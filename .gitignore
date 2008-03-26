@@ -1,0 +1,22 @@
+# Compiled objects.
+bin
+lib
+
+# Packaged objects.
+BaseSystem*
+NetherPanel*
+.NetherPanel
+.svn
+
+# Import tracing files.
+all-libs
+used-imports
+
+# Netbeans junk.
+build-before-profiler.xml
+build.xml
+build
+dist
+manifest.mf
+nbproject
+
