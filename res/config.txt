@@ -1,0 +1,1 @@
+commandline=-cp bin:lib ui.NetherPanel

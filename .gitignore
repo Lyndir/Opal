@@ -1,22 +1,21 @@
 # Compiled objects.
-bin
-lib
+/*/target
 
 # Packaged objects.
-BaseSystem*
-NetherPanel*
-.NetherPanel
 .svn
 
-# Import tracing files.
-all-libs
-used-imports
+# Ant
+/*/build.xml
 
-# Netbeans junk.
-build-before-profiler.xml
-build.xml
-build
-dist
-manifest.mf
-nbproject
+# Eclipse IDE
+/*/.classpath
+/*/.project
+/*/.settings
 
+# Netbeans IDE
+/build-before-profiler.xml
+/build.xml
+/build
+/dist
+/manifest.mf
+/nbproject

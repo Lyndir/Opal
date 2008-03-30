@@ -1,0 +1,420 @@
+<html>
+    <head>
+        <title>NetherPanel v2 - Development Changelog</title>
+    </head>
+    <body>
+        <h1>1.95 -- Alpha</h1>
+        <ul>
+            <li>Don't use cached addons when refreshing addon list; reload them from server.</li>
+            <li>Addons now have an action property that specifies what exactly you want to do with them instead of just selected or not selected: current actions: install, upgrade, remove.</li>
+            <li>Uninstalling addons now doesn't happen immediately.  Addons are marked for uninstalling and are previewed as marked for installation in the next step along with the addons marked for upgrading/installing and are removed along with the installation of new and upgraded addons.</li>
+            <li>Added a feature that marks all addons that are not requested and are not dependencies of requested addons for removal effectively cleaning up unneeded addons (handy for cleaning up Ace libraries).</li>
+            <li>Toolbar by the addon manager has been changed a little -- should make more sense now to people.</li>
+        </ul>
+        <h1>1.91a -- Alpha</h1>
+        <ul>
+            <li>Added a feature that allows people to ignore addons that are in SVN, GIT or CVS repositories.  Defaults to on (addons in repositories are ignored by default).</li>
+        </ul>
+        <h1>1.9a -- Alpha</h1>
+        <ul>
+            <li>Forgot to re-enable splash screen.</li>
+        </ul>
+        <h1>1.9 -- Alpha</h1>
+        <ul>
+            <li>Uploader code reworked largely.  Multiple upload configurations are now possible.</li>
+            <li>Beginnings of code that will let people switch between externalized deps and embedded deps.</li>
+            <li>Fixed problems that occur when people move from embedded deps to external deps by automatically selecting all necessary (the existing fix deps option).</li>
+            <li>Fixed UniAdmin problems.</li>
+            <li>Fixed search field - it stayed red even on match.</li>
+            <li>Search field now hops to the next match by pressing Enter several times.</li>
+        </ul>
+        <h1>1.08-rc1 -- Alpha</h1>
+        <ul>
+            <li>Fixed an issue where the tag file was not updated with the new addon's version number.</li>
+            <li>New: Addon preview images.  Each addon is looked up on WoWInterface.com and have their preview images displayed and cached.</li>
+        </ul>
+        <h1>1.07a -- Alpha</h1>
+        <ul>
+            <li>Get rid of an annoying little info that triggered the console window before the main window appears.</li>
+            <li>Reworked WoW Directory detection (prev commit).</li>
+        </ul>
+        <h1>1.07 -- Alpha</h1>
+        <ul>
+            <li>Addon Versioning fixes - autodetect addon versions from source code and local version is now kept properly.</li>
+            <li>Update addon information that's showing in the lists as it changes (eg. when an addon is uninstalled).</li>
+        </ul>
+        <h1>1.06a -- Alpha</h1>
+        <ul>
+            <li>Oops.  I deployed unstable code accidently.  Quick-fix to make it runnable.</li>
+        </ul>
+        <h1>1.06 -- Alpha</h1>
+        <ul>
+            <li>Remove a dependency on SUN's Java VM.</li>
+        </ul>
+        <h1>1.05 -- Alpha</h1>
+        <ul>
+            <li>Make the progress bars look a bit better.</li>
+            <li>Set WoWLauncher on by default.</li>
+        </ul>
+        <h1>1.04 -- Alpha</h1>
+        <ul>
+            <li>Show an exception dialog now when NetherPanel exits before being able to show the frame.  No more invisible and impossible to debug exceptions.</li>
+            <li>Keep outputting debugging logs on console even when the console window is up.</li>
+            <li>Make all threads that should die after the UI disappeared daemon threads so the application can quit when unexpected issues caused the UI to crash and disappear.</li>
+        </ul>
+        <h1>1.03 -- Alpha</h1>
+        <ul>
+            <li>More graphical fixes of the new GButton and background and effects.</li>
+            <li>New slash screen for NetherPanel.</li>
+        </ul>
+        <h1>1.02 -- Alpha</h1>
+        <ul>
+            <li>Lots of eye-candy changes.  Myummy.</li>
+        </ul>
+        <h1>1.01 -- Alpha</h1>
+        <ul>
+            <li>jUniUploader is now called NetherPanel.</li>
+            <li>Ability to disable support for UniAdmin and Roster.</li>
+            <li>Added support for dependency management.</li>
+            <li>Added graph visualization of dependencies.</li>
+            <li>Redesigned the addon manager pane.</li>
+            <li>ACE addons are now dealt with as noext.  Meaning no embedded libraries but all libraries are addons of their own.</li>
+            <li>Addon manager now displays addons in categories.  Only Ace addons support this, though.</li>
+            <li>Massive overall fixes and reworks.</li>
+        </ul>
+        <h1>0.9.15.10 -- Alpha</h1>
+        <ul>
+            <li>Fixed an issue caused by addons that had a later version but didn't update any files.  They would keep showing as out-of-date.</li>
+        </ul>
+        <h1>0.9.15.9 -- Alpha</h1>
+        <ul>
+            <li>Wrote wrappers for Java 6 classes that are unavailable in Java 5; this way the code can be compiled on Java 5 (for example - on MAC).</li>
+        </ul>
+        <h1>0.9.15.8 -- Alpha</h1>
+        <ul>
+            <li>Do not use no-ext ACE Addons; use the ace addons that actually include all their deps.</li>
+            <li>Deal with ACE's decimal revision numbers; this fixes updating of a lot of ACE addons that started using this method of versioning.</li>
+        </ul>
+        <h1>0.9.15.7 -- Alpha</h1>
+        <ul>
+            <li>Check whether the saved variable is readable before trying to MD5sum it.</li>
+        </ul>
+        <h1>0.9.15.6 -- Alpha</h1>
+        <ul>
+            <li>Unimplemented sync settings messages moved from warning-&gt;config level so that they don't fill up your screen when using systray.</li>
+        </ul>
+        <h1>0.9.15.5 -- Alpha</h1>
+        <ul>
+            <li>Fix to become compatible again with the updated files.wowace.com; added some backend for a kick-ass addon management implementation with I might add later.</li>
+        </ul>
+        <h1>0.9.15.4 -- Alpha</h1>
+        <ul>
+            <li>Fixed some issues caused by the tooltips (mostly in Windows) (such as textbox loosing focus when tips show up and buttons need to be pressed twice for them to take effect).</li>
+            <li>Fixed the buttons in the addon update/install preview pane that allow you to see a DIFF of each file that will be changed during the updating of your addons (very handy).</li>
+            <li>Hopefully fixed the addon status thingy from wrapping itself to two lines in Windows (the [ADDON INST] thingy).</li>
+            <li>Made the addon search bar activate immediately instead of waiting for you to type at least three letters of the addon name.</li>
+        </ul>
+        <h1>0.9.15.3 -- Alpha</h1>
+        <ul>
+            <li>Added german localization (translation).</li>
+        </ul>
+        <h1>0.9.15.2 -- Alpha</h1>
+        <ul>
+            <li>Made WoW launchable through cedega as well as through wine on Linux (former preferred if available).</li>
+        </ul>
+        <h1>0.9.15.1 -- Alpha</h1>
+        <ul>
+            <li>Fixed handling of alternative upload URLs configured in UniAdmin (ADDURLx).</li>
+        </ul>
+        <h1>0.9.15 -- Alpha</h1>
+        <ul>
+            <li>Fixed right-click to show popup menu in NP and its systray (eg. for Macs that don't have a right mouse button).</li>
+            <li>Fixed detection of WoW directory on Macs (I hope).</li>
+            <li>Added a new feature that allows you to search through addon descriptions to find addons that do a specific thing.</li>
+        </ul>
+        <h1>0.9.14.9 -- Alpha</h1>
+        <ul>
+            <li>Fixed a bug in the parser that occurs when there's } characters in notes and names etc.</li>
+            <li>Made checking of addons some faster (mainly if you have a lot of ace addons).</li>
+            <li>Should have fixed loading WoW on Macs.</li>
+        </ul>
+        <h1>0.9.14.8 -- Alpha</h1>
+        <ul>
+            <li>Cleaned up tooltip code a little more and profiled the memory usage.</li>
+        </ul>
+        <h1>0.9.14.7 -- Alpha</h1>
+        <ul>
+            <li>Rework tooltips; they use far less memory this time - finally!</li>
+        </ul>
+        <h1>0.9.14.6 -- Alpha</h1>
+        <ul>
+            <li>Fix logger messages for Out-of-Memory errors and other errors that have no source.</li>
+            <li>Fix installing addons that have completely insane and retarded zip filename entries.</li>
+        </ul>
+        <h1>0.9.14.5 -- Alpha</h1>
+        <ul>
+            <li>Small fix in uploader that prevents it from breaking if the CharacterProfiler file does not contain any characters (yet).</li>
+        </ul>
+        <h1>0.9.14.4 -- Alpha</h1>
+        <ul>
+            <li>Modified file checks to only check for file existance, not whether they're regular files too (fixes symlinks).</li>
+            <li>Fixed tooltips making a lot of threads which caused issues with some operating systems and configurations.</li>
+        </ul>
+        <h1>0.9.14.3 -- Alpha</h1>
+        <ul>
+            <li>Filename of World of Warcraft Launcher fixed for Mac.</li>
+            <li>Fixed error message formatting code in the parser.</li>
+        </ul>
+        <h1>0.9.14.2 -- Alpha</h1>
+        <ul>
+            <li>Made settings controled by UniAdmin appear read only in the interface by disabling their controls.</li>
+            <li>Implement a heap of other UA settings that were already supported by NP but not checked against yet in the UA reply.</li>
+            <li>Rename addon tag file to force tag file update.  This is needed because of an addon update bug that has already been fixed.</li>
+            <li>Possibly fixed a rather obscure annoyance that caused an error to be displayed when searching for the WoW directory.</li>
+        </ul>
+        <h1>0.9.14.1 -- Alpha</h1>
+        <ul>
+            <li>Made uploader only upload guild data once in case it needs to split up your CharacterProfiler.lua.</li>
+        </ul>
+        <h1>0.9.14 -- Alpha</h1>
+        <ul>
+            <li>Fixed some issues with the refresh button in the addon updater.</li>
+            <li>Made it so windows doens't wrap the [ADDON INST] etc. labels anymore.</li>
+            <li>Fixed and upgraded the system tray menu.</li>
+            <li>Implemented an advanced scheduling system.</li>
+            <li>Changed the implementation of the uploader to work through the scheduler instead of with an interval.</li>
+            <li>Made the log window a little more colour/featureful.</li>
+            <li>UniAdmin settings are now seen as obligatory and will always override local changes upon sync.</li>
+            <li>Added lots of debugging code to the Uploader module to make tracing of upload problems easier.</li>
+            <li>Fixed a deadlock that occurred during NP shutdown on Windows.</li>
+            <li>Added several extra tooltips on controls to help people understand what they do.</li>
+            <li>Made the uploader show an HTML pane with the output from the roster after each file upload if the upload was forced.</li>
+            <li>Several smaller fixes and improvements here and there including extensive backend reworks.</li>
+        </ul>
+        <h1>0.9.13 -- Alpha</h1>
+        <ul>
+            <li>Ability to set a default theme by using system property 'theme' (eg. through the WebStart JNLP file).</li>
+            <li>Fixed the implementation of the queue satitizer that removes already queued events.</li>
+            <li>Fixed a problem that could cause NetherPanel to lock itself down.</li>
+            <li>Addon description in installer preview pane now wrap if they are too long for the line.</li>
+        </ul>
+        <h1>0.9.12 -- Alpha</h1>
+        <ul>
+            <li>Reworked UI request implementation with blocking queues (now compatible with Java 5 again, sorry; plus heh, it's better than in 0.9.11 yet)</li>
+            <li>Fixed a problem with the new console window that prevented logger messages from being redirected to it.</li>
+            <li>Fixed a problem with the new console window that made it output corrupted messages sometimes.</li>
+            <li>Fixed a problem with the new console window that caused it to not properly reset the output if it got closed using it's own close button.</li>
+            <li>Deal sanely with completely mangled ZIP file path separators (fixes a bug that caused certain files not to get installed from nagled addon ZIP files).</li>
+            <li>Don't mark our addon tag file for removal when "Remove unneeded files" is checked.</li>
+            <li>Added implementation that reads in UniAdmin setting for GZip.</li>
+        </ul>
+        <h1>0.9.11 -- Alpha</h1>
+        <ul>
+            <li>UI update interface has been completely reworked to achieve a more stable system.</li>
+            <li>Source code has been arranged in a com.lyndir.lhunath package tree.</li>
+            <li>Bug fixed with editing the Forum and Homepage fields in the NP settings.</li>
+            <li>CharacterProfiler and GuildProfiler and dublicate addons in UniAdmin will now no longer be added to the list (NP adds its own, more up-to-date addons for the former two to the list).</li>
+            <li>Several libraries that weren't used by NP have been removed from the JARs/ZIP.</li>
+            <li>A manual console has been added which might provide some more debugging output in case things go wrong.</li>
+            <li>The console log output has been greatly improved in functionality/effectiveness.</li>
+            <li>And several more backend enhancements, mainly in the BaseSystem lib.</li>
+        </ul>
+        <h1>0.9.10 -- Alpha</h1>
+        <ul>
+            <li>Language switching has now been integrated completely.</li>
+            <li>Several minor bugfixes.</li>
+            <li>And.. I so don't remember the rest since I was working on 0.9.11 and forgot to write this version's changelog.</li>
+        </ul>
+        <h1>0.9.9 -- Alpha</h1>
+        <ul>
+            <li>Added a panel with licensing details to NetherPanel.</li>
+            <li>Fixed a bug that disabled the close button when toggling fullscreen/windowed mode.</li>
+            <li>Fixed a bug induced by hitting the cancel button in some dialogs.</li>
+            <li>Fixed a bug that cleared the post variables list as soon as it got filled up.</li>
+            <li>Some workarounds that should prevent NetherPanel from going out of memory too soon.</li>
+            <li>Most strings externalized in preparation of translation to other languages.</li>
+            <li>UI has been templetized in BaseSystem so that new applications can easily use it for their own purpose.</li>
+            <li>Made addons enumerate smoother as they are being processed (usually they only appeared as soon as processing had completed).</li>
+        </ul>
+        <h1>0.9.8.1 -- Alpha</h1>
+        <ul>
+            <li>Getting rid of character validation in the Parser. Let's assume the lua file is valid.</li>
+            <li>Implementing support for escaped characters in the Parser.</li>
+        </ul>
+        <h1>0.9.8 -- Alpha</h1>
+        <ul>
+            <li>Made Uploader send CharacterProfiler.lua in chunks to prevent PHP Out of Memory errors in the roster while parsing it.</li>
+            <li>Fixed launching World Of Warcraft - OS detection issue.</li>
+            <li>Improved Uploader module's stability.</li>
+            <li>Several minor fixes here and there.</li>
+        </ul>
+        <h1>0.9.7.2 -- Alpha</h1>
+        <ul>
+            <li>Fixed a bug introduced in the locale module while recoding that prevented NP from starting.</li>
+            <li>Fixed a bug that prevented Post Variables from being loaded from UniAdmin.</li>
+        </ul>
+        <h1>0.9.7.1 -- Alpha</h1>
+        <ul>
+            <li>Fixed a few bugs introduced in the logger while recoding.</li>
+        </ul>
+        <h1>0.9.7 -- Alpha</h1>
+        <ul>
+            <li>Released the source code for the libraries used under the Apache license, and the source code for NetherPanel under the GPL license.</li>
+            <li>Added extra data checks on config file content to assure compatibility (incompatible config files could cause NP to crash on startup).</li>
+            <li>Fixed a bug in the addon installer to do with the tag file.</li>
+            <li>Sorted addons alphanumericly in the addon installer view.</li>
+            <li>Implemented ability to have multiple upload sites.</li>
+        </ul>
+        <h1>0.9.6.2 -- Alpha</h1>
+        <ul>
+            <li>Quick fix for hover events in the addon manager.</li>
+        </ul>
+        <h1>0.9.6.1 -- Alpha</h1>
+        <ul>
+            <li>0.9.6 had broken compatibilty with Java 5. This has been resolved.</li>
+        </ul>
+        <h1>0.9.6 -- Alpha</h1>
+        <ul>
+            <li>Added config options to manually set homepage and forum button urls.</li>
+            <li>Added config options to manually configure post variables.</li>
+            <li>No longer asking for UniAdmin URL if empty; because some people might not even use UniAdmin.</li>
+            <li>Ability to unselect addons from being installed; when in the preview window.</li>
+            <li>Log verbosity switch (currently only toggles stack traces on the console).</li>
+            <li>Completely redesigned addon manager.</li>
+        </ul>
+        <h1>0.9.5 -- Alpha</h1>
+        <ul>
+            <li>Repackaging NetherPanel in JARs. No longer using those EXE wrappers. Should make launching on Mac easier too.</li>
+            <li>Fixed a bug introduced in 0.9.4: Uploading was broken due to introduction of support for multiple-accounts.</li>
+            <li>Santitized the application a bit for use with auto-uploading disabled. (Ie. mainly using it for addon manager).</li>
+            <li>Fixed a little bug with shell process spawning, nothing serious.</li>
+            <li>Fixed a bug with non-UniAdmin addons in Windows. (Not appearant unix/mac)</li>
+        </ul>
+        <h1>0.9.4 -- Alpha</h1>
+        <ul>
+            <li>Filter button to show only addons that can be updated and hide the uninstalled / up-to-date addons from the list.</li>
+            <li>Added SV MD5s to config so that we don't always upload SVs on application startup, only if they changed since NP exited.</li>
+            <li>Don't use /usr/bin/locate if the system doesn't have it installed to avoid an error.</li>
+            <li>Also automatically select all required but not installed addons (this includes CharacterProfiler and GuildProfiler).</li>
+            <li>Completely redesigned settings pane to be more intuative, accessible, and fit more settings in a readable way.</li>
+            <li>Made the tooltips only show after a delay of half a second.</li>
+            <li>Changed how the home and forum URLs are fetched from UniAdmin to comply with UniAdmin v0.7.8</li>
+            <li>Implemented ADDVAR support to allow arbitrary POST vars to be sent along with the SV upload; send-pass-securely for DF uploads; and support for GZIP-compressed uploads.</li>
+            <li>Implemented UA settings for using OpenGL rendered mode, Windowed mode, optional use of the WoW Launcher, and adding additional parameters when starting WoW.</li>
+            <li>Implemented setting to switch between manual and automatic file upload.</li>
+            <li>Implemented always on top mode, auto-start WoW, start NP as minimized.</li>
+            <li>Added User Agent string for file uploads: UniUploader 2.0 (NP2 0.9.4; English)</li>
+        </ul>
+        <h1>0.9.3 -- Alpha</h1>
+        <ul>
+            <li>Automatically provides CharacterProfiler and GuildProfiler addons, latest version straight from rpgoutfitter.</li>
+            <li>Changed the logger's output to include some more detailed code location info.</li>
+            <li>Added a statistical information bar to the addons page; showing the amount of addons there are and how many are selected for update / install.</li>
+            <li>Improved version checking and comparison. Also implemented this code in numerous other places improving their old operation.</li>
+            <li>Fixed showing the changelog in the development pane of the application.</li>
+            <li>Made the uploader's progress bar show the progress of the upload.</li>
+            <li>The usual internal reworks and improvements.</li>
+        </ul>
+        <h1>0.9.2 -- Alpha</h1>
+        <ul>
+            <li>Implemented the 'Check for updates' - feature. Checks for an installs updates when available.</li>
+            <li>Added a nice little splash screen implementation with translucency.</li>
+        </ul>
+        <h1>0.9.1 -- Alpha</h1>
+        <ul>
+            <li>Now updates all guild members when the guild roster password is known (which includes players not uploading to the roster).</li>
+            <li>Extensive performance profiling to detect memory leaks, improve GC management and memory reclaiming.</li>
+            <li>Improved code for stability and overcoming exceptional sitations (ea. bugs/problems).</li>
+            <li>Added search box in addon list for very quick browsing through long addons list.</li>
+            <li>Added completion percentages to progress bars.</li>
+        </ul>
+        <h1>0.9 -- Alpha</h1>
+        <ul>
+            <li>Improved Ace SVN support, including all Ace SVN addons in the addon listing for installation.</li>
+            <li>Numerous internal UI improvements.</li>
+        </ul>
+        <h1>0.8.1 -- Alpha</h1>
+        <ul>
+            <li>A lot of rewriting to allow integration of NetherPanel in webpages through Java WebStart.</li>
+            <li>Use http://lhunath.lyndir.com/NetherPanel/NetherPanel.jnlp to start the latest version of NP.</li>
+        </ul>
+        <h1>0.8 -- Alpha</h1>
+        <ul>
+            <li>Several small bugfixes.</li>
+            <li>Launch progress notifications and launching of WoW fixed on Linux, and possibly Mac.</li>
+            <li>Addon upgrading completed!  Addons are now being installed.</li>
+            <li>Ace SVN can now be used to always get the very latest versions of your Ace addons.</li>
+            <li>Mailer / Webbrowser / System Tray migrated AWAY from JDIC, and now using native Java 6 API.  Install Java 6, not Java 5, if you want to use these features!</li>
+        </ul>
+        <h1>0.7 -- Alpha</h1>
+        <ul>
+            <li>Enhanced the graphics a little more again.</li>
+            <li>Added fullscreen support.</li>
+            <li>Replaced the ugly window manager borders and titlebar with something more personal.</li>
+            <li>Made frame draggable by holding the right mouse button on it and dragging the mouse around.</li>
+            <li>A LOT of fixes to make it runnable on Windows.</li>
+            <li>WoW can be started on windows again .. broke on linux and won't work on Mac either.  Need to find a decent way to do this ..</li>
+            <li>Moved to alpha version of JDIC to enable Mac support of browser/systray. (Systray still under development for all platforms)</li>
+            <li>Optimized memory usage of addon upgrader; and almost completed its installing phase.</li>
+            <li>Made addon upgrading a manual step, not automatic. (It sucks a lot of I/O; which is not fun if you don't really want to check for addon upgrades)</li>
+        </ul>
+        <h1>0.6 -- Alpha</h1>
+        <ul>
+            <li>Locking the UI while background activities are running so that we can't trigger multiple actions that might break each other.</li>
+            <li>Reworking progress bars to allow for multiple simultaneous progress bar levels.</li>
+            <li>Downloading addons selected for upgrade and installing.</li>
+            <li>Reworking tooltips to make them stickable (in a separate frame) by clicking on the component that shows them.</li>
+            <li>Showing difference between local files that need to be modified for upgrading of addons and the new version of the file.</li>
+            <li>Plenty of internal improvements on the UI and theme switching to make things update better and smoother.</li>
+            <li>Lots of internal reworks on the tooltips and how they work.  Make them wrap and scroll, fix their gradient background.</li>
+            <li>Fixed threading and timing issues with logger inheritance.  Global logger is only inherited for callback logging so far.</li>
+            <li>FINALLY fixed the damned file uploading; bless Apache Jakarta.</li>
+        </ul>
+        <h1>0.5 -- Alpha</h1>
+        <ul>
+            <li>Reworked config system to allow for far better cross-version config file compatibility.</li>
+            <li>Reworked process execution internals.</li>
+            <li>Added ability to autodetect WoW in Linux (and possibly on Mac).</li>
+            <li>Started work on checking Ace SVN for the latest of the latest of Ace addons.</li>
+            <li>Small bugfix for Macs, since it fails to find the native library for JDic ( which does not support Mac :( ).</li>
+        </ul>
+        <h1>0.4 -- Alpha</h1>
+        <ul>
+            <li>Added checking of local addons against addon info, to see which files need to be added/removed/modified.</li>
+            <li>Added tooltips to see addon notes (descriptions of what they are).</li>
+            <li>Added status labels in the addon manager that show whether an addon is installed / needs to be updated.</li>
+            <li>Provided options for ignoring certain addon files based on some checks or on a custom PCRE pattern.</li>
+            <li>Added a few new themes and improved theme customizing.</li>
+            <li>Added ability to dump settings to standard output by clicking the logo.</li>
+        </ul>
+        <h1>0.3 -- Alpha</h1>
+        <ul>
+            <li>Redesigned UI, moved tabs.</li>
+            <li>Some bugfixes and stability improvements.</li>
+            <li>Added theming ability and some heavy refractoring to allow painless theme creation.</li>
+            <li>Allowed custom themes and saving of theme settings.</li>
+            <li>Internals for checking addon up-to-date-ness.</li>
+        </ul>
+        <h1>0.2 -- Alpha</h1>
+        <ul>
+            <li>Settings for character upload URL and SVs.</li>
+            <li>Save log output to file.</li>
+            <li>UI improvements and backend implementation / refractoring.</li>
+            <li>Launching World of Warcraft as script or executable.</li>
+            <li>Check Saved Variables every x seconds using MD5.</li>
+            <li>Upload Saved Variables to the roster update URL when they're modified.</li>
+            <li>Mindbogglingly complex transparant and design-clean config implementation.</li>
+            <li>Launch some pages in a webbrowser using jDic.</li>
+        </ul>
+        <h1>0.1 -- Alpha</h1>
+        <ul>
+            <li>Base User Interface.</li>
+            <li>WoW Folder detection in Windows.</li>
+            <li>Account enumeration.</li>
+            <li>Fetching of remote settings.</li>
+            <li>Fetching of remote addon listing.</li>
+            <li>Extensive operation logging.</li>
+            <li>Progress bar for nearly all operations.</li>
+        </ul>
+    </body>
+</html>

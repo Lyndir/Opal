@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/JLibs Math"/>
-	<classpathentry exported="true" kind="lib" path="/Repository/lib/looks-2.1.4.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/JLibs System"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
