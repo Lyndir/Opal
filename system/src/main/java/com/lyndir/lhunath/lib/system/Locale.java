@@ -63,9 +63,9 @@ public class Locale {
 
         try {
             if (lang == null)
-                resources = ResourceBundle.getBundle( "res.messages" );
+                resources = ResourceBundle.getBundle( "messages" );
             else
-                resources = ResourceBundle.getBundle( "res.messages", lang );
+                resources = ResourceBundle.getBundle( "messages", lang );
         } catch (MissingResourceException e) {
             resources = new ListResourceBundle() {
 

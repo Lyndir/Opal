@@ -114,8 +114,10 @@ public abstract class LogFormatter extends Formatter {
         String message = "";
         if (error != null)
             for (Throwable e = error; e != null; e = e.getCause())
-                message = String.format( "(%s:%d) %s: %s\n", e.getStackTrace()[0].getFileName(),
-                        e.getStackTrace()[0].getLineNumber(), e.getClass().getName(), e.getLocalizedMessage() )
+                message = String.format( "(%s:%d) %s: %s\n",
+                        e.getStackTrace().length > 0 ? e.getStackTrace()[0].getFileName() : "n/a",
+                        e.getStackTrace().length > 0 ? e.getStackTrace()[0].getLineNumber() : -1,
+                        e.getClass().getName(), e.getLocalizedMessage() )
                           + message;
 
         if (record.getMessage() != null && record.getMessage().length() > 0)

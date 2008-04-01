@@ -13,13 +13,16 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.lib.network.xml;
+package com.lyndir.lhunath.lib.xml;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.tidy.Tidy;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
@@ -33,6 +36,8 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  * @author lhunath
  */
 public class Structure {
+
+    private static final int TAB_SIZE = 4;
 
     public static Tidy getTidyBuilder() {
 
@@ -75,5 +80,56 @@ public class Structure {
         }
 
         return null;
+    }
+
+    /**
+     * Render the given node as an XML-formatted string.
+     */
+    public static String toString(Node node) {
+
+        return toString( node, 1 ).toString();
+    }
+
+    private static StringBuffer toString(Node node, int indent) {
+
+        if (node.getNodeType() == Node.TEXT_NODE)
+            return new StringBuffer( indent( indent ) ).append( node.getNodeValue() ).append( '\n' );
+
+        StringBuffer out = new StringBuffer();
+        out.append( indent( indent ) );
+        out.append( '<' ).append( node.getNodeName() );
+
+        NamedNodeMap attributes = node.getAttributes();
+        for (int i = 0; i < attributes.getLength(); ++i) {
+            Node attribute = attributes.item( i );
+
+            out.append( ' ' ).append( attribute.getNodeName() );
+            out.append( '=' ).append( '"' ).append( attribute.getNodeValue() ).append( '"' );
+        }
+
+        out.append( '>' ).append( '\n' );
+
+        NodeList children = node.getChildNodes();
+        for (int i = 0; i < children.getLength(); ++i) {
+            Node child = children.item( i );
+
+            out.append( toString( child, indent + 1 ) );
+        }
+
+        String value = node.getNodeValue();
+        if (value != null && value.length() > 0) {
+            out.append( indent( indent + 1 ) );
+            out.append( value ).append( '\n' );
+        }
+
+        out.append( indent( indent ) );
+        out.append( '<' ).append( '/' ).append( node.getNodeName() ).append( '>' ).append( '\n' );
+
+        return out;
+    }
+
+    private static String indent(int indent) {
+
+        return String.format( "%" + indent * TAB_SIZE + "s", "" );
     }
 }

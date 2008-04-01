@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidClassException;
@@ -30,13 +32,17 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.core.BaseException;
 
 /**
  * <i>BaseConfig - A configuration backend system with built-in persistence.</i><br>
@@ -69,9 +75,13 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      */
     public static BaseConfig<File>              configFile       = create( File.class );
 
+    /**
+     * Whether to write out this configuration file in XML format.
+     */
+    public static BaseConfig<Boolean>           writeAsXML       = create( true );
+
     protected static Set<Runnable>              shutdownHooks    = new HashSet<Runnable>();
     protected static Map<BaseConfig<?>, String> names            = new HashMap<BaseConfig<?>, String>();
-    protected static Map<String, String>        types            = new HashMap<String, String>();
 
     static {
         /* CALL THIS METHOD IN EVERY SUBCLASS! */
@@ -97,11 +107,29 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                         configFile.get().delete();
                     configFile.get().createNewFile();
 
-                    FileOutputStream out = new FileOutputStream( configFile.get() );
-                    ObjectOutputStream objects = new ObjectOutputStream( out );
-                    objects.writeObject( names );
-                    objects.writeObject( types );
-                    objects.close();
+                    if (writeAsXML.get()) {
+                        XStream xstream = new XStream();
+                        FileWriter configWriter = new FileWriter( configFile.get() );
+
+                        try {
+                            xstream.toXML( names, configWriter );
+                            // xstream.toXML( types, configWriter );
+                        } finally {
+                            configWriter.close();
+                        }
+                    }
+
+                    else {
+                        FileOutputStream out = new FileOutputStream( configFile.get() );
+                        ObjectOutputStream objects = new ObjectOutputStream( out );
+
+                        try {
+                            objects.writeObject( names );
+                            // objects.writeObject( types );
+                        } finally {
+                            objects.close();
+                        }
+                    }
                 } catch (UnsupportedEncodingException e) {
                     Logger.error( e, "Charset %s is unsupported!", Utils.getCharset().name() );
                 } catch (FileNotFoundException e) {
@@ -221,8 +249,9 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                     ParameterizedType type = (ParameterizedType) field.getGenericType();
 
                     config.hashCode = config.getName( configClass ).hashCode();
+                    config.type = type.getActualTypeArguments()[0].toString();
+
                     names.put( config, config.getName( configClass ) );
-                    types.put( config.getName( configClass ), type.getActualTypeArguments()[0].toString() );
                 }
             } catch (IllegalArgumentException e) {
                 continue;
@@ -244,14 +273,62 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                 return;
 
             /* Read in the config file to a new settings object. */
-            InputStream stream = new BufferedInputStream( new FileInputStream( configFile.get() ) );
-            ObjectInputStream objects = new ObjectInputStream( stream );
-            Map<BaseConfig, String> configNames;
-            Map<String, String> configTypes;
+            boolean loaded = false, useXML = writeAsXML.isSet() ? writeAsXML.get() : true;
+            List<Exception> loadProblems = new ArrayList<Exception>();
+            Map<BaseConfig<? extends Serializable>, String> configNames = new HashMap<BaseConfig<? extends Serializable>, String>();
+            // Map<String, String> configTypes = new HashMap<String, String>();
 
-            configNames = names.getClass().cast( objects.readObject() );
-            configTypes = types.getClass().cast( objects.readObject() );
-            objects.close();
+            /* XML XStream Method. */
+            if (useXML)
+                try {
+                    XStream xstream = new XStream();
+                    FileReader configReader = new FileReader( configFile.get() );
+
+                    try {
+                        configNames = names.getClass().cast( xstream.fromXML( configReader ) );
+                        // configTypes = types.getClass().cast( xstream.fromXML( configReader ) );
+                    } finally {
+                        configReader.close();
+                    }
+
+                    loaded = true;
+                } catch (IOException e) {
+                    loadProblems.add( e );
+                    useXML = false;
+                } catch (BaseException e) {
+                    loadProblems.add( e );
+                    useXML = false;
+                }
+
+            /* ObjectStream Method. */
+            if (!useXML)
+                try {
+                    InputStream stream = new BufferedInputStream( new FileInputStream( configFile.get() ) );
+                    ObjectInputStream objects = new ObjectInputStream( stream );
+
+                    try {
+                        configNames = names.getClass().cast( objects.readObject() );
+                        // configTypes = types.getClass().cast( objects.readObject() );
+                    } finally {
+                        objects.close();
+                    }
+
+                    loaded = true;
+                } catch (InvalidClassException e) {
+                    Logger.warn( "Config file is incompatible, reverting to defaults." );
+                } catch (IOException e) {
+                    loadProblems.add( e );
+                }
+
+            /* Failed. */
+            if (!loaded) {
+                Logger.error( "Failed to load config file %s.  Reason follows.", configFile.get().toString() );
+                for (Exception loadProblem : loadProblems)
+                    Logger.error( loadProblem );
+
+                revert();
+                return;
+            }
 
             /* Apply config file and check its settings for any keys not defined by the application. */
             for (BaseConfig fileEntry : configNames.keySet())
@@ -263,15 +340,14 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
                     /* Persistent entry info. */
                     String configName = configNames.get( fileEntry );
-                    String configType = configTypes.get( configName );
+                    // String configType = configTypes.get( configName );
 
                     /* If field names match .. */
                     if (currEntry.getName().equals( configName )) {
                         try {
                             /* Abort if types don't match. */
-                            if (!currEntry.getType().equals( configType ))
-                                throw new ClassCastException( "Generic types don't match." );
-
+                            // if (!currEntry.getType().equals( configType ))
+                            // throw new ClassCastException( "Generic types don't match." );
                             currEntry.set( fileEntry.get() );
                         }
 
@@ -286,29 +362,18 @@ public class BaseConfig<T extends Serializable> implements Serializable {
         }
 
         /* Names and/or Types Map has become incompatible. */
-        catch (InvalidClassException e) {
-            Logger.warn( "Config file is incompatible, reverting to defaults." );
-            revert();
-        } catch (ClassCastException e) {
+        catch (ClassCastException e) {
             Logger.warn( "Config file is incompatible, reverting to defaults." );
             revert();
         } catch (ClassNotFoundException e) {
             Logger.error( e, "Object in config file not supported, reverting to defaults." );
             revert();
         }
-
-        /* I/O errors. */
-        catch (FileNotFoundException e) {
-            Logger.error( e, "Config file '%s' not found!", configFile.get() );
-        } catch (IOException e) {
-            Logger.error( e, "Couldn't read the config file '%s'!", configFile.get() );
-        }
     }
 
     private static void revert() {
 
         names = new HashMap<BaseConfig<?>, String>();
-        types = new HashMap<String, String>();
     }
 
     public static void addShutdownHook(Runnable hook) {
@@ -318,6 +383,8 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     private T                                       value;
     private int                                     hashCode;
+    private String                                  type;
+
     private transient Set<ConfigChangedListener<T>> listeners;
 
     /**
@@ -364,8 +431,8 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      */
     public String getType() {
 
-        if (types.containsKey( getName() ))
-            return types.get( getName() );
+        if (type != null)
+            return type;
 
         Logger.warn( "This config entry has not (yet) been flushed, returning its superclass." );
 

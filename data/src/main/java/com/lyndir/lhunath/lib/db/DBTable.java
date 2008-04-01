@@ -13,11 +13,11 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.lib.network.db;
+package com.lyndir.lhunath.lib.db;
 
-import static com.lyndir.lhunath.lib.network.db.DBQuery.Type.INSERT;
-import static com.lyndir.lhunath.lib.network.db.DBQuery.Type.SELECT;
-import static com.lyndir.lhunath.lib.network.db.DBQuery.Type.UPDATE;
+import static com.lyndir.lhunath.lib.db.DBQuery.Type.INSERT;
+import static com.lyndir.lhunath.lib.db.DBQuery.Type.SELECT;
+import static com.lyndir.lhunath.lib.db.DBQuery.Type.UPDATE;
 
 import java.util.ArrayList;
 import java.util.Collections;

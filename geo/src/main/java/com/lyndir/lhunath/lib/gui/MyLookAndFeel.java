@@ -33,15 +33,17 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 
 /**
  * TODO: {@link MyLookAndFeel}<br>
- *
+ * 
  * @author lhunath
  */
 public class MyLookAndFeel implements Serializable {
 
     private static MyLookAndFeel active;
     private Map<String, Color>   defaults;
-    private MyTheme              theme;
+    private MyThemeType          themeType;
     Color                        base;
+
+    transient private MyTheme    cachedTheme;
 
     /**
      * Version of the class.
@@ -56,19 +58,19 @@ public class MyLookAndFeel implements Serializable {
 
     /**
      * Create a new {@link MyLookAndFeel} instance.
-     *
+     * 
      * @param base
      *        The shade upon which to base this theme's colors.
      */
     public MyLookAndFeel(Color base, MyThemeType themeType) {
 
         setBase( base );
-        theme = themeType.create( this );
+        this.themeType = themeType;
     }
 
     /**
      * Set up certain defaults for UI elements.
-     *
+     * 
      * @return This instance.
      */
     public MyLookAndFeel setup() {
@@ -82,7 +84,7 @@ public class MyLookAndFeel implements Serializable {
 
     /**
      * Reconfigure components that used UI defaults that change in this theme, recursively.
-     *
+     * 
      * @param container
      *        The container from which to remove this {@link DragListener}.
      * @return This instance.
@@ -105,7 +107,7 @@ public class MyLookAndFeel implements Serializable {
 
     /**
      * Set the base shade.
-     *
+     * 
      * @param base
      *        Guess.
      * @return This instance.
@@ -136,12 +138,15 @@ public class MyLookAndFeel implements Serializable {
      */
     public MyTheme getTheme() {
 
-        return theme;
+        if (cachedTheme == null)
+            cachedTheme = themeType.create( this );
+
+        return cachedTheme;
     }
 
     /**
      * Retrieve the base shade.
-     *
+     * 
      * @return Guess.
      */
     public Color getBase() {
@@ -175,7 +180,7 @@ public class MyLookAndFeel implements Serializable {
 
     /**
      * Get a darker shade from the current theme.
-     *
+     * 
      * @return Guess.
      */
     public static Color getActiveDark() {
@@ -188,7 +193,7 @@ public class MyLookAndFeel implements Serializable {
 
     /**
      * Get a darker shade from the current theme.
-     *
+     * 
      * @return Guess.
      */
     public static Color getActiveMedium() {
@@ -201,7 +206,7 @@ public class MyLookAndFeel implements Serializable {
 
     /**
      * Get a darker shade from the current theme.
-     *
+     * 
      * @return Guess.
      */
     public static Color getActiveBright() {

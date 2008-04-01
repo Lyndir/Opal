@@ -17,6 +17,8 @@ package com.lyndir.lhunath.lib.math;
 
 import java.io.Serializable;
 
+import com.lyndir.lhunath.lib.system.Utils;
+
 /**
  * <i>{@link Version} - A class that represents version numbers in a comparable structure.</i><br>
  * <br>
@@ -40,7 +42,7 @@ public class Version implements Comparable<Version>, Serializable {
      */
     public Version(Number version) {
 
-        this( version.toString() );
+        this( version == null ? null : version.toString() );
     }
 
     /**
@@ -62,8 +64,23 @@ public class Version implements Comparable<Version>, Serializable {
      */
     public void set(String version) {
 
+        if (version == null)
+            version = "0";
+
         this.version = version.trim();
         tags = version.trim().split( "\\." );
+    }
+
+    /**
+     * @return The major version number (the first number in the version). <code>null</code> if the first tag is not a
+     *         number or there are no tags.
+     */
+    public Integer getMajor() {
+
+        if (tags.length == 0)
+            return null;
+
+        return Utils.parseInt( tags[0] );
     }
 
     /**

@@ -115,7 +115,7 @@ public enum MyTheme {
      */
     CUSTOM (Color.DARK_GRAY);
 
-    private static final MyTheme FALLBACK = NATURE;
+    private static final MyTheme FALLBACK = TECH;
     protected MyLookAndFeel      lookAndFeel;
 
     private MyTheme(Color base) {

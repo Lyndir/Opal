@@ -47,7 +47,7 @@ public class ShadeConfig<T extends Serializable> extends BaseConfig<T> {
     /**
      * The release version of the application.
      */
-    public static final Version               VERSION          = new Version( "0.0" );           //$NON-NLS-1$
+    public static final Version               VERSION          = new Version( "0.0" );
 
     /**
      * The application's storage location.

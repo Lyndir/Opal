@@ -1,4 +1,4 @@
-package com.lyndir.lhunath.lib.network.xml;
+package com.lyndir.lhunath.lib.xml;
 
 import java.util.ArrayList;
 import java.util.HashMap;
