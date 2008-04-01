@@ -5,7 +5,7 @@
 # 
 #
 # Group identifier for your projects
-GROUP = "com.lhunath.lyndir.lib"
+GROUP = "com.lyndir.lhunath.lib"
 COPYRIGHT = "Lhunath (C) 2007-2008"
 # 
 # Versioning

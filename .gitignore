@@ -1,7 +1,11 @@
 # Compiled objects.
 /*/target
 
+# OS-Specific junk.
+.DS_Store
+
 # Packaged objects.
+/archive.builder
 .svn
 
 # Ant

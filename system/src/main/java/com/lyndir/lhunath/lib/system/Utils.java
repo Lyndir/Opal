@@ -425,11 +425,11 @@ public class Utils {
      */
     public static ImageIcon getIcon(String resource) {
 
-        URL uri = Utils.class.getResource( resource );
-        if (uri == null)
+        URL url = resolve( resource );
+        if (url == null)
             return null;
 
-        return new ImageIcon( uri );
+        return new ImageIcon( url );
     }
 
     /**
@@ -622,12 +622,29 @@ public class Utils {
      * Get a {@link File} object for a resource.
      * 
      * @param resource
-     *        The filename of the resource.
+     *        The filename of the resource. This should be an absolute path and is relative toward the root of the
+     *        application code. If a relative resource is given, it is made absolute by prefixing it with a /.
+     * @return Guess.
+     */
+    public static URL resolve(String resource) {
+
+        if (!resource.startsWith( "/" ))
+            resource = "/" + resource;
+
+        return Utils.class.getResource( resource );
+    }
+
+    /**
+     * Get a {@link File} object for a resource.
+     * 
+     * @param resource
+     *        The filename of the resource. This should be an absolute path and is relative toward the root of the
+     *        application code. If a relative resource is given, it is made absolute by prefixing it with a /.
      * @return Guess.
      */
     public static File res(String resource) {
 
-        URL url = Utils.class.getResource( resource );
+        URL url = resolve( resource );
         if (url == null)
             return null;
 

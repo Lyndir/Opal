@@ -15,8 +15,8 @@
  */
 package com.lyndir.lhunath.lib.system.logging;
 
-import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.ConsoleHandler;
@@ -27,6 +27,7 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 
 import com.lyndir.lhunath.lib.system.Locale;
+import com.lyndir.lhunath.lib.system.Utils;
 
 /**
  * <i>Logger - An interface to the java {@link java.util.logging.Logger} class.</i><br>
@@ -48,9 +49,9 @@ public class Logger {
     static {
         try {
             /* Configure the Java Logging backend. */
-            InputStream stream = Logger.class.getResourceAsStream( "Logger.properties" );
-            if (stream != null)
-                LogManager.getLogManager().readConfiguration( stream );
+            URL loggerProperties = Utils.resolve( "Logger.properties" );
+            if (loggerProperties != null)
+                LogManager.getLogManager().readConfiguration( loggerProperties.openStream() );
 
             /* Set up base handlers. */
             ConsoleHandler handler = new ConsoleHandler();
