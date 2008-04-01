@@ -48,7 +48,7 @@ public class Logger {
     static {
         try {
             /* Configure the Java Logging backend. */
-            InputStream stream = Logger.class.getResourceAsStream( "/res/Logger.properties" );
+            InputStream stream = Logger.class.getResourceAsStream( "Logger.properties" );
             if (stream != null)
                 LogManager.getLogManager().readConfiguration( stream );
 

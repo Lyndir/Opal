@@ -53,7 +53,7 @@ public class ToolTipButton extends ToolTip {
      */
     public ToolTipButton(String toolTip) {
 
-        super( toolTip, new JButton( Utils.getIcon( "/res/help.png" ) ) );
+        super( toolTip, new JButton( Utils.getIcon( "help.png" ) ) );
     }
 
     /**

@@ -94,7 +94,7 @@ public class EditableList extends JList {
                 /* Add. */
                 item = new JMenuItem( new AbstractAction(
                         Locale.explain( "ui.add" ) + a + contentTitle + ' ' + Locale.explain( "ui.addsuffix" ), //$NON-NLS-1$ //$NON-NLS-2$
-                        Utils.getIcon( "/res/add-ss.png" ) ) { //$NON-NLS-1$
+                        Utils.getIcon( "add-ss.png" ) ) { //$NON-NLS-1$
 
                             private static final long serialVersionUID = 1L;
 
@@ -112,7 +112,7 @@ public class EditableList extends JList {
 
                 /* Delete. */
                 item = new JMenuItem( new AbstractAction( Locale.explain( "ui.remove" ) + contentTitle, //$NON-NLS-1$
-                        Utils.getIcon( "/res/del-ss.png" ) ) { //$NON-NLS-1$
+                        Utils.getIcon( "del-ss.png" ) ) { //$NON-NLS-1$
 
                             private static final long serialVersionUID = 1L;
 
@@ -126,7 +126,7 @@ public class EditableList extends JList {
 
                 /* Modify. */
                 item = new JMenuItem( new AbstractAction( Locale.explain( "ui.edit" ) + contentTitle, //$NON-NLS-1$
-                        Utils.getIcon( "/res/edit-ss.png" ) ) { //$NON-NLS-1$
+                        Utils.getIcon( "edit-ss.png" ) ) { //$NON-NLS-1$
 
                             private static final long serialVersionUID = 1L;
 

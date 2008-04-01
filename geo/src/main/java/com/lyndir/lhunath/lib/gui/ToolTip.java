@@ -88,7 +88,7 @@ public class ToolTip extends JPanel {
      */
     public ToolTip(final String toolTip) {
 
-        this( toolTip, new JLabel( Utils.getIcon( "/res/help.png" ) ) );
+        this( toolTip, new JLabel( Utils.getIcon( "help.png" ) ) );
     }
 
     /**
