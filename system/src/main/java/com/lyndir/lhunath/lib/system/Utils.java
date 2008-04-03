@@ -131,7 +131,7 @@ public class Utils {
     /**
      * Ratio of the long part of the golden section.
      */
-    public static final double                GOLDEN         = 0.62;
+    public static final double                GOLDEN         = 0.618;
 
     /**
      * Inverted ratio of the long part of the golden section.
@@ -1278,4 +1278,45 @@ public class Utils {
         return compressed.replaceFirst( " throws [^\\(\\)]*", "" );
     }
 
+    /**
+     * Trim all <code>trim</code> strings off of the <code>source</code> string, operating only on the left side.
+     */
+    public static String ltrim(Object source, Object trim) {
+
+        if (source == null || trim == null)
+            return source == null ? null : source.toString();
+
+        String sourceString = source.toString();
+        String trimString = trim.toString();
+
+        while (sourceString.startsWith( trimString ) && sourceString.length() > trimString.length())
+            sourceString = sourceString.substring( trimString.length() );
+
+        return sourceString;
+    }
+
+    /**
+     * Trim all <code>trim</code> strings off of the <code>source</code> string, operating only on the left side.
+     */
+    public static String rtrim(Object source, Object trim) {
+
+        if (source == null || trim == null)
+            return source == null ? null : source.toString();
+
+        String sourceString = source.toString();
+        String trimString = trim.toString();
+
+        while (sourceString.endsWith( trimString ) && sourceString.length() > trimString.length())
+            sourceString = sourceString.substring( 0, sourceString.length() - trimString.length() );
+
+        return sourceString;
+    }
+
+    /**
+     * Trim all <code>trim</code> strings off of the <code>source</code> string, operating on both sides.
+     */
+    public static String trim(Object source, Object trim) {
+
+        return Utils.rtrim( Utils.ltrim( source, trim ), trim );
+    }
 }
