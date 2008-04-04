@@ -138,6 +138,9 @@ public class MyLookAndFeel implements Serializable {
      */
     public MyTheme getTheme() {
 
+        if (themeType == null)
+            themeType = MyThemeType.PLASTIC;
+
         if (cachedTheme == null)
             cachedTheme = themeType.create( this );
 
