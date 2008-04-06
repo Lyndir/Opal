@@ -323,7 +323,9 @@ public class GPG {
         /* Find the PGP encrypted data. */
         Object encryptedDataObjects = null;
         do
-            encryptedDataObjects = encryptedDataFactory.nextObject();
+            try {
+                encryptedDataObjects = encryptedDataFactory.nextObject();
+            } catch (IOException e) {}
         while (!(encryptedDataObjects instanceof PGPEncryptedDataList) && encryptedDataObjects != null);
         if (encryptedDataObjects == null)
             throw new PGPException( "No encrypted objects found." );

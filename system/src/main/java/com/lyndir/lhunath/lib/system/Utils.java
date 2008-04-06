@@ -1319,4 +1319,15 @@ public class Utils {
 
         return Utils.rtrim( Utils.ltrim( source, trim ), trim );
     }
+
+    /**
+     * @return A concise representation of the URL showing only the root domain and final path of the path.
+     */
+    public static String shortUrl(URL home) {
+
+        String shortHome = home.getHost().replaceFirst( "^.*?([^\\.]+\\.[^\\.]+)$", "$1" );
+        String path = home.getPath().replaceFirst( "/+$", "" ).replaceFirst( "^.*/", "" );
+
+        return shortHome + ':' + path;
+    }
 }

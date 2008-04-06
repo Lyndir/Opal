@@ -16,10 +16,10 @@
 package com.lyndir.lhunath.lib.gui;
 
 import java.awt.AWTException;
+import java.awt.AlphaComposite;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.util.Timer;
@@ -38,33 +38,50 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  * This splash screen captures the screen and paints an image on top of the capture. This allows for splash screens with
  * transparent or translucent images.<br>
  * The splash screen normally disappears after a given delay, but you can also call the {@link #dispose()} method to get
- * rid of it as soon as your application's com.lyndir.lhunath.lib.gui * 
+ * rid of it as soon as your application's com.lyndir.lhunath.lib.gui *
+ * 
  * @author lhunath
  */
 public class Splash extends JWindow {
 
     protected static Splash instance;
-    private Image           splash = null;
     private Icon            icon;
+    private Icon            initial;
+    private BufferedImage   back;
+    private long            startTime;
+    private long            endTime;
 
-    private Splash(Icon icon) {
+    private Splash(Icon initial, Icon icon) {
 
         int width = icon.getIconWidth();
         int height = icon.getIconHeight();
+        int initialWidth = width;
+        int initialHeight = height;
+
+        if (initial != null) {
+            initial.getIconWidth();
+            initial.getIconHeight();
+
+            if (initialWidth != width || initialHeight != height) {
+                Logger.warn( "Initial icon has a different width or height.  Disabling fade." );
+                initial = null;
+            }
+        }
 
         setSize( new Dimension( width, height ) );
         setLocationRelativeTo( null );
         setAlwaysOnTop( true );
-        setIcon( icon );
+        setIcons( initial, icon );
     }
-
     /**
      * @param icon
      *        The icon to show in the splash screen.
      */
-    private void setIcon(Icon icon) {
+    private void setIcons(Icon initial, Icon icon) {
 
+        this.initial = initial;
         this.icon = icon;
+
         update();
     }
 
@@ -76,15 +93,13 @@ public class Splash extends JWindow {
 
         setVisible( false );
 
-        splash = new BufferedImage( getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB );
-        Graphics2D g2 = (Graphics2D) splash.getGraphics();
+        back = new BufferedImage( getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB );
+        Graphics2D g2 = (Graphics2D) back.getGraphics();
 
         try {
             BufferedImage capture = new Robot().createScreenCapture( getBounds() );
             g2.drawImage( capture, null, 0, 0 );
         } catch (AWTException e) {}
-
-        icon.paintIcon( this, g2, 0, 0 );
 
         setVisible( true );
     }
@@ -95,8 +110,38 @@ public class Splash extends JWindow {
     @Override
     public void paint(Graphics g) {
 
-        if (splash != null)
-            g.drawImage( splash, 0, 0, null );
+        Graphics2D g2 = (Graphics2D) g;
+
+        if (back != null) {
+            g2.drawImage( back, 0, 0, null );
+
+            if (startTime > 0 && initial != null) {
+                float alpha = (float) Math.max( 0, (endTime - System.currentTimeMillis())
+                                                   / (double) (endTime - startTime) );
+                System.out.println( "repainting with alpha: " + alpha );
+                g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, alpha ) );
+                initial.paintIcon( this, g2, 0, 0 );
+
+                g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, 1f - alpha ) );
+            }
+
+            icon.paintIcon( this, g2, 0, 0 );
+        }
+    }
+
+    public void fade(int duration) {
+
+        startTime = System.currentTimeMillis();
+        endTime = startTime + duration;
+
+        new Timer( "Splash Fade Timer", true ).scheduleAtFixedRate( new TimerTask() {
+
+            @Override
+            public void run() {
+
+                repaint();
+            }
+        }, 0, Math.max( 1, (endTime - startTime) / 1000 ) );
     }
 
     /**
@@ -105,6 +150,7 @@ public class Splash extends JWindow {
     @Override
     public void dispose() {
 
+        System.out.println( "dispose" );
         super.dispose();
         instance = null;
     }
@@ -134,13 +180,19 @@ public class Splash extends JWindow {
 
         if (instance == null) {
             ImageIcon icon = Utils.getIcon( image );
-            if (icon == null) {
-                Logger.warn( "Splash disabled: Image not found: %s", image );
-                return null;
-            }
+            ImageIcon initial = Utils.getIcon( image.replaceFirst( "(\\.[^\\.]+$)", "-desat$1" ) );
 
-            instance = new Splash( icon );
-            new Timer( "SplashTimer" ).schedule( new TimerTask() {
+            if (icon == null)
+                if (initial != null) {
+                    icon = initial;
+                    initial = null;
+                } else {
+                    Logger.warn( "Splash disabled: Image not found: %s", image );
+                    return null;
+                }
+
+            instance = new Splash( initial, icon );
+            new Timer( "Splash Disposal Timer" ).schedule( new TimerTask() {
 
                 @Override
                 public void run() {

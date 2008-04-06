@@ -208,23 +208,17 @@ public abstract class AbstractUi
         animation.setDeceleration( .4f );
 
         /* Build user interface. */
-        SwingUtilities.invokeLater( new Runnable() {
+        try {
+            buildUi();
+        } catch (RuntimeException e) {
+            if (frame != null)
+                frame.dispose();
+            animation.cancel();
 
-            public void run() {
+            throw e;
+        }
 
-                try {
-                    buildUi();
-                } catch (RuntimeException e) {
-                    if (frame != null)
-                        frame.dispose();
-                    animation.cancel();
-
-                    throw e;
-                }
-
-                executeAll();
-            }
-        } );
+        executeAll();
     }
 
     /**
@@ -1106,27 +1100,11 @@ public abstract class AbstractUi
                 "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
         layout.setColumnGroups( new int[][] { { 3, 5 } } );
 
-        String doc = "";
         JButton button;
         PanelBuilder builder = new PanelBuilder( layout, new ScrollPanel() );
         CellConstraints cc = new CellConstraints();
 
-        try {
-            doc = getChangeLog();
-        } catch (IOException e) {
-            Logger.error( e, "err.readChangelog" );
-        }
-
-        JEditorPane changelog = new JEditorPane( "text/html", doc.toString() ); //$NON-NLS-1$
-        changelog.setOpaque( false );
-        changelog.setEditable( false );
-        changelog.setFont( Font.decode( "Monospaced-15" ) ); //$NON-NLS-1$
-
-        JScrollPane pane = new JScrollPane( changelog );
-        pane.setBorder( Borders.EMPTY_BORDER );
-        pane.setOpaque( false );
-        pane.getViewport().setOpaque( false );
-        builder.add( pane, cc.xyw( 2, 2, 5 ) );
+        builder.add( getDevelopmentComponent(), cc.xyw( 2, 2, 5 ) );
 
         button = new JButton( Locale.explain( "ui.reportProblem" ), Utils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
@@ -1144,6 +1122,31 @@ public abstract class AbstractUi
 
         builder.getPanel().setOpaque( false );
         return builder.getPanel();
+    }
+
+    /**
+     * @return The component to put on the center of the development pane.
+     */
+    protected JComponent getDevelopmentComponent() {
+
+        String doc = "";
+        try {
+            doc = getChangeLog();
+        } catch (IOException e) {
+            Logger.error( e, "err.readChangelog" );
+        }
+
+        JEditorPane changelog = new JEditorPane( "text/html", doc.toString() ); //$NON-NLS-1$
+        changelog.setOpaque( false );
+        changelog.setEditable( false );
+        changelog.setFont( Font.decode( "Monospaced-15" ) ); //$NON-NLS-1$
+
+        JScrollPane pane = new JScrollPane( changelog );
+        pane.setBorder( Borders.EMPTY_BORDER );
+        pane.setOpaque( false );
+        pane.getViewport().setOpaque( false );
+
+        return pane;
     }
 
     @SuppressWarnings("unused")
