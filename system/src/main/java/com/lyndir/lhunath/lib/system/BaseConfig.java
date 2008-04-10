@@ -44,6 +44,7 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.BaseException;
 
+
 /**
  * <i>BaseConfig - A configuration backend system with built-in persistence.</i><br>
  * <br>
@@ -143,6 +144,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
         } );
     }
 
+
     /**
      * Create a new {@link BaseConfig} that defaults to being unset.
      * 
@@ -152,7 +154,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      *        See type.
      * @return The {@link BaseConfig} object for this entry.
      */
-    public static <T extends Serializable> BaseConfig<T> create(Class<T> type) {
+    public static <T extends Serializable> BaseConfig<T> create(@SuppressWarnings("unused") Class<T> type) {
 
         return new BaseConfig<T>( null );
     }
@@ -376,16 +378,24 @@ public class BaseConfig<T extends Serializable> implements Serializable {
         names = new HashMap<BaseConfig<?>, String>();
     }
 
+    /**
+     * Add a {@link Runnable} to execute as we are shutting down.
+     * 
+     * @param hook
+     *        The hook to execute during shutdown.
+     */
     public static void addShutdownHook(Runnable hook) {
 
         shutdownHooks.add( hook );
     }
+
 
     private T                                       value;
     private int                                     hashCode;
     private String                                  type;
 
     private transient Set<ConfigChangedListener<T>> listeners;
+
 
     /**
      * Create a new {@link BaseConfig} instance.
@@ -509,6 +519,9 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     /**
      * Register an event handler that will be called when this value changes.
+     * 
+     * @param listener
+     *        The {@link ConfigChangedListener} to register.
      */
     public void register(ConfigChangedListener<T> listener) {
 

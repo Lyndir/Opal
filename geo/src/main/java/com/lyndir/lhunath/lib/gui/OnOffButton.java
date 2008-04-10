@@ -20,6 +20,7 @@ import javax.swing.JToggleButton.ToggleButtonModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+
 /**
  * <i>OnOffButton - A toggle button with configurable text for its toggle states.</i><br>
  * <br>
@@ -32,6 +33,7 @@ public class OnOffButton extends GButton implements ChangeListener {
 
     private String onText, offText;
     private Icon   onIcon, offIcon;
+
 
     /**
      * Create a new OnOffButton instance.
@@ -72,8 +74,12 @@ public class OnOffButton extends GButton implements ChangeListener {
      * 
      * @param onText
      *        The text that shows on the button when it is selected.
+     * @param onIcon
+     *        The icon that shows on the button when it is selected.
      * @param offText
      *        The text that shows on the button when it is not selected.
+     * @param offIcon
+     *        The icon that shows on the button when it is not selected.
      */
     public OnOffButton(String onText, Icon onIcon, String offText, Icon offIcon) {
 

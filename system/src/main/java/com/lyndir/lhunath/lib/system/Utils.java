@@ -68,6 +68,7 @@ import javax.swing.plaf.FontUIResource;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import com.lyndir.lhunath.lib.system.wrapper.Desktop;
 
+
 /**
  * <i>Utils - A big collection of convenience methods.</i><br>
  * <br>
@@ -207,6 +208,7 @@ public class Utils {
      * The maximum size for a component. Very useful to make components in a BoxLayout fill all available space.
      */
     public static final Dimension             MAX_SIZE       = new Dimension( Short.MAX_VALUE, Short.MAX_VALUE );
+
 
     /**
      * Get the charset that should be used for all encoding and decoding of externalized messages and communication.
@@ -532,6 +534,7 @@ public class Utils {
         return null;
     }
 
+
     /**
      * Digests that can be calculated with the {@link Utils#getDigest(File, com.lyndir.lhunath.lib.system.Utils.Digest)}
      * method.
@@ -617,6 +620,7 @@ public class Utils {
             throw new IllegalArgumentException( "The digest in the argument is cannot be recougnized: '" + digest + "'" );
         }
     }
+
 
     /**
      * Get a {@link File} object for a resource.
@@ -842,12 +846,8 @@ public class Utils {
      * 
      * @param in
      *        The stream to get the data from.
-     * @param bufferSize
-     *        The size of the buffer to use for reading.
      * @param out
      *        The destination of the output stream.
-     * @param callback
-     *        The callback object to notify each time a chunk of data was written.
      * @throws IOException
      * @see BaseConfig#BUFFER_SIZE
      */
@@ -919,6 +919,7 @@ public class Utils {
         }
     }
 
+
     /**
      * A callback interface that will be called while data is being written to allow evaluating the writing progress.
      */
@@ -932,6 +933,7 @@ public class Utils {
          */
         public void wroteChunk(double totalBytesWritten);
     }
+
 
     /**
      * Extend the java library search path by adding the path of a library that will need to be loaded at some point in
@@ -1259,10 +1261,14 @@ public class Utils {
 
     /**
      * Create a debug border with a red coloured line bevel and a text label.
+     * 
+     * @param text
+     *        The text to put on the label.
+     * @return The label component.
      */
-    public static Component createDebugLabel(String debugLabel) {
+    public static Component createDebugLabel(String text) {
 
-        JLabel label = new JLabel( debugLabel, SwingConstants.CENTER );
+        JLabel label = new JLabel( text, SwingConstants.CENTER );
         label.setBorder( BorderFactory.createLineBorder( RED ) );
 
         return label;
@@ -1271,6 +1277,10 @@ public class Utils {
     /**
      * Compress the generic form of the method's signature. Trim off throws declarations.<br>
      * java.lang.method -> j~l~method
+     * 
+     * @param signature
+     *        The signature that needs to be compressed.
+     * @return The compressed signature.
      */
     public static String compressSignature(String signature) {
 
@@ -1280,6 +1290,12 @@ public class Utils {
 
     /**
      * Trim all <code>trim</code> strings off of the <code>source</code> string, operating only on the left side.
+     * 
+     * @param source
+     *        The source object that needs to be converted to a string and trimmed.
+     * @param trim
+     *        The object that needs to be converted to a string and is what will be trimmed off.
+     * @return The result of the trimming.
      */
     public static String ltrim(Object source, Object trim) {
 
@@ -1297,6 +1313,12 @@ public class Utils {
 
     /**
      * Trim all <code>trim</code> strings off of the <code>source</code> string, operating only on the left side.
+     * 
+     * @param source
+     *        The source object that needs to be converted to a string and trimmed.
+     * @param trim
+     *        The object that needs to be converted to a string and is what will be trimmed off.
+     * @return The result of the trimming.
      */
     public static String rtrim(Object source, Object trim) {
 
@@ -1314,6 +1336,12 @@ public class Utils {
 
     /**
      * Trim all <code>trim</code> strings off of the <code>source</code> string, operating on both sides.
+     * 
+     * @param source
+     *        The source object that needs to be converted to a string and trimmed.
+     * @param trim
+     *        The object that needs to be converted to a string and is what will be trimmed off.
+     * @return The result of the trimming.
      */
     public static String trim(Object source, Object trim) {
 
@@ -1321,6 +1349,8 @@ public class Utils {
     }
 
     /**
+     * @param home
+     *        The {@link URL} that needs to be converted to a short string version.
      * @return A concise representation of the URL showing only the root domain and final path of the path.
      */
     public static String shortUrl(URL home) {

@@ -30,6 +30,7 @@ import jlibdiff.Hunk;
 
 import com.lyndir.lhunath.lib.system.Utils;
 
+
 /**
  * TODO: Needs cleanup.
  */
@@ -38,9 +39,9 @@ public class DiffUtils {
     /**
      * Get the contextual difference between the data from two streams.
      * 
-     * @param fromStream
+     * @param from
      *        Original stream
-     * @param toStream
+     * @param to
      *        Modified stream
      * @return The diff string.
      * @throws FileNotFoundException
@@ -55,9 +56,9 @@ public class DiffUtils {
     /**
      * Get the contextual difference between the data from two streams.
      * 
-     * @param fromStream
+     * @param from
      *        Original stream
-     * @param toStream
+     * @param to
      *        Modified stream
      * @return The diff string.
      * @throws FileNotFoundException
@@ -74,9 +75,9 @@ public class DiffUtils {
     /**
      * Get the contextual difference between the data from two strings.
      * 
-     * @param fromStream
+     * @param from
      *        Original stream
-     * @param toStream
+     * @param to
      *        Modified stream
      * @return The diff string.
      * @throws FileNotFoundException

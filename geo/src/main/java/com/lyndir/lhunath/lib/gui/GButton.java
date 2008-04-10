@@ -37,6 +37,7 @@ import javax.swing.SwingUtilities;
 import com.lyndir.lhunath.lib.math.Vec2;
 import com.lyndir.lhunath.lib.system.Utils;
 
+
 /**
  * <h2>{@link GButton} - [in short] (TODO).</h2>
  * <p>
@@ -62,16 +63,25 @@ public class GButton extends JButton {
     private BufferedImage        smallDisabledIcon;
     private BufferedImage        largeDisabledIcon;
 
+
     /**
      * Create a new {@link GButton} instance.
+     * 
+     * @param icon
+     *        The icon to show on the button.
      */
-    public GButton(Icon onIcon) {
+    public GButton(Icon icon) {
 
-        this( null, onIcon );
+        this( null, icon );
     }
 
     /**
      * Create a new {@link GButton} instance.
+     * 
+     * @param text
+     *        The text to put on the button.
+     * @param icon
+     *        The icon to show next to the button text.
      */
     public GButton(String text, Icon icon) {
 

@@ -27,6 +27,7 @@ import java.util.Map;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
+
 /**
  * TODO: Database<br>
  * 
@@ -40,6 +41,7 @@ public class DBTable {
 
     protected Map<String, Object>              data;
 
+
     protected DBTable() {
 
         data = new HashMap<String, Object>();
@@ -47,6 +49,9 @@ public class DBTable {
 
     /**
      * Create a new Database instance.
+     * 
+     * @param row
+     *        The data in the database object.
      */
     protected DBTable(Map<String, Object> row) {
 
@@ -62,6 +67,9 @@ public class DBTable {
      *        Same as type.
      * @param type
      *        The type of database object to generate using the database data.
+     * @param data
+     *        The data that should be contained in the database object.
+     * @return The database object that contains the given data.
      */
     protected static <T extends DBTable> T getInstance(Class<T> type, Map<String, Object> data) {
 
@@ -373,6 +381,8 @@ public class DBTable {
      *        The name of the field to modify in the row.
      * @param newValue
      *        The new value for the field in the row.
+     * @param where
+     *        The where condition that defines which database objects to modify.
      */
     protected static <T extends DBTable> void modify(Class<T> type, final String field, final Object newValue,
             DBWhere where) {

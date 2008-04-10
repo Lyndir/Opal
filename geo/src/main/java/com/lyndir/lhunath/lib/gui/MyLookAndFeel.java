@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.ColorUIResource;
@@ -30,6 +31,7 @@ import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
 import com.jgoodies.looks.plastic.theme.AbstractSkyTheme;
 import com.lyndir.lhunath.lib.system.logging.Logger;
+
 
 /**
  * TODO: {@link MyLookAndFeel}<br>
@@ -56,11 +58,14 @@ public class MyLookAndFeel implements Serializable {
                 MyThemeType.PLASTIC );
     }
 
+
     /**
      * Create a new {@link MyLookAndFeel} instance.
      * 
      * @param base
      *        The shade upon which to base this theme's colors.
+     * @param themeType
+     *        The type of theme to use.
      */
     public MyLookAndFeel(Color base, MyThemeType themeType) {
 
@@ -158,7 +163,7 @@ public class MyLookAndFeel implements Serializable {
     }
 
     /**
-     * Get a darker shade from this theme.
+     * @return a darker shade from this theme.
      */
     public Color getDark() {
 
@@ -166,7 +171,7 @@ public class MyLookAndFeel implements Serializable {
     }
 
     /**
-     * Get a darker shade from this theme.
+     * @return a darker shade from this theme.
      */
     public Color getMedium() {
 
@@ -174,7 +179,7 @@ public class MyLookAndFeel implements Serializable {
     }
 
     /**
-     * Get a darker shade from this theme.
+     * @return a darker shade from this theme.
      */
     public Color getBright() {
 
@@ -182,9 +187,7 @@ public class MyLookAndFeel implements Serializable {
     }
 
     /**
-     * Get a darker shade from the current theme.
-     * 
-     * @return Guess.
+     * @return a darker shade from the current theme.
      */
     public static Color getActiveDark() {
 
@@ -195,9 +198,7 @@ public class MyLookAndFeel implements Serializable {
     }
 
     /**
-     * Get a darker shade from the current theme.
-     * 
-     * @return Guess.
+     * @return a darker shade from the current theme.
      */
     public static Color getActiveMedium() {
 
@@ -208,9 +209,7 @@ public class MyLookAndFeel implements Serializable {
     }
 
     /**
-     * Get a darker shade from the current theme.
-     * 
-     * @return Guess.
+     * @return a darker shade from the current theme.
      */
     public static Color getActiveBright() {
 
@@ -255,16 +254,37 @@ public class MyLookAndFeel implements Serializable {
         return String.format( "L&F [#%08x]", base.getRGB() ); //$NON-NLS-1$
     }
 
+
+    /**
+     * <h2>{@link MyThemeType}<br>
+     * <sub>Swing Look and Feel type.</sub></h2>
+     * 
+     * <p>
+     * <i>Apr 9, 2008</i>
+     * </p>
+     * 
+     * @author mbillemo
+     */
     public enum MyThemeType {
+
+        /**
+         * JGoodies Plastic theme.
+         */
         PLASTIC (MyPlasticTheme.class); // , SUBSTANCE (MySubstanceTheme.class);
 
         private Class<? extends MyTheme> type;
+
 
         private MyThemeType(Class<? extends MyTheme> type) {
 
             this.type = type;
         }
 
+        /**
+         * @param lnf
+         *        The {@link LookAndFeel} that colors the theme.
+         * @return Create a {@link MyTheme} of this type.
+         */
         public MyTheme create(MyLookAndFeel lnf) {
 
             try {
@@ -279,6 +299,17 @@ public class MyLookAndFeel implements Serializable {
         }
     }
 
+
+    /**
+     * <h2>{@link MyTheme}<br>
+     * <sub>A wrapper for Java Look and Feels.</sub></h2>
+     * 
+     * <p>
+     * <i>Apr 9, 2008</i>
+     * </p>
+     * 
+     * @author mbillemo
+     */
     public interface MyTheme extends Serializable {
 
         /**
@@ -286,6 +317,7 @@ public class MyLookAndFeel implements Serializable {
          */
         public void setup();
     }
+
 
     // public class MySubstanceTheme extends SubstanceCremeTheme implements MyTheme {
     //
@@ -303,7 +335,20 @@ public class MyLookAndFeel implements Serializable {
     // }
     // }
 
+    /**
+     * <h2>{@link MyPlasticTheme}<br>
+     * <sub>A {@link MyTheme} implementation for the JGoodies theme.</sub></h2>
+     * 
+     * <p>
+     * <i>Apr 9, 2008</i>
+     * </p>
+     * 
+     * @author mbillemo
+     */
     public class MyPlasticTheme extends AbstractSkyTheme implements MyTheme {
+
+        private static final long serialVersionUID = 1L;
+
 
         /**
          * {@inheritDoc}
@@ -346,6 +391,7 @@ public class MyLookAndFeel implements Serializable {
 
             return new ColorUIResource( base.brighter().brighter() );
         }
+
         /**
          * Button borders.<br>
          * {@inheritDoc}

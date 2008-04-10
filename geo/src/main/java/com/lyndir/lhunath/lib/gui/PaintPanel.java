@@ -33,6 +33,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.UIManager;
 
+
 /**
  * <i>{@link PaintPanel} - A panel that uses a paint for its background, rather than a color.</i><br>
  * <br>
@@ -49,6 +50,7 @@ public class PaintPanel extends ScrollPanel {
     private int     autoColorControl;
     GradientPaint   autoPaint;
     Paint           paint;
+
 
     /**
      * Create a new {@link PaintPanel} instance.
@@ -209,7 +211,7 @@ public class PaintPanel extends ScrollPanel {
     /**
      * Set the paint of this {@link PaintPanel}.
      * 
-     * @param paint
+     * @param image
      *        Guess.
      */
     public void setBackgroundImage(Image image) {
@@ -288,6 +290,7 @@ public class PaintPanel extends ScrollPanel {
             g2.setComposite( originalComposite );
         }
     }
+
 
     class PaintPanelComponentAdapter extends ComponentAdapter {
 

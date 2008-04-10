@@ -32,6 +32,7 @@ import javax.swing.JWindow;
 import com.lyndir.lhunath.lib.system.Utils;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
+
 /**
  * <i>Splash - Create and show a splash screen for your application.</i><br>
  * <br>
@@ -44,12 +45,14 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  */
 public class Splash extends JWindow {
 
-    protected static Splash instance;
-    private Icon            icon;
-    private Icon            initial;
-    private BufferedImage   back;
-    private long            startTime;
-    private long            endTime;
+    private static final long serialVersionUID = 1L;
+    protected static Splash   instance;
+    private Icon              icon;
+    private Icon              initial;
+    private BufferedImage     background;
+    private long              startTime;
+    private long              endTime;
+
 
     private Splash(Icon initial, Icon icon) {
 
@@ -73,6 +76,7 @@ public class Splash extends JWindow {
         setAlwaysOnTop( true );
         setIcons( initial, icon );
     }
+
     /**
      * @param icon
      *        The icon to show in the splash screen.
@@ -93,8 +97,8 @@ public class Splash extends JWindow {
 
         setVisible( false );
 
-        back = new BufferedImage( getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB );
-        Graphics2D g2 = (Graphics2D) back.getGraphics();
+        background = new BufferedImage( getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB );
+        Graphics2D g2 = (Graphics2D) background.getGraphics();
 
         try {
             BufferedImage capture = new Robot().createScreenCapture( getBounds() );
@@ -110,25 +114,31 @@ public class Splash extends JWindow {
     @Override
     public void paint(Graphics g) {
 
-        Graphics2D g2 = (Graphics2D) g;
+        if (background == null)
+            return;
 
-        if (back != null) {
-            g2.drawImage( back, 0, 0, null );
+        BufferedImage backbuffer = new BufferedImage( getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB );
+        Graphics2D g2 = (Graphics2D) backbuffer.getGraphics();
+        g2.drawImage( background, 0, 0, null );
 
-            if (startTime > 0 && initial != null) {
-                float alpha = (float) Math.max( 0, (endTime - System.currentTimeMillis())
-                                                   / (double) (endTime - startTime) );
-                System.out.println( "repainting with alpha: " + alpha );
-                g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, alpha ) );
-                initial.paintIcon( this, g2, 0, 0 );
+        if (startTime > 0 && initial != null) {
+            float alpha = (float) Math.max( 0, (endTime - System.currentTimeMillis()) / (double) (endTime - startTime) );
+            g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, alpha ) );
+            initial.paintIcon( this, g2, 0, 0 );
 
-                g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, 1f - alpha ) );
-            }
-
-            icon.paintIcon( this, g2, 0, 0 );
+            g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, 1f - alpha ) );
         }
+
+        icon.paintIcon( this, g2, 0, 0 );
+        g.drawImage( backbuffer, 0, 0, this );
     }
 
+    /**
+     * Fade the initial image over into the final image.
+     * 
+     * @param duration
+     *        The duration over which to fade.
+     */
     public void fade(int duration) {
 
         startTime = System.currentTimeMillis();
@@ -150,7 +160,6 @@ public class Splash extends JWindow {
     @Override
     public void dispose() {
 
-        System.out.println( "dispose" );
         super.dispose();
         instance = null;
     }

@@ -24,6 +24,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+
 /**
  * <i>{@link SearchBox} - [in short] (TODO).</i><br>
  * <br>
@@ -38,6 +39,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
     private int     minChars;
     private String  subject;
     private int     hit = 1;
+
 
     /**
      * Create a new {@link SearchBox} instance.
@@ -64,6 +66,8 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      * 
      * @param subject
      *        The name of what will be searched for (appears in the gray text).
+     * @param minChars
+     *        Minimum amount of characters required to activate the search.
      */
     public SearchBox(String subject, int minChars) {
 
@@ -74,6 +78,9 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
     /**
      * This method will be called when the search string changes. Implement this to make the search string take effect
      * and return <code>true</code> if it did.
+     * 
+     * @param text
+     *        The text in the box.
      * 
      * @return <code>true</code> will make the search text black, <code>false</code> will make the search text red.
      */

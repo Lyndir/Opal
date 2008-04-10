@@ -18,6 +18,7 @@ package com.lyndir.lhunath.lib.system;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * <i>{@link Emitter} - [in short] (TODO).</i><br>
  * <br>
@@ -31,6 +32,7 @@ import java.util.List;
 public abstract class Emitter<E> {
 
     private List<Receiver<E>> receivers;
+
 
     /**
      * Create a new {@link Emitter} instance.
@@ -53,6 +55,9 @@ public abstract class Emitter<E> {
 
     /**
      * Trigger an event so that all {@link Receiver}s process it.
+     * 
+     * @param event
+     *        The event that needs to be sent out.
      * 
      * @return <code>true</code> if at least one {@link Receiver} successfully processed the event.
      */

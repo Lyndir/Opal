@@ -125,6 +125,7 @@ import com.lyndir.lhunath.lib.system.wrapper.SystemTray;
 import com.lyndir.lhunath.lib.system.wrapper.TrayIcon;
 import com.lyndir.lhunath.lib.system.wrapper.TrayIcon.MessageType;
 
+
 /**
  * TODO: {@link AbstractUi}<br>
  * 
@@ -144,7 +145,7 @@ public abstract class AbstractUi
     private static final String       reportLicenseSubject = Locale.explain( "ui.licenseSubject" );
     private static boolean            startup              = true;
 
-    protected int                     showPanel;
+    protected Action                  showPanel;
     protected Map<Action, JComponent> panelComponents;
     protected List<Stack<String>>     messageStack;
     protected HTMLFormatter           logFormatter;
@@ -178,6 +179,7 @@ public abstract class AbstractUi
     private ScreenTransition          transition;
     private PaintPanel                contentPanel;
     private PipedOutputStream         consoleStdOut;
+    private AbstractAction            settingsPanel;
 
     static {
         System.setProperty( "swing.aatext", "true" );
@@ -186,8 +188,9 @@ public abstract class AbstractUi
     {
         ShadeConfig.ui = this;
 
-        /* Initialize the logger as early as possible.
-         * (before any subclass code other than the main method has ran.) */
+        /*
+         * Initialize the logger as early as possible. (before any subclass code other than the main method has ran.)
+         */
         process( BasicRequest.LOGGER );
 
         /* Fallback Logo. */
@@ -196,6 +199,7 @@ public abstract class AbstractUi
         /* Start the user interface. */
         initTemplate();
     }
+
 
     private void initTemplate() {
 
@@ -326,13 +330,14 @@ public abstract class AbstractUi
             ShadeConfig.startMini.set( startMini.isSelected() );
 
         else if ("openSettings".equals( actionCommand )) { //$NON-NLS-1$
-            showPanel = 2;
+            showPanel = settingsPanel;
             execute( BasicRequest.PANEL, false );
             showFrame( true );
         }
 
-        else if (source instanceof JComponent && ((JComponent) source).getParent().equals( window.getToolBar() )) {
-            showPanel = window.getToolBar().getComponentIndex( (Component) source );
+        else if (source instanceof AbstractButton
+                 && panelComponents.containsKey( ((AbstractButton) source).getAction() )) {
+            showPanel = ((AbstractButton) source).getAction();
             execute( BasicRequest.PANEL, false );
         }
 
@@ -706,17 +711,17 @@ public abstract class AbstractUi
      */
     public void showJavaVersionWarning() {
 
-        JOptionPane.showMessageDialog( frame, Locale.explain( "ui.requireJava6" ) //$NON-NLS-1$
-
-                , null, JOptionPane.WARNING_MESSAGE );
+        JOptionPane.showMessageDialog( frame, Locale.explain( "ui.requireJava6" ), null, JOptionPane.WARNING_MESSAGE );
     }
 
-    protected void addPanelButton(String description, Icon icon, JComponent panel) {
+    protected AbstractAction addPanelButton(String description, Icon icon, JComponent panel) {
 
+        AbstractAction action;
         final AbstractUi ui = this;
-        JToggleButton button = new JToggleButton( new AbstractAction( description, icon ) {
+        JToggleButton button = new JToggleButton( action = new AbstractAction( description, icon ) {
 
             private static final long serialVersionUID = 1L;
+
 
             public void actionPerformed(ActionEvent e) {
 
@@ -727,8 +732,10 @@ public abstract class AbstractUi
         button.setText( null );
         button.setBorderPainted( false );
         button.setOpaque( false );
-        window.getToolBar().add( button );
+        window.getToolBar().add( new ToolTip( description, button ) );
         panelComponents.put( button.getAction(), panel );
+
+        return action;
     }
 
     /**
@@ -882,6 +889,7 @@ public abstract class AbstractUi
         contentPane.setBorder( BorderFactory.createRaisedBevelBorder() );
         execute( BasicRequest.FULLSCREEN, false );
     }
+
     /**
      * @param image
      *        The image to use as a background on the main content pane.
@@ -910,14 +918,14 @@ public abstract class AbstractUi
     public void setupNextScreen() {
 
         JToolBar toolbar = window.getToolBar();
-        AbstractButton activeButton = (AbstractButton) toolbar.getComponent( showPanel );
         for (Component c : toolbar.getComponents())
-            if (c instanceof JToggleButton)
-                ((JToggleButton) c).setSelected( c.equals( activeButton ) );
+            if (c instanceof ToolTip && ((ToolTip) c).getContent() instanceof AbstractButton) {
+                AbstractButton button = (AbstractButton) ((ToolTip) c).getContent();
+                button.setSelected( c.equals( showPanel.equals( button.getAction() ) ) );
+            }
 
-        window.setTitle( "     " + (showPanel + 1) + ".  "
-                         + activeButton.getAction().getValue( Action.NAME ).toString() + " ~" );
-        window.setContent( panelComponents.get( activeButton.getAction() ) );
+        window.setTitle( "     " + showPanel.getValue( Action.NAME ).toString() + " ~" );
+        window.setContent( panelComponents.get( showPanel ) );
     }
 
     /**
@@ -926,7 +934,7 @@ public abstract class AbstractUi
      */
     public void buildTabs() {
 
-        addPanelButton( Locale.explain( "ui.configuration" ), Utils.getIcon( "settings-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
+        settingsPanel = addPanelButton( Locale.explain( "ui.configuration" ), Utils.getIcon( "settings-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
                 getSettingsPane() );
         addPanelButton( Locale.explain( "ui.logs" ), Utils.getIcon( "log-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
                 getOperationsPane() );
@@ -934,6 +942,9 @@ public abstract class AbstractUi
                 getLicensePane() );
         addPanelButton( Locale.explain( "ui.development" ), Utils.getIcon( "develop-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
                 getDevelopmentPane() );
+
+        if (showPanel == null)
+            showPanel = settingsPanel;
     }
 
     private JComponent getSettingsPane() {
@@ -1202,6 +1213,7 @@ public abstract class AbstractUi
 
             private static final long serialVersionUID = 1L;
 
+
             @Override
             public void approved() {
 
@@ -1412,13 +1424,11 @@ public abstract class AbstractUi
         }
 
         /* Show the selected panel and ensure the correct toolbar button states. */
-        else if (element.equals( BasicRequest.PANEL )) {
-            if (window.getToolBar().getComponent( showPanel ) instanceof AbstractButton)
-                if (transition != null)
-                    transition.start();
-                else
-                    setupNextScreen();
-        }
+        else if (element.equals( BasicRequest.PANEL ))
+            if (transition != null)
+                transition.start();
+            else
+                setupNextScreen();
 
         /* Change the color theme of UI elements. */
         else if (element.equals( BasicRequest.THEME )) {
@@ -1434,6 +1444,9 @@ public abstract class AbstractUi
     /**
      * Override this method if you want to perform an action when the frame changes visibility state or has just been
      * made valid.
+     * 
+     * @param newVisibilityState
+     *        <code>true</code>: frame is visible.
      */
     protected void frameVisibilityChanged(@SuppressWarnings("unused") boolean newVisibilityState) {
 
@@ -1446,7 +1459,7 @@ public abstract class AbstractUi
      * @param sysMenu
      *        The menu to add the items to.
      */
-    protected void appendCustomSystrayMenuItems(JPopupMenu sysMenu) {
+    protected void appendCustomSystrayMenuItems(@SuppressWarnings("unused") JPopupMenu sysMenu) {
 
     /* Nothing custom here. */
     }
@@ -1461,6 +1474,7 @@ class ConsoleThread extends Thread {
     private InputStreamReader in;
     private JTextArea         console;
 
+
     /**
      * Create a new {@link ConsoleThread} instance.
      * 
@@ -1469,7 +1483,7 @@ class ConsoleThread extends Thread {
      * @param console
      *        The component to output the console data to.
      */
-    public ConsoleThread(InputStream in, JTextArea console) {
+    ConsoleThread(InputStream in, JTextArea console) {
 
         super( "Redirect stdout to Virtual Console" );
         setDaemon( true );

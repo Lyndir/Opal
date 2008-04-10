@@ -30,6 +30,7 @@ public class Vec3 extends Vec2 {
      */
     public double z;
 
+
     /**
      * Convert a planar vector (2D) into a spatial vector (3D).
      * 
@@ -304,6 +305,9 @@ public class Vec3 extends Vec2 {
         return x == ((Vec3) o).x && y == ((Vec3) o).y && z == ((Vec3) o).z;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
 

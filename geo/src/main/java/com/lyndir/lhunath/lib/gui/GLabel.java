@@ -30,54 +30,111 @@ import javax.swing.JLabel;
 
 import com.lyndir.lhunath.lib.math.Vec2;
 
+
 /**
- * <h2>{@link GLabel} - [in short] (TODO).</h2>
+ * <h2>{@link GLabel}<br>
+ * <sub>A rounded replacement for the default {@link JLabel}.</sub></h2>
+ * 
  * <p>
- * [description / usage].
- * </p>
- * <p>
- * <i>Dec 2, 2007</i>
+ * <i>Apr 9, 2008</i>
  * </p>
  * 
  * @author mbillemo
  */
 public class GLabel extends JLabel {
 
-    protected boolean     hasMouse, isPressed;
-    private GradientPaint gradientBase;
-    private int           arc = 5;
-    protected int         padding;
+    private static final long serialVersionUID = 1L;
 
+    protected boolean         hasMouse, isPressed;
+    protected int             padding;
+    private GradientPaint     gradientBase;
+    private int               arc              = 5;
+
+
+    /**
+     * Create a new {@link GLabel} instance.
+     * 
+     * @param text
+     *        The text to render in the label.
+     * @param icon
+     *        The icon to display next to the text on the label.
+     * @param horizontalAlignment
+     *        The alignment of the text in the label.
+     * @param gradient
+     *        The gradient base color for the label.
+     */
     public GLabel(String text, Icon icon, int horizontalAlignment, Color gradient) {
 
         super( text, icon, horizontalAlignment );
         init( gradient );
     }
 
+    /**
+     * Create a new {@link GLabel} instance.
+     * 
+     * @param text
+     *        The text to render in the label.
+     * @param horizontalAlignment
+     *        The alignment of the text in the label.
+     * @param gradient
+     *        The gradient base color for the label.
+     */
     public GLabel(String text, int horizontalAlignment, Color gradient) {
 
         super( text, horizontalAlignment );
         init( gradient );
     }
 
+    /**
+     * Create a new {@link GLabel} instance.
+     * 
+     * @param text
+     *        The text to render in the label.
+     * @param gradient
+     *        The gradient base color for the label.
+     */
     public GLabel(String text, Color gradient) {
 
         super( text );
         init( gradient );
     }
 
-    public GLabel(Icon image, int horizontalAlignment, Color gradient) {
+    /**
+     * Create a new {@link GLabel} instance.
+     * 
+     * @param icon
+     *        The icon to display next to the text on the label.
+     * @param horizontalAlignment
+     *        The alignment of the text in the label.
+     * @param gradient
+     *        The gradient base color for the label.
+     */
+    public GLabel(Icon icon, int horizontalAlignment, Color gradient) {
 
-        super( image, horizontalAlignment );
+        super( icon, horizontalAlignment );
         init( gradient );
     }
 
-    public GLabel(Icon image, Color gradient) {
+    /**
+     * Create a new {@link GLabel} instance.
+     * 
+     * @param icon
+     *        The icon to display next to the text on the label.
+     * @param gradient
+     *        The gradient base color for the label.
+     */
+    public GLabel(Icon icon, Color gradient) {
 
-        super( image );
+        super( icon );
         init( gradient );
     }
 
+    /**
+     * Create a new {@link GLabel} instance.
+     * 
+     * @param gradient
+     *        The gradient base color for the label.
+     */
     public GLabel(Color gradient) {
 
         super();
@@ -152,10 +209,12 @@ public class GLabel extends JLabel {
         super.paintComponent( g );
     }
 
+
     class GLabelMouseAdapter extends MouseAdapter {
 
         private static final int CLICK_PADDING = 2;
         private int              originalPadding;
+
 
         /**
          * @{inheritDoc}

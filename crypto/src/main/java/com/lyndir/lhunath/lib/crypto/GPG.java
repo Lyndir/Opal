@@ -62,6 +62,7 @@ import org.bouncycastle.openpgp.PGPUtil;
 import com.lyndir.lhunath.lib.system.BaseConfig;
 import com.lyndir.lhunath.lib.system.Utils;
 
+
 /**
  * <h2>{@link GPG} - [in short] (TODO).</h2>
  * <p>
@@ -79,8 +80,13 @@ public class GPG {
         Security.addProvider( new BouncyCastleProvider() );
     }
 
+
     /**
      * Parse a hexadecimal key Id into a wrapped long.
+     * 
+     * @param keyId
+     *        The ID to convert.
+     * @return The long that represents the key ID.
      */
     public static long parseKeyId(String keyId) {
 
@@ -96,7 +102,14 @@ public class GPG {
     }
 
     /**
-     * Load a public key from file.
+     * @param publicKeyFile
+     *        The file that contains the public key.
+     * @param publicKeyId
+     *        The ID of the key to retrieve from the file.
+     * @return a public key from file.
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws PGPException
      */
     public static PGPPublicKey getPublicKey(File publicKeyFile, long publicKeyId) throws FileNotFoundException,
             IOException, PGPException {
@@ -106,7 +119,14 @@ public class GPG {
     }
 
     /**
-     * Load a private key from file.
+     * @param privateKeyFile
+     *        The file that contains the private key.
+     * @param privateKeyId
+     *        The ID of the key to retrieve from the file.
+     * @return a private key from file.
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws PGPException
      */
     public static PGPSecretKey getPrivateKey(File privateKeyFile, long privateKeyId) throws FileNotFoundException,
             IOException, PGPException {
@@ -118,7 +138,13 @@ public class GPG {
     }
 
     /**
-     * Load a private key required to decrypt the given file from file.
+     * @param encryptedFile
+     *        The file to decrypt.
+     * @param privateKeyFile
+     *        The file that contains the private key that can decrypt the file.
+     * @return a private key required to decrypt the given file from file.
+     * @throws IOException
+     * @throws PGPException
      */
     public static PGPSecretKey getPrivateKeyFor(File encryptedFile, File privateKeyFile) throws IOException,
             PGPException {
@@ -127,7 +153,13 @@ public class GPG {
     }
 
     /**
-     * Load a private key required to decrypt the given string from file.
+     * @param encryptedString
+     *        The string that can be decrypted with the private key.
+     * @param privateKeyFile
+     *        The file that contains the private key that can decrypt the string.
+     * @return a private key required to decrypt the given string from file.
+     * @throws IOException
+     * @throws PGPException
      */
     public static PGPSecretKey getPrivateKeyFor(String encryptedString, File privateKeyFile) throws IOException,
             PGPException {
@@ -136,7 +168,13 @@ public class GPG {
     }
 
     /**
-     * Load a private key required to decrypt the given stream from file.
+     * @param encryptedStream
+     *        The stream of data that can be decrypted with the private key.
+     * @param privateKeyFile
+     *        The file that contains the private key that can decrypt the stream data.
+     * @return a private key required to decrypt the given stream from file.
+     * @throws IOException
+     * @throws PGPException
      */
     public static PGPSecretKey getPrivateKeyFor(InputStream encryptedStream, File privateKeyFile) throws IOException,
             PGPException {
@@ -164,7 +202,12 @@ public class GPG {
     }
 
     /**
-     * Retrieve all master key IDs available in the given key ring.
+     * @param privateKeyFile
+     *        The file that contains the private keys.
+     * @return all master key IDs available in the given key ring.
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws PGPException
      */
     public static List<PrintableKeyWrapper<PGPSecretKey>> getPrivateKeys(File privateKeyFile)
             throws FileNotFoundException, IOException, PGPException {
@@ -198,8 +241,14 @@ public class GPG {
 
         return keys;
     }
+
     /**
-     * Retrieve all master key IDs available in the given key ring.
+     * @param publicKeyFile
+     *        The file that contains the public keys.
+     * @return all master key IDs available in the given key ring.
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws PGPException
      */
     public static List<PrintableKeyWrapper<PGPPublicKey>> getPublicKeys(File publicKeyFile)
             throws FileNotFoundException, IOException, PGPException {
@@ -233,8 +282,21 @@ public class GPG {
 
         return keys;
     }
+
     /**
      * PGP Encrypt a file.
+     * 
+     * @param decryptedFile
+     *        The file that contains the decrypted data.
+     * @param encryptedFile
+     *        The file to write encrypted data into.
+     * @param publicKey
+     *        The public key to use for encryption.
+     * @param armoured
+     *        <code>true</code>: ASCII armor the encrypted data.
+     * @throws NoSuchProviderException
+     * @throws IOException
+     * @throws PGPException
      */
     public static void encryptFile(File decryptedFile, File encryptedFile, PGPPublicKey publicKey, boolean armoured)
             throws NoSuchProviderException, IOException, PGPException {
@@ -247,6 +309,17 @@ public class GPG {
 
     /**
      * PGP Encrypt a string.
+     * 
+     * @param decryptedString
+     *        The string that contains the decrypted data.
+     * @param publicKey
+     *        The public key to use for encryption.
+     * @param armoured
+     *        <code>true</code>: ASCII armor the encrypted data.
+     * @return The encrypted string data.
+     * @throws NoSuchProviderException
+     * @throws IOException
+     * @throws PGPException
      */
     public static String encrypt(String decryptedString, PGPPublicKey publicKey, boolean armoured)
             throws NoSuchProviderException, IOException, PGPException {
@@ -256,6 +329,17 @@ public class GPG {
 
     /**
      * PGP Encrypt a stream.
+     * 
+     * @param decryptedData
+     *        The stream that contains the decrypted data.
+     * @param publicKey
+     *        The public key to use for encryption.
+     * @param armoured
+     *        <code>true</code>: ASCII armor the encrypted data.
+     * @return The encrypted data stream.
+     * @throws NoSuchProviderException
+     * @throws IOException
+     * @throws PGPException
      */
     public static InputStream encrypt(InputStream decryptedData, PGPPublicKey publicKey, boolean armoured)
             throws IOException, NoSuchProviderException, PGPException {
@@ -290,6 +374,18 @@ public class GPG {
 
     /**
      * Decrypt a PGP encrypted file.
+     * 
+     * @param encryptedFile
+     *        The file that contains the encrypted data.
+     * @param decryptedFile
+     *        The file to write the decrypted data into.
+     * @param privateKey
+     *        The private key to use for decrypting the data.
+     * @param passPhrase
+     *        The passphrase the private key is encrypted with.
+     * @throws NoSuchProviderException
+     * @throws IOException
+     * @throws PGPException
      */
     public static void decryptFile(File encryptedFile, File decryptedFile, PGPSecretKey privateKey, String passPhrase)
             throws NoSuchProviderException, IOException, PGPException {
@@ -302,6 +398,17 @@ public class GPG {
 
     /**
      * Decrypt a PGP encrypted string.
+     * 
+     * @param encryptedString
+     *        The string that contains the encrypted data.
+     * @param privateKey
+     *        The private key to use for decrypting the data.
+     * @param passPhrase
+     *        The passphrase the private key is encrypted with.
+     * @return The decrypted string.
+     * @throws NoSuchProviderException
+     * @throws IOException
+     * @throws PGPException
      */
     public static String decrypt(String encryptedString, PGPSecretKey privateKey, String passPhrase)
             throws NoSuchProviderException, IOException, PGPException {
@@ -312,6 +419,17 @@ public class GPG {
 
     /**
      * Decrypt a PGP encrypted stream.
+     * 
+     * @param encryptedStream
+     *        The stream that contains the encrypted data.
+     * @param privateKey
+     *        The private key to use for decrypting the data.
+     * @param passPhrase
+     *        The passphrase the private key is encrypted with.
+     * @return The decrypted stream.
+     * @throws NoSuchProviderException
+     * @throws IOException
+     * @throws PGPException
      */
     public static InputStream decrypt(InputStream encryptedStream, PGPSecretKey privateKey, String passPhrase)
             throws IOException, PGPException, NoSuchProviderException {
@@ -375,6 +493,23 @@ public class GPG {
 
     /**
      * PGP sign a file.
+     * 
+     * @param dataFile
+     *        The file that contains the data to sign.
+     * @param signedFile
+     *        The file to write the signature into.
+     * @param privateKey
+     *        The private key to use for signing.
+     * @param passPhrase
+     *        The passphrase that the private key is locked with.
+     * @param armoured
+     *        <code>true</code>: ASCII armor the signature.
+     * @throws NoSuchAlgorithmException
+     * @throws NoSuchProviderException
+     * @throws SignatureException
+     * @throws FileNotFoundException
+     * @throws PGPException
+     * @throws IOException
      */
     public static void signFile(File dataFile, File signedFile, PGPSecretKey privateKey, String passPhrase,
             boolean armoured) throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException,
@@ -388,6 +523,22 @@ public class GPG {
 
     /**
      * PGP sign a string.
+     * 
+     * @param data
+     *        The string that contains the data to sign.
+     * @param privateKey
+     *        The private key to use for signing.
+     * @param passPhrase
+     *        The passphrase that the private key is locked with.
+     * @param armoured
+     *        <code>true</code>: ASCII armor the signature.
+     * @return The signature.
+     * @throws NoSuchAlgorithmException
+     * @throws NoSuchProviderException
+     * @throws SignatureException
+     * @throws FileNotFoundException
+     * @throws PGPException
+     * @throws IOException
      */
     public static String sign(String data, PGPSecretKey privateKey, String passPhrase, boolean armoured)
             throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException, IOException, PGPException {
@@ -397,6 +548,22 @@ public class GPG {
 
     /**
      * PGP sign a stream.
+     * 
+     * @param data
+     *        The stream that contains the data to sign.
+     * @param privateKey
+     *        The private key to use for signing.
+     * @param passPhrase
+     *        The passphrase that the private key is locked with.
+     * @param armoured
+     *        <code>true</code>: ASCII armor the signature.
+     * @return The signature.
+     * @throws NoSuchAlgorithmException
+     * @throws NoSuchProviderException
+     * @throws SignatureException
+     * @throws FileNotFoundException
+     * @throws PGPException
+     * @throws IOException
      */
     public static InputStream sign(InputStream data, PGPSecretKey privateKey, String passPhrase, boolean armoured)
             throws NoSuchAlgorithmException, NoSuchProviderException, PGPException, SignatureException, IOException {
@@ -425,13 +592,33 @@ public class GPG {
         return new ByteArrayInputStream( signatureByteStream.toByteArray() );
     }
 
+
+    /**
+     * <h2>{@link PrintableKeyWrapper}<br>
+     * <sub>A wrapper for wrapping a key id with a printable representation of it.</sub></h2>
+     * 
+     * @param <K>
+     *        The type of object to use for representing the key id.
+     * 
+     * <p>
+     * <i>Apr 9, 2008</i>
+     * </p>
+     * 
+     * @author mbillemo
+     */
     public static class PrintableKeyWrapper<K> {
 
         private K    key;
         private Long keyId;
 
+
         /**
          * Create a new {@link GPG.PrintableKeyWrapper} instance.
+         * 
+         * @param key
+         *        The object to use for representing the key id.
+         * @param keyId
+         *        The key id to wrap.
          */
         public PrintableKeyWrapper(K key, Long keyId) {
 

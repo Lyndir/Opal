@@ -29,6 +29,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
 import org.apache.commons.httpclient.ConnectTimeoutException;
@@ -93,8 +94,8 @@ public class SslFactory implements SecureProtocolSocketFactory {
             TrustManagerFactory tFactory = TrustManagerFactory.getInstance( "SunX509" );
             tFactory.init( store );
 
-            context = SSLContext.getInstance( "TLS" );
-            context.init( null, tFactory.getTrustManagers(), null );
+            this.context = SSLContext.getInstance( "TLS" );
+            this.context.init( null, tFactory.getTrustManagers(), null );
         } catch (KeyStoreException e) {
             Logger.error( e, "Keystore type not supported or keystore could not be initialized." );
         } catch (NoSuchAlgorithmException e) {
@@ -116,7 +117,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
     public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException,
             UnknownHostException {
 
-        return context.getSocketFactory().createSocket( socket, host, port, autoClose );
+        return this.context.getSocketFactory().createSocket( socket, host, port, autoClose );
     }
 
     /**
@@ -124,7 +125,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
      */
     public Socket createSocket(String host, int port) throws IOException, UnknownHostException {
 
-        return context.getSocketFactory().createSocket( host, port );
+        return this.context.getSocketFactory().createSocket( host, port );
     }
 
     /**
@@ -133,13 +134,13 @@ public class SslFactory implements SecureProtocolSocketFactory {
     public Socket createSocket(String host, int port, InetAddress localAddress, int localPort) throws IOException,
             UnknownHostException {
 
-        return context.getSocketFactory().createSocket( host, port, localAddress, localPort );
+        return this.context.getSocketFactory().createSocket( host, port, localAddress, localPort );
     }
 
     /**
      * {@inheritDoc}
      * 
-     * @deprecated
+     * @deprecated See {@link SSLSocketFactory#createSocket(String, int, InetAddress, int)}.
      */
     @Deprecated
     public Socket createSocket(String host, int port, InetAddress localAddress, int localPort,
@@ -150,7 +151,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
 
         int timeout = params.getConnectionTimeout();
         if (timeout == 0)
-            return context.getSocketFactory().createSocket( host, port, localAddress, localPort );
+            return this.context.getSocketFactory().createSocket( host, port, localAddress, localPort );
 
         throw new IllegalArgumentException( "Timeout is not supported." );
     }
@@ -161,7 +162,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
     @Override
     public boolean equals(Object obj) {
 
-        return ((obj != null) && obj.getClass().equals( SSLProtocolSocketFactory.class ));
+        return obj != null && obj.getClass().equals( SSLProtocolSocketFactory.class );
     }
 
     /**

@@ -22,6 +22,7 @@ import java.io.PipedInputStream;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
+
 /**
  * <h2>{@link TeeThread} - [in short] (TODO).</h2>
  * <p>
@@ -38,8 +39,14 @@ public class TeeThread extends Thread {
     private InputStream    source;
     private OutputStream[] destinations;
 
+
     /**
      * Create a new {@link TeeThread} instance.
+     * 
+     * @param source
+     *        The data source.
+     * @param destinations
+     *        The destination streams to write the source data to.
      */
     public TeeThread(InputStream source, OutputStream... destinations) {
 

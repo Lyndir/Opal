@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import com.lyndir.lhunath.lib.math.Vec2;
 import com.lyndir.lhunath.lib.system.Utils;
 
+
 /**
  * <i>{@link GridBag} - [in short] (TODO).</i><br>
  * <br>
@@ -45,6 +46,7 @@ public class GridBag extends GridBagConstraints {
     private Color                      back;
     private Color                      front;
 
+
     /**
      * Create a new {@link GridBag} instance.
      */
@@ -57,7 +59,8 @@ public class GridBag extends GridBagConstraints {
      * Create a new {@link GridBag} instance.
      * 
      * @param c
-     *        The container that will have the grid applied to it and the components {@link #add(Component)}ed to it.
+     *        The container that will have the grid applied to it and the components {@link #add(Component...)}ed to
+     *        it.
      */
     public GridBag(JComponent c) {
 

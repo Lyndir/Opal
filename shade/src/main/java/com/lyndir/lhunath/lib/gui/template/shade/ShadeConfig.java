@@ -30,6 +30,7 @@ import com.lyndir.lhunath.lib.system.logging.ConsoleFormatter;
 import com.lyndir.lhunath.lib.system.logging.LogFormatter;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
+
 /**
  * TODO: {@link ShadeConfig}<br>
  * 
@@ -133,8 +134,12 @@ public class ShadeConfig<T extends Serializable> extends BaseConfig<T> {
         Logger.getGlobal().silence().addHandler( handler );
     }
 
+
     /**
      * Create a new Config instance.
+     * 
+     * @param defaultValue
+     *        The default value for this config entry in case it is <code>null</code>.
      */
     protected ShadeConfig(T defaultValue) {
 

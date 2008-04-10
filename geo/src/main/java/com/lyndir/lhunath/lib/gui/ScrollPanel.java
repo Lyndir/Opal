@@ -24,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
+
 /**
  * <i>ScrollPanel - A panel that will properly set its scroll unit size depending on its content.</i><br>
  * <br>
@@ -40,6 +41,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
     private boolean horizontal;
     private boolean vertical;
 
+
     /**
      * Create a new {@link ScrollPanel} instance.<br>
      * The amount to scroll this panel will be calculated from the size of the first visible component of the panel.
@@ -52,6 +54,11 @@ public class ScrollPanel extends JPanel implements Scrollable {
     /**
      * Create a new {@link ScrollPanel} instance.<br>
      * The amount to scroll this panel will be calculated from the size of the first visible component of the panel.
+     * 
+     * @param horizontal
+     *        <code>true</code>: track the horizontal size of the panel.
+     * @param vertical
+     *        <code>true</code>: track the vertical size of the panel.
      */
     public ScrollPanel(boolean horizontal, boolean vertical) {
 
@@ -74,6 +81,10 @@ public class ScrollPanel extends JPanel implements Scrollable {
      * 
      * @param scrollUnit
      *        The amount in pixels to scroll this panel on every tick of the scroll wheel.
+     * @param horizontal
+     *        <code>true</code>: track the horizontal size of the panel.
+     * @param vertical
+     *        <code>true</code>: track the vertical size of the panel.
      */
     public ScrollPanel(int scrollUnit, boolean horizontal, boolean vertical) {
 
