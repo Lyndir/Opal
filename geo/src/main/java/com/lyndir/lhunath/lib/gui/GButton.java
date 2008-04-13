@@ -32,6 +32,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import com.lyndir.lhunath.lib.math.Vec2;
@@ -51,10 +52,9 @@ import com.lyndir.lhunath.lib.system.Utils;
  */
 public class GButton extends JButton {
 
-    protected static final float ZOOM              = 0.9f;
-    protected static final float ARC_FRACTION      = 0.1f;
-    protected static final float TRANSLUCENCY      = 0.8f;
-    protected static final int   ICON_TEXT_SPACING = 5;
+    protected static final float ZOOM         = 0.9f;
+    protected static final float ARC_FRACTION = 0.1f;
+    protected static final float TRANSLUCENCY = 0.8f;
 
     protected Image              smallEnabledIcon, largeEnabledIcon;
     protected boolean            hover;
@@ -114,6 +114,9 @@ public class GButton extends JButton {
                 updateUI();
             }
         } );
+
+        setHorizontalTextPosition( SwingConstants.RIGHT );
+        setVerticalTextPosition( SwingConstants.CENTER );
     }
 
     /**
@@ -123,6 +126,39 @@ public class GButton extends JButton {
     public void setText(String text) {
 
         super.setText( text );
+
+        updateSize();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setHorizontalTextPosition(int textPosition) {
+
+        super.setHorizontalTextPosition( textPosition );
+
+        updateSize();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setVerticalTextPosition(int textPosition) {
+
+        super.setVerticalTextPosition( textPosition );
+
+        updateSize();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setIconTextGap(int iconTextGap) {
+
+        super.setIconTextGap( iconTextGap );
 
         updateSize();
     }
@@ -166,7 +202,7 @@ public class GButton extends JButton {
      */
     protected void updateSize() {
 
-        Vec2 size = new Vec2();
+        Vec2 textSize = new Vec2(), iconSize = new Vec2(), buttonSize = new Vec2();
 
         if (getText() != null && getText().length() > 0) {
             if (getFont() == null) {
@@ -182,18 +218,40 @@ public class GButton extends JButton {
             }
 
             FontMetrics metrics = getFontMetrics( getFont() );
-            size.add( new Vec2( metrics.stringWidth( getText() ), getFont().getSize() ) );
+            textSize = new Vec2( metrics.stringWidth( getText() ), getFont().getSize() );
         }
 
         if (largeEnabledIcon != null) {
             int width = largeEnabledIcon.getWidth( this );
             int height = largeEnabledIcon.getHeight( this );
-            size.add( new Vec2( width, Math.max( 0, height - size.y ) ) );
+            iconSize = new Vec2( width, height );
         }
 
-        size.multiply( 1 / (ZOOM * ZOOM) );
-        size.x += ICON_TEXT_SPACING;
-        setPreferredSize( size.toDimension() );
+        switch (getHorizontalTextPosition()) {
+            case SwingConstants.LEFT:
+            case SwingConstants.RIGHT:
+                buttonSize.x = textSize.x + getIconTextGap() + iconSize.x;
+            break;
+
+            default:
+            case SwingConstants.CENTER:
+                buttonSize.x = Math.max( textSize.x, iconSize.x );
+            break;
+        }
+        switch (getVerticalTextPosition()) {
+            case SwingConstants.TOP:
+            case SwingConstants.BOTTOM:
+                buttonSize.y = textSize.y + getIconTextGap() + iconSize.y;
+            break;
+
+            default:
+            case SwingConstants.CENTER:
+                buttonSize.y = Math.max( textSize.y, iconSize.y );
+            break;
+        }
+
+        buttonSize.multiply( 1 / (ZOOM * ZOOM) );
+        setPreferredSize( buttonSize.toDimension() );
     }
 
     /**
@@ -231,47 +289,87 @@ public class GButton extends JButton {
         Graphics2D g2 = (Graphics2D) g;
         Image image = null;
 
+        // Set 'image' to the currently active image.
+        boolean hovering = isEnabled() ? hover : false;
         if (isEnabled()) {
             image = smallEnabledIcon;
-            if (hover)
+            if (hovering)
                 image = largeEnabledIcon;
         } else {
             image = smallDisabledIcon;
-            if (hover)
+            if (hovering)
                 image = largeDisabledIcon;
         }
 
-        int largeWidth = 0, smallWidth = 0, iconX = 0, iconY = 0, textX = 0;
+        // Image Sizing.
+        int largeHeight = largeEnabledIcon == null ? 0 : largeEnabledIcon.getHeight( this );
+        int largeWidth = largeEnabledIcon == null ? 0 : largeEnabledIcon.getWidth( this );
+        int smallWidth = smallEnabledIcon == null ? 0 : smallEnabledIcon.getWidth( this );
+        int imageWidth = image == null ? 0 : image.getWidth( this );
+        int imageHeight = image == null ? 0 : image.getHeight( this );
+        int xPadding = (int) (getWidth() * (1 - ZOOM * ZOOM) / 2);
+        int yPadding = (int) (getHeight() * (1 - ZOOM * ZOOM) / 2);
+        int smallXPadding = xPadding + (largeWidth - smallWidth) / 2;
+        int smallYPadding = yPadding + (largeWidth - smallWidth) / 2;
 
-        if (image != null) {
-            largeWidth = largeEnabledIcon.getWidth( this );
-            smallWidth = smallEnabledIcon.getWidth( this );
+        // Text Sizing.
+        g2.setFont( getFont() );
+        Rectangle2D textBounds = g2.getFontMetrics().getStringBounds( getText(), g2 );
 
-            iconX = (getWidth() - image.getWidth( this )) / 2;
-            iconY = (getHeight() - image.getHeight( this )) / 2;
+        int horizontal = getHorizontalTextPosition();
+        int vertical = getVerticalTextPosition();
+        if (getText() == null || getText().length() == 0)
+            horizontal = vertical = SwingConstants.CENTER;
 
-            if (getText() != null && getText().length() > 0) {
-                int hoverPadding = (int) (getWidth() * (1 - ZOOM * ZOOM) / 2);
-                int normalPadding = hoverPadding + (largeWidth - smallWidth) / 2;
+        int iconX, iconY, textX, textY;
+        switch (horizontal) {
+            default:
+            case SwingConstants.CENTER:
+                textX = (getWidth() - (int) textBounds.getWidth()) / 2;
+                iconX = (getWidth() - imageWidth) / 2;
+            break;
 
-                iconX = hover ? hoverPadding : normalPadding;
-                textX = hoverPadding + largeWidth + ICON_TEXT_SPACING;
-            }
+            case SwingConstants.LEFT:
+                textX = xPadding;
+                iconX = getWidth() - largeWidth - (hovering ? xPadding : smallXPadding);
+            break;
 
-            g2.drawImage( image, iconX, iconY, this );
+            case SwingConstants.RIGHT:
+                textX = xPadding + largeWidth + getIconTextGap();
+                iconX = hovering ? xPadding : smallXPadding;
+            break;
         }
 
+        switch (vertical) {
+            default:
+            case SwingConstants.CENTER:
+                textY = (getHeight() - (int) textBounds.getHeight()) / 2 + getFont().getSize();
+                iconY = (getHeight() - imageHeight) / 2;
+            break;
+
+            case SwingConstants.TOP:
+                textY = yPadding + g2.getFont().getSize();
+                iconY = getHeight() - imageHeight - (hovering ? yPadding : smallYPadding);
+            break;
+
+            case SwingConstants.BOTTOM:
+                textY = yPadding + largeHeight + getIconTextGap() + g2.getFont().getSize();
+                iconY = hovering ? yPadding : smallYPadding;
+            break;
+        }
+
+        if (image != null)
+            g2.drawImage( image, iconX, iconY, this );
+
         if (getText() != null) {
-            g2.setFont( getFont() );
-            Rectangle2D textBounds = g2.getFontMetrics().getStringBounds( getText(), g2 );
-            int textY = (getHeight() - (int) textBounds.getHeight()) / 2 + getFont().getSize();
+            if (Boolean.getBoolean( "swing.aatext" ))
+                g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 
             g2.drawString( getText(), textX, textY );
         }
 
         Composite origComposite = g2.getComposite();
         g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, TRANSLUCENCY ) );
-        g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 
         g2.setPaint( backgroundPaint );
         g2.fillRoundRect( 0, 0, getWidth(), getHeight(), (int) (getWidth() * ARC_FRACTION),

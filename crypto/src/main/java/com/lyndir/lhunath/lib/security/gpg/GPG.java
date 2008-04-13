@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.lib.crypto;
+package com.lyndir.lhunath.lib.security.gpg;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -61,6 +61,7 @@ import org.bouncycastle.openpgp.PGPUtil;
 
 import com.lyndir.lhunath.lib.system.BaseConfig;
 import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
 /**
@@ -443,7 +444,9 @@ public class GPG {
         do
             try {
                 encryptedDataObjects = encryptedDataFactory.nextObject();
-            } catch (IOException e) {}
+            } catch (IOException e) {
+                Logger.warn( e.getMessage() );
+            }
         while (!(encryptedDataObjects instanceof PGPEncryptedDataList) && encryptedDataObjects != null);
         if (encryptedDataObjects == null)
             throw new PGPException( "No encrypted objects found." );
