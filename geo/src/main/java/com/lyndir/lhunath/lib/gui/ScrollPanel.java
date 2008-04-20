@@ -56,9 +56,9 @@ public class ScrollPanel extends JPanel implements Scrollable {
      * The amount to scroll this panel will be calculated from the size of the first visible component of the panel.
      * 
      * @param horizontal
-     *        <code>true</code>: track the horizontal size of the panel.
+     *        <code>true</code>: scroll horizontally.
      * @param vertical
-     *        <code>true</code>: track the vertical size of the panel.
+     *        <code>true</code>: scroll vertically.
      */
     public ScrollPanel(boolean horizontal, boolean vertical) {
 

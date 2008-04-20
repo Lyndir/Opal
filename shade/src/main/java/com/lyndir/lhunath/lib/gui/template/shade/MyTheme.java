@@ -33,6 +33,7 @@ import com.lyndir.lhunath.lib.system.Locale;
 import com.lyndir.lhunath.lib.system.Utils;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
+
 /**
  * TODO: MyThemes<br>
  * 
@@ -115,8 +116,9 @@ public enum MyTheme {
      */
     CUSTOM (Color.DARK_GRAY);
 
-    private static final MyTheme FALLBACK = TECH;
+    private static final MyTheme FALLBACK = OAK;
     protected MyLookAndFeel      lookAndFeel;
+
 
     private MyTheme(Color base) {
 

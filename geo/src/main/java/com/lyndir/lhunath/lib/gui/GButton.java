@@ -313,8 +313,11 @@ public class GButton extends JButton {
         int smallYPadding = yPadding + (largeWidth - smallWidth) / 2;
 
         // Text Sizing.
-        g2.setFont( getFont() );
-        Rectangle2D textBounds = g2.getFontMetrics().getStringBounds( getText(), g2 );
+        Rectangle2D textBounds = new Rectangle2D.Double( 0, 0, 0, 0 );
+        if (getText() != null) {
+            g2.setFont( getFont() );
+            textBounds = g2.getFontMetrics().getStringBounds( getText(), g2 );
+        }
 
         int horizontal = getHorizontalTextPosition();
         int vertical = getVerticalTextPosition();

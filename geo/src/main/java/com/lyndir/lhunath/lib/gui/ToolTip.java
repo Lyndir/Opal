@@ -45,10 +45,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JWindow;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import com.lyndir.lhunath.lib.system.Utils;
-import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
 /**
@@ -71,6 +71,7 @@ public class ToolTip extends JPanel {
     protected static JFrame               toolTipFrame;
     protected static JWindow              toolTipWindow;
     protected static PaintPanel           toolTipContainer;
+    protected static ScrollPanel          toolTipPanel;
     protected static JEditorPane          toolTipPane;
 
     protected static int                  maxWidth  = 0;
@@ -90,13 +91,18 @@ public class ToolTip extends JPanel {
 
         stickyhint = new JLabel( "Press F2 to frame this tip." );
         stickyhint.setFont( stickyhint.getFont().deriveFont( 10f ) );
+        stickyhint.setHorizontalAlignment( SwingConstants.CENTER );
 
         toolTipPane = new JEditorPane( "text/html", null );
         toolTipPane.setEditable( false );
         toolTipPane.setOpaque( false );
 
+        toolTipPanel = new ScrollPanel();
+        toolTipPanel.setLayout( new BoxLayout( toolTipPanel, BoxLayout.PAGE_AXIS ) );
+        toolTipPanel.add( toolTipPane );
+
         toolTipContainer = PaintPanel.gradientPanel( new Point( 0, 1 ), new Point( 0, -1 ) );
-        toolTipContainer.setLayout( new BoxLayout( toolTipContainer, BoxLayout.Y_AXIS ) );
+        toolTipContainer.setLayout( new BorderLayout() );
         toolTipContainer.setAutoColorControl( 4 );
     }
 
@@ -171,16 +177,15 @@ public class ToolTip extends JPanel {
      */
     public void setTip(String toolTip) {
 
-        if (toolTip == null || toolTip.length() == 0)
-            return;
-
-        if (!toolTip.contains( "<html>" )) {
+        if (toolTip != null && toolTip.length() > 0 && !toolTip.contains( "<html>" )) {
             toolTip = toolTip.trim();
             toolTip = toolTip.replaceFirst( "^([^\n\r]+)[\n\r]", "<h2>$1</h2>" );
             toolTip = toolTip.replaceAll( "\n", "<br>" );
         }
 
         toolTipText = toolTip;
+        if (activeTip == this && toolTipPane != null)
+            toolTipPane.setText( toolTipText );
     }
 
     /**
@@ -279,19 +284,20 @@ public class ToolTip extends JPanel {
         } );
 
         PaintPanel gradient = PaintPanel.gradientPanel( new Point( 0, 1 ), new Point( 0, -1 ) );
-        gradient.setLayout( new BoxLayout( gradient, BoxLayout.Y_AXIS ) );
+        gradient.setLayout( new BorderLayout() );
         gradient.setAutoColorControl( 4 );
         gradient.setBorder( BorderFactory.createEmptyBorder( 5, 5, 5, 5 ) );
         toolTipPane.setText( toolTipText );
-        JScrollPane pane = new JScrollPane( toolTipPane );
+        JScrollPane pane = new JScrollPane( toolTipPanel );
         pane.setOpaque( false );
         pane.getViewport().setOpaque( false );
         pane.setBorder( BorderFactory.createEmptyBorder() );
         pane.setViewportBorder( BorderFactory.createEmptyBorder() );
-        gradient.add( pane );
+        gradient.add( pane, BorderLayout.CENTER );
         JLabel unstickyhint = new JLabel( "Press F2 to close this frame." );
         unstickyhint.setFont( unstickyhint.getFont().deriveFont( 10f ) );
-        gradient.add( unstickyhint );
+        unstickyhint.setHorizontalAlignment( SwingConstants.CENTER );
+        gradient.add( unstickyhint, BorderLayout.SOUTH );
 
         gradient.getInputMap( JComponent.WHEN_IN_FOCUSED_WINDOW ).put( KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ),
                 "unstick" );
@@ -352,28 +358,25 @@ public class ToolTip extends JPanel {
          * {@inheritDoc}
          */
         @Override
-        public void mouseClicked(MouseEvent e) {
-
-            stick();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
         public void mouseEntered(final MouseEvent e) {
 
             // Check if a tooltip is set.
-            if (getContent() == null || toolTipText == null || toolTipText.length() == 0)
+            if (getContent() == null || toolTipText == null || toolTipText.trim().length() == 0)
                 return;
+
+            // Don't do anything if this tip is already showing.
+            if (activeTip == ToolTip.this)
+                return;
+            activeTip = ToolTip.this;
 
             // Check if tooltip is attached to frame instead of window.
             if (toolTipFrame != null)
                 return;
 
             /* Calculate these guys only once. */
-            x = e.getX();
-            y = e.getY();
+            Point mouseLocation = SwingUtilities.convertPoint( e.getComponent(), e.getPoint(), getContent() );
+            x = (int) mouseLocation.getX();
+            y = (int) mouseLocation.getY();
 
             /* Schedule a timer to show the tip after TIP_SHOW_DELAY milliseconds. */
             tipTimer.schedule( tipSchedule = new TimerTask() {
@@ -395,21 +398,39 @@ public class ToolTip extends JPanel {
                                     return;
 
                                 /* Put the text of this tooltip in the container. */
-                                activeTip = ToolTip.this;
                                 toolTipWindow = new JWindow( SwingUtilities.getWindowAncestor( ToolTip.this ) );
                                 toolTipWindow.setBackground( toolTipContainer.getBackground().darker() );
                                 toolTipWindow.setFocusable( false );
                                 toolTipWindow.setFocusableWindowState( false );
                                 toolTipWindow.setAlwaysOnTop( true );
+                                toolTipWindow.addWindowListener( new WindowAdapter() {
+
+                                    @Override
+                                    public void windowClosed(WindowEvent windowEvent) {
+
+                                        if (activeTip != ToolTip.this) {
+                                            if (toolTipWindow != null)
+                                                toolTipWindow.removeWindowListener( this );
+                                            return;
+                                        }
+
+                                        if (toolTipWindow != null) {
+                                            toolTipWindow.dispose();
+                                            toolTipWindow = null;
+                                        }
+
+                                        activeTip = null;
+                                    }
+                                } );
 
                                 toolTipPane.setSize( 0, 0 );
                                 toolTipPane.setText( toolTipText );
                                 toolTipPane.setMaximumSize( new Dimension( maxWidth, maxHeight ) );
 
                                 toolTipContainer.removeAll();
-                                toolTipContainer.add( toolTipPane );
+                                toolTipContainer.add( toolTipPanel, BorderLayout.CENTER );
                                 if (stickable)
-                                    toolTipContainer.add( stickyhint );
+                                    toolTipContainer.add( stickyhint, BorderLayout.SOUTH );
 
                                 toolTipWindow.setContentPane( toolTipContainer );
                                 toolTipWindow.pack();
@@ -429,21 +450,6 @@ public class ToolTip extends JPanel {
                                 /* Place and reveal the tooltip window. */
                                 toolTipWindow.setLocation( location );
                                 toolTipWindow.setVisible( true );
-                                toolTipWindow.addMouseListener( new MouseAdapter() {
-
-                                    @Override
-                                    public void mouseEntered(MouseEvent ee) {
-
-                                        TipButtonListener.this.mouseExited( ee );
-                                    }
-
-                                    @Override
-                                    public void mouseClicked(MouseEvent ee) {
-
-                                        Logger.config( "You clicked the tooltip!" );
-                                        TipButtonListener.this.mouseExited( ee );
-                                    }
-                                } );
 
                                 // Small adjustment to the size which is only known after paint has been performed.
                                 SwingUtilities.invokeLater( new Runnable() {
@@ -465,7 +471,6 @@ public class ToolTip extends JPanel {
 
                 }
             }, TIP_SHOW_DELAY );
-
         }
 
         /**
@@ -474,13 +479,21 @@ public class ToolTip extends JPanel {
         @Override
         public void mouseExited(MouseEvent e) {
 
+            // Don't do anything when new component is descendant of this tip's content.
+            if (getContent() != null && e.getComponent() != null
+                && getContent().contains( SwingUtilities.convertPoint( e.getComponent(), e.getPoint(), getContent() ) ))
+                return;
+
+            if (activeTip != ToolTip.this)
+                return;
+            activeTip = null;
+
             if (tipSchedule != null)
                 tipSchedule.cancel();
             if (toolTipWindow == null)
                 return;
 
             toolTipWindow.dispose();
-            toolTipWindow = null;
         }
 
         /**

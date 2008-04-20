@@ -17,8 +17,10 @@ package com.lyndir.lhunath.lib.gui.template.shade;
 
 import java.awt.AWTException;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -28,6 +30,7 @@ import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -76,6 +79,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -88,6 +92,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import javax.swing.border.BevelBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ListDataEvent;
@@ -136,7 +141,7 @@ public abstract class AbstractUi
         ListDataListener, FocusListener, TransitionTarget {
 
     protected static final long       LAUNCH_DELAY         = 5000;
-    protected static final int        FONT_SIZE            = 14;
+    protected static final int        FONT_SIZE            = 12;
     protected static final String     FONT_FACE            = Locale.explain( "conf.font" );
     protected static final Dimension  MINIMUM_SIZE         = new Dimension( 1000, 700 );
 
@@ -148,15 +153,15 @@ public abstract class AbstractUi
     protected Action                  showPanel;
     protected Map<Action, JComponent> panelComponents;
     protected List<Stack<String>>     messageStack;
+    protected List<Double>            progressStack;
     protected HTMLFormatter           logFormatter;
     protected TrayIcon                systray;
     protected SimpleInternalFrame     window;
-    protected List<JProgressBar>      progress;
+    protected JProgressBar            progress;
     protected JEditorPane             log;
     protected JFrame                  frame;
-    protected JPanel                  logo;
+    protected JLabel                  logo;
     protected JPanel                  contentPane;
-    protected ImageIcon               logoIcon;
     protected JCheckBox               systrayButton;
     protected JCheckBox               alwaysOnTop;
     protected JCheckBox               startMini;
@@ -175,11 +180,12 @@ public abstract class AbstractUi
     private PrintStream               realStdOut;
     private PrintStream               realStdErr;
     private UpdateUi                  updateUi;
-    protected Animator                animation;
-    private ScreenTransition          transition;
+    protected Animator                panelAnimation;
+    private ScreenTransition          panelTransition;
     private PaintPanel                contentPanel;
     private PipedOutputStream         consoleStdOut;
     private AbstractAction            settingsPanel;
+    private boolean                   overlayed;
 
     static {
         System.setProperty( "swing.aatext", "true" );
@@ -193,9 +199,6 @@ public abstract class AbstractUi
          */
         process( BasicRequest.LOGGER );
 
-        /* Fallback Logo. */
-        defaultLogo = Utils.res( "splash.png" );
-
         /* Start the user interface. */
         initTemplate();
     }
@@ -205,24 +208,35 @@ public abstract class AbstractUi
 
         /* Set up the backend. */
         messageStack = new ArrayList<Stack<String>>();
+        progressStack = new ArrayList<Double>();
         panelComponents = new HashMap<Action, JComponent>();
         (updateUi = new UpdateUi( this )).start();
-        animation = new Animator( 800 );
-        animation.setAcceleration( .1f );
-        animation.setDeceleration( .4f );
 
-        /* Build user interface. */
-        try {
-            buildUi();
-        } catch (RuntimeException e) {
-            if (frame != null)
-                frame.dispose();
-            animation.cancel();
+        panelAnimation = new Animator( 800 );
+        panelAnimation.setAcceleration( .1f );
+        panelAnimation.setDeceleration( .4f );
 
-            throw e;
-        }
+        SwingUtilities.invokeLater( new Runnable() {
 
-        executeAll();
+            /**
+             * {@inheritDoc}
+             */
+            public void run() {
+
+                /* Build user interface. */
+                try {
+                    buildUi();
+                } catch (RuntimeException e) {
+                    if (frame != null)
+                        frame.dispose();
+                    panelAnimation.cancel();
+
+                    throw e;
+                }
+
+                executeAll();
+            }
+        } );
     }
 
     /**
@@ -636,8 +650,7 @@ public abstract class AbstractUi
                     if (level.intValue() < Level.CONFIG.intValue()) {
                         int progressLevel = 5 - level.intValue() / 100;
                         if (message != null) {
-                            messageStack.get( progressLevel ).push( progress.get( progressLevel ).getString() );
-                            progress.get( progressLevel ).setString( "[ " + message + " ]" ); //$NON-NLS-1$ //$NON-NLS-2$
+                            messageStack.get( progressLevel ).push( message );
                             setProgress( null, level );
                         }
 
@@ -645,9 +658,8 @@ public abstract class AbstractUi
                             if (!messageStack.get( progressLevel ).isEmpty())
                                 message = messageStack.get( progressLevel ).pop();
                             else
-                                message = ""; //$NON-NLS-1$
+                                message = "";
 
-                            progress.get( progressLevel ).setString( message );
                             setProgress( 0d, level );
                         }
                     }
@@ -683,25 +695,40 @@ public abstract class AbstractUi
             public void run() {
 
                 int progressLevel = 5 - level.intValue() / 100;
-                JProgressBar bar = progress.get( progressLevel );
+                progressStack.set( progressLevel, percent );
 
-                if (bar.getParent() == null)
+                if (progress.getParent() == null)
                     return;
 
-                if (percent == null) {
-                    bar.setIndeterminate( true );
-                    bar.setString( bar.getString().replaceFirst( "[\\s\\d%]*\\]$", " ]" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                for (int i = progressStack.size() - 1; i >= 0; --i) {
+                    Double levelValue = progressStack.get( i );
+
+                    // Show value if non-null and higher than zero, or zero if last progress in the stack.
+                    if (levelValue == null) {
+                        progress.setIndeterminate( true );
+                        if (messageStack.get( i ).isEmpty())
+                            progress.setString( "" );
+                        else
+                            progress.setString( String.format( "[ %s ]", messageStack.get( i ).peek() ) );
+                        return;
+                    }
+
+                    else if (levelValue > 0 || i == 0) {
+                        progress.setIndeterminate( false );
+                        progress.setMaximum( 100 );
+                        progress.setMinimum( 0 );
+
+                        int value = (int) (levelValue * 100);
+                        progress.setValue( value );
+                        if (messageStack.get( i ).isEmpty())
+                            progress.setString( "" );
+                        else
+                            progress.setString( String.format( "[ %s - %d%% ]", messageStack.get( i ).peek(), value ) );
+
+                        return;
+                    }
                 }
 
-                else {
-                    bar.setIndeterminate( false );
-                    bar.setMaximum( 100 );
-                    bar.setMinimum( 0 );
-
-                    int value = (int) (percent * 100);
-                    bar.setValue( value );
-                    bar.setString( bar.getString().replaceFirst( "[\\s\\d%]*\\]$", " " + value + "% ]" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                }
             }
         } );
     }
@@ -767,22 +794,35 @@ public abstract class AbstractUi
      */
     protected void buildUi() {
 
+        /* Container. */
+        contentPane = new JPanel( new BorderLayout() );
+        contentPane.add( contentPanel = PaintPanel.gradientPanel() );
+        FormLayout layout = new FormLayout( "0dlu, 0dlu, 0dlu:g, 0dlu, r:p", "t:m, f:0dlu:g, 4dlu, m" );
+        DefaultFormBuilder builder = new DefaultFormBuilder( layout, contentPanel );
+        layout.setColumnGroups( new int[][] { { 1, 5 } } );
+        builder.setDefaultDialogBorder();
+
         /* Prepare the look and feel. */
         execute( BasicRequest.THEME, false );
 
-        /* Container. */
-        FormLayout layout = new FormLayout( "c:3dlu, p:g, 1dlu:g, r:1dlu:g, 3dlu",
-                "3dlu, t:p, 3dlu, p, 3dlu, f:m:g, 6dlu" );
+        /* Header */
+        logo = new JLabel();
+        logo.setHorizontalAlignment( SwingConstants.CENTER );
+        logo.addMouseListener( new MouseAdapter() {
 
-        contentPanel = PaintPanel.gradientPanel();
-        PanelBuilder builder = new PanelBuilder( layout, contentPanel );
-        CellConstraints cc = new CellConstraints();
+            @Override
+            public void mouseClicked(MouseEvent e) {
 
-        /* Buttons */
-        titleBar = new JPanel();
+                if (e.getButton() == MouseEvent.BUTTON3)
+                    BaseConfig.dump();
+                else
+                    toggleOverlay();
+            }
+        } );
+
+        titleBar = new JPanel( new FlowLayout( FlowLayout.RIGHT ) );
         titleBar.setLayout( new BoxLayout( titleBar, BoxLayout.X_AXIS ) );
         titleBar.setOpaque( false );
-        builder.add( titleBar, cc.xy( 4, 2 ) );
 
         windowedTitleButton = new JButton( Utils.getIcon( "windowed-sss.png" ) );
         windowedTitleButton.setActionCommand( "windowed" );
@@ -801,93 +841,118 @@ public abstract class AbstractUi
         closeTitleButton.setContentAreaFilled( false );
         titleBar.add( closeTitleButton );
 
-        /* Header */
-        logo = new JPanel( new BorderLayout() ) {
+        builder.nextColumn( 2 );
+        builder.append( logo );
+        builder.append( titleBar );
 
-            @Override
-            protected void paintComponent(Graphics g) {
-
-                if (logoIcon != null) {
-                    int x = (getWidth() - logoIcon.getIconWidth()) / 2;
-                    int y = (getHeight() - logoIcon.getIconHeight()) / 2;
-                    logoIcon.paintIcon( this, g, x, y );
-                }
-
-                super.paintComponent( g );
-            }
-        };
-        logo.addMouseListener( new MouseAdapter() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-                if (e.getButton() == MouseEvent.BUTTON1)
-                    BaseConfig.dump();
-            }
-        } );
-        logo.setOpaque( false );
-        execute( BasicRequest.LOGO, false );
-        builder.add( new ToolTip( Locale.explain( "conf.application" ) + " v" + ShadeConfig.VERSION, logo ), cc.xyw( 2,
-                2, 3 ) );
-
-        progress = new ArrayList<JProgressBar>();
-        JPanel progressPanel = new JPanel();
-        progressPanel.setLayout( new BoxLayout( progressPanel, BoxLayout.Y_AXIS ) );
-        progressPanel.setOpaque( false );
-        JPanel strut = new JPanel();
-        strut.setPreferredSize( new Dimension( 0, 25 ) );
-        strut.setOpaque( false );
-        progressPanel.add( strut );
-        for (int i = 0; i < 3; ++i) {
-            JProgressBar bar = new JProgressBar() {
-
-                @Override
-                public void repaint(long tm, int x, int y, int width, int height) {
-
-                    setOpaque( getValue() != 0 || isIndeterminate() );
-
-                    if (getParent() != null)
-                        getParent().repaint( tm, x, y, width, height );
-                    super.repaint( tm, x, y, width, height );
-                }
-
-                @Override
-                protected void paintComponent(Graphics g) {
-
-                    super.paintComponent( g );
-
-                    if (isOpaque()) {
-                        ((Graphics2D) g).setPaint( getBackground() );
-                        g.drawRect( 0, 0, getWidth() - 1, getHeight() - 1 );
-                    }
-                }
-            };
-
-            bar.setString( "" );
-            bar.setStringPainted( true );
-            bar.setBorderPainted( false );
-            bar.setBackground( Utils.setAlpha( bar.getBackground(), 100 ) );
-
-            messageStack.add( new Stack<String>() );
-            progressPanel.add( bar );
-            progress.add( bar );
-        }
-        logo.add( progressPanel, BorderLayout.NORTH );
-
-        window = new SimpleInternalFrame( null, new JToolBar(), null, false );
-        window.setBorder( Borders.EMPTY_BORDER );
+        /* Panels */
+        window = new SimpleInternalFrame( null, new JToolBar(), null, true );
         window.setSelected( true );
         window.setOpaque( false );
 
         /* Tabs */
         buildTabs();
         execute( BasicRequest.PANEL, false );
-        builder.add( window, cc.xyw( 2, 6, 3 ) );
+        builder.append( window, 5 );
+        builder.nextLine( 2 );
+
+        progress = new JProgressBar() {
+
+            @Override
+            public void repaint(long tm, int x, int y, int width, int height) {
+
+                setOpaque( getValue() != 0 || isIndeterminate() );
+
+                if (getParent() != null)
+                    getParent().repaint( tm, x, y, width, height );
+                super.repaint( tm, x, y, width, height );
+            }
+
+            @Override
+            protected void paintComponent(Graphics g) {
+
+                super.paintComponent( g );
+
+                if (isOpaque()) {
+                    ((Graphics2D) g).setPaint( getBackground() );
+                    g.drawRect( 0, 0, getWidth() - 1, getHeight() - 1 );
+                }
+            }
+        };
+
+        progress.setString( "" );
+        progress.setStringPainted( true );
+        progress.setBorderPainted( false );
+        progress.setBackground( Utils.setAlpha( progress.getBackground(), 100 ) );
+
+        for (int level = 0; level <= 5; ++level) {
+            messageStack.add( new Stack<String>() );
+            progressStack.add( 0d );
+        }
+
+        builder.append( progress, 5 );
 
         /* Frame. */
-        contentPane = builder.getPanel();
-        contentPane.setBorder( BorderFactory.createRaisedBevelBorder() );
+        execute( BasicRequest.LOGO, false );
         execute( BasicRequest.FULLSCREEN, false );
+    }
+
+    /**
+     * Toggle the visibility of the overlay screen.
+     */
+    protected void toggleOverlay() {
+
+        if (overlayed)
+            frame.getGlassPane().setVisible( false );
+
+        else {
+            frame.setGlassPane( getOverlay() );
+            frame.getGlassPane().setVisible( true );
+            frame.getGlassPane().requestFocusInWindow();
+            overlayListener( frame.getGlassPane() );
+        }
+
+        overlayed = !overlayed;
+    }
+
+    private void overlayListener(Component c) {
+
+        c.addMouseListener( new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                toggleOverlay();
+            }
+        } );
+
+        if (c instanceof JComponent)
+            for (Component cc : ((JComponent) c).getComponents())
+                overlayListener( cc );
+    }
+
+    /**
+     * Build the overlay that will be shown when the user toggles it on.<br>
+     * <br>
+     * To make your own overlay, you are recommended to use the panel returned by super.getOverlay().
+     * 
+     * @return The overlay panel.
+     */
+    protected JPanel getOverlay() {
+
+        final JPanel pane = new JPanel( new BorderLayout() );
+        pane.setBackground( Utils.setAlpha( Color.black, 150 ) );
+        pane.addFocusListener( new FocusAdapter() {
+
+            @Override
+            public void focusLost(FocusEvent e) {
+
+                if (pane.isVisible())
+                    pane.requestFocus();
+            }
+        } );
+
+        return pane;
     }
 
     /**
@@ -921,7 +986,7 @@ public abstract class AbstractUi
         for (Component c : toolbar.getComponents())
             if (c instanceof ToolTip && ((ToolTip) c).getContent() instanceof AbstractButton) {
                 AbstractButton button = (AbstractButton) ((ToolTip) c).getContent();
-                button.setSelected( c.equals( showPanel.equals( button.getAction() ) ) );
+                button.setSelected( showPanel.equals( button.getAction() ) );
             }
 
         window.setTitle( "     " + showPanel.getValue( Action.NAME ).toString() + " ~" );
@@ -1180,8 +1245,10 @@ public abstract class AbstractUi
             }
 
             /* Set some look and feel properties. */
-            // Utils.setUIFont( new Font( FONT_FACE, Font.PLAIN, FONT_SIZE ) );
-            // Wrapper.wrap( new AntiAliasingBehavior() );
+            Utils.setUIFont( new Font( FONT_FACE, Font.PLAIN, FONT_SIZE ) );
+            contentPane.setBorder( BorderFactory.createBevelBorder( BevelBorder.RAISED,
+                    ShadeConfig.theme.get().getBright(), ShadeConfig.theme.get().getDark() ) );
+
             /* Force update on hidden panels. */
             if (frame != null && frame.isVisible())
                 SwingUtilities.invokeAndWait( new Runnable() {
@@ -1337,11 +1404,8 @@ public abstract class AbstractUi
             if (iconFile == null || !iconFile.isFile())
                 iconFile = defaultLogo;
 
-            if (iconFile != null && iconFile.isFile()) {
-                logoIcon = new ImageIcon( iconFile.getPath() );
-                logo.repaint();
-                logo.setPreferredSize( new Dimension( logoIcon.getIconWidth(), logoIcon.getIconHeight() + 10 ) );
-            }
+            if (iconFile != null && iconFile.isFile())
+                logo.setIcon( new ImageIcon( iconFile.getPath() ) );
         }
 
         /* Activate / Disable the system tray. */
@@ -1419,14 +1483,14 @@ public abstract class AbstractUi
             }
 
             /* Create the transition manager if it's not yet there. */
-            if (transition == null)
-                transition = new ScreenTransition( window, this, animation );
+            if (panelTransition == null)
+                panelTransition = new ScreenTransition( window, this, panelAnimation );
         }
 
         /* Show the selected panel and ensure the correct toolbar button states. */
         else if (element.equals( BasicRequest.PANEL ))
-            if (transition != null)
-                transition.start();
+            if (panelTransition != null)
+                panelTransition.start();
             else
                 setupNextScreen();
 

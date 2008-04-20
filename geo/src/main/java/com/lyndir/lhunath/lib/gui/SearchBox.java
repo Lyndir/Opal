@@ -171,6 +171,9 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
         else
             hit = 1;
 
+        if (!String.valueOf( e.getKeyChar() ).matches( "\\w" ))
+            return;
+
         if (getText().length() > 0 && getText().length() < minChars || !isMatch( getText().trim() ))
             setForeground( Color.red );
         else

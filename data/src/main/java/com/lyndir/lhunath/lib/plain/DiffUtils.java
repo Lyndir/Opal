@@ -107,9 +107,10 @@ public class DiffUtils {
 
             String diffFormat = "<span style='color: %x'>%s</span>";
             if (chunkDel.length() > 0)
-                out.append( String.format( diffFormat, Utils.RED.getRGB() - 0xff000000, chunkDel ) ).append( '\n' );
+                out.append( String.format( diffFormat, Utils.DARK_RED.getRGB() - 0xff000000, chunkDel ) ).append( '\n' );
             if (chunkAdd.length() > 0)
-                out.append( String.format( diffFormat, Utils.GREEN.getRGB() - 0xff000000, chunkAdd ) ).append( '\n' );
+                out.append( String.format( diffFormat, Utils.DARK_GREEN.getRGB() - 0xff000000, chunkAdd ) ).append(
+                        '\n' );
         }
 
         return out.append( "</pre>" ).toString();
