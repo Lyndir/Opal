@@ -349,6 +349,9 @@ public class ToolTip extends JPanel {
 
     protected static void closeTip() {
 
+        if (toolTipSchedule != null)
+            toolTipSchedule.cancel();
+
         if (toolTipWindow != null) {
             toolTipWindow.dispose();
             toolTipWindow = null;
