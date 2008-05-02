@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.MenuItem;
+import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -80,10 +81,8 @@ import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -313,7 +312,7 @@ public abstract class AbstractUi
 
         else if ("reportOffense".equals( actionCommand )) //$NON-NLS-1$
             try {
-                URI uri = new URI( "mailto: " + reportEmail + "?subject=" //$NON-NLS-1$ //$NON-NLS-2$
+                URI uri = new URI( "mailto:" + reportEmail + "?subject=" //$NON-NLS-1$ //$NON-NLS-2$
                                    + URLEncoder.encode( reportLicenseSubject, "ISO-8859-1" ) ); //$NON-NLS-1$
 
                 launchDelay( "stat.openingMail" ); //$NON-NLS-1$
@@ -1416,35 +1415,35 @@ public abstract class AbstractUi
             if (ShadeConfig.sysTray.get())
                 try {
                     if (systray == null) {
-                        TrayMenu sysMenu = new TrayMenu( frame );
+                        PopupMenu sysMenu = new PopupMenu( Locale.explain( "conf.application" ) );
                         appendCustomSystrayMenuItems( sysMenu );
 
-                        JMenuItem item;
-                        item = new JMenuItem( Locale.explain( "ui.settings" ) ); //$NON-NLS-1$
-                        item.setActionCommand( "openSettings" ); //$NON-NLS-1$
+                        MenuItem item;
+                        item = new MenuItem( Locale.explain( "ui.settings" ) );
+                        item.setActionCommand( "openSettings" );
                         item.addActionListener( this );
                         sysMenu.add( item );
                         sysMenu.addSeparator();
-                        item = new JMenuItem( Locale.explain( "ui.exit" ) ); //$NON-NLS-1$
-                        item.setActionCommand( "exit" ); //$NON-NLS-1$
+                        item = new MenuItem( Locale.explain( "ui.exit" ) );
+                        item.setActionCommand( "exit" );
                         item.addActionListener( this );
                         sysMenu.add( item );
 
-                        Image icon = Utils.getIcon( "warcraft.png" ).getImage(); //$NON-NLS-1$
+                        Image icon = Utils.getIcon( "warcraft.png" ).getImage();
                         Dimension traySize = SystemTray.getSystemTray().getTrayIconSize();
                         icon = icon.getScaledInstance( traySize.width, traySize.height, Image.SCALE_SMOOTH );
 
                         systray = new TrayIcon( icon );
-                        systray.setActionCommand( "openLoader" ); //$NON-NLS-1$
+                        systray.setActionCommand( "openLoader" );
                         systray.addActionListener( this );
                         systray.setImageAutoSize( true );
-                        systray.addMouseListener( sysMenu );
+                        systray.setPopupMenu( sysMenu );
 
                         try {
                             SystemTray.getSystemTray().add( systray );
                             frame.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
                         } catch (AWTException e) {
-                            Logger.error( e, "err.sysTray" ); //$NON-NLS-1$
+                            Logger.error( e, "err.sysTray" );
 
                             showFrame = true;
                             ShadeConfig.sysTray.set( false );
@@ -1489,7 +1488,7 @@ public abstract class AbstractUi
 
         /* Show the selected panel and ensure the correct toolbar button states. */
         else if (element.equals( BasicRequest.PANEL ))
-            if (panelTransition != null)
+            if (panelTransition != null && !panelAnimation.isRunning())
                 panelTransition.start();
             else
                 setupNextScreen();
@@ -1523,7 +1522,7 @@ public abstract class AbstractUi
      * @param sysMenu
      *        The menu to add the items to.
      */
-    protected void appendCustomSystrayMenuItems(@SuppressWarnings("unused") JPopupMenu sysMenu) {
+    protected void appendCustomSystrayMenuItems(@SuppressWarnings("unused") PopupMenu sysMenu) {
 
     /* Nothing custom here. */
     }

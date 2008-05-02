@@ -22,7 +22,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.lyndir.lhunath.lib.system.logging.Logger;
 
 /**
  * <i>{@link Wrapper} - An abstract class that assists in writing wrapper classes for other classes that may or may not
@@ -54,6 +53,7 @@ public abstract class Wrapper {
     protected static boolean                                 classNotFound  = false;
     protected static Map<Class<? extends Wrapper>, Class<?>> wrappedClasses = new HashMap<Class<? extends Wrapper>, Class<?>>();
 
+
     protected static Object construct(Class<? extends Wrapper> proxyClass, Class<?>[] classes, Object... args)
             throws UnsupportedOperationException {
 
@@ -80,16 +80,13 @@ public abstract class Wrapper {
     protected static Class<?> getClass(String className) throws UnsupportedOperationException {
 
         try {
-            return Wrapper.class.getClassLoader().loadClass( className );
+            return ClassLoader.getSystemClassLoader().loadClass( className );
         } catch (ClassNotFoundException e) {
             throw new UnsupportedOperationException( e );
         }
     }
 
     protected static Class<?> getWrappedClass(Class<? extends Wrapper> proxyClass) throws UnsupportedOperationException {
-
-        Logger.info( "wrappers : %s", wrappedClasses );
-        Logger.info( "requested: %s", proxyClass );
 
         try {
             if (classNotFound)
@@ -148,7 +145,9 @@ public abstract class Wrapper {
         return null;
     }
 
+
     protected Object wrappedInstance;
+
 
     protected Wrapper(Object wrappedInstance) {
 

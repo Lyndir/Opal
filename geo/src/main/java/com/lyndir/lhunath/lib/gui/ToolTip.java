@@ -19,6 +19,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -84,6 +85,7 @@ public class ToolTip extends JPanel {
     protected TipButtonListener           buttonListener;
     protected List<ToolTipStickyListener> stickyListeners;
     protected boolean                     stickable;
+    protected boolean                     stickOnly;
 
     private JComponent                    toolTipContent;
     protected String                      toolTipText;
@@ -101,7 +103,25 @@ public class ToolTip extends JPanel {
         toolTipPane.setEditable( false );
         toolTipPane.setOpaque( false );
 
-        toolTipPanel = new ScrollPanel();
+        toolTipPanel = new ScrollPanel() {
+
+            @Override
+            public void paint(Graphics g) {
+
+                Dimension size = new Dimension( toolTipPane.getWidth() + 5,
+                        toolTipPane.getHeight() + (activeTip.stickable ? stickyhint.getHeight() : 0) );
+                Window window = toolTipWindow;
+                if (window == null || !window.isDisplayable())
+                    window = toolTipFrame;
+
+                if (window.getWidth() != size.width && window.getHeight() != size.height) {
+                    window.setSize( size );
+                    return;
+                }
+
+                super.paint( g );
+            }
+        };
         toolTipPanel.setLayout( new BoxLayout( toolTipPanel, BoxLayout.PAGE_AXIS ) );
         toolTipPanel.add( toolTipPane );
 
@@ -114,7 +134,8 @@ public class ToolTip extends JPanel {
             @Override
             public void windowLostFocus(WindowEvent e) {
 
-                closeTip();
+                if (toolTipFrame == null)
+                    closeTip();
             }
         };
     }
@@ -147,8 +168,9 @@ public class ToolTip extends JPanel {
         stickyListeners = new ArrayList<ToolTipStickyListener>();
         buttonListener = new TipButtonListener();
 
-        c.getInputMap( JComponent.WHEN_IN_FOCUSED_WINDOW ).put( KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ), "stick" );
-        c.getActionMap().put( "stick", new AbstractAction( "stick" ) {
+        toolTipPane.getInputMap( JComponent.WHEN_IN_FOCUSED_WINDOW ).put( KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ),
+                "stick" );
+        toolTipPane.getActionMap().put( "stick", new AbstractAction( "stick" ) {
 
             public void actionPerformed(ActionEvent e) {
 
@@ -180,6 +202,23 @@ public class ToolTip extends JPanel {
     public void setStickable(boolean stickable) {
 
         this.stickable = stickable;
+    }
+
+    /**
+     * @return <code>true</code> if this tip should only be sticked not shown on hover.
+     */
+    public boolean isStickOnly() {
+
+        return stickOnly;
+    }
+
+    /**
+     * @param stickOnly
+     *        <code>true</code> if this tip should only be sticked not shown on hover.
+     */
+    public void setStickOnly(boolean stickOnly) {
+
+        this.stickOnly = stickOnly;
     }
 
     /**
@@ -278,6 +317,8 @@ public class ToolTip extends JPanel {
         if (toolTipFrame != null || !stickable)
             return;
 
+        activeTip = this;
+
         for (ToolTipStickyListener listener : stickyListeners)
             listener.stickyState( ToolTip.this, true );
 
@@ -317,6 +358,8 @@ public class ToolTip extends JPanel {
         toolTipFrame.setSize( Math.min( toolTipFrame.getWidth(), maxWidth ), Math.min( toolTipFrame.getHeight(),
                 maxHeight ) );
         toolTipFrame.setLocationRelativeTo( null );
+
+        pane.getViewport().scrollRectToVisible( new Rectangle( 0, 0, 0, 0 ) );
         toolTipFrame.setVisible( true );
 
         // Dispose of the toolTipWindow if it is still there.
@@ -376,7 +419,7 @@ public class ToolTip extends JPanel {
         public void mouseEntered(final MouseEvent e) {
 
             // Check if a tooltip is set.
-            if (getContent() == null || toolTipText == null || toolTipText.trim().length() == 0)
+            if (getContent() == null || toolTipText == null || toolTipText.trim().length() == 0 || stickOnly)
                 return;
 
             // Don't do anything if this tip is already showing.
@@ -427,7 +470,8 @@ public class ToolTip extends JPanel {
                                     @Override
                                     public void windowClosed(WindowEvent windowEvent) {
 
-                                        closeTip();
+                                        if (activeTip == ToolTip.this)
+                                            closeTip();
                                     }
                                 } );
 
@@ -464,19 +508,6 @@ public class ToolTip extends JPanel {
                                 if (!Arrays.asList( window.getWindowListeners() ).contains(
                                         toolTipContentWindowListener ))
                                     window.addWindowFocusListener( toolTipContentWindowListener );
-
-                                // Small adjustment to the size which is only known after paint has been performed.
-                                SwingUtilities.invokeLater( new Runnable() {
-
-                                    public void run() {
-
-                                        if (toolTipWindow == null)
-                                            return;
-
-                                        toolTipWindow.setSize( toolTipPane.getWidth() + 5,
-                                                toolTipPane.getHeight() + (stickable ? stickyhint.getHeight() : 0) );
-                                    }
-                                } );
                             } catch (NullPointerException err) {
                                 /* Tooltip has been removed while timer was running. */
                             }
@@ -493,15 +524,16 @@ public class ToolTip extends JPanel {
         @Override
         public void mouseExited(MouseEvent e) {
 
+            if (activeTip != ToolTip.this)
+                return;
+
             // Don't do anything when new component is descendant of this tip's content.
             if (getContent() != null && e.getComponent() != null
                 && getContent().contains( SwingUtilities.convertPoint( e.getComponent(), e.getPoint(), getContent() ) ))
                 return;
 
-            if (activeTip != ToolTip.this)
-                return;
-
-            closeTip();
+            if (activeTip == ToolTip.this)
+                closeTip();
         }
 
         /**

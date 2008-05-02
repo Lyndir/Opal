@@ -127,7 +127,7 @@ public class TrayIcon extends Wrapper {
      */
     public void displayMessage(String caption, String text, MessageType messageType) {
 
-        Class<?> wrappedEnumClass = getClass( "java.awt.TrayIcon.MessageType" );
+        Class<?> wrappedEnumClass = getClass( "java.awt.TrayIcon$MessageType" );
         invoke( "displayMessage", new Class[] { String.class, String.class, wrappedEnumClass }, caption, text,
                 mapEnumValue( messageType, wrappedEnumClass ) );
     }
@@ -255,7 +255,7 @@ public class TrayIcon extends Wrapper {
      */
     public void setImageAutoSize(boolean autosize) {
 
-        invoke( "setImageAutoSize", new Class[] { Boolean.class }, autosize );
+        invoke( "setImageAutoSize", new Class[] { boolean.class }, autosize );
     }
 
     /**

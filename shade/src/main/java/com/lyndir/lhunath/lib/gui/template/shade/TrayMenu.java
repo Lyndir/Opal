@@ -18,11 +18,14 @@ package com.lyndir.lhunath.lib.gui.template.shade;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+
 
 /**
  * <i>{@link TrayMenu} - [in short] (TODO).</i><br>
@@ -35,6 +38,7 @@ import javax.swing.SwingUtilities;
 public class TrayMenu extends JPopupMenu implements MouseListener {
 
     protected Component invoker;
+
 
     /**
      * Create a new {@link TrayMenu} instance.
@@ -54,14 +58,17 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
 
         /* Popup Button. */
         if (e.getModifiers() == Event.META_MASK) {
-            setLocation( e.getPoint() );
+            Point point = e.getPoint();
+            SwingUtilities.convertPointToScreen( point, e.getComponent() );
+            setLocation( point );
             setInvoker( invoker );
             setVisible( true );
 
             SwingUtilities.invokeLater( new Runnable() {
 
                 private static final int PADDING      = 10;
-                private final Dimension  screenBounds = invoker.getGraphicsConfiguration().getBounds().getSize();
+                private final Dimension  screenBounds = Toolkit.getDefaultToolkit().getScreenSize();
+
 
                 public void run() {
 
