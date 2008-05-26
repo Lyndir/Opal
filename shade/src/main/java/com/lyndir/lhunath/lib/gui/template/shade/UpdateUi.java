@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 import com.lyndir.lhunath.lib.system.Locale;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
+
 /**
  * <i>{@link UpdateUi} - [in short] (TODO).</i><br>
  * <br>
@@ -34,14 +35,14 @@ public class UpdateUi extends Thread {
 
     private BlockingQueue<UpdateRequest> requests;
     private AbstractUi                   ui;
-    private boolean                      emitStats;
     private UpdateRequest                currentRequest;
+
 
     /**
      * Create a new {@link UpdateUi} instance.
      * 
      * @param ui
-     *        The user interface that will process the request.
+     *  The user interface that will process the request.
      */
     public UpdateUi(AbstractUi ui) {
 
@@ -56,7 +57,7 @@ public class UpdateUi extends Thread {
      * Add a request to the stack of requests to execute in the update thread.
      * 
      * @param uiRequest
-     *        The request to execute in the update thread.
+     *  The request to execute in the update thread.
      */
     public void request(Request uiRequest) {
 
@@ -90,28 +91,16 @@ public class UpdateUi extends Thread {
             currentRequest = null;
 
             /* Take a new request from the queue, waiting for one if none is available yet. */
-            emitStats = !requests.isEmpty();
-            if (emitStats)
-                Logger.finest( "stat.queued", requests.size() );
             try {
                 currentRequest = requests.take();
             }
 
-            /* Interrupted?  Well, try again! */
+            /* Interrupted? Well, try again! */
             catch (InterruptedException e) {
                 continue;
             }
 
-            /* Get rid of the queue stats if any were emitted. */
-            finally {
-                if (emitStats)
-                    Logger.finest( null );
-            }
-
             /* Process the request. */
-            emitStats = requests.size() > 2;
-            if (emitStats)
-                Logger.finest( "stat.queued", requests.size() - 1 );
             try {
                 ui.process( currentRequest.getRequest() );
             }
@@ -121,27 +110,23 @@ public class UpdateUi extends Thread {
                 Logger.error( e );
                 Logger.error( currentRequest.getCause(), "Caused by this request." );
             }
-
-            /* Get rid of the queue stats if any were emitted. */
-            finally {
-                if (emitStats)
-                    Logger.finest( null );
-            }
         }
     }
+
 
     private class UpdateRequest {
 
         private Request   request;
         private Throwable cause;
 
+
         /**
          * Create a new {@link UpdateUi.UpdateRequest} instance.
          * 
          * @param request
-         *        The request this stack element should make.
+         *  The request this stack element should make.
          * @param cause
-         *        In case an exception gets thrown during the request, this will be set as the exception's cause.
+         *  In case an exception gets thrown during the request, this will be set as the exception's cause.
          */
         public UpdateRequest(Request request, Throwable cause) {
 
