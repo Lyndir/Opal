@@ -27,6 +27,7 @@ import org.w3c.tidy.Tidy;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
+
 /**
  * <h2>{@link Structure}<br>
  * <sub>A utility class to create XML document builders.</sub></h2>
@@ -47,6 +48,7 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 public class Structure {
 
     private static final int TAB_SIZE = 4;
+
 
     /**
      * @return a builder that can parse HTML data.
@@ -92,7 +94,7 @@ public class Structure {
      * </ul>
      * 
      * @param schema
-     *        The schema to validate against.
+     *            The schema to validate against.
      * @return a builder that parses XML data according to the defaults highlighted above.
      */
     public static DocumentBuilder getXMLBuilder(Schema schema) {
@@ -102,21 +104,21 @@ public class Structure {
 
     /**
      * @param coalescing
-     *        <code>true</code> to convert CDATA to text nodes.
+     *            <code>true</code> to convert CDATA to text nodes.
      * @param expandEntityRef
-     *        <code>true</code> to expand entity reference nodes.
+     *            <code>true</code> to expand entity reference nodes.
      * @param ignoreComments
-     *        <code>true</code> to ignore comment nodes.
+     *            <code>true</code> to ignore comment nodes.
      * @param whitespace
-     *        <code>true</code> to remove 'ignorable whitespace'.
+     *            <code>true</code> to remove 'ignorable whitespace'.
      * @param awareness
-     *        <code>true</code> to be namespace-aware.
+     *            <code>true</code> to be namespace-aware.
      * @param xIncludes
-     *        <code>true</code> to be XInclude-aware.
+     *            <code>true</code> to be XInclude-aware.
      * @param validating
-     *        <code>true</code> to validate the XML data against a schema.
+     *            <code>true</code> to validate the XML data against a schema.
      * @param schema
-     *        The schema to validate against. Specify <code>null</code> if not validating.
+     *            The schema to validate against. Specify <code>null</code> if not validating.
      * @return a builder that parses XML data according to the rules specified by the arguments.
      */
     public static DocumentBuilder getXMLBuilder(boolean coalescing, boolean expandEntityRef, boolean ignoreComments,
@@ -144,19 +146,38 @@ public class Structure {
     }
 
     /**
+     * This method trims text node data.
+     * 
      * @param node
-     *        The XML node to render.
+     *            The XML node to render.
      * @return the given node as an XML-formatted string.
      */
     public static String toString(Node node) {
 
-        return toString( node, 1 ).toString();
+        return toString( node, true );
     }
 
-    private static StringBuffer toString(Node node, int indent) {
+    /**
+     * @param node
+     *            The XML node to render.
+     * @param trim
+     *            <code>false</code>: Don't trim whitespace from text node data.
+     * @return the given node as an XML-formatted string.
+     */
+    public static String toString(Node node, boolean trim) {
+
+        StringBuffer result = toString( node, 1, trim );
+        return result == null ? null : result.toString().replaceFirst( "\n$", "" );
+    }
+
+    private static StringBuffer toString(Node node, int indent, boolean trim) {
+
+        if (node == null)
+            return null;
 
         if (node.getNodeType() == Node.TEXT_NODE)
-            return new StringBuffer( indent( indent ) ).append( node.getNodeValue() ).append( '\n' );
+            return new StringBuffer( indent( indent ) ).append( trim ? node.getNodeValue().trim() : node.getNodeValue() ).append(
+                    '\n' );
 
         StringBuffer out = new StringBuffer();
         out.append( indent( indent ) );
@@ -176,7 +197,7 @@ public class Structure {
         for (int i = 0; i < children.getLength(); ++i) {
             Node child = children.item( i );
 
-            out.append( toString( child, indent + 1 ) );
+            out.append( toString( child, indent + 1, trim ) );
         }
 
         String value = node.getNodeValue();
