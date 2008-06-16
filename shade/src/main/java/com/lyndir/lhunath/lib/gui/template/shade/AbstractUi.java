@@ -58,6 +58,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -72,7 +73,6 @@ import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -139,52 +139,53 @@ public abstract class AbstractUi
         implements ActionListener, LogListener, CaretListener, ListSelectionListener, ItemListener, Reflective,
         ListDataListener, FocusListener, TransitionTarget {
 
-    protected static final long       LAUNCH_DELAY         = 5000;
-    protected static final int        FONT_SIZE            = 12;
-    protected static final String     FONT_FACE            = Locale.explain( "conf.font" );
-    protected static final Dimension  MINIMUM_SIZE         = new Dimension( 1000, 700 );
+    protected static final long      LAUNCH_DELAY         = 5000;
+    protected static final int       FONT_SIZE            = 12;
+    protected static final String    FONT_FACE            = Locale.explain( "conf.font" );
+    protected static final Dimension MINIMUM_SIZE         = new Dimension( 1000, 700 );
 
-    private static final String       reportEmail          = Locale.explain( "conf.author" );
-    private static final String       reportIssueSubject   = Locale.explain( "ui.reportSubject" ) + ShadeConfig.VERSION;
-    private static final String       reportLicenseSubject = Locale.explain( "ui.licenseSubject" );
-    private static boolean            startup              = true;
+    private static final String      reportEmail          = Locale.explain( "conf.author" );
+    private static final String      reportIssueSubject   = Locale.explain( "ui.reportSubject" ) + ShadeConfig.VERSION;
+    private static final String      reportLicenseSubject = Locale.explain( "ui.licenseSubject" );
+    private static boolean           startup              = true;
 
-    protected Action                  showPanel;
-    protected Map<Action, JComponent> panelComponents;
-    protected List<Stack<String>>     messageStack;
-    protected List<Double>            progressStack;
-    protected HTMLFormatter           logFormatter;
-    protected TrayIcon                systray;
-    protected SimpleInternalFrame     window;
-    protected JProgressBar            progress;
-    protected JEditorPane             log;
-    protected JFrame                  frame;
-    protected JLabel                  logo;
-    protected JPanel                  contentPane;
-    protected JCheckBox               systrayButton;
-    protected JCheckBox               alwaysOnTop;
-    protected JCheckBox               startMini;
-    protected File                    defaultLogo;
-    private boolean                   showFrame;
-    private DragListener              dragListener;
-    private JComponent                themesPanel;
-    private JCheckBox                 verboseLogs;
-    private JButton                   windowedTitleButton;
-    private JButton                   fullscreenTitleButton;
-    private JButton                   closeTitleButton;
-    private JDialog                   console;
-    private JPanel                    titleBar;
-    private PipedInputStream          pipeStdOut;
-    private PipedInputStream          pipeStdErr;
-    private PrintStream               realStdOut;
-    private PrintStream               realStdErr;
-    private UpdateUi                  updateUi;
-    protected Animator                panelAnimation;
-    private ScreenTransition          panelTransition;
-    private PaintPanel                contentPanel;
-    private PipedOutputStream         consoleStdOut;
-    private AbstractAction            settingsPanel;
-    private boolean                   overlayed;
+    protected Tab                    showingTab;
+    protected Map<Action, Tab>       panelTabs;
+    protected List<Stack<String>>    messageStack;
+    protected List<Double>           progressStack;
+    protected HTMLFormatter          logFormatter;
+    protected TrayIcon               systray;
+    protected SimpleInternalFrame    window;
+    protected JProgressBar           progress;
+    protected JEditorPane            log;
+    protected JFrame                 frame;
+    protected JLabel                 logo;
+    protected JPanel                 contentPane;
+    protected JCheckBox              systrayButton;
+    protected JCheckBox              alwaysOnTop;
+    protected JCheckBox              startMini;
+    protected File                   defaultLogo;
+    private boolean                  showFrame;
+    private DragListener             dragListener;
+    private JComponent               themesPanel;
+    private JCheckBox                verboseLogs;
+    private JButton                  windowedTitleButton;
+    private JButton                  fullscreenTitleButton;
+    private JButton                  closeTitleButton;
+    private JDialog                  console;
+    private JPanel                   titleBar;
+    private PipedInputStream         pipeStdOut;
+    private PipedInputStream         pipeStdErr;
+    private PrintStream              realStdOut;
+    private PrintStream              realStdErr;
+    private UpdateUi                 updateUi;
+    protected Animator               panelAnimation;
+    private ScreenTransition         panelTransition;
+    private PaintPanel               contentPanel;
+    private PipedOutputStream        consoleStdOut;
+    private Tab                      settingsTab;
+    private boolean                  overlayed;
+    private HashSet<Plugin>          plugins;
 
     static {
         System.setProperty( "swing.aatext", "true" );
@@ -208,7 +209,8 @@ public abstract class AbstractUi
         /* Set up the backend. */
         messageStack = new ArrayList<Stack<String>>();
         progressStack = new ArrayList<Double>();
-        panelComponents = new HashMap<Action, JComponent>();
+        panelTabs = new HashMap<Action, Tab>();
+        plugins = new HashSet<Plugin>();
         (updateUi = new UpdateUi( this )).start();
 
         panelAnimation = new Animator( 800 );
@@ -245,11 +247,11 @@ public abstract class AbstractUi
      * code. This code processes default interface events.
      * 
      * @param e
-     *        The event that triggered this method call.
+     *            The event that triggered this method call.
      * @param source
-     *        The component upon which this event was executed.
+     *            The component upon which this event was executed.
      * @param actionCommand
-     *        If the event was an {@link ActionEvent}, this contains the action command string.
+     *            If the event was an {@link ActionEvent}, this contains the action command string.
      */
     public void event(EventObject e, Object source, String actionCommand) {
 
@@ -343,19 +345,23 @@ public abstract class AbstractUi
             ShadeConfig.startMini.set( startMini.isSelected() );
 
         else if ("openSettings".equals( actionCommand )) { //$NON-NLS-1$
-            showPanel = settingsPanel;
+            showingTab = settingsTab;
             execute( BasicRequest.PANEL, false );
             showFrame( true );
         }
 
-        else if (source instanceof AbstractButton
-                 && panelComponents.containsKey( ((AbstractButton) source).getAction() )) {
-            showPanel = ((AbstractButton) source).getAction();
+        else if (source instanceof AbstractButton && panelTabs.containsKey( ((AbstractButton) source).getAction() )) {
+            showingTab = panelTabs.get( ((AbstractButton) source).getAction() );
             execute( BasicRequest.PANEL, false );
         }
 
-        else
+        else {
+            for (Plugin plugin : plugins)
+                if (plugin.handleEvent( e ))
+                    return;
+
             eventNotImplemented( e );
+        }
 
     }
 
@@ -547,7 +553,7 @@ public abstract class AbstractUi
      * Update a given element in this UI in the {@link UpdateUi} thread.
      * 
      * @param element
-     *        The element to update, or null to update them all.
+     *            The element to update, or null to update them all.
      */
     public void execute(final Request element) {
 
@@ -558,9 +564,9 @@ public abstract class AbstractUi
      * Update a given element in this UI.
      * 
      * @param element
-     *        The element to update, or null to update them all.
+     *            The element to update, or null to update them all.
      * @param useThread
-     *        Use the UpdateUI thread for this update.
+     *            Use the UpdateUI thread for this update.
      */
     protected void execute(final Request element, final boolean useThread) {
 
@@ -597,9 +603,9 @@ public abstract class AbstractUi
      * message will be removed from the progress bar.
      * 
      * @param desc
-     *        Description of the launch event.
+     *            Description of the launch event.
      * @param args
-     *        Arguments used to format the description string.
+     *            Arguments used to format the description string.
      */
     public void launchDelay(String desc, Object... args) {
 
@@ -682,10 +688,10 @@ public abstract class AbstractUi
      * Set the value of the progress bar.
      * 
      * @param percent
-     *        Set the percent to show completed. Use a decimal value in the range 0-1. Use null to switch to
-     *        indeterminate mode.
+     *            Set the percent to show completed. Use a decimal value in the range 0-1. Use null to switch to
+     *            indeterminate mode.
      * @param level
-     *        The level of progress bar to use. See {@link Level} (fine, finer, finest).
+     *            The level of progress bar to use. See {@link Level} (fine, finer, finest).
      */
     public void setProgress(final Double percent, final Level level) {
 
@@ -740,11 +746,11 @@ public abstract class AbstractUi
         JOptionPane.showMessageDialog( frame, Locale.explain( "ui.requireJava6" ), null, JOptionPane.WARNING_MESSAGE );
     }
 
-    protected AbstractAction addPanelButton(String description, Icon icon, JComponent panel) {
+    private AbstractAction addPanelButton(Tab tab) {
 
         AbstractAction action;
         final AbstractUi ui = this;
-        JToggleButton button = new JToggleButton( action = new AbstractAction( description, icon ) {
+        JToggleButton button = new JToggleButton( action = new AbstractAction( tab.getTitle(), tab.getIcon() ) {
 
             private static final long serialVersionUID = 1L;
 
@@ -758,8 +764,8 @@ public abstract class AbstractUi
         button.setText( null );
         button.setBorderPainted( false );
         button.setOpaque( false );
-        window.getToolBar().add( new ToolTip( description, button ) );
-        panelComponents.put( button.getAction(), panel );
+        window.getToolBar().add( new ToolTip( tab.getTitle(), button ) );
+        panelTabs.put( button.getAction(), tab );
 
         return action;
     }
@@ -768,7 +774,7 @@ public abstract class AbstractUi
      * Signal the UI to show a launch notification and start the platform's web browser to the given URL.
      * 
      * @param url
-     *        The URL to open in the web browser.
+     *            The URL to open in the web browser.
      */
     public void browseTo(URL url) {
 
@@ -850,7 +856,17 @@ public abstract class AbstractUi
         window.setOpaque( false );
 
         /* Tabs */
-        buildTabs();
+        List<Tab> tabs = appendCustomTabs();
+        tabs.addAll( buildTabs() );
+        for (Plugin plugin : plugins) {
+            List<? extends Tab> pluginTabs = plugin.buildTabs();
+            if (pluginTabs != null)
+                tabs.addAll( pluginTabs );
+        }
+        for (Tab tab : tabs)
+            tab.setAction( addPanelButton( tab ) );
+        if (showingTab == null)
+            showingTab = tabs.get( 0 );
         execute( BasicRequest.PANEL, false );
         builder.append( window, 5 );
         builder.nextLine( 2 );
@@ -956,7 +972,7 @@ public abstract class AbstractUi
 
     /**
      * @param image
-     *        The image to use as a background on the main content pane.
+     *            The image to use as a background on the main content pane.
      */
     protected void setBackgroundImage(final Image image) {
 
@@ -977,7 +993,7 @@ public abstract class AbstractUi
      * Feel free to override this method to perform actions before and after the panel changes, but don't remember to
      * still call the parent implementation.
      * 
-     * @{inheritDoc}
+     * @{inheritDoc
      */
     public void setupNextScreen() {
 
@@ -985,30 +1001,31 @@ public abstract class AbstractUi
         for (Component c : toolbar.getComponents())
             if (c instanceof ToolTip && ((ToolTip) c).getContent() instanceof AbstractButton) {
                 AbstractButton button = (AbstractButton) ((ToolTip) c).getContent();
-                button.setSelected( showPanel.equals( button.getAction() ) );
+                button.setSelected( showingTab.getAction() == button.getAction() );
             }
 
-        window.setTitle( "     " + showPanel.getValue( Action.NAME ).toString() + " ~" );
-        window.setContent( panelComponents.get( showPanel ) );
+        window.setTitle( "     " + showingTab.getTitle() + " ~" );
+        window.setContent( showingTab.getContent() );
     }
 
     /**
-     * Override this method to add your own set of tabs; but don't forget to call this one too if you want to have the
-     * default tabs showing as well!
+     * @return The list of additional tabs to show in the UI.
      */
-    public void buildTabs() {
+    protected abstract List<Tab> appendCustomTabs();
 
-        settingsPanel = addPanelButton( Locale.explain( "ui.configuration" ), Utils.getIcon( "settings-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
-                getSettingsPane() );
-        addPanelButton( Locale.explain( "ui.logs" ), Utils.getIcon( "log-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
-                getOperationsPane() );
-        addPanelButton( Locale.explain( "ui.licensing" ), Utils.getIcon( "license-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
-                getLicensePane() );
-        addPanelButton( Locale.explain( "ui.development" ), Utils.getIcon( "develop-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
-                getDevelopmentPane() );
+    private List<Tab> buildTabs() {
 
-        if (showPanel == null)
-            showPanel = settingsPanel;
+        List<Tab> tabs = new ArrayList<Tab>();
+        tabs.add( settingsTab = new Tab( Locale.explain( "ui.configuration" ), Utils.getIcon( "settings-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
+                getSettingsPane() ) );
+        tabs.add( new Tab( Locale.explain( "ui.logs" ), Utils.getIcon( "log-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
+                getOperationsPane() ) );
+        tabs.add( new Tab( Locale.explain( "ui.licensing" ), Utils.getIcon( "license-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
+                getLicensePane() ) );
+        tabs.add( new Tab( Locale.explain( "ui.development" ), Utils.getIcon( "develop-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
+                getDevelopmentPane() ) );
+
+        return tabs;
     }
 
     private JComponent getSettingsPane() {
@@ -1047,6 +1064,11 @@ public abstract class AbstractUi
 
         appendCustomSettings( builder );
 
+        for (Plugin plugin : plugins) {
+            builder.appendSeparator( plugin.getName() );
+            plugin.buildSettings( builder );
+        }
+
         systrayButton.addActionListener( this );
         alwaysOnTop.addActionListener( this );
         startMini.addActionListener( this );
@@ -1082,7 +1104,7 @@ public abstract class AbstractUi
      * </pre>
      * 
      * @param builder
-     *        The {@link DefaultFormBuilder} to which you should add your settings components.
+     *            The {@link DefaultFormBuilder} to which you should add your settings components.
      */
     protected abstract void appendCustomSettings(DefaultFormBuilder builder);
 
@@ -1238,9 +1260,9 @@ public abstract class AbstractUi
             ShadeConfig.theme.get().setup();
             if (frame != null) {
                 ShadeConfig.theme.get().reconfigure( frame );
-                for (JComponent panel : panelComponents.values())
-                    if (!panel.equals( window.getContent() ))
-                        ShadeConfig.theme.get().reconfigure( panel );
+                for (Tab tab : panelTabs.values())
+                    if (!tab.getContent().isDisplayable())
+                        ShadeConfig.theme.get().reconfigure( tab.getContent() );
             }
 
             /* Set some look and feel properties. */
@@ -1257,9 +1279,9 @@ public abstract class AbstractUi
                         SwingUtilities.updateComponentTreeUI( frame );
 
                         /* Also update invisible panels, please. */
-                        for (JComponent panel : panelComponents.values())
-                            if (!panel.equals( window.getContent() ))
-                                SwingUtilities.updateComponentTreeUI( panel );
+                        for (Tab tab : panelTabs.values())
+                            if (!tab.getContent().isDisplayable())
+                                SwingUtilities.updateComponentTreeUI( tab.getContent() );
                     }
                 } );
         } catch (InterruptedException e) {} catch (InvocationTargetException e) {}
@@ -1313,9 +1335,9 @@ public abstract class AbstractUi
             /* Remove the frame drag listeners. */
             if (dragListener != null) {
                 dragListener.uninstall();
-                for (JComponent panel : panelComponents.values())
-                    if (!panel.equals( window.getContent() ))
-                        dragListener.uninstall( panel );
+                for (Tab tab : panelTabs.values())
+                    if (tab.getContent() != window.getContent())
+                        dragListener.uninstall( tab.getContent() );
             }
 
             /* Rebuild frame. */
@@ -1343,9 +1365,9 @@ public abstract class AbstractUi
             if (!ShadeConfig.fullScreen.get()) {
                 dragListener = new DragListener( frame );
                 dragListener.install();
-                for (JComponent panel : panelComponents.values())
-                    if (!panel.equals( window.getContent() ))
-                        dragListener.install( panel );
+                for (Tab tab : panelTabs.values())
+                    if (tab.getContent() != window.getContent())
+                        dragListener.install( tab.getContent() );
             }
 
             /* All set, start the show. */
@@ -1501,7 +1523,10 @@ public abstract class AbstractUi
             } finally {
                 Logger.fine( null );
             }
-        }
+        } else
+            for (Plugin plugin : plugins)
+                if (plugin.handleRequest( element ))
+                    return;
     }
 
     /**
@@ -1509,7 +1534,7 @@ public abstract class AbstractUi
      * made valid.
      * 
      * @param newVisibilityState
-     *        <code>true</code>: frame is visible.
+     *            <code>true</code>: frame is visible.
      */
     protected void frameVisibilityChanged(@SuppressWarnings("unused") boolean newVisibilityState) {
 
@@ -1520,11 +1545,12 @@ public abstract class AbstractUi
      * Override this method to add custom {@link MenuItem}s to the system tray menu.
      * 
      * @param sysMenu
-     *        The menu to add the items to.
+     *            The menu to add the items to.
      */
     protected void appendCustomSystrayMenuItems(@SuppressWarnings("unused") PopupMenu sysMenu) {
 
-    /* Nothing custom here. */
+        for (Plugin plugin : plugins)
+            plugin.buildSystray( sysMenu );
     }
 }
 
@@ -1542,9 +1568,9 @@ class ConsoleThread extends Thread {
      * Create a new {@link ConsoleThread} instance.
      * 
      * @param in
-     *        The source of the data to write in the console.
+     *            The source of the data to write in the console.
      * @param console
-     *        The component to output the console data to.
+     *            The component to output the console data to.
      */
     ConsoleThread(InputStream in, JTextArea console) {
 
