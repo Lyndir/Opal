@@ -1,5 +1,6 @@
 # Compiled objects.
 /*/target
+/target
 
 # OS-Specific junk.
 .DS_Store

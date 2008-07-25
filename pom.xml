@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- PROJECT METADATA -->
+	<parent>
+        <groupId>com.lyndir.lhunath</groupId>
+        <artifactId>lyndir</artifactId>
+        <version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.lyndir.lhunath.jlibs</groupId>
+	<artifactId>jlibs</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>JLibs</name>
+	<description>
+        Java library for programming convenience.
+	</description>
+
+	<!-- CODE ACCESS -->
+	<scm>
+        <url>http://lhunath.lyndir.com</url>
+        <connection>${scm.git.pubbase}/JLibs.git</connection>
+        <developerConnection>${scm.git.devbase}/JLibs.git</developerConnection>
+	</scm>
+
+	<!-- DEFAULT PROPERTIES -->
+	<properties>
+    </properties>
+
+	<!-- ALL MODULES THAT ARE ENABLED BY DEFAULT -->
+	<modules>
+        <module>crypto</module>
+        <module>data</module>
+        <module>geo</module>
+        <module>math</module>
+        <!--module>piccolo</module-->
+        <module>pigeon</module>
+        <module>shade</module>
+        <module>system</module>
+    </modules>
+
+</project>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- PROJECT METADATA -->
+	<parent>
+        <groupId>com.lyndir.lhunath.jlibs</groupId>
+        <artifactId>jlibs</artifactId>
+        <version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.lyndir.lhunath.jlibs</groupId>
+	<artifactId>crypto</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>JLibs Crypto</name>
+	<description>
+        JLibs: Cryptography Utilities
+	</description>
+
+	<!-- BUILD CONFIGURATION -->
+	<build>
+	</build>
+
+	<!-- DEPENDENCY MANAGEMENT -->
+	<dependencies>
+
+        <!-- PROJECT REFERENCES -->
+        <dependency>
+            <groupId>com.lyndir.lhunath.jlibs</groupId>
+            <artifactId>system</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- EXTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>bouncycastle</groupId>
+            <artifactId>bcpg-jdk15</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>bouncycastle</groupId>
+            <artifactId>bcprov-jdk15</artifactId>
+        </dependency>
+	</dependencies>
+
+</project>
