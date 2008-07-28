@@ -54,6 +54,13 @@
             <groupId>net.java.dev.timingframework</groupId>
             <artifactId>timingframework</artifactId>
         </dependency>
+        <dependency>
+            <groupId>net.java.dev.animatedtransitions</groupId>
+            <artifactId>animatedtransitions</artifactId>
+            <version>0.11</version>
+            <scope>system</scope>
+            <systemPath>${project.home}/lib/AnimatedTransitions-0.11.jar</systemPath>
+        </dependency>
 	</dependencies>
 
 </project>
