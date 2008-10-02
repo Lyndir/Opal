@@ -30,6 +30,7 @@ import javax.swing.JPopupMenu;
 import com.lyndir.lhunath.lib.system.Locale;
 import com.lyndir.lhunath.lib.system.Utils;
 
+
 /**
  * TODO: {@link EditableList}<br>
  * 
@@ -41,11 +42,12 @@ public class EditableList extends JList {
     protected DefaultListModel model;
     protected String           a;
 
+
     /**
      * Create a new EditableList instance.
      * 
      * @param contentTitle
-     *        The title describing this list's content.
+     *            The title describing this list's content.
      */
     public EditableList(String contentTitle) {
 
@@ -56,10 +58,10 @@ public class EditableList extends JList {
      * Create a new EditableList instance.
      * 
      * @param contentTitle
-     *        The title describing this list's content.
+     *            The title describing this list's content.
      * @param newText
-     *        Additional information text to show up when adding a new item to this list in the popup dialog for it (ie.
-     *        syntax/purpose).
+     *            Additional information text to show up when adding a new item to this list in the popup dialog for it
+     *            (ie. syntax/purpose).
      */
     public EditableList(final String contentTitle, final String newText) {
 
@@ -98,6 +100,7 @@ public class EditableList extends JList {
 
                             private static final long serialVersionUID = 1L;
 
+
                             public void actionPerformed(ActionEvent ee) {
 
                                 String element = JOptionPane.showInputDialog( list,
@@ -116,6 +119,7 @@ public class EditableList extends JList {
 
                             private static final long serialVersionUID = 1L;
 
+
                             public void actionPerformed(ActionEvent ee) {
 
                                 model.remove( getSelectedIndex() );
@@ -129,6 +133,7 @@ public class EditableList extends JList {
                         Utils.getIcon( "edit-ss.png" ) ) { //$NON-NLS-1$
 
                             private static final long serialVersionUID = 1L;
+
 
                             public void actionPerformed(ActionEvent ee) {
 

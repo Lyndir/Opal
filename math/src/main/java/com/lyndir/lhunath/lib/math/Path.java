@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.math;
 
 import java.awt.geom.RectangularShape;
 
+
 /**
  * <i>{@link Path} - [in short] (TODO).</i><br>
  * <br>
@@ -33,6 +34,7 @@ public class Path {
     private Vec2    dst;
     private Vec2    size;
     private Vec2    offset;
+
 
     /**
      * {@inheritDoc}
@@ -60,9 +62,9 @@ public class Path {
      * shape by attaching the path to the center of either top, left, bottom or right side of each shape.
      * 
      * @param srcBounds
-     *        The rectangle that the path originates from.
+     *            The rectangle that the path originates from.
      * @param dstBounds
-     *        The rectangle that the path arrives at.
+     *            The rectangle that the path arrives at.
      * @return A {@link Path} object that provides the geometry needed to define the requested path.
      */
     public static Path calculatePath(RectangularShape srcBounds, RectangularShape dstBounds) {

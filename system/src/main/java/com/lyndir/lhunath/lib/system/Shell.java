@@ -29,6 +29,7 @@ import java.io.PipedOutputStream;
 import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
+
 /**
  * <i>Shell - A convenience class to execute processes for different purposes.</i><br>
  * <br>
@@ -39,15 +40,16 @@ public class Shell {
 
     protected static final int BUFFER_SIZE = 4096;
 
+
     /**
      * Run an application or shell script and redirect its stdout and stderr to our stdout and stderr.
      * 
      * @param block
-     *        Whether or not to block until the process has finished.
+     *            Whether or not to block until the process has finished.
      * @param currDir
-     *        The current directory for the child process.
+     *            The current directory for the child process.
      * @param cmd
-     *        The command to invoke for running the new process.
+     *            The command to invoke for running the new process.
      * @return The process object for the process that was started.
      * @throws FileNotFoundException
      */
@@ -65,7 +67,7 @@ public class Shell {
      * Wait for the given process to exit and return its exit status.
      * 
      * @param process
-     *        The process to wait for.
+     *            The process to wait for.
      * @return The exit status of the given process.
      */
     public static int waitFor(Process process) {
@@ -90,13 +92,13 @@ public class Shell {
      * Output and error streams will be closed, except if they are the application's standard output or standard error.
      * 
      * @param out
-     *        The stream to write the process' standard output into.
+     *            The stream to write the process' standard output into.
      * @param err
-     *        The stream to write the process' standard error into.
+     *            The stream to write the process' standard error into.
      * @param currDir
-     *        The current directory for the child process.
+     *            The current directory for the child process.
      * @param cmd
-     *        The command to invoke for running the new process.
+     *            The command to invoke for running the new process.
      * @return The process object for the process that was started.
      * @throws FileNotFoundException
      */
@@ -181,9 +183,9 @@ public class Shell {
      * Run an application or shell script and read its standard output and standard error into a string.
      * 
      * @param currDir
-     *        The current directory for the child process.
+     *            The current directory for the child process.
      * @param cmd
-     *        The command to invoke for running the new process.
+     *            The command to invoke for running the new process.
      * @return The standard output and standard error of the process.
      */
     public static String execRead(File currDir, String... cmd) {

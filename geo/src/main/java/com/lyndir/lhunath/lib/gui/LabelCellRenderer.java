@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.SwingConstants;
 
+
 /**
  * <i>LabelCellRenderer - A cell renderer for lists and combo boxes that sets up a {@link JLabel} for its cells.</i><br>
  * <br>

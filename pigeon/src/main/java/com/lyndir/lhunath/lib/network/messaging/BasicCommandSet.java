@@ -18,6 +18,7 @@ package com.lyndir.lhunath.lib.network.messaging;
 import java.util.LinkedList;
 import java.util.List;
 
+
 /**
  * <i>Command - Commands that can be issued over the network.</i><br>
  * <br>
@@ -35,6 +36,7 @@ public enum BasicCommandSet {
 
     private Class<? extends Message>     type;
     private static List<BasicCommandSet> subSets;
+
 
     private BasicCommandSet(Class<? extends Message> cmdType) {
 
@@ -66,7 +68,7 @@ public enum BasicCommandSet {
      * Retrieve the Command that stands for the given Message class.
      * 
      * @param cmd
-     *        The Message class.
+     *            The Message class.
      * @return The Command.
      */
     public static BasicCommandSet fromClass(Class<? extends Message> cmd) {
@@ -82,7 +84,7 @@ public enum BasicCommandSet {
      * Retrieve the Command that is defined by the given name.
      * 
      * @param type
-     *        The name of the Command.
+     *            The name of the Command.
      * @return The Command object.
      */
     public static BasicCommandSet fromType(String type) {

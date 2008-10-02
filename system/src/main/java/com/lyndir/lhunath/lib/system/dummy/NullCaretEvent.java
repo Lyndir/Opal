@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.system.dummy;
 
 import javax.swing.event.CaretEvent;
 
+
 /**
  * <i>NullCaretEvent - A dummy {@link CaretEvent} object.</i><br>
  * <br>
@@ -34,7 +35,7 @@ public class NullCaretEvent extends CaretEvent {
      * Create a new NullCaretEvent instance.
      * 
      * @param source
-     *        The source of the caret event.
+     *            The source of the caret event.
      */
     public NullCaretEvent(Object source) {
 

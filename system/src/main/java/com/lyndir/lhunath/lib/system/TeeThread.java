@@ -44,9 +44,9 @@ public class TeeThread extends Thread {
      * Create a new {@link TeeThread} instance.
      * 
      * @param source
-     *        The data source.
+     *            The data source.
      * @param destinations
-     *        The destination streams to write the source data to.
+     *            The destination streams to write the source data to.
      */
     public TeeThread(InputStream source, OutputStream... destinations) {
 

@@ -28,6 +28,7 @@ import java.util.Map;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
+
 /**
  * <i>DBLink - [in short] (TODO).</i><br>
  * <br>
@@ -39,6 +40,7 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 public class DBMysql implements DBLink {
 
     private static Connection db;
+
 
     /* Connect to the database. */
     private static Connection getDb() {

@@ -29,6 +29,7 @@ import java.util.logging.LogRecord;
 import com.lyndir.lhunath.lib.system.Locale;
 import com.lyndir.lhunath.lib.system.Utils;
 
+
 /**
  * <i>Logger - An interface to the java {@link java.util.logging.Logger} class.</i><br>
  * <br>
@@ -64,8 +65,10 @@ public class Logger {
 
                 public void uncaughtException(Thread t, Throwable e) {
 
-                    /* Report all uncaught errors..
-                     * Except for that annoying one caused by a buggy BasicPopupMenuUI.MouseGrabber. */
+                    /*
+                     * Report all uncaught errors.. Except for that annoying one caused by a buggy
+                     * BasicPopupMenuUI.MouseGrabber.
+                     */
                     if (!"java.awt.TrayIcon cannot be cast to java.awt.Component".equals( e.getMessage() ))
                         Logger.error( e );
                 }
@@ -75,17 +78,18 @@ public class Logger {
         }
     }
 
+
     /**
      * Log a message with the given information.
      * 
      * @param level
-     *        The severity level of the message.
+     *            The severity level of the message.
      * @param message
-     *        The description message.
+     *            The description message.
      * @param error
-     *        An optional throwable cause of this log message. Set to null if not applicable.
+     *            An optional throwable cause of this log message. Set to null if not applicable.
      * @param args
-     *        Arguments to format the description message with.
+     *            Arguments to format the description message with.
      */
     public static void log(Level level, String message, Throwable error, Object... args) {
 
@@ -109,7 +113,7 @@ public class Logger {
      * Handle an uncaught {@link Throwable} that cannot be safely handled through the logging backend.
      * 
      * @param e
-     *        The {@link Throwable} that needs to be handled.
+     *            The {@link Throwable} that needs to be handled.
      */
     public static void uncaught(Throwable e) {
 
@@ -123,9 +127,9 @@ public class Logger {
      * Send a message about the correct working of the program.
      * 
      * @param message
-     *        The locale message identifier or format string to send.
+     *            The locale message identifier or format string to send.
      * @param args
-     *        The arguments for the message format string.
+     *            The arguments for the message format string.
      */
     public static void fine(String message, Object... args) {
 
@@ -136,9 +140,9 @@ public class Logger {
      * Send a message about the correct working of the program, when being verbose.
      * 
      * @param message
-     *        The locale message identifier or format string to send.
+     *            The locale message identifier or format string to send.
      * @param args
-     *        The arguments for the message format string.
+     *            The arguments for the message format string.
      */
     public static void finer(String message, Object... args) {
 
@@ -149,9 +153,9 @@ public class Logger {
      * Send a message about the correct working of the program, when being very verbose.
      * 
      * @param message
-     *        The locale message identifier or format string to send.
+     *            The locale message identifier or format string to send.
      * @param args
-     *        The arguments for the message format string.
+     *            The arguments for the message format string.
      */
     public static void finest(String message, Object... args) {
 
@@ -162,9 +166,9 @@ public class Logger {
      * Send a message about the current configuration of the program.
      * 
      * @param message
-     *        The locale message identifier or format string to send.
+     *            The locale message identifier or format string to send.
      * @param args
-     *        The arguments for the message format string.
+     *            The arguments for the message format string.
      */
     public static void config(String message, Object... args) {
 
@@ -175,9 +179,9 @@ public class Logger {
      * Send a message informing the user about the state of the program.
      * 
      * @param message
-     *        The locale message identifier or format string to send.
+     *            The locale message identifier or format string to send.
      * @param args
-     *        The arguments for the message format string.
+     *            The arguments for the message format string.
      */
     public static void info(String message, Object... args) {
 
@@ -188,9 +192,9 @@ public class Logger {
      * Send a warning message stating that abnormal behaviour was detected.
      * 
      * @param message
-     *        The locale message identifier or format string to send.
+     *            The locale message identifier or format string to send.
      * @param args
-     *        The arguments for the message format string.
+     *            The arguments for the message format string.
      */
     public static void warn(String message, Object... args) {
 
@@ -201,7 +205,7 @@ public class Logger {
      * Send an error message, notifying the user that something went seriously wrong.
      * 
      * @param exception
-     *        The exception that occurred causing this error.
+     *            The exception that occurred causing this error.
      */
     public static void error(Throwable exception) {
 
@@ -212,11 +216,11 @@ public class Logger {
      * Send an error message, notifying the user that something went seriously wrong.
      * 
      * @param exception
-     *        The exception that occurred causing this error.
+     *            The exception that occurred causing this error.
      * @param message
-     *        The locale message identifier or format string to send.
+     *            The locale message identifier or format string to send.
      * @param args
-     *        The arguments for the message format string.
+     *            The arguments for the message format string.
      */
     public static void error(Throwable exception, String message, Object... args) {
 
@@ -230,9 +234,9 @@ public class Logger {
      * Send an error message, notifying the user that something went seriously wrong.
      * 
      * @param message
-     *        The locale message identifier or format string to send.
+     *            The locale message identifier or format string to send.
      * @param args
-     *        The arguments for the message format string.
+     *            The arguments for the message format string.
      */
     public static void error(String message, Object... args) {
 
@@ -244,7 +248,7 @@ public class Logger {
      * terminated as a result.
      * 
      * @param exception
-     *        The exception that occurred causing this error.
+     *            The exception that occurred causing this error.
      */
     public static void fatal(Throwable exception) {
 
@@ -257,11 +261,11 @@ public class Logger {
      * terminated as a result.
      * 
      * @param exception
-     *        The exception that occurred causing this error.
+     *            The exception that occurred causing this error.
      * @param message
-     *        The locale message identifier or format string to send.
+     *            The locale message identifier or format string to send.
      * @param args
-     *        The arguments for the message format string.
+     *            The arguments for the message format string.
      */
     public static void fatal(Throwable exception, String message, Object... args) {
 
@@ -274,9 +278,9 @@ public class Logger {
      * terminated as a result.
      * 
      * @param message
-     *        The locale message identifier or format string to send.
+     *            The locale message identifier or format string to send.
      * @param args
-     *        The arguments for the message format string.
+     *            The arguments for the message format string.
      */
     public static void fatal(String message, Object... args) {
 
@@ -298,7 +302,7 @@ public class Logger {
      * loggers.
      * 
      * @param handler
-     *        a logging Handler
+     *            a logging Handler
      */
     public void addHandler(ConsoleHandler handler) {
 
@@ -309,9 +313,9 @@ public class Logger {
      * Make the logger output to listeners.
      * 
      * @param listener
-     *        The object that will be listening for log messages.
+     *            The object that will be listening for log messages.
      * @param minLevel
-     *        The minimal {@link Level} of log messages accepted by this listener.
+     *            The minimal {@link Level} of log messages accepted by this listener.
      * @return The logger that was modified.
      */
     public Logger addListener(LogListener listener, Level minLevel) {
@@ -345,7 +349,7 @@ public class Logger {
      * Make the logger output to the specified target file.
      * 
      * @param target
-     *        The output channel.
+     *            The output channel.
      * @return The logger that was modified.
      */
     public Logger logTo(String target) {
@@ -365,7 +369,7 @@ public class Logger {
      * the given one will be ignored by this logger.
      * 
      * @param level
-     *        The minimum allowed {@link Level}.
+     *            The minimum allowed {@link Level}.
      * @return This logger.
      */
     public Logger setLevel(Level level) {
@@ -391,7 +395,7 @@ public class Logger {
      * Remove the specified destination of a logger.
      * 
      * @param silenceHandler
-     *        The handler that must be removed.
+     *            The handler that must be removed.
      * @return This logger.
      */
     public Logger silence(Handler silenceHandler) {
@@ -436,7 +440,7 @@ public class Logger {
      * Retrieve the logger that uses the given Java Logger.
      * 
      * @param jLogger
-     *        The Java Logger that is used by the requested logger.
+     *            The Java Logger that is used by the requested logger.
      * @return Guess.
      */
     private static Logger getLogger(java.util.logging.Logger jLogger) {
@@ -470,7 +474,7 @@ public class Logger {
      * Retrieve the logger for a certain class.
      * 
      * @param source
-     *        The section that needs to be logged.
+     *            The section that needs to be logged.
      * @return The logger.
      */
     public static Logger getLogger(Class<?> source) {
@@ -485,12 +489,12 @@ public class Logger {
      * Create a new Logger instance.
      * 
      * @param name
-     *        A name for the logger. This should be a dot-separated name and should normally be based on the package
-     *        name or class name of the subsystem, such as java.net or javax.swing. It may be null for anonymous
-     *        Loggers.
+     *            A name for the logger. This should be a dot-separated name and should normally be based on the package
+     *            name or class name of the subsystem, such as java.net or javax.swing. It may be null for anonymous
+     *            Loggers.
      * @param resourceBundleName
-     *        name of ResourceBundle to be used for localizing messages for this logger. May be null if none of the
-     *        messages require localization.
+     *            name of ResourceBundle to be used for localizing messages for this logger. May be null if none of the
+     *            messages require localization.
      */
     private Logger(String name, String resourceBundleName) {
 
@@ -501,7 +505,7 @@ public class Logger {
      * Create a new Logger instance.
      * 
      * @param logger
-     *        The java logger this logger will be using.
+     *            The java logger this logger will be using.
      */
     private Logger(java.util.logging.Logger logger) {
 

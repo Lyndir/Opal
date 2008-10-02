@@ -41,6 +41,7 @@ import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
+
 /**
  * <i>{@link SslFactory} - Factory for creating {@link Protocol} objects that can be used by Jakarta's HttpClient for
  * establishing https communications.</i><br>
@@ -55,13 +56,14 @@ public class SslFactory implements SecureProtocolSocketFactory {
     private static SslFactory instance;
     private SSLContext        context;
 
+
     /**
      * Initialize this factory with the given keystore.
      * 
      * @param keyStore
-     *        The keystore that contains the trusted server keys.
+     *            The keystore that contains the trusted server keys.
      * @param password
-     *        The password to access the keystore.
+     *            The password to access the keystore.
      * @return The factory.
      */
     public static SslFactory initialize(File keyStore, String password) {

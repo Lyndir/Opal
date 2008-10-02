@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.gui.template.shade;
 
 import java.io.Serializable;
 
+
 /**
  * <i>{@link Request} - [in short] (TODO).</i><br>
  * <br>

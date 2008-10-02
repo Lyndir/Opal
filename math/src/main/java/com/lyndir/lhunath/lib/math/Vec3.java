@@ -35,7 +35,7 @@ public class Vec3 extends Vec2 {
      * Convert a planar vector (2D) into a spatial vector (3D).
      * 
      * @param vector
-     *        The 2D vector to be converted.
+     *            The 2D vector to be converted.
      */
     public Vec3(Vec2 vector) {
 
@@ -46,9 +46,9 @@ public class Vec3 extends Vec2 {
      * Convert a planar vector (2D) into a spatial vector (3D); placing it at a specified depth in space.
      * 
      * @param vector
-     *        The 2D vector to be converted.
+     *            The 2D vector to be converted.
      * @param z
-     *        The depth at which to place the vector in space.
+     *            The depth at which to place the vector in space.
      */
     public Vec3(Vec2 vector, double z) {
 
@@ -67,11 +67,11 @@ public class Vec3 extends Vec2 {
      * Create a new three dimensional vector.
      * 
      * @param x
-     *        The x-coordinate of the new vector.
+     *            The x-coordinate of the new vector.
      * @param y
-     *        The y-coordinate of the new vector.
+     *            The y-coordinate of the new vector.
      * @param z
-     *        The z-coordinate of the new vector.
+     *            The z-coordinate of the new vector.
      */
     public Vec3(double x, double y, double z) {
 
@@ -113,9 +113,9 @@ public class Vec3 extends Vec2 {
      * Rotate this vector over an angle along the specified axis.
      * 
      * @param a
-     *        The angle over which to rotate.
+     *            The angle over which to rotate.
      * @param ax
-     *        The axis around which to rotate.
+     *            The axis around which to rotate.
      * @return A reference to this vector, after it has been updated.
      */
     public Vec3 rotate(Angle a, Axis ax) {
@@ -159,7 +159,7 @@ public class Vec3 extends Vec2 {
      * Add another vector to this one.
      * 
      * @param vector
-     *        A vector that needs to be added to this.
+     *            A vector that needs to be added to this.
      * @return A reference to the this vector, after it has been updated.
      */
     public Vec3 add(Vec3 vector) {
@@ -178,7 +178,7 @@ public class Vec3 extends Vec2 {
      * Subtract another vector from this one.
      * 
      * @param vector
-     *        The vector which will be subtracted from this.
+     *            The vector which will be subtracted from this.
      * @return A reference to the this vector, after it has been updated.
      */
     public Vec3 substract(Vec3 vector) {
@@ -197,7 +197,7 @@ public class Vec3 extends Vec2 {
      * Multiply this vector with the coefficients of another.
      * 
      * @param vector
-     *        The vector whose coefficients will be used for the multiplication.
+     *            The vector whose coefficients will be used for the multiplication.
      * @return A reference to the this vector, after it has been updated.
      */
     public Vec3 multiply(Vec3 vector) {
@@ -238,12 +238,10 @@ public class Vec3 extends Vec2 {
      * 
      * <br>
      * The resulting vector is perpendicular to both vectors. The direction it will be pointing in is theoretically
-     * undefined, but defined by convention as:
-     * <q>An easy way to compute the direction of the resultant vector is the "right-hand rule."
-     * If the coordinate system is right-handed, one simply points the forefinger in the direction
-     * of the first operand and the middle finger in the direction of the second operand.
-     * Then, the resultant vector is coming out of the thumb.</q>
-     * <br>
+     * undefined, but defined by convention as: <q>An easy way to compute the direction of the resultant vector is the
+     * "right-hand rule." If the coordinate system is right-handed, one simply points the forefinger in the direction of
+     * the first operand and the middle finger in the direction of the second operand. Then, the resultant vector is
+     * coming out of the thumb.</q> <br>
      * <br>
      * It will thus always be perpendicular to the plane formed by the given vectors (this is the same plane as formed
      * by the above parallelogram).<br>
@@ -251,7 +249,7 @@ public class Vec3 extends Vec2 {
      * parallelepiped thus formed.</i>
      * 
      * @param vector
-     *        The vector with which this vector must be multiplied.
+     *            The vector with which this vector must be multiplied.
      * @return A new vector, perpendicular to both given vectors, as described above.
      */
     public Vec3 crossMultiply(Vec3 vector) {
@@ -271,7 +269,7 @@ public class Vec3 extends Vec2 {
      * Any vector in a plane, multiplied in this way with the plane's normal; will therefore result in 0.</i>
      * 
      * @param vector
-     *        The vector with which this vector must be multiplied.
+     *            The vector with which this vector must be multiplied.
      * @return The result of the dot product of this vector with the given one.
      */
     public double dotMultiply(Vec3 vector) {

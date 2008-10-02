@@ -59,6 +59,7 @@ import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -990,8 +991,8 @@ public abstract class AbstractUi
     }
 
     /**
-     * Feel free to override this method to perform actions before and after the panel changes, but don't remember to
-     * still call the parent implementation.
+     * Feel free to override this method to perform actions before and after the panel changes, but DO NOT FORGET to
+     * call the parent implementation.
      * 
      * @{inheritDoc
      */
@@ -1015,7 +1016,7 @@ public abstract class AbstractUi
 
     private List<Tab> buildTabs() {
 
-        List<Tab> tabs = new ArrayList<Tab>();
+        List<Tab> tabs = new LinkedList<Tab>();
         tabs.add( settingsTab = new Tab( Locale.explain( "ui.configuration" ), Utils.getIcon( "settings-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
                 getSettingsPane() ) );
         tabs.add( new Tab( Locale.explain( "ui.logs" ), Utils.getIcon( "log-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$

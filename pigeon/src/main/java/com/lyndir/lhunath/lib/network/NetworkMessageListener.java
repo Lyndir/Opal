@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.network;
 
 import java.net.Socket;
 
+
 /**
  * This listener should be implemented by classes that wish to be notified of incoming network messages.<br>
  * 
@@ -28,9 +29,9 @@ public interface NetworkMessageListener {
      * A message has been received over the network.
      * 
      * @param message
-     *        The decoded message.
+     *            The decoded message.
      * @param socket
-     *        The socket over which the message has arrived.
+     *            The socket over which the message has arrived.
      */
     public void received(String message, Socket socket);
 }

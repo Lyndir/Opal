@@ -37,7 +37,7 @@ public class Desktop extends Wrapper {
     /**
      * @return See {@link "http://java.sun.com/javase/6/docs/api/java/awt/Desktop.html#getDesktop()"}
      * @throws UnsupportedOperationException
-     *         If the native class wrapped by this class is not available.
+     *             If the native class wrapped by this class is not available.
      */
     public static Desktop getDesktop() throws UnsupportedOperationException {
 
@@ -60,7 +60,7 @@ public class Desktop extends Wrapper {
 
     /**
      * @param action
-     *        The wrapped action to check support for.
+     *            The wrapped action to check support for.
      * @return <code>true</code> If the Java6 Desktop class is available and the given action is supported by the
      *         current environment.
      */
@@ -84,7 +84,7 @@ public class Desktop extends Wrapper {
      * Browse to the given {@link URI} natively.
      * 
      * @param uri
-     *        The {@link URI} to browse to.
+     *            The {@link URI} to browse to.
      * @throws IOException
      */
     @SuppressWarnings("unused")
@@ -97,7 +97,7 @@ public class Desktop extends Wrapper {
      * Edit the given file natively.
      * 
      * @param file
-     *        The {@link File} to edit.
+     *            The {@link File} to edit.
      * @throws IOException
      */
     @SuppressWarnings("unused")
@@ -121,7 +121,7 @@ public class Desktop extends Wrapper {
      * Send an email to the given {@link URI} natively.
      * 
      * @param mailtoURI
-     *        The {@link URI} address to direct the mail to.
+     *            The {@link URI} address to direct the mail to.
      * @throws IOException
      */
     @SuppressWarnings("unused")
@@ -134,7 +134,7 @@ public class Desktop extends Wrapper {
      * Open the given file as configured natively.
      * 
      * @param file
-     *        The {@link File} to open.
+     *            The {@link File} to open.
      * @throws IOException
      */
     @SuppressWarnings("unused")
@@ -147,7 +147,7 @@ public class Desktop extends Wrapper {
      * Print the given {@link File} as configured natively.
      * 
      * @param file
-     *        The {@link File} to print.
+     *            The {@link File} to print.
      * @throws IOException
      * 
      */

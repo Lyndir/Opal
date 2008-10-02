@@ -24,6 +24,7 @@ import java.util.TreeMap;
 
 import com.lyndir.lhunath.lib.system.Utils;
 
+
 /**
  * TODO: {@link BasicRequest}<br>
  * <br>
@@ -72,12 +73,13 @@ public enum BasicRequest implements Request {
 
     private int autorunPriority;
 
+
     /**
      * Create a new {@link BasicRequest} instance.
      * 
      * @param autorunPriority
-     *        Lower or equal to zero: No auto-running.<br>
-     *        Larger than zero: Ascending order in which the request will be processed.
+     *            Lower or equal to zero: No auto-running.<br>
+     *            Larger than zero: Ascending order in which the request will be processed.
      */
     private BasicRequest(int autorunPriority) {
 
@@ -101,7 +103,9 @@ public enum BasicRequest implements Request {
         return Utils.reformat( name() );
     }
 
+
     private static List<Request> requests = new ArrayList<Request>();
+
 
     /**
      * Retrieve a list of addons to run on autorun actions. The list will be sorted by addon priority.
@@ -122,12 +126,13 @@ public enum BasicRequest implements Request {
      * Register new requests that should be made available through this class' utility methods.
      * 
      * @param newRequests
-     *        The new requests.
+     *            The new requests.
      */
     public static void register(Request[] newRequests) {
 
         requests.addAll( Arrays.asList( newRequests ) );
     }
+
 
     static {
         register( values() );

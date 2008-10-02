@@ -18,6 +18,7 @@ package com.lyndir.lhunath.lib.network;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+
 /**
  * This listener should be implemented by classes that wish to be notified of network connection events.<br>
  * 
@@ -29,9 +30,9 @@ public interface NetworkStateListener {
      * A new connection has been accepted by a listening server.
      * 
      * @param server
-     *        The socket on which the connection has been requested.
+     *            The socket on which the connection has been requested.
      * @param socket
-     *        The socket over which the new connection will take place.
+     *            The socket over which the new connection will take place.
      */
     public void accepted(ServerSocket server, Socket socket);
 
@@ -39,7 +40,7 @@ public interface NetworkStateListener {
      * A new connection has been established to a remote server.
      * 
      * @param connection
-     *        The socket over which the new connection will take place.
+     *            The socket over which the new connection will take place.
      */
     public void connected(Socket connection);
 }

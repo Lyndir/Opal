@@ -19,6 +19,7 @@ import java.util.ListResourceBundle;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+
 /**
  * <i>Locale - This class allows access to locale specific externalized strings for use in the application.</i><br>
  * <br>
@@ -33,6 +34,7 @@ public class Locale {
 
     private static Locale  instance;
     private ResourceBundle resources;
+
 
     private Locale() {
 
@@ -56,7 +58,7 @@ public class Locale {
      * Switch to a new locale.
      * 
      * @param lang
-     *        The new locale.
+     *            The new locale.
      * @return Reference to this locale instance.
      */
     public Locale setLang(java.util.Locale lang) {
@@ -87,9 +89,9 @@ public class Locale {
      * optional additional arguments as input values.
      * 
      * @param messageKey
-     *        The key of the message or the message to format.
+     *            The key of the message or the message to format.
      * @param args
-     *        Arguments to use in formatting of the result.
+     *            Arguments to use in formatting of the result.
      * @return The formatted externalized string, or key if none was found.
      */
     public static String explain(String messageKey, Object... args) {
@@ -104,9 +106,9 @@ public class Locale {
      * optional additional arguments as input values.
      * 
      * @param messageKey
-     *        The key of the message or the message to format.
+     *            The key of the message or the message to format.
      * @param args
-     *        Arguments to use in formatting of the result.
+     *            Arguments to use in formatting of the result.
      * @return The formatted externalized string, or key if none was found.
      */
     private String _explain(String messageKey, Object... args) {

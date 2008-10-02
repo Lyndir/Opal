@@ -22,6 +22,7 @@ import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
 /**
  * <i>{@link Schedule} - [in short] (TODO).</i><br>
  * <br>
@@ -40,15 +41,16 @@ public abstract class Schedule implements Runnable, Serializable {
     private transient boolean   isScheduled;
     private transient TimerTask scheduleTask;
 
+
     /**
      * Update this schedule's timings.
      * 
      * @param time
-     *        The time at which this scheduled event must take place.
+     *            The time at which this scheduled event must take place.
      * @param steps
-     *        The amount of steps specified by the step field that apply.
+     *            The amount of steps specified by the step field that apply.
      * @param step
-     *        An enumeration of the relevant {@link Calendar} fields in the given time specification.
+     *            An enumeration of the relevant {@link Calendar} fields in the given time specification.
      */
     public void setSchedule(long time, int steps, int step) {
 

@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 
 import com.lyndir.lhunath.lib.system.Utils;
 
+
 /**
  * TODO: {@link HoverPanel}<br>
  * 
@@ -41,11 +42,12 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
     private static boolean     alternateRow;
     private Color              background;
 
+
     /**
      * Create a new AddonPanel instance.
      * 
      * @param layout
-     *        The layout to use for this panel.
+     *            The layout to use for this panel.
      */
     public HoverPanel(LayoutManager layout) {
 

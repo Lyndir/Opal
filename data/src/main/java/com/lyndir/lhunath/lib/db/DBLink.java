@@ -18,6 +18,7 @@ package com.lyndir.lhunath.lib.db;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * <i>DBLink - [in short] (TODO).</i><br>
  * <br>
@@ -32,7 +33,7 @@ public interface DBLink {
      * Execute a query on the database that returns table data that matched the query requirements.
      * 
      * @param query
-     *        The query to execute on the database.
+     *            The query to execute on the database.
      * @return The resulting table data.
      */
     public List<Map<String, Object>> selectQuery(DBQuery query);
@@ -41,7 +42,7 @@ public interface DBLink {
      * Execute a query on the database that modifies table data.
      * 
      * @param query
-     *        The query to execute on the database.
+     *            The query to execute on the database.
      * @return The value of the first primary ID of the row in the table that was modified.
      */
     public Integer modifyQuery(DBQuery query);

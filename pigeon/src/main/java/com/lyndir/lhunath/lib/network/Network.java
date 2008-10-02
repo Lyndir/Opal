@@ -38,6 +38,7 @@ import java.util.Map;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
+
 /**
  * Non-blocking, single threaded, SSL enabled network module.
  * 
@@ -52,6 +53,7 @@ public class Network implements Runnable {
     protected List<NetworkStateListener>    stateListeners;
     protected StringBuffer                  msg;
     protected Map<Socket, List<ByteBuffer>> writeRequest;
+
 
     /**
      * Create a new ServerNet instance.
@@ -156,7 +158,7 @@ public class Network implements Runnable {
      * Finish a connection initiated by {@link #connect(InetSocketAddress)}.
      * 
      * @param clientSock
-     *        The socket on which the connection happening.
+     *            The socket on which the connection happening.
      * @throws IOException
      */
     private void connect(Socket clientSock) throws IOException {
@@ -195,7 +197,7 @@ public class Network implements Runnable {
      * Bind a socket on the localhost on a specified port and listen for connections in this network object.
      * 
      * @param port
-     *        The local port to bind on.
+     *            The local port to bind on.
      * @return The socket that will be listening for connections. object controls the communication between the network
      *         layer and the application logic. It is responsible for sending all data sent to it from the application
      *         in correct form over the network; and delivering all neceserry information from the network; filtered and
@@ -223,7 +225,7 @@ public class Network implements Runnable {
      * Make a connection to destination using this network object to handle it's events.
      * 
      * @param destination
-     *        The destination that should be connected to.
+     *            The destination that should be connected to.
      * @return The socket on which the connection will run.
      */
     public Socket connect(InetSocketAddress destination) {
@@ -248,7 +250,7 @@ public class Network implements Runnable {
      * Accept a new connection.
      * 
      * @param key
-     *        The key of the connection that can be accepted from.
+     *            The key of the connection that can be accepted from.
      * @throws IOException
      * @throws ClosedChannelException
      */
@@ -272,9 +274,9 @@ public class Network implements Runnable {
      * will be added.
      * 
      * @param request
-     *        The message to send wrapped in a bytebuffer. Use 'null' to request this connection be terminated.
+     *            The message to send wrapped in a bytebuffer. Use 'null' to request this connection be terminated.
      * @param destination
-     *        The channel over which to send the message.
+     *            The channel over which to send the message.
      */
     public void queue(ByteBuffer request, Socket destination) {
 
@@ -295,11 +297,11 @@ public class Network implements Runnable {
      * Stuff can be written to the socket.
      * 
      * @param socket
-     *        The socket to write data to.
+     *            The socket to write data to.
      * @return true: The queue has been emptied.<br>
      *         false: There's data left in the queue that couldn't be written yet.
      * @throws IOException
-     *         Couldn't write to network.
+     *             Couldn't write to network.
      */
     private boolean write(Socket socket) throws IOException {
 
@@ -317,7 +319,7 @@ public class Network implements Runnable {
      * Retrieve the active operations for a given channel, or the operations pending to be applied for that channel.
      * 
      * @param channel
-     *        The channel whose operations are requested.
+     *            The channel whose operations are requested.
      * @return The channel's active operations.
      */
     private int getOps(SelectableChannel channel) {
@@ -336,11 +338,11 @@ public class Network implements Runnable {
      * Change the specified channel's operations so that the given operation set is either enabled or disabled.
      * 
      * @param channel
-     *        The channel whose operations must be modified.
+     *            The channel whose operations must be modified.
      * @param newOps
-     *        The operations that must be enabled or disabled.
+     *            The operations that must be enabled or disabled.
      * @param enable
-     *        true: enable the given operations.
+     *            true: enable the given operations.
      */
     private void setOps(SelectableChannel channel, int newOps, boolean enable) {
 
@@ -355,9 +357,9 @@ public class Network implements Runnable {
      * will be registered with it. Registration will occur as soon as the selector is available for registration.
      * 
      * @param channel
-     *        The channel whose interest ops should be modified.
+     *            The channel whose interest ops should be modified.
      * @param newOps
-     *        The ops that should be set on the channel.
+     *            The ops that should be set on the channel.
      */
     private void setOps(SelectableChannel channel, int newOps) {
 
@@ -369,9 +371,9 @@ public class Network implements Runnable {
      * Notify listeners that something has been received over the network.
      * 
      * @param message
-     *        The message that was received.
+     *            The message that was received.
      * @param destination
-     *        The socket on which the message was received.
+     *            The socket on which the message was received.
      */
     private void notifyRead(String message, Socket destination) {
 
@@ -383,9 +385,9 @@ public class Network implements Runnable {
      * Notify listeners that a new connection has been accepted.
      * 
      * @param serverSock
-     *        The socket that accepted the new connection.
+     *            The socket that accepted the new connection.
      * @param newSock
-     *        The socket over which the new connection will take place.
+     *            The socket over which the new connection will take place.
      */
     private void notifyAccept(ServerSocket serverSock, Socket newSock) {
 
@@ -408,7 +410,7 @@ public class Network implements Runnable {
      * Register an object as a message listener so that it will be notified when new messages arrive on the network.
      * 
      * @param listener
-     *        The object that wishes to be notified.
+     *            The object that wishes to be notified.
      */
     public void registerMessageListener(NetworkMessageListener listener) {
 
@@ -420,7 +422,7 @@ public class Network implements Runnable {
      * Register an object as a state listener so that it will be notified when connection states change on the network.
      * 
      * @param listener
-     *        The object that wishes to be notified.
+     *            The object that wishes to be notified.
      */
     public void registerStateListener(NetworkStateListener listener) {
 
@@ -432,9 +434,9 @@ public class Network implements Runnable {
      * Process network data after it's been read in.
      * 
      * @param buf
-     *        A bytebuffer with data that has just been read in.
+     *            A bytebuffer with data that has just been read in.
      * @param socket
-     *        The socket that was used to obtain the data.
+     *            The socket that was used to obtain the data.
      */
     private void process(ByteBuffer buf, Socket socket) {
 
@@ -466,7 +468,7 @@ public class Network implements Runnable {
      * Write out as much data as possible that was queued for a certain socket.
      * 
      * @param destination
-     *        The socket to which the remaining data should be written.
+     *            The socket to which the remaining data should be written.
      * @return true: The queue has been emptied.<br>
      *         false: There's data left in the queue that couldn't be written yet.
      * @throws IOException
@@ -481,14 +483,13 @@ public class Network implements Runnable {
         while (i.hasNext()) {
             ByteBuffer buf = i.next();
 
-            /*
-             * {TODO SSL} SSLLayer ssl = SSLLayer.getLayer(destination); if(ssl != null) { bytes =
-             * ssl.writeQueue( buf );
-             * 
-             * if (bytes < 0) return true; }
-             * 
-             * else {
-             */
+            // {TODO SSL}
+            // SSLLayer ssl = SSLLayer.getLayer(destination);
+            // if(ssl != null) {
+            // bytes = ssl.writeQueue( buf );
+            // if (bytes < 0)
+            // return true;
+            // } else {
             // Not an SSL managed socket.
             if (buf == null) {
                 destination.close();

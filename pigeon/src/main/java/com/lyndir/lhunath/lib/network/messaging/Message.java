@@ -21,6 +21,7 @@ import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
 
+
 /**
  * 
  */
@@ -29,11 +30,12 @@ public abstract class Message {
     protected Element root;
     private Document  document;
 
+
     /**
      * Parse an XML document into a {@link Message} object.
      * 
      * @param xml
-     *        A string containing the XML document to be parsed.
+     *            A string containing the XML document to be parsed.
      * @return The resulting {@link Message} object.
      */
     public static Message parse(String xml) {

@@ -56,7 +56,7 @@ import com.thoughtworks.xstream.core.BaseException;
  * 
  * @author lhunath
  * @param <T>
- *        The type of this entry's value.
+ *            The type of this entry's value.
  */
 public class BaseConfig<T extends Serializable> implements Serializable {
 
@@ -149,9 +149,9 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * Create a new {@link BaseConfig} that defaults to being unset.
      * 
      * @param type
-     *        The type of value for this {@link BaseConfig}.
+     *            The type of value for this {@link BaseConfig}.
      * @param <T>
-     *        See type.
+     *            See type.
      * @return The {@link BaseConfig} object for this entry.
      */
     public static <T extends Serializable> BaseConfig<T> create(@SuppressWarnings("unused") Class<T> type) {
@@ -163,9 +163,9 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * Create a new {@link BaseConfig} with the given default value.
      * 
      * @param defaultValue
-     *        The value that will be used if no other value is defined.
+     *            The value that will be used if no other value is defined.
      * @param <T>
-     *        The type of value for this {@link BaseConfig}.
+     *            The type of value for this {@link BaseConfig}.
      * @return The {@link BaseConfig} object for this entry.
      */
     public static <T extends Serializable> BaseConfig<T> create(T defaultValue) {
@@ -177,7 +177,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * Create a new {@link BaseConfig} with the given default value that will be parsed into a URL.
      * 
      * @param defaultValue
-     *        The value that will be used if no other value is defined.
+     *            The value that will be used if no other value is defined.
      * @return The {@link BaseConfig} object for this entry.
      */
     public static BaseConfig<URL> createUrl(String defaultValue) {
@@ -198,7 +198,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * Create a new {@link BaseConfig} that defaults to being unset.
      * 
      * @param <T>
-     *        The type of value for this {@link BaseConfig}.
+     *            The type of value for this {@link BaseConfig}.
      * @return The {@link BaseConfig} object for this entry.
      */
     public static <T extends Serializable> BaseConfig<T> empty() {
@@ -213,7 +213,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * <b>YOU MUST CALL THIS FUNCTION IN A STATIC BLOCK WHENEVER YOU SUBCLASS THIS CLASS!</b>
      * 
      * @param configClass
-     *        The class that is being initialized. This is the Class object of the {@link BaseConfig} subclass.
+     *            The class that is being initialized. This is the Class object of the {@link BaseConfig} subclass.
      */
     @SuppressWarnings("unchecked")
     public static void initClass(Class<? extends BaseConfig> configClass) {
@@ -226,7 +226,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * Change the location of the config file and reload the config from the new location.
      * 
      * @param config
-     *        The new config file.
+     *            The new config file.
      */
     public static void setConfig(File config) {
 
@@ -239,7 +239,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * list so that they will be serialized.
      * 
      * @param configClass
-     *        The name of the class whose static {@link BaseConfig} fields should be flushed into the settings list.
+     *            The name of the class whose static {@link BaseConfig} fields should be flushed into the settings list.
      */
     @SuppressWarnings("unchecked")
     private static void flushConfig(Class<? extends BaseConfig> configClass) {
@@ -382,7 +382,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * Add a {@link Runnable} to execute as we are shutting down.
      * 
      * @param hook
-     *        The hook to execute during shutdown.
+     *            The hook to execute during shutdown.
      */
     public static void addShutdownHook(Runnable hook) {
 
@@ -401,7 +401,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * Create a new {@link BaseConfig} instance.
      * 
      * @param defaultValue
-     *        The default value for this entry.
+     *            The default value for this entry.
      */
     protected BaseConfig(T defaultValue) {
 
@@ -482,10 +482,10 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * Change the configured value for this setting.
      * 
      * @param newValue
-     *        The setting's new value.
+     *            The setting's new value.
      * @return <code>true</code> in case the original value was not the same as the new value.
      * @throws ClassCastException
-     *         If the object is not null and is not assignable to the setting's type.
+     *             If the object is not null and is not assignable to the setting's type.
      */
     public boolean set(T newValue) throws ClassCastException {
 
@@ -508,7 +508,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * You should use this if you need the object in the config file to be a reference to the new value.
      * 
      * @param newValue
-     *        The setting's new value.
+     *            The setting's new value.
      * @return true if the value was changed.
      */
     public boolean force(T newValue) {
@@ -521,7 +521,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * Register an event handler that will be called when this value changes.
      * 
      * @param listener
-     *        The {@link ConfigChangedListener} to register.
+     *            The {@link ConfigChangedListener} to register.
      */
     public void register(ConfigChangedListener<T> listener) {
 

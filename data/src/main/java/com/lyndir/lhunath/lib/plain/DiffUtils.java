@@ -40,9 +40,9 @@ public class DiffUtils {
      * Get the contextual difference between the data from two streams.
      * 
      * @param from
-     *        Original stream
+     *            Original stream
      * @param to
-     *        Modified stream
+     *            Modified stream
      * @return The diff string.
      * @throws FileNotFoundException
      * @throws IOException
@@ -57,9 +57,9 @@ public class DiffUtils {
      * Get the contextual difference between the data from two streams.
      * 
      * @param from
-     *        Original stream
+     *            Original stream
      * @param to
-     *        Modified stream
+     *            Modified stream
      * @return The diff string.
      * @throws FileNotFoundException
      * @throws IOException
@@ -76,9 +76,9 @@ public class DiffUtils {
      * Get the contextual difference between the data from two strings.
      * 
      * @param from
-     *        Original stream
+     *            Original stream
      * @param to
-     *        Modified stream
+     *            Modified stream
      * @return The diff string.
      * @throws FileNotFoundException
      * @throws IOException

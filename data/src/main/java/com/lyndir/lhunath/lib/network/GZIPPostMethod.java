@@ -24,6 +24,7 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpState;
 import org.apache.commons.httpclient.methods.PostMethod;
 
+
 /**
  * <i>GZIPPostMethod - A extended post method for Apache Commons HttpClient that supports GZip compression.</i><br>
  * <br>
@@ -37,6 +38,7 @@ public class GZIPPostMethod extends PostMethod {
 
     private boolean useGZip;
 
+
     /** Creates a new instance of GZIPAwarePostMethod */
     public GZIPPostMethod() {
 
@@ -47,7 +49,7 @@ public class GZIPPostMethod extends PostMethod {
      * Constructor specifying a URI.
      * 
      * @param uri
-     *        either an absolute or relative URI
+     *            either an absolute or relative URI
      */
     public GZIPPostMethod(String uri) {
 
@@ -68,7 +70,7 @@ public class GZIPPostMethod extends PostMethod {
      * Set the useGZip of this GZIPPostMethod.
      * 
      * @param enabled
-     *        Guess.
+     *            Guess.
      */
     public void useGZip(boolean enabled) {
 

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+
 /**
  * TODO: WhereStatement<br>
  * 
@@ -27,6 +28,7 @@ import java.util.List;
 public class DBWhere {
 
     private LinkedList<DBWhereNode> nodes;
+
 
     /**
      * Create a new WhereStatement instance.
@@ -41,8 +43,8 @@ public class DBWhere {
      * true.
      * 
      * @param where
-     *        You must pass a sequence of String and Object objects. These represent the column name to check against,
-     *        and the value to check that column for.
+     *            You must pass a sequence of String and Object objects. These represent the column name to check
+     *            against, and the value to check that column for.
      */
     public DBWhere(Object... where) {
 
@@ -77,11 +79,11 @@ public class DBWhere {
      * The key may also be a {@link DBTable}. In this case, its primary ID is used instead.
      * 
      * @param <T>
-     *        Same as type.
+     *            Same as type.
      * @param type
-     *        The type of database object to generate using the database data.
+     *            The type of database object to generate using the database data.
      * @param key
-     *        The value of the primary key column.
+     *            The value of the primary key column.
      * @return Guess.
      */
     public static <T extends DBTable> DBWhere matchKey(Class<T> type, Object key) {
@@ -99,9 +101,9 @@ public class DBWhere {
      * The values may also be {@link DBTable}s. In this case, their primary ID is used instead.
      * 
      * @param column
-     *        The name of the column to check against the given value.
+     *            The name of the column to check against the given value.
      * @param value
-     *        The value the given column must match for this element to resolve to true.
+     *            The value the given column must match for this element to resolve to true.
      * @return A reference to this where expression.
      */
     public DBWhere and(String column, Object value) {
@@ -121,11 +123,11 @@ public class DBWhere {
      * The value may also be a {@link DBTable}. In this case, its primary ID is used instead.
      * 
      * @param <T>
-     *        Same as type.
+     *            Same as type.
      * @param type
-     *        The type of database object to generate using the database data.
+     *            The type of database object to generate using the database data.
      * @param value
-     *        The value the given column must match for this element to resolve to true.
+     *            The value the given column must match for this element to resolve to true.
      * @return A reference to this where expression.
      */
     public <T extends DBTable> DBWhere andKey(Class<T> type, Object value) {
@@ -140,9 +142,9 @@ public class DBWhere {
      * The values may also be {@link DBTable}s. In this case, their primary ID is used instead.
      * 
      * @param column
-     *        The name of the column to check against the given value.
+     *            The name of the column to check against the given value.
      * @param value
-     *        The value the given column must match for this element to resolve to true.
+     *            The value the given column must match for this element to resolve to true.
      * @return A reference to this where expression.
      */
     public DBWhere or(String column, Object value) {
@@ -162,11 +164,11 @@ public class DBWhere {
      * The value may also be a {@link DBTable}. In this case, its primary ID is used instead.
      * 
      * @param <T>
-     *        Same as type.
+     *            Same as type.
      * @param type
-     *        The type of database object to generate using the database data.
+     *            The type of database object to generate using the database data.
      * @param value
-     *        The value the given column must match for this element to resolve to true.
+     *            The value the given column must match for this element to resolve to true.
      * @return A reference to this where expression.
      */
     public <T extends DBTable> DBWhere orKey(Class<T> type, Object value) {
@@ -225,6 +227,7 @@ public class DBWhere {
         return values;
     }
 
+
     /**
      * The definition of a singular where condition.
      */
@@ -234,16 +237,17 @@ public class DBWhere {
         private String          column;
         private Object          value;
 
+
         /**
          * Create a new WhereNodes instance.
          * 
          * @param test
-         *        Either one of the test fields. See {@link DBWhere#or(String, Object)} and
-         *        {@link DBWhere#and(String, Object)}.
+         *            Either one of the test fields. See {@link DBWhere#or(String, Object)} and
+         *            {@link DBWhere#and(String, Object)}.
          * @param column
-         *        The name of the column to test.
+         *            The name of the column to test.
          * @param value
-         *        The value of the column for the test to succeed.
+         *            The value of the column for the test to succeed.
          */
         public DBWhereNode(DBWhereNodeType test, String column, Object value) {
 
@@ -304,6 +308,7 @@ public class DBWhere {
             return String.format( "%s %s = %s", test, column, value );
         }
     }
+
 
     /**
      * The type of condition for a where node.

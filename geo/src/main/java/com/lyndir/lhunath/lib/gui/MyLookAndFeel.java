@@ -63,9 +63,9 @@ public class MyLookAndFeel implements Serializable {
      * Create a new {@link MyLookAndFeel} instance.
      * 
      * @param base
-     *        The shade upon which to base this theme's colors.
+     *            The shade upon which to base this theme's colors.
      * @param themeType
-     *        The type of theme to use.
+     *            The type of theme to use.
      */
     public MyLookAndFeel(Color base, MyThemeType themeType) {
 
@@ -91,7 +91,7 @@ public class MyLookAndFeel implements Serializable {
      * Reconfigure components that used UI defaults that change in this theme, recursively.
      * 
      * @param container
-     *        The container from which to remove this {@link DragListener}.
+     *            The container from which to remove this {@link DragListener}.
      * @return This instance.
      */
     public MyLookAndFeel reconfigure(Container container) {
@@ -114,7 +114,7 @@ public class MyLookAndFeel implements Serializable {
      * Set the base shade.
      * 
      * @param base
-     *        Guess.
+     *            Guess.
      * @return This instance.
      */
     public MyLookAndFeel setBase(Color base) {
@@ -282,7 +282,7 @@ public class MyLookAndFeel implements Serializable {
 
         /**
          * @param lnf
-         *        The {@link LookAndFeel} that colors the theme.
+         *            The {@link LookAndFeel} that colors the theme.
          * @return Create a {@link MyTheme} of this type.
          */
         public MyTheme create(MyLookAndFeel lnf) {
@@ -365,6 +365,7 @@ public class MyLookAndFeel implements Serializable {
 
         /**
          * Text color.<br>
+         * 
          * {@inheritDoc}
          */
         @Override
@@ -384,6 +385,7 @@ public class MyLookAndFeel implements Serializable {
 
         /**
          * Control foreground (Scrollbar / Progress bar).<br>
+         * 
          * {@inheritDoc}
          */
         @Override
@@ -394,6 +396,7 @@ public class MyLookAndFeel implements Serializable {
 
         /**
          * Button borders.<br>
+         * 
          * {@inheritDoc}
          */
         @Override
@@ -404,6 +407,7 @@ public class MyLookAndFeel implements Serializable {
 
         /**
          * Selected button background.<br>
+         * 
          * {@inheritDoc}
          */
         @Override
@@ -414,6 +418,7 @@ public class MyLookAndFeel implements Serializable {
 
         /**
          * Control background.<br>
+         * 
          * {@inheritDoc}
          */
         @Override

@@ -20,6 +20,7 @@ import java.net.Socket;
 
 import com.lyndir.lhunath.lib.system.Poller;
 
+
 /**
  * Poller that offers messages from a certain network.<br>
  * 
@@ -31,7 +32,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, Socket>
      * Create a new NetworkMessagePoller instance.
      * 
      * @param net
-     *        The network whose messages we should be polling.
+     *            The network whose messages we should be polling.
      */
     public NetworkStatePoller(Network net) {
 
@@ -53,6 +54,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, Socket>
 
         offer( State.CONNECTED, connection );
     }
+
 
     /**
      * A certain state that can be polled for by the NetworkStatePoller.

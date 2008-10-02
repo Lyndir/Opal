@@ -63,7 +63,7 @@ public class SystemTray extends Wrapper {
      * Add a tray icon to the system tray.
      * 
      * @param trayIcon
-     *        The wrapped TrayIcon.
+     *            The wrapped TrayIcon.
      * @throws AWTException
      */
     @SuppressWarnings("unused")
@@ -76,9 +76,9 @@ public class SystemTray extends Wrapper {
      * Add a {@link PropertyChangeListener} for the given property.
      * 
      * @param propertyName
-     *        The property to listen for.
+     *            The property to listen for.
      * @param listener
-     *        The listener to invoke.
+     *            The listener to invoke.
      */
     public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 
@@ -90,7 +90,7 @@ public class SystemTray extends Wrapper {
      * Retrieve all active listeners for the given property.
      * 
      * @param propertyName
-     *        The property that is listened for.
+     *            The property that is listened for.
      * @return The {@link PropertyChangeListener}s registered for the given property.
      */
     public synchronized PropertyChangeListener[] getPropertyChangeListeners(String propertyName) {
@@ -125,7 +125,7 @@ public class SystemTray extends Wrapper {
      * Unregister the given tray icon removing it from the system tray.
      * 
      * @param trayIcon
-     *        The tray icon to remove.
+     *            The tray icon to remove.
      */
     public void remove(TrayIcon trayIcon) {
 
@@ -136,9 +136,9 @@ public class SystemTray extends Wrapper {
      * Stop listening for the given property with the given listener.
      * 
      * @param propertyName
-     *        The property to stop listening for with the given listener.
+     *            The property to stop listening for with the given listener.
      * @param listener
-     *        The listener that should stop listening to the given property.
+     *            The listener that should stop listening to the given property.
      */
     public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 

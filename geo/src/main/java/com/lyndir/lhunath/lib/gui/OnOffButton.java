@@ -47,9 +47,9 @@ public class OnOffButton extends GButton implements ChangeListener {
      * Create a new OnOffButton instance.
      * 
      * @param onText
-     *        The text that shows on the button when it is selected.
+     *            The text that shows on the button when it is selected.
      * @param offText
-     *        The text that shows on the button when it is not selected.
+     *            The text that shows on the button when it is not selected.
      */
     public OnOffButton(String onText, String offText) {
 
@@ -60,9 +60,9 @@ public class OnOffButton extends GButton implements ChangeListener {
      * Create a new OnOffButton instance.
      * 
      * @param onIcon
-     *        The icon that shows on the button when it is selected.
+     *            The icon that shows on the button when it is selected.
      * @param offIcon
-     *        The icon that shows on the button when it is not selected.
+     *            The icon that shows on the button when it is not selected.
      */
     public OnOffButton(Icon onIcon, Icon offIcon) {
 
@@ -73,13 +73,13 @@ public class OnOffButton extends GButton implements ChangeListener {
      * Create a new OnOffButton instance.
      * 
      * @param onText
-     *        The text that shows on the button when it is selected.
+     *            The text that shows on the button when it is selected.
      * @param onIcon
-     *        The icon that shows on the button when it is selected.
+     *            The icon that shows on the button when it is selected.
      * @param offText
-     *        The text that shows on the button when it is not selected.
+     *            The text that shows on the button when it is not selected.
      * @param offIcon
-     *        The icon that shows on the button when it is not selected.
+     *            The icon that shows on the button when it is not selected.
      */
     public OnOffButton(String onText, Icon onIcon, String offText, Icon offIcon) {
 

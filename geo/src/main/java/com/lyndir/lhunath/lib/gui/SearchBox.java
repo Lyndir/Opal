@@ -45,7 +45,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      * Create a new {@link SearchBox} instance.
      * 
      * @param subject
-     *        The name of what will be searched for (appears in the gray text).
+     *            The name of what will be searched for (appears in the gray text).
      */
     public SearchBox(String subject) {
 
@@ -65,9 +65,9 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      * Create a new {@link SearchBox} instance.
      * 
      * @param subject
-     *        The name of what will be searched for (appears in the gray text).
+     *            The name of what will be searched for (appears in the gray text).
      * @param minChars
-     *        Minimum amount of characters required to activate the search.
+     *            Minimum amount of characters required to activate the search.
      */
     public SearchBox(String subject, int minChars) {
 
@@ -80,7 +80,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      * and return <code>true</code> if it did.
      * 
      * @param text
-     *        The text in the box.
+     *            The text in the box.
      * 
      * @return <code>true</code> will make the search text black, <code>false</code> will make the search text red.
      */
@@ -111,7 +111,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      * Set the minChars of this {@link SearchBox}.
      * 
      * @param minChars
-     *        Guess.
+     *            Guess.
      */
     public void setMinChars(int minChars) {
 

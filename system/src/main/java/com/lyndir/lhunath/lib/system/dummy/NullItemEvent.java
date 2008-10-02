@@ -18,6 +18,7 @@ package com.lyndir.lhunath.lib.system.dummy;
 import java.awt.ItemSelectable;
 import java.awt.event.ItemEvent;
 
+
 /**
  * <i>NullItemEvent - A dummy {@link ItemEvent} object.</i><br>
  * <br>
@@ -35,7 +36,7 @@ public class NullItemEvent extends ItemEvent {
      * Create a new NullItemEvent instance.
      * 
      * @param source
-     *        the <code>ItemSelectable</code> object that originated the event
+     *            the <code>ItemSelectable</code> object that originated the event
      */
     public NullItemEvent(ItemSelectable source) {
 
@@ -46,13 +47,13 @@ public class NullItemEvent extends ItemEvent {
      * Create a new NullItemEvent instance.
      * 
      * @param source
-     *        the <code>ItemSelectable</code> object that originated the event
+     *            the <code>ItemSelectable</code> object that originated the event
      * @param id
-     *        an integer that identifies the event type
+     *            an integer that identifies the event type
      * @param item
-     *        an object -- the item affected by the event
+     *            an object -- the item affected by the event
      * @param stateChange
-     *        an integer that indicates whether the item was selected or deselected
+     *            an integer that indicates whether the item was selected or deselected
      */
     public NullItemEvent(ItemSelectable source, int id, Object item, int stateChange) {
 

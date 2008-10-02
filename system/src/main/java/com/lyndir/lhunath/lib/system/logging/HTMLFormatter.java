@@ -21,6 +21,7 @@ import java.awt.Color;
 
 import com.lyndir.lhunath.lib.system.Utils;
 
+
 /**
  * <i>HTMLFormatter - A log formatter which wraps the output of {@link LogFormatter} in styling HTML.</i><br>
  * <br>

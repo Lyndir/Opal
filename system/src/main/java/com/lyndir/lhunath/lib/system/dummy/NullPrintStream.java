@@ -18,6 +18,7 @@ package com.lyndir.lhunath.lib.system.dummy;
 
 import java.io.PrintStream;
 
+
 /**
  * <h2>{@link NullPrintStream} - [in short] (TODO).</h2>
  * <p>

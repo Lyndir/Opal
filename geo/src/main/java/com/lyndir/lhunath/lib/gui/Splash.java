@@ -79,7 +79,7 @@ public class Splash extends JWindow {
 
     /**
      * @param icon
-     *        The icon to show in the splash screen.
+     *            The icon to show in the splash screen.
      */
     private void setIcons(Icon initial, Icon icon) {
 
@@ -137,7 +137,7 @@ public class Splash extends JWindow {
      * Fade the initial image over into the final image.
      * 
      * @param duration
-     *        The duration over which to fade.
+     *            The duration over which to fade.
      */
     public void fade(int duration) {
 
@@ -168,7 +168,7 @@ public class Splash extends JWindow {
      * Spawn a splash screen with the given splash image for five seconds.
      * 
      * @param image
-     *        The resource name of the image to load for the splash screen.
+     *            The resource name of the image to load for the splash screen.
      * @return The splash screen.
      */
     public static Splash spawn(String image) {
@@ -180,9 +180,9 @@ public class Splash extends JWindow {
      * Spawn a splash screen with the given splash image and the given duration in milliseconds.
      * 
      * @param image
-     *        The resource name of the image to load for the splash screen.
+     *            The resource name of the image to load for the splash screen.
      * @param duration
-     *        How long the splash screen should remain visible.
+     *            How long the splash screen should remain visible.
      * @return The splash screen.
      */
     public static Splash spawn(final String image, final long duration) {

@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.db;
 
 import java.util.Map;
 
+
 /**
  * <i>DBQuery - [in short] (TODO).</i><br>
  * <br>
@@ -53,6 +54,7 @@ public class DBQuery {
         REPLACE,
     }
 
+
     private Type                type;
     private String              table;
     private DBWhere             where;
@@ -60,19 +62,20 @@ public class DBQuery {
     private Map<String, Object> values;
     private String              sql;
 
+
     /**
      * Create a new DBQuery instance.
      * 
      * @param type
-     *        The type of operation this query will perform.
+     *            The type of operation this query will perform.
      * @param table
-     *        The table to query for data.
+     *            The table to query for data.
      * @param values
-     *        The new values for the row that will be added or modified in this query.
+     *            The new values for the row that will be added or modified in this query.
      * @param where
-     *        The condition that should be fulfilled for each row.
+     *            The condition that should be fulfilled for each row.
      * @param limit
-     *        The maximum amount of rows that will be processed.
+     *            The maximum amount of rows that will be processed.
      */
     public DBQuery(Type type, String table, Map<String, Object> values, DBWhere where, Integer limit) {
 
@@ -90,13 +93,13 @@ public class DBQuery {
      * Create a new DBQuery instance.
      * 
      * @param type
-     *        The type of operation this query will perform.
+     *            The type of operation this query will perform.
      * @param table
-     *        The table to query for data.
+     *            The table to query for data.
      * @param where
-     *        The condition that should be fulfilled for each row.
+     *            The condition that should be fulfilled for each row.
      * @param limit
-     *        The maximum amount of rows that will be processed.
+     *            The maximum amount of rows that will be processed.
      */
     public DBQuery(Type type, String table, DBWhere where, Integer limit) {
 

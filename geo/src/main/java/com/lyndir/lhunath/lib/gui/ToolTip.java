@@ -145,7 +145,7 @@ public class ToolTip extends JPanel {
      * Create a new {@link ToolTip} instance.
      * 
      * @param toolTip
-     *        The text to show when hovering this button.
+     *            The text to show when hovering this button.
      */
     public ToolTip(final String toolTip) {
 
@@ -156,9 +156,9 @@ public class ToolTip extends JPanel {
      * Create a new {@link ToolTip} instance.
      * 
      * @param toolTip
-     *        The text to show when hovering this button.
+     *            The text to show when hovering this button.
      * @param c
-     *        The component to use as content.
+     *            The component to use as content.
      */
     public ToolTip(String toolTip, final JComponent c) {
 
@@ -197,7 +197,7 @@ public class ToolTip extends JPanel {
      * Set whether this {@link ToolTip} has a sticky frame popping up on click.
      * 
      * @param stickable
-     *        Guess.
+     *            Guess.
      */
     public void setStickable(boolean stickable) {
 
@@ -214,7 +214,7 @@ public class ToolTip extends JPanel {
 
     /**
      * @param stickOnly
-     *        <code>true</code> if this tip should only be sticked not shown on hover.
+     *            <code>true</code> if this tip should only be sticked not shown on hover.
      */
     public void setStickOnly(boolean stickOnly) {
 
@@ -225,7 +225,7 @@ public class ToolTip extends JPanel {
      * Define the text that will show up in the tooltip. Set this to null to disable the tooltip momentarily.
      * 
      * @param toolTip
-     *        Guess.
+     *            Guess.
      */
     public void setTip(String toolTip) {
 
@@ -244,7 +244,7 @@ public class ToolTip extends JPanel {
      * Make the given object listen to sticky state changes of this tooltip.
      * 
      * @param listener
-     *        The object that will listen to the state changes.
+     *            The object that will listen to the state changes.
      */
     public void addStickyListener(ToolTipStickyListener listener) {
 
@@ -265,7 +265,7 @@ public class ToolTip extends JPanel {
      * Set the component used to show the tooltip on hover.
      * 
      * @param content
-     *        Guess.
+     *            Guess.
      */
     public void setContent(final JComponent content) {
 
@@ -281,7 +281,7 @@ public class ToolTip extends JPanel {
      * Recursively add the main mouse listener to the given component and its children.
      * 
      * @param c
-     *        The component to which the main mouse listener needs to be added.
+     *            The component to which the main mouse listener needs to be added.
      */
     private void listen(Component c) {
 
@@ -297,7 +297,7 @@ public class ToolTip extends JPanel {
      * Recursively remove the main mouse listener from the given component and its children.
      * 
      * @param c
-     *        The component from which the main mouse listeners need to be removed.
+     *            The component from which the main mouse listeners need to be removed.
      */
     private void unlisten(Component c) {
 
@@ -404,6 +404,7 @@ public class ToolTip extends JPanel {
     }
 
 
+    @SuppressWarnings("unused")
     class TipButtonListener extends MouseAdapter implements MouseMotionListener {
 
         private static final long TIP_SHOW_DELAY = 500;
@@ -521,7 +522,6 @@ public class ToolTip extends JPanel {
         /**
          * {@inheritDoc}
          */
-        @Override
         public void mouseExited(MouseEvent e) {
 
             if (activeTip != ToolTip.this)
@@ -550,8 +550,9 @@ public class ToolTip extends JPanel {
         }
 
         /**
-         * @{inheritDoc}
+         * {@inheritDoc}
          */
+        @Override
         public void mouseDragged(MouseEvent e) {
 
         /* Nothing. */
@@ -568,9 +569,9 @@ public class ToolTip extends JPanel {
          * Notifies the listener that this tooltip's sticky state has changed.
          * 
          * @param toolTip
-         *        The tooltip whose sticky state changed.
+         *            The tooltip whose sticky state changed.
          * @param sticky
-         *        true if the tooltip has been made sticky.
+         *            true if the tooltip has been made sticky.
          */
         public void stickyState(ToolTip toolTip, boolean sticky);
     }

@@ -19,6 +19,7 @@ import java.io.Serializable;
 
 import com.lyndir.lhunath.lib.system.Utils;
 
+
 /**
  * <i>{@link Version} - A class that represents version numbers in a comparable structure.</i><br>
  * <br>
@@ -34,11 +35,12 @@ public class Version implements Comparable<Version>, Serializable {
     private String   version;
     private String[] tags;
 
+
     /**
      * Create a new {@link Version} instance.
      * 
      * @param version
-     *        The string version tag.
+     *            The string version tag.
      */
     public Version(Number version) {
 
@@ -49,7 +51,7 @@ public class Version implements Comparable<Version>, Serializable {
      * Create a new {@link Version} instance.
      * 
      * @param version
-     *        The string version tag.
+     *            The string version tag.
      */
     public Version(String version) {
 
@@ -60,7 +62,7 @@ public class Version implements Comparable<Version>, Serializable {
      * Change the version represented by this {@link Version} object.
      * 
      * @param version
-     *        The string representation of the version to set this object to.
+     *            The string representation of the version to set this object to.
      */
     public void set(String version) {
 
@@ -120,7 +122,7 @@ public class Version implements Comparable<Version>, Serializable {
      * Check whether this version is newer than the given one.
      * 
      * @param v
-     *        The possibly older version.
+     *            The possibly older version.
      * @return Guess.
      */
     public boolean newerThan(Version v) {
@@ -132,7 +134,7 @@ public class Version implements Comparable<Version>, Serializable {
      * Check whether this version is older than the given one.
      * 
      * @param v
-     *        The possibly newer version.
+     *            The possibly newer version.
      * @return Guess.
      */
     public boolean olderThan(Version v) {

@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.network.commands;
 
 import com.lyndir.lhunath.lib.network.messaging.Message;
 
+
 /**
  * 
  */
@@ -25,13 +26,14 @@ public class Location extends Message {
     private Integer col;
     private Integer row;
 
+
     /**
      * Create a new Location instance.
      * 
      * @param col
-     *        The column in the world of this location.
+     *            The column in the world of this location.
      * @param row
-     *        The row in the world of this location.
+     *            The row in the world of this location.
      */
     public Location(int col, int row) {
 

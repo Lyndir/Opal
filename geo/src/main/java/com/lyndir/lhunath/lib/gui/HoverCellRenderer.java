@@ -29,6 +29,7 @@ import javax.swing.JList;
 
 import com.lyndir.lhunath.lib.system.Utils;
 
+
 /**
  * <i>{@link HoverCellRenderer} - [in short] (TODO).</i><br>
  * <br>
@@ -43,11 +44,12 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
     private int        hoveredIndex = -1;
     private JList      myList;
 
+
     /**
      * Create a new {@link HoverCellRenderer} instance.
      * 
      * @param list
-     *        The list this renderer works for.
+     *            The list this renderer works for.
      */
     public HoverCellRenderer(JList list) {
 
@@ -95,7 +97,8 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
     /**
      * Generate a {@link Component} that represents the given object when painted.<br>
      * <br>
-     * <b>Override this method instead of {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}!</b>
+     * <b>Override this method instead of {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
+     * !</b>
      * 
      * @return The {@link Component} that will be painted to represent the given data.
      */

@@ -23,11 +23,11 @@ import java.io.Serializable;
  * <sub>[in short] (TODO).</sub></h2>
  * 
  * @param <T>
- *        The type of config entries.
+ *            The type of config entries.
  * 
- * <p>
- * <i>Mar 26, 2008</i>
- * </p>
+ *            <p>
+ *            <i>Mar 26, 2008</i>
+ *            </p>
  * 
  * @author mbillemo
  */
@@ -37,11 +37,11 @@ public interface ConfigChangedListener<T extends Serializable> {
      * A configuration entry has been modified.
      * 
      * @param configEntry
-     *        The config entry that triggered this listener.
+     *            The config entry that triggered this listener.
      * @param oldValue
-     *        The old value of the triggered entry.
+     *            The old value of the triggered entry.
      * @param newValue
-     *        The new value of the triggered entry.
+     *            The new value of the triggered entry.
      */
     public void configValueChanged(BaseConfig<T> configEntry, T oldValue, T newValue);
 }

@@ -223,7 +223,7 @@ public class Utils {
      * Visualize the state of the current key.
      * 
      * @param key
-     *  The key whose state must be shown.
+     *            The key whose state must be shown.
      */
     public static void showKeyState(SelectionKey key) {
 
@@ -280,11 +280,11 @@ public class Utils {
      * graphics.
      * 
      * @param graphics
-     *  The graphics configuration the string would be drawn on.
+     *            The graphics configuration the string would be drawn on.
      * @param font
-     *  The font to use for rendering the string.
+     *            The font to use for rendering the string.
      * @param string
-     *  The string to measure.
+     *            The string to measure.
      * @return Guess.
      */
     public static double fontWidth(Graphics2D graphics, Font font, String string) {
@@ -297,11 +297,11 @@ public class Utils {
      * graphics.
      * 
      * @param graphics
-     *  The graphics configuration the string would be drawn on.
+     *            The graphics configuration the string would be drawn on.
      * @param font
-     *  The font to use for rendering the string.
+     *            The font to use for rendering the string.
      * @param string
-     *  The string to measure.
+     *            The string to measure.
      * @return Guess.
      */
     public static double fontHeight(Graphics2D graphics, Font font, String string) {
@@ -313,11 +313,11 @@ public class Utils {
      * Align the given point on the given grid.
      * 
      * @param point
-     *  The point that needs to be aligned.
+     *            The point that needs to be aligned.
      * @param gridX
-     *  The length of the grid cells.
+     *            The length of the grid cells.
      * @param gridY
-     *  The height of the grid cells.
+     *            The height of the grid cells.
      * @return A new point as close to the given as possible, nicely aligned on the given grid.
      */
     public static Point2D gridAlign(Point2D point, double gridX, double gridY) {
@@ -331,7 +331,7 @@ public class Utils {
      * <code>null</code> rather than throw an exception if the result is not a valid {@link Double}.
      * 
      * @param object
-     *  The object that may represent a double.
+     *            The object that may represent a double.
      * @return The resulting double.
      */
     public static Double parseDouble(Object object) {
@@ -354,7 +354,7 @@ public class Utils {
      * <code>null</code> rather than throw an exception if the result is not a valid {@link Integer}.
      * 
      * @param object
-     *  The object that may represent an integer.
+     *            The object that may represent an integer.
      * @return The resulting integer.
      */
     public static Integer parseInt(Object object) {
@@ -377,7 +377,7 @@ public class Utils {
      * passed, don't return a string "null", but return <code>null</code> explicitly.
      * 
      * @param object
-     *  The object to convert into a string.
+     *            The object to convert into a string.
      * @return The string representation of the object.
      */
     public static String toString(Object object) {
@@ -395,7 +395,7 @@ public class Utils {
      * Change the default font for all components.
      * 
      * @param font
-     *  The new default font.
+     *            The new default font.
      */
     public static void setUIFont(Font font) {
 
@@ -421,7 +421,7 @@ public class Utils {
      * Load an icon for the given resource file.
      * 
      * @param resource
-     *  URI of the resource.
+     *            URI of the resource.
      * @return The icon.
      */
     public static ImageIcon getIcon(String resource) {
@@ -437,7 +437,7 @@ public class Utils {
      * Calculate the MD5 hash for the given file.
      * 
      * @param file
-     *  The file to calculate the sum for.
+     *            The file to calculate the sum for.
      * @return The hash.
      */
     public static String getMD5(File file) {
@@ -449,9 +449,9 @@ public class Utils {
      * Calculate a digest hash for the given file.
      * 
      * @param file
-     *  The file to calculate the sum for.
+     *            The file to calculate the sum for.
      * @param digestType
-     *  The digest to calculate.
+     *            The digest to calculate.
      * @return The hash.
      */
     public static String getDigest(File file, Digest digestType) {
@@ -468,7 +468,7 @@ public class Utils {
      * Calculate a digest hash for the given file.
      * 
      * @param data
-     *  The data to calculate the sum for.
+     *            The data to calculate the sum for.
      * @return The hash.
      */
     public static String getMD5(String data) {
@@ -480,9 +480,9 @@ public class Utils {
      * Calculate a digest hash for the given file.
      * 
      * @param data
-     *  The data to calculate the sum for.
+     *            The data to calculate the sum for.
      * @param digestType
-     *  The digest to calculate.
+     *            The digest to calculate.
      * @return The hash.
      */
     public static String getDigest(String data, Digest digestType) {
@@ -494,9 +494,9 @@ public class Utils {
      * Calculate a digest hash for the given file.
      * 
      * @param in
-     *  The stream to read the data from needed to calculate the sum.
+     *            The stream to read the data from needed to calculate the sum.
      * @param digestType
-     *  The digest to calculate.
+     *            The digest to calculate.
      * @return The hash.
      */
     public static String getDigest(InputStream in, Digest digestType) {
@@ -590,14 +590,14 @@ public class Utils {
 
         /**
          * Try to guess which type of hash the given digest is. This works fairly flawlessly for every supported hash
-         * except for {@link Digest#MD2}; since its hash string is not exclusively different from that of {@link
-         * Digest#MD5}. {@link Digest#MD5} will be the result of this function in this case.
+         * except for {@link Digest#MD2}; since its hash string is not exclusively different from that of
+         * {@link Digest#MD5}. {@link Digest#MD5} will be the result of this function in this case.
          * 
          * @param digest
-         *  The hexadecimal-formatted hash string to estimate the type of.
+         *            The hexadecimal-formatted hash string to estimate the type of.
          * @return The guessed digest type.
          * @throws IllegalArgumentException
-         *  If the digest could not be guessed.
+         *             If the digest could not be guessed.
          */
         public static Digest guessType(String digest) throws IllegalArgumentException {
 
@@ -625,8 +625,8 @@ public class Utils {
      * Get a {@link File} object for a resource.
      * 
      * @param resource
-     *  The filename of the resource. This should be an absolute path and is relative toward the root of the application
-     *  code. If a relative resource is given, it is made absolute by prefixing it with a /.
+     *            The filename of the resource. This should be an absolute path and is relative toward the root of the
+     *            application code. If a relative resource is given, it is made absolute by prefixing it with a /.
      * @return Guess.
      */
     public static URL resolve(String resource) {
@@ -641,8 +641,8 @@ public class Utils {
      * Get a {@link File} object for a resource.
      * 
      * @param resource
-     *  The filename of the resource. This should be an absolute path and is relative toward the root of the application
-     *  code. If a relative resource is given, it is made absolute by prefixing it with a /.
+     *            The filename of the resource. This should be an absolute path and is relative toward the root of the
+     *            application code. If a relative resource is given, it is made absolute by prefixing it with a /.
      * @return Guess.
      */
     public static File res(String resource) {
@@ -658,7 +658,7 @@ public class Utils {
      * Get a {@link File} object for a resource.
      * 
      * @param url
-     *  The url of the resource.
+     *            The url of the resource.
      * @return Guess.
      */
     public static File res(URL url) {
@@ -691,7 +691,7 @@ public class Utils {
      * Check whether the given string is in a valid URL format.
      * 
      * @param url
-     *  The string that could represent a URL.
+     *            The string that could represent a URL.
      * @return Guess.
      */
     public static boolean isUrl(String url) {
@@ -708,7 +708,7 @@ public class Utils {
      * Convenience method of building a URL without the annoying exception thing.
      * 
      * @param url
-     *  The URL string.
+     *            The URL string.
      * @return The URL string in a URL object.
      */
     public static URL url(String url) {
@@ -726,7 +726,7 @@ public class Utils {
      * close both streams before it returns. It uses the default buffer size.
      * 
      * @param stream
-     *  The stream to get the data from.
+     *            The stream to get the data from.
      * @return The stream's data as a string decoded with the default character set.
      * @throws IOException
      * @see BaseConfig#BUFFER_SIZE
@@ -741,11 +741,11 @@ public class Utils {
      * close both streams before it returns.
      * 
      * @param stream
-     *  The stream to get the data from.
+     *            The stream to get the data from.
      * @param bufferSize
-     *  The size of the buffer to use for reading.
+     *            The size of the buffer to use for reading.
      * @param callback
-     *  The callback object to notify each time a chunk of data was written.
+     *            The callback object to notify each time a chunk of data was written.
      * @return The stream's data as a string decoded with the default character set.
      * @throws IOException
      */
@@ -758,13 +758,13 @@ public class Utils {
      * Read a stream in and return it as a string. This method will block until the stream is closed.
      * 
      * @param stream
-     *  The stream to get the data from.
+     *            The stream to get the data from.
      * @param bufferSize
-     *  The size of the buffer to use for reading.
+     *            The size of the buffer to use for reading.
      * @param callback
-     *  The callback object to notify each time a chunk of data was written.
+     *            The callback object to notify each time a chunk of data was written.
      * @param autoclose
-     *  Whether or not to close all streams involved automatically after completion.
+     *            Whether or not to close all streams involved automatically after completion.
      * @return The stream's data as a string decoded with the default character set.
      * @throws IOException
      */
@@ -780,11 +780,11 @@ public class Utils {
      * close the reader before it returns.
      * 
      * @param reader
-     *  The reader to get the data from.
+     *            The reader to get the data from.
      * @param bufferSize
-     *  The size of the buffer to use for reading.
+     *            The size of the buffer to use for reading.
      * @param callback
-     *  The callback object to notify each time a chunk of data was written.
+     *            The callback object to notify each time a chunk of data was written.
      * @return The stream's data as a string decoded with the default character set.
      * @throws IOException
      */
@@ -797,13 +797,13 @@ public class Utils {
      * Read a stream in and return it as a string. This method will block until the stream is closed.
      * 
      * @param reader
-     *  The reader to get the data from.
+     *            The reader to get the data from.
      * @param bufferSize
-     *  The size of the buffer to use for reading.
+     *            The size of the buffer to use for reading.
      * @param callback
-     *  The callback object to notify each time a chunk of data was written.
+     *            The callback object to notify each time a chunk of data was written.
      * @param autoclose
-     *  Whether or not to close all streams involved automatically after completion.
+     *            Whether or not to close all streams involved automatically after completion.
      * @return The stream's data as a string decoded with the default character set.
      * @throws IOException
      */
@@ -843,9 +843,9 @@ public class Utils {
      * size.
      * 
      * @param in
-     *  The stream to get the data from.
+     *            The stream to get the data from.
      * @param out
-     *  The destination of the output stream.
+     *            The destination of the output stream.
      * @throws IOException
      * @see BaseConfig#BUFFER_SIZE
      */
@@ -859,13 +859,13 @@ public class Utils {
      * the input stream is closed. This method will close all streams before it returns.
      * 
      * @param in
-     *  The stream to get the data from.
+     *            The stream to get the data from.
      * @param bufferSize
-     *  The size of the buffer to use for reading.
+     *            The size of the buffer to use for reading.
      * @param out
-     *  The destination of the output stream.
+     *            The destination of the output stream.
      * @param callback
-     *  The callback object to notify each time a chunk of data was written.
+     *            The callback object to notify each time a chunk of data was written.
      * @throws IOException
      */
     public static void pipeStream(InputStream in, int bufferSize, OutputStream out, StreamCallback callback)
@@ -879,15 +879,15 @@ public class Utils {
      * the input stream is closed.
      * 
      * @param in
-     *  The stream to get the data from.
+     *            The stream to get the data from.
      * @param bufferSize
-     *  The size of the buffer to use for reading.
+     *            The size of the buffer to use for reading.
      * @param out
-     *  The destination of the output stream.
+     *            The destination of the output stream.
      * @param callback
-     *  The callback object to notify each time a chunk of data was written.
+     *            The callback object to notify each time a chunk of data was written.
      * @param autoclose
-     *  Whether or not to close all streams involved automatically after completion.
+     *            Whether or not to close all streams involved automatically after completion.
      * @throws IOException
      */
     public static void pipeStream(InputStream in, int bufferSize, OutputStream out, StreamCallback callback,
@@ -927,7 +927,7 @@ public class Utils {
          * A chunk of data has just been written. The size of the chunk is no greater than the write buffer used.
          * 
          * @param totalBytesWritten
-         *  The total amount of bytes that have been written so far.
+         *            The total amount of bytes that have been written so far.
          */
         public void wroteChunk(double totalBytesWritten);
     }
@@ -938,7 +938,7 @@ public class Utils {
      * the application's lifecycle.
      * 
      * @param libName
-     *  The name of the library that will be loaded.
+     *            The name of the library that will be loaded.
      */
     public static void initNativeLibPath(String libName) {
 
@@ -975,7 +975,7 @@ public class Utils {
      * every word.
      * 
      * @param string
-     *  The string to reformat.
+     *            The string to reformat.
      * @return Guess.
      */
     public static String reformat(String string) {
@@ -988,9 +988,9 @@ public class Utils {
      * Check whether a component is the child of another, anywhere down the line.
      * 
      * @param child
-     *  The possible child.
+     *            The possible child.
      * @param parent
-     *  The container that possibly contains the child.
+     *            The container that possibly contains the child.
      * @return Guess.
      */
     public static boolean isChild(Component child, Container parent) {
@@ -1011,7 +1011,7 @@ public class Utils {
      * Convert a color into an HTML-type hex string (#RRGGBB). This does not take transparency into account.
      * 
      * @param color
-     *  The color to hexify.
+     *            The color to hexify.
      * @return The hex string.
      */
     public static String colorToHex(Color color) {
@@ -1023,9 +1023,9 @@ public class Utils {
      * Get the name of the field in the given owner that contains the given object.
      * 
      * @param owner
-     *  The object that contains the field.
+     *            The object that contains the field.
      * @param fieldValue
-     *  The current value of the field you want to get the name for.
+     *            The current value of the field you want to get the name for.
      * @return The name of the field.
      */
     public static String getFieldName(Reflective owner, Object fieldValue) {
@@ -1053,11 +1053,11 @@ public class Utils {
      * be returned.
      * 
      * @param pattern
-     *  The pattern to search for.
+     *            The pattern to search for.
      * @param file
-     *  The file to search in.
+     *            The file to search in.
      * @param group
-     *  The group number in the pattern to return; or 0 to return the whole matching line.
+     *            The group number in the pattern to return; or 0 to return the whole matching line.
      * @return The matching line or given group in the matching line.
      */
     public static String grep(String pattern, File file, int group) {
@@ -1074,11 +1074,11 @@ public class Utils {
      * be returned.
      * 
      * @param pattern
-     *  The pattern to search for.
+     *            The pattern to search for.
      * @param file
-     *  The file to search in.
+     *            The file to search in.
      * @param group
-     *  The group number in the pattern to return; or 0 to return the whole matching line.
+     *            The group number in the pattern to return; or 0 to return the whole matching line.
      * @return The matching line or given group in the matching line.
      */
     public static String grep(Pattern pattern, File file, int group) {
@@ -1116,9 +1116,9 @@ public class Utils {
      * Return a new color based on the given color with the given alpha.
      * 
      * @param color
-     *  The base color.
+     *            The base color.
      * @param alpha
-     *  The alpha to apply to the color (0-255).
+     *            The alpha to apply to the color (0-255).
      * @return The resulting color.
      */
     public static Color setAlpha(Color color, int alpha) {
@@ -1189,9 +1189,9 @@ public class Utils {
      * A sane way of retrieving an entry from a {@link ZipFile} based on its /-delimited pathname.
      * 
      * @param zipFile
-     *  The {@link ZipFile} to retrieve the entry for.
+     *            The {@link ZipFile} to retrieve the entry for.
      * @param zippedName
-     *  The /-delimited pathname of the entry.
+     *            The /-delimited pathname of the entry.
      * @return The {@link ZipEntry} for the pathname or <code>null</code> if none was present.
      */
     public static ZipEntry getZipEntry(ZipFile zipFile, String zippedName) {
@@ -1211,9 +1211,9 @@ public class Utils {
      * encountered that equals the given {@link Object}, the method returns <code>true</code>.
      * 
      * @param c
-     *  The collection to iterate recursively.
+     *            The collection to iterate recursively.
      * @param o
-     *  The object to look for in the collection.
+     *            The object to look for in the collection.
      * @return <code>true</code> if the object was found anywhere within the collection or any of its sub-collections.
      */
     public static boolean recurseContains(Collection<?> c, Object o) {
@@ -1231,7 +1231,7 @@ public class Utils {
      * Format suffix for the given calendar field.
      * 
      * @param field
-     *  {@link Calendar} field.
+     *            {@link Calendar} field.
      * @return The suffix in the format specification of the given field.
      */
     public static String calendarSuffix(int field) {
@@ -1243,9 +1243,9 @@ public class Utils {
      * Check whether the given array contains the given search object.
      * 
      * @param array
-     *  The array to search through.
+     *            The array to search through.
      * @param search
-     *  The object to search for in the array.
+     *            The object to search for in the array.
      * @return <code>true</code> if the search object was found in the array.
      */
     public static boolean inArray(Object[] array, Object search) {
@@ -1261,7 +1261,7 @@ public class Utils {
      * Create a debug border with a red coloured line bevel and a text label.
      * 
      * @param text
-     *  The text to put on the label.
+     *            The text to put on the label.
      * @return The label component.
      */
     public static Component createDebugLabel(String text) {
@@ -1277,7 +1277,7 @@ public class Utils {
      * java.lang.method -> j~l~method
      * 
      * @param signature
-     *  The signature that needs to be compressed.
+     *            The signature that needs to be compressed.
      * @return The compressed signature.
      */
     public static String compressSignature(String signature) {
@@ -1290,9 +1290,9 @@ public class Utils {
      * Trim all <code>trim</code> strings off of the <code>source</code> string, operating only on the left side.
      * 
      * @param source
-     *  The source object that needs to be converted to a string and trimmed.
+     *            The source object that needs to be converted to a string and trimmed.
      * @param trim
-     *  The object that needs to be converted to a string and is what will be trimmed off.
+     *            The object that needs to be converted to a string and is what will be trimmed off.
      * @return The result of the trimming.
      */
     public static String ltrim(Object source, Object trim) {
@@ -1313,9 +1313,9 @@ public class Utils {
      * Trim all <code>trim</code> strings off of the <code>source</code> string, operating only on the left side.
      * 
      * @param source
-     *  The source object that needs to be converted to a string and trimmed.
+     *            The source object that needs to be converted to a string and trimmed.
      * @param trim
-     *  The object that needs to be converted to a string and is what will be trimmed off.
+     *            The object that needs to be converted to a string and is what will be trimmed off.
      * @return The result of the trimming.
      */
     public static String rtrim(Object source, Object trim) {
@@ -1336,9 +1336,9 @@ public class Utils {
      * Trim all <code>trim</code> strings off of the <code>source</code> string, operating on both sides.
      * 
      * @param source
-     *  The source object that needs to be converted to a string and trimmed.
+     *            The source object that needs to be converted to a string and trimmed.
      * @param trim
-     *  The object that needs to be converted to a string and is what will be trimmed off.
+     *            The object that needs to be converted to a string and is what will be trimmed off.
      * @return The result of the trimming.
      */
     public static String trim(Object source, Object trim) {
@@ -1348,7 +1348,7 @@ public class Utils {
 
     /**
      * @param home
-     *  The {@link URL} that needs to be converted to a short string version.
+     *            The {@link URL} that needs to be converted to a short string version.
      * @return A concise representation of the URL showing only the root domain and final path of the path.
      */
     public static String shortUrl(URL home) {

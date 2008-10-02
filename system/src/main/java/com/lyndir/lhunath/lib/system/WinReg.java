@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
+
 /**
  * <i>WinReg - A simple interface to the windows registry.</i><br>
  * <br>
@@ -52,13 +53,13 @@ public class WinReg {
      * Query the windows registry at the given location for a response in the given type.
      * 
      * @param <T>
-     *        See type.
+     *            See type.
      * @param key
-     *        The key name to query.
+     *            The key name to query.
      * @param value
-     *        The value in the given key to query.
+     *            The value in the given key to query.
      * @param type
-     *        The type of the reply (String or Integer).
+     *            The type of the reply (String or Integer).
      * @return The reply from the windows registry parsed into the requested type.
      */
     public static <T> T query(String key, String value, Class<T> type) {

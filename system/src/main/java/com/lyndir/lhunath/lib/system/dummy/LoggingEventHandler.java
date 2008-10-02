@@ -76,9 +76,9 @@ public class LoggingEventHandler
      * Watch all non-input events that can occur on the given component.
      * 
      * @param name
-     *        The name to use in the log output for identifying this component.
+     *            The name to use in the log output for identifying this component.
      * @param c
-     *        The component to watch events on.
+     *            The component to watch events on.
      */
     public static void watchComponentEvents(String name, JComponent c) {
 
@@ -96,9 +96,9 @@ public class LoggingEventHandler
      * Watch all events that can occur on the given window.
      * 
      * @param name
-     *        The name to use in the log output for identifying this window.
+     *            The name to use in the log output for identifying this window.
      * @param w
-     *        The window to watch events on.
+     *            The window to watch events on.
      */
     public static void watchWindowEvents(String name, Window w) {
 
@@ -118,9 +118,9 @@ public class LoggingEventHandler
      * Watch all input events that can occur on the given component.
      * 
      * @param name
-     *        The name to use in the log output for identifying this component.
+     *            The name to use in the log output for identifying this component.
      * @param c
-     *        The component to watch events on.
+     *            The component to watch events on.
      */
     public static void watchInputEvents(String name, Component c) {
 
@@ -136,7 +136,7 @@ public class LoggingEventHandler
      * Create a new {@link LoggingEventHandler} instance.
      * 
      * @param name
-     *        The name to use for the components handled by this handler.
+     *            The name to use for the components handled by this handler.
      */
     public LoggingEventHandler(String name) {
 

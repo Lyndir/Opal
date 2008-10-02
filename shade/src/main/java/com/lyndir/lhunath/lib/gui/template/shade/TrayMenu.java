@@ -44,7 +44,7 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
      * Create a new {@link TrayMenu} instance.
      * 
      * @param invoker
-     *        The component that is responsible for the invocation of this menu.
+     *            The component that is responsible for the invocation of this menu.
      */
     public TrayMenu(Component invoker) {
 

@@ -56,7 +56,7 @@ public class PaintPanel extends ScrollPanel {
      * Create a new {@link PaintPanel} instance.
      * 
      * @param paint
-     *        The paint to use to fill the background of this panel with.
+     *            The paint to use to fill the background of this panel with.
      */
     public PaintPanel(Paint paint) {
 
@@ -87,7 +87,7 @@ public class PaintPanel extends ScrollPanel {
      * specified identifier.
      * 
      * @param autoColorControl
-     *        &gt; 0: Choose color automatically from L&F. Higher is brighter.
+     *            &gt; 0: Choose color automatically from L&F. Higher is brighter.
      * @return The resulting {@link PaintPanel}.
      */
     public static PaintPanel gradientPanel(int autoColorControl) {
@@ -104,9 +104,9 @@ public class PaintPanel extends ScrollPanel {
      * appropriate colors.
      * 
      * @param startPos
-     *        The start of the gradient.
+     *            The start of the gradient.
      * @param endPos
-     *        The end of the gradient.
+     *            The end of the gradient.
      * @return The resulting {@link PaintPanel}.
      */
     public static PaintPanel gradientPanel(Point2D startPos, Point2D endPos) {
@@ -123,9 +123,9 @@ public class PaintPanel extends ScrollPanel {
      * bottom-left corner.
      * 
      * @param startCol
-     *        The color to start the gradient with.
+     *            The color to start the gradient with.
      * @param endCol
-     *        The color to end the gradient with.
+     *            The color to end the gradient with.
      * @return The resulting {@link PaintPanel}.
      */
     public static PaintPanel gradientPanel(Color startCol, Color endCol) {
@@ -137,13 +137,13 @@ public class PaintPanel extends ScrollPanel {
      * Create a {@link PaintPanel} that has a gradient background paint.
      * 
      * @param startPos
-     *        The start of the gradient.
+     *            The start of the gradient.
      * @param startCol
-     *        The color to start the gradient with.
+     *            The color to start the gradient with.
      * @param endPos
-     *        The end of the gradient.
+     *            The end of the gradient.
      * @param endCol
-     *        The color to end the gradient with.
+     *            The color to end the gradient with.
      * @return The resulting {@link PaintPanel}.
      */
     public static PaintPanel gradientPanel(Point2D startPos, Color startCol, Point2D endPos, Color endCol) {
@@ -155,9 +155,9 @@ public class PaintPanel extends ScrollPanel {
      * Create a gradient paint spanning from the top-left corner to the bottom-left corner.
      * 
      * @param startCol
-     *        The color to start the gradient with.
+     *            The color to start the gradient with.
      * @param endCol
-     *        The color to end the gradient with.
+     *            The color to end the gradient with.
      * @return Guess.
      */
     public static GradientPaint gradientPaint(Color startCol, Color endCol) {
@@ -169,7 +169,7 @@ public class PaintPanel extends ScrollPanel {
      * Create a {@link PaintPanel} that has a tiled background picture.
      * 
      * @param image
-     *        The image to tile on the background.
+     *            The image to tile on the background.
      * @return The resulting {@link PaintPanel}.
      */
     public static PaintPanel tiledPanel(Image image) {
@@ -185,7 +185,7 @@ public class PaintPanel extends ScrollPanel {
      * the effect. Higher values result in brighter backgrounds.
      * 
      * @param autoColorControl
-     *        Guess.
+     *            Guess.
      * @return This instance.
      */
     public PaintPanel setAutoColorControl(int autoColorControl) {
@@ -200,7 +200,7 @@ public class PaintPanel extends ScrollPanel {
      * Set the paint of this {@link PaintPanel}.
      * 
      * @param paint
-     *        Guess.
+     *            Guess.
      */
     public void setPaint(Paint paint) {
 
@@ -212,7 +212,7 @@ public class PaintPanel extends ScrollPanel {
      * Set the paint of this {@link PaintPanel}.
      * 
      * @param image
-     *        Guess.
+     *            Guess.
      */
     public void setBackgroundImage(Image image) {
 

@@ -55,13 +55,13 @@ public class GLabel extends JLabel {
      * Create a new {@link GLabel} instance.
      * 
      * @param text
-     *        The text to render in the label.
+     *            The text to render in the label.
      * @param icon
-     *        The icon to display next to the text on the label.
+     *            The icon to display next to the text on the label.
      * @param horizontalAlignment
-     *        The alignment of the text in the label.
+     *            The alignment of the text in the label.
      * @param gradient
-     *        The gradient base color for the label.
+     *            The gradient base color for the label.
      */
     public GLabel(String text, Icon icon, int horizontalAlignment, Color gradient) {
 
@@ -73,11 +73,11 @@ public class GLabel extends JLabel {
      * Create a new {@link GLabel} instance.
      * 
      * @param text
-     *        The text to render in the label.
+     *            The text to render in the label.
      * @param horizontalAlignment
-     *        The alignment of the text in the label.
+     *            The alignment of the text in the label.
      * @param gradient
-     *        The gradient base color for the label.
+     *            The gradient base color for the label.
      */
     public GLabel(String text, int horizontalAlignment, Color gradient) {
 
@@ -89,9 +89,9 @@ public class GLabel extends JLabel {
      * Create a new {@link GLabel} instance.
      * 
      * @param text
-     *        The text to render in the label.
+     *            The text to render in the label.
      * @param gradient
-     *        The gradient base color for the label.
+     *            The gradient base color for the label.
      */
     public GLabel(String text, Color gradient) {
 
@@ -103,11 +103,11 @@ public class GLabel extends JLabel {
      * Create a new {@link GLabel} instance.
      * 
      * @param icon
-     *        The icon to display next to the text on the label.
+     *            The icon to display next to the text on the label.
      * @param horizontalAlignment
-     *        The alignment of the text in the label.
+     *            The alignment of the text in the label.
      * @param gradient
-     *        The gradient base color for the label.
+     *            The gradient base color for the label.
      */
     public GLabel(Icon icon, int horizontalAlignment, Color gradient) {
 
@@ -119,9 +119,9 @@ public class GLabel extends JLabel {
      * Create a new {@link GLabel} instance.
      * 
      * @param icon
-     *        The icon to display next to the text on the label.
+     *            The icon to display next to the text on the label.
      * @param gradient
-     *        The gradient base color for the label.
+     *            The gradient base color for the label.
      */
     public GLabel(Icon icon, Color gradient) {
 
@@ -133,7 +133,7 @@ public class GLabel extends JLabel {
      * Create a new {@link GLabel} instance.
      * 
      * @param gradient
-     *        The gradient base color for the label.
+     *            The gradient base color for the label.
      */
     public GLabel(Color gradient) {
 
@@ -151,7 +151,7 @@ public class GLabel extends JLabel {
 
     /**
      * @param padding
-     *        The padding of this {@link GLabel}.
+     *            The padding of this {@link GLabel}.
      */
     public void setPadding(int padding) {
 
@@ -161,7 +161,7 @@ public class GLabel extends JLabel {
 
     /**
      * @param base
-     *        The base color of the gradient for this {@link GLabel}'s background.
+     *            The base color of the gradient for this {@link GLabel}'s background.
      */
     private void setGradient(Color base) {
 
@@ -171,7 +171,7 @@ public class GLabel extends JLabel {
 
     /**
      * @param arc
-     *        The arc of this {@link GLabel}.
+     *            The arc of this {@link GLabel}.
      */
     public void setArc(int arc) {
 
@@ -179,7 +179,7 @@ public class GLabel extends JLabel {
     }
 
     /**
-     * @{inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -217,7 +217,7 @@ public class GLabel extends JLabel {
 
 
         /**
-         * @{inheritDoc}
+         * {@inheritDoc}
          */
         @Override
         public void mouseEntered(MouseEvent e) {
@@ -227,7 +227,7 @@ public class GLabel extends JLabel {
         }
 
         /**
-         * @{inheritDoc}
+         * {@inheritDoc}
          */
         @Override
         public void mouseExited(MouseEvent e) {
@@ -237,7 +237,7 @@ public class GLabel extends JLabel {
         }
 
         /**
-         * @{inheritDoc}
+         * {@inheritDoc}
          */
         @Override
         public void mousePressed(MouseEvent e) {
@@ -248,7 +248,7 @@ public class GLabel extends JLabel {
         }
 
         /**
-         * @{inheritDoc}
+         * {@inheritDoc}
          */
         @Override
         public void mouseReleased(MouseEvent e) {

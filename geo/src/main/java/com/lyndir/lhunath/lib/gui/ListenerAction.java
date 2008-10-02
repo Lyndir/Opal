@@ -21,6 +21,7 @@ import java.awt.event.ActionListener;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 
+
 /**
  * <i>{@link ListenerAction} - [in short] (TODO).</i><br>
  * <br>
@@ -33,11 +34,12 @@ public class ListenerAction extends AbstractAction {
 
     private ActionListener listener;
 
+
     /**
      * Create a new {@link ListenerAction} instance.
      * 
      * @param listener
-     *        The listener that will be notified of this action.
+     *            The listener that will be notified of this action.
      */
     public ListenerAction(ActionListener listener) {
 
@@ -49,9 +51,9 @@ public class ListenerAction extends AbstractAction {
      * Create a new {@link ListenerAction} instance.
      * 
      * @param name
-     *        The name of the action.
+     *            The name of the action.
      * @param listener
-     *        The listener that will be notified of this action.
+     *            The listener that will be notified of this action.
      */
     public ListenerAction(String name, ActionListener listener) {
 
@@ -63,13 +65,13 @@ public class ListenerAction extends AbstractAction {
      * Create a new {@link ListenerAction} instance.
      * 
      * @param name
-     *        The name of the action.
+     *            The name of the action.
      * @param command
-     *        The string that will identify the action that must be taken.
+     *            The string that will identify the action that must be taken.
      * @param icon
-     *        The icon of the action.
+     *            The icon of the action.
      * @param listener
-     *        The listener that will be notified of this action.
+     *            The listener that will be notified of this action.
      */
     public ListenerAction(String name, String command, Icon icon, ActionListener listener) {
 
@@ -82,7 +84,7 @@ public class ListenerAction extends AbstractAction {
      * Specify an action command string for this action.
      * 
      * @param command
-     *        The string that will identify the action that must be taken.
+     *            The string that will identify the action that must be taken.
      */
     public void setActionCommand(String command) {
 

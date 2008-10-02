@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.system.logging;
 
 import java.util.logging.Level;
 
+
 /**
  * <i>ConsoleFormatter - A log output formatter which keeps the format of {@link LogFormatter} as it is.</i><br>
  * <br>
@@ -31,7 +32,7 @@ public class ConsoleFormatter extends LogFormatter {
      * Create a new ConsoleFormatter instance.
      * 
      * @param verbosity
-     *        Whether to use verbose mode.
+     *            Whether to use verbose mode.
      */
     public ConsoleFormatter(boolean verbosity) {
 

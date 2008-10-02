@@ -23,6 +23,7 @@ import java.util.logging.LogRecord;
 
 import com.lyndir.lhunath.lib.system.Utils;
 
+
 /**
  * <i>LogFormatter - Formats log messages.</i><br>
  * <br>
@@ -45,6 +46,7 @@ public abstract class LogFormatter extends Formatter {
     protected Map<Level, String>  levelColor;
     protected boolean             verbose;
 
+
     /**
      * Create a new LogFormatter instance.
      */
@@ -59,7 +61,7 @@ public abstract class LogFormatter extends Formatter {
      * Create a new LogFormatter instance.
      * 
      * @param verbosity
-     *        Whether to use verbose mode or not (default: false).
+     *            Whether to use verbose mode or not (default: false).
      */
     public LogFormatter(boolean verbosity) {
 
@@ -98,7 +100,7 @@ public abstract class LogFormatter extends Formatter {
             if (!isIgnored( (sourceElement = element).getClassName() ))
                 break;
 
-        /* Pretty print the source:                    Line:Package.Class.Method() */
+        /* Pretty print the source: Line:Package.Class.Method() */
         String realSource = "", relevSource = "";
         if (stackTrace.length > 0 && !stackTrace[0].equals( sourceElement ))
             realSource = String.format( "(%s:%d) %s.%s()", stackTrace[0].getFileName(), stackTrace[0].getLineNumber(),
@@ -110,7 +112,7 @@ public abstract class LogFormatter extends Formatter {
         if (source.length() == 0)
             source = "[Unknown Source]";
 
-        /* Generate a detail message for the problem:  # (File:Line) Exception: Message */
+        /* Generate a detail message for the problem: # (File:Line) Exception: Message */
         String message = "";
         if (error != null)
             for (Throwable e = error; e != null; e = e.getCause())
@@ -169,7 +171,7 @@ public abstract class LogFormatter extends Formatter {
      * Verbose mode shows stack traces for errors.
      * 
      * @param verbose
-     *        Guess.
+     *            Guess.
      */
     public void setVerbose(boolean verbose) {
 

@@ -42,7 +42,7 @@ public class UpdateUi extends Thread {
      * Create a new {@link UpdateUi} instance.
      * 
      * @param ui
-     *  The user interface that will process the request.
+     *            The user interface that will process the request.
      */
     public UpdateUi(AbstractUi ui) {
 
@@ -57,7 +57,7 @@ public class UpdateUi extends Thread {
      * Add a request to the stack of requests to execute in the update thread.
      * 
      * @param uiRequest
-     *  The request to execute in the update thread.
+     *            The request to execute in the update thread.
      */
     public void request(Request uiRequest) {
 
@@ -124,9 +124,9 @@ public class UpdateUi extends Thread {
          * Create a new {@link UpdateUi.UpdateRequest} instance.
          * 
          * @param request
-         *  The request this stack element should make.
+         *            The request this stack element should make.
          * @param cause
-         *  In case an exception gets thrown during the request, this will be set as the exception's cause.
+         *            In case an exception gets thrown during the request, this will be set as the exception's cause.
          */
         public UpdateRequest(Request request, Throwable cause) {
 

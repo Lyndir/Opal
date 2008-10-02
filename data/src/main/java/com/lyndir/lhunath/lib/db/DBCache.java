@@ -18,6 +18,7 @@ package com.lyndir.lhunath.lib.db;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * TODO: StatementCache<br>
  * 
@@ -29,11 +30,12 @@ public class DBCache {
     private DBQuery                   query;
     private List<Map<String, Object>> result;
 
+
     /**
      * Create a new DBCache instance.
      * 
      * @param query
-     *        The SQL query for which these cache results apply.
+     *            The SQL query for which these cache results apply.
      */
     public DBCache(DBQuery query) {
 
@@ -55,7 +57,7 @@ public class DBCache {
      * Set the query of this cache entry.
      * 
      * @param query
-     *        Guess.
+     *            Guess.
      */
     public void setQuery(DBQuery query) {
 
@@ -84,7 +86,7 @@ public class DBCache {
      * Set the result of this cache entry.
      * 
      * @param newResult
-     *        Guess.
+     *            Guess.
      */
     public void setResult(List<Map<String, Object>> newResult) {
 

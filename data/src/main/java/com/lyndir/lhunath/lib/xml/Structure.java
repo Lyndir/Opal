@@ -15,15 +15,25 @@
  */
 package com.lyndir.lhunath.lib.xml;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
+import javax.xml.xpath.XPathExpressionException;
 
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.tidy.Tidy;
+import org.xml.sax.SAXException;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
@@ -47,8 +57,232 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  */
 public class Structure {
 
-    private static final int TAB_SIZE = 4;
+    public static final XPathUtil xmlpath   = new XPathUtil( false );
+    public static final XPathUtil xhtmlpath = new XPathUtil( true );
 
+    private static final int      TAB_SIZE  = 4;
+
+
+    private static <T> void inject(Node root, T structure) throws XPathExpressionException {
+
+        // Inject the XML data into the XInject fields.
+        for (Field field : structure.getClass().getDeclaredFields()) {
+            XInject annotation = field.getAnnotation( XInject.class );
+            if (annotation == null)
+                continue;
+
+            try {
+                Object value = null;
+                Class<?> valueType = field.getType();
+                field.setAccessible( true );
+
+                Logger.finest( "Setting (%s) '%s' to '%s' (xpath: %s)", valueType.getSimpleName(), field.getName(),
+                        xmlpath.getString( root, annotation.value() ), annotation.value() );
+
+                if (Byte.class == valueType || Byte.TYPE == valueType)
+                    value = xmlpath.getNumber( root, annotation.value() ).byteValue();
+
+                else if (Double.class == valueType || Double.TYPE == valueType)
+                    value = xmlpath.getNumber( root, annotation.value() ).doubleValue();
+
+                else if (Float.class == valueType || Float.TYPE == valueType)
+                    value = xmlpath.getNumber( root, annotation.value() ).floatValue();
+
+                else if (Integer.class == valueType || Integer.TYPE == valueType)
+                    value = xmlpath.getNumber( root, annotation.value() ).intValue();
+
+                else if (Long.class == valueType || Long.TYPE == valueType)
+                    value = xmlpath.getNumber( root, annotation.value() ).longValue();
+
+                else if (Short.class == valueType || Short.TYPE == valueType)
+                    value = xmlpath.getNumber( root, annotation.value() ).shortValue();
+
+                else if (Boolean.class == valueType || Boolean.TYPE == valueType)
+                    value = xmlpath.getBoolean( root, annotation.value() );
+
+                else
+                    value = xmlpath.getString( root, annotation.value() );
+
+                field.set( structure, value );
+            }
+
+            // In case data to the field goes wrong (shouldn't).
+            catch (IllegalArgumentException e) {
+                Logger.error( e );
+            } catch (IllegalAccessException e) {
+                Logger.error( e );
+            }
+        }
+
+        // Look for XAfterInject methods.
+        for (Method method : structure.getClass().getDeclaredMethods())
+            if (method.getAnnotation( XAfterInject.class ) != null)
+                try {
+                    method.setAccessible( true );
+                    method.invoke( structure );
+                }
+
+                catch (IllegalArgumentException e) {
+                    Logger.error( e );
+                } catch (IllegalAccessException e) {
+                    Logger.error( e );
+                } catch (InvocationTargetException e) {
+                    Logger.error( e );
+                }
+    }
+
+    /**
+     * Load XML data into an object that has the {@link FromXML} annotation on it.
+     * 
+     * @param <T>
+     * @param type
+     *            The annotated class to create an object for.
+     * 
+     * @return An object of the given type with XML data injected.
+     * 
+     * @throws IOException
+     * @throws SAXException
+     * @throws XPathExpressionException
+     */
+    public static <T> T load(Class<T> type) throws IOException, SAXException, XPathExpressionException {
+
+        // Test whether the given type actually has a FromXML annotation on it.
+        if (type.getAnnotation( FromXML.class ) == null)
+            throw new IllegalArgumentException( "Object passed must have the FromXML annotation." );
+
+        // Create an empty object of the specified type.
+        T structure = null;
+        try {
+            structure = type.newInstance();
+        } catch (InstantiationException e) {
+            Logger.error( e );
+        } catch (IllegalAccessException e) {
+            Logger.error( e );
+        }
+        if (structure == null)
+            return null;
+
+        // Set up our XML parser.
+        DocumentBuilder builder = Structure.getXMLBuilder();
+        String resourceName = type.getAnnotation( FromXML.class ).value();
+
+        // Parse in our XML data.
+        Element root = builder.parse( ClassLoader.getSystemResourceAsStream( resourceName ) ).getDocumentElement();
+
+        inject( root, structure );
+
+        return structure;
+    }
+
+    /**
+     * Load XML data into a list of objects that have the {@link FromXML} annotation on it.
+     * 
+     * @param <T>
+     * @param type
+     *            The annotated class to create a objects for.
+     * 
+     * @return A list of object of the given type with XML data injected.
+     * 
+     * @throws IOException
+     * @throws SAXException
+     * @throws XPathExpressionException
+     */
+    public static <T> List<T> loadAll(Class<T> type) throws IOException, SAXException, XPathExpressionException {
+
+        // Test whether the given type actually has a FromXML annotation on it.
+        if (type.getAnnotation( FromXML.class ) == null)
+            throw new IllegalArgumentException( "Object passed must have the FromXML annotation." );
+
+        // Set up our XML parser.
+        DocumentBuilder builder = Structure.getXMLBuilder();
+        String resourceName = type.getAnnotation( FromXML.class ).value();
+
+        // Parse in our XML data.
+        Element root = builder.parse( ClassLoader.getSystemResourceAsStream( resourceName ) ).getDocumentElement();
+
+        // Create an empty object of the specified type.
+        List<Node> children = xmlpath.getNodes( root, "/*/*" );
+        List<T> structures = new ArrayList<T>( children.size() );
+        for (Node child : children) {
+            T structure = null;
+            try {
+                structure = type.newInstance();
+            } catch (InstantiationException e) {
+                Logger.error( e );
+            } catch (IllegalAccessException e) {
+                Logger.error( e );
+            }
+            if (structure == null)
+                return null;
+
+            // If an XInjectTag is defined; set it to the name of the child tag.
+            for (Field field : structure.getClass().getDeclaredFields()) {
+                XInjectTag tag = field.getAnnotation( XInjectTag.class );
+                if (tag != null)
+                    try {
+                        Logger.finest( "Setting (%s) '%s' to tagname '%s'", field.getType().getSimpleName(),
+                                field.getName(), child.getNodeName() );
+
+                        field.setAccessible( true );
+                        field.set( structure, child.getNodeName() );
+                    }
+
+                    catch (IllegalArgumentException e) {
+                        Logger.error( e );
+                    } catch (IllegalAccessException e) {
+                        Logger.error( e );
+                    }
+            }
+
+            // Inject the child tag's data into our new structure object.
+            inject( child, structure );
+            structures.add( structure );
+        }
+
+        return structures;
+    }
+
+    /**
+     * Convert an object that has the {@link FromXML} annotation to an XML structured string.
+     * 
+     * @param structure
+     *            The object to render as XML.
+     * @return the given object as an XML-formatted string.
+     */
+    public static String toString(Object structure) {
+
+        if (structure.getClass().getAnnotation( FromXML.class ) == null)
+            throw new IllegalArgumentException( "Object passed must have the FromXML annotation." );
+
+        StringBuffer out = new StringBuffer( String.format( "<%s>\n", structure.getClass().getSimpleName() ) );
+        for (Field field : structure.getClass().getDeclaredFields()) {
+            XInject annotation = field.getAnnotation( XInject.class );
+            if (annotation == null)
+                continue;
+
+            try {
+                field.setAccessible( true );
+                out.append( indent( 1 ) ).append( '<' ).append( annotation.value() );
+                String attribute = annotation.attribute();
+                if (attribute.length() > 0)
+                    out.append( String.format( " %s=\"%s\"", attribute, field.get( structure ).toString() ) );
+
+                String content = String.valueOf( field.get( structure ) );
+                if (content == null || content.length() == 0 || attribute.length() > 0)
+                    out.append( ' ' ).append( '/' ).append( '>' ).append( '\n' );
+                else {
+                    out.append( '>' ).append( '\n' );
+                    out.append( indent( 2 ) ).append( content ).append( '\n' );
+                    out.append( indent( 1 ) ).append( String.format( "</%s>\n", annotation.value() ) );
+                }
+            }
+
+            catch (IllegalArgumentException e) {} catch (IllegalAccessException e) {}
+        }
+        out.append( String.format( "</%s>", structure.getClass().getSimpleName() ) );
+
+        return out.toString();
+    }
 
     /**
      * @return a builder that can parse HTML data.

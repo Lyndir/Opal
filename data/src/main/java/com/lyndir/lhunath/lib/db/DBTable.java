@@ -51,7 +51,7 @@ public class DBTable {
      * Create a new Database instance.
      * 
      * @param row
-     *        The data in the database object.
+     *            The data in the database object.
      */
     protected DBTable(Map<String, Object> row) {
 
@@ -64,11 +64,11 @@ public class DBTable {
      * Get the database object of the given type with the given data.
      * 
      * @param <T>
-     *        Same as type.
+     *            Same as type.
      * @param type
-     *        The type of database object to generate using the database data.
+     *            The type of database object to generate using the database data.
      * @param data
-     *        The data that should be contained in the database object.
+     *            The data that should be contained in the database object.
      * @return The database object that contains the given data.
      */
     protected static <T extends DBTable> T getInstance(Class<T> type, Map<String, Object> data) {
@@ -106,7 +106,7 @@ public class DBTable {
      * they were.
      * 
      * @param column
-     *        The name of the column to read.
+     *            The name of the column to read.
      * @return Guess.
      */
     public Object getData(String column) {
@@ -134,11 +134,11 @@ public class DBTable {
      * Retrieve a specific column of the data from this database object.
      * 
      * @param <D>
-     *        Same as type.
+     *            Same as type.
      * @param column
-     *        The name of the column to read.
+     *            The name of the column to read.
      * @param dataType
-     *        The data type of column value.
+     *            The data type of column value.
      * @return Guess.
      */
     public <D> D getData(String column, Class<D> dataType) {
@@ -223,11 +223,11 @@ public class DBTable {
      * Create a database object using on the primary key value to choose the row to instantiate.
      * 
      * @param <T>
-     *        Same as type.
+     *            Same as type.
      * @param type
-     *        The type of database object to generate using the database data.
+     *            The type of database object to generate using the database data.
      * @param id
-     *        The value for the primary key column.
+     *            The value for the primary key column.
      * @return Guess.
      */
     public static <T extends DBTable> T conjure(Class<T> type, Integer id) {
@@ -239,11 +239,11 @@ public class DBTable {
      * Create a database object. Only the first matching row will be instantiated.
      * 
      * @param <T>
-     *        Same as type.
+     *            Same as type.
      * @param type
-     *        The type of database object to generate using the database data.
+     *            The type of database object to generate using the database data.
      * @param where
-     *        The expression that should be used to select the row to instantiate.
+     *            The expression that should be used to select the row to instantiate.
      * @return Guess.
      */
     public static <T extends DBTable> T conjure(Class<T> type, DBWhere where) {
@@ -259,11 +259,11 @@ public class DBTable {
      * Create database objects.
      * 
      * @param <T>
-     *        Same as type.
+     *            Same as type.
      * @param type
-     *        The type of database object to generate using the database data.
+     *            The type of database object to generate using the database data.
      * @param where
-     *        The expression that should be used to select the rows to instantiate.
+     *            The expression that should be used to select the rows to instantiate.
      * @return Guess.
      */
     public static <T extends DBTable> List<T> conjureAll(Class<T> type, DBWhere where) {
@@ -307,9 +307,9 @@ public class DBTable {
      * Get the name of the primary key column of the table of the given type.
      * 
      * @param <T>
-     *        Same as type.
+     *            Same as type.
      * @param type
-     *        The type representing the database table.
+     *            The type representing the database table.
      * @return Guess.
      */
     public static <T extends DBTable> String getId(Class<T> type) {
@@ -326,9 +326,9 @@ public class DBTable {
      * Get the name of the table of the given type.
      * 
      * @param <T>
-     *        Same as type.
+     *            Same as type.
      * @param type
-     *        The type representing the database table.
+     *            The type representing the database table.
      * @return Guess.
      */
     public static <T extends DBTable> String getTable(Class<T> type) {
@@ -345,9 +345,9 @@ public class DBTable {
      * Remove a certain table from the SQL cache (because its cache has been invalidated).
      * 
      * @param <T>
-     *        See type.
+     *            See type.
      * @param type
-     *        The type of the entries that will be removed from the cache.
+     *            The type of the entries that will be removed from the cache.
      */
     public static <T extends DBTable> void uncacheTable(Class<T> type) {
 
@@ -374,15 +374,15 @@ public class DBTable {
      * Change a field in the given database table row instance.
      * 
      * @param <T>
-     *        See type.
+     *            See type.
      * @param type
-     *        The type that defines the table in which to add the new row.
+     *            The type that defines the table in which to add the new row.
      * @param field
-     *        The name of the field to modify in the row.
+     *            The name of the field to modify in the row.
      * @param newValue
-     *        The new value for the field in the row.
+     *            The new value for the field in the row.
      * @param where
-     *        The where condition that defines which database objects to modify.
+     *            The where condition that defines which database objects to modify.
      */
     protected static <T extends DBTable> void modify(Class<T> type, final String field, final Object newValue,
             DBWhere where) {
@@ -398,11 +398,11 @@ public class DBTable {
      * Build a new row in the given table.
      * 
      * @param <T>
-     *        See type.
+     *            See type.
      * @param type
-     *        The type that defines the table in which to add the new row.
+     *            The type that defines the table in which to add the new row.
      * @param row
-     *        The data to compose the new row of.
+     *            The data to compose the new row of.
      * @return The new row as a table instance.
      */
     protected static <T extends DBTable> T construct(Class<T> type, Map<String, Object> row) {
@@ -415,11 +415,11 @@ public class DBTable {
      * Add a field in the given database table row instance.
      * 
      * @param <T>
-     *        See type.
+     *            See type.
      * @param type
-     *        The type that will define the table the row will be added to.
+     *            The type that will define the table the row will be added to.
      * @param row
-     *        The data to compose the new row of.
+     *            The data to compose the new row of.
      * @return The value of the ID field that was auto-generated for the new row.
      */
     public static <T extends DBTable> Integer create(Class<T> type, Map<String, Object> row) {

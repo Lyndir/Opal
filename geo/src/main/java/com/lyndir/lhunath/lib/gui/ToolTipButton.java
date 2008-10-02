@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import com.lyndir.lhunath.lib.system.Utils;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
+
 /**
  * <i>{@link ToolTipButton} - An extension to the default tooltip panel that assumes a button for content.</i><br>
  * <br>
@@ -36,9 +37,9 @@ public class ToolTipButton extends ToolTip {
      * Create a new {@link ToolTipButton} instance.
      * 
      * @param toolTip
-     *        The text to show when hovering this button.
+     *            The text to show when hovering this button.
      * @param b
-     *        The button to use as content.
+     *            The button to use as content.
      */
     public ToolTipButton(String toolTip, AbstractButton b) {
 
@@ -49,7 +50,7 @@ public class ToolTipButton extends ToolTip {
      * Create a new {@link ToolTipButton} instance.
      * 
      * @param toolTip
-     *        The text to show when hovering this button.
+     *            The text to show when hovering this button.
      */
     public ToolTipButton(String toolTip) {
 
@@ -77,7 +78,7 @@ public class ToolTipButton extends ToolTip {
      * Set the button content.
      * 
      * @param button
-     *        The button to use for content.
+     *            The button to use for content.
      */
     public void setButton(AbstractButton button) {
 

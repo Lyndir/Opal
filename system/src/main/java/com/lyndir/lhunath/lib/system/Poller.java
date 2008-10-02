@@ -19,26 +19,28 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+
 /**
  * The poller acts as an interface between two threads that need to exchange events.<br>
  * 
  * @param <K>
- *        The type of key that owns the elements to poll.
+ *            The type of key that owns the elements to poll.
  * @param <E>
- *        The type of elements that will be queued in this poller.
+ *            The type of elements that will be queued in this poller.
  * @author lhunath
  */
 public class Poller<K, E> {
 
     private Map<K, Queue<E>> queues;
 
+
     /**
      * Offer a new element to be polled.
      * 
      * @param key
-     *        The key resposible for the element to add.
+     *            The key resposible for the element to add.
      * @param element
-     *        The new element to offer to the Poller's queue for the given key.
+     *            The new element to offer to the Poller's queue for the given key.
      */
     public void offer(K key, E element) {
 
@@ -53,7 +55,7 @@ public class Poller<K, E> {
      * Check whether there are any elements available for a given key.
      * 
      * @param owner
-     *        The key resposible for the requested element.
+     *            The key resposible for the requested element.
      * @return An element polled for the given key, or null when that key does not have a queue or has no elements
      *         queued.
      */

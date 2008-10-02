@@ -139,7 +139,7 @@ public class ShadeConfig<T extends Serializable> extends BaseConfig<T> {
      * Create a new Config instance.
      * 
      * @param defaultValue
-     *        The default value for this config entry in case it is <code>null</code>.
+     *            The default value for this config entry in case it is <code>null</code>.
      */
     protected ShadeConfig(T defaultValue) {
 

@@ -34,11 +34,12 @@ public class Angle {
     private float       degrees, radians, sin, cos;
     private boolean     hasDegrees, hasRadians, hasSin, hasCos;
 
+
     /**
      * Create a new Angle, specifying degrees.
      * 
      * @param degrees
-     *        The degrees value of this Angle.
+     *            The degrees value of this Angle.
      */
     public Angle(float degrees) {
 
@@ -49,9 +50,9 @@ public class Angle {
      * Create a new Angle.
      * 
      * @param angle
-     *        The angle of this Angle object.
+     *            The angle of this Angle object.
      * @param isDegrees
-     *        Whether the specified angles are in degrees (<code>true</code>), or radians (<code>false</code>).
+     *            Whether the specified angles are in degrees (<code>true</code>), or radians (<code>false</code>).
      */
     public Angle(float angle, boolean isDegrees) {
 
@@ -129,7 +130,7 @@ public class Angle {
      * Set the radians of this Angle.
      * 
      * @param radians
-     *        The radians to set this angle by.
+     *            The radians to set this angle by.
      */
     public void setRadians(float radians) {
 
@@ -146,7 +147,7 @@ public class Angle {
      * Set the degrees of this Angle.
      * 
      * @param degrees
-     *        The degrees to set this angle by.
+     *            The degrees to set this angle by.
      */
     public void setDegrees(float degrees) {
 

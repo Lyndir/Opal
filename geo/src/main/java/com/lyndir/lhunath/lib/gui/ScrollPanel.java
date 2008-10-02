@@ -29,8 +29,8 @@ import javax.swing.SwingConstants;
  * <i>ScrollPanel - A panel that will properly set its scroll unit size depending on its content.</i><br>
  * <br>
  * Since {@link JPanel}s don't like being wrapped in {@link JScrollPane}s (they scroll by 1 to 3 pixels, really
- * tedious), this attempt has been made to address the issue.<br>
- * {@link ScrollPanel} uses its first visible child component to determine the scroll unit.<br>
+ * tedious), this attempt has been made to address the issue.<br> {@link ScrollPanel} uses its first visible child component
+ * to determine the scroll unit.<br>
  * <br>
  * 
  * @author lhunath
@@ -56,9 +56,9 @@ public class ScrollPanel extends JPanel implements Scrollable {
      * The amount to scroll this panel will be calculated from the size of the first visible component of the panel.
      * 
      * @param horizontal
-     *        <code>true</code>: scroll horizontally.
+     *            <code>true</code>: scroll horizontally.
      * @param vertical
-     *        <code>true</code>: scroll vertically.
+     *            <code>true</code>: scroll vertically.
      */
     public ScrollPanel(boolean horizontal, boolean vertical) {
 
@@ -69,7 +69,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
      * Create a new {@link ScrollPanel} instance.
      * 
      * @param scrollUnit
-     *        The amount in pixels to scroll this panel on every tick of the scroll wheel.
+     *            The amount in pixels to scroll this panel on every tick of the scroll wheel.
      */
     public ScrollPanel(int scrollUnit) {
 
@@ -80,11 +80,11 @@ public class ScrollPanel extends JPanel implements Scrollable {
      * Create a new {@link ScrollPanel} instance.
      * 
      * @param scrollUnit
-     *        The amount in pixels to scroll this panel on every tick of the scroll wheel.
+     *            The amount in pixels to scroll this panel on every tick of the scroll wheel.
      * @param horizontal
-     *        <code>true</code>: track the horizontal size of the panel.
+     *            <code>true</code>: track the horizontal size of the panel.
      * @param vertical
-     *        <code>true</code>: track the vertical size of the panel.
+     *            <code>true</code>: track the vertical size of the panel.
      */
     public ScrollPanel(int scrollUnit, boolean horizontal, boolean vertical) {
 

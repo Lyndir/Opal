@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.system.logging;
 
 import java.util.logging.LogRecord;
 
+
 /**
  * <i>LogListener - A listener for log messages.</i><br>
  * <br>
@@ -31,7 +32,7 @@ public interface LogListener {
      * A log message was triggered on this listener.
      * 
      * @param record
-     *        The record that was logged through this listener.
+     *            The record that was logged through this listener.
      */
     public void logMessage(LogRecord record);
 }

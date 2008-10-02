@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.system.dummy;
 
 import java.io.OutputStream;
 
+
 /**
  * <i>NullOutputStream - An output stream that does nothing when written to (ie. >/dev/null).</i><br>
  * <br>

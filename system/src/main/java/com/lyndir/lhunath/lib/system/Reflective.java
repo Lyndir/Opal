@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.system;
 
 import java.lang.reflect.Field;
 
+
 /**
  * An interface that allows public access to an instance's private and protected fields.
  * 
@@ -33,7 +34,7 @@ public interface Reflective {
      * </pre>
      * 
      * @param field
-     *        The field that contains the object that's being requested.
+     *            The field that contains the object that's being requested.
      * @return The field's value.
      * @throws IllegalArgumentException
      * @throws IllegalAccessException

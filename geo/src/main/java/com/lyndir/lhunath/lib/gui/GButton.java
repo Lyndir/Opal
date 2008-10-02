@@ -68,7 +68,7 @@ public class GButton extends JButton {
      * Create a new {@link GButton} instance.
      * 
      * @param icon
-     *        The icon to show on the button.
+     *            The icon to show on the button.
      */
     public GButton(Icon icon) {
 
@@ -79,9 +79,9 @@ public class GButton extends JButton {
      * Create a new {@link GButton} instance.
      * 
      * @param text
-     *        The text to put on the button.
+     *            The text to put on the button.
      * @param icon
-     *        The icon to show next to the button text.
+     *            The icon to show next to the button text.
      */
     public GButton(String text, Icon icon) {
 
@@ -269,7 +269,7 @@ public class GButton extends JButton {
     }
 
     /**
-     * @{inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public void repaint(long tm, int x, int y, int width, int height) {
@@ -281,7 +281,7 @@ public class GButton extends JButton {
     }
 
     /**
-     * @{inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     protected void paintComponent(Graphics g) {

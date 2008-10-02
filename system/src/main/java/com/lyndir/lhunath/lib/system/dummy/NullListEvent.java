@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.system.dummy;
 
 import javax.swing.event.ListSelectionEvent;
 
+
 /**
  * <i>NullListEvent - A dummy {@link ListSelectionEvent} object.</i><br>
  * <br>
@@ -34,7 +35,7 @@ public class NullListEvent extends ListSelectionEvent {
      * Create a new NullListEvent instance.
      * 
      * @param source
-     *        The object upon which the list event takes place.
+     *            The object upon which the list event takes place.
      */
     public NullListEvent(Object source) {
 
@@ -45,13 +46,13 @@ public class NullListEvent extends ListSelectionEvent {
      * Create a new NullListEvent instance.
      * 
      * @param source
-     *        The object upon which the list event takes place.
+     *            The object upon which the list event takes place.
      * @param firstIndex
-     *        The first index in the range, &lt;= lastIndex
+     *            The first index in the range, &lt;= lastIndex
      * @param lastIndex
-     *        The last index in the range, &gt;= firstIndex
+     *            The last index in the range, &gt;= firstIndex
      * @param isAdjusting
-     *        Whether or not this is one in a series of multiple events, where changes are still being made
+     *            Whether or not this is one in a series of multiple events, where changes are still being made
      */
     public NullListEvent(Object source, int firstIndex, int lastIndex, boolean isAdjusting) {
 

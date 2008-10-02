@@ -19,6 +19,7 @@ import java.net.Socket;
 
 import com.lyndir.lhunath.lib.system.Poller;
 
+
 /**
  * Poller that offers messages from a certain network.<br>
  * 
@@ -30,7 +31,7 @@ public class NetworkMessagePoller extends Poller<Socket, String> implements Netw
      * Create a new NetworkMessagePoller instance.
      * 
      * @param net
-     *        The network whose messages we should be polling.
+     *            The network whose messages we should be polling.
      */
     public NetworkMessagePoller(Network net) {
 

@@ -27,13 +27,13 @@ import java.util.Map;
  * </p>
  * 
  * @param <K>
- *        The class of the keys.
+ *            The class of the keys.
  * @param <V>
- *        The class of the values.
+ *            The class of the values.
  * 
- * <p>
- * <i>Apr 17, 2008</i>
- * </p>
+ *            <p>
+ *            <i>Apr 17, 2008</i>
+ *            </p>
  * 
  * @author mbillemo
  */
@@ -47,9 +47,9 @@ public class Pair<K, V> implements Map.Entry<K, V> {
      * Create a new {@link Pair} instance.
      * 
      * @param key
-     *        The key of this pair.
+     *            The key of this pair.
      * @param value
-     *        The value of this pair.
+     *            The value of this pair.
      */
     public Pair(K key, V value) {
 

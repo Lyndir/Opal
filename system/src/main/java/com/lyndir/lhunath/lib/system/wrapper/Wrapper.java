@@ -155,7 +155,7 @@ public abstract class Wrapper {
     }
 
     /**
-     * @{inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public boolean equals(Object obj) {
@@ -174,7 +174,7 @@ public abstract class Wrapper {
     }
 
     /**
-     * @{inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public int hashCode() {
@@ -183,7 +183,7 @@ public abstract class Wrapper {
     }
 
     /**
-     * @{inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public String toString() {
