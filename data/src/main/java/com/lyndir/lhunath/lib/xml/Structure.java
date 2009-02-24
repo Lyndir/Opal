@@ -63,7 +63,8 @@ public class Structure {
     private static final int      TAB_SIZE  = 4;
 
 
-    private static <T> void inject(Node root, T structure) throws XPathExpressionException {
+    private static <T> void inject(Node root, T structure)
+            throws XPathExpressionException {
 
         // Inject the XML data into the XInject fields.
         for (Field field : structure.getClass().getDeclaredFields()) {
@@ -77,7 +78,7 @@ public class Structure {
                 field.setAccessible( true );
 
                 Logger.finest( "Setting (%s) '%s' to '%s' (xpath: %s)", valueType.getSimpleName(), field.getName(),
-                        xmlpath.getString( root, annotation.value() ), annotation.value() );
+                               xmlpath.getString( root, annotation.value() ), annotation.value() );
 
                 if (Byte.class == valueType || Byte.TYPE == valueType)
                     value = xmlpath.getNumber( root, annotation.value() ).byteValue();
@@ -144,7 +145,8 @@ public class Structure {
      * @throws SAXException
      * @throws XPathExpressionException
      */
-    public static <T> T load(Class<T> type) throws IOException, SAXException, XPathExpressionException {
+    public static <T> T load(Class<T> type)
+            throws IOException, SAXException, XPathExpressionException {
 
         // Test whether the given type actually has a FromXML annotation on it.
         if (type.getAnnotation( FromXML.class ) == null)
@@ -187,7 +189,8 @@ public class Structure {
      * @throws SAXException
      * @throws XPathExpressionException
      */
-    public static <T> List<T> loadAll(Class<T> type) throws IOException, SAXException, XPathExpressionException {
+    public static <T> List<T> loadAll(Class<T> type)
+            throws IOException, SAXException, XPathExpressionException {
 
         // Test whether the given type actually has a FromXML annotation on it.
         if (type.getAnnotation( FromXML.class ) == null)
@@ -216,12 +219,11 @@ public class Structure {
                 return null;
 
             // If an XInjectTag is defined; set it to the name of the child tag.
-            for (Field field : structure.getClass().getDeclaredFields()) {
-                XInjectTag tag = field.getAnnotation( XInjectTag.class );
-                if (tag != null)
+            for (Field field : structure.getClass().getDeclaredFields())
+                if (field.isAnnotationPresent( XInjectTag.class ))
                     try {
                         Logger.finest( "Setting (%s) '%s' to tagname '%s'", field.getType().getSimpleName(),
-                                field.getName(), child.getNodeName() );
+                                       field.getName(), child.getNodeName() );
 
                         field.setAccessible( true );
                         field.set( structure, child.getNodeName() );
@@ -232,7 +234,6 @@ public class Structure {
                     } catch (IllegalAccessException e) {
                         Logger.error( e );
                     }
-            }
 
             // Inject the child tag's data into our new structure object.
             inject( child, structure );
@@ -290,8 +291,10 @@ public class Structure {
     public static Tidy getTidyBuilder() {
 
         Tidy factory = new Tidy();
-        factory.setXmlOut( true );
+        factory.setXHTML( true );
         factory.setQuiet( true );
+        factory.setOnlyErrors( true );
+        factory.setShowWarnings( false );
 
         return factory;
     }
@@ -356,7 +359,8 @@ public class Structure {
      * @return a builder that parses XML data according to the rules specified by the arguments.
      */
     public static DocumentBuilder getXMLBuilder(boolean coalescing, boolean expandEntityRef, boolean ignoreComments,
-            boolean whitespace, boolean awareness, boolean xIncludes, boolean validating, Schema schema) {
+                                                boolean whitespace, boolean awareness, boolean xIncludes,
+                                                boolean validating, Schema schema) {
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -411,19 +415,20 @@ public class Structure {
 
         if (node.getNodeType() == Node.TEXT_NODE)
             return new StringBuffer( indent( indent ) ).append( trim ? node.getNodeValue().trim() : node.getNodeValue() ).append(
-                    '\n' );
+                                                                                                                                  '\n' );
 
         StringBuffer out = new StringBuffer();
         out.append( indent( indent ) );
         out.append( '<' ).append( node.getNodeName() );
 
         NamedNodeMap attributes = node.getAttributes();
-        for (int i = 0; i < attributes.getLength(); ++i) {
-            Node attribute = attributes.item( i );
+        if (attributes != null)
+            for (int i = 0; i < attributes.getLength(); ++i) {
+                Node attribute = attributes.item( i );
 
-            out.append( ' ' ).append( attribute.getNodeName() );
-            out.append( '=' ).append( '"' ).append( attribute.getNodeValue() ).append( '"' );
-        }
+                out.append( ' ' ).append( attribute.getNodeName() );
+                out.append( '=' ).append( '"' ).append( attribute.getNodeValue() ).append( '"' );
+            }
 
         out.append( '>' ).append( '\n' );
 

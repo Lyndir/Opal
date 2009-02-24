@@ -33,7 +33,9 @@
 							<mainClass>
 								com.lyndir.lhunath.lib.xml.XPath
 							</mainClass>
-							<addClasspath>true</addClasspath>
+							<!--addClasspath>true</addClasspath>
+                            <classpathMavenRepositoryLayout>true</classpathMavenRepositoryLayout>
+                            <classpathPrefix>./</classpathPrefix-->
 						</manifest>
 					</archive>
 				</configuration>

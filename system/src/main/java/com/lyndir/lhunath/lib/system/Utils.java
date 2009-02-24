@@ -599,7 +599,8 @@ public class Utils {
          * @throws IllegalArgumentException
          *             If the digest could not be guessed.
          */
-        public static Digest guessType(String digest) throws IllegalArgumentException {
+        public static Digest guessType(String digest)
+                throws IllegalArgumentException {
 
             switch (digest.length()) {
                 case 8:
@@ -731,7 +732,8 @@ public class Utils {
      * @throws IOException
      * @see BaseConfig#BUFFER_SIZE
      */
-    public static String readStream(InputStream stream) throws IOException {
+    public static String readStream(InputStream stream)
+            throws IOException {
 
         return readStream( stream, BaseConfig.BUFFER_SIZE, null );
     }
@@ -749,7 +751,8 @@ public class Utils {
      * @return The stream's data as a string decoded with the default character set.
      * @throws IOException
      */
-    public static String readStream(InputStream stream, int bufferSize, StreamCallback callback) throws IOException {
+    public static String readStream(InputStream stream, int bufferSize, StreamCallback callback)
+            throws IOException {
 
         return readStream( stream, bufferSize, callback, true );
     }
@@ -788,7 +791,8 @@ public class Utils {
      * @return The stream's data as a string decoded with the default character set.
      * @throws IOException
      */
-    public static String readStream(Reader reader, int bufferSize, StreamCallback callback) throws IOException {
+    public static String readStream(Reader reader, int bufferSize, StreamCallback callback)
+            throws IOException {
 
         return readStream( reader, bufferSize, callback, true );
     }
@@ -849,7 +853,8 @@ public class Utils {
      * @throws IOException
      * @see BaseConfig#BUFFER_SIZE
      */
-    public static void pipeStream(InputStream in, OutputStream out) throws IOException {
+    public static void pipeStream(InputStream in, OutputStream out)
+            throws IOException {
 
         pipeStream( in, BaseConfig.BUFFER_SIZE, out, null );
     }
@@ -891,7 +896,8 @@ public class Utils {
      * @throws IOException
      */
     public static void pipeStream(InputStream in, int bufferSize, OutputStream out, StreamCallback callback,
-            boolean autoclose) throws IOException {
+                                  boolean autoclose)
+            throws IOException {
 
         /* Buffer the streams for better I/O performance. */
         // if (!(in instanceof BufferedInputStream))
@@ -1221,7 +1227,7 @@ public class Utils {
         for (Object co : c)
             if (co.equals( o ))
                 return true;
-            else if (co instanceof Collection && recurseContains( (Collection<?>) co, o ))
+            else if (co instanceof Collection<?> && recurseContains( (Collection<?>) co, o ))
                 return true;
 
         return false;

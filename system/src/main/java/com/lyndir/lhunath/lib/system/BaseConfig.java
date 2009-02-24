@@ -42,7 +42,6 @@ import java.util.Set;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.core.BaseException;
 
 
 /**
@@ -297,9 +296,6 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                 } catch (IOException e) {
                     loadProblems.add( e );
                     useXML = false;
-                } catch (BaseException e) {
-                    loadProblems.add( e );
-                    useXML = false;
                 }
 
             /* ObjectStream Method. */
@@ -356,7 +352,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                         /* Value type does not match. */
                         catch (ClassCastException e) {
                             Logger.warn( "Couldn't load value for %s, " + "its config value is longer compatible.",
-                                    currEntry.getName() );
+                                         currEntry.getName() );
                         }
                         break;
                     }
@@ -462,7 +458,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
         if (value == null)
             return true;
 
-        if (value instanceof Collection)
+        if (value instanceof Collection<?>)
             return ((Collection<?>) value).isEmpty();
 
         return value.toString().length() == 0;
@@ -487,7 +483,8 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * @throws ClassCastException
      *             If the object is not null and is not assignable to the setting's type.
      */
-    public boolean set(T newValue) throws ClassCastException {
+    public boolean set(T newValue)
+            throws ClassCastException {
 
         if (value == null && newValue == null)
             return false;
@@ -584,7 +581,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
         if (obj == this)
             return true;
-        if (!(obj instanceof BaseConfig))
+        if (!(obj instanceof BaseConfig<?>))
             return false;
 
         return obj.hashCode() == hashCode();
