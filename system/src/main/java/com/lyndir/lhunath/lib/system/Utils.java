@@ -40,7 +40,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.CharBuffer;
-import java.nio.channels.SelectionKey;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -78,135 +77,135 @@ import com.lyndir.lhunath.lib.system.wrapper.Desktop;
  */
 public class Utils {
 
-    private static Map<SelectionKey, Integer> lastOps        = new HashMap<SelectionKey, Integer>();
+    private static final Logger              logger         = Logger.get( Utils.class );
 
     /**
      * The default character set.
      */
-    public static final Charset               charset        = Charset.forName( "UTF-8" );
+    public static final Charset              charset        = Charset.forName( "UTF-8" );
 
     /**
      * Calendar fields in order.
      */
-    public static final int[]                 calendarFields = new int[] { Calendar.MILLISECOND, Calendar.SECOND,
+    public static final int[]                calendarFields = new int[] { Calendar.MILLISECOND, Calendar.SECOND,
             Calendar.MINUTE, Calendar.HOUR_OF_DAY, Calendar.DAY_OF_MONTH, Calendar.MONTH, Calendar.YEAR };
 
     /**
      * Description of the calendar fields.
      */
-    public static final Map<Integer, String>  calendarDesc   = new HashMap<Integer, String>() {
+    public static final Map<Integer, String> calendarDesc   = new HashMap<Integer, String>() {
 
-                                                                 {
-                                                                     put( Calendar.MILLISECOND, "Millisecond" );
-                                                                     put( Calendar.SECOND, "Second" );
-                                                                     put( Calendar.MINUTE, "Minute" );
-                                                                     put( Calendar.HOUR_OF_DAY, "Hour" );
-                                                                     put( Calendar.DAY_OF_MONTH, "Day" );
-                                                                     put( Calendar.MONTH, "Month" );
-                                                                     put( Calendar.YEAR, "Year" );
-                                                                 }
-                                                             };
+                                                                {
+                                                                    put( Calendar.MILLISECOND, "Millisecond" );
+                                                                    put( Calendar.SECOND, "Second" );
+                                                                    put( Calendar.MINUTE, "Minute" );
+                                                                    put( Calendar.HOUR_OF_DAY, "Hour" );
+                                                                    put( Calendar.DAY_OF_MONTH, "Day" );
+                                                                    put( Calendar.MONTH, "Month" );
+                                                                    put( Calendar.YEAR, "Year" );
+                                                                }
+                                                            };
 
     /**
      * {@link SimpleDateFormat} of the calendar fields.
      */
-    public static final Map<Integer, String>  calendarFormat = new HashMap<Integer, String>() {
+    public static final Map<Integer, String> calendarFormat = new HashMap<Integer, String>() {
 
-                                                                 {
-                                                                     put( Calendar.MILLISECOND, "SSSS" );
-                                                                     put( Calendar.SECOND, "ss." );
-                                                                     put( Calendar.MINUTE, "mm:" );
-                                                                     put( Calendar.HOUR_OF_DAY, "HH:" );
-                                                                     put( Calendar.DAY_OF_MONTH, "dd " );
-                                                                     put( Calendar.MONTH, "MM/" );
-                                                                     put( Calendar.YEAR, "yyyy/" );
-                                                                 }
-                                                             };
+                                                                {
+                                                                    put( Calendar.MILLISECOND, "SSSS" );
+                                                                    put( Calendar.SECOND, "ss." );
+                                                                    put( Calendar.MINUTE, "mm:" );
+                                                                    put( Calendar.HOUR_OF_DAY, "HH:" );
+                                                                    put( Calendar.DAY_OF_MONTH, "dd " );
+                                                                    put( Calendar.MONTH, "MM/" );
+                                                                    put( Calendar.YEAR, "yyyy/" );
+                                                                }
+                                                            };
 
     /**
      * Default buffer size.
      */
-    public static int                         BUFFER_SIZE    = 4096;
+    public static int                        BUFFER_SIZE    = 4096;
 
     /**
      * Ratio of the long part of the golden section.
      */
-    public static final double                GOLDEN         = 0.618;
+    public static final double               GOLDEN         = 0.618;
 
     /**
      * Inverted ratio of the long part of the golden section.
      */
-    public static final double                GOLDEN_INV     = 1 / GOLDEN;
+    public static final double               GOLDEN_INV     = 1 / GOLDEN;
 
     /**
      * The transparent color.
      */
-    public static final Color                 TRANSPARENT    = new Color( 0, 0, 0, 0 );
+    public static final Color                TRANSPARENT    = new Color( 0, 0, 0, 0 );
 
     /**
      * A slightly custom RED color.
      */
-    public static final Color                 LIGHT_RED      = Color.decode( "#FFDDDD" );
+    public static final Color                LIGHT_RED      = Color.decode( "#FFDDDD" );
 
     /**
      * A slightly custom GREEN color.
      */
-    public static final Color                 LIGHT_GREEN    = Color.decode( "#DDFFDD" );
+    public static final Color                LIGHT_GREEN    = Color.decode( "#DDFFDD" );
 
     /**
      * A slightly custom BLUE color.
      */
-    public static final Color                 LIGHT_BLUE     = Color.decode( "#DDDDFF" );
+    public static final Color                LIGHT_BLUE     = Color.decode( "#DDDDFF" );
 
     /**
      * A slightly custom YELLOW color.
      */
-    public static final Color                 LIGHT_YELLOW   = Color.decode( "#FFFFDD" );
+    public static final Color                LIGHT_YELLOW   = Color.decode( "#FFFFDD" );
 
     /**
      * A slightly custom RED color.
      */
-    public static final Color                 RED            = Color.decode( "#FF9999" );
+    public static final Color                RED            = Color.decode( "#FF9999" );
 
     /**
      * A slightly custom GREEN color.
      */
-    public static final Color                 GREEN          = Color.decode( "#99FF99" );
+    public static final Color                GREEN          = Color.decode( "#99FF99" );
 
     /**
      * A slightly custom BLUE color.
      */
-    public static final Color                 BLUE           = Color.decode( "#9999FF" );
+    public static final Color                BLUE           = Color.decode( "#9999FF" );
 
     /**
      * A slightly custom YELLOW color.
      */
-    public static final Color                 YELLOW         = Color.decode( "#FFFF99" );
+    public static final Color                YELLOW         = Color.decode( "#FFFF99" );
 
     /**
      * A slightly custom RED color.
      */
-    public static final Color                 DARK_RED       = Color.decode( "#993333" );
+    public static final Color                DARK_RED       = Color.decode( "#993333" );
 
     /**
      * A slightly custom GREEN color.
      */
-    public static final Color                 DARK_GREEN     = Color.decode( "#339933" );
+    public static final Color                DARK_GREEN     = Color.decode( "#339933" );
 
     /**
      * A slightly custom BLUE color.
      */
-    public static final Color                 DARK_BLUE      = Color.decode( "#333399" );
+    public static final Color                DARK_BLUE      = Color.decode( "#333399" );
 
     /**
      * A slightly custom YELLOW color.
      */
-    public static final Color                 DARK_YELLOW    = Color.decode( "#999933" );
+    public static final Color                DARK_YELLOW    = Color.decode( "#999933" );
 
     /**
      * The maximum size for a component. Very useful to make components in a BoxLayout fill all available space.
      */
-    public static final Dimension             MAX_SIZE       = new Dimension( Short.MAX_VALUE, Short.MAX_VALUE );
+    public static final Dimension            MAX_SIZE       = new Dimension( Short.MAX_VALUE, Short.MAX_VALUE );
 
 
     /**
@@ -217,62 +216,6 @@ public class Utils {
     public static Charset getCharset() {
 
         return charset;
-    }
-
-    /**
-     * Visualize the state of the current key.
-     * 
-     * @param key
-     *            The key whose state must be shown.
-     */
-    public static void showKeyState(SelectionKey key) {
-
-        if (!lastOps.containsKey( key ))
-            lastOps.put( key, 0 );
-
-        boolean redraw = false;
-
-        if (key.isValid() && key.channel().isOpen()) {
-            if (redraw = lastOps.get( key ) != key.interestOps())
-                lastOps.put( key, key.interestOps() );
-        } else if (redraw = lastOps.get( key ) != null)
-            lastOps.put( key, null );
-
-        if (redraw) {
-            System.out.print( "[STAT] Socket " + key.channel().toString().replaceFirst( ".*\\[", "[" )
-                              + " has done: \t[ " + (char) 27 + "[32m" );
-
-            if (key.isValid() && key.channel().isOpen()) {
-                if (key.isReadable())
-                    System.out.print( "R" );
-                if (key.isWritable())
-                    System.out.print( "W" );
-                if (key.isAcceptable())
-                    System.out.print( "A" );
-                if (key.isConnectable())
-                    System.out.print( "C" );
-            } else
-                System.out.print( (char) 27 + "[31mD/C" );
-
-            System.out.print( (char) 27 + "[0m ]" );
-
-            if (key.isValid() && key.channel().isOpen()) {
-                System.out.print( "\t now, wants to do [ " + (char) 27 + "[32m" );
-
-                if ((key.interestOps() & SelectionKey.OP_READ) > 0)
-                    System.out.print( "R" );
-                if ((key.interestOps() & SelectionKey.OP_WRITE) > 0)
-                    System.out.print( "W" );
-                if ((key.interestOps() & SelectionKey.OP_ACCEPT) > 0)
-                    System.out.print( "A" );
-                if ((key.interestOps() & SelectionKey.OP_CONNECT) > 0)
-                    System.out.print( "C" );
-
-                System.out.print( (char) 27 + "[0m ]." );
-            }
-
-            System.out.println();
-        }
     }
 
     /**
@@ -459,7 +402,7 @@ public class Utils {
         try {
             return getDigest( new BufferedInputStream( new FileInputStream( file ) ), digestType );
         } catch (FileNotFoundException e) {
-            Logger.error( e, "File %s does not exist.  Can't calculate " + digestType.getName(), file );
+            logger.err( e, "File %s does not exist.  Can't calculate %s", file, digestType.getName() );
             return null;
         }
     }
@@ -525,9 +468,9 @@ public class Utils {
 
             return digestHex.toString();
         } catch (NoSuchAlgorithmException e) {
-            Logger.error( e, digestType.getName() + " is unsupported!" );
+            logger.err( e, "%s is unsupported!", digestType.getName() );
         } catch (IOException e) {
-            Logger.error( e, "Couldn't read file to digest!" );
+            logger.err( e, "Couldn't read file to digest!" );
         }
 
         return null;
@@ -715,9 +658,9 @@ public class Utils {
     public static URL url(String url) {
 
         try {
-            return url == null || url.length() == 0 ? null : new URL( url );
+            return url == null || url.length() == 0? null: new URL( url );
         } catch (MalformedURLException e) {
-            Logger.error( e, "Malformed URL: '%s'!", url );
+            logger.err( e, "Malformed URL: '%s'!", url );
             return null;
         }
     }
@@ -966,11 +909,11 @@ public class Utils {
             else
                 libFileName = "lib" + libName + "_sun_sparc.so";
         else
-            Logger.warn( "Unrecougnised OS: %s", System.getProperty( "os.name" ) );
+            logger.wrn( "Unrecougnised OS: %s", System.getProperty( "os.name" ) );
 
         File libFile = res( "/lib/native/" + libFileName );
         if (libFile == null)
-            Logger.warn( "Native library %s not supported for your OS (%s).", libName, System.getProperty( "os.name" ) );
+            logger.wrn( "Native library %s not supported for your OS (%s).", libName, System.getProperty( "os.name" ) );
         else
             System.setProperty( "java.library.path", System.getProperty( "java.library.path" ) + ":"
                                                      + libFile.getParent() );
@@ -1093,7 +1036,7 @@ public class Utils {
 
         if (file.isDirectory())
             for (File child : file.listFiles())
-                result += (result.length() > 0 ? "\n" : "") + grep( pattern, child, group );
+                result += (result.length() > 0? "\n": "") + grep( pattern, child, group );
 
         else if (file.isFile()) {
             String content;
@@ -1106,14 +1049,14 @@ public class Utils {
                         return matcher.group( group );
                 }
             } catch (FileNotFoundException e) {
-                Logger.error( "[BUG] File '%s' not found even though we checked for its existance.", file );
+                logger.err( e, "[BUG] File '%s' not found even though we checked for its existance.", file );
             } catch (IOException e) {
-                Logger.error( e, "Couldn't read file '%s'!", file );
+                logger.err( e, "Couldn't read file '%s'!", file );
             }
         }
 
         else
-            Logger.warn( "File %s was not found.  Could not grep it.", file );
+            logger.wrn( "File %s was not found.  Could not grep it.", file );
 
         return result;
     }
@@ -1304,7 +1247,7 @@ public class Utils {
     public static String ltrim(Object source, Object trim) {
 
         if (source == null || trim == null)
-            return source == null ? null : source.toString();
+            return source == null? null: source.toString();
 
         String sourceString = source.toString();
         String trimString = trim.toString();
@@ -1327,7 +1270,7 @@ public class Utils {
     public static String rtrim(Object source, Object trim) {
 
         if (source == null || trim == null)
-            return source == null ? null : source.toString();
+            return source == null? null: source.toString();
 
         String sourceString = source.toString();
         String trimString = trim.toString();

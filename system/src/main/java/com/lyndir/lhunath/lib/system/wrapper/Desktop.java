@@ -20,8 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
-import com.lyndir.lhunath.lib.system.logging.Logger;
-
 
 /**
  * @author mbillemo
@@ -29,7 +27,6 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 public class Desktop extends Wrapper {
 
     static {
-        Logger.info( "wrapping Desktop" );
         initWrapper( Desktop.class, "java.awt.Desktop" );
     }
 
@@ -39,7 +36,8 @@ public class Desktop extends Wrapper {
      * @throws UnsupportedOperationException
      *             If the native class wrapped by this class is not available.
      */
-    public static Desktop getDesktop() throws UnsupportedOperationException {
+    public static Desktop getDesktop()
+            throws UnsupportedOperationException {
 
         return new Desktop( invoke( Desktop.class, null, "getDesktop", new Class[0] ) );
     }
@@ -69,7 +67,7 @@ public class Desktop extends Wrapper {
         try {
             Object desktopAction = mapEnumValue( action, getClass( "java.awt.Desktop.Action" ) );
             return (Boolean) invoke( "isSupported", new Class[] { getClass( "java.awt.Desktop.Action" ) },
-                    desktopAction );
+                                     desktopAction );
         } catch (Exception e) {}
 
         return false;
@@ -88,7 +86,8 @@ public class Desktop extends Wrapper {
      * @throws IOException
      */
     @SuppressWarnings("unused")
-    public void browse(URI uri) throws IOException {
+    public void browse(URI uri)
+            throws IOException {
 
         invoke( "browse", new Class[] { URI.class }, uri );
     }
@@ -101,7 +100,8 @@ public class Desktop extends Wrapper {
      * @throws IOException
      */
     @SuppressWarnings("unused")
-    public void edit(File file) throws IOException {
+    public void edit(File file)
+            throws IOException {
 
         invoke( "edit", new Class[] { File.class }, file );
     }
@@ -112,7 +112,8 @@ public class Desktop extends Wrapper {
      * @throws IOException
      */
     @SuppressWarnings("unused")
-    public void mail() throws IOException {
+    public void mail()
+            throws IOException {
 
         invoke( "mail", new Class[0] );
     }
@@ -125,7 +126,8 @@ public class Desktop extends Wrapper {
      * @throws IOException
      */
     @SuppressWarnings("unused")
-    public void mail(URI mailtoURI) throws IOException {
+    public void mail(URI mailtoURI)
+            throws IOException {
 
         invoke( "mail", new Class[] { URI.class }, mailtoURI );
     }
@@ -138,7 +140,8 @@ public class Desktop extends Wrapper {
      * @throws IOException
      */
     @SuppressWarnings("unused")
-    public void open(File file) throws IOException {
+    public void open(File file)
+            throws IOException {
 
         invoke( "open", new Class[] { File.class }, file );
     }
@@ -152,7 +155,8 @@ public class Desktop extends Wrapper {
      * 
      */
     @SuppressWarnings("unused")
-    public void print(File file) throws IOException {
+    public void print(File file)
+            throws IOException {
 
         invoke( "print", new Class[] { File.class }, file );
     }

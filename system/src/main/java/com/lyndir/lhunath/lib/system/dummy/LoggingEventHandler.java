@@ -47,7 +47,8 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.MouseInputListener;
 
-import com.lyndir.lhunath.lib.system.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -69,7 +70,9 @@ public class LoggingEventHandler
         HierarchyListener, WindowFocusListener, WindowListener, WindowStateListener, PropertyChangeListener,
         MouseListener, MouseInputListener, MouseMotionListener, MouseWheelListener, KeyListener, InputMethodListener {
 
-    private String name;
+    private static final Logger logger = LoggerFactory.getLogger( LoggingEventHandler.class );
+
+    private String              name;
 
 
     /**
@@ -148,7 +151,7 @@ public class LoggingEventHandler
      */
     public void componentHidden(ComponentEvent e) {
 
-        Logger.config( "%s: hidden [Id: %d]", name, e.getID() );
+        logger.debug( "%s: hidden [Id: %d]", new Object[] { name, e.getID() } );
     }
 
     /**
@@ -156,7 +159,7 @@ public class LoggingEventHandler
      */
     public void componentMoved(ComponentEvent e) {
 
-        Logger.config( "%s: moved [Id: %d]", name, e.getID() );
+        logger.debug( "%s: moved [Id: %d]", new Object[] { name, e.getID() } );
     }
 
     /**
@@ -164,7 +167,7 @@ public class LoggingEventHandler
      */
     public void componentResized(ComponentEvent e) {
 
-        Logger.config( "%s: sized [Id: %d]", name, e.getID() );
+        logger.debug( "%s: sized [Id: %d]", new Object[] { name, e.getID() } );
     }
 
     /**
@@ -172,7 +175,7 @@ public class LoggingEventHandler
      */
     public void componentShown(ComponentEvent e) {
 
-        Logger.config( "%s: shown [Id: %d]", name, e.getID() );
+        logger.debug( "%s: shown [Id: %d]", new Object[] { name, e.getID() } );
     }
 
     /**
@@ -180,7 +183,7 @@ public class LoggingEventHandler
      */
     public void componentAdded(ContainerEvent e) {
 
-        Logger.config( "%s: added [Id: %d]", name, e.getID() );
+        logger.debug( "%s: added [Id: %d]", new Object[] { name, e.getID() } );
     }
 
     /**
@@ -188,7 +191,7 @@ public class LoggingEventHandler
      */
     public void componentRemoved(ContainerEvent e) {
 
-        Logger.config( "%s: removed [Id: %d]", name, e.getID() );
+        logger.debug( "%s: removed [Id: %d]", new Object[] { name, e.getID() } );
     }
 
     /**
@@ -196,7 +199,7 @@ public class LoggingEventHandler
      */
     public void focusGained(FocusEvent e) {
 
-        Logger.config( "%s: focussed [Id: %d]", name, e.getID() );
+        logger.debug( "%s: focussed [Id: %d]", new Object[] { name, e.getID() } );
     }
 
     /**
@@ -204,7 +207,7 @@ public class LoggingEventHandler
      */
     public void focusLost(FocusEvent e) {
 
-        Logger.config( "%s: unfocussed [Id: %d]", name, e.getID() );
+        logger.debug( "%s: unfocussed [Id: %d]", new Object[] { name, e.getID() } );
     }
 
     /**
@@ -212,7 +215,7 @@ public class LoggingEventHandler
      */
     public void ancestorAdded(AncestorEvent e) {
 
-        Logger.config( "%s: ancestor added [Id: %d]", name, e.getID() );
+        logger.debug( "%s: ancestor added [Id: %d]", new Object[] { name, e.getID() } );
     }
 
     /**
@@ -220,7 +223,7 @@ public class LoggingEventHandler
      */
     public void ancestorMoved(AncestorEvent e) {
 
-        Logger.config( "%s: ancestor moved [Id: %d]", name, e.getID() );
+        logger.debug( "%s: ancestor moved [Id: %d]", new Object[] { name, e.getID() } );
     }
 
     /**
@@ -228,7 +231,7 @@ public class LoggingEventHandler
      */
     public void ancestorRemoved(AncestorEvent e) {
 
-        Logger.config( "%s: ancestor removed [Id: %d]", name, e.getID() );
+        logger.debug( "%s: ancestor removed [Id: %d]", new Object[] { name, e.getID() } );
     }
 
     /**
@@ -236,7 +239,8 @@ public class LoggingEventHandler
      */
     public void ancestorMoved(HierarchyEvent e) {
 
-        Logger.config( "%s: hierarchy ancestor moved [Id: %d, Flags: %d]", name, e.getID(), e.getChangeFlags() );
+        logger.debug( "%s: hierarchy ancestor moved [Id: %d, Flags: %d]", new Object[] { name, e.getID(),
+                e.getChangeFlags() } );
     }
 
     /**
@@ -244,7 +248,8 @@ public class LoggingEventHandler
      */
     public void ancestorResized(HierarchyEvent e) {
 
-        Logger.config( "%s: hierarchy ancestor sized [Id: %d, Flags: %d]", name, e.getID(), e.getChangeFlags() );
+        logger.debug( "%s: hierarchy ancestor sized [Id: %d, Flags: %d]", new Object[] { name, e.getID(),
+                e.getChangeFlags() } );
     }
 
     /**
@@ -252,7 +257,7 @@ public class LoggingEventHandler
      */
     public void hierarchyChanged(HierarchyEvent e) {
 
-        Logger.config( "%s: hierarchy changed [Id: %d, Flags: %d]", name, e.getID(), e.getChangeFlags() );
+        logger.debug( "%s: hierarchy changed [Id: %d, Flags: %d]", new Object[] { name, e.getID(), e.getChangeFlags() } );
     }
 
     /**
@@ -260,8 +265,8 @@ public class LoggingEventHandler
      */
     public void windowGainedFocus(WindowEvent e) {
 
-        Logger.config( "%s: window focussed [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                e.getNewState() );
+        logger.debug( "%s: window focussed [Id: %d, State: From %d to %d]", new Object[] { name, e.getID(),
+                e.getOldState(), e.getNewState() } );
     }
 
     /**
@@ -269,8 +274,8 @@ public class LoggingEventHandler
      */
     public void windowLostFocus(WindowEvent e) {
 
-        Logger.config( "%s: window unfocussed [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                e.getNewState() );
+        logger.debug( "%s: window unfocussed [Id: %d, State: From %d to %d]", new Object[] { name, e.getID(),
+                e.getOldState(), e.getNewState() } );
     }
 
     /**
@@ -278,8 +283,8 @@ public class LoggingEventHandler
      */
     public void windowActivated(WindowEvent e) {
 
-        Logger.config( "%s: window activated [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                e.getNewState() );
+        logger.debug( "%s: window activated [Id: %d, State: From %d to %d]", new Object[] { name, e.getID(),
+                e.getOldState(), e.getNewState() } );
     }
 
     /**
@@ -287,8 +292,8 @@ public class LoggingEventHandler
      */
     public void windowClosed(WindowEvent e) {
 
-        Logger.config( "%s: window closed [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                e.getNewState() );
+        logger.debug( "%s: window closed [Id: %d, State: From %d to %d]", new Object[] { name, e.getID(),
+                e.getOldState(), e.getNewState() } );
     }
 
     /**
@@ -296,8 +301,8 @@ public class LoggingEventHandler
      */
     public void windowClosing(WindowEvent e) {
 
-        Logger.config( "%s: window closing [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                e.getNewState() );
+        logger.debug( "%s: window closing [Id: %d, State: From %d to %d]", new Object[] { name, e.getID(),
+                e.getOldState(), e.getNewState() } );
     }
 
     /**
@@ -305,8 +310,8 @@ public class LoggingEventHandler
      */
     public void windowDeactivated(WindowEvent e) {
 
-        Logger.config( "%s: window deactivated [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                e.getNewState() );
+        logger.debug( "%s: window deactivated [Id: %d, State: From %d to %d]", new Object[] { name, e.getID(),
+                e.getOldState(), e.getNewState() } );
     }
 
     /**
@@ -314,8 +319,8 @@ public class LoggingEventHandler
      */
     public void windowDeiconified(WindowEvent e) {
 
-        Logger.config( "%s: window deiconified [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                e.getNewState() );
+        logger.debug( "%s: window deiconified [Id: %d, State: From %d to %d]", new Object[] { name, e.getID(),
+                e.getOldState(), e.getNewState() } );
     }
 
     /**
@@ -323,8 +328,8 @@ public class LoggingEventHandler
      */
     public void windowIconified(WindowEvent e) {
 
-        Logger.config( "%s: window iconified [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                e.getNewState() );
+        logger.debug( "%s: window iconified [Id: %d, State: From %d to %d]", new Object[] { name, e.getID(),
+                e.getOldState(), e.getNewState() } );
     }
 
     /**
@@ -332,8 +337,8 @@ public class LoggingEventHandler
      */
     public void windowOpened(WindowEvent e) {
 
-        Logger.config( "%s: window opened [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                e.getNewState() );
+        logger.debug( "%s: window opened [Id: %d, State: From %d to %d]", new Object[] { name, e.getID(),
+                e.getOldState(), e.getNewState() } );
     }
 
     /**
@@ -341,8 +346,8 @@ public class LoggingEventHandler
      */
     public void windowStateChanged(WindowEvent e) {
 
-        Logger.config( "%s: window state [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                e.getNewState() );
+        logger.debug( "%s: window state [Id: %d, State: From %d to %d]", new Object[] { name, e.getID(),
+                e.getOldState(), e.getNewState() } );
     }
 
     /**
@@ -350,8 +355,8 @@ public class LoggingEventHandler
      */
     public void propertyChange(PropertyChangeEvent e) {
 
-        Logger.config( "%s: property [Name: %s, Value: From %s to %s]", name, e.getPropertyName(), e.getOldValue(),
-                e.getNewValue() );
+        logger.debug( "%s: property [Name: %s, Value: From %s to %s]", new Object[] { name, e.getPropertyName(),
+                e.getOldValue(), e.getNewValue() } );
     }
 
     /**
@@ -359,9 +364,9 @@ public class LoggingEventHandler
      */
     public void mouseClicked(MouseEvent e) {
 
-        Logger.config( "%s: clicked [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                e.getY(), System.currentTimeMillis() - e.getWhen() );
+        logger.debug( "%s: clicked [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
+                      new Object[] { name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(),
+                              e.getClickCount(), e.getX(), e.getY(), System.currentTimeMillis() - e.getWhen() } );
     }
 
     /**
@@ -369,9 +374,9 @@ public class LoggingEventHandler
      */
     public void mouseEntered(MouseEvent e) {
 
-        Logger.config( "%s: entered [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                e.getY(), System.currentTimeMillis() - e.getWhen() );
+        logger.debug( "%s: entered [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
+                      new Object[] { name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(),
+                              e.getClickCount(), e.getX(), e.getY(), System.currentTimeMillis() - e.getWhen() } );
     }
 
     /**
@@ -379,9 +384,9 @@ public class LoggingEventHandler
      */
     public void mouseExited(MouseEvent e) {
 
-        Logger.config( "%s: exited [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                e.getY(), System.currentTimeMillis() - e.getWhen() );
+        logger.debug( "%s: exited [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
+                      new Object[] { name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(),
+                              e.getClickCount(), e.getX(), e.getY(), System.currentTimeMillis() - e.getWhen() } );
     }
 
     /**
@@ -389,9 +394,9 @@ public class LoggingEventHandler
      */
     public void mousePressed(MouseEvent e) {
 
-        Logger.config( "%s: pressed [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                e.getY(), System.currentTimeMillis() - e.getWhen() );
+        logger.debug( "%s: pressed [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
+                      new Object[] { name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(),
+                              e.getClickCount(), e.getX(), e.getY(), System.currentTimeMillis() - e.getWhen() } );
     }
 
     /**
@@ -399,10 +404,9 @@ public class LoggingEventHandler
      */
     public void mouseReleased(MouseEvent e) {
 
-        Logger.config(
-                "%s: released [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name,
-                e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(), e.getY(),
-                System.currentTimeMillis() - e.getWhen() );
+        logger.debug( "%s: released [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
+                      new Object[] { name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(),
+                              e.getClickCount(), e.getX(), e.getY(), System.currentTimeMillis() - e.getWhen() } );
     }
 
     /**
@@ -410,9 +414,9 @@ public class LoggingEventHandler
      */
     public void mouseDragged(MouseEvent e) {
 
-        Logger.config( "%s: dragged [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                e.getY(), System.currentTimeMillis() - e.getWhen() );
+        logger.debug( "%s: dragged [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
+                      new Object[] { name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(),
+                              e.getClickCount(), e.getX(), e.getY(), System.currentTimeMillis() - e.getWhen() } );
     }
 
     /**
@@ -420,9 +424,9 @@ public class LoggingEventHandler
      */
     public void mouseMoved(MouseEvent e) {
 
-        Logger.config( "%s: moved [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                e.getY(), System.currentTimeMillis() - e.getWhen() );
+        logger.debug( "%s: moved [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
+                      new Object[] { name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(),
+                              e.getClickCount(), e.getX(), e.getY(), System.currentTimeMillis() - e.getWhen() } );
     }
 
     /**
@@ -430,11 +434,11 @@ public class LoggingEventHandler
      */
     public void mouseWheelMoved(MouseWheelEvent e) {
 
-        Logger.config(
-                "%s: wheeled [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), ScrollType: %d, ScrollAmount: %d, ScrollRotation: %d, Time: %dms ago]",
-                name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                e.getY(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation(), System.currentTimeMillis()
-                                                                                        - e.getWhen() );
+        logger.debug(
+                      "%s: wheeled [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), ScrollType: %d, ScrollAmount: %d, ScrollRotation: %d, Time: %dms ago]",
+                      new Object[] { name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(),
+                              e.getClickCount(), e.getX(), e.getY(), e.getScrollType(), e.getScrollAmount(),
+                              e.getWheelRotation(), System.currentTimeMillis() - e.getWhen() } );
     }
 
     /**
@@ -442,8 +446,9 @@ public class LoggingEventHandler
      */
     public void keyPressed(KeyEvent e) {
 
-        Logger.config( "%s: key pressed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, e.getID(),
-                e.getKeyChar(), e.getKeyCode(), e.getKeyLocation(), System.currentTimeMillis() - e.getWhen() );
+        logger.debug( "%s: key pressed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]",
+                      new Object[] { new Object[] { name, e.getID(), e.getKeyChar(), e.getKeyCode(),
+                              e.getKeyLocation(), System.currentTimeMillis() - e.getWhen() } } );
     }
 
     /**
@@ -451,8 +456,9 @@ public class LoggingEventHandler
      */
     public void keyReleased(KeyEvent e) {
 
-        Logger.config( "%s: key released [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, e.getID(),
-                e.getKeyChar(), e.getKeyCode(), e.getKeyLocation(), System.currentTimeMillis() - e.getWhen() );
+        logger.debug( "%s: key released [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]",
+                      new Object[] { new Object[] { name, e.getID(), e.getKeyChar(), e.getKeyCode(),
+                              e.getKeyLocation(), System.currentTimeMillis() - e.getWhen() } } );
     }
 
     /**
@@ -460,8 +466,9 @@ public class LoggingEventHandler
      */
     public void keyTyped(KeyEvent e) {
 
-        Logger.config( "%s: key typed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, e.getID(),
-                e.getKeyChar(), e.getKeyCode(), e.getKeyLocation(), System.currentTimeMillis() - e.getWhen() );
+        logger.debug( "%s: key typed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]",
+                      new Object[] { new Object[] { name, e.getID(), e.getKeyChar(), e.getKeyCode(),
+                              e.getKeyLocation(), System.currentTimeMillis() - e.getWhen() } } );
     }
 
     /**
@@ -469,8 +476,8 @@ public class LoggingEventHandler
      */
     public void caretPositionChanged(InputMethodEvent e) {
 
-        Logger.config( "%s: caret [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", name, e.getID(),
-                e.getCommittedCharacterCount(), e.getText(), System.currentTimeMillis() - e.getWhen() );
+        logger.debug( "%s: caret [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", new Object[] { name, e.getID(),
+                e.getCommittedCharacterCount(), e.getText(), System.currentTimeMillis() - e.getWhen() } );
     }
 
     /**
@@ -478,7 +485,7 @@ public class LoggingEventHandler
      */
     public void inputMethodTextChanged(InputMethodEvent e) {
 
-        Logger.config( "%s: text changed [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", name, e.getID(),
-                e.getCommittedCharacterCount(), e.getText(), System.currentTimeMillis() - e.getWhen() );
+        logger.debug( "%s: text changed [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", new Object[] { name, e.getID(),
+                e.getCommittedCharacterCount(), e.getText(), System.currentTimeMillis() - e.getWhen() } );
     }
 }

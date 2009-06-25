@@ -1,5 +1,5 @@
 /*
- *   Copyright 2005-2007 Maarten Billemont
+ *   Copyright 2009, Maarten Billemont
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,25 +13,25 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.lib.network;
-
-import java.net.Socket;
-
+package com.lyndir.lhunath.lib.system.localization;
 
 /**
- * This listener should be implemented by classes that wish to be notified of incoming network messages.<br>
+ * <h2>{@link ResourceEnum}<br>
+ * <sub>An {@link Enum} that simply provides a value for a key.</sub></h2>
+ * 
+ * <p>
+ * The key is the {@link #name()} of the enum constant, the value is the return value of {@link #value()}.
+ * </p>
+ * 
+ * <p>
+ * <i>Mar 29, 2009</i>
+ * </p>
  * 
  * @author lhunath
  */
-public interface NetworkMessageListener {
+public interface ResourceEnum {
 
-    /**
-     * A message has been received over the network.
-     * 
-     * @param message
-     *            The decoded message.
-     * @param socket
-     *            The socket over which the message has arrived.
-     */
-    public void received(String message, Socket socket);
+    public String name();
+
+    public Object value();
 }

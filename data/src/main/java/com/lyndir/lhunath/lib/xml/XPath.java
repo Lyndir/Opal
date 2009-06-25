@@ -24,10 +24,10 @@ import java.util.List;
 
 import javax.xml.xpath.XPathExpressionException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-
-import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
 /**
@@ -42,7 +42,11 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  */
 public class XPath {
 
-    public static void main(String[] args) throws SAXException, IOException, XPathExpressionException {
+    private static final Logger logger = LoggerFactory.getLogger( XPath.class );
+
+
+    public static void main(String[] args)
+            throws SAXException, IOException, XPathExpressionException {
 
         InputStream in = System.in;
         String xpathExpression = null;
@@ -116,10 +120,14 @@ public class XPath {
                 return;
             }
 
-            else
-                Logger.fatal( "'%s' is not a valid argument.", arg );
-        if (xpathExpression == null)
-            Logger.fatal( "No XPath Expression provided." );
+            else {
+                logger.error( "'%s' is not a valid argument.", arg );
+                System.exit( 1 );
+            }
+        if (xpathExpression == null) {
+            logger.error( "No XPath Expression provided." );
+            System.exit( 1 );
+        }
 
         /* XPath Setup (use XHTML namespace?). */
         XPathUtil xpath = new XPathUtil( xhtml );

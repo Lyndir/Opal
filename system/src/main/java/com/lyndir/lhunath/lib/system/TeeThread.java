@@ -20,7 +20,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 
-import com.lyndir.lhunath.lib.system.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -36,8 +37,10 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  */
 public class TeeThread extends Thread {
 
-    private InputStream    source;
-    private OutputStream[] destinations;
+    private static final Logger logger = LoggerFactory.getLogger( TeeThread.class );
+
+    private InputStream         source;
+    private OutputStream[]      destinations;
 
 
     /**
@@ -73,7 +76,7 @@ public class TeeThread extends Thread {
 
         } catch (IOException e) {
             if (!(source instanceof PipedInputStream))
-                Logger.error( e, "Could not read from the console source." );
+                logger.error( "Could not read from the console source.", e );
         }
     }
 }

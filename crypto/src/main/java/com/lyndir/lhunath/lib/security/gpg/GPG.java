@@ -58,10 +58,11 @@ import org.bouncycastle.openpgp.PGPSecretKeyRingCollection;
 import org.bouncycastle.openpgp.PGPSignature;
 import org.bouncycastle.openpgp.PGPSignatureGenerator;
 import org.bouncycastle.openpgp.PGPUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.lyndir.lhunath.lib.system.BaseConfig;
 import com.lyndir.lhunath.lib.system.Utils;
-import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
 /**
@@ -76,6 +77,8 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  * @author mbillemo
  */
 public class GPG {
+
+    private static final Logger logger = LoggerFactory.getLogger( GPG.class );
 
     static {
         Security.addProvider( new BouncyCastleProvider() );
@@ -112,8 +115,8 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static PGPPublicKey getPublicKey(File publicKeyFile, long publicKeyId) throws FileNotFoundException,
-            IOException, PGPException {
+    public static PGPPublicKey getPublicKey(File publicKeyFile, long publicKeyId)
+            throws FileNotFoundException, IOException, PGPException {
 
         PGPPublicKeyRing publicKeyRing = new PGPPublicKeyRing( new FileInputStream( publicKeyFile ) );
         return publicKeyRing.getPublicKey( publicKeyId );
@@ -129,8 +132,8 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static PGPSecretKey getPrivateKey(File privateKeyFile, long privateKeyId) throws FileNotFoundException,
-            IOException, PGPException {
+    public static PGPSecretKey getPrivateKey(File privateKeyFile, long privateKeyId)
+            throws FileNotFoundException, IOException, PGPException {
 
         PGPSecretKeyRingCollection privateKeyRing = new PGPSecretKeyRingCollection(
                 PGPUtil.getDecoderStream( new FileInputStream( privateKeyFile ) ) );
@@ -147,8 +150,8 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static PGPSecretKey getPrivateKeyFor(File encryptedFile, File privateKeyFile) throws IOException,
-            PGPException {
+    public static PGPSecretKey getPrivateKeyFor(File encryptedFile, File privateKeyFile)
+            throws IOException, PGPException {
 
         return getPrivateKeyFor( new FileInputStream( encryptedFile ), privateKeyFile );
     }
@@ -162,8 +165,8 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static PGPSecretKey getPrivateKeyFor(String encryptedString, File privateKeyFile) throws IOException,
-            PGPException {
+    public static PGPSecretKey getPrivateKeyFor(String encryptedString, File privateKeyFile)
+            throws IOException, PGPException {
 
         return getPrivateKeyFor( new ByteArrayInputStream( encryptedString.getBytes() ), privateKeyFile );
     }
@@ -177,8 +180,8 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static PGPSecretKey getPrivateKeyFor(InputStream encryptedStream, File privateKeyFile) throws IOException,
-            PGPException {
+    public static PGPSecretKey getPrivateKeyFor(InputStream encryptedStream, File privateKeyFile)
+            throws IOException, PGPException {
 
         /* Open the encrypted file. */
         InputStream encryptedDataStream = PGPUtil.getDecoderStream( encryptedStream );
@@ -350,7 +353,7 @@ public class GPG {
         ByteArrayOutputStream decryptedStream = new ByteArrayOutputStream();
         PGPCompressedDataGenerator compressor = new PGPCompressedDataGenerator( CompressionAlgorithmTags.ZLIB );
         OutputStream literalStream = literator.open( compressor.open( decryptedStream ), PGPLiteralData.BINARY, "",
-                new Date(), new byte[BaseConfig.BUFFER_SIZE] );
+                                                     new Date(), new byte[BaseConfig.BUFFER_SIZE] );
         Utils.pipeStream( decryptedData, literalStream );
         compressor.close();
 
@@ -415,7 +418,7 @@ public class GPG {
             throws NoSuchProviderException, IOException, PGPException {
 
         return Utils.readStream( decrypt( new ByteArrayInputStream( encryptedString.getBytes() ), privateKey,
-                passPhrase ) );
+                                          passPhrase ) );
     }
 
     /**
@@ -445,7 +448,7 @@ public class GPG {
             try {
                 encryptedDataObjects = encryptedDataFactory.nextObject();
             } catch (IOException e) {
-                Logger.warn( e.getMessage() );
+                logger.warn( e.getMessage() );
             }
         while (!(encryptedDataObjects instanceof PGPEncryptedDataList) && encryptedDataObjects != null);
         if (encryptedDataObjects == null)
@@ -465,8 +468,11 @@ public class GPG {
             throw new PGPException( "No encrypted data found." );
 
         /* Decrypt the data. */
-        InputStream unencryptedStream = encryptedData.getDataStream( privateKey.extractPrivateKey(
-                passPhrase.toCharArray(), BouncyCastleProvider.PROVIDER_NAME ), BouncyCastleProvider.PROVIDER_NAME );
+        InputStream unencryptedStream = encryptedData.getDataStream(
+                                                                     privateKey.extractPrivateKey(
+                                                                                                   passPhrase.toCharArray(),
+                                                                                                   BouncyCastleProvider.PROVIDER_NAME ),
+                                                                     BouncyCastleProvider.PROVIDER_NAME );
         PGPObjectFactory pgpFactory = new PGPObjectFactory( unencryptedStream );
         Object unencryptedObject = pgpFactory.nextObject();
 
@@ -515,8 +521,9 @@ public class GPG {
      * @throws IOException
      */
     public static void signFile(File dataFile, File signedFile, PGPSecretKey privateKey, String passPhrase,
-            boolean armoured) throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException,
-            FileNotFoundException, PGPException, IOException {
+                                boolean armoured)
+            throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException, FileNotFoundException,
+            PGPException, IOException {
 
         InputStream decryptedInputStream = sign( new FileInputStream( dataFile ), privateKey, passPhrase, armoured );
         FileOutputStream decryptedOutputStream = new FileOutputStream( signedFile );
@@ -574,8 +581,8 @@ public class GPG {
         /* Build the signature generator. */
         PGPSignatureGenerator signer = new PGPSignatureGenerator( privateKey.getPublicKey().getAlgorithm(),
                 HashAlgorithmTags.SHA1, BouncyCastleProvider.PROVIDER_NAME );
-        signer.initSign( PGPSignature.BINARY_DOCUMENT, privateKey.extractPrivateKey( passPhrase.toCharArray(),
-                BouncyCastleProvider.PROVIDER_NAME ) );
+        signer.initSign( PGPSignature.BINARY_DOCUMENT,
+                         privateKey.extractPrivateKey( passPhrase.toCharArray(), BouncyCastleProvider.PROVIDER_NAME ) );
 
         /* Write the data into the generator. */
         byte[] buffer = new byte[BaseConfig.BUFFER_SIZE];

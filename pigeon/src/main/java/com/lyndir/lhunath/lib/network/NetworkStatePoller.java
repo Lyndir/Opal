@@ -22,55 +22,83 @@ import com.lyndir.lhunath.lib.system.Poller;
 
 
 /**
- * Poller that offers messages from a certain network.<br>
+ * A poller that collects state changes from the network.
  * 
  * @author lhunath
  */
-public class NetworkStatePoller extends Poller<NetworkStatePoller.State, Socket> implements NetworkStateListener {
+public class NetworkStatePoller extends Poller<NetworkStatePoller.State, Socket>
+        implements NetworkServerStateListener, NetworkConnectionStateListener {
 
     /**
-     * Create a new NetworkMessagePoller instance.
+     * Create a new {@link NetworkStatePoller} instance. Register it on the network you're interested in.
+     */
+    public NetworkStatePoller() {
+
+    }
+
+    /**
+     * Create a new {@link NetworkStatePoller} instance that listens on the given network.
      * 
-     * @param net
+     * @param network
      *            The network whose messages we should be polling.
      */
-    public NetworkStatePoller(Network net) {
+    public NetworkStatePoller(Network network) {
 
-        net.registerStateListener( this );
+        network.registerServerStateListener( this );
+        network.registerConnectionStateListener( this );
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    public void accepted(ServerSocket server, Socket socket) {
+    public void bound(ServerSocket serverSocket) {
 
-        offer( State.ACCEPTED, socket );
+    // Not supported.
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    public void connected(Socket connection) {
+    public void accepted(ServerSocket serverSocket, Socket connectionSocket) {
 
-        offer( State.CONNECTED, connection );
+        offer( State.ACCEPTED, connectionSocket );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void connected(Socket connectionSocket) {
+
+        offer( State.CONNECTED, connectionSocket );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void closed(Socket connectionSocket, boolean resetByPeer) {
+
+        offer( State.CLOSED, connectionSocket );
     }
 
 
     /**
-     * A certain state that can be polled for by the NetworkStatePoller.
+     * States that a network socket can progress into.
      */
     public enum State {
 
         /**
-         * A new connection has been accepted by a listening socket. The Poller returns the socket that will be used for
-         * the new connection.
+         * A new connection has been accepted by a listening socket. The element is the new connection's socket.
          */
         ACCEPTED,
 
         /**
-         * A connection has been established to a certain host. The Poller returns the socket that will be used for the
-         * new connection.
+         * A connection has been established to a remote server. The element is the connection's socket.
          */
-        CONNECTED;
+        CONNECTED,
+
+        /**
+         * An active connection has been terminated. The element is the connection's socket.
+         */
+        CLOSED;
     }
 }

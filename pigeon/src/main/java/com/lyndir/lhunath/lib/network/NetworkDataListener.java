@@ -16,33 +16,24 @@
 package com.lyndir.lhunath.lib.network;
 
 import java.net.Socket;
-
-import com.lyndir.lhunath.lib.system.Poller;
+import java.nio.ByteBuffer;
 
 
 /**
- * Poller that offers messages from a certain network.<br>
+ * This listener should be implemented by classes that wish to be notified of incoming network messages.<br>
  * 
  * @author lhunath
  */
-public class NetworkMessagePoller extends Poller<Socket, String> implements NetworkMessageListener {
+public interface NetworkDataListener {
 
     /**
-     * Create a new NetworkMessagePoller instance.
+     * Data has been received over the network.
      * 
-     * @param net
-     *            The network whose messages we should be polling.
+     * @param dataBuffer
+     *            A byte buffer that contains the available data. It has been flipped and is ready to be read from. To
+     *            read the data from it multiple times, flip it between complete read operations.
+     * @param connectionSocket
+     *            The socket over which the message has arrived.
      */
-    public NetworkMessagePoller(Network net) {
-
-        net.registerMessageListener( this );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public void received(String message, Socket socket) {
-
-        offer( socket, message );
-    }
+    public void received(ByteBuffer dataBuffer, Socket connectionSocket);
 }

@@ -47,6 +47,11 @@
 
         <!-- EXTERNAL DEPENDENCIES -->
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.jgoodies</groupId>
             <artifactId>forms</artifactId>
         </dependency>

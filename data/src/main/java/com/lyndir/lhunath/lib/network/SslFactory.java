@@ -38,8 +38,8 @@ import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
-
-import com.lyndir.lhunath.lib.system.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -53,8 +53,10 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  */
 public class SslFactory implements SecureProtocolSocketFactory {
 
-    private static SslFactory instance;
-    private SSLContext        context;
+    private static final Logger logger = LoggerFactory.getLogger( SslFactory.class );
+
+    private static SslFactory   instance;
+    private SSLContext          context;
 
 
     /**
@@ -96,47 +98,48 @@ public class SslFactory implements SecureProtocolSocketFactory {
             TrustManagerFactory tFactory = TrustManagerFactory.getInstance( "SunX509" );
             tFactory.init( store );
 
-            this.context = SSLContext.getInstance( "TLS" );
-            this.context.init( null, tFactory.getTrustManagers(), null );
+            context = SSLContext.getInstance( "TLS" );
+            context.init( null, tFactory.getTrustManagers(), null );
         } catch (KeyStoreException e) {
-            Logger.error( e, "Keystore type not supported or keystore could not be initialized." );
+            logger.error( "Keystore type not supported or keystore could not be initialized.", e );
         } catch (NoSuchAlgorithmException e) {
-            Logger.error( e, "Key algorithm not supported." );
+            logger.error( "Key algorithm not supported.", e );
         } catch (CertificateException e) {
-            Logger.error( e, "An unexpected error has occurred!" );
+            logger.error( "An unexpected error has occurred!", e );
         } catch (FileNotFoundException e) {
-            Logger.error( e, "Keystore not found!" );
+            logger.error( "Keystore not found!", e );
         } catch (IOException e) {
-            Logger.error( e, "Could not read the keys from the keystore!" );
+            logger.error( "Could not read the keys from the keystore!", e );
         } catch (KeyManagementException e) {
-            Logger.error( e, "Could not add the keys as trusted!" );
+            logger.error( "Could not add the keys as trusted!", e );
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException,
-            UnknownHostException {
+    public Socket createSocket(Socket socket, String host, int port, boolean autoClose)
+            throws IOException, UnknownHostException {
 
-        return this.context.getSocketFactory().createSocket( socket, host, port, autoClose );
+        return context.getSocketFactory().createSocket( socket, host, port, autoClose );
     }
 
     /**
      * {@inheritDoc}
      */
-    public Socket createSocket(String host, int port) throws IOException, UnknownHostException {
+    public Socket createSocket(String host, int port)
+            throws IOException, UnknownHostException {
 
-        return this.context.getSocketFactory().createSocket( host, port );
+        return context.getSocketFactory().createSocket( host, port );
     }
 
     /**
      * {@inheritDoc}
      */
-    public Socket createSocket(String host, int port, InetAddress localAddress, int localPort) throws IOException,
-            UnknownHostException {
+    public Socket createSocket(String host, int port, InetAddress localAddress, int localPort)
+            throws IOException, UnknownHostException {
 
-        return this.context.getSocketFactory().createSocket( host, port, localAddress, localPort );
+        return context.getSocketFactory().createSocket( host, port, localAddress, localPort );
     }
 
     /**
@@ -146,14 +149,15 @@ public class SslFactory implements SecureProtocolSocketFactory {
      */
     @Deprecated
     public Socket createSocket(String host, int port, InetAddress localAddress, int localPort,
-            HttpConnectionParams params) throws IOException, UnknownHostException, ConnectTimeoutException {
+                               HttpConnectionParams params)
+            throws IOException, UnknownHostException, ConnectTimeoutException {
 
         if (params == null)
             throw new IllegalArgumentException( "Parameters may not be null." );
 
         int timeout = params.getConnectionTimeout();
         if (timeout == 0)
-            return this.context.getSocketFactory().createSocket( host, port, localAddress, localPort );
+            return context.getSocketFactory().createSocket( host, port, localAddress, localPort );
 
         throw new IllegalArgumentException( "Timeout is not supported." );
     }

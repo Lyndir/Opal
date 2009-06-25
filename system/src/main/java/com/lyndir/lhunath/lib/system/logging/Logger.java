@@ -1,5 +1,5 @@
 /*
- *   Copyright 2005-2007 Maarten Billemont
+ *   Copyright 2009, Maarten Billemont
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -15,519 +15,425 @@
  */
 package com.lyndir.lhunath.lib.system.logging;
 
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.net.URL;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.LogRecord;
 
-import com.lyndir.lhunath.lib.system.Locale;
-import com.lyndir.lhunath.lib.system.Utils;
+import org.slf4j.LoggerFactory;
 
 
 /**
- * <i>Logger - An interface to the java {@link java.util.logging.Logger} class.</i><br>
- * <br>
- * This is an attempt to making the java {@link java.util.logging.Logger} class easier to use.<br>
- * For basic use, just call the {@link #log(Level, String, Throwable, Object[])} method, or the convenience methods for
- * each log level.<br>
- * <br>
+ * <h2>{@link Logger}<br>
+ * <sub>[in short] (TODO).</sub></h2>
+ * 
+ * <p>
+ * [description / usage].
+ * </p>
+ * 
+ * <p>
+ * <i>Mar 28, 2009</i>
+ * </p>
  * 
  * @author lhunath
  */
 public class Logger {
 
-    private static Map<String, Logger> loggers;
+    private static final Logger          loggerLogger = Logger.get( Logger.class );
 
-    private java.util.logging.Logger   javaLogger;
-    private Map<LogListener, Level>    listeners;
+    private static Map<Class<?>, Logger> loggers;
 
-    static {
-        try {
-            /* Configure the Java Logging backend. */
-            URL loggerProperties = Utils.resolve( "Logger.properties" );
-            if (loggerProperties != null)
-                LogManager.getLogManager().readConfiguration( loggerProperties.openStream() );
+    private org.slf4j.Logger             logger;
 
-            /* Set up base handlers. */
-            ConsoleHandler handler = new ConsoleHandler();
-            handler.setFormatter( new ConsoleFormatter( true ) );
-            handler.setLevel( Level.FINER );
-            getGlobal().silence().addHandler( handler );
+    private Throwable                    eventCause;
+    private String                       eventFormat;
+    private Object[]                     eventArguments;
 
-            /* Register us as the default handler for uncaught exceptions. */
-            Thread.setDefaultUncaughtExceptionHandler( new UncaughtExceptionHandler() {
 
-                public void uncaughtException(Thread t, Throwable e) {
+    // Create a logger --
 
-                    /*
-                     * Report all uncaught errors.. Except for that annoying one caused by a buggy
-                     * BasicPopupMenuUI.MouseGrabber.
-                     */
-                    if (!"java.awt.TrayIcon cannot be cast to java.awt.Component".equals( e.getMessage() ))
-                        Logger.error( e );
-                }
-            } );
-        } catch (Exception e) {
-            Logger.error( e, "Failed to properly initialize logger settings." );
-        }
-    }
-
-
-    /**
-     * Log a message with the given information.
-     * 
-     * @param level
-     *            The severity level of the message.
-     * @param message
-     *            The description message.
-     * @param error
-     *            An optional throwable cause of this log message. Set to null if not applicable.
-     * @param args
-     *            Arguments to format the description message with.
-     */
-    public static void log(Level level, String message, Throwable error, Object... args) {
-
-        try {
-            message = Locale.explain( message, args );
-            LogRecord record = new LogRecord( level, message );
-            record.setThrown( error );
-
-            getLogger().fireEvent( record );
-            if (message == null && error == null)
-                return;
-
-            getGlobal().javaLogger.log( record );
-        } catch (Exception e) {
-            e.printStackTrace();
-            uncaught( e );
-        }
-    }
-
-    /**
-     * Handle an uncaught {@link Throwable} that cannot be safely handled through the logging backend.
-     * 
-     * @param e
-     *            The {@link Throwable} that needs to be handled.
-     */
-    public static void uncaught(Throwable e) {
-
-        if (Thread.getDefaultUncaughtExceptionHandler() != null)
-            Thread.getDefaultUncaughtExceptionHandler().uncaughtException( Thread.currentThread(), e );
-        else
-            e.printStackTrace();
-    }
-
-    /**
-     * Send a message about the correct working of the program.
-     * 
-     * @param message
-     *            The locale message identifier or format string to send.
-     * @param args
-     *            The arguments for the message format string.
-     */
-    public static void fine(String message, Object... args) {
-
-        log( Level.FINE, message, null, args );
-    }
-
-    /**
-     * Send a message about the correct working of the program, when being verbose.
-     * 
-     * @param message
-     *            The locale message identifier or format string to send.
-     * @param args
-     *            The arguments for the message format string.
-     */
-    public static void finer(String message, Object... args) {
-
-        log( Level.FINER, message, null, args );
-    }
-
-    /**
-     * Send a message about the correct working of the program, when being very verbose.
-     * 
-     * @param message
-     *            The locale message identifier or format string to send.
-     * @param args
-     *            The arguments for the message format string.
-     */
-    public static void finest(String message, Object... args) {
-
-        log( Level.FINEST, message, null, args );
-    }
-
-    /**
-     * Send a message about the current configuration of the program.
-     * 
-     * @param message
-     *            The locale message identifier or format string to send.
-     * @param args
-     *            The arguments for the message format string.
-     */
-    public static void config(String message, Object... args) {
-
-        log( Level.CONFIG, message, null, args );
-    }
-
-    /**
-     * Send a message informing the user about the state of the program.
-     * 
-     * @param message
-     *            The locale message identifier or format string to send.
-     * @param args
-     *            The arguments for the message format string.
-     */
-    public static void info(String message, Object... args) {
-
-        log( Level.INFO, message, null, args );
-    }
-
-    /**
-     * Send a warning message stating that abnormal behaviour was detected.
-     * 
-     * @param message
-     *            The locale message identifier or format string to send.
-     * @param args
-     *            The arguments for the message format string.
-     */
-    public static void warn(String message, Object... args) {
-
-        log( Level.WARNING, message, null, args );
-    }
-
-    /**
-     * Send an error message, notifying the user that something went seriously wrong.
-     * 
-     * @param exception
-     *            The exception that occurred causing this error.
-     */
-    public static void error(Throwable exception) {
-
-        log( Level.SEVERE, exception.getMessage(), exception, "" );
-    }
-
-    /**
-     * Send an error message, notifying the user that something went seriously wrong.
-     * 
-     * @param exception
-     *            The exception that occurred causing this error.
-     * @param message
-     *            The locale message identifier or format string to send.
-     * @param args
-     *            The arguments for the message format string.
-     */
-    public static void error(Throwable exception, String message, Object... args) {
-
-        if (args.length > 0 || message != null && message.length() > 0)
-            error( new RuntimeException( Locale.explain( message, args ), exception ) );
-        else
-            error( exception );
-    }
-
-    /**
-     * Send an error message, notifying the user that something went seriously wrong.
-     * 
-     * @param message
-     *            The locale message identifier or format string to send.
-     * @param args
-     *            The arguments for the message format string.
-     */
-    public static void error(String message, Object... args) {
-
-        error( new RuntimeException( Locale.explain( message, args ) ) );
-    }
-
-    /**
-     * Send an error message, notifying the user that something went so badly wrong that the program needs to be
-     * terminated as a result.
-     * 
-     * @param exception
-     *            The exception that occurred causing this error.
-     */
-    public static void fatal(Throwable exception) {
-
-        error( exception );
-        System.exit( 1 );
-    }
-
-    /**
-     * Send an error message, notifying the user that something went so badly wrong that the program needs to be
-     * terminated as a result.
-     * 
-     * @param exception
-     *            The exception that occurred causing this error.
-     * @param message
-     *            The locale message identifier or format string to send.
-     * @param args
-     *            The arguments for the message format string.
-     */
-    public static void fatal(Throwable exception, String message, Object... args) {
-
-        error( exception, message, args );
-        System.exit( 1 );
-    }
-
-    /**
-     * Send an error message, notifying the user that something went so badly wrong that the program needs to be
-     * terminated as a result.
-     * 
-     * @param message
-     *            The locale message identifier or format string to send.
-     * @param args
-     *            The arguments for the message format string.
-     */
-    public static void fatal(String message, Object... args) {
-
-        error( message, args );
-        System.exit( 1 );
-    }
-
-    /**
-     * Print out a stack trace at the INFO level.
-     */
-    public static void trace() {
-
-        log( Level.INFO, "Tracing.", new Throwable() );
-    }
-
-    /**
-     * Add a log Handler to receive logging messages. By default, Loggers also send their output to their parent logger.
-     * Typically the root Logger is configured with a set of Handlers that essentially act as default handlers for all
-     * loggers.
-     * 
-     * @param handler
-     *            a logging Handler
-     */
-    public void addHandler(ConsoleHandler handler) {
-
-        javaLogger.addHandler( handler );
-    }
-
-    /**
-     * Make the logger output to listeners.
-     * 
-     * @param listener
-     *            The object that will be listening for log messages.
-     * @param minLevel
-     *            The minimal {@link Level} of log messages accepted by this listener.
-     * @return The logger that was modified.
-     */
-    public Logger addListener(LogListener listener, Level minLevel) {
-
-        if (listeners == null || listeners.isEmpty())
-            listeners = new HashMap<LogListener, Level>();
-
-        listeners.put( listener, minLevel );
-        return this;
-    }
-
-    private void fireEvent(LogRecord record) {
-
-        /* Fire all our listeners. */
-        if (listeners != null)
-            for (LogListener listener : listeners.keySet())
-                /* Check to see if we're supposed to be ignoring this record. */
-                if (record.getLevel().intValue() >= listeners.get( listener ).intValue()
-                    && !listeners.get( listener ).equals( Level.OFF ))
-                    listener.logMessage( record );
-
-        /* Fire all listeners of our parents. */
-        if (!equals( getGlobal() ))
-            if (javaLogger.getParent() != null)
-                getLogger( javaLogger.getParent() ).fireEvent( record );
-            else if (!equals( getGlobal() ))
-                getGlobal().fireEvent( record );
-    }
-
-    /**
-     * Make the logger output to the specified target file.
-     * 
-     * @param target
-     *            The output channel.
-     * @return The logger that was modified.
-     */
-    public Logger logTo(String target) {
-
-        try {
-            javaLogger.addHandler( new FileHandler( target ) );
-        } catch (Exception e) {
-            javaLogger.severe( Locale.explain( "logOpenFailed", this, target ) );
-            e.printStackTrace();
-        }
-
-        return this;
-    }
-
-    /**
-     * Change the {@link Level} at which this logger filters out messages. Any message with a {@link Level} lower than
-     * the given one will be ignored by this logger.
-     * 
-     * @param level
-     *            The minimum allowed {@link Level}.
-     * @return This logger.
-     */
-    public Logger setLevel(Level level) {
-
-        javaLogger.setLevel( level );
-        return this;
-    }
-
-    /**
-     * Remove all output destinations of a logger.
-     * 
-     * @return This logger.
-     */
-    public Logger silence() {
-
-        for (Handler handler : javaLogger.getHandlers())
-            javaLogger.removeHandler( handler );
-
-        return this;
-    }
-
-    /**
-     * Remove the specified destination of a logger.
-     * 
-     * @param silenceHandler
-     *            The handler that must be removed.
-     * @return This logger.
-     */
-    public Logger silence(Handler silenceHandler) {
-
-        for (Handler handler : javaLogger.getHandlers())
-            if (handler.equals( silenceHandler ))
-                javaLogger.removeHandler( handler );
-
-        return this;
-    }
-
-    /**
-     * Retrieve the logger for the first non-system class in the current stack.
-     * 
-     * @return Guess.
-     */
-    public static Logger getLogger() {
-
-        for (StackTraceElement element : new Throwable().getStackTrace()) {
-
-            /* Skip all stack trace elements from com.lyndir.lhunath.lib.system.logging. */
-            if (element.getClassName().startsWith( Logger.class.getPackage().getName() ))
-                continue;
-
-            return getLogger( java.util.logging.Logger.getLogger( element.getClassName() ) );
-        }
-
-        return getGlobal();
-    }
-
-    /**
-     * Retrieve the global logger.
-     * 
-     * @return Guess.
-     */
-    public static Logger getGlobal() {
-
-        return getLogger( java.util.logging.Logger.getLogger( java.util.logging.Logger.global.getName() ) );
-    }
-
-    /**
-     * Retrieve the logger that uses the given Java Logger.
-     * 
-     * @param jLogger
-     *            The Java Logger that is used by the requested logger.
-     * @return Guess.
-     */
-    private static Logger getLogger(java.util.logging.Logger jLogger) {
+    public static Logger get(Class<?> type) {
 
         if (loggers == null)
-            loggers = new HashMap<String, Logger>();
+            loggers = new HashMap<Class<?>, Logger>();
 
-        Logger logger = null;
-        if (jLogger != null) {
-            /* Initialize this logger's level from its parent. */
-            if (jLogger.getLevel() == null)
-                if (jLogger.getName().equals( java.util.logging.Logger.global.getName() ))
-                    jLogger.setLevel( Level.INFO );
-                else
-                    for (java.util.logging.Logger parent = jLogger.getParent(); parent != null; parent = jLogger.getParent())
-                        if (parent.getLevel() != null) {
-                            jLogger.setLevel( parent.getLevel() );
-                            break;
-                        }
-
-            /* Get/put this logger from/in our logger cache. */
-            logger = loggers.get( jLogger.getName() );
-            if (logger == null)
-                loggers.put( jLogger.getName(), logger = new Logger( jLogger ) );
+        Logger logger = loggers.get( type );
+        if (logger == null) {
+            logger = new Logger( type );
+            loggers.put( type, logger );
         }
 
         return logger;
     }
 
+    // Event logging --
+
     /**
-     * Retrieve the logger for a certain class.
+     * Log a progress trace event.
      * 
-     * @param source
-     *            The section that needs to be logged.
-     * @return The logger.
+     * <p>
+     * This level is for all events that describe the flow of execution.
+     * </p>
+     * 
+     * @param cause
+     *            A throwable that details the stack at the time of this event.
+     * @param descriptionFormat
+     *            The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments
+     *            The arguments to inject into the event message format.
+     * 
+     * @return Self, for chaining.
      */
-    public static Logger getLogger(Class<?> source) {
+    public Logger trc(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
 
-        if (loggers == null)
-            loggers = new HashMap<String, Logger>();
+        if (logger.isTraceEnabled())
+            if (cause == null)
+                logger.trace( String.format( descriptionFormat, descriptionArguments ) );
+            else
+                logger.trace( String.format( descriptionFormat, descriptionArguments ), cause );
 
-        return getLogger( java.util.logging.Logger.getLogger( source == null ? null : source.getCanonicalName() ) );
+        eventCause = cause;
+        eventFormat = descriptionFormat;
+        eventArguments = descriptionArguments;
+
+        return this;
     }
 
     /**
-     * Create a new Logger instance.
+     * Log a progress trace event.
      * 
-     * @param name
-     *            A name for the logger. This should be a dot-separated name and should normally be based on the package
-     *            name or class name of the subsystem, such as java.net or javax.swing. It may be null for anonymous
-     *            Loggers.
-     * @param resourceBundleName
-     *            name of ResourceBundle to be used for localizing messages for this logger. May be null if none of the
-     *            messages require localization.
+     * <p>
+     * This level is for all events that describe the flow of execution.
+     * </p>
+     * 
+     * @see #trc(Throwable, String, Object...)
+     * 
+     * @param descriptionFormat
+     *            The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments
+     *            The arguments to inject into the event message format.
+     * 
+     * @return Self, for chaining.
      */
-    private Logger(String name, String resourceBundleName) {
+    public void trc(String descriptionFormat, Object... descriptionArguments) {
 
-        javaLogger = java.util.logging.Logger.getLogger( name, resourceBundleName );
+        trc( null, descriptionFormat, descriptionArguments );
     }
 
     /**
-     * Create a new Logger instance.
+     * Log a debugging event.
      * 
-     * @param logger
-     *            The java logger this logger will be using.
+     * <p>
+     * This level is for all events that visualize the application's state.
+     * </p>
+     * 
+     * @param cause
+     *            A throwable that details the stack at the time of this event.
+     * @param descriptionFormat
+     *            The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments
+     *            The arguments to inject into the event message format.
+     * 
+     * @return Self, for chaining.
      */
-    private Logger(java.util.logging.Logger logger) {
+    public Logger dbg(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
 
-        this( logger.getName(), logger.getResourceBundleName() );
+        if (logger.isDebugEnabled())
+            if (cause == null)
+                logger.debug( String.format( descriptionFormat, descriptionArguments ) );
+            else
+                logger.debug( String.format( descriptionFormat, descriptionArguments ), cause );
+
+        eventCause = cause;
+        eventFormat = descriptionFormat;
+        eventArguments = descriptionArguments;
+
+        return this;
     }
 
     /**
-     * Retrieve the javaLogger of this Logger.
+     * Log a debugging event.
      * 
-     * @return Guess.
+     * <p>
+     * This level is for all events that visualize the application's state.
+     * </p>
+     * 
+     * @param descriptionFormat
+     *            The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments
+     *            The arguments to inject into the event message format.
+     * 
+     * @return Self, for chaining.
      */
-    public java.util.logging.Logger getJavaLogger() {
+    public Logger dbg(String descriptionFormat, Object... descriptionArguments) {
 
-        return javaLogger;
+        return dbg( null, descriptionFormat, descriptionArguments );
     }
 
     /**
-     * @inheritDoc
+     * Log an informative statement.
+     * 
+     * <p>
+     * This level is for all events that detail an important evolution in the application's state.
+     * </p>
+     * 
+     * @param cause
+     *            A throwable that details the stack at the time of this event.
+     * @param descriptionFormat
+     *            The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments
+     *            The arguments to inject into the event message format.
+     * 
+     * @return Self, for chaining.
      */
-    @Override
-    public String toString() {
+    public Logger inf(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
 
-        return String.format( "[%s] %s >%s", javaLogger.getLevel(), javaLogger.getName(), listeners );
+        if (logger.isInfoEnabled())
+            logger.info( String.format( descriptionFormat, descriptionArguments ), cause );
+
+        eventCause = cause;
+        eventFormat = descriptionFormat;
+        eventArguments = descriptionArguments;
+
+        return this;
+    }
+
+    /**
+     * Log an informative statement.
+     * 
+     * <p>
+     * This level is for all events that detail an important evolution in the application's state.
+     * </p>
+     * 
+     * @see #inf(Throwable, String, Object...)
+     * 
+     * @param descriptionFormat
+     *            The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments
+     *            The arguments to inject into the event message format.
+     * 
+     * @return Self, for chaining.
+     */
+    public Logger inf(String descriptionFormat, Object... descriptionArguments) {
+
+        return inf( null, descriptionFormat, descriptionArguments );
+    }
+
+    /**
+     * Log an application warning.
+     * 
+     * <p>
+     * This level is for all events that indicate a suboptimal / non-ideal flow.
+     * </p>
+     * 
+     * @param cause
+     *            A throwable that details the stack at the time of this event.
+     * @param descriptionFormat
+     *            The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments
+     *            The arguments to inject into the event message format.
+     * 
+     * @return Self, for chaining.
+     */
+    public Logger wrn(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
+
+        if (logger.isWarnEnabled())
+            if (cause == null)
+                logger.warn( String.format( descriptionFormat, descriptionArguments ) );
+            else
+                logger.warn( String.format( descriptionFormat, descriptionArguments ), cause );
+
+        eventCause = cause;
+        eventFormat = descriptionFormat;
+        eventArguments = descriptionArguments;
+
+        return this;
+    }
+
+    /**
+     * Log an application warning.
+     * 
+     * <p>
+     * This level is for all events that indicate a suboptimal / non-ideal flow.
+     * </p>
+     * 
+     * @param descriptionFormat
+     *            The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments
+     *            The arguments to inject into the event message format.
+     * 
+     * @return Self, for chaining.
+     */
+    public Logger wrn(String descriptionFormat, Object... descriptionArguments) {
+
+        return wrn( null, descriptionFormat, descriptionArguments );
+    }
+
+    /**
+     * Log an internal inconsistency.
+     * 
+     * <p>
+     * This level is for all events that occur unexpectedly. They indicate a bug in the application's flow.
+     * </p>
+     * 
+     * @see #bug(Throwable, String, Object...)
+     * 
+     * @param cause
+     *            A throwable that details the stack at the time of this event.
+     * 
+     * @return Self, for chaining.
+     */
+    public Logger bug(Throwable cause) {
+
+        return bug( cause, "Unexpected Error" );
+    }
+
+    /**
+     * Log an internal inconsistency.
+     * 
+     * <p>
+     * This level is for all events that occur unexpectedly. They indicate a bug in the application's flow.
+     * </p>
+     * 
+     * @param cause
+     *            A throwable that details the stack at the time of this event.
+     * @param descriptionFormat
+     *            The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments
+     *            The arguments to inject into the event message format.
+     * 
+     * @return Self, for chaining.
+     */
+    public Logger bug(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
+
+        if (logger.isErrorEnabled())
+            if (cause == null)
+                logger.error( String.format( descriptionFormat, descriptionArguments ) );
+            else
+                logger.error( String.format( descriptionFormat, descriptionArguments ), cause );
+
+        eventCause = cause;
+        eventFormat = descriptionFormat;
+        eventArguments = descriptionArguments;
+
+        return this;
+    }
+
+    /**
+     * Log an internal inconsistency.
+     * 
+     * <p>
+     * This level is for all events that occur unexpectedly. They indicate a bug in the application's flow.
+     * </p>
+     * 
+     * @param descriptionFormat
+     *            The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments
+     *            The arguments to inject into the event message format.
+     * 
+     * @return Self, for chaining.
+     */
+    public Logger bug(String descriptionFormat, Object... descriptionArguments) {
+
+        return bug( null, descriptionFormat, descriptionArguments );
+    }
+
+    /**
+     * Log an application error.
+     * 
+     * <p>
+     * This level is for all events that indicate failure to comply with the request.
+     * </p>
+     * 
+     * @param cause
+     *            A throwable that details the stack at the time of this event.
+     * @param descriptionFormat
+     *            The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments
+     *            The arguments to inject into the event message format.
+     * 
+     * @return Self, for chaining.
+     */
+    public Logger err(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
+
+        if (logger.isErrorEnabled())
+            if (cause == null)
+                logger.error( String.format( descriptionFormat, descriptionArguments ) );
+            else
+                logger.error( String.format( descriptionFormat, descriptionArguments ), cause );
+
+        eventCause = cause;
+        eventFormat = descriptionFormat;
+        eventArguments = descriptionArguments;
+
+        return this;
+    }
+
+    /**
+     * Log an application error.
+     * 
+     * <p>
+     * This level is for all events that indicate failure to comply with the request.
+     * </p>
+     * 
+     * @param descriptionFormat
+     *            The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments
+     *            The arguments to inject into the event message format.
+     * 
+     * @return Self, for chaining.
+     */
+    public Logger err(String descriptionFormat, Object... descriptionArguments) {
+
+        return err( null, descriptionFormat, descriptionArguments );
+    }
+
+    // Event delegation --
+
+    /**
+     * Generate an unchecked {@link Error} of the previously logged event (and initialize its cause if set).
+     * 
+     * @return The previously logged event.
+     */
+    public Error toError() {
+
+        return toError( Error.class );
+    }
+
+    public <E extends Throwable> E toError(Class<E> errorClass) {
+
+        if (eventFormat == null)
+            throw new IllegalStateException( "No previous event set: can't rethrow one." );
+
+        try {
+            if (eventCause == null) {
+                Constructor<E> errorConstructor = errorClass.getConstructor( String.class );
+                return errorConstructor.newInstance( String.format( eventFormat, eventArguments ) );
+            }
+
+            Constructor<E> errorConstructor = errorClass.getConstructor( String.class, Throwable.class );
+            return errorConstructor.newInstance( String.format( eventFormat, eventArguments ), eventCause );
+        }
+
+        catch (IllegalArgumentException e) {
+            throw loggerLogger.bug( e ).toError();
+        } catch (InstantiationException e) {
+            throw loggerLogger.bug( e ).toError();
+        } catch (IllegalAccessException e) {
+            throw loggerLogger.bug( e ).toError();
+        } catch (InvocationTargetException e) {
+            throw loggerLogger.bug( e ).toError();
+        } catch (SecurityException e) {
+            throw loggerLogger.bug( e ).toError();
+        } catch (NoSuchMethodException e) {
+            throw loggerLogger.bug( e ).toError();
+        }
+    }
+
+    // Internal operation --
+
+    private Logger(Class<?> type) {
+
+        logger = LoggerFactory.getLogger( type );
     }
 }

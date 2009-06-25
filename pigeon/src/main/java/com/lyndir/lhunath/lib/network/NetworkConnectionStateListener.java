@@ -15,32 +15,33 @@
  */
 package com.lyndir.lhunath.lib.network;
 
-import java.net.ServerSocket;
 import java.net.Socket;
 
 
 /**
- * This listener should be implemented by classes that wish to be notified of network connection events.<br>
+ * This listener should be implemented by classes that wish to be notified of network events pertaining connection
+ * sockets.<br>
  * 
  * @author lhunath
  */
-public interface NetworkStateListener {
-
-    /**
-     * A new connection has been accepted by a listening server.
-     * 
-     * @param server
-     *            The socket on which the connection has been requested.
-     * @param socket
-     *            The socket over which the new connection will take place.
-     */
-    public void accepted(ServerSocket server, Socket socket);
+public interface NetworkConnectionStateListener {
 
     /**
      * A new connection has been established to a remote server.
      * 
-     * @param connection
+     * @param connectionSocket
      *            The socket over which the new connection will take place.
      */
-    public void connected(Socket connection);
+    public void connected(Socket connectionSocket);
+
+    /**
+     * A connection has been terminated.
+     * 
+     * @param connectionSocket
+     *            The socket whose connection has been terminated.
+     * @param resetByPeer
+     *            <code>true</code> if the remote side closed the connection, <code>false</code> if the local side hung
+     *            up.
+     */
+    public void closed(Socket connectionSocket, boolean resetByPeer);
 }

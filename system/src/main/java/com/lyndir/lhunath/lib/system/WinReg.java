@@ -19,8 +19,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
-import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
 /**
@@ -33,6 +35,9 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  * @author lhunath
  */
 public class WinReg {
+
+    private static final Logger logger = LoggerFactory.getLogger( WinReg.class );
+
 
     /**
      * Check whether registry queries are supported on the running operating system.
@@ -75,7 +80,7 @@ public class WinReg {
         if (type.equals( String.class )) {
             pos = output.indexOf( "REG_SZ" ) + "REG_SZ".length();
             if (pos < 6) {
-                Logger.warn( "Key %s:%s not found!", key, value );
+                logger.warn( "Key %s:%s not found!", key, value );
                 return type.cast( "" );
             }
 

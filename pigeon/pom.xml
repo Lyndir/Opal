@@ -37,6 +37,11 @@
 
         <!-- EXTERNAL DEPENDENCIES -->
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>xom</groupId>
             <artifactId>xom</artifactId>
         </dependency>

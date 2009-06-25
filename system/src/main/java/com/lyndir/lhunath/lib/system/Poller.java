@@ -15,18 +15,22 @@
  */
 package com.lyndir.lhunath.lib.system;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 /**
- * The poller acts as an interface between two threads that need to exchange events.<br>
+ * A poller maintains a queue for responsible objects. Each responsible object has a queue of elements that it needs to
+ * process.
  * 
  * @param <K>
- *            The type of key that owns the elements to poll.
+ *            The responsible objects type.
  * @param <E>
- *            The type of elements that will be queued in this poller.
+ *            The responsible objects' element type.
+ * 
  * @author lhunath
  */
 public class Poller<K, E> {
@@ -35,29 +39,38 @@ public class Poller<K, E> {
 
 
     /**
-     * Offer a new element to be polled.
-     * 
-     * @param key
-     *            The key resposible for the element to add.
-     * @param element
-     *            The new element to offer to the Poller's queue for the given key.
+     * Create a new {@link Poller} instance.
      */
-    public void offer(K key, E element) {
+    public Poller() {
 
-        Queue<E> queue = queues.get( key );
+        queues = Collections.synchronizedMap( new HashMap<K, Queue<E>>() );
+    }
+
+    /**
+     * Offer a new element to the responsible object's queue.
+     * 
+     * @param owner
+     *            The responsible object.
+     * @param element
+     *            The element that should be processed for the responsible object.
+     */
+    public void offer(K owner, E element) {
+
+        Queue<E> queue = queues.get( owner );
         if (queue == null)
-            queues.put( key, queue = new ConcurrentLinkedQueue<E>() );
+            queues.put( owner, queue = new ConcurrentLinkedQueue<E>() );
 
         queue.offer( element );
     }
 
     /**
-     * Check whether there are any elements available for a given key.
+     * Poll an element from the responsible object's queue.
      * 
      * @param owner
-     *            The key resposible for the requested element.
-     * @return An element polled for the given key, or null when that key does not have a queue or has no elements
-     *         queued.
+     *            The responsible object whose queue to poll.
+     * 
+     * @return The element that has been on the responsible object's queue the longest, or <code>null</code> if its
+     *         queue is empty.
      */
     public E poll(K owner) {
 
@@ -68,9 +81,11 @@ public class Poller<K, E> {
     }
 
     /**
-     * Check which key has available elements.
+     * Check whether there is a responsible object that has available elements.
      * 
-     * @return A key with elements that can be polled, or null if there is no such key.
+     * @return A responsible object that has elements on its queue or <code>null</code> if no queues need polling. When
+     *         there are multiple candidates, it is undefined which will be returned. You should continue to check this
+     *         method and poll elements until it returns <code>null</code>.
      */
     public K pollKey() {
 

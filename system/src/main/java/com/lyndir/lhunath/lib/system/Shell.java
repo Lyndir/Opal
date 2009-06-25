@@ -15,9 +15,6 @@
  */
 package com.lyndir.lhunath.lib.system;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -25,9 +22,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.util.Arrays;
+import java.util.LinkedList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
-import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
 /**
@@ -38,6 +39,7 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  */
 public class Shell {
 
+    static final Logger        logger      = LoggerFactory.getLogger( Shell.class );
     protected static final int BUFFER_SIZE = 4096;
 
 
@@ -53,7 +55,8 @@ public class Shell {
      * @return The process object for the process that was started.
      * @throws FileNotFoundException
      */
-    public static Process exec(boolean block, File currDir, String... cmd) throws FileNotFoundException {
+    public static Process exec(boolean block, File currDir, String... cmd)
+            throws FileNotFoundException {
 
         Process process = exec( System.out, System.err, currDir, cmd );
 
@@ -78,7 +81,7 @@ public class Shell {
         try {
             process.waitFor();
         } catch (InterruptedException err) {
-            Logger.error( err, "Process interrupted!" );
+            logger.error( "Process interrupted!", err );
             process.destroy();
         }
 
@@ -112,7 +115,7 @@ public class Shell {
             reader.read( buffer );
             reader.close();
         } catch (IOException e) {
-            Logger.error( e, "Failed to open the file to execute!" );
+            logger.error( "Failed to open the file to execute!", e );
             return null;
         }
 
@@ -140,7 +143,7 @@ public class Shell {
                     try {
                         Utils.pipeStream( process.getInputStream(), BUFFER_SIZE, out, null, false );
                     } catch (IOException e) {
-                        Logger.error( e, "Couldn't read from process or write to stdout!" );
+                        logger.error( "Couldn't read from process or write to stdout!", e );
                     }
                     try {
                         process.getInputStream().close();
@@ -160,7 +163,7 @@ public class Shell {
                     try {
                         Utils.pipeStream( process.getErrorStream(), BUFFER_SIZE, err, null, false );
                     } catch (IOException e) {
-                        Logger.error( e, "Couldn't read from process or write to stderr!" );
+                        logger.error( "Couldn't read from process or write to stderr!", e );
                     }
                     try {
                         process.getErrorStream().close();
@@ -174,7 +177,7 @@ public class Shell {
 
             return process;
         } catch (IOException e) {
-            Logger.error( e, "Could not start process %s!", cmd[0] );
+            logger.error( String.format( "Could not start process %s!", cmd[0] ), e );
             return null;
         }
     }
@@ -196,9 +199,9 @@ public class Shell {
 
             return Utils.readStream( new PipedInputStream( output ), Utils.BUFFER_SIZE, null );
         } catch (FileNotFoundException e) {
-            Logger.error( e, "Command to execute was not found!" );
+            logger.error( "Command to execute was not found!", e );
         } catch (IOException e) {
-            Logger.error( e, "Failed to read from the process!" );
+            logger.error( "Failed to read from the process!", e );
         }
 
         return null;
