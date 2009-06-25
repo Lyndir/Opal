@@ -41,7 +41,6 @@ import javax.net.ssl.SSLEngineResult;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLEngineResult.HandshakeStatus;
 
-import com.lyndir.lhunath.lib.system.Utils;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
@@ -534,6 +533,10 @@ public class Network implements Runnable {
                     break;
 
                     case OK:
+                        logger.dbg(
+                                    "[>>>>: %s] SSL %s - %s: Produced %d bytes application data", //
+                                    nameChannel( connectionSocket.getChannel() ), sslEngineResult.getStatus(),
+                                    sslEngineResult.getHandshakeStatus(), sslEngineResult.bytesProduced() );
                     break;
                 }
 
@@ -589,13 +592,6 @@ public class Network implements Runnable {
             if (writeBuffer == null)
                 // No write buffer assigned to this connection yet; allocate one.
                 writeBuffers.put( connectionSocket, writeBuffer = ByteBuffer.allocate( WRITE_BUFFER ) );
-
-            // Visualize outgoing (plain-text) data.
-            if (writeQueueBuffer.remaining() > 0) {
-                logger.inf( "[>>>>: %s] Sending (plain): %s", //
-                            nameChannel( connectionSocket.getChannel() ), Utils.getCharset().decode( writeQueueBuffer ) );
-                writeQueueBuffer.flip();
-            }
 
             // Perform translation from application data to network data and out the result.
             writeBuffer = fromApplicationData( writeQueueBuffer, connectionSocket, writeBuffer );
@@ -676,6 +672,10 @@ public class Network implements Runnable {
                     break;
 
                     case OK:
+                        logger.dbg(
+                                    "[>>>>: %s] SSL %s - %s: Consumed %d bytes application data", //
+                                    nameChannel( connectionSocket.getChannel() ), sslEngineResult.getStatus(),
+                                    sslEngineResult.getHandshakeStatus(), sslEngineResult.bytesConsumed() );
                     break;
                 }
 
@@ -782,10 +782,10 @@ public class Network implements Runnable {
         }
 
         // We are interested in writing stuff.
-        addOps( connectionSocket.getChannel(), SelectionKey.OP_WRITE );
         synchronized (writeQueueLocks.get( connectionSocket )) {
             writeQueueBuffer.put( dataBuffer );
         }
+        addOps( connectionSocket.getChannel(), SelectionKey.OP_WRITE );
     }
 
     /**
@@ -966,8 +966,10 @@ public class Network implements Runnable {
             throws IOException {
 
         // Read buffers
-        for (Socket connectionSocket : readBuffers.keySet()) {
-            ByteBuffer readBuffer = readBuffers.get( connectionSocket );
+        for (Map.Entry<Socket, ByteBuffer> entry : readBuffers.entrySet()) {
+            Socket connectionSocket = entry.getKey();
+            ByteBuffer readBuffer = entry.getValue();
+
             if (readBuffer.position() > 0) {
                 logger.dbg( "[rbuf: %s] %s", //
                             nameChannel( connectionSocket.getChannel() ), renderBuffer( readBuffer ) );
@@ -976,13 +978,25 @@ public class Network implements Runnable {
         }
 
         // Write buffers
-        for (Socket connectionSocket : writeBuffers.keySet()) {
-            ByteBuffer writeBuffer = writeBuffers.get( connectionSocket );
+        for (Map.Entry<Socket, ByteBuffer> entry : writeBuffers.entrySet()) {
+            Socket connectionSocket = entry.getKey();
+            ByteBuffer writeBuffer = entry.getValue();
+
             if (writeBuffer.position() > 0) {
                 logger.dbg( "[wbuf: %s] %s", //
                             nameChannel( connectionSocket.getChannel() ), renderBuffer( writeBuffer ) );
                 addOps( connectionSocket.getChannel(), SelectionKey.OP_WRITE );
             }
+        }
+
+        // Write queued application data
+        for (Map.Entry<Socket, ByteBuffer> entry : writeQueueBuffers.entrySet()) {
+            Socket connectionSocket = entry.getKey();
+            ByteBuffer writeQueueBuffer = entry.getValue();
+
+            if (writeQueueBuffer.position() > 0)
+                if (connectionSocket.isConnected() && !connectionSocket.isOutputShutdown())
+                    write( connectionSocket );
         }
     }
 
@@ -1154,14 +1168,20 @@ public class Network implements Runnable {
                     processHandshakes();
                     processBuffers();
 
+                    // See if any keys in the selector are ready for I/O.
+                    synchronized (selectorGuard) {}
+
                     // Visualize key state evolution.
                     for (SelectionKey key : selector.keys())
                         showKeyState( key );
 
-                    // See if any keys in the selector are ready for I/O.
-                    synchronized (selectorGuard) {}
+                    // Wait for selector operations.
                     if (selector.select() <= 0)
                         continue;
+
+                    // Visualize key state evolution.
+                    for (SelectionKey key : selector.keys())
+                        showKeyState( key );
 
                     // Perform I/O on the selected keys.
                     Iterator<SelectionKey> keysIt = selector.selectedKeys().iterator();
