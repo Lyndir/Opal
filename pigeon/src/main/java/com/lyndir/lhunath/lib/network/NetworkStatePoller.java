@@ -15,8 +15,8 @@
  */
 package com.lyndir.lhunath.lib.network;
 
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 
 import com.lyndir.lhunath.lib.system.Poller;
 
@@ -26,7 +26,7 @@ import com.lyndir.lhunath.lib.system.Poller;
  * 
  * @author lhunath
  */
-public class NetworkStatePoller extends Poller<NetworkStatePoller.State, Socket>
+public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketChannel>
         implements NetworkServerStateListener, NetworkConnectionStateListener {
 
     /**
@@ -51,7 +51,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, Socket>
     /**
      * {@inheritDoc}
      */
-    public void bound(ServerSocket serverSocket) {
+    public void bound(ServerSocketChannel serverSocket) {
 
     // Not supported.
     }
@@ -59,7 +59,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, Socket>
     /**
      * {@inheritDoc}
      */
-    public void accepted(ServerSocket serverSocket, Socket connectionSocket) {
+    public void accepted(ServerSocketChannel serverSocket, SocketChannel connectionSocket) {
 
         offer( State.ACCEPTED, connectionSocket );
     }
@@ -67,7 +67,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, Socket>
     /**
      * {@inheritDoc}
      */
-    public void connected(Socket connectionSocket) {
+    public void connected(SocketChannel connectionSocket) {
 
         offer( State.CONNECTED, connectionSocket );
     }
@@ -75,7 +75,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, Socket>
     /**
      * {@inheritDoc}
      */
-    public void closed(Socket connectionSocket, boolean resetByPeer) {
+    public void closed(SocketChannel connectionSocket, boolean resetByPeer) {
 
         offer( State.CLOSED, connectionSocket );
     }

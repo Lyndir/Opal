@@ -15,8 +15,8 @@
  */
 package com.lyndir.lhunath.lib.network;
 
-import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 
 import com.lyndir.lhunath.lib.system.Poller;
 
@@ -26,7 +26,7 @@ import com.lyndir.lhunath.lib.system.Poller;
  * 
  * @author lhunath
  */
-public class NetworkDataPoller extends Poller<Socket, ByteBuffer> implements NetworkDataListener {
+public class NetworkDataPoller extends Poller<SocketChannel, ByteBuffer> implements NetworkDataListener {
 
     /**
      * Create a new {@link NetworkDataPoller} instance. Register it on the network you're interested in.
@@ -49,7 +49,7 @@ public class NetworkDataPoller extends Poller<Socket, ByteBuffer> implements Net
     /**
      * {@inheritDoc}
      */
-    public void received(ByteBuffer dataBuffer, Socket connectionSocket) {
+    public void received(ByteBuffer dataBuffer, SocketChannel connectionSocket) {
 
         offer( connectionSocket, dataBuffer );
     }

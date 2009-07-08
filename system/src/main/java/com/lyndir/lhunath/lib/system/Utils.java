@@ -381,7 +381,7 @@ public class Utils {
      * 
      * @param file
      *            The file to calculate the sum for.
-     * @return The hash.
+     * @return The hash as a string of hexadecimal characters.
      */
     public static String getMD5(File file) {
 
@@ -395,7 +395,7 @@ public class Utils {
      *            The file to calculate the sum for.
      * @param digestType
      *            The digest to calculate.
-     * @return The hash.
+     * @return The hash as a string of hexadecimal characters.
      */
     public static String getDigest(File file, Digest digestType) {
 
@@ -412,7 +412,7 @@ public class Utils {
      * 
      * @param data
      *            The data to calculate the sum for.
-     * @return The hash.
+     * @return The hash as a string of hexadecimal characters.
      */
     public static String getMD5(String data) {
 
@@ -426,7 +426,7 @@ public class Utils {
      *            The data to calculate the sum for.
      * @param digestType
      *            The digest to calculate.
-     * @return The hash.
+     * @return The hash as a string of hexadecimal characters.
      */
     public static String getDigest(String data, Digest digestType) {
 
@@ -440,7 +440,7 @@ public class Utils {
      *            The stream to read the data from needed to calculate the sum.
      * @param digestType
      *            The digest to calculate.
-     * @return The hash.
+     * @return The hash as a string of hexadecimal characters.
      */
     public static String getDigest(InputStream in, Digest digestType) {
 

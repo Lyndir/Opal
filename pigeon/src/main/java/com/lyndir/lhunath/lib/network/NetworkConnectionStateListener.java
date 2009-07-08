@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.lib.network;
 
-import java.net.Socket;
+import java.nio.channels.SocketChannel;
 
 
 /**
@@ -29,19 +29,19 @@ public interface NetworkConnectionStateListener {
     /**
      * A new connection has been established to a remote server.
      * 
-     * @param connectionSocket
-     *            The socket over which the new connection will take place.
+     * @param socketChannel
+     *            The channel over which the new connection will take place.
      */
-    public void connected(Socket connectionSocket);
+    public void connected(SocketChannel socketChannel);
 
     /**
-     * A connection has been terminated.
+     * A channel has been closed.
      * 
-     * @param connectionSocket
-     *            The socket whose connection has been terminated.
+     * @param channel
+     *            The channel whose connection has been terminated.
      * @param resetByPeer
      *            <code>true</code> if the remote side closed the connection, <code>false</code> if the local side hung
      *            up.
      */
-    public void closed(Socket connectionSocket, boolean resetByPeer);
+    public void closed(SocketChannel channel, boolean resetByPeer);
 }

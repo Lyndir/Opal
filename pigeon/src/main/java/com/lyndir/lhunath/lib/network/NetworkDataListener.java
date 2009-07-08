@@ -15,8 +15,8 @@
  */
 package com.lyndir.lhunath.lib.network;
 
-import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 
 
 /**
@@ -32,8 +32,8 @@ public interface NetworkDataListener {
      * @param dataBuffer
      *            A byte buffer that contains the available data. It has been flipped and is ready to be read from. To
      *            read the data from it multiple times, flip it between complete read operations.
-     * @param connectionSocket
-     *            The socket over which the message has arrived.
+     * @param socketChannel
+     *            The channel over which the message has arrived.
      */
-    public void received(ByteBuffer dataBuffer, Socket connectionSocket);
+    public void received(ByteBuffer dataBuffer, SocketChannel socketChannel);
 }

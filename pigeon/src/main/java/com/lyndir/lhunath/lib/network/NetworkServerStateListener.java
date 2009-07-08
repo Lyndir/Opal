@@ -15,8 +15,8 @@
  */
 package com.lyndir.lhunath.lib.network;
 
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 
 
 /**
@@ -29,18 +29,18 @@ public interface NetworkServerStateListener {
     /**
      * A new server socket has begun listening for connections.
      * 
-     * @param serverSocket
-     *            The socket on which new connections are now being accepted.
+     * @param serverChannel
+     *            The channel on which new connections are now being accepted.
      */
-    public void bound(ServerSocket serverSocket);
+    public void bound(ServerSocketChannel serverChannel);
 
     /**
      * A new connection has been accepted by a listening server.
      * 
-     * @param serverSocket
-     *            The socket on which the connection has been requested.
-     * @param connectionSocket
-     *            The socket over which the new connection will take place.
+     * @param serverChannel
+     *            The channel on which the connection has been requested.
+     * @param connectionChannel
+     *            The channel over which the new connection will take place.
      */
-    public void accepted(ServerSocket serverSocket, Socket connectionSocket);
+    public void accepted(ServerSocketChannel serverChannel, SocketChannel connectionChannel);
 }
