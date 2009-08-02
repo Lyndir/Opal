@@ -33,6 +33,8 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  */
 public class UpdateUi extends Thread {
 
+    private static final Logger          logger = Logger.get( UpdateUi.class );
+
     private BlockingQueue<UpdateRequest> requests;
     private AbstractUi                   ui;
     private UpdateRequest                currentRequest;
@@ -74,7 +76,7 @@ public class UpdateUi extends Thread {
                 if (!requests.offer( newRequest, 500, TimeUnit.MILLISECONDS ))
                     throw new InterruptedException( "Maximum wait time elapsed." );
             } catch (InterruptedException e) {
-                Logger.error( "err.updateQueueFull", newRequest );
+                logger.err( "err.updateQueueFull", newRequest );
             }
         }
     }
@@ -107,8 +109,8 @@ public class UpdateUi extends Thread {
 
             /* Uncaught exception occurred during the request. */
             catch (Throwable e) {
-                Logger.error( e );
-                Logger.error( currentRequest.getCause(), "Caused by this request." );
+                e.initCause( currentRequest.getCause() );
+                logger.err( e, "Unexpected error occurred." );
             }
         }
     }

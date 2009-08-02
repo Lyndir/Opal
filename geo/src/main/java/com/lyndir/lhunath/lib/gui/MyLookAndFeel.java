@@ -40,6 +40,8 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  */
 public class MyLookAndFeel implements Serializable {
 
+    static final Logger          logger           = Logger.get( MyLookAndFeel.class );
+
     private static MyLookAndFeel active;
     private Map<String, Color>   defaults;
     private MyThemeType          themeType;
@@ -292,7 +294,7 @@ public class MyLookAndFeel implements Serializable {
             } catch (InstantiationException e) {
                 // Logger.error( e, "[BUG] Couldn't instantiate %s!", type ); TODO
             } catch (IllegalAccessException e) {
-                Logger.error( e, "[BUG] Couldn't instantiate %s!", type );
+                logger.err( e, "[BUG] Couldn't instantiate %s!", type );
             }
 
             return lnf.new MyPlasticTheme();
@@ -359,7 +361,7 @@ public class MyLookAndFeel implements Serializable {
                 PlasticLookAndFeel.setPlasticTheme( this );
                 UIManager.setLookAndFeel( new PlasticXPLookAndFeel() );
             } catch (UnsupportedLookAndFeelException e) {
-                Logger.error( e, "err.lookAndFeel" );
+                logger.err( e, "err.lookAndFeel" );
             }
         }
 

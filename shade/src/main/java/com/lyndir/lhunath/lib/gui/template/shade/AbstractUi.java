@@ -140,6 +140,8 @@ public abstract class AbstractUi
         implements ActionListener, LogListener, CaretListener, ListSelectionListener, ItemListener, Reflective,
         ListDataListener, FocusListener, TransitionTarget {
 
+    private static final Logger      logger               = Logger.get( AbstractUi.class );
+
     protected static final long      LAUNCH_DELAY         = 5000;
     protected static final int       FONT_SIZE            = 12;
     protected static final String    FONT_FACE            = Locale.explain( "conf.font" );
@@ -304,13 +306,13 @@ public abstract class AbstractUi
             } catch (NoClassDefFoundError err) {
                 showJavaVersionWarning();
             } catch (URISyntaxException err) {
-                Logger.error( err, Locale.explain( "bug.invalidMailto" ) //$NON-NLS-1$
-                                   + Locale.explain( "err.reportManually", Locale.explain( "ui.issue" ) ) //$NON-NLS-1$ //$NON-NLS-2$
-                                   + reportEmail );
+                logger.err( err, Locale.explain( "bug.invalidMailto" ) //$NON-NLS-1$
+                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.issue" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+                                 + reportEmail );
             } catch (IOException err) {
-                Logger.error( err, Locale.explain( "err.openingMail" ) //$NON-NLS-1$
-                                   + Locale.explain( "err.reportManually", Locale.explain( "ui.issue" ) ) //$NON-NLS-1$ //$NON-NLS-2$
-                                   + reportEmail );
+                logger.err( err, Locale.explain( "err.openingMail" ) //$NON-NLS-1$
+                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.issue" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+                                 + reportEmail );
             }
 
         else if ("reportOffense".equals( actionCommand )) //$NON-NLS-1$
@@ -323,13 +325,13 @@ public abstract class AbstractUi
             } catch (NoClassDefFoundError err) {
                 showJavaVersionWarning();
             } catch (URISyntaxException err) {
-                Logger.error( err, "bug.invalidMailto" //$NON-NLS-1$
-                                   + Locale.explain( "err.reportManually", Locale.explain( "ui.offense" ) ) //$NON-NLS-1$ //$NON-NLS-2$
-                                   + reportEmail );
+                logger.err( err, "bug.invalidMailto" //$NON-NLS-1$
+                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.offense" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+                                 + reportEmail );
             } catch (IOException err) {
-                Logger.error( err, "err.openingMail" //$NON-NLS-1$
-                                   + Locale.explain( "err.reportManually", Locale.explain( "ui.offense" ) ) //$NON-NLS-1$ //$NON-NLS-2$
-                                   + reportEmail );
+                logger.err( err, "err.openingMail" //$NON-NLS-1$
+                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.offense" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+                                 + reportEmail );
             }
 
         else if (systrayButton.equals( source )) {
@@ -396,7 +398,7 @@ public abstract class AbstractUi
                 pipeStdErr.close();
                 consoleStdOut.close();
             } catch (IOException e) {
-                Logger.error( e, "Couldn't properly close console output." );
+                logger.err( e, "Couldn't properly close console output." );
             }
         }
 
@@ -441,7 +443,7 @@ public abstract class AbstractUi
                 new TeeThread( pipeStdErr, realStdErr, consoleStdOut ).start();
                 new ConsoleThread( new PipedInputStream( consoleStdOut ), terminal ).start();
             } catch (IOException e) {
-                Logger.error( e, "Couldn't create replacement stdout/stderr." );
+                logger.err( e, "Couldn't create replacement stdout/stderr." );
             }
         }
     }
@@ -454,11 +456,12 @@ public abstract class AbstractUi
         newConsoleLogger.setFilter( ShadeConfig.console.getFilter() );
         newConsoleLogger.setLevel( ShadeConfig.console.getLevel() );
 
+        // FIXME
         ShadeConfig.console.close();
-        Logger.getGlobal().silence( ShadeConfig.console );
+        // Logger.getGlobal().silence( ShadeConfig.console );
 
         ShadeConfig.console = newConsoleLogger;
-        Logger.getGlobal().addHandler( ShadeConfig.console );
+        // Logger.getGlobal().addHandler( ShadeConfig.console );
     }
 
     /**
@@ -536,10 +539,10 @@ public abstract class AbstractUi
     private void eventNotImplemented(EventObject e) {
 
         if (e instanceof ActionEvent)
-            Logger.warn( "warn.actionNotImplemented", e.getClass(), ((ActionEvent) e).getActionCommand(), //$NON-NLS-1$
-                    Utils.getFieldName( this, e.getSource() ) );
+            logger.wrn( "warn.actionNotImplemented", e.getClass(), ((ActionEvent) e).getActionCommand(), //$NON-NLS-1$
+                        Utils.getFieldName( this, e.getSource() ) );
         else
-            Logger.warn( "warn.eventNotImplemented", e.getClass(), Utils.getFieldName( this, e.getSource() ) ); //$NON-NLS-1$
+            logger.wrn( "warn.eventNotImplemented", e.getClass(), Utils.getFieldName( this, e.getSource() ) ); //$NON-NLS-1$
     }
 
     /**
@@ -584,7 +587,8 @@ public abstract class AbstractUi
     /**
      * {@inheritDoc}
      */
-    public Object getFieldValue(Field field) throws IllegalArgumentException, IllegalAccessException {
+    public Object getFieldValue(Field field)
+            throws IllegalArgumentException, IllegalAccessException {
 
         return field.get( this );
     }
@@ -610,13 +614,13 @@ public abstract class AbstractUi
      */
     public void launchDelay(String desc, Object... args) {
 
-        Logger.finest( desc, args );
+        logger.dbg( desc, args );
         new Timer().schedule( new TimerTask() {
 
             @Override
             public void run() {
 
-                Logger.finest( null );
+                logger.dbg( null );
             }
         }, LAUNCH_DELAY );
     }
@@ -642,11 +646,11 @@ public abstract class AbstractUi
                     if (message != null || record.getThrown() != null)
                         try {
                             log.getEditorKit().read( new StringReader( logFormatter.format( record ) ),
-                                    log.getDocument(), log.getDocument().getLength() );
+                                                     log.getDocument(), log.getDocument().getLength() );
                         } catch (IOException e) {
-                            Logger.error( e, "Couldn't read the log message from the record!" );
+                            logger.err( e, "Couldn't read the log message from the record!" );
                         } catch (BadLocationException e) {
-                            Logger.error( e, "Invalid location in the log pane specified for log record insertion!" );
+                            logger.err( e, "Invalid location in the log pane specified for log record insertion!" );
                         }
 
                     /* Scroll to the bottom. */
@@ -785,11 +789,11 @@ public abstract class AbstractUi
         } catch (NoClassDefFoundError e) {
             showJavaVersionWarning();
         } catch (UnsupportedOperationException e) {
-            Logger.error( e, "err.browserSupported" );
+            logger.err( e, "err.browserSupported" );
         } catch (IOException e) {
-            Logger.error( e, "err.openingBrowser" );
+            logger.err( e, "err.openingBrowser" );
         } catch (URISyntaxException e) {
-            Logger.error( e, "err.browseUri", url );
+            logger.err( e, "err.browseUri", url );
         }
     }
 
@@ -1040,8 +1044,8 @@ public abstract class AbstractUi
         builder.appendSeparator( Locale.explain( "ui.appearance" ) ); //$NON-NLS-1$
 
         builder.append(
-                Locale.explain( "ui.theme" ), new ToolTip( Locale.explain( "ui.themeTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                                                           + Locale.explain( "ui.themeTip" ), themesPanel = new JPanel() ), 5 ); //$NON-NLS-1$
+                        Locale.explain( "ui.theme" ), new ToolTip( Locale.explain( "ui.themeTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                                                   + Locale.explain( "ui.themeTip" ), themesPanel = new JPanel() ), 5 ); //$NON-NLS-1$
         for (MyTheme theme : MyTheme.values())
             themesPanel.add( theme.getButton() );
         themesPanel.setOpaque( false );
@@ -1161,7 +1165,7 @@ public abstract class AbstractUi
         try {
             doc = getLicense();
         } catch (IOException e) {
-            Logger.error( e, "err.readLicense" );
+            logger.err( e, "err.readLicense" );
         }
 
         JEditorPane changelog = new JEditorPane( "text/html", doc.toString() ); //$NON-NLS-1$
@@ -1187,7 +1191,8 @@ public abstract class AbstractUi
     }
 
     @SuppressWarnings("unused")
-    protected String getLicense() throws IOException {
+    protected String getLicense()
+            throws IOException {
 
         return Locale.explain( "ui.licenseNotFound" );
     }
@@ -1231,7 +1236,7 @@ public abstract class AbstractUi
         try {
             doc = getChangeLog();
         } catch (IOException e) {
-            Logger.error( e, "err.readChangelog" );
+            logger.err( e, "err.readChangelog" );
         }
 
         JEditorPane changelog = new JEditorPane( "text/html", doc.toString() ); //$NON-NLS-1$
@@ -1248,7 +1253,8 @@ public abstract class AbstractUi
     }
 
     @SuppressWarnings("unused")
-    protected String getChangeLog() throws IOException {
+    protected String getChangeLog()
+            throws IOException {
 
         return Locale.explain( "ui.changelogNotFound" );
     }
@@ -1269,7 +1275,8 @@ public abstract class AbstractUi
             /* Set some look and feel properties. */
             Utils.setUIFont( new Font( FONT_FACE, Font.PLAIN, FONT_SIZE ) );
             contentPane.setBorder( BorderFactory.createBevelBorder( BevelBorder.RAISED,
-                    ShadeConfig.theme.get().getBright(), ShadeConfig.theme.get().getDark() ) );
+                                                                    ShadeConfig.theme.get().getBright(),
+                                                                    ShadeConfig.theme.get().getDark() ) );
 
             /* Force update on hidden panels. */
             if (frame != null && frame.isVisible())
@@ -1311,7 +1318,7 @@ public abstract class AbstractUi
                     writer.write( log.getText() );
                     writer.close();
                 } catch (IOException err) {
-                    Logger.error( err, "err.saveLog" ); //$NON-NLS-1$
+                    logger.err( err, "err.saveLog" ); //$NON-NLS-1$
                 }
             }
         };
@@ -1386,7 +1393,7 @@ public abstract class AbstractUi
                 if (ShadeConfig.sysTray.get())
                     showFrame = !ShadeConfig.startMini.get();
                 else
-                    frame.setExtendedState( ShadeConfig.startMini.get() ? Frame.ICONIFIED : Frame.NORMAL );
+                    frame.setExtendedState( ShadeConfig.startMini.get()? Frame.ICONIFIED: Frame.NORMAL );
             }
 
             frame.setLocationRelativeTo( null );
@@ -1398,14 +1405,16 @@ public abstract class AbstractUi
             if (logFormatter == null)
                 logFormatter = new HTMLFormatter();
 
-            Logger.getGlobal().setLevel( ShadeConfig.verbose.get() ? Level.FINEST : Level.INFO );
+            // FIXME
+            // logger.setLevel( ShadeConfig.verbose.get()? Level.FINEST: Level.INFO );
             ShadeConfig.formatter.setVerbose( ShadeConfig.verbose.get() );
             logFormatter.setVerbose( ShadeConfig.verbose.get() );
 
             if (verboseLogs != null)
                 verboseLogs.setSelected( ShadeConfig.verbose.get() );
 
-            Logger.getGlobal().addListener( this, Level.ALL );
+            // FIXME
+            // Logger.getGlobal().addListener( this, Level.ALL );
         }
 
         /* Update the settings buttons and fields. */
@@ -1466,7 +1475,7 @@ public abstract class AbstractUi
                             SystemTray.getSystemTray().add( systray );
                             frame.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
                         } catch (AWTException e) {
-                            Logger.error( e, "err.sysTray" );
+                            logger.err( e, "err.sysTray" );
 
                             showFrame = true;
                             ShadeConfig.sysTray.set( false );
@@ -1518,11 +1527,11 @@ public abstract class AbstractUi
 
         /* Change the color theme of UI elements. */
         else if (element.equals( BasicRequest.THEME )) {
-            Logger.fine( "stat.theme" ); //$NON-NLS-1$
+            logger.inf( "stat.theme" ); //$NON-NLS-1$
             try {
                 setLookAndFeel();
             } finally {
-                Logger.fine( null );
+                logger.inf( null );
             }
         } else
             for (Plugin plugin : plugins)
@@ -1561,8 +1570,10 @@ public abstract class AbstractUi
  */
 class ConsoleThread extends Thread {
 
-    private InputStreamReader in;
-    private JTextArea         console;
+    private static final Logger logger = Logger.get( ConsoleThread.class );
+
+    private InputStreamReader   in;
+    private JTextArea           console;
 
 
     /**
@@ -1599,7 +1610,7 @@ class ConsoleThread extends Thread {
                 console.setCaretPosition( console.getDocument().getLength() );
             }
         } catch (IOException e) {
-            Logger.error( e, "Could not read from the console source." );
+            logger.err( e, "Could not read from the console source." );
         }
     }
 }

@@ -49,67 +49,67 @@ public enum MyTheme {
     /**
      * Guess.
      */
-    DEW (Color.decode( "#CCFFFF" )), //$NON-NLS-1$
+    DEW (Color.decode( "#CCFFFF" )),
 
     /**
      * Guess.
      */
-    CANDY (Color.decode( "#FF6666" )), //$NON-NLS-1$
+    CANDY (Color.decode( "#FF6666" )),
 
     /**
      * Guess.
      */
-    AZTEK (Color.decode( "#FF9933" )), //$NON-NLS-1$
+    AZTEK (Color.decode( "#FF9933" )),
 
     /**
      * Guess.
      */
-    NATURE (Color.decode( "#99CC66" )), //$NON-NLS-1$
+    NATURE (Color.decode( "#99CC66" )),
 
     /**
      * Guess.
      */
-    FOREST (Color.decode( "#223922" )), //$NON-NLS-1$
+    FOREST (Color.decode( "#223922" )),
 
     /**
      * Guess.
      */
-    OAK (Color.decode( "#DD9966" )), //$NON-NLS-1$
+    OAK (Color.decode( "#DD9966" )),
 
     /**
      * Guess.
      */
-    SALT (Color.decode( "#6666BB" )), //$NON-NLS-1$
+    SALT (Color.decode( "#6666BB" )),
 
     /**
      * Guess.
      */
-    BABY (Color.decode( "#FFCCCC" )), //$NON-NLS-1$
+    BABY (Color.decode( "#FFCCCC" )),
 
     /**
      * Guess.
      */
-    SUNLIT (Color.decode( "#CCBB44" )), //$NON-NLS-1$
+    SUNLIT (Color.decode( "#CCBB44" )),
 
     /**
      * Guess.
      */
-    CORAL (Color.decode( "#558899" )), //$NON-NLS-1$
+    CORAL (Color.decode( "#558899" )),
 
     /**
      * Guess.
      */
-    TECH (Color.decode( "#333333" )), //$NON-NLS-1$
+    TECH (Color.decode( "#333333" )),
 
     /**
      * Guess.
      */
-    AURORA (Color.decode( "#332244" )), //$NON-NLS-1$
+    AURORA (Color.decode( "#332244" )),
 
     /**
      * Guess.
      */
-    BLOOD (Color.decode( "#551919" )), //$NON-NLS-1$
+    BLOOD (Color.decode( "#551919" )),
 
     /**
      * Guess.
@@ -125,7 +125,7 @@ public enum MyTheme {
         lookAndFeel = new MyLookAndFeel( base, MyThemeType.PLASTIC );
 
         /* Must load CUSTOM theme out of the config file if we're using it. */
-        if (name().equals( "CUSTOM" )) //$NON-NLS-1$
+        if (name().equals( "CUSTOM" ))
             SwingUtilities.invokeLater( new Runnable() {
 
                 public void run() {
@@ -217,7 +217,7 @@ public enum MyTheme {
     protected static boolean customThemeDialog(Component parent) {
 
         Color customColor = JColorChooser.showDialog( parent, Locale.explain( "ui.chooseBase" ), //$NON-NLS-1$
-                ShadeConfig.theme.get().getBase() );
+                                                      ShadeConfig.theme.get().getBase() );
         if (customColor != null) {
             CUSTOM.getLookAndFeel().setBase( customColor );
             return true;
@@ -260,7 +260,8 @@ public enum MyTheme {
                     customColor = Color.decode( System.getProperty( "theme" ).trim() );
                 } catch (NumberFormatException e) {
                     if (System.getProperty( "theme" ).trim().length() > 0)
-                        Logger.error( e, "err.invalidDefaultTheme", System.getProperty( "theme" ).trim() );
+                        Logger.get( MyTheme.class ).err( e, "err.invalidDefaultTheme",
+                                                         System.getProperty( "theme" ).trim() );
                 }
 
                 if (customColor != null) {

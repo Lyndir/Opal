@@ -33,6 +33,9 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  */
 public class ToolTipButton extends ToolTip {
 
+    private static final Logger logger = Logger.get( ToolTipButton.class );
+
+
     /**
      * Create a new {@link ToolTipButton} instance.
      * 
@@ -70,7 +73,7 @@ public class ToolTipButton extends ToolTip {
         if (getContent() instanceof AbstractButton)
             return (AbstractButton) getContent();
 
-        Logger.warn( "ToolTip has a non-AbstractButton as content!" );
+        logger.wrn( "ToolTip has a non-AbstractButton as content!" );
         return null;
     }
 

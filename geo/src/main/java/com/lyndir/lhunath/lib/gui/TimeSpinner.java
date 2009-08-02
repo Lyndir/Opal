@@ -39,6 +39,8 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  */
 public class TimeSpinner extends JSpinner {
 
+    static final Logger      logger = Logger.get( TimeSpinner.class );
+
     private TimeSpinnerModel model;
     private int              jumpField;
 
@@ -132,7 +134,7 @@ public class TimeSpinner extends JSpinner {
             String value = getValue().toString();
             return model.getFormat().parse( value ).getTime();
         } catch (ParseException e) {
-            Logger.error( e, "You entered an invalid time specification!" );
+            logger.err( e, "You entered an invalid time specification!" );
         }
 
         return 0;
@@ -179,7 +181,7 @@ public class TimeSpinner extends JSpinner {
     }
 
 
-    private class TimeSpinnerModel extends AbstractSpinnerModel {
+    class TimeSpinnerModel extends AbstractSpinnerModel {
 
         private Date             value;
         private SimpleDateFormat format;
@@ -291,7 +293,7 @@ public class TimeSpinner extends JSpinner {
                     else
                         this.value = format.parse( value.toString() );
                 } catch (ParseException e) {
-                    Logger.error( e, "%s is not a valid time specification!", value );
+                    logger.err( e, "%s is not a valid time specification!", value );
                 }
 
             fireStateChanged();

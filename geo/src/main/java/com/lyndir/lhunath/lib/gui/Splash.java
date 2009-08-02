@@ -45,13 +45,15 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  */
 public class Splash extends JWindow {
 
-    private static final long serialVersionUID = 1L;
-    protected static Splash   instance;
-    private Icon              icon;
-    private Icon              initial;
-    private BufferedImage     background;
-    private long              startTime;
-    private long              endTime;
+    private static final Logger logger           = Logger.get( Splash.class );
+
+    private static final long   serialVersionUID = 1L;
+    protected static Splash     instance;
+    private Icon                icon;
+    private Icon                initial;
+    private BufferedImage       background;
+    private long                startTime;
+    private long                endTime;
 
 
     private Splash(Icon initial, Icon icon) {
@@ -66,7 +68,7 @@ public class Splash extends JWindow {
             initial.getIconHeight();
 
             if (initialWidth != width || initialHeight != height) {
-                Logger.warn( "Initial icon has a different width or height.  Disabling fade." );
+                logger.wrn( "Initial icon has a different width or height.  Disabling fade." );
                 initial = null;
             }
         }
@@ -196,7 +198,7 @@ public class Splash extends JWindow {
                     icon = initial;
                     initial = null;
                 } else {
-                    Logger.warn( "Splash disabled: Image not found: %s", image );
+                    logger.wrn( "Splash disabled: Image not found: %s", image );
                     return null;
                 }
 

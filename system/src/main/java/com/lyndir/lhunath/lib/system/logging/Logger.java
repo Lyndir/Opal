@@ -39,15 +39,15 @@ import org.slf4j.LoggerFactory;
  */
 public class Logger {
 
-    private static final Logger          loggerLogger = Logger.get( Logger.class );
+    private static final Logger          loggerLogger   = Logger.get( Logger.class );
 
     private static Map<Class<?>, Logger> loggers;
 
     private org.slf4j.Logger             logger;
 
-    private Throwable                    eventCause;
-    private String                       eventFormat;
-    private Object[]                     eventArguments;
+    private ThreadLocal<Throwable>       eventCause     = new ThreadLocal<Throwable>();
+    private ThreadLocal<String>          eventFormat    = new ThreadLocal<String>();
+    private ThreadLocal<Object[]>        eventArguments = new ThreadLocal<Object[]>();
 
 
     // Create a logger --
@@ -92,9 +92,9 @@ public class Logger {
             else
                 logger.trace( String.format( descriptionFormat, descriptionArguments ), cause );
 
-        eventCause = cause;
-        eventFormat = descriptionFormat;
-        eventArguments = descriptionArguments;
+        eventCause.set( cause );
+        eventFormat.set( descriptionFormat );
+        eventArguments.set( descriptionArguments );
 
         return this;
     }
@@ -144,9 +144,9 @@ public class Logger {
             else
                 logger.debug( String.format( descriptionFormat, descriptionArguments ), cause );
 
-        eventCause = cause;
-        eventFormat = descriptionFormat;
-        eventArguments = descriptionArguments;
+        eventCause.set( cause );
+        eventFormat.set( descriptionFormat );
+        eventArguments.set( descriptionArguments );
 
         return this;
     }
@@ -191,9 +191,9 @@ public class Logger {
         if (logger.isInfoEnabled())
             logger.info( String.format( descriptionFormat, descriptionArguments ), cause );
 
-        eventCause = cause;
-        eventFormat = descriptionFormat;
-        eventArguments = descriptionArguments;
+        eventCause.set( cause );
+        eventFormat.set( descriptionFormat );
+        eventArguments.set( descriptionArguments );
 
         return this;
     }
@@ -243,9 +243,9 @@ public class Logger {
             else
                 logger.warn( String.format( descriptionFormat, descriptionArguments ), cause );
 
-        eventCause = cause;
-        eventFormat = descriptionFormat;
-        eventArguments = descriptionArguments;
+        eventCause.set( cause );
+        eventFormat.set( descriptionFormat );
+        eventArguments.set( descriptionArguments );
 
         return this;
     }
@@ -312,9 +312,9 @@ public class Logger {
             else
                 logger.error( String.format( descriptionFormat, descriptionArguments ), cause );
 
-        eventCause = cause;
-        eventFormat = descriptionFormat;
-        eventArguments = descriptionArguments;
+        eventCause.set( cause );
+        eventFormat.set( descriptionFormat );
+        eventArguments.set( descriptionArguments );
 
         return this;
     }
@@ -362,9 +362,9 @@ public class Logger {
             else
                 logger.error( String.format( descriptionFormat, descriptionArguments ), cause );
 
-        eventCause = cause;
-        eventFormat = descriptionFormat;
-        eventArguments = descriptionArguments;
+        eventCause.set( cause );
+        eventFormat.set( descriptionFormat );
+        eventArguments.set( descriptionArguments );
 
         return this;
     }
@@ -393,26 +393,41 @@ public class Logger {
     /**
      * Generate an unchecked {@link Error} of the previously logged event (and initialize its cause if set).
      * 
-     * @return The previously logged event.
+     * The previous event details are kept in a thread-safe manner and local to this logger instance.
+     * 
+     * @return An unchecked {@link Error}.
      */
     public Error toError() {
 
         return toError( Error.class );
     }
 
+    /**
+     * Generate the given {@link Throwable} of the previously logged event (and initialize its cause if set).
+     * 
+     * The previous event details are kept in a thread-safe manner and local to this logger instance.
+     * 
+     * @param errorClass
+     *            The type of {@link Throwable} to generate for the previously logged event.
+     * @param <E>
+     *            The type of the requested exception must be a subclass of {@link Throwable}.
+     * 
+     * @return The requested {@link Throwable}.
+     */
     public <E extends Throwable> E toError(Class<E> errorClass) {
 
-        if (eventFormat == null)
+        if (eventFormat.get() == null)
             throw new IllegalStateException( "No previous event set: can't rethrow one." );
 
         try {
-            if (eventCause == null) {
+            if (eventCause.get() == null) {
                 Constructor<E> errorConstructor = errorClass.getConstructor( String.class );
-                return errorConstructor.newInstance( String.format( eventFormat, eventArguments ) );
+                return errorConstructor.newInstance( String.format( eventFormat.get(), eventArguments.get() ) );
             }
 
             Constructor<E> errorConstructor = errorClass.getConstructor( String.class, Throwable.class );
-            return errorConstructor.newInstance( String.format( eventFormat, eventArguments ), eventCause );
+            return errorConstructor.newInstance( String.format( eventFormat.get(), eventArguments.get() ),
+                                                 eventCause.get() );
         }
 
         catch (IllegalArgumentException e) {

@@ -19,16 +19,12 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
 
 import com.lyndir.lhunath.lib.gui.MyLookAndFeel;
 import com.lyndir.lhunath.lib.math.Version;
 import com.lyndir.lhunath.lib.system.BaseConfig;
 import com.lyndir.lhunath.lib.system.Locale;
-import com.lyndir.lhunath.lib.system.logging.ConsoleFormatter;
 import com.lyndir.lhunath.lib.system.logging.LogFormatter;
-import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
 /**
@@ -115,23 +111,24 @@ public class ShadeConfig<T extends Serializable> extends BaseConfig<T> {
         initClass( ShadeConfig.class );
 
         /* Find the logger's console handler. */
-        ConsoleHandler handler = null;
-        for (Handler h : Logger.getGlobal().getJavaLogger().getHandlers())
-            if (h instanceof ConsoleHandler) {
-                handler = (ConsoleHandler) h;
-                break;
-            }
-        if (handler == null)
-            handler = new ConsoleHandler();
-
-        /* Configure it for use with the config's formatter. */
-        ShadeConfig.console = handler;
-        ShadeConfig.formatter = new ConsoleFormatter( verbose.get() );
-
-        /* Set the handlers up for use. */
-        handler.setLevel( Level.ALL );
-        handler.setFormatter( ShadeConfig.formatter );
-        Logger.getGlobal().silence().addHandler( handler );
+        // FIXME
+        // ConsoleHandler handler = null;
+        // for (Handler h : Logger.getGlobal().getJavaLogger().getHandlers())
+        // if (h instanceof ConsoleHandler) {
+        // handler = (ConsoleHandler) h;
+        // break;
+        // }
+        // if (handler == null)
+        // handler = new ConsoleHandler();
+        //
+        // /* Configure it for use with the config's formatter. */
+        // ShadeConfig.console = handler;
+        // ShadeConfig.formatter = new ConsoleFormatter( verbose.get() );
+        //
+        // /* Set the handlers up for use. */
+        // handler.setLevel( Level.ALL );
+        // handler.setFormatter( ShadeConfig.formatter );
+        // Logger.getGlobal().silence().addHandler( handler );
     }
 
 
