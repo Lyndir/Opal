@@ -115,7 +115,7 @@ public class Vec2 implements Cloneable {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public Vec2 clone() {
@@ -327,6 +327,6 @@ public class Vec2 implements Cloneable {
         if (!(o instanceof Vec2))
             return false;
 
-        return (x == ((Vec2) o).x && y == ((Vec2) o).y);
+        return x == ((Vec2) o).x && y == ((Vec2) o).y;
     }
 }

@@ -26,8 +26,8 @@ import java.lang.annotation.Target;
  * <sub>Mark a type whose instances can have XML data injected into them.</sub></h2>
  * 
  * <p>
- * Types with this annotation can be passed to {@link Structure#load(Class)}. This will cause the resource specified in this annotation to
- * be deserialized into the annotated object's fields.
+ * Types with this annotation can be passed to {@link Structure#load(Class)}. This will cause the resource specified in
+ * this annotation to be deserialized into the annotated object's fields.
  * </p>
  * 
  * <p>

@@ -67,7 +67,7 @@ public class EditableList extends JList {
 
         super();
 
-        a = contentTitle.matches( "^(?i)[aeiou].*" ) ? Locale.explain( "ui.an" ) : Locale.explain( "ui.a" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        a = contentTitle.matches( "^(?i)[aeiou].*" )? Locale.explain( "ui.an" ): Locale.explain( "ui.a" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         final EditableList list = this;
         setModel( model = new DefaultListModel() );
 
@@ -103,9 +103,10 @@ public class EditableList extends JList {
 
                             public void actionPerformed(ActionEvent ee) {
 
-                                String element = JOptionPane.showInputDialog( list,
-                                        Locale.explain( "ui.new" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
-                                                + newText );
+                                String element = JOptionPane.showInputDialog(
+                                                                              list,
+                                                                              Locale.explain( "ui.new" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
+                                                                                      + newText );
 
                                 if (element != null)
                                     model.addElement( element );
@@ -137,9 +138,10 @@ public class EditableList extends JList {
 
                             public void actionPerformed(ActionEvent ee) {
 
-                                String newVar = JOptionPane.showInputDialog( list,
-                                        Locale.explain( "ui.modify" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
-                                                + newText, getSelectedValue() );
+                                String newVar = JOptionPane.showInputDialog(
+                                                                             list,
+                                                                             Locale.explain( "ui.modify" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
+                                                                                     + newText, getSelectedValue() );
                                 model.remove( getSelectedIndex() );
                                 model.addElement( newVar );
                             }

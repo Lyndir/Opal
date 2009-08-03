@@ -31,6 +31,9 @@ import javax.swing.event.CaretEvent;
  */
 public class NullCaretEvent extends CaretEvent {
 
+    private static final long serialVersionUID = 1L;
+
+
     /**
      * Create a new NullCaretEvent instance.
      * 
@@ -43,7 +46,7 @@ public class NullCaretEvent extends CaretEvent {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public int getDot() {
@@ -52,7 +55,7 @@ public class NullCaretEvent extends CaretEvent {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public int getMark() {

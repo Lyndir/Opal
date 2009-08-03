@@ -109,7 +109,7 @@ public class ToolTip extends JPanel {
             public void paint(Graphics g) {
 
                 Dimension size = new Dimension( toolTipPane.getWidth() + 5,
-                        toolTipPane.getHeight() + (activeTip.stickable ? stickyhint.getHeight() : 0) );
+                        toolTipPane.getHeight() + (activeTip.stickable? stickyhint.getHeight(): 0) );
                 Window window = toolTipWindow;
                 if (window == null || !window.isDisplayable())
                     window = toolTipFrame;
@@ -169,7 +169,7 @@ public class ToolTip extends JPanel {
         buttonListener = new TipButtonListener();
 
         toolTipPane.getInputMap( JComponent.WHEN_IN_FOCUSED_WINDOW ).put( KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ),
-                "stick" );
+                                                                          "stick" );
         toolTipPane.getActionMap().put( "stick", new AbstractAction( "stick" ) {
 
             public void actionPerformed(ActionEvent e) {
@@ -356,7 +356,7 @@ public class ToolTip extends JPanel {
         toolTipFrame.setContentPane( gradient );
         toolTipFrame.pack();
         toolTipFrame.setSize( Math.min( toolTipFrame.getWidth(), maxWidth ), Math.min( toolTipFrame.getHeight(),
-                maxHeight ) );
+                                                                                       maxHeight ) );
         toolTipFrame.setLocationRelativeTo( null );
 
         pane.getViewport().scrollRectToVisible( new Rectangle( 0, 0, 0, 0 ) );
@@ -488,8 +488,7 @@ public class ToolTip extends JPanel {
                                 toolTipWindow.setContentPane( toolTipContainer );
                                 toolTipWindow.pack();
                                 toolTipWindow.setSize( toolTipPane.getWidth() + 5, toolTipPane.getHeight()
-                                                                                   + (stickable
-                                                                                               ? stickyhint.getHeight()
+                                                                                   + (stickable? stickyhint.getHeight()
                                                                                                : 0) );
 
                                 /* Determine the window's location. */
@@ -507,7 +506,7 @@ public class ToolTip extends JPanel {
                                 /* Listener that cleans up tip when content's window loses focus. */
                                 Window window = SwingUtilities.windowForComponent( getContent() );
                                 if (!Arrays.asList( window.getWindowListeners() ).contains(
-                                        toolTipContentWindowListener ))
+                                                                                            toolTipContentWindowListener ))
                                     window.addWindowFocusListener( toolTipContentWindowListener );
                             } catch (NullPointerException err) {
                                 /* Tooltip has been removed while timer was running. */
@@ -543,7 +542,7 @@ public class ToolTip extends JPanel {
 
             if (e.getSource() instanceof Component) {
                 Point pointOnContent = SwingUtilities.convertPoint( (Component) e.getSource(), e.getPoint(),
-                        getContent() );
+                                                                    getContent() );
                 x = pointOnContent.x;
                 y = pointOnContent.y;
             }

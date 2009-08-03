@@ -47,7 +47,8 @@ public class DiffUtils {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static String getDiff(InputStream from, InputStream to) throws FileNotFoundException, IOException {
+    public static String getDiff(InputStream from, InputStream to)
+            throws FileNotFoundException, IOException {
 
         return getDiff( new BufferedReader( new InputStreamReader( from ) ), new BufferedReader( new InputStreamReader(
                 to ) ) );
@@ -64,7 +65,8 @@ public class DiffUtils {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static String getDiff(BufferedReader from, BufferedReader to) throws FileNotFoundException, IOException {
+    public static String getDiff(BufferedReader from, BufferedReader to)
+            throws FileNotFoundException, IOException {
 
         Diff diff = new Diff();
         diff.diffBuffer( from, to );
@@ -83,7 +85,8 @@ public class DiffUtils {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static String getDiff(String from, String to) throws FileNotFoundException, IOException {
+    public static String getDiff(String from, String to)
+            throws FileNotFoundException, IOException {
 
         Diff diff = new Diff();
         diff.diffString( from, to );
@@ -110,7 +113,7 @@ public class DiffUtils {
                 out.append( String.format( diffFormat, Utils.DARK_RED.getRGB() - 0xff000000, chunkDel ) ).append( '\n' );
             if (chunkAdd.length() > 0)
                 out.append( String.format( diffFormat, Utils.DARK_GREEN.getRGB() - 0xff000000, chunkAdd ) ).append(
-                        '\n' );
+                                                                                                                    '\n' );
         }
 
         return out.append( "</pre>" ).toString();

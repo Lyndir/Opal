@@ -80,10 +80,11 @@ public class GZIPPostMethod extends PostMethod {
     /**
      * Notifies the server that we can process a GZIP-compressed response before sending the request.
      * 
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
-    public int execute(HttpState state, HttpConnection conn) throws HttpException, IOException {
+    public int execute(HttpState state, HttpConnection conn)
+            throws HttpException, IOException {
 
         if (useGZip)
             addRequestHeader( "Accept-Encoding", "gzip" );
@@ -95,10 +96,11 @@ public class GZIPPostMethod extends PostMethod {
      * If the response body was GZIP-compressed, responseStream will be set to a GZIPInputStream wrapping the original
      * InputStream used by the superclass.
      * 
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
-    protected void readResponse(HttpState state, HttpConnection conn) throws IOException, HttpException {
+    protected void readResponse(HttpState state, HttpConnection conn)
+            throws IOException, HttpException {
 
         super.readResponse( state, conn );
 

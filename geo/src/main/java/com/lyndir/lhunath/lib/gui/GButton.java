@@ -182,7 +182,7 @@ public class GButton extends JButton {
         g2 = (Graphics2D) smallEnabledIcon.getGraphics();
         g2.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
         g2.drawImage( largeEnabledIcon, 0, 0, smallEnabledIcon.getWidth( this ), smallEnabledIcon.getHeight( this ),
-                this );
+                      this );
 
         icon = getDisabledIcon();
         largeDisabledIcon = new BufferedImage( icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB );
@@ -192,7 +192,7 @@ public class GButton extends JButton {
         g2 = (Graphics2D) smallDisabledIcon.getGraphics();
         g2.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
         g2.drawImage( largeDisabledIcon, 0, 0, smallDisabledIcon.getWidth( this ), smallDisabledIcon.getHeight( this ),
-                this );
+                      this );
 
         updateSize();
     }
@@ -262,8 +262,8 @@ public class GButton extends JButton {
 
         super.updateUI();
 
-        backgroundPaint = new GradientPaint( 0, 0, MyLookAndFeel.getActiveBright(), 0, getHeight(), Utils.setAlpha(
-                MyLookAndFeel.getActiveDark(), 50 ) );
+        backgroundPaint = new GradientPaint( 0, 0, MyLookAndFeel.getActiveBright(), 0, getHeight(),
+                Utils.setAlpha( MyLookAndFeel.getActiveDark(), 50 ) );
         borderPaint = new GradientPaint( 0, 0, MyLookAndFeel.getActiveBright().brighter(), 0, getHeight(),
                 Utils.setAlpha( MyLookAndFeel.getActiveBright(), 50 ) );
     }
@@ -290,7 +290,7 @@ public class GButton extends JButton {
         Image image = null;
 
         // Set 'image' to the currently active image.
-        boolean hovering = isEnabled() ? hover : false;
+        boolean hovering = isEnabled()? hover: false;
         if (isEnabled()) {
             image = smallEnabledIcon;
             if (hovering)
@@ -302,11 +302,11 @@ public class GButton extends JButton {
         }
 
         // Image Sizing.
-        int largeHeight = largeEnabledIcon == null ? 0 : largeEnabledIcon.getHeight( this );
-        int largeWidth = largeEnabledIcon == null ? 0 : largeEnabledIcon.getWidth( this );
-        int smallWidth = smallEnabledIcon == null ? 0 : smallEnabledIcon.getWidth( this );
-        int imageWidth = image == null ? 0 : image.getWidth( this );
-        int imageHeight = image == null ? 0 : image.getHeight( this );
+        int largeHeight = largeEnabledIcon == null? 0: largeEnabledIcon.getHeight( this );
+        int largeWidth = largeEnabledIcon == null? 0: largeEnabledIcon.getWidth( this );
+        int smallWidth = smallEnabledIcon == null? 0: smallEnabledIcon.getWidth( this );
+        int imageWidth = image == null? 0: image.getWidth( this );
+        int imageHeight = image == null? 0: image.getHeight( this );
         int xPadding = (int) (getWidth() * (1 - ZOOM * ZOOM) / 2);
         int yPadding = (int) (getHeight() * (1 - ZOOM * ZOOM) / 2);
         int smallXPadding = xPadding + (largeWidth - smallWidth) / 2;
@@ -334,12 +334,12 @@ public class GButton extends JButton {
 
             case SwingConstants.LEFT:
                 textX = xPadding;
-                iconX = getWidth() - largeWidth - (hovering ? xPadding : smallXPadding);
+                iconX = getWidth() - largeWidth - (hovering? xPadding: smallXPadding);
             break;
 
             case SwingConstants.RIGHT:
                 textX = xPadding + largeWidth + getIconTextGap();
-                iconX = hovering ? xPadding : smallXPadding;
+                iconX = hovering? xPadding: smallXPadding;
             break;
         }
 
@@ -352,12 +352,12 @@ public class GButton extends JButton {
 
             case SwingConstants.TOP:
                 textY = yPadding + g2.getFont().getSize();
-                iconY = getHeight() - imageHeight - (hovering ? yPadding : smallYPadding);
+                iconY = getHeight() - imageHeight - (hovering? yPadding: smallYPadding);
             break;
 
             case SwingConstants.BOTTOM:
                 textY = yPadding + largeHeight + getIconTextGap() + g2.getFont().getSize();
-                iconY = hovering ? yPadding : smallYPadding;
+                iconY = hovering? yPadding: smallYPadding;
             break;
         }
 
@@ -376,11 +376,11 @@ public class GButton extends JButton {
 
         g2.setPaint( backgroundPaint );
         g2.fillRoundRect( 0, 0, getWidth(), getHeight(), (int) (getWidth() * ARC_FRACTION),
-                (int) (getWidth() * ARC_FRACTION) );
+                          (int) (getWidth() * ARC_FRACTION) );
 
         g2.setPaint( borderPaint );
         g2.drawRoundRect( 0, 0, getWidth() - 1, getHeight() - 1, (int) (getWidth() * ARC_FRACTION),
-                (int) (getWidth() * ARC_FRACTION) );
+                          (int) (getWidth() * ARC_FRACTION) );
 
         g2.setComposite( origComposite );
     }

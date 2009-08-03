@@ -32,8 +32,10 @@ import com.lyndir.lhunath.lib.system.Utils;
  */
 public class Version implements Comparable<Version>, Serializable {
 
-    private String   version;
-    private String[] tags;
+    private static final long serialVersionUID = 1L;
+
+    private String            version;
+    private String[]          tags;
 
 
     /**
@@ -44,7 +46,7 @@ public class Version implements Comparable<Version>, Serializable {
      */
     public Version(Number version) {
 
-        this( version == null ? null : version.toString() );
+        this( version == null? null: version.toString() );
     }
 
     /**
@@ -67,10 +69,11 @@ public class Version implements Comparable<Version>, Serializable {
     public void set(String version) {
 
         if (version == null)
-            version = "0";
+            this.version = "0";
+        else
+            this.version = version.trim();
 
-        this.version = version.trim();
-        tags = version.trim().split( "\\." );
+        tags = this.version.split( "\\." );
     }
 
     /**

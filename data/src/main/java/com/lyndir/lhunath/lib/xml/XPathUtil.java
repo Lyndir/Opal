@@ -74,7 +74,8 @@ public class XPathUtil {
      * @return The first of the selected nodes.
      * @throws XPathExpressionException
      */
-    public Node getNode(Object context, String expressionFormat, Object... arguments) throws XPathExpressionException {
+    public Node getNode(Object context, String expressionFormat, Object... arguments)
+            throws XPathExpressionException {
 
         return (Node) getObject( context, expressionFormat, XPathConstants.NODE, arguments );
     }

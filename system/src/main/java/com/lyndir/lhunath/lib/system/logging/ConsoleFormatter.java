@@ -40,7 +40,7 @@ public class ConsoleFormatter extends LogFormatter {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     protected void setColors() {

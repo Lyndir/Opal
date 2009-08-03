@@ -49,7 +49,7 @@ public enum Axis {
 
     private Axis(Vec3 vector) {
 
-        this.vector = vector != null ? vector : new Vec3();
+        this.vector = vector != null? vector: new Vec3();
     }
 
     /**

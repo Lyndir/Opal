@@ -84,7 +84,6 @@ public class Locale {
 
     /**
      * Retrieves an externalized string for the given key, or the key if none was found.<br>
-     * Retrieves an externalized string for the given key, or the key if none was found.<br>
      * The result is parsed by {@link String#format(java.util.Locale, java.lang.String, java.lang.Object[])} using the
      * optional additional arguments as input values.
      * 
@@ -100,7 +99,6 @@ public class Locale {
     }
 
     /**
-     * Retrieves an externalized string for the given key, or the key if none was found.<br>
      * Retrieves an externalized string for the given key, or the key if none was found.<br>
      * The result is parsed by {@link String#format(java.util.Locale, java.lang.String, java.lang.Object[])} using the
      * optional additional arguments as input values.
@@ -121,13 +119,15 @@ public class Locale {
                 return String.format( resources.getLocale(), resources.getString( messageKey ), args );
             return resources.getString( messageKey );
         } catch (MissingResourceException e) {
+            String message = messageKey;
+
             if (args == null || args.length == (messageKey + " ").split( "%[-#+ 0,\\(\\.]*\\w" ).length - 1)
                 return String.format( resources.getLocale(), messageKey, args );
 
             for (Object arg : args)
-                messageKey += arg;
+                message += arg;
 
-            return messageKey;
+            return message;
         }
     }
 }

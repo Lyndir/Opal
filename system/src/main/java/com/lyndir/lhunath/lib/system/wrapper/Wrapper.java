@@ -77,7 +77,8 @@ public abstract class Wrapper {
         }
     }
 
-    protected static Class<?> getClass(String className) throws UnsupportedOperationException {
+    protected static Class<?> getClass(String className)
+            throws UnsupportedOperationException {
 
         try {
             return ClassLoader.getSystemClassLoader().loadClass( className );
@@ -86,7 +87,8 @@ public abstract class Wrapper {
         }
     }
 
-    protected static Class<?> getWrappedClass(Class<? extends Wrapper> proxyClass) throws UnsupportedOperationException {
+    protected static Class<?> getWrappedClass(Class<? extends Wrapper> proxyClass)
+            throws UnsupportedOperationException {
 
         try {
             if (classNotFound)
@@ -116,7 +118,8 @@ public abstract class Wrapper {
     }
 
     protected static Object invoke(Class<? extends Wrapper> proxyClass, Object wrappedInstance, String methodName,
-            Class<?>[] classes, Object... args) throws UnsupportedOperationException {
+                                   Class<?>[] classes, Object... args)
+            throws UnsupportedOperationException {
 
         try {
             Method method = getWrappedClass( proxyClass ).getMethod( methodName, classes );
@@ -199,7 +202,8 @@ public abstract class Wrapper {
     // Assuming only classes that extend this
     // class can call this method and play nice.
     @SuppressWarnings("unchecked")
-    protected Object invoke(String methodName, Class<?>[] classes, Object... args) throws UnsupportedOperationException {
+    protected Object invoke(String methodName, Class<?>[] classes, Object... args)
+            throws UnsupportedOperationException {
 
         return invoke( (Class<? extends Wrapper>) getClass(), wrappedInstance, methodName, classes, args );
     }

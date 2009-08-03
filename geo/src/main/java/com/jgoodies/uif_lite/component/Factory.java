@@ -59,7 +59,7 @@ public final class Factory {
      * @return a split panes that has an empty border
      */
     public static JSplitPane createStrippedSplitPane(int orientation, Component comp1, Component comp2,
-            double resizeWeight) {
+                                                     double resizeWeight) {
 
         JSplitPane split = UIFSplitPane.createStrippedSplitPane( orientation, comp1, comp2 );
         split.setResizeWeight( resizeWeight );

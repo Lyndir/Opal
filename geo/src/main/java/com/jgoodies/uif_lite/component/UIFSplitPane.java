@@ -47,7 +47,7 @@ public final class UIFSplitPane extends JSplitPane {
     public UIFSplitPane() {
 
         this( JSplitPane.HORIZONTAL_SPLIT, false, new JButton( UIManager.getString( "SplitPane.leftButtonText" ) ),
-                new JButton( UIManager.getString( "SplitPane.rightButtonText" ) ) );
+              new JButton( UIManager.getString( "SplitPane.rightButtonText" ) ) );
     }
 
     /**
@@ -138,7 +138,7 @@ public final class UIFSplitPane extends JSplitPane {
      *             if <code>orientation</code> is not one of: HORIZONTAL_SPLIT or VERTICAL_SPLIT
      */
     public static UIFSplitPane createStrippedSplitPane(int orientation, Component leftComponent,
-            Component rightComponent) {
+                                                       Component rightComponent) {
 
         UIFSplitPane split = new UIFSplitPane( orientation, leftComponent, rightComponent );
         split.setBorder( BorderFactory.createEmptyBorder() );

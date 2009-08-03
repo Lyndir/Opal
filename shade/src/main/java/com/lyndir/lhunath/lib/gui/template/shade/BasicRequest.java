@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import com.lyndir.lhunath.lib.system.Utils;
-
 
 /**
  * TODO: {@link BasicRequest}<br>
@@ -100,7 +98,7 @@ public enum BasicRequest implements Request {
     @Override
     public String toString() {
 
-        return Utils.reformat( name() );
+        return name();
     }
 
 

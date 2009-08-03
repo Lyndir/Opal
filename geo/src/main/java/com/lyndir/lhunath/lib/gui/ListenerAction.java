@@ -98,7 +98,7 @@ public class ListenerAction extends AbstractAction {
      */
     public String getActionCommand() {
 
-        return getValue( ACTION_COMMAND_KEY ) == null ? null : getValue( ACTION_COMMAND_KEY ).toString();
+        return getValue( ACTION_COMMAND_KEY ) == null? null: getValue( ACTION_COMMAND_KEY ).toString();
     }
 
     /**

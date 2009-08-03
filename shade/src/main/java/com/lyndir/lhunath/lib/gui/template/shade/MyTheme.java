@@ -30,7 +30,6 @@ import com.lyndir.lhunath.lib.gui.MyLookAndFeel;
 import com.lyndir.lhunath.lib.gui.ToolTip;
 import com.lyndir.lhunath.lib.gui.MyLookAndFeel.MyThemeType;
 import com.lyndir.lhunath.lib.system.Locale;
-import com.lyndir.lhunath.lib.system.Utils;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
@@ -232,7 +231,7 @@ public enum MyTheme {
     @Override
     public String toString() {
 
-        return Utils.reformat( name() );
+        return name();
     }
 
     /**

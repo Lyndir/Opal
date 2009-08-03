@@ -279,7 +279,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                 return;
 
             /* Read in the config file to a new settings object. */
-            boolean loaded = false, useXML = writeAsXML.isSet() ? writeAsXML.get() : true;
+            boolean loaded = false, useXML = writeAsXML.isSet()? writeAsXML.get(): true;
             List<Exception> loadProblems = new ArrayList<Exception>();
             Map<BaseConfig<? extends Serializable>, String> configNames = new HashMap<BaseConfig<? extends Serializable>, String>();
             // Map<String, String> configTypes = new HashMap<String, String>();

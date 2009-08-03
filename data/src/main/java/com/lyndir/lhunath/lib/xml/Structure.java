@@ -407,7 +407,7 @@ public class Structure {
     public static String toString(Node node, boolean trim) {
 
         StringBuffer result = toString( node, 1, trim );
-        return result == null ? null : result.toString().replaceFirst( "\n$", "" );
+        return result == null? null: result.toString().replaceFirst( "\n$", "" );
     }
 
     private static StringBuffer toString(Node node, int indent, boolean trim) {
@@ -416,8 +416,8 @@ public class Structure {
             return null;
 
         if (node.getNodeType() == Node.TEXT_NODE)
-            return new StringBuffer( indent( indent ) ).append( trim ? node.getNodeValue().trim() : node.getNodeValue() ).append(
-                                                                                                                                  '\n' );
+            return new StringBuffer( indent( indent ) ).append( trim? node.getNodeValue().trim(): node.getNodeValue() ).append(
+                                                                                                                                '\n' );
 
         StringBuffer out = new StringBuffer();
         out.append( indent( indent ) );

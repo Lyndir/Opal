@@ -490,7 +490,7 @@ public class Network implements Runnable {
      *            The buffer of application data, ready to be written/appended to. After this operation it will be ready
      *            to be read (position set to zero, limit set to the end of the application data).
      * 
-     * @return The dataBuffer.
+     * @return The (possibly new) dataBuffer.
      *         <p>
      *         <b>Use the return value for processing, not the original data buffer!</b><br>
      *         The buffer might have been reallocated in which case the original buffer is obsolete.
@@ -499,6 +499,8 @@ public class Network implements Runnable {
     private ByteBuffer toApplicationData(ByteBuffer readBuffer, SocketChannel socketChannel, ByteBuffer dataBuffer)
             throws SSLException, IOException {
 
+        ByteBuffer newDataBuffer = dataBuffer;
+
         SSLEngine sslEngine = sslEngines.get( socketChannel );
         if (sslEngine != null) {
             // SSL/TLS: Decrypt network data into application data (or into nothingness!).
@@ -506,7 +508,7 @@ public class Network implements Runnable {
             while (true) {
 
                 // Try to decrypt readBuffer into dataBuffer.
-                SSLEngineResult sslEngineResult = sslEngine.unwrap( readBuffer, dataBuffer );
+                SSLEngineResult sslEngineResult = sslEngine.unwrap( readBuffer, newDataBuffer );
 
                 switch (sslEngineResult.getStatus()) {
                     case BUFFER_OVERFLOW:
@@ -514,10 +516,10 @@ public class Network implements Runnable {
                         logger.dbg(
                                     "[<<<<: %s] SSL %s: dataBuffer%s + %d]", //
                                     nameChannel( socketChannel ), sslEngineResult.getStatus(),
-                                    renderBuffer( dataBuffer ), READ_BUFFER );
-                        ByteBuffer newDataBuffer = ByteBuffer.allocate( dataBuffer.capacity() + READ_BUFFER );
-                        dataBuffer.flip();
-                        dataBuffer = newDataBuffer.put( dataBuffer );
+                                    renderBuffer( newDataBuffer ), READ_BUFFER );
+                        ByteBuffer resizedDataBuffer = ByteBuffer.allocate( newDataBuffer.capacity() + READ_BUFFER );
+                        newDataBuffer.flip();
+                        newDataBuffer = resizedDataBuffer.put( newDataBuffer );
 
                         // Retry
                         continue;
@@ -550,25 +552,25 @@ public class Network implements Runnable {
             }
 
             // Make the application data available and add new network data after what's left unprocessed.
-            dataBuffer.flip();
+            newDataBuffer.flip();
             readBuffer.compact();
 
-            return dataBuffer;
+            return newDataBuffer;
         }
 
         // Plain Text: Copy network data to application data and prepare both buffers for their next operations.
-        if (dataBuffer.remaining() < readBuffer.remaining()) {
+        if (newDataBuffer.remaining() < readBuffer.remaining()) {
             // Not enough space in the dataBuffer for the readBuffer's data; make it bigger.
-            ByteBuffer newDataBuffer = ByteBuffer.allocate( dataBuffer.position() + readBuffer.remaining() );
+            ByteBuffer resizedDataBuffer = ByteBuffer.allocate( newDataBuffer.position() + readBuffer.remaining() );
 
-            dataBuffer.flip();
-            dataBuffer = newDataBuffer.put( dataBuffer );
+            newDataBuffer.flip();
+            newDataBuffer = resizedDataBuffer.put( newDataBuffer );
         }
 
-        dataBuffer.put( readBuffer ).flip();
+        newDataBuffer.put( readBuffer ).flip();
         readBuffer.limit( readBuffer.capacity() ).rewind();
 
-        return dataBuffer;
+        return newDataBuffer;
     }
 
     /**
@@ -631,7 +633,7 @@ public class Network implements Runnable {
      *            (position set to the end of the network data). At the end of this operation, this buffer will be ready
      *            to be read/sent/written out (position set to zero, limit set to the end of the network data).
      * 
-     * @return The writeBuffer.
+     * @return The (possibly new) writeBuffer.
      *         <p>
      *         <b>Use the return value for writing, not the original write buffer!</b><br>
      *         The buffer might have been reallocated in which case the original buffer is obsolete.
@@ -640,6 +642,8 @@ public class Network implements Runnable {
     private ByteBuffer fromApplicationData(ByteBuffer dataBuffer, SocketChannel socketChannel, ByteBuffer writeBuffer)
             throws SSLException, IOException {
 
+        ByteBuffer newWriteBuffer = writeBuffer;
+
         SSLEngine sslEngine = sslEngines.get( socketChannel );
         if (sslEngine != null) {
             // SSL/TLS: Encrypt network data from application data (or from nothingness!).
@@ -647,7 +651,7 @@ public class Network implements Runnable {
             while (true) {
 
                 // Try to encrypt readBuffer into dataBuffer.
-                SSLEngineResult sslEngineResult = sslEngine.wrap( dataBuffer, writeBuffer );
+                SSLEngineResult sslEngineResult = sslEngine.wrap( dataBuffer, newWriteBuffer );
 
                 switch (sslEngineResult.getStatus()) {
                     case BUFFER_OVERFLOW:
@@ -655,10 +659,10 @@ public class Network implements Runnable {
                         logger.dbg(
                                     "[>>>>: %s] SSL %s: writeBuffer%s + %d", //
                                     nameChannel( socketChannel ), sslEngineResult.getStatus(),
-                                    renderBuffer( writeBuffer ), WRITE_BUFFER );
-                        ByteBuffer newWriteBuffer = ByteBuffer.allocate( writeBuffer.capacity() + WRITE_BUFFER );
-                        writeBuffer.flip();
-                        writeBuffer = newWriteBuffer.put( writeBuffer );
+                                    renderBuffer( newWriteBuffer ), WRITE_BUFFER );
+                        ByteBuffer resizedWriteBuffer = ByteBuffer.allocate( newWriteBuffer.capacity() + WRITE_BUFFER );
+                        newWriteBuffer.flip();
+                        newWriteBuffer = resizedWriteBuffer.put( newWriteBuffer );
 
                         // Retry
                         continue;
@@ -691,25 +695,25 @@ public class Network implements Runnable {
             }
 
             // Make the application data available and add new network data after what's left unprocessed.
-            writeBuffer.flip();
+            newWriteBuffer.flip();
             dataBuffer.compact();
 
-            return writeBuffer;
+            return newWriteBuffer;
         }
 
         // Plain Text: Copy application data to network data and prepare both buffers for their next operations.
-        if (writeBuffer.remaining() < dataBuffer.remaining()) {
+        if (newWriteBuffer.remaining() < dataBuffer.remaining()) {
             // Not enough space in the writeBuffer for the dataBuffer's data; make it bigger.
-            ByteBuffer newWriteBuffer = ByteBuffer.allocate( writeBuffer.position() + dataBuffer.remaining() );
+            ByteBuffer resizedWriteBuffer = ByteBuffer.allocate( newWriteBuffer.position() + dataBuffer.remaining() );
 
-            writeBuffer.flip();
-            writeBuffer = newWriteBuffer.put( writeBuffer );
+            newWriteBuffer.flip();
+            newWriteBuffer = resizedWriteBuffer.put( newWriteBuffer );
         }
 
-        writeBuffer.put( dataBuffer ).flip();
+        newWriteBuffer.put( dataBuffer ).flip();
         dataBuffer.limit( dataBuffer.capacity() ).rewind();
 
-        return writeBuffer;
+        return newWriteBuffer;
     }
 
     /**
@@ -838,9 +842,7 @@ public class Network implements Runnable {
             if (sslEngine != null) {
                 sslEngine.closeOutbound();
                 addOps( socketChannel, SelectionKey.OP_WRITE );
-            }
-
-            else
+            } else
                 socketChannel.close();
         }
     }

@@ -683,7 +683,7 @@ public abstract class AbstractUi
                             else if (level.equals( Level.SEVERE ))
                                 type = MessageType.ERROR;
 
-                            systray.displayMessage( Utils.reformat( level.getLocalizedName() ), message, type );
+                            systray.displayMessage( level.getLocalizedName(), message, type );
                         }
                 }
             } );

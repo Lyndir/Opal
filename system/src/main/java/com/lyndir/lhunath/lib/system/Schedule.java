@@ -33,7 +33,9 @@ import java.util.TimerTask;
  */
 public abstract class Schedule implements Runnable, Serializable {
 
-    private static Timer        scheduler = new Timer( "Scheduler", true );
+    private static final long   serialVersionUID = 1L;
+
+    private static Timer        scheduler        = new Timer( "Scheduler", true );
 
     private Calendar            nextSchedule;
     private int                 stepAmount;
@@ -147,7 +149,7 @@ public abstract class Schedule implements Runnable, Serializable {
         }
 
         String desc = Utils.calendarDesc.get( stepField ).toLowerCase();
-        if (stepAmount > 1) // Add the plural 's'.
+        if (stepAmount > 1)
             desc += 's';
 
         return String.format( "%s (Every %d %s at %s)", getDescription(), stepAmount, desc, time );

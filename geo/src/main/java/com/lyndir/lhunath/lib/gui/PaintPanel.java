@@ -279,7 +279,7 @@ public class PaintPanel extends ScrollPanel {
         Graphics2D g2 = (Graphics2D) g;
 
         // Fill the panel with the paint.
-        g2.setPaint( autoPaint == null ? paint : autoPaint );
+        g2.setPaint( autoPaint == null? paint: autoPaint );
         g2.fill( g2.getClip() );
 
         // Draw a faint background image.

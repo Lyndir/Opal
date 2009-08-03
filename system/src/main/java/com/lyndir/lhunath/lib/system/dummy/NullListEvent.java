@@ -31,6 +31,9 @@ import javax.swing.event.ListSelectionEvent;
  */
 public class NullListEvent extends ListSelectionEvent {
 
+    private static final long serialVersionUID = 1L;
+
+
     /**
      * Create a new NullListEvent instance.
      * 

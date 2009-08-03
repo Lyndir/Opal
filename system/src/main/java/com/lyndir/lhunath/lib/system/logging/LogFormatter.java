@@ -104,11 +104,13 @@ public abstract class LogFormatter extends Formatter {
         String realSource = "", relevSource = "";
         if (stackTrace.length > 0 && !stackTrace[0].equals( sourceElement ))
             realSource = String.format( "(%s:%d) %s.%s()", stackTrace[0].getFileName(), stackTrace[0].getLineNumber(),
-                    Utils.compressSignature( stackTrace[0].getClassName() ), stackTrace[0].getMethodName() );
+                                        Utils.compressSignature( stackTrace[0].getClassName() ),
+                                        stackTrace[0].getMethodName() );
         if (sourceElement != null)
             relevSource = String.format( "(%s:%d) %s.%s()", sourceElement.getFileName(), sourceElement.getLineNumber(),
-                    Utils.compressSignature( sourceElement.getClassName() ), sourceElement.getMethodName() );
-        String source = realSource + (realSource.length() > 0 ? ", " : "") + relevSource;
+                                         Utils.compressSignature( sourceElement.getClassName() ),
+                                         sourceElement.getMethodName() );
+        String source = realSource + (realSource.length() > 0? ", ": "") + relevSource;
         if (source.length() == 0)
             source = "[Unknown Source]";
 
@@ -117,9 +119,9 @@ public abstract class LogFormatter extends Formatter {
         if (error != null)
             for (Throwable e = error; e != null; e = e.getCause())
                 message = String.format( "(%s:%d) %s: %s\n",
-                        e.getStackTrace().length > 0 ? e.getStackTrace()[0].getFileName() : "n/a",
-                        e.getStackTrace().length > 0 ? e.getStackTrace()[0].getLineNumber() : -1,
-                        e.getClass().getName(), e.getLocalizedMessage() )
+                                         e.getStackTrace().length > 0? e.getStackTrace()[0].getFileName(): "n/a",
+                                         e.getStackTrace().length > 0? e.getStackTrace()[0].getLineNumber(): -1,
+                                         e.getClass().getName(), e.getLocalizedMessage() )
                           + message;
 
         if (record.getMessage() != null && record.getMessage().length() > 0)
@@ -141,7 +143,7 @@ public abstract class LogFormatter extends Formatter {
             /* Write the stack trace to the buffer. */
             if (stackTrace.length > 0)
                 for (StackTraceElement e : stackTrace)
-                    buffer.append( String.format( "\n %s      %s", isIgnored( e.getClassName() ) ? '-' : '>', e ) );
+                    buffer.append( String.format( "\n %s      %s", isIgnored( e.getClassName() )? '-': '>', e ) );
         buffer.append( levelColor.get( null ) );
 
         return buffer.toString();

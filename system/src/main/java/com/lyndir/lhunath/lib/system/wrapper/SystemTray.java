@@ -67,7 +67,8 @@ public class SystemTray extends Wrapper {
      * @throws AWTException
      */
     @SuppressWarnings("unused")
-    public void add(TrayIcon trayIcon) throws AWTException {
+    public void add(TrayIcon trayIcon)
+            throws AWTException {
 
         invoke( "add", new Class[] { getWrappedClass( TrayIcon.class ) }, trayIcon.getWrappedInstance() );
     }
@@ -96,7 +97,7 @@ public class SystemTray extends Wrapper {
     public synchronized PropertyChangeListener[] getPropertyChangeListeners(String propertyName) {
 
         return (PropertyChangeListener[]) invoke( "getPropertyChangeListeners", new Class[] { String.class },
-                propertyName );
+                                                  propertyName );
     }
 
     /**

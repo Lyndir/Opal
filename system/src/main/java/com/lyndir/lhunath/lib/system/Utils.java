@@ -24,14 +24,16 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
@@ -39,7 +41,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -95,6 +96,8 @@ public class Utils {
      */
     public static final Map<Integer, String> calendarDesc   = new HashMap<Integer, String>() {
 
+                                                                private static final long serialVersionUID = 1L;
+
                                                                 {
                                                                     put( Calendar.MILLISECOND, "Millisecond" );
                                                                     put( Calendar.SECOND, "Second" );
@@ -110,6 +113,8 @@ public class Utils {
      * {@link SimpleDateFormat} of the calendar fields.
      */
     public static final Map<Integer, String> calendarFormat = new HashMap<Integer, String>() {
+
+                                                                private static final long serialVersionUID = 1L;
 
                                                                 {
                                                                     put( Calendar.MILLISECOND, "SSSS" );
@@ -369,7 +374,7 @@ public class Utils {
      */
     public static ImageIcon getIcon(String resource) {
 
-        URL url = resolve( resource );
+        URL url = Thread.currentThread().getContextClassLoader().getResource( resource );
         if (url == null)
             return null;
 
@@ -386,6 +391,30 @@ public class Utils {
     public static String getMD5(File file) {
 
         return getDigest( file, Digest.MD5 );
+    }
+
+    /**
+     * Calculate a digest hash for the given string.
+     * 
+     * @param data
+     *            The data to calculate the sum for.
+     * @return The hash as a string of hexadecimal characters.
+     */
+    public static String getMD5(String data) {
+
+        return getDigest( new ByteArrayInputStream( data.getBytes() ), Digest.MD5 );
+    }
+
+    /**
+     * Calculate a digest hash for the given bytes.
+     * 
+     * @param data
+     *            The data to calculate the sum for.
+     * @return The hash as a string of hexadecimal characters.
+     */
+    public static String getMD5(byte[] data) {
+
+        return getDigest( new ByteArrayInputStream( data ), Digest.MD5 );
     }
 
     /**
@@ -412,11 +441,13 @@ public class Utils {
      * 
      * @param data
      *            The data to calculate the sum for.
+     * @param digestType
+     *            The digest to calculate.
      * @return The hash as a string of hexadecimal characters.
      */
-    public static String getMD5(String data) {
+    public static String getDigest(String data, Digest digestType) {
 
-        return getDigest( new ByteArrayInputStream( data.getBytes() ), Digest.MD5 );
+        return getDigest( new ByteArrayInputStream( data.getBytes() ), digestType );
     }
 
     /**
@@ -428,9 +459,9 @@ public class Utils {
      *            The digest to calculate.
      * @return The hash as a string of hexadecimal characters.
      */
-    public static String getDigest(String data, Digest digestType) {
+    public static String getDigest(byte[] data, Digest digestType) {
 
-        return getDigest( new ByteArrayInputStream( data.getBytes() ), digestType );
+        return getDigest( new ByteArrayInputStream( data ), digestType );
     }
 
     /**
@@ -569,29 +600,12 @@ public class Utils {
      * Get a {@link File} object for a resource.
      * 
      * @param resource
-     *            The filename of the resource. This should be an absolute path and is relative toward the root of the
-     *            application code. If a relative resource is given, it is made absolute by prefixing it with a /.
-     * @return Guess.
-     */
-    public static URL resolve(String resource) {
-
-        if (!resource.startsWith( "/" ))
-            resource = "/" + resource;
-
-        return Utils.class.getResource( resource );
-    }
-
-    /**
-     * Get a {@link File} object for a resource.
-     * 
-     * @param resource
-     *            The filename of the resource. This should be an absolute path and is relative toward the root of the
-     *            application code. If a relative resource is given, it is made absolute by prefixing it with a /.
+     *            The filename of the resource. This is relative to the classpath of the context classloader.
      * @return Guess.
      */
     public static File res(String resource) {
 
-        URL url = resolve( resource );
+        URL url = Thread.currentThread().getContextClassLoader().getResource( resource );
         if (url == null)
             return null;
 
@@ -666,16 +680,99 @@ public class Utils {
     }
 
     /**
+     * Read a stream in and return it as a string. This method will block until the stream is closed or reaches EOF.
+     * This method will close both streams before it returns. It uses the default buffer size.
+     * 
+     * @param reader
+     *            The reader to get the data from.
+     * 
+     * @return The stream's data as a string decoded with the default character set.
+     * 
+     * @throws IOException
+     * 
+     * @see BaseConfig#BUFFER_SIZE
+     */
+    public static String readReader(Reader reader)
+            throws IOException {
+
+        return readReader( reader, BaseConfig.BUFFER_SIZE, null );
+    }
+
+    /**
+     * Read a stream in and return it as a string. This method will block until the stream is closed or reaches EOF.
+     * This method will close both streams before it returns.
+     * 
+     * @param reader
+     *            The reader to get the data from.
+     * @param bufferSize
+     *            The size of the buffer to use for reading.
+     * @param callback
+     *            The callback object to notify each time a chunk of data was written.
+     * 
+     * @return The stream's data as a string decoded with the default character set.
+     * 
+     * @throws IOException
+     */
+    public static String readReader(Reader reader, int bufferSize, StreamCallback callback)
+            throws IOException {
+
+        return readReader( reader, bufferSize, callback, true );
+    }
+
+    /**
+     * Read a stream in and return it as a string. This method will block until the stream is closed or reaches EOF.
+     * This method will close the reader before it returns.
+     * 
+     * @param reader
+     *            The reader to get the data from.
+     * @param bufferSize
+     *            The size of the buffer to use for reading.
+     * @param callback
+     *            The callback object to notify each time a chunk of data was written.
+     * @param autoclose
+     *            Whether or not to close all streams involved automatically after completion.
+     * 
+     * @return The stream's data as a string decoded with the default character set.
+     * 
+     * @throws IOException
+     */
+    public static String readReader(Reader reader, int bufferSize, StreamCallback callback, boolean autoclose)
+            throws IOException {
+
+        StringWriter output = new StringWriter();
+        char[] buffer = new char[bufferSize];
+
+        try {
+            int bytesWritten = 0;
+            for (int bytesRead; (bytesRead = reader.read( buffer )) > 0;) {
+                output.write( buffer, 0, bytesRead );
+                bytesWritten += bytesRead;
+
+                if (callback != null)
+                    callback.wroteChunk( bytesWritten );
+            }
+        } finally {
+            if (autoclose)
+                reader.close();
+        }
+
+        return output.toString();
+    }
+
+    /**
      * Read a stream in and return it as a string. This method will block until the stream is closed. This method will
      * close both streams before it returns. It uses the default buffer size.
      * 
      * @param stream
      *            The stream to get the data from.
+     * 
      * @return The stream's data as a string decoded with the default character set.
+     * 
      * @throws IOException
+     * 
      * @see BaseConfig#BUFFER_SIZE
      */
-    public static String readStream(InputStream stream)
+    public static byte[] readStream(InputStream stream)
             throws IOException {
 
         return readStream( stream, BaseConfig.BUFFER_SIZE, null );
@@ -691,10 +788,12 @@ public class Utils {
      *            The size of the buffer to use for reading.
      * @param callback
      *            The callback object to notify each time a chunk of data was written.
+     * 
      * @return The stream's data as a string decoded with the default character set.
+     * 
      * @throws IOException
      */
-    public static String readStream(InputStream stream, int bufferSize, StreamCallback callback)
+    public static byte[] readStream(InputStream stream, int bufferSize, StreamCallback callback)
             throws IOException {
 
         return readStream( stream, bufferSize, callback, true );
@@ -704,46 +803,6 @@ public class Utils {
      * Read a stream in and return it as a string. This method will block until the stream is closed.
      * 
      * @param stream
-     *            The stream to get the data from.
-     * @param bufferSize
-     *            The size of the buffer to use for reading.
-     * @param callback
-     *            The callback object to notify each time a chunk of data was written.
-     * @param autoclose
-     *            Whether or not to close all streams involved automatically after completion.
-     * @return The stream's data as a string decoded with the default character set.
-     * @throws IOException
-     */
-    public static String readStream(InputStream stream, int bufferSize, StreamCallback callback, boolean autoclose)
-            throws IOException {
-
-        Reader reader = new InputStreamReader( stream );
-        return readStream( reader, bufferSize, callback, autoclose );
-    }
-
-    /**
-     * Read a stream in and return it as a string. This method will block until the stream is closed. This method will
-     * close the reader before it returns.
-     * 
-     * @param reader
-     *            The reader to get the data from.
-     * @param bufferSize
-     *            The size of the buffer to use for reading.
-     * @param callback
-     *            The callback object to notify each time a chunk of data was written.
-     * @return The stream's data as a string decoded with the default character set.
-     * @throws IOException
-     */
-    public static String readStream(Reader reader, int bufferSize, StreamCallback callback)
-            throws IOException {
-
-        return readStream( reader, bufferSize, callback, true );
-    }
-
-    /**
-     * Read a stream in and return it as a string. This method will block until the stream is closed.
-     * 
-     * @param reader
      *            The reader to get the data from.
      * @param bufferSize
      *            The size of the buffer to use for reading.
@@ -751,37 +810,32 @@ public class Utils {
      *            The callback object to notify each time a chunk of data was written.
      * @param autoclose
      *            Whether or not to close all streams involved automatically after completion.
+     * 
      * @return The stream's data as a string decoded with the default character set.
+     * 
      * @throws IOException
      */
-    public static String readStream(Reader reader, int bufferSize, StreamCallback callback, boolean autoclose)
+    public static byte[] readStream(InputStream stream, int bufferSize, StreamCallback callback, boolean autoclose)
             throws IOException {
 
-        /* Buffer the reader for better I/O performance. */
-        // if (!(reader instanceof BufferedReader))
-        // reader = new BufferedReader( reader );
-        CharBuffer buffer = CharBuffer.allocate( bufferSize );
-        StringBuffer writer = new StringBuffer();
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        byte[] buffer = new byte[bufferSize];
 
         try {
             int bytesWritten = 0;
-            for (int bytesRead; (bytesRead = reader.read( buffer )) > 0;) {
-                buffer.flip();
+            for (int bytesRead; (bytesRead = stream.read( buffer )) > 0;) {
+                output.write( buffer, 0, bytesRead );
+                bytesWritten += bytesRead;
 
-                writer.append( buffer );
-                if (callback != null) {
-                    bytesWritten += bytesRead;
+                if (callback != null)
                     callback.wroteChunk( bytesWritten );
-                }
-
-                buffer.rewind();
             }
         } finally {
             if (autoclose)
-                reader.close();
+                stream.close();
         }
 
-        return writer.toString();
+        return output.toByteArray();
     }
 
     /**
@@ -793,7 +847,9 @@ public class Utils {
      *            The stream to get the data from.
      * @param out
      *            The destination of the output stream.
+     * 
      * @throws IOException
+     * 
      * @see BaseConfig#BUFFER_SIZE
      */
     public static void pipeStream(InputStream in, OutputStream out)
@@ -836,17 +892,13 @@ public class Utils {
      *            The callback object to notify each time a chunk of data was written.
      * @param autoclose
      *            Whether or not to close all streams involved automatically after completion.
+     * 
      * @throws IOException
      */
     public static void pipeStream(InputStream in, int bufferSize, OutputStream out, StreamCallback callback,
                                   boolean autoclose)
             throws IOException {
 
-        /* Buffer the streams for better I/O performance. */
-        // if (!(in instanceof BufferedInputStream))
-        // in = new BufferedInputStream( in );
-        // if (!(out instanceof BufferedOutputStream))
-        // out = new BufferedOutputStream( out );
         try {
             int bytesWritten = 0;
             byte[] buffer = new byte[bufferSize];
@@ -894,18 +946,14 @@ public class Utils {
         String libFileName = libName;
         if (System.getProperty( "os.name" ).matches( "Windows.*" ))
             libFileName = libName + ".dll";
-
         else if (System.getProperty( "os.name" ).matches( "Linux.*" ))
             libFileName = "lib" + libName + ".so";
-
         else if (System.getProperty( "os.name" ).matches( "Mac.*" ))
             libFileName = "lib" + libName + ".jnilib";
-
         else if (System.getProperty( "os.name" ).matches( "SunOS.*" ))
 
             if (System.getProperty( "os.arch" ).equals( "x86" ))
                 libFileName = "lib" + libName + "_sun_x86.so";
-
             else
                 libFileName = "lib" + libName + "_sun_sparc.so";
         else
@@ -920,27 +968,12 @@ public class Utils {
     }
 
     /**
-     * Reformat the given string. Trims leading and trailing whitespace, converts underscores to spaces and capitalizes
-     * every word.
-     * 
-     * @param string
-     *            The string to reformat.
-     * @return Guess.
-     */
-    public static String reformat(String string) {
-
-        string = string.trim().replace( '_', ' ' );
-        return string.charAt( 0 ) + string.toLowerCase().substring( 1 );
-    }
-
-    /**
      * Check whether a component is the child of another, anywhere down the line.
      * 
      * @param child
      *            The possible child.
      * @param parent
      *            The container that possibly contains the child.
-     * @return Guess.
      */
     public static boolean isChild(Component child, Container parent) {
 
@@ -960,7 +993,7 @@ public class Utils {
      * Convert a color into an HTML-type hex string (#RRGGBB). This does not take transparency into account.
      * 
      * @param color
-     *            The color to hexify.
+     *            The color to convert to hexadecimal notation.
      * @return The hex string.
      */
     public static String colorToHex(Color color) {
@@ -1037,11 +1070,10 @@ public class Utils {
         if (file.isDirectory())
             for (File child : file.listFiles())
                 result += (result.length() > 0? "\n": "") + grep( pattern, child, group );
-
         else if (file.isFile()) {
             String content;
             try {
-                content = Utils.readStream( new FileInputStream( file ), 4096, null );
+                content = Utils.readReader( new FileReader( file ), 4096, null, true );
 
                 for (String line : content.split( "\n" )) {
                     Matcher matcher = pattern.matcher( line );
@@ -1053,9 +1085,7 @@ public class Utils {
             } catch (IOException e) {
                 logger.err( e, "Couldn't read file '%s'!", file );
             }
-        }
-
-        else
+        } else
             logger.wrn( "File %s was not found.  Could not grep it.", file );
 
         return result;

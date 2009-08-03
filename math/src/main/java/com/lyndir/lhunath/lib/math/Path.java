@@ -42,8 +42,7 @@ public class Path {
     @Override
     public String toString() {
 
-        return "{Path: " + src + (srcHorizontal ? " - " : " | ") + " --> " + (dstHorizontal ? " - " : " | ") + dst
-               + "}";
+        return "{Path: " + src + (srcHorizontal? " - ": " | ") + " --> " + (dstHorizontal? " - ": " | ") + dst + "}";
     }
 
     /**

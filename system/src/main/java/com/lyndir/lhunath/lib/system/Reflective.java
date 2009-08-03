@@ -39,5 +39,6 @@ public interface Reflective {
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
      */
-    public Object getFieldValue(Field field) throws IllegalArgumentException, IllegalAccessException;
+    public Object getFieldValue(Field field)
+            throws IllegalArgumentException, IllegalAccessException;
 }

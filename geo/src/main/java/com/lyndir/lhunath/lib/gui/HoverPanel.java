@@ -53,7 +53,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
 
         super( layout );
 
-        background = alternateRow ? Utils.setAlpha( backgroundBase, 20 ) : Utils.setAlpha( backgroundBase, 0 );
+        background = alternateRow? Utils.setAlpha( backgroundBase, 20 ): Utils.setAlpha( backgroundBase, 0 );
         alternateRow = !alternateRow;
         restoreBackground();
     }

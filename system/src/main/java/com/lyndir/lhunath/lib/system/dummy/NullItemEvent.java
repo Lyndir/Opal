@@ -32,6 +32,9 @@ import java.awt.event.ItemEvent;
  */
 public class NullItemEvent extends ItemEvent {
 
+    private static final long serialVersionUID = 1L;
+
+
     /**
      * Create a new NullItemEvent instance.
      * 

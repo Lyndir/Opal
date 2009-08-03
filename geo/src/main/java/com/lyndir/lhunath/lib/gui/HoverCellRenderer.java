@@ -65,7 +65,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      */
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-            boolean cellHasFocus) {
+                                                  boolean cellHasFocus) {
 
         Component label = getObjectComponent( list, value, index, isSelected, cellHasFocus );
         if (label instanceof JComponent)

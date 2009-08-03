@@ -112,7 +112,7 @@ public class SimpleInternalFrame extends JPanel {
         titleLabel = new JLabel( title, icon, SwingConstants.LEADING );
         JPanel top = buildHeader( titleLabel, bar );
 
-        add( top, headerTop ? BorderLayout.NORTH : BorderLayout.SOUTH );
+        add( top, headerTop? BorderLayout.NORTH: BorderLayout.SOUTH );
         if (content != null)
             setContent( content );
         setBorder( new ShadowBorder() );
@@ -175,7 +175,7 @@ public class SimpleInternalFrame extends JPanel {
      */
     public JToolBar getToolBar() {
 
-        return headerPanel.getComponentCount() > 1 ? (JToolBar) headerPanel.getComponent( 1 ) : null;
+        return headerPanel.getComponentCount() > 1? (JToolBar) headerPanel.getComponent( 1 ): null;
     }
 
     /**
@@ -206,7 +206,7 @@ public class SimpleInternalFrame extends JPanel {
      */
     public Component getContent() {
 
-        return hasContent() ? getComponent( 1 ) : null;
+        return hasContent()? getComponent( 1 ): null;
     }
 
     /**
@@ -330,11 +330,11 @@ public class SimpleInternalFrame extends JPanel {
      */
     protected Color getTextForeground(boolean isSelected) {
 
-        Color c = UIManager.getColor( isSelected ? "SimpleInternalFrame.activeTitleForeground"
+        Color c = UIManager.getColor( isSelected? "SimpleInternalFrame.activeTitleForeground"
                                                 : "SimpleInternalFrame.inactiveTitleForeground" );
         if (c != null)
             return c;
-        return UIManager.getColor( isSelected ? "InternalFrame.activeTitleForeground" : "Label.foreground" );
+        return UIManager.getColor( isSelected? "InternalFrame.activeTitleForeground": "Label.foreground" );
 
     }
 
@@ -347,7 +347,7 @@ public class SimpleInternalFrame extends JPanel {
     protected Color getHeaderBackground() {
 
         Color c = UIManager.getColor( "SimpleInternalFrame.activeTitleBackground" );
-        return c != null ? c : UIManager.getColor( "InternalFrame.activeTitleBackground" );
+        return c != null? c: UIManager.getColor( "InternalFrame.activeTitleBackground" );
     }
 
 

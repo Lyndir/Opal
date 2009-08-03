@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -110,6 +111,7 @@ public class Shell {
 
         char[] buffer = new char[100];
         FileReader reader = new FileReader( new File( currDir, cmd[0] ) );
+        String[] execCmd = cmd;
 
         try {
             reader.read( buffer );
@@ -120,6 +122,7 @@ public class Shell {
         }
 
         /* Check whether this is a shell script and if so, what interpreter to use. */
+        // FIXME: Hashbang can contain one argument
         String head = new String( buffer );
         int eol = head.indexOf( "\n" );
         if (eol > 0) {
@@ -128,12 +131,12 @@ public class Shell {
                 String shell = head.substring( 2 );
                 LinkedList<String> cmdList = new LinkedList<String>( Arrays.asList( cmd ) );
                 cmdList.addFirst( shell.trim() );
-                cmd = cmdList.toArray( cmd );
+                execCmd = cmdList.toArray( cmd );
             }
         }
 
         try {
-            final Process process = Runtime.getRuntime().exec( cmd, null, currDir );
+            final Process process = Runtime.getRuntime().exec( execCmd, null, currDir );
 
             new Thread( cmd[0] + " stdout" ) {
 
@@ -197,7 +200,7 @@ public class Shell {
             PipedOutputStream output = new PipedOutputStream();
             Shell.exec( output, new NullOutputStream(), currDir, cmd );
 
-            return Utils.readStream( new PipedInputStream( output ), Utils.BUFFER_SIZE, null );
+            return Utils.readReader( new InputStreamReader( new PipedInputStream( output ) ) );
         } catch (FileNotFoundException e) {
             logger.error( "Command to execute was not found!", e );
         } catch (IOException e) {
