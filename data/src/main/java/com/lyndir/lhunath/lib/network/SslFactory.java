@@ -38,8 +38,8 @@ import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
 /**
@@ -53,7 +53,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SslFactory implements SecureProtocolSocketFactory {
 
-    private static final Logger logger = LoggerFactory.getLogger( SslFactory.class );
+    private static final Logger logger = Logger.get( SslFactory.class );
 
     private static SslFactory   instance;
     private SSLContext          context;
@@ -101,17 +101,17 @@ public class SslFactory implements SecureProtocolSocketFactory {
             context = SSLContext.getInstance( "TLS" );
             context.init( null, tFactory.getTrustManagers(), null );
         } catch (KeyStoreException e) {
-            logger.error( "Keystore type not supported or keystore could not be initialized.", e );
+            logger.err( e, "Keystore type not supported or keystore could not be initialized." );
         } catch (NoSuchAlgorithmException e) {
-            logger.error( "Key algorithm not supported.", e );
+            logger.err( e, "Key algorithm not supported." );
         } catch (CertificateException e) {
-            logger.error( "An unexpected error has occurred!", e );
+            logger.err( e, "An unexpected error has occurred!" );
         } catch (FileNotFoundException e) {
-            logger.error( "Keystore not found!", e );
+            logger.err( e, "Keystore not found!" );
         } catch (IOException e) {
-            logger.error( "Could not read the keys from the keystore!", e );
+            logger.err( e, "Could not read the keys from the keystore!" );
         } catch (KeyManagementException e) {
-            logger.error( "Could not add the keys as trusted!", e );
+            logger.err( e, "Could not add the keys as trusted!" );
         }
     }
 

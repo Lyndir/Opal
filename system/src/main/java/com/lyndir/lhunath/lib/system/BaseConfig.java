@@ -40,9 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import com.thoughtworks.xstream.XStream;
 
 
@@ -61,7 +59,7 @@ import com.thoughtworks.xstream.XStream;
  */
 public class BaseConfig<T extends Serializable> implements Serializable {
 
-    static final Logger                         logger           = LoggerFactory.getLogger( BaseConfig.class );
+    static final Logger                         logger           = Logger.get( BaseConfig.class );
 
     /**
      * Version of the class. Augment this whenever the class type of a config entry field changes, or the context of a
@@ -97,13 +95,13 @@ public class BaseConfig<T extends Serializable> implements Serializable {
             @Override
             public void run() {
 
-                logger.debug( "stat.saveConfig", configFile.get() );
+                logger.dbg( "stat.saveConfig", configFile.get() );
                 try {
                     for (Runnable hook : shutdownHooks)
                         hook.run();
 
                     if (configFile.isEmpty()) {
-                        logger.warn( "Config file unset, can't save!" );
+                        logger.wrn( "Config file unset, can't save!" );
                         return;
                     }
 
@@ -135,14 +133,13 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                         }
                     }
                 } catch (UnsupportedEncodingException e) {
-                    logger.error( String.format( "Charset %s is unsupported!", Utils.getCharset().name() ), e );
+                    logger.err( e, "Charset %s is unsupported!", Utils.getCharset().name() );
                 } catch (FileNotFoundException e) {
-                    logger.error( String.format( "Could not find the config file '%s'!", configFile.get() ), e );
+                    logger.err( e, "Could not find the config file '%s'!", configFile.get() );
                 } catch (IOException e) {
-                    logger.error( String.format( "Could not create/write to the config file '%s'!", configFile.get() ),
-                                  e );
+                    logger.err( e, "Could not create/write to the config file '%s'!", configFile.get() );
                 } finally {
-                    logger.debug( null );
+                    logger.dbg( null );
                 }
             }
         } );
@@ -318,16 +315,16 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
                     loaded = true;
                 } catch (InvalidClassException e) {
-                    logger.warn( "Config file is incompatible, reverting to defaults." );
+                    logger.wrn( "Config file is incompatible, reverting to defaults." );
                 } catch (IOException e) {
                     loadProblems.add( e );
                 }
 
             /* Failed. */
             if (!loaded) {
-                logger.error( "Failed to load config file %s.  Reason follows.", configFile.get().toString() );
+                logger.err( "Failed to load config file %s.  Reason follows.", configFile.get() );
                 for (Exception loadProblem : loadProblems)
-                    logger.error( "Reason:", loadProblem );
+                    logger.err( "Reason:", loadProblem );
 
                 revert();
                 return;
@@ -356,8 +353,8 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
                         /* Value type does not match. */
                         catch (ClassCastException e) {
-                            logger.warn( "Couldn't load value for %s, its config value is longer compatible.",
-                                         currEntry.getName() );
+                            logger.wrn( "Couldn't load value for %s, its config value is longer compatible.",
+                                        currEntry.getName() );
                         }
                         break;
                     }
@@ -366,10 +363,10 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
         /* Names and/or Types Map has become incompatible. */
         catch (ClassCastException e) {
-            logger.warn( "Config file is incompatible, reverting to defaults." );
+            logger.wrn( e, "Config file is incompatible, reverting to defaults." );
             revert();
         } catch (ClassNotFoundException e) {
-            logger.error( "Object in config file not supported, reverting to defaults.", e );
+            logger.err( e, "Object in config file not supported, reverting to defaults." );
             revert();
         }
     }
@@ -445,7 +442,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
         if (type != null)
             return type;
 
-        logger.warn( "This config entry has not (yet) been flushed, returning its superclass." );
+        logger.wrn( "This config entry has not (yet) been flushed, returning its superclass." );
 
         if (value == null)
             return "Object";
@@ -560,7 +557,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                 continue;
             }
 
-        logger.warn( "Could not find the name of config entry with value: %s", get() );
+        logger.wrn( "Could not find the name of config entry with value: %s", get() );
         return null;
     }
 
@@ -571,7 +568,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
     public int hashCode() {
 
         if (hashCode == 0) {
-            logger.warn( "Could not find the hash code of config entry with value: %s", get() );
+            logger.wrn( "Could not find the hash code of config entry with value: %s", get() );
             return super.hashCode();
         }
 

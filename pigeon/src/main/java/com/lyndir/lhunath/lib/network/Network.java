@@ -85,6 +85,7 @@ public class Network implements Runnable {
     private Map<SocketChannel, ByteBuffer>                  readBuffers;
     private Map<SocketChannel, ByteBuffer>                  writeBuffers;
     private Map<SocketChannel, Boolean>                     closedChannels;
+    private boolean                                         running;
 
 
     /**
@@ -109,15 +110,31 @@ public class Network implements Runnable {
     }
 
     /**
-     * Start this network by executing a networking thread and bringing up the network selector.
+     * Start this network by executing a networking thread. When a networking thread begins, it invokes
+     * {@link #bringUp()}.
      */
     public void startThread() {
 
         if (networkThread != null && networkThread.isAlive())
-            throw logger.err( "Network thread is already running." ).toError();
+            throw logger.err( "Network thread is already running." ).toError( IllegalStateException.class );
 
         networkThread = new Thread( this );
         networkThread.start();
+    }
+
+    /**
+     * Stop this network's thread. This will cause {@link #bringDown()} if the network is still up.
+     */
+    public void stopThread() {
+
+        if (networkThread == null || !networkThread.isAlive())
+            throw logger.err( "Network thread is already stopped." ).toError( IllegalStateException.class );
+
+        if (isUp())
+            bringDown();
+
+        running = false;
+        networkThread.interrupt();
     }
 
     /**
@@ -1226,12 +1243,13 @@ public class Network implements Runnable {
      */
     public void run() {
 
+        running = true;
         int errorThrottle = 10;
         Thread.currentThread().setName( "Networking" );
 
         bringUp();
 
-        while (true)
+        while (running)
             try {
                 try {
                     // Wait for the networking framework to be brought up.
@@ -1317,7 +1335,7 @@ public class Network implements Runnable {
                         wait( -1000 * errorThrottle );
                 }
             } catch (InterruptedException e) {
-                bringDown();
+                logger.wrn( e, "Operation was interrupted." );
             }
     }
 

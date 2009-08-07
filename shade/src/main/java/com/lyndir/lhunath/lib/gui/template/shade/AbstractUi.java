@@ -140,7 +140,7 @@ public abstract class AbstractUi
         implements ActionListener, LogListener, CaretListener, ListSelectionListener, ItemListener, Reflective,
         ListDataListener, FocusListener, TransitionTarget {
 
-    private static final Logger      logger               = Logger.get( AbstractUi.class );
+    static final Logger              logger               = Logger.get( AbstractUi.class );
 
     protected static final long      LAUNCH_DELAY         = 5000;
     protected static final int       FONT_SIZE            = 12;

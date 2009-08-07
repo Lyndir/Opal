@@ -974,6 +974,8 @@ public class Utils {
      *            The possible child.
      * @param parent
      *            The container that possibly contains the child.
+     * 
+     * @return The given child component exists in parent's hierarchy.
      */
     public static boolean isChild(Component child, Container parent) {
 

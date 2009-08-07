@@ -28,14 +28,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 import javax.xml.xpath.XPathExpressionException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.tidy.Tidy;
 import org.xml.sax.SAXException;
+
+import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
 /**
@@ -57,7 +57,7 @@ import org.xml.sax.SAXException;
  */
 public class Structure {
 
-    private static final Logger   logger    = LoggerFactory.getLogger( Structure.class );
+    private static final Logger   logger    = Logger.get( Structure.class );
 
     public static final XPathUtil xmlpath   = new XPathUtil( false );
     public static final XPathUtil xhtmlpath = new XPathUtil( true );
@@ -79,8 +79,8 @@ public class Structure {
                 Class<?> valueType = field.getType();
                 field.setAccessible( true );
 
-                logger.debug( "Setting (%s) '%s' to '%s' (xpath: %s)", new Object[] { valueType.getSimpleName(),
-                        field.getName(), xmlpath.getString( root, annotation.value() ), annotation.value() } );
+                logger.dbg( "Setting (%s) '%s' to '%s' (xpath: %s)", valueType.getSimpleName(), field.getName(),
+                            xmlpath.getString( root, annotation.value() ), annotation.value() );
 
                 if (Byte.class == valueType || Byte.TYPE == valueType)
                     value = xmlpath.getNumber( root, annotation.value() ).byteValue();
@@ -111,9 +111,9 @@ public class Structure {
 
             // In case data to the field goes wrong (shouldn't).
             catch (IllegalArgumentException e) {
-                logger.error( "Unexpected data type.", e );
+                logger.err( e, "Unexpected data type." );
             } catch (IllegalAccessException e) {
-                logger.error( "Field not accessible.", e );
+                logger.err( e, "Field not accessible." );
             }
         }
 
@@ -126,11 +126,11 @@ public class Structure {
                 }
 
                 catch (IllegalArgumentException e) {
-                    logger.error( "XAfterInject method shouldn't take any arguments.", e );
+                    logger.err( e, "XAfterInject method shouldn't take any arguments." );
                 } catch (IllegalAccessException e) {
-                    logger.error( "XAfterInject method must be accessible.", e );
+                    logger.err( e, "XAfterInject method must be accessible." );
                 } catch (InvocationTargetException e) {
-                    logger.error( "XAfterInject method throw an exception.", e );
+                    logger.err( e, "XAfterInject method throw an exception." );
                 }
     }
 
@@ -159,9 +159,9 @@ public class Structure {
         try {
             structure = type.newInstance();
         } catch (InstantiationException e) {
-            logger.error( "FromXML class can't be instantiated.", e );
+            logger.err( e, "FromXML class can't be instantiated." );
         } catch (IllegalAccessException e) {
-            logger.error( "FromXML class isn't accessible.", e );
+            logger.err( e, "FromXML class isn't accessible." );
         }
         if (structure == null)
             return null;
@@ -213,9 +213,9 @@ public class Structure {
             try {
                 structure = type.newInstance();
             } catch (InstantiationException e) {
-                logger.error( "FromXML class can't be instantiated.", e );
+                logger.err( e, "FromXML class can't be instantiated." );
             } catch (IllegalAccessException e) {
-                logger.error( "FromXML class isn't accessible.", e );
+                logger.err( e, "FromXML class isn't accessible." );
             }
             if (structure == null)
                 return null;
@@ -224,17 +224,17 @@ public class Structure {
             for (Field field : structure.getClass().getDeclaredFields())
                 if (field.isAnnotationPresent( XInjectTag.class ))
                     try {
-                        logger.debug( "Setting (%s) '%s' to tagname '%s'", new Object[] {
-                                field.getType().getSimpleName(), field.getName(), child.getNodeName() } );
+                        logger.dbg( "Setting (%s) '%s' to tagname '%s'", field.getType().getSimpleName(),
+                                    field.getName(), child.getNodeName() );
 
                         field.setAccessible( true );
                         field.set( structure, child.getNodeName() );
                     }
 
                     catch (IllegalArgumentException e) {
-                        logger.error( "XInjectTag field of the wrong type.", e );
+                        logger.err( e, "XInjectTag field of the wrong type." );
                     } catch (IllegalAccessException e) {
-                        logger.error( "XInjectTag field not accessible.", e );
+                        logger.err( e, "XInjectTag field not accessible." );
                     }
 
             // Inject the child tag's data into our new structure object.
@@ -379,7 +379,7 @@ public class Structure {
         }
 
         catch (ParserConfigurationException e) {
-            logger.error( "Document Builder has not been configured correctly!", e );
+            logger.err( e, "Document Builder has not been configured correctly!" );
         }
 
         return null;
