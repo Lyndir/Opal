@@ -29,7 +29,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JWindow;
 
-import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.UIUtils;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
@@ -190,8 +190,8 @@ public class Splash extends JWindow {
     public static Splash spawn(final String image, final long duration) {
 
         if (instance == null) {
-            ImageIcon icon = Utils.getIcon( image );
-            ImageIcon initial = Utils.getIcon( image.replaceFirst( "(\\.[^\\.]+$)", "-desat$1" ) );
+            ImageIcon icon = UIUtils.getIcon( image );
+            ImageIcon initial = UIUtils.getIcon( image.replaceFirst( "(\\.[^\\.]+$)", "-desat$1" ) );
 
             if (icon == null)
                 if (initial != null) {

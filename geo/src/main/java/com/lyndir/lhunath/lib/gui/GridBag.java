@@ -27,7 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.lyndir.lhunath.lib.math.Vec2;
-import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.UIUtils;
 
 
 /**
@@ -260,7 +260,7 @@ public class GridBag extends GridBagConstraints {
      */
     private Component createGlue() {
 
-        JComponent glue = new GLabel( Utils.RED );
+        JComponent glue = new GLabel( UIUtils.RED );
         glue.setOpaque( false );
 
         return glue;

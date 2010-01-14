@@ -17,7 +17,7 @@ package com.lyndir.lhunath.lib.math;
 
 import java.io.Serializable;
 
-import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.util.Utils;
 
 
 /**

@@ -121,10 +121,11 @@ import com.lyndir.lhunath.lib.system.BaseConfig;
 import com.lyndir.lhunath.lib.system.Locale;
 import com.lyndir.lhunath.lib.system.Reflective;
 import com.lyndir.lhunath.lib.system.TeeThread;
-import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.UIUtils;
 import com.lyndir.lhunath.lib.system.logging.HTMLFormatter;
 import com.lyndir.lhunath.lib.system.logging.LogListener;
 import com.lyndir.lhunath.lib.system.logging.Logger;
+import com.lyndir.lhunath.lib.system.util.Utils;
 import com.lyndir.lhunath.lib.system.wrapper.Desktop;
 import com.lyndir.lhunath.lib.system.wrapper.SystemTray;
 import com.lyndir.lhunath.lib.system.wrapper.TrayIcon;
@@ -540,7 +541,7 @@ public abstract class AbstractUi
 
         if (e instanceof ActionEvent)
             logger.wrn( "warn.actionNotImplemented", e.getClass(), ((ActionEvent) e).getActionCommand(), //$NON-NLS-1$
-                        Utils.getFieldName( this, e.getSource() ) );
+                    Utils.getFieldName( this, e.getSource() ) );
         else
             logger.wrn( "warn.eventNotImplemented", e.getClass(), Utils.getFieldName( this, e.getSource() ) ); //$NON-NLS-1$
     }
@@ -646,7 +647,7 @@ public abstract class AbstractUi
                     if (message != null || record.getThrown() != null)
                         try {
                             log.getEditorKit().read( new StringReader( logFormatter.format( record ) ),
-                                                     log.getDocument(), log.getDocument().getLength() );
+                                    log.getDocument(), log.getDocument().getLength() );
                         } catch (IOException e) {
                             logger.err( e, "Couldn't read the log message from the record!" );
                         } catch (BadLocationException e) {
@@ -834,17 +835,17 @@ public abstract class AbstractUi
         titleBar.setLayout( new BoxLayout( titleBar, BoxLayout.X_AXIS ) );
         titleBar.setOpaque( false );
 
-        windowedTitleButton = new JButton( Utils.getIcon( "windowed-sss.png" ) );
+        windowedTitleButton = new JButton( UIUtils.getIcon( "windowed-sss.png" ) );
         windowedTitleButton.setActionCommand( "windowed" );
         windowedTitleButton.addActionListener( this );
         windowedTitleButton.setBorderPainted( false );
         windowedTitleButton.setContentAreaFilled( false );
-        fullscreenTitleButton = new JButton( Utils.getIcon( "fullscreen-sss.png" ) );
+        fullscreenTitleButton = new JButton( UIUtils.getIcon( "fullscreen-sss.png" ) );
         fullscreenTitleButton.setActionCommand( "fullscreen" );
         fullscreenTitleButton.addActionListener( this );
         fullscreenTitleButton.setBorderPainted( false );
         fullscreenTitleButton.setContentAreaFilled( false );
-        closeTitleButton = new JButton( Utils.getIcon( "close-sss.png" ) );
+        closeTitleButton = new JButton( UIUtils.getIcon( "close-sss.png" ) );
         closeTitleButton.setActionCommand( "close" );
         closeTitleButton.addActionListener( this );
         closeTitleButton.setBorderPainted( false );
@@ -903,7 +904,7 @@ public abstract class AbstractUi
         progress.setString( "" );
         progress.setStringPainted( true );
         progress.setBorderPainted( false );
-        progress.setBackground( Utils.setAlpha( progress.getBackground(), 100 ) );
+        progress.setBackground( UIUtils.setAlpha( progress.getBackground(), 100 ) );
 
         for (int level = 0; level <= 5; ++level) {
             messageStack.add( new Stack<String>() );
@@ -961,7 +962,7 @@ public abstract class AbstractUi
     protected JPanel getOverlay() {
 
         final JPanel pane = new JPanel( new BorderLayout() );
-        pane.setBackground( Utils.setAlpha( Color.black, 150 ) );
+        pane.setBackground( UIUtils.setAlpha( Color.black, 150 ) );
         pane.addFocusListener( new FocusAdapter() {
 
             @Override
@@ -1021,13 +1022,13 @@ public abstract class AbstractUi
     private List<Tab> buildTabs() {
 
         List<Tab> tabs = new LinkedList<Tab>();
-        tabs.add( settingsTab = new Tab( Locale.explain( "ui.configuration" ), Utils.getIcon( "settings-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
+        tabs.add( settingsTab = new Tab( Locale.explain( "ui.configuration" ), UIUtils.getIcon( "settings-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
                 getSettingsPane() ) );
-        tabs.add( new Tab( Locale.explain( "ui.logs" ), Utils.getIcon( "log-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
+        tabs.add( new Tab( Locale.explain( "ui.logs" ), UIUtils.getIcon( "log-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
                 getOperationsPane() ) );
-        tabs.add( new Tab( Locale.explain( "ui.licensing" ), Utils.getIcon( "license-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
+        tabs.add( new Tab( Locale.explain( "ui.licensing" ), UIUtils.getIcon( "license-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
                 getLicensePane() ) );
-        tabs.add( new Tab( Locale.explain( "ui.development" ), Utils.getIcon( "develop-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
+        tabs.add( new Tab( Locale.explain( "ui.development" ), UIUtils.getIcon( "develop-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
                 getDevelopmentPane() ) );
 
         return tabs;
@@ -1044,8 +1045,8 @@ public abstract class AbstractUi
         builder.appendSeparator( Locale.explain( "ui.appearance" ) ); //$NON-NLS-1$
 
         builder.append(
-                        Locale.explain( "ui.theme" ), new ToolTip( Locale.explain( "ui.themeTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                                                                   + Locale.explain( "ui.themeTip" ), themesPanel = new JPanel() ), 5 ); //$NON-NLS-1$
+                Locale.explain( "ui.theme" ), new ToolTip( Locale.explain( "ui.themeTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                                           + Locale.explain( "ui.themeTip" ), themesPanel = new JPanel() ), 5 ); //$NON-NLS-1$
         for (MyTheme theme : MyTheme.values())
             themesPanel.add( theme.getButton() );
         themesPanel.setOpaque( false );
@@ -1133,14 +1134,14 @@ public abstract class AbstractUi
         pane.getViewport().setOpaque( false );
         builder.add( pane, cc.xyw( 2, 2, 5 ) );
 
-        button = new JButton( Locale.explain( "ui.clearLog" ), Utils.getIcon( "clear-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.clearLog" ), UIUtils.getIcon( "clear-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "logClear" ); //$NON-NLS-1$
         button.addActionListener( this );
         builder.add( button, cc.xy( 3, 4 ) );
 
-        button = new JButton( Locale.explain( "ui.saveLog" ), Utils.getIcon( "save-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.saveLog" ), UIUtils.getIcon( "save-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "logSave" ); //$NON-NLS-1$
@@ -1179,7 +1180,7 @@ public abstract class AbstractUi
         pane.getViewport().setOpaque( false );
         builder.add( pane, cc.xyw( 2, 2, 5 ) );
 
-        button = new JButton( Locale.explain( "ui.reportOffense" ), Utils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.reportOffense" ), UIUtils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "reportOffense" ); //$NON-NLS-1$
@@ -1209,14 +1210,14 @@ public abstract class AbstractUi
 
         builder.add( getDevelopmentComponent(), cc.xyw( 2, 2, 5 ) );
 
-        button = new JButton( Locale.explain( "ui.reportProblem" ), Utils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.reportProblem" ), UIUtils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "reportIssue" ); //$NON-NLS-1$
         button.addActionListener( this );
         builder.add( new ToolTip( Locale.explain( "ui.reportProblemTip" ), button ), cc.xy( 3, 4 ) );
 
-        button = new JButton( Locale.explain( "ui.toggleConsole" ), Utils.getIcon( "terminal-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.toggleConsole" ), UIUtils.getIcon( "terminal-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "toggleConsole" ); //$NON-NLS-1$
@@ -1273,10 +1274,10 @@ public abstract class AbstractUi
             }
 
             /* Set some look and feel properties. */
-            Utils.setUIFont( new Font( FONT_FACE, Font.PLAIN, FONT_SIZE ) );
-            contentPane.setBorder( BorderFactory.createBevelBorder( BevelBorder.RAISED,
-                                                                    ShadeConfig.theme.get().getBright(),
-                                                                    ShadeConfig.theme.get().getDark() ) );
+            UIUtils.setUIFont( new Font( FONT_FACE, Font.PLAIN, FONT_SIZE ) );
+            contentPane.setBorder( BorderFactory.createBevelBorder( BevelBorder.RAISED, ShadeConfig.theme.get()
+                                                                                                         .getBright(),
+                    ShadeConfig.theme.get().getDark() ) );
 
             /* Force update on hidden panels. */
             if (frame != null && frame.isVisible())
@@ -1461,7 +1462,7 @@ public abstract class AbstractUi
                         item.addActionListener( this );
                         sysMenu.add( item );
 
-                        Image icon = Utils.getIcon( "warcraft.png" ).getImage();
+                        Image icon = UIUtils.getIcon( "warcraft.png" ).getImage();
                         Dimension traySize = SystemTray.getSystemTray().getTrayIconSize();
                         icon = icon.getScaledInstance( traySize.width, traySize.height, Image.SCALE_SMOOTH );
 

@@ -28,7 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import com.lyndir.lhunath.lib.system.Locale;
-import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.UIUtils;
 
 
 /**
@@ -96,17 +96,16 @@ public class EditableList extends JList {
                 /* Add. */
                 item = new JMenuItem( new AbstractAction(
                         Locale.explain( "ui.add" ) + a + contentTitle + ' ' + Locale.explain( "ui.addsuffix" ), //$NON-NLS-1$ //$NON-NLS-2$
-                        Utils.getIcon( "add-ss.png" ) ) { //$NON-NLS-1$
+                        UIUtils.getIcon( "add-ss.png" ) ) { //$NON-NLS-1$
 
                             private static final long serialVersionUID = 1L;
 
 
                             public void actionPerformed(ActionEvent ee) {
 
-                                String element = JOptionPane.showInputDialog(
-                                                                              list,
-                                                                              Locale.explain( "ui.new" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
-                                                                                      + newText );
+                                String element = JOptionPane.showInputDialog( list,
+                                        Locale.explain( "ui.new" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
+                                                + newText );
 
                                 if (element != null)
                                     model.addElement( element );
@@ -116,7 +115,7 @@ public class EditableList extends JList {
 
                 /* Delete. */
                 item = new JMenuItem( new AbstractAction( Locale.explain( "ui.remove" ) + contentTitle, //$NON-NLS-1$
-                        Utils.getIcon( "del-ss.png" ) ) { //$NON-NLS-1$
+                        UIUtils.getIcon( "del-ss.png" ) ) { //$NON-NLS-1$
 
                             private static final long serialVersionUID = 1L;
 
@@ -131,17 +130,16 @@ public class EditableList extends JList {
 
                 /* Modify. */
                 item = new JMenuItem( new AbstractAction( Locale.explain( "ui.edit" ) + contentTitle, //$NON-NLS-1$
-                        Utils.getIcon( "edit-ss.png" ) ) { //$NON-NLS-1$
+                        UIUtils.getIcon( "edit-ss.png" ) ) { //$NON-NLS-1$
 
                             private static final long serialVersionUID = 1L;
 
 
                             public void actionPerformed(ActionEvent ee) {
 
-                                String newVar = JOptionPane.showInputDialog(
-                                                                             list,
-                                                                             Locale.explain( "ui.modify" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
-                                                                                     + newText, getSelectedValue() );
+                                String newVar = JOptionPane.showInputDialog( list,
+                                        Locale.explain( "ui.modify" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
+                                                + newText, getSelectedValue() );
                                 model.remove( getSelectedIndex() );
                                 model.addElement( newVar );
                             }

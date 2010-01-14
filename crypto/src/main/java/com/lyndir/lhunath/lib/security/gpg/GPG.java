@@ -62,7 +62,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.lyndir.lhunath.lib.system.BaseConfig;
-import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.util.Utils;
 
 
 /**
@@ -353,7 +353,7 @@ public class GPG {
         ByteArrayOutputStream decryptedStream = new ByteArrayOutputStream();
         PGPCompressedDataGenerator compressor = new PGPCompressedDataGenerator( CompressionAlgorithmTags.ZLIB );
         OutputStream literalStream = literator.open( compressor.open( decryptedStream ), PGPLiteralData.BINARY, "",
-                                                     new Date(), new byte[BaseConfig.BUFFER_SIZE] );
+                new Date(), new byte[BaseConfig.BUFFER_SIZE] );
         Utils.pipeStream( plainTextStream, literalStream );
         compressor.close();
 
@@ -471,11 +471,8 @@ public class GPG {
             throw new PGPException( "No encrypted data found." );
 
         /* Decrypt the data. */
-        InputStream unencryptedStream = encryptedData.getDataStream(
-                                                                     privateKey.extractPrivateKey(
-                                                                                                   passPhrase.toCharArray(),
-                                                                                                   BouncyCastleProvider.PROVIDER_NAME ),
-                                                                     BouncyCastleProvider.PROVIDER_NAME );
+        InputStream unencryptedStream = encryptedData.getDataStream( privateKey.extractPrivateKey(
+                passPhrase.toCharArray(), BouncyCastleProvider.PROVIDER_NAME ), BouncyCastleProvider.PROVIDER_NAME );
         PGPObjectFactory pgpFactory = new PGPObjectFactory( unencryptedStream );
         Object unencryptedObject = pgpFactory.nextObject();
 
@@ -589,8 +586,8 @@ public class GPG {
         /* Build the signature generator. */
         PGPSignatureGenerator signer = new PGPSignatureGenerator( privateKey.getPublicKey().getAlgorithm(),
                 HashAlgorithmTags.SHA1, BouncyCastleProvider.PROVIDER_NAME );
-        signer.initSign( PGPSignature.BINARY_DOCUMENT,
-                         privateKey.extractPrivateKey( passPhrase.toCharArray(), BouncyCastleProvider.PROVIDER_NAME ) );
+        signer.initSign( PGPSignature.BINARY_DOCUMENT, privateKey.extractPrivateKey( passPhrase.toCharArray(),
+                BouncyCastleProvider.PROVIDER_NAME ) );
 
         /* Write the data into the generator. */
         byte[] buffer = new byte[BaseConfig.BUFFER_SIZE];

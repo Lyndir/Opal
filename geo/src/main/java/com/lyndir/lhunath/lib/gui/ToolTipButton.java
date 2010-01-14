@@ -18,7 +18,7 @@ package com.lyndir.lhunath.lib.gui;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 
-import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.UIUtils;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
@@ -57,7 +57,7 @@ public class ToolTipButton extends ToolTip {
      */
     public ToolTipButton(String toolTip) {
 
-        super( toolTip, new JButton( Utils.getIcon( "help.png" ) ) );
+        super( toolTip, new JButton( UIUtils.getIcon( "help.png" ) ) );
     }
 
     /**

@@ -13,15 +13,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.lib.system;
+package com.lyndir.lhunath.lib.system.util;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -57,15 +50,9 @@ import java.util.zip.Checksum;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.plaf.FontUIResource;
-
+import com.lyndir.lhunath.lib.system.BaseConfig;
+import com.lyndir.lhunath.lib.system.Reflective;
 import com.lyndir.lhunath.lib.system.logging.Logger;
-import com.lyndir.lhunath.lib.system.wrapper.Desktop;
 
 
 /**
@@ -142,76 +129,6 @@ public class Utils {
      */
     public static final double               GOLDEN_INV     = 1 / GOLDEN;
 
-    /**
-     * The transparent color.
-     */
-    public static final Color                TRANSPARENT    = new Color( 0, 0, 0, 0 );
-
-    /**
-     * A slightly custom RED color.
-     */
-    public static final Color                LIGHT_RED      = Color.decode( "#FFDDDD" );
-
-    /**
-     * A slightly custom GREEN color.
-     */
-    public static final Color                LIGHT_GREEN    = Color.decode( "#DDFFDD" );
-
-    /**
-     * A slightly custom BLUE color.
-     */
-    public static final Color                LIGHT_BLUE     = Color.decode( "#DDDDFF" );
-
-    /**
-     * A slightly custom YELLOW color.
-     */
-    public static final Color                LIGHT_YELLOW   = Color.decode( "#FFFFDD" );
-
-    /**
-     * A slightly custom RED color.
-     */
-    public static final Color                RED            = Color.decode( "#FF9999" );
-
-    /**
-     * A slightly custom GREEN color.
-     */
-    public static final Color                GREEN          = Color.decode( "#99FF99" );
-
-    /**
-     * A slightly custom BLUE color.
-     */
-    public static final Color                BLUE           = Color.decode( "#9999FF" );
-
-    /**
-     * A slightly custom YELLOW color.
-     */
-    public static final Color                YELLOW         = Color.decode( "#FFFF99" );
-
-    /**
-     * A slightly custom RED color.
-     */
-    public static final Color                DARK_RED       = Color.decode( "#993333" );
-
-    /**
-     * A slightly custom GREEN color.
-     */
-    public static final Color                DARK_GREEN     = Color.decode( "#339933" );
-
-    /**
-     * A slightly custom BLUE color.
-     */
-    public static final Color                DARK_BLUE      = Color.decode( "#333399" );
-
-    /**
-     * A slightly custom YELLOW color.
-     */
-    public static final Color                DARK_YELLOW    = Color.decode( "#999933" );
-
-    /**
-     * The maximum size for a component. Very useful to make components in a BoxLayout fill all available space.
-     */
-    public static final Dimension            MAX_SIZE       = new Dimension( Short.MAX_VALUE, Short.MAX_VALUE );
-
 
     /**
      * Get the charset that should be used for all encoding and decoding of externalized messages and communication.
@@ -221,57 +138,6 @@ public class Utils {
     public static Charset getCharset() {
 
         return charset;
-    }
-
-    /**
-     * Calculate the width in pixels that are necessary to draw the given string in the given font on the given
-     * graphics.
-     * 
-     * @param graphics
-     *            The graphics configuration the string would be drawn on.
-     * @param font
-     *            The font to use for rendering the string.
-     * @param string
-     *            The string to measure.
-     * @return Guess.
-     */
-    public static double fontWidth(Graphics2D graphics, Font font, String string) {
-
-        return graphics.getFontMetrics( font ).getStringBounds( string, graphics ).getWidth();
-    }
-
-    /**
-     * Calculate the height in pixels that are necessary to draw the given string in the given font on the given
-     * graphics.
-     * 
-     * @param graphics
-     *            The graphics configuration the string would be drawn on.
-     * @param font
-     *            The font to use for rendering the string.
-     * @param string
-     *            The string to measure.
-     * @return Guess.
-     */
-    public static double fontHeight(Graphics2D graphics, Font font, String string) {
-
-        return graphics.getFontMetrics( font ).getStringBounds( string, graphics ).getHeight();
-    }
-
-    /**
-     * Align the given point on the given grid.
-     * 
-     * @param point
-     *            The point that needs to be aligned.
-     * @param gridX
-     *            The length of the grid cells.
-     * @param gridY
-     *            The height of the grid cells.
-     * @return A new point as close to the given as possible, nicely aligned on the given grid.
-     */
-    public static Point2D gridAlign(Point2D point, double gridX, double gridY) {
-
-        return new Point2D.Double( Math.round( point.getX() / gridX ) * gridX, Math.round( point.getY() / gridY )
-                                                                               * gridY );
     }
 
     /**
@@ -314,7 +180,30 @@ public class Utils {
             if (object instanceof Integer)
                 return (Integer) object;
 
-            return Integer.parseInt( object.toString() );
+            return Integer.valueOf( object.toString() );
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Convert an object into a long in a semi-safe way. We parse {@link Object#toString()} and choose to return
+     * <code>null</code> rather than throw an exception if the result is not a valid {@link Long}.
+     * 
+     * @param object
+     *            The object that may represent an long.
+     * @return The resulting integer.
+     */
+    public static Long parseLong(Object object) {
+
+        try {
+            if (object == null)
+                return null;
+
+            if (object instanceof Long)
+                return (Long) object;
+
+            return Long.valueOf( object.toString() );
         } catch (NumberFormatException e) {
             return null;
         }
@@ -337,48 +226,6 @@ public class Utils {
             return (String) object;
 
         return object.toString();
-    }
-
-    /**
-     * Change the default font for all components.
-     * 
-     * @param font
-     *            The new default font.
-     */
-    public static void setUIFont(Font font) {
-
-        FontUIResource uiFont = new FontUIResource( font );
-
-        UIManager.put( "Label.font", uiFont );
-        UIManager.put( "TabbedPane.font", uiFont );
-        UIManager.put( "TextField.font", uiFont );
-        UIManager.put( "PasswordField.font", uiFont );
-        UIManager.put( "Button.font", uiFont );
-        UIManager.put( "RadioButton.font", uiFont );
-        UIManager.put( "CheckBox.font", uiFont );
-        UIManager.put( "ComboBox.font", uiFont );
-        UIManager.put( "Menu.font", uiFont );
-        UIManager.put( "List.font", uiFont );
-        UIManager.put( "ListBox.font", uiFont );
-        UIManager.put( "MenuItem.font", uiFont );
-        UIManager.put( "Panel.font", uiFont );
-        UIManager.put( "TitledBorder.font", uiFont );
-    }
-
-    /**
-     * Load an icon for the given resource file.
-     * 
-     * @param resource
-     *            URI of the resource.
-     * @return The icon.
-     */
-    public static ImageIcon getIcon(String resource) {
-
-        URL url = Thread.currentThread().getContextClassLoader().getResource( resource );
-        if (url == null)
-            return null;
-
-        return new ImageIcon( url );
     }
 
     /**
@@ -509,7 +356,7 @@ public class Utils {
 
 
     /**
-     * Digests that can be calculated with the {@link Utils#getDigest(File, com.lyndir.lhunath.lib.system.Utils.Digest)}
+     * Digests that can be calculated with the {@link Utils#getDigest(File, com.lyndir.lhunath.lib.system.util.Utils.Digest)}
      * method.
      */
     public enum Digest {
@@ -968,39 +815,24 @@ public class Utils {
     }
 
     /**
-     * Check whether a component is the child of another, anywhere down the line.
+     * A sane way of retrieving an entry from a {@link ZipFile} based on its /-delimited pathname.
      * 
-     * @param child
-     *            The possible child.
-     * @param parent
-     *            The container that possibly contains the child.
-     * 
-     * @return The given child component exists in parent's hierarchy.
+     * @param zipFile
+     *            The {@link ZipFile} to retrieve the entry for.
+     * @param zippedName
+     *            The /-delimited pathname of the entry.
+     * @return The {@link ZipEntry} for the pathname or <code>null</code> if none was present.
      */
-    public static boolean isChild(Component child, Container parent) {
+    public static ZipEntry getZipEntry(ZipFile zipFile, String zippedName) {
 
-        if (child instanceof Container)
-            for (Component grandChild : ((Container) child).getComponents())
+        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        while (entries.hasMoreElements()) {
+            ZipEntry entry = entries.nextElement();
+            if (entry.getName().replaceAll( "[\\\\/]+", "/" ).equals( zippedName.replaceAll( "[\\\\/]+", "/" ) ))
+                return entry;
+        }
 
-                if (child.equals( parent ))
-                    return true;
-
-                else if (isChild( grandChild, parent ))
-                    return true;
-
-        return false;
-    }
-
-    /**
-     * Convert a color into an HTML-type hex string (#RRGGBB). This does not take transparency into account.
-     * 
-     * @param color
-     *            The color to convert to hexadecimal notation.
-     * @return The hex string.
-     */
-    public static String colorToHex(Color color) {
-
-        return String.format( "#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue() );
+        return null;
     }
 
     /**
@@ -1094,100 +926,6 @@ public class Utils {
     }
 
     /**
-     * Return a new color based on the given color with the given alpha.
-     * 
-     * @param color
-     *            The base color.
-     * @param alpha
-     *            The alpha to apply to the color (0-255).
-     * @return The resulting color.
-     */
-    public static Color setAlpha(Color color, int alpha) {
-
-        if (color == null)
-            return null;
-
-        return new Color( color.getRed(), color.getGreen(), color.getBlue(), alpha );
-    }
-
-    /**
-     * Check whether the Java 6+ Desktop API is supported.
-     * 
-     * @return Guess.
-     */
-    public static boolean isDesktopSupported() {
-
-        try {
-            return Desktop.isDesktopSupported();
-        } catch (NoClassDefFoundError e) {
-            return false;
-        }
-    }
-
-    /**
-     * Check whether the Java 6+ Desktop API is supported for the BROWSE action.
-     * 
-     * @return Guess.
-     */
-    public static boolean isBrowseSupported() {
-
-        try {
-            return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.BROWSE );
-        } catch (NoClassDefFoundError e) {
-            return false;
-        }
-    }
-
-    /**
-     * Check whether the Java 6+ Desktop API is supported for the MAIL action.
-     * 
-     * @return Guess.
-     */
-    public static boolean isMailSupported() {
-
-        try {
-            return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.MAIL );
-        } catch (NoClassDefFoundError e) {
-            return false;
-        }
-    }
-
-    /**
-     * Check whether the Java 6+ Desktop API is supported for the OPEN action.
-     * 
-     * @return Guess.
-     */
-    public static boolean isOpenSupported() {
-
-        try {
-            return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.OPEN );
-        } catch (NoClassDefFoundError e) {
-            return false;
-        }
-    }
-
-    /**
-     * A sane way of retrieving an entry from a {@link ZipFile} based on its /-delimited pathname.
-     * 
-     * @param zipFile
-     *            The {@link ZipFile} to retrieve the entry for.
-     * @param zippedName
-     *            The /-delimited pathname of the entry.
-     * @return The {@link ZipEntry} for the pathname or <code>null</code> if none was present.
-     */
-    public static ZipEntry getZipEntry(ZipFile zipFile, String zippedName) {
-
-        Enumeration<? extends ZipEntry> entries = zipFile.entries();
-        while (entries.hasMoreElements()) {
-            ZipEntry entry = entries.nextElement();
-            if (entry.getName().replaceAll( "[\\\\/]+", "/" ).equals( zippedName.replaceAll( "[\\\\/]+", "/" ) ))
-                return entry;
-        }
-
-        return null;
-    }
-
-    /**
      * Recursively iterate the given {@link Collection} and all {@link Collection}s within it. When an element is
      * encountered that equals the given {@link Object}, the method returns <code>true</code>.
      * 
@@ -1236,21 +974,6 @@ public class Utils {
                 return true;
 
         return false;
-    }
-
-    /**
-     * Create a debug border with a red coloured line bevel and a text label.
-     * 
-     * @param text
-     *            The text to put on the label.
-     * @return The label component.
-     */
-    public static Component createDebugLabel(String text) {
-
-        JLabel label = new JLabel( text, SwingConstants.CENTER );
-        label.setBorder( BorderFactory.createLineBorder( RED ) );
-
-        return label;
     }
 
     /**

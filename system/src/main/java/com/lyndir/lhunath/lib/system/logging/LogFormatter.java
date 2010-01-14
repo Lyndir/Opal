@@ -21,7 +21,7 @@ import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.util.Utils;
 
 
 /**

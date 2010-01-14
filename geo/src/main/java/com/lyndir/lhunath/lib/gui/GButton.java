@@ -36,7 +36,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import com.lyndir.lhunath.lib.math.Vec2;
-import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.UIUtils;
 
 
 /**
@@ -182,7 +182,7 @@ public class GButton extends JButton {
         g2 = (Graphics2D) smallEnabledIcon.getGraphics();
         g2.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
         g2.drawImage( largeEnabledIcon, 0, 0, smallEnabledIcon.getWidth( this ), smallEnabledIcon.getHeight( this ),
-                      this );
+                this );
 
         icon = getDisabledIcon();
         largeDisabledIcon = new BufferedImage( icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB );
@@ -192,7 +192,7 @@ public class GButton extends JButton {
         g2 = (Graphics2D) smallDisabledIcon.getGraphics();
         g2.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
         g2.drawImage( largeDisabledIcon, 0, 0, smallDisabledIcon.getWidth( this ), smallDisabledIcon.getHeight( this ),
-                      this );
+                this );
 
         updateSize();
     }
@@ -262,10 +262,10 @@ public class GButton extends JButton {
 
         super.updateUI();
 
-        backgroundPaint = new GradientPaint( 0, 0, MyLookAndFeel.getActiveBright(), 0, getHeight(),
-                Utils.setAlpha( MyLookAndFeel.getActiveDark(), 50 ) );
+        backgroundPaint = new GradientPaint( 0, 0, MyLookAndFeel.getActiveBright(), 0, getHeight(), UIUtils.setAlpha(
+                MyLookAndFeel.getActiveDark(), 50 ) );
         borderPaint = new GradientPaint( 0, 0, MyLookAndFeel.getActiveBright().brighter(), 0, getHeight(),
-                Utils.setAlpha( MyLookAndFeel.getActiveBright(), 50 ) );
+                UIUtils.setAlpha( MyLookAndFeel.getActiveBright(), 50 ) );
     }
 
     /**
@@ -376,11 +376,11 @@ public class GButton extends JButton {
 
         g2.setPaint( backgroundPaint );
         g2.fillRoundRect( 0, 0, getWidth(), getHeight(), (int) (getWidth() * ARC_FRACTION),
-                          (int) (getWidth() * ARC_FRACTION) );
+                (int) (getWidth() * ARC_FRACTION) );
 
         g2.setPaint( borderPaint );
         g2.drawRoundRect( 0, 0, getWidth() - 1, getHeight() - 1, (int) (getWidth() * ARC_FRACTION),
-                          (int) (getWidth() * ARC_FRACTION) );
+                (int) (getWidth() * ARC_FRACTION) );
 
         g2.setComposite( origComposite );
     }

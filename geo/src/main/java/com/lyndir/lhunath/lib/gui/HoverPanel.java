@@ -27,7 +27,7 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
-import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.UIUtils;
 
 
 /**
@@ -38,7 +38,7 @@ import com.lyndir.lhunath.lib.system.Utils;
 public class HoverPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener {
 
     private static final Color backgroundBase  = new Color( 0.9f, 0.9f, 1 );
-    private static final Color backgroundHover = Utils.setAlpha( backgroundBase, 100 );
+    private static final Color backgroundHover = UIUtils.setAlpha( backgroundBase, 100 );
     private static boolean     alternateRow;
     private Color              background;
 
@@ -53,7 +53,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
 
         super( layout );
 
-        background = alternateRow? Utils.setAlpha( backgroundBase, 20 ): Utils.setAlpha( backgroundBase, 0 );
+        background = alternateRow? UIUtils.setAlpha( backgroundBase, 20 ): UIUtils.setAlpha( backgroundBase, 0 );
         alternateRow = !alternateRow;
         restoreBackground();
     }

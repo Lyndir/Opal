@@ -15,11 +15,10 @@
  */
 package com.lyndir.lhunath.lib.system.logging;
 
+import java.awt.Color;
 import java.util.logging.Level;
 
-import java.awt.Color;
-
-import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.UIUtils;
 
 
 /**
@@ -44,12 +43,12 @@ public class HTMLFormatter extends LogFormatter {
     protected void setColors() {
 
         levelColor.put( null, "</pre>" );
-        levelColor.put( Level.SEVERE, "<pre style='color: " + Utils.colorToHex( Utils.RED ) + "'>" );
-        levelColor.put( Level.WARNING, "<pre style='color: " + Utils.colorToHex( Utils.YELLOW ) + "'>" );
-        levelColor.put( Level.INFO, "<pre style='color: " + Utils.colorToHex( Color.CYAN ) + "'>" );
-        levelColor.put( Level.CONFIG, "<pre style='color: " + Utils.colorToHex( Utils.DARK_BLUE ) + "'>" );
-        levelColor.put( Level.FINE, "<pre style='color: " + Utils.colorToHex( Utils.DARK_GREEN ) + "'>" );
-        levelColor.put( Level.FINER, "<pre style='color: " + Utils.colorToHex( Utils.DARK_GREEN ) + "'>" );
-        levelColor.put( Level.FINEST, "<pre style='color: " + Utils.colorToHex( Utils.DARK_GREEN ) + "'>" );
+        levelColor.put( Level.SEVERE, "<pre style='color: " + UIUtils.colorToHex( UIUtils.RED ) + "'>" );
+        levelColor.put( Level.WARNING, "<pre style='color: " + UIUtils.colorToHex( UIUtils.YELLOW ) + "'>" );
+        levelColor.put( Level.INFO, "<pre style='color: " + UIUtils.colorToHex( Color.CYAN ) + "'>" );
+        levelColor.put( Level.CONFIG, "<pre style='color: " + UIUtils.colorToHex( UIUtils.DARK_BLUE ) + "'>" );
+        levelColor.put( Level.FINE, "<pre style='color: " + UIUtils.colorToHex( UIUtils.DARK_GREEN ) + "'>" );
+        levelColor.put( Level.FINER, "<pre style='color: " + UIUtils.colorToHex( UIUtils.DARK_GREEN ) + "'>" );
+        levelColor.put( Level.FINEST, "<pre style='color: " + UIUtils.colorToHex( UIUtils.DARK_GREEN ) + "'>" );
     }
 }

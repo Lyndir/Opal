@@ -21,14 +21,21 @@ import java.lang.reflect.Proxy;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
+import com.lyndir.lhunath.lib.system.localization.UseBundle.UnspecifiedBundle;
+
 
 /**
- * <h2>{@link Localizer}<br>
- * <sub>Obtain localized data from localization interfaces.</sub></h2>
+ * <h2>{@link LocalizerFactory}<br>
+ * <sub>Create localizers from localization interfaces.</sub></h2>
  * 
  * <p>
- * This class provides localization data from interfaces annotated with the {@link UseBundle} and {@link UseKey}
- * annotations.
+ * This class builds localizers from interfaces annotated with the {@link UseBundle} and {@link UseKey} annotations.
+ * </p>
+ * 
+ * <p>
+ * This localizer can then be queried by invoking the methods provided by the interface used to create it. This way, you
+ * can to obtain localized data from them as provided by the resource bundle that interface references in its
+ * {@link UseBundle} annotation.
  * </p>
  * 
  * <p>
@@ -37,16 +44,16 @@ import java.util.ResourceBundle;
  * 
  * @author lhunath
  */
-public class Localizer {
+public abstract class LocalizerFactory {
 
-    public static <L> L localize(Class<L> localizationProvider) {
+    public static <L> L getLocalizer(Class<L> localizationProvider) {
 
         // Do some validation on the localization provider interface.
         if (!localizationProvider.isInterface())
             throw new IllegalArgumentException(
                     MessageFormat.format( "Localization provider must be an interface: {0}", localizationProvider ) );
 
-        if (!localizationProvider.isAnnotationPresent( UseBundle.class ))
+        if (!(localizationProvider.isAnnotationPresent( UseBundle.class ) || localizationProvider.isAnnotationPresent( UseBundle.class )))
             throw new IllegalArgumentException(
                     MessageFormat.format( "Localization provider must be annotated with {0}: {1}", UseBundle.class,
                                           localizationProvider ) );
@@ -75,18 +82,33 @@ public class Localizer {
         public Object invoke(Object proxy, Method method, Object[] args)
                 throws Throwable {
 
+            UseKey useKeyAnnotation = method.getAnnotation( UseKey.class );
+            if (useKeyAnnotation == null)
+                throw new IllegalStateException( MessageFormat.format( "Need a {0} annotation on {1}", UseKey.class,
+                                                                       method ) );
+
             Class<?> methodType = method.getDeclaringClass();
             UseBundle useBundleAnnotation = methodType.getAnnotation( UseBundle.class );
             if (useBundleAnnotation == null)
-                throw new IllegalStateException( "Need a " + UseBundle.class + " annotation on " + methodType );
-
-            UseKey useKeyAnnotation = method.getAnnotation( UseKey.class );
-            if (useKeyAnnotation == null)
-                throw new IllegalStateException( "Need a " + UseKey.class + " annotation on " + method );
+                throw new IllegalStateException( MessageFormat.format( "Need a {0} annotation on {1}", UseBundle.class,
+                                                                       method ) );
 
             String bundleKey = useKeyAnnotation.value();
-            String bundleBaseName = useBundleAnnotation.value();
-            ResourceBundle bundle = ResourceBundle.getBundle( bundleBaseName );
+            Class<? extends ResourceBundle> bundleType = useBundleAnnotation.type();
+            String bundleResource = null;
+            if (bundleType != null && !bundleType.equals( UnspecifiedBundle.class ))
+                bundleResource = bundleType.getCanonicalName();
+            else
+                bundleResource = useBundleAnnotation.resource();
+            if (bundleResource == null || bundleResource.isEmpty())
+                throw new IllegalStateException(
+                        MessageFormat.format( "No #type or #resource was specified on the {0} annotation for {1}",
+                                              UseBundle.class, method ) );
+
+            if (bundleKey == null || bundleKey.isEmpty())
+                bundleKey = method.getName();
+
+            ResourceBundle bundle = ResourceBundle.getBundle( bundleResource );
 
             if (String.class.isAssignableFrom( method.getReturnType() )) {
                 String localizedValueFormat = bundle.getString( bundleKey );

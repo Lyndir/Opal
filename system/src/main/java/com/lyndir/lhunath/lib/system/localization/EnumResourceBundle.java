@@ -24,25 +24,28 @@ import java.util.ResourceBundle;
 
 /**
  * <h2>{@link EnumResourceBundle}<br>
- * <sub>An implementation of {@link ResourceBundle} that uses {@link Enum}s with a value for data container.</sub></h2>
+ * <sub>An implementation of {@link ResourceBundle} that uses {@link Enum}s with a value as the resource.</sub></h2>
  * 
  * <p>
- * The {@link Enum} must implement the {@link ResourceEnum} interface.
+ * The {@link Enum} must implement the {@link ValueEnum} interface.
  * </p>
  * 
  * <p>
  * <i>Mar 29, 2009</i>
  * </p>
  * 
+ * @param <T>
+ *            The type of values provided as resources.
+ * 
  * @author lhunath
  */
-public class EnumResourceBundle extends ResourceBundle {
+public class EnumResourceBundle<T> extends ResourceBundle {
 
-    private LinkedList<String>  keyList;
-    private Class<ResourceEnum> enumType;
+    private LinkedList<String>            keyList;
+    private Class<? extends ValueEnum<T>> enumType;
 
 
-    public EnumResourceBundle(Class<ResourceEnum> enumType) {
+    public EnumResourceBundle(Class<? extends ValueEnum<T>> enumType) {
 
         if (!enumType.isEnum())
             throw new IllegalArgumentException( "Expected an enum, got: " + enumType );
@@ -50,7 +53,7 @@ public class EnumResourceBundle extends ResourceBundle {
         this.enumType = enumType;
 
         keyList = new LinkedList<String>();
-        for (ResourceEnum element : enumType.getEnumConstants())
+        for (ValueEnum<T> element : enumType.getEnumConstants())
             keyList.add( element.name() );
     }
 
@@ -67,12 +70,12 @@ public class EnumResourceBundle extends ResourceBundle {
      * {@inheritDoc}
      */
     @Override
-    protected Object handleGetObject(String key) {
+    protected T handleGetObject(String key) {
 
-        for (ResourceEnum element : enumType.getEnumConstants())
+        for (ValueEnum<T> element : enumType.getEnumConstants())
             if (element.name().equals( key ))
                 return element.value();
 
-        throw new MissingResourceException( "Resource key not implemented.", enumType.getName(), key );
+        throw new MissingResourceException( "Resource key '" + key + "' not implemented.", enumType.getName(), key );
     }
 }

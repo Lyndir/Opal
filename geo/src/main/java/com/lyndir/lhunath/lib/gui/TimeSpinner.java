@@ -25,8 +25,8 @@ import java.util.TimeZone;
 import javax.swing.AbstractSpinnerModel;
 import javax.swing.JSpinner;
 
-import com.lyndir.lhunath.lib.system.Utils;
 import com.lyndir.lhunath.lib.system.logging.Logger;
+import com.lyndir.lhunath.lib.system.util.Utils;
 
 
 /**

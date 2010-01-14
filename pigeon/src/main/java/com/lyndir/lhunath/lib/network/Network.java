@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.lib.network;
 
-import static com.lyndir.lhunath.lib.system.Utils.getCharset;
+import static com.lyndir.lhunath.lib.system.util.Utils.getCharset;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -127,11 +127,11 @@ public class Network implements Runnable {
      */
     public void stopThread() {
 
-        if (networkThread == null || !networkThread.isAlive())
-            throw logger.err( "Network thread is already stopped." ).toError( IllegalStateException.class );
-
         if (isUp())
             bringDown();
+
+        if (networkThread == null || !networkThread.isAlive())
+            return;
 
         running = false;
         networkThread.interrupt();

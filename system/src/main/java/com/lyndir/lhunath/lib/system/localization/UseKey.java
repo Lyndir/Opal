@@ -5,6 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 
 /**
@@ -22,10 +23,14 @@ import java.util.Properties;
 public @interface UseKey {
 
     /**
-     * The property key that identifies the value of the localized result format.
+     * The key in the resource bundle that references the localization value for the annotated method.
      * 
      * <p>
-     * This is the key in the {@link Properties} that yields the value that contains the localization source data.
+     * An empty string indicates that the annotated method's name should be used as the key.
+     * </p>
+     * 
+     * <p>
+     * This is the key in {@link ResourceBundle} that yields the localization data as value.
      * </p>
      */
     String value() default "";

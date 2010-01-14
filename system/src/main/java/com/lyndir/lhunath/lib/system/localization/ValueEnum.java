@@ -16,22 +16,24 @@
 package com.lyndir.lhunath.lib.system.localization;
 
 /**
- * <h2>{@link ResourceEnum}<br>
- * <sub>An {@link Enum} that simply provides a value for a key.</sub></h2>
- * 
- * <p>
- * The key is the {@link #name()} of the enum constant, the value is the return value of {@link #value()}.
- * </p>
+ * <h2>{@link ValueEnum}<br>
+ * <sub>An interface for {@link Enum}s whose keys provide a simple value.</sub></h2>
  * 
  * <p>
  * <i>Mar 29, 2009</i>
  * </p>
  * 
+ * @param <T>
+ *            The type of values provided by this {@link Enum} class.
+ * 
  * @author lhunath
  */
-public interface ResourceEnum {
+public interface ValueEnum<T> {
 
     public String name();
 
-    public Object value();
+    /**
+     * @return The value provided by the {@link Enum} instance.
+     */
+    public T value();
 }

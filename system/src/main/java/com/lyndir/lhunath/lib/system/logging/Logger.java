@@ -17,7 +17,10 @@ package com.lyndir.lhunath.lib.system.logging;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.LoggerFactory;
@@ -397,9 +400,12 @@ public class Logger {
      * 
      * @return An unchecked {@link Error}.
      */
-    public Error toError() {
+    public RuntimeException toError() {
 
-        return toError( Error.class );
+        if (eventCause.get() instanceof RuntimeException)
+            return (RuntimeException) eventCause.get();
+
+        return toError( RuntimeException.class );
     }
 
     /**
@@ -408,26 +414,68 @@ public class Logger {
      * The previous event details are kept in a thread-safe manner and local to this logger instance.
      * 
      * @param errorClass
-     *            The type of {@link Throwable} to generate for the previously logged event.
+     *            The type of {@link Throwable} to generate for the previously logged event. This method relies on the
+     *            fact that the given class has a constructor that takes a {@link String} argument (the message) and a
+     *            {@link Throwable} argument (the cause) in that order.
+     * @param args
+     *            Optional additional arguments. These will be passed to the <code>errorClass</code> constructor, so
+     *            make sure the class has a constructor that supports the given number and type of arguments. They
+     *            should <b>follow</b> the message and cause arguments.
      * @param <E>
      *            The type of the requested exception must be a subclass of {@link Throwable}.
      * 
      * @return The requested {@link Throwable}.
      */
-    public <E extends Throwable> E toError(Class<E> errorClass) {
+    public <E extends Throwable> E toError(Class<E> errorClass, Object... args) {
 
         if (eventFormat.get() == null)
             throw new IllegalStateException( "No previous event set: can't rethrow one." );
 
         try {
-            if (eventCause.get() == null) {
-                Constructor<E> errorConstructor = errorClass.getConstructor( String.class );
-                return errorConstructor.newInstance( String.format( eventFormat.get(), eventArguments.get() ) );
+            Class<?>[] types = new Class<?>[args.length + 2];
+            Object[] arguments = new Object[args.length + 2];
+            types[0] = String.class;
+            arguments[0] = String.format( eventFormat.get(), eventArguments.get() );
+            types[1] = Throwable.class;
+            arguments[1] = eventCause.get();
+            for (int a = 0; a < args.length; ++a) {
+                arguments[a + 2] = args[a];
+                if (arguments[a + 2] != null)
+                    types[a + 2] = arguments[a + 2].getClass();
             }
 
-            Constructor<E> errorConstructor = errorClass.getConstructor( String.class, Throwable.class );
-            return errorConstructor.newInstance( String.format( eventFormat.get(), eventArguments.get() ),
-                                                 eventCause.get() );
+            // Find all constructors of errorClass that match the argument types.
+            // (Cast is necessary because generic arrays are unsafe in java.)
+            @SuppressWarnings("unchecked")
+            Constructor<E>[] errorConstructors = (Constructor<E>[]) errorClass.getConstructors();
+            List<Constructor<E>> constructors = new LinkedList<Constructor<E>>();
+            for (Constructor<E> constructor : errorConstructors) {
+                if (constructor.getParameterTypes().length != types.length)
+                    continue;
+
+                boolean validConstructor = true;
+                for (int t = 0; t < types.length; ++t) {
+                    if (types[t] == null)
+                        continue;
+                    if (!constructor.getParameterTypes()[t].equals( types[t] )) {
+                        validConstructor = false;
+                        break;
+                    }
+                }
+
+                if (validConstructor)
+                    constructors.add( constructor );
+            }
+            if (constructors.isEmpty())
+                throw loggerLogger.err( "No constructors found for %s that match argument types %s", //
+                                        errorClass, Arrays.asList( types ) ) //
+                .toError( IllegalArgumentException.class );
+            if (constructors.size() > 1)
+                throw loggerLogger.err( "Ambiguous argument types %s for constructors of %s.  Constructors: %s", //
+                                        Arrays.asList( types ), errorClass, constructors ) //
+                .toError( IllegalArgumentException.class );
+
+            return constructors.get( 0 ).newInstance( arguments );
         }
 
         catch (IllegalArgumentException e) {
@@ -439,8 +487,6 @@ public class Logger {
         } catch (InvocationTargetException e) {
             throw loggerLogger.bug( e ).toError();
         } catch (SecurityException e) {
-            throw loggerLogger.bug( e ).toError();
-        } catch (NoSuchMethodException e) {
             throw loggerLogger.bug( e ).toError();
         }
     }

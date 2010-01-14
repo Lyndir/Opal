@@ -27,7 +27,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.UIUtils;
 
 
 /**
@@ -78,13 +78,13 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
 
         if (cellHasFocus)
             if (panel.isBackgroundRestored())
-                panel.setBackground( Utils.setAlpha( list.getSelectionBackground(), 100 ) );
+                panel.setBackground( UIUtils.setAlpha( list.getSelectionBackground(), 100 ) );
             else
                 panel.setBorder( BorderFactory.createLineBorder( list.getSelectionBackground() ) );
 
         if (isSelected)
             if (panel.isBackgroundRestored())
-                panel.setBackground( Utils.setAlpha( list.getSelectionBackground(), 200 ) );
+                panel.setBackground( UIUtils.setAlpha( list.getSelectionBackground(), 200 ) );
             else
                 panel.setBorder( BorderFactory.createLineBorder( list.getSelectionBackground() ) );
 

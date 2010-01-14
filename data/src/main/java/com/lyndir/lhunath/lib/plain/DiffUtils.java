@@ -28,7 +28,7 @@ import java.util.Vector;
 import jlibdiff.Diff;
 import jlibdiff.Hunk;
 
-import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.UIUtils;
 
 
 /**
@@ -110,10 +110,11 @@ public class DiffUtils {
 
             String diffFormat = "<span style='color: %x'>%s</span>";
             if (chunkDel.length() > 0)
-                out.append( String.format( diffFormat, Utils.DARK_RED.getRGB() - 0xff000000, chunkDel ) ).append( '\n' );
+                out.append( String.format( diffFormat, UIUtils.DARK_RED.getRGB() - 0xff000000, chunkDel ) ).append(
+                        '\n' );
             if (chunkAdd.length() > 0)
-                out.append( String.format( diffFormat, Utils.DARK_GREEN.getRGB() - 0xff000000, chunkAdd ) ).append(
-                                                                                                                    '\n' );
+                out.append( String.format( diffFormat, UIUtils.DARK_GREEN.getRGB() - 0xff000000, chunkAdd ) ).append(
+                        '\n' );
         }
 
         return out.append( "</pre>" ).toString();
