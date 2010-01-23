@@ -5,13 +5,6 @@
 # OS-Specific junk.
 .DS_Store
 
-# Packaged objects.
-/archive.builder
-.svn
-
-# Ant
-/*/build.xml
-
 # Eclipse IDE
 /*/eclipse
 /*/.classpath
@@ -20,10 +13,9 @@
 
 # IntelliJ IDEA IDE
 /.idea
-/*/*.iml
+*.iml
 
 # Netbeans IDE
-/build-before-profiler.xml
 /build.xml
 /build
 /dist
