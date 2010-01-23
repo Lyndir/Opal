@@ -18,6 +18,10 @@
 /*/.project
 /*/.settings
 
+# IntelliJ IDEA IDE
+/.idea
+/*/*.iml
+
 # Netbeans IDE
 /build-before-profiler.xml
 /build.xml

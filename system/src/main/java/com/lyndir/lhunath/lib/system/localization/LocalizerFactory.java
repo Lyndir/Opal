@@ -15,6 +15,7 @@
  */
 package com.lyndir.lhunath.lib.system.localization;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -22,6 +23,7 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 import com.lyndir.lhunath.lib.system.localization.UseBundle.UnspecifiedBundle;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
 /**
@@ -46,35 +48,44 @@ import com.lyndir.lhunath.lib.system.localization.UseBundle.UnspecifiedBundle;
  */
 public abstract class LocalizerFactory {
 
-    public static <L> L getLocalizer(Class<L> localizationProvider) {
+    static final Logger logger = Logger.get( LocalizerFactory.class );
 
-        // Do some validation on the localization provider interface.
-        if (!localizationProvider.isInterface())
-            throw new IllegalArgumentException(
-                    MessageFormat.format( "Localization provider must be an interface: {0}", localizationProvider ) );
 
-        if (!(localizationProvider.isAnnotationPresent( UseBundle.class ) || localizationProvider.isAnnotationPresent( UseBundle.class )))
-            throw new IllegalArgumentException(
-                    MessageFormat.format( "Localization provider must be annotated with {0}: {1}", UseBundle.class,
-                                          localizationProvider ) );
+    public static <L> L getLocalizer(Class<L> localizationInterface, Object context) {
 
-        for (Method method : localizationProvider.getDeclaredMethods())
+        // Do some validation on the localization interface.
+        if (!localizationInterface.isInterface())
+            throw new IllegalArgumentException( MessageFormat.format(
+                    "Localization interface must be an interface: {0}", localizationInterface ) );
+
+        if (!(localizationInterface.isAnnotationPresent( UseBundle.class ) || localizationInterface.isAnnotationPresent( UseLocalizationProvider.class )))
+            throw new IllegalArgumentException( MessageFormat.format(
+                    "Localization interface must be annotated with {0} or {1}: {2}", //
+                    UseBundle.class, UseLocalizationProvider.class, localizationInterface ) );
+
+        for (Method method : localizationInterface.getDeclaredMethods())
             if (!method.isAnnotationPresent( UseKey.class ))
-                throw new IllegalArgumentException(
-                        MessageFormat.format( "Method must be annotated with {0}: {1} of {2}", UseKey.class, method,
-                                              localizationProvider ) );
+                throw new IllegalArgumentException( MessageFormat.format(
+                        "Method must be annotated with {0}: {1} of {2}", UseKey.class, method, localizationInterface ) );
 
-        // Create a localization provider proxy.
+        // Create a localization interface proxy.
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        L queryObject = localizationProvider.cast( Proxy.newProxyInstance( classLoader,
-                                                                           new Class[] { localizationProvider },
-                                                                           new LocalizationInvocationHandler() ) );
+        L queryObject = localizationInterface.cast( Proxy.newProxyInstance( classLoader, new Class[] {
+                localizationInterface, Serializable.class }, new LocalizationInvocationHandler( context ) ) );
 
         return queryObject;
     }
 
 
-    static class LocalizationInvocationHandler implements InvocationHandler {
+    static class LocalizationInvocationHandler implements InvocationHandler, Serializable {
+
+        private Object context;
+
+
+        public LocalizationInvocationHandler(Object context) {
+
+            this.context = context;
+        }
 
         /**
          * {@inheritDoc}
@@ -85,41 +96,50 @@ public abstract class LocalizerFactory {
             UseKey useKeyAnnotation = method.getAnnotation( UseKey.class );
             if (useKeyAnnotation == null)
                 throw new IllegalStateException( MessageFormat.format( "Need a {0} annotation on {1}", UseKey.class,
-                                                                       method ) );
+                        method ) );
+
+            String localizationKey = useKeyAnnotation.value();
+            if (localizationKey == null || localizationKey.isEmpty())
+                localizationKey = method.getName();
 
             Class<?> methodType = method.getDeclaringClass();
             UseBundle useBundleAnnotation = methodType.getAnnotation( UseBundle.class );
-            if (useBundleAnnotation == null)
-                throw new IllegalStateException( MessageFormat.format( "Need a {0} annotation on {1}", UseBundle.class,
-                                                                       method ) );
+            if (useBundleAnnotation != null) {
+                Class<? extends ResourceBundle> bundleType = useBundleAnnotation.type();
+                String bundleResource = null;
+                if (bundleType != null && !bundleType.equals( UnspecifiedBundle.class ))
+                    bundleResource = bundleType.getCanonicalName();
+                else
+                    bundleResource = useBundleAnnotation.resource();
+                if (bundleResource == null || bundleResource.isEmpty())
+                    throw new IllegalStateException( MessageFormat.format(
+                            "No #type or #resource was specified on the {0} annotation for {1}", UseBundle.class,
+                            method ) );
 
-            String bundleKey = useKeyAnnotation.value();
-            Class<? extends ResourceBundle> bundleType = useBundleAnnotation.type();
-            String bundleResource = null;
-            if (bundleType != null && !bundleType.equals( UnspecifiedBundle.class ))
-                bundleResource = bundleType.getCanonicalName();
-            else
-                bundleResource = useBundleAnnotation.resource();
-            if (bundleResource == null || bundleResource.isEmpty())
-                throw new IllegalStateException(
-                        MessageFormat.format( "No #type or #resource was specified on the {0} annotation for {1}",
-                                              UseBundle.class, method ) );
+                ResourceBundle bundle = ResourceBundle.getBundle( bundleResource );
 
-            if (bundleKey == null || bundleKey.isEmpty())
-                bundleKey = method.getName();
+                if (String.class.isAssignableFrom( method.getReturnType() )) {
+                    String localizedValueFormat = bundle.getString( localizationKey );
+                    return MessageFormat.format( localizedValueFormat, args );
+                }
 
-            ResourceBundle bundle = ResourceBundle.getBundle( bundleResource );
+                if (method.getParameterTypes().length > 0)
+                    throw new IllegalArgumentException( "Expected no arguments on " + method
+                                                        + ": Can't format non-String return type." );
 
-            if (String.class.isAssignableFrom( method.getReturnType() )) {
-                String localizedValueFormat = bundle.getString( bundleKey );
-                return MessageFormat.format( localizedValueFormat, args );
+                return bundle.getObject( localizationKey );
             }
 
-            if (method.getParameterTypes().length > 0)
-                throw new IllegalArgumentException( "Expected no arguments on " + method
-                                                    + ": Can't format non-String return type." );
+            UseLocalizationProvider useLocalizationProviderAnnotation = methodType.getAnnotation( UseLocalizationProvider.class );
+            if (useLocalizationProviderAnnotation != null) {
+                Class<? extends LocalizationProvider> localizationProvider = useLocalizationProviderAnnotation.value();
 
-            return bundle.getObject( bundleKey );
+                return MessageFormat.format( localizationProvider.newInstance().getValueForKeyInContext(
+                        localizationKey, context ), args );
+            }
+
+            throw new UnsupportedOperationException( MessageFormat.format( "No supported annotation found on: {0}",
+                    methodType ) );
         }
     }
 }
