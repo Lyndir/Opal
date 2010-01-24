@@ -53,15 +53,15 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 /**
  * <h2>{@link LoggingEventHandler}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * [description / usage].
  * </p>
- * 
+ *
  * <p>
  * <i>Apr 19, 2008</i>
  * </p>
- * 
+ *
  * @author mbillemo
  */
 public class LoggingEventHandler
@@ -76,7 +76,7 @@ public class LoggingEventHandler
 
     /**
      * Watch all non-input events that can occur on the given component.
-     * 
+     *
      * @param name
      *            The name to use in the log output for identifying this component.
      * @param c
@@ -96,7 +96,7 @@ public class LoggingEventHandler
 
     /**
      * Watch all events that can occur on the given window.
-     * 
+     *
      * @param name
      *            The name to use in the log output for identifying this window.
      * @param w
@@ -118,7 +118,7 @@ public class LoggingEventHandler
 
     /**
      * Watch all input events that can occur on the given component.
-     * 
+     *
      * @param name
      *            The name to use in the log output for identifying this component.
      * @param c
@@ -136,7 +136,7 @@ public class LoggingEventHandler
 
     /**
      * Create a new {@link LoggingEventHandler} instance.
-     * 
+     *
      * @param name
      *            The name to use for the components handled by this handler.
      */
@@ -148,6 +148,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void componentHidden(ComponentEvent e) {
 
         logger.dbg( "%s: hidden [Id: %d]", name, e.getID() );
@@ -156,6 +157,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void componentMoved(ComponentEvent e) {
 
         logger.dbg( "%s: moved [Id: %d]", name, e.getID() );
@@ -164,6 +166,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void componentResized(ComponentEvent e) {
 
         logger.dbg( "%s: sized [Id: %d]", name, e.getID() );
@@ -172,6 +175,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void componentShown(ComponentEvent e) {
 
         logger.dbg( "%s: shown [Id: %d]", name, e.getID() );
@@ -180,6 +184,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void componentAdded(ContainerEvent e) {
 
         logger.dbg( "%s: added [Id: %d]", name, e.getID() );
@@ -188,6 +193,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void componentRemoved(ContainerEvent e) {
 
         logger.dbg( "%s: removed [Id: %d]", name, e.getID() );
@@ -196,6 +202,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void focusGained(FocusEvent e) {
 
         logger.dbg( "%s: focussed [Id: %d]", name, e.getID() );
@@ -204,6 +211,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void focusLost(FocusEvent e) {
 
         logger.dbg( "%s: unfocussed [Id: %d]", name, e.getID() );
@@ -212,6 +220,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void ancestorAdded(AncestorEvent e) {
 
         logger.dbg( "%s: ancestor added [Id: %d]", name, e.getID() );
@@ -220,6 +229,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void ancestorMoved(AncestorEvent e) {
 
         logger.dbg( "%s: ancestor moved [Id: %d]", name, e.getID() );
@@ -228,6 +238,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void ancestorRemoved(AncestorEvent e) {
 
         logger.dbg( "%s: ancestor removed [Id: %d]", name, e.getID() );
@@ -236,6 +247,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void ancestorMoved(HierarchyEvent e) {
 
         logger.dbg( "%s: hierarchy ancestor moved [Id: %d, Flags: %d]", name, e.getID(), e.getChangeFlags() );
@@ -244,6 +256,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void ancestorResized(HierarchyEvent e) {
 
         logger.dbg( "%s: hierarchy ancestor sized [Id: %d, Flags: %d]", name, e.getID(), e.getChangeFlags() );
@@ -252,6 +265,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void hierarchyChanged(HierarchyEvent e) {
 
         logger.dbg( "%s: hierarchy changed [Id: %d, Flags: %d]", name, e.getID(), e.getChangeFlags() );
@@ -260,6 +274,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void windowGainedFocus(WindowEvent e) {
 
         logger.dbg( "%s: window focussed [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
@@ -269,6 +284,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void windowLostFocus(WindowEvent e) {
 
         logger.dbg( "%s: window unfocussed [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
@@ -278,6 +294,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void windowActivated(WindowEvent e) {
 
         logger.dbg( "%s: window activated [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
@@ -287,6 +304,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void windowClosed(WindowEvent e) {
 
         logger.dbg( "%s: window closed [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
@@ -296,6 +314,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void windowClosing(WindowEvent e) {
 
         logger.dbg( "%s: window closing [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
@@ -305,6 +324,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void windowDeactivated(WindowEvent e) {
 
         logger.dbg( "%s: window deactivated [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
@@ -314,6 +334,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void windowDeiconified(WindowEvent e) {
 
         logger.dbg( "%s: window deiconified [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
@@ -323,6 +344,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void windowIconified(WindowEvent e) {
 
         logger.dbg( "%s: window iconified [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
@@ -332,6 +354,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void windowOpened(WindowEvent e) {
 
         logger.dbg( "%s: window opened [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
@@ -341,6 +364,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void windowStateChanged(WindowEvent e) {
 
         logger.dbg( "%s: window state [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
@@ -350,6 +374,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void propertyChange(PropertyChangeEvent e) {
 
         logger.dbg( "%s: property [Name: %s, Value: From %s to %s]", name, e.getPropertyName(), e.getOldValue(),
@@ -359,6 +384,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseClicked(MouseEvent e) {
 
         logger.dbg( "%s: clicked [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
@@ -369,6 +395,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseEntered(MouseEvent e) {
 
         logger.dbg( "%s: entered [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
@@ -379,6 +406,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseExited(MouseEvent e) {
 
         logger.dbg( "%s: exited [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
@@ -389,6 +417,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mousePressed(MouseEvent e) {
 
         logger.dbg( "%s: pressed [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
@@ -399,6 +428,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseReleased(MouseEvent e) {
 
         logger.dbg( "%s: released [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
@@ -409,6 +439,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseDragged(MouseEvent e) {
 
         logger.dbg( "%s: dragged [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
@@ -419,6 +450,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseMoved(MouseEvent e) {
 
         logger.dbg( "%s: moved [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
@@ -429,6 +461,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
 
         logger.dbg(
@@ -441,6 +474,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void keyPressed(KeyEvent e) {
 
         logger.dbg( "%s: key pressed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, e.getID(),
@@ -450,6 +484,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void keyReleased(KeyEvent e) {
 
         logger.dbg( "%s: key released [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, e.getID(),
@@ -459,6 +494,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void keyTyped(KeyEvent e) {
 
         logger.dbg( "%s: key typed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, e.getID(),
@@ -468,6 +504,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void caretPositionChanged(InputMethodEvent e) {
 
         logger.dbg( "%s: caret [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", name, e.getID(),
@@ -477,6 +514,7 @@ public class LoggingEventHandler
     /**
      * {@inheritDoc}
      */
+    @Override
     public void inputMethodTextChanged(InputMethodEvent e) {
 
         logger.dbg( "%s: text changed [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", name, e.getID(),

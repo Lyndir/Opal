@@ -29,7 +29,7 @@ import java.awt.geom.Point2D;
  * <br>
  * The Vec2 object represents a two dimensional vector in a plane.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class Vec2 implements Cloneable {
@@ -55,7 +55,7 @@ public class Vec2 implements Cloneable {
 
     /**
      * Create a new two dimensional vector.
-     * 
+     *
      * @param x
      *            The x-coordinate of the new vector.
      * @param y
@@ -69,7 +69,7 @@ public class Vec2 implements Cloneable {
 
     /**
      * Create a new two dimensional vector.
-     * 
+     *
      * @param p
      *            A 2D point that describes the endpoint of the vector.
      */
@@ -81,7 +81,7 @@ public class Vec2 implements Cloneable {
 
     /**
      * Create a new two dimensional vector.
-     * 
+     *
      * @param d
      *            A 2D dimension that describes the endpoint of the vector.
      */
@@ -93,7 +93,7 @@ public class Vec2 implements Cloneable {
 
     /**
      * Create a point that represents this vector.
-     * 
+     *
      * @return A new point at the target of the vector.
      */
     public Point2D toPoint() {
@@ -103,7 +103,7 @@ public class Vec2 implements Cloneable {
 
     /**
      * Create a point that represents this vector.
-     * 
+     *
      * @return A new point at the target of the vector.
      */
     public Dimension toDimension() {
@@ -125,7 +125,7 @@ public class Vec2 implements Cloneable {
 
     /**
      * Calculate the length of the vector.
-     * 
+     *
      * @return The length of this vector.
      */
     public double length() {
@@ -137,7 +137,7 @@ public class Vec2 implements Cloneable {
      * Calculate the squared length of the vector.<br>
      * <br>
      * It is advised to use this function in favor of {@link #length()} due to performance.
-     * 
+     *
      * @return The squared length of this vector.
      */
     public double lengthSq() {
@@ -147,7 +147,7 @@ public class Vec2 implements Cloneable {
 
     /**
      * Normalize this vector; returning it's original length.
-     * 
+     *
      * @return The length of the vector; before it had been normalized.
      */
     public double normalize() {
@@ -160,7 +160,7 @@ public class Vec2 implements Cloneable {
 
     /**
      * Rotate this vector over an angle.
-     * 
+     *
      * @param a
      *            The angle over which to rotate.
      * @return A reference to the this vector, after it has been updated.
@@ -179,7 +179,7 @@ public class Vec2 implements Cloneable {
 
     /**
      * Add another vector to this one.
-     * 
+     *
      * @param vector
      *            The vector which will be added to this.
      * @return A reference to the this vector, after it has been updated.
@@ -197,7 +197,7 @@ public class Vec2 implements Cloneable {
 
     /**
      * Subtract another vector from this one.
-     * 
+     *
      * @param vector
      *            The vector which will be subtracted from this.
      * @return A reference to the this vector, after it has been updated.
@@ -215,7 +215,7 @@ public class Vec2 implements Cloneable {
 
     /**
      * Multiply this vector with the coefficients of another.
-     * 
+     *
      * @param vector
      *            The vector whose coefficients will be used for the multiplication.
      * @return A reference to the this vector, after it has been updated.
@@ -233,7 +233,7 @@ public class Vec2 implements Cloneable {
 
     /**
      * Multiply this vector with a scalar number.
-     * 
+     *
      * @param c
      *            The scalar value with which to multiply this vector.
      * @return A reference to the this vector, after it has been updated.
@@ -249,7 +249,7 @@ public class Vec2 implements Cloneable {
     /**
      * Inverse the direction of this vector.<br>
      * This is basically the same as {@link #multiply(double)} with -1.
-     * 
+     *
      * @return A reference to the this vector, after it has been updated.
      */
     public Vec2 inverse() {
@@ -262,13 +262,13 @@ public class Vec2 implements Cloneable {
      * <br>
      * <i>The length of the cross product of this vector with a given one is the area of the parallelogram having this
      * and the given vector as sides.</i>
-     * 
+     *
      * <pre>
      *    _______
      *    \      \  - Consider this paralellogram's horizontal side (either of the two) as a vector,
      *     \______\     and the vertical side as another. Their cross product returns the area.
      * </pre>
-     * 
+     *
      * @param vector
      *            The vector with which this vector will be multiplied.
      * @return The result of the cross product of this vector with the given one.
@@ -285,7 +285,7 @@ public class Vec2 implements Cloneable {
      * Multiply this vector with another vector using the dot product. <i>The dot product returns the length of the
      * projection of this vector on the given one.<br>
      * As a result of this; the dot product of two perpendicular vectors is 0.</i>
-     * 
+     *
      * @param vector
      *            The vector with which this vector will be multiplied.
      * @return The result of the dot product of this vector with the given one.
@@ -324,9 +324,7 @@ public class Vec2 implements Cloneable {
 
         if (o == this)
             return true;
-        if (!(o instanceof Vec2))
-            return false;
+        return o instanceof Vec2 && x == ((Vec2) o).x && y == ((Vec2) o).y;
 
-        return x == ((Vec2) o).x && y == ((Vec2) o).y;
     }
 }

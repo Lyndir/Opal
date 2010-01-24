@@ -35,7 +35,7 @@ import com.lyndir.lhunath.lib.system.UIUtils;
  * <br>
  * [description / usage].<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class HoverCellRenderer extends DefaultListCellRenderer implements MouseListener, MouseMotionListener {
@@ -47,7 +47,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
 
     /**
      * Create a new {@link HoverCellRenderer} instance.
-     * 
+     *
      * @param list
      *            The list this renderer works for.
      */
@@ -99,7 +99,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      * <br>
      * <b>Override this method instead of {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
      * !</b>
-     * 
+     *
      * @return The {@link Component} that will be painted to represent the given data.
      */
     private Component getObjectComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -125,6 +125,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseClicked(MouseEvent e) {
 
     // Not interested.
@@ -133,6 +134,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseEntered(MouseEvent e) {
 
         hovered( e, true );
@@ -141,6 +143,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseExited(MouseEvent e) {
 
         hovered( e, false );
@@ -149,6 +152,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mousePressed(MouseEvent e) {
 
     // Not interested.
@@ -157,6 +161,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseReleased(MouseEvent e) {
 
     // Not interested.
@@ -165,6 +170,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseDragged(MouseEvent e) {
 
         hovered( e, true );
@@ -173,6 +179,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseMoved(MouseEvent e) {
 
         hovered( e, true );

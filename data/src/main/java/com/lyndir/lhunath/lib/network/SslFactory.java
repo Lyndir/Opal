@@ -48,7 +48,7 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  * <br>
  * The Protocol trusts all keys provided by the keystore that is used to initialize this {@link SslFactory}.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class SslFactory implements SecureProtocolSocketFactory {
@@ -61,7 +61,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
 
     /**
      * Initialize this factory with the given keystore.
-     * 
+     *
      * @param keyStore
      *            The keystore that contains the trusted server keys.
      * @param password
@@ -78,7 +78,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
 
     /**
      * Create a protocol for use with HttpClient for Jakarta that supports https and uses the keys from our keystore.
-     * 
+     *
      * @return Guess.
      */
     public static Protocol createHttpsProtocol() {
@@ -118,6 +118,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Socket createSocket(Socket socket, String host, int port, boolean autoClose)
             throws IOException, UnknownHostException {
 
@@ -127,6 +128,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Socket createSocket(String host, int port)
             throws IOException, UnknownHostException {
 
@@ -136,6 +138,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Socket createSocket(String host, int port, InetAddress localAddress, int localPort)
             throws IOException, UnknownHostException {
 
@@ -144,9 +147,10 @@ public class SslFactory implements SecureProtocolSocketFactory {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @deprecated See {@link SSLSocketFactory#createSocket(String, int, InetAddress, int)}.
      */
+    @Override
     @Deprecated
     public Socket createSocket(String host, int port, InetAddress localAddress, int localPort,
                                HttpConnectionParams params)

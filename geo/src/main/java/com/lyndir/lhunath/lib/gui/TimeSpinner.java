@@ -34,7 +34,7 @@ import com.lyndir.lhunath.lib.system.util.Utils;
  * <br>
  * [description / usage].<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class TimeSpinner extends JSpinner {
@@ -55,7 +55,7 @@ public class TimeSpinner extends JSpinner {
 
     /**
      * Create a new {@link TimeSpinner} instance.
-     * 
+     *
      * @param stepField
      *            The calendar field that designates the size of the spinner's arrows' steps.
      * @param jumpField
@@ -77,7 +77,7 @@ public class TimeSpinner extends JSpinner {
 
     /**
      * Create a new {@link TimeSpinner} instance.
-     * 
+     *
      * @param format
      *            The format that will be used to display the time. See {@link DateFormat}. You may use
      *            <code>null</code> for a default format (HH:mm).
@@ -97,7 +97,7 @@ public class TimeSpinner extends JSpinner {
     /**
      * Specify the calendar field that defines the format to use (all fields up to but not including the jump field will
      * be included in the spinner's format).
-     * 
+     *
      * @param jumpField
      *            A {@link Calendar} field.
      */
@@ -125,7 +125,7 @@ public class TimeSpinner extends JSpinner {
 
     /**
      * Return the amount of milliseconds represented in this spinner's current value.
-     * 
+     *
      * @return Amount of milliseconds represented by the spinner.
      */
     public long getTime() {
@@ -142,7 +142,7 @@ public class TimeSpinner extends JSpinner {
 
     /**
      * Return the amount of seconds represented in this spinner's current value.
-     * 
+     *
      * @return Amount of seconds represented by the spinner.
      */
     public long getSeconds() {
@@ -152,7 +152,7 @@ public class TimeSpinner extends JSpinner {
 
     /**
      * Return the amount of minutes represented in this spinner's current value.
-     * 
+     *
      * @return Amount of minutes represented by the spinner.
      */
     public long getMinutes() {
@@ -162,7 +162,7 @@ public class TimeSpinner extends JSpinner {
 
     /**
      * Return the amount of hours represented in this spinner's current value.
-     * 
+     *
      * @return Amount of hours represented by the spinner.
      */
     public long getHours() {
@@ -172,7 +172,7 @@ public class TimeSpinner extends JSpinner {
 
     /**
      * Return the amount of days represented in this spinner's current value.
-     * 
+     *
      * @return Amount of days represented by the spinner.
      */
     public long getDays() {
@@ -198,7 +198,7 @@ public class TimeSpinner extends JSpinner {
 
         /**
          * Create a new {@link TimeSpinnerModel} instance.
-         * 
+         *
          * @param timeFormat
          *            The format that will be used to display the time. See {@link DateFormat}. You may use
          *            <code>null</code> for a default format (HH:mm).
@@ -221,7 +221,7 @@ public class TimeSpinner extends JSpinner {
 
         /**
          * Retrieve the format of this {@link TimeSpinner.TimeSpinnerModel}.
-         * 
+         *
          * @return Guess.
          */
         public SimpleDateFormat getFormat() {
@@ -231,7 +231,7 @@ public class TimeSpinner extends JSpinner {
 
         /**
          * Set the format of this {@link TimeSpinner.TimeSpinnerModel}.
-         * 
+         *
          * @param formatPattern
          *            The pattern of the new format to use for this spinner.
          */
@@ -256,6 +256,7 @@ public class TimeSpinner extends JSpinner {
         /**
          * {@inheritDoc}
          */
+        @Override
         public Object getNextValue() {
 
             return format.format( new Date( value.getTime() + step ) );
@@ -264,6 +265,7 @@ public class TimeSpinner extends JSpinner {
         /**
          * {@inheritDoc}
          */
+        @Override
         public Object getPreviousValue() {
 
             return format.format( new Date( value.getTime() - step ) );
@@ -272,6 +274,7 @@ public class TimeSpinner extends JSpinner {
         /**
          * {@inheritDoc}
          */
+        @Override
         public Object getValue() {
 
             return format.format( value );
@@ -280,6 +283,7 @@ public class TimeSpinner extends JSpinner {
         /**
          * {@inheritDoc}
          */
+        @Override
         public void setValue(Object value) {
 
             if (value == null)
@@ -305,7 +309,7 @@ public class TimeSpinner extends JSpinner {
 
         /**
          * Create a new {@link TimeSpinnerEditor} instance.
-         * 
+         *
          * @param spinner
          *            The spinner that contains this editor.
          */

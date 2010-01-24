@@ -28,7 +28,7 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  * <br>
  * [description / usage].<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class UpdateUi extends Thread {
@@ -42,7 +42,7 @@ public class UpdateUi extends Thread {
 
     /**
      * Create a new {@link UpdateUi} instance.
-     * 
+     *
      * @param ui
      *            The user interface that will process the request.
      */
@@ -57,7 +57,7 @@ public class UpdateUi extends Thread {
 
     /**
      * Add a request to the stack of requests to execute in the update thread.
-     * 
+     *
      * @param uiRequest
      *            The request to execute in the update thread.
      */
@@ -124,7 +124,7 @@ public class UpdateUi extends Thread {
 
         /**
          * Create a new {@link UpdateUi.UpdateRequest} instance.
-         * 
+         *
          * @param request
          *            The request this stack element should make.
          * @param cause
@@ -138,7 +138,7 @@ public class UpdateUi extends Thread {
 
         /**
          * Retrieve the request of this {@link UpdateUi.UpdateRequest}.
-         * 
+         *
          * @return Guess.
          */
         public Request getRequest() {
@@ -148,7 +148,7 @@ public class UpdateUi extends Thread {
 
         /**
          * Retrieve the cause of this {@link UpdateUi.UpdateRequest}.
-         * 
+         *
          * @return Guess.
          */
         public Throwable getCause() {
@@ -164,10 +164,8 @@ public class UpdateUi extends Thread {
 
             if (obj == this)
                 return true;
-            if (obj instanceof UpdateRequest)
-                return request.equals( ((UpdateRequest) obj).request );
+            return obj instanceof UpdateRequest && request.equals( ((UpdateRequest) obj).request );
 
-            return false;
         }
 
         /**

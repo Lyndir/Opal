@@ -26,7 +26,7 @@ import javax.swing.event.ChangeListener;
  * <br>
  * This button shows the onText specified in the constructor when it is selected and the offText when it is not.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class OnOffButton extends GButton implements ChangeListener {
@@ -45,7 +45,7 @@ public class OnOffButton extends GButton implements ChangeListener {
 
     /**
      * Create a new OnOffButton instance.
-     * 
+     *
      * @param onText
      *            The text that shows on the button when it is selected.
      * @param offText
@@ -58,7 +58,7 @@ public class OnOffButton extends GButton implements ChangeListener {
 
     /**
      * Create a new OnOffButton instance.
-     * 
+     *
      * @param onIcon
      *            The icon that shows on the button when it is selected.
      * @param offIcon
@@ -71,7 +71,7 @@ public class OnOffButton extends GButton implements ChangeListener {
 
     /**
      * Create a new OnOffButton instance.
-     * 
+     *
      * @param onText
      *            The text that shows on the button when it is selected.
      * @param onIcon
@@ -98,6 +98,7 @@ public class OnOffButton extends GButton implements ChangeListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void stateChanged(ChangeEvent e) {
 
         if (isSelected()) {

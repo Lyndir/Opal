@@ -32,7 +32,7 @@ import javax.swing.SwingUtilities;
  * <br>
  * [description / usage].<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class TrayMenu extends JPopupMenu implements MouseListener {
@@ -42,7 +42,7 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
 
     /**
      * Create a new {@link TrayMenu} instance.
-     * 
+     *
      * @param invoker
      *            The component that is responsible for the invocation of this menu.
      */
@@ -54,6 +54,7 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseClicked(final MouseEvent e) {
 
         /* Popup Button. */
@@ -70,6 +71,7 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
                 private final Dimension  screenBounds = Toolkit.getDefaultToolkit().getScreenSize();
 
 
+                @Override
                 public void run() {
 
                     int x = e.getX(), y = e.getY();
@@ -87,6 +89,7 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseEntered(MouseEvent e) {
 
     /* Not interested. */
@@ -95,6 +98,7 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseExited(MouseEvent e) {
 
     /* Not interested. */
@@ -103,6 +107,7 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mousePressed(final MouseEvent e) {
 
     /* Not interested. */
@@ -111,6 +116,7 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseReleased(MouseEvent e) {
 
     /* Not interested. */

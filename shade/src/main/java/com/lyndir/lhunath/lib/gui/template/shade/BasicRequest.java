@@ -28,7 +28,7 @@ import java.util.TreeMap;
  * <br>
  * Any class that wishes to extend the amount of requests available should call {@link #register(Request[])} in a static
  * block to make its requests available to {@link BasicRequest}'s utility methods such as {@link #getAutoruns()}.
- * 
+ *
  * @author lhunath
  */
 public enum BasicRequest implements Request {
@@ -74,7 +74,7 @@ public enum BasicRequest implements Request {
 
     /**
      * Create a new {@link BasicRequest} instance.
-     * 
+     *
      * @param autorunPriority
      *            Lower or equal to zero: No auto-running.<br>
      *            Larger than zero: Ascending order in which the request will be processed.
@@ -87,6 +87,7 @@ public enum BasicRequest implements Request {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getAutorunPriority() {
 
         return autorunPriority;
@@ -107,7 +108,7 @@ public enum BasicRequest implements Request {
 
     /**
      * Retrieve a list of addons to run on autorun actions. The list will be sorted by addon priority.
-     * 
+     *
      * @return Guess.
      */
     public static Collection<Request> getAutoruns() {
@@ -122,7 +123,7 @@ public enum BasicRequest implements Request {
 
     /**
      * Register new requests that should be made available through this class' utility methods.
-     * 
+     *
      * @param newRequests
      *            The new requests.
      */

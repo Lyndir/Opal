@@ -27,7 +27,7 @@ import com.lyndir.lhunath.lib.system.util.Utils;
  * string, the higher its importance is.<br>
  * You can use this version class to compare versions painlessly.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class Version implements Comparable<Version>, Serializable {
@@ -40,7 +40,7 @@ public class Version implements Comparable<Version>, Serializable {
 
     /**
      * Create a new {@link Version} instance.
-     * 
+     *
      * @param version
      *            The string version tag.
      */
@@ -51,7 +51,7 @@ public class Version implements Comparable<Version>, Serializable {
 
     /**
      * Create a new {@link Version} instance.
-     * 
+     *
      * @param version
      *            The string version tag.
      */
@@ -62,7 +62,7 @@ public class Version implements Comparable<Version>, Serializable {
 
     /**
      * Change the version represented by this {@link Version} object.
-     * 
+     *
      * @param version
      *            The string representation of the version to set this object to.
      */
@@ -91,6 +91,7 @@ public class Version implements Comparable<Version>, Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(Version o) {
 
         if (o == null)
@@ -123,7 +124,7 @@ public class Version implements Comparable<Version>, Serializable {
 
     /**
      * Check whether this version is newer than the given one.
-     * 
+     *
      * @param v
      *            The possibly older version.
      * @return Guess.
@@ -135,7 +136,7 @@ public class Version implements Comparable<Version>, Serializable {
 
     /**
      * Check whether this version is older than the given one.
-     * 
+     *
      * @param v
      *            The possibly newer version.
      * @return Guess.

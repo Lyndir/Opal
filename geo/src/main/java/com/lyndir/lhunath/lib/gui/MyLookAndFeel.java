@@ -35,7 +35,7 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 
 /**
  * TODO: {@link MyLookAndFeel}<br>
- * 
+ *
  * @author lhunath
  */
 public class MyLookAndFeel implements Serializable {
@@ -63,7 +63,7 @@ public class MyLookAndFeel implements Serializable {
 
     /**
      * Create a new {@link MyLookAndFeel} instance.
-     * 
+     *
      * @param base
      *            The shade upon which to base this theme's colors.
      * @param themeType
@@ -77,7 +77,7 @@ public class MyLookAndFeel implements Serializable {
 
     /**
      * Set up certain defaults for UI elements.
-     * 
+     *
      * @return This instance.
      */
     public MyLookAndFeel setup() {
@@ -91,7 +91,7 @@ public class MyLookAndFeel implements Serializable {
 
     /**
      * Reconfigure components that used UI defaults that change in this theme, recursively.
-     * 
+     *
      * @param container
      *            The container from which to remove this {@link DragListener}.
      * @return This instance.
@@ -114,7 +114,7 @@ public class MyLookAndFeel implements Serializable {
 
     /**
      * Set the base shade.
-     * 
+     *
      * @param base
      *            Guess.
      * @return This instance.
@@ -156,7 +156,7 @@ public class MyLookAndFeel implements Serializable {
 
     /**
      * Retrieve the base shade.
-     * 
+     *
      * @return Guess.
      */
     public Color getBase() {
@@ -232,10 +232,8 @@ public class MyLookAndFeel implements Serializable {
         if (o == this)
             return true;
 
-        if (o instanceof MyLookAndFeel)
-            return ((MyLookAndFeel) o).getBase().equals( getBase() );
+        return o instanceof MyLookAndFeel && ((MyLookAndFeel) o).getBase().equals( getBase() );
 
-        return false;
     }
 
     /**
@@ -260,11 +258,11 @@ public class MyLookAndFeel implements Serializable {
     /**
      * <h2>{@link MyThemeType}<br>
      * <sub>Swing Look and Feel type.</sub></h2>
-     * 
+     *
      * <p>
      * <i>Apr 9, 2008</i>
      * </p>
-     * 
+     *
      * @author mbillemo
      */
     public enum MyThemeType {
@@ -305,11 +303,11 @@ public class MyLookAndFeel implements Serializable {
     /**
      * <h2>{@link MyTheme}<br>
      * <sub>A wrapper for Java Look and Feels.</sub></h2>
-     * 
+     *
      * <p>
      * <i>Apr 9, 2008</i>
      * </p>
-     * 
+     *
      * @author mbillemo
      */
     public interface MyTheme extends Serializable {
@@ -340,11 +338,11 @@ public class MyLookAndFeel implements Serializable {
     /**
      * <h2>{@link MyPlasticTheme}<br>
      * <sub>A {@link MyTheme} implementation for the JGoodies theme.</sub></h2>
-     * 
+     *
      * <p>
      * <i>Apr 9, 2008</i>
      * </p>
-     * 
+     *
      * @author mbillemo
      */
     public class MyPlasticTheme extends AbstractSkyTheme implements MyTheme {
@@ -355,6 +353,7 @@ public class MyLookAndFeel implements Serializable {
         /**
          * {@inheritDoc}
          */
+        @Override
         public void setup() {
 
             try {
@@ -367,7 +366,7 @@ public class MyLookAndFeel implements Serializable {
 
         /**
          * Text color.<br>
-         * 
+         *
          * {@inheritDoc}
          */
         @Override
@@ -387,7 +386,7 @@ public class MyLookAndFeel implements Serializable {
 
         /**
          * Control foreground (Scrollbar / Progress bar).<br>
-         * 
+         *
          * {@inheritDoc}
          */
         @Override
@@ -398,7 +397,7 @@ public class MyLookAndFeel implements Serializable {
 
         /**
          * Button borders.<br>
-         * 
+         *
          * {@inheritDoc}
          */
         @Override
@@ -409,7 +408,7 @@ public class MyLookAndFeel implements Serializable {
 
         /**
          * Selected button background.<br>
-         * 
+         *
          * {@inheritDoc}
          */
         @Override
@@ -420,7 +419,7 @@ public class MyLookAndFeel implements Serializable {
 
         /**
          * Control background.<br>
-         * 
+         *
          * {@inheritDoc}
          */
         @Override

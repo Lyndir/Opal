@@ -27,7 +27,7 @@ import javax.swing.Icon;
  * <br>
  * [description / usage].<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class ListenerAction extends AbstractAction {
@@ -37,7 +37,7 @@ public class ListenerAction extends AbstractAction {
 
     /**
      * Create a new {@link ListenerAction} instance.
-     * 
+     *
      * @param listener
      *            The listener that will be notified of this action.
      */
@@ -49,7 +49,7 @@ public class ListenerAction extends AbstractAction {
 
     /**
      * Create a new {@link ListenerAction} instance.
-     * 
+     *
      * @param name
      *            The name of the action.
      * @param listener
@@ -63,7 +63,7 @@ public class ListenerAction extends AbstractAction {
 
     /**
      * Create a new {@link ListenerAction} instance.
-     * 
+     *
      * @param name
      *            The name of the action.
      * @param command
@@ -82,7 +82,7 @@ public class ListenerAction extends AbstractAction {
 
     /**
      * Specify an action command string for this action.
-     * 
+     *
      * @param command
      *            The string that will identify the action that must be taken.
      */
@@ -93,7 +93,7 @@ public class ListenerAction extends AbstractAction {
 
     /**
      * Specify an action command string for this action.
-     * 
+     *
      * @return The string that will identify the action that must be taken.
      */
     public String getActionCommand() {
@@ -104,6 +104,7 @@ public class ListenerAction extends AbstractAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
 
         if (listener != null)

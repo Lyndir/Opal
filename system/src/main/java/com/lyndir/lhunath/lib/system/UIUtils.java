@@ -15,21 +15,11 @@
  */
 package com.lyndir.lhunath.lib.system;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics2D;
+import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.net.URL;
-
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.plaf.FontUIResource;
 
 import com.lyndir.lhunath.lib.system.wrapper.Desktop;
 
@@ -37,15 +27,15 @@ import com.lyndir.lhunath.lib.system.wrapper.Desktop;
 /**
  * <h2>{@link UIUtils}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * [description / usage].
  * </p>
- * 
+ *
  * <p>
  * <i>Oct 25, 2009</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public class UIUtils {
@@ -124,40 +114,40 @@ public class UIUtils {
     /**
      * Calculate the width in pixels that are necessary to draw the given string in the given font on the given
      * graphics.
-     * 
+     *
      * @param graphics
      *            The graphics configuration the string would be drawn on.
      * @param font
      *            The font to use for rendering the string.
-     * @param string
+     * @param str
      *            The string to measure.
      * @return Guess.
      */
-    public static double fontWidth(Graphics2D graphics, Font font, String string) {
+    public static double fontWidth(Graphics2D graphics, Font font, String str) {
 
-        return graphics.getFontMetrics( font ).getStringBounds( string, graphics ).getWidth();
+        return graphics.getFontMetrics( font ).getStringBounds( str, graphics ).getWidth();
     }
 
     /**
      * Calculate the height in pixels that are necessary to draw the given string in the given font on the given
      * graphics.
-     * 
+     *
      * @param graphics
      *            The graphics configuration the string would be drawn on.
      * @param font
      *            The font to use for rendering the string.
-     * @param string
+     * @param str
      *            The string to measure.
      * @return Guess.
      */
-    public static double fontHeight(Graphics2D graphics, Font font, String string) {
+    public static double fontHeight(Graphics2D graphics, Font font, String str) {
 
-        return graphics.getFontMetrics( font ).getStringBounds( string, graphics ).getHeight();
+        return graphics.getFontMetrics( font ).getStringBounds( str, graphics ).getHeight();
     }
 
     /**
      * Align the given point on the given grid.
-     * 
+     *
      * @param point
      *            The point that needs to be aligned.
      * @param gridX
@@ -174,12 +164,12 @@ public class UIUtils {
 
     /**
      * Check whether a component is the child of another, anywhere down the line.
-     * 
+     *
      * @param child
      *            The possible child.
      * @param parent
      *            The container that possibly contains the child.
-     * 
+     *
      * @return The given child component exists in parent's hierarchy.
      */
     public static boolean isChild(Component child, Container parent) {
@@ -198,7 +188,7 @@ public class UIUtils {
 
     /**
      * Convert a color into an HTML-type hex string (#RRGGBB). This does not take transparency into account.
-     * 
+     *
      * @param color
      *            The color to convert to hexadecimal notation.
      * @return The hex string.
@@ -210,7 +200,7 @@ public class UIUtils {
 
     /**
      * Return a new color based on the given color with the given alpha.
-     * 
+     *
      * @param color
      *            The base color.
      * @param alpha
@@ -227,7 +217,7 @@ public class UIUtils {
 
     /**
      * Check whether the Java 6+ Desktop API is supported.
-     * 
+     *
      * @return Guess.
      */
     public static boolean isDesktopSupported() {
@@ -241,7 +231,7 @@ public class UIUtils {
 
     /**
      * Check whether the Java 6+ Desktop API is supported for the BROWSE action.
-     * 
+     *
      * @return Guess.
      */
     public static boolean isBrowseSupported() {
@@ -255,7 +245,7 @@ public class UIUtils {
 
     /**
      * Check whether the Java 6+ Desktop API is supported for the MAIL action.
-     * 
+     *
      * @return Guess.
      */
     public static boolean isMailSupported() {
@@ -269,7 +259,7 @@ public class UIUtils {
 
     /**
      * Check whether the Java 6+ Desktop API is supported for the OPEN action.
-     * 
+     *
      * @return Guess.
      */
     public static boolean isOpenSupported() {
@@ -283,7 +273,7 @@ public class UIUtils {
 
     /**
      * Change the default font for all components.
-     * 
+     *
      * @param font
      *            The new default font.
      */
@@ -309,7 +299,7 @@ public class UIUtils {
 
     /**
      * Load an icon for the given resource file.
-     * 
+     *
      * @param resource
      *            URI of the resource.
      * @return The icon.
@@ -325,7 +315,7 @@ public class UIUtils {
 
     /**
      * Create a debug border with a red coloured line bevel and a text label.
-     * 
+     *
      * @param text
      *            The text to put on the label.
      * @return The label component.

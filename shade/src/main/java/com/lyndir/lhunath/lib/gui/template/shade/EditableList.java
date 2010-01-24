@@ -15,17 +15,11 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
-import java.awt.Event;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 
 import com.lyndir.lhunath.lib.system.Locale;
 import com.lyndir.lhunath.lib.system.UIUtils;
@@ -33,7 +27,7 @@ import com.lyndir.lhunath.lib.system.UIUtils;
 
 /**
  * TODO: {@link EditableList}<br>
- * 
+ *
  * @author lhunath
  */
 public class EditableList extends JList {
@@ -45,7 +39,7 @@ public class EditableList extends JList {
 
     /**
      * Create a new EditableList instance.
-     * 
+     *
      * @param contentTitle
      *            The title describing this list's content.
      */
@@ -56,7 +50,7 @@ public class EditableList extends JList {
 
     /**
      * Create a new EditableList instance.
-     * 
+     *
      * @param contentTitle
      *            The title describing this list's content.
      * @param newText
@@ -74,10 +68,10 @@ public class EditableList extends JList {
         addMouseListener( new MouseAdapter() {
 
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent mouseEvent) {
 
                 /* Only proceed on Popup Button. */
-                if (e.getModifiers() != Event.META_MASK)
+                if (mouseEvent.getModifiers() != Event.META_MASK)
                     return;
 
                 JMenuItem item;
@@ -101,7 +95,8 @@ public class EditableList extends JList {
                             private static final long serialVersionUID = 1L;
 
 
-                            public void actionPerformed(ActionEvent ee) {
+                            @Override
+                            public void actionPerformed(ActionEvent actionEvent) {
 
                                 String element = JOptionPane.showInputDialog( list,
                                         Locale.explain( "ui.new" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
@@ -120,7 +115,8 @@ public class EditableList extends JList {
                             private static final long serialVersionUID = 1L;
 
 
-                            public void actionPerformed(ActionEvent ee) {
+                            @Override
+                            public void actionPerformed(ActionEvent actionEvent) {
 
                                 model.remove( getSelectedIndex() );
                             }
@@ -135,7 +131,8 @@ public class EditableList extends JList {
                             private static final long serialVersionUID = 1L;
 
 
-                            public void actionPerformed(ActionEvent ee) {
+                            @Override
+                            public void actionPerformed(ActionEvent actionEvent) {
 
                                 String newVar = JOptionPane.showInputDialog( list,
                                         Locale.explain( "ui.modify" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
@@ -147,7 +144,7 @@ public class EditableList extends JList {
                 item.setEnabled( !isSelectionEmpty() );
                 popup.add( item );
 
-                popup.show( list, e.getX(), e.getY() );
+                popup.show( list, mouseEvent.getX(), mouseEvent.getY() );
             }
         } );
     }

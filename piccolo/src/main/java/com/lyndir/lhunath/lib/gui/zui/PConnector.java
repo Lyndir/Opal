@@ -35,7 +35,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * TODO: PConnector<br>
- * 
+ *
  * @author lhunath
  */
 public class PConnector extends PNode {
@@ -62,7 +62,7 @@ public class PConnector extends PNode {
 
     /**
      * Create a new PConnector instance.
-     * 
+     *
      * @param src
      *        The connector's source.
      * @param dst
@@ -78,7 +78,7 @@ public class PConnector extends PNode {
 
     /**
      * Set the strokeWidth of this PConnector.
-     * 
+     *
      * @param strokeWidth
      *        Guess.
      */
@@ -89,7 +89,7 @@ public class PConnector extends PNode {
 
     /**
      * Retrieve the source of this {@link PConnector}.
-     * 
+     *
      * @return Guess.
      */
     public PNode getSrc() {
@@ -99,7 +99,7 @@ public class PConnector extends PNode {
 
     /**
      * Retrieve the destination of this {@link PConnector}.
-     * 
+     *
      * @return Guess.
      */
     public PNode getDst() {
@@ -109,7 +109,7 @@ public class PConnector extends PNode {
 
     /**
      * Add a node connected through this connector, if possible.
-     * 
+     *
      * @param node
      *        The node to connect as either source or destination.
      * @return true If a source or destination was unset and has now been assigned.
@@ -140,7 +140,7 @@ public class PConnector extends PNode {
 
     /**
      * Remove a node connected through this connector, if present.
-     * 
+     *
      * @param node
      *        The node to remove as either source or destination.
      * @return true If the given node was a source or destination node and has now been removed.
@@ -205,10 +205,10 @@ public class PConnector extends PNode {
         if (calculateNewBounds())
             return;
 
-        srcX = srcX - getXOffset();
-        srcY = srcY - getYOffset();
-        dstX = dstX - getXOffset();
-        dstY = dstY - getYOffset();
+        srcX -= getXOffset();
+        srcY -= getYOffset();
+        dstX -= getXOffset();
+        dstY -= getYOffset();
 
         if (src.getPaint() instanceof Color && dst.getPaint() instanceof Color)
             g2.setPaint( new GradientPaint( new Point2D.Double( srcX, srcY ), (Color) src.getPaint(),

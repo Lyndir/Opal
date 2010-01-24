@@ -15,95 +15,25 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
-import java.awt.AWTException;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintStream;
-import java.io.StringReader;
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.event.*;
+import javax.swing.text.BadLocationException;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.EventObject;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Stack;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-
-import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JToggleButton;
-import javax.swing.JToolBar;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
-import javax.swing.border.BevelBorder;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.text.BadLocationException;
-
-import org.jdesktop.animation.timing.Animator;
-import org.jdesktop.animation.transitions.ScreenTransition;
-import org.jdesktop.animation.transitions.TransitionTarget;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.builder.PanelBuilder;
@@ -111,17 +41,10 @@ import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.uif_lite.panel.SimpleInternalFrame;
-import com.lyndir.lhunath.lib.gui.DragListener;
+import com.lyndir.lhunath.lib.gui.*;
 import com.lyndir.lhunath.lib.gui.FileDialog;
-import com.lyndir.lhunath.lib.gui.PaintPanel;
-import com.lyndir.lhunath.lib.gui.ScrollPanel;
-import com.lyndir.lhunath.lib.gui.Splash;
-import com.lyndir.lhunath.lib.gui.ToolTip;
-import com.lyndir.lhunath.lib.system.BaseConfig;
+import com.lyndir.lhunath.lib.system.*;
 import com.lyndir.lhunath.lib.system.Locale;
-import com.lyndir.lhunath.lib.system.Reflective;
-import com.lyndir.lhunath.lib.system.TeeThread;
-import com.lyndir.lhunath.lib.system.UIUtils;
 import com.lyndir.lhunath.lib.system.logging.HTMLFormatter;
 import com.lyndir.lhunath.lib.system.logging.LogListener;
 import com.lyndir.lhunath.lib.system.logging.Logger;
@@ -130,11 +53,14 @@ import com.lyndir.lhunath.lib.system.wrapper.Desktop;
 import com.lyndir.lhunath.lib.system.wrapper.SystemTray;
 import com.lyndir.lhunath.lib.system.wrapper.TrayIcon;
 import com.lyndir.lhunath.lib.system.wrapper.TrayIcon.MessageType;
+import org.jdesktop.animation.timing.Animator;
+import org.jdesktop.animation.transitions.ScreenTransition;
+import org.jdesktop.animation.transitions.TransitionTarget;
 
 
 /**
  * TODO: {@link AbstractUi}<br>
- * 
+ *
  * @author lhunath
  */
 public abstract class AbstractUi
@@ -226,6 +152,7 @@ public abstract class AbstractUi
             /**
              * {@inheritDoc}
              */
+            @Override
             public void run() {
 
                 /* Build user interface. */
@@ -249,7 +176,7 @@ public abstract class AbstractUi
      * <br>
      * When overriding this method; call the original method (super.event(..)) if the event is not processed by your
      * code. This code processes default interface events.
-     * 
+     *
      * @param e
      *            The event that triggered this method call.
      * @param source
@@ -369,11 +296,13 @@ public abstract class AbstractUi
 
     }
 
+    @SuppressWarnings({"AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull"})
     protected void toggleConsole() {
 
         if (!SwingUtilities.isEventDispatchThread()) {
             SwingUtilities.invokeLater( new Runnable() {
 
+                @Override
                 public void run() {
 
                     toggleConsole();
@@ -468,6 +397,7 @@ public abstract class AbstractUi
     /**
      * {@inheritDoc}
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
 
         event( e, e.getSource(), e.getActionCommand() );
@@ -476,6 +406,7 @@ public abstract class AbstractUi
     /**
      * {@inheritDoc}
      */
+    @Override
     public void focusGained(FocusEvent e) {
 
         event( e, e.getSource(), null );
@@ -484,6 +415,7 @@ public abstract class AbstractUi
     /**
      * {@inheritDoc}
      */
+    @Override
     public void focusLost(FocusEvent e) {
 
         event( e, e.getSource(), null );
@@ -492,6 +424,7 @@ public abstract class AbstractUi
     /**
      * {@inheritDoc}
      */
+    @Override
     public void caretUpdate(CaretEvent e) {
 
         event( e, e.getSource(), null );
@@ -500,6 +433,7 @@ public abstract class AbstractUi
     /**
      * {@inheritDoc}
      */
+    @Override
     public void itemStateChanged(ItemEvent e) {
 
         event( e, e.getSource(), null );
@@ -508,6 +442,7 @@ public abstract class AbstractUi
     /**
      * {@inheritDoc}
      */
+    @Override
     public void valueChanged(ListSelectionEvent e) {
 
         event( e, e.getSource(), null );
@@ -516,6 +451,7 @@ public abstract class AbstractUi
     /**
      * {@inheritDoc}
      */
+    @Override
     public void contentsChanged(ListDataEvent e) {
 
         event( e, e.getSource(), null );
@@ -524,6 +460,7 @@ public abstract class AbstractUi
     /**
      * {@inheritDoc}
      */
+    @Override
     public void intervalAdded(ListDataEvent e) {
 
         event( e, e.getSource(), null );
@@ -532,6 +469,7 @@ public abstract class AbstractUi
     /**
      * {@inheritDoc}
      */
+    @Override
     public void intervalRemoved(ListDataEvent e) {
 
         event( e, e.getSource(), null );
@@ -556,7 +494,7 @@ public abstract class AbstractUi
 
     /**
      * Update a given element in this UI in the {@link UpdateUi} thread.
-     * 
+     *
      * @param element
      *            The element to update, or null to update them all.
      */
@@ -567,7 +505,7 @@ public abstract class AbstractUi
 
     /**
      * Update a given element in this UI.
-     * 
+     *
      * @param element
      *            The element to update, or null to update them all.
      * @param useThread
@@ -588,6 +526,7 @@ public abstract class AbstractUi
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object getFieldValue(Field field)
             throws IllegalArgumentException, IllegalAccessException {
 
@@ -596,7 +535,7 @@ public abstract class AbstractUi
 
     /**
      * Retrieve the frame of this user interface.
-     * 
+     *
      * @return Guess.
      */
     public JFrame getFrame() {
@@ -607,7 +546,7 @@ public abstract class AbstractUi
     /**
      * Send out a log message about a task being launched. After {@link AbstractUi#LAUNCH_DELAY} milliseconds, the
      * message will be removed from the progress bar.
-     * 
+     *
      * @param desc
      *            Description of the launch event.
      * @param args
@@ -629,6 +568,7 @@ public abstract class AbstractUi
     /**
      * {@inheritDoc}
      */
+    @Override
     public void logMessage(final LogRecord record) {
 
         if ((log == null || log.getParent() == null) && record.getLevel().intValue() > Level.CONFIG.intValue()
@@ -638,6 +578,7 @@ public abstract class AbstractUi
         if (log != null)
             SwingUtilities.invokeLater( new Runnable() {
 
+                @Override
                 public void run() {
 
                     String message = record.getMessage();
@@ -666,10 +607,7 @@ public abstract class AbstractUi
                         }
 
                         else {
-                            if (!messageStack.get( progressLevel ).isEmpty())
-                                message = messageStack.get( progressLevel ).pop();
-                            else
-                                message = "";
+                            message = messageStack.get( progressLevel ).isEmpty()? "": messageStack.get( progressLevel ).pop();
 
                             setProgress( 0d, level );
                         }
@@ -692,7 +630,7 @@ public abstract class AbstractUi
 
     /**
      * Set the value of the progress bar.
-     * 
+     *
      * @param percent
      *            Set the percent to show completed. Use a decimal value in the range 0-1. Use null to switch to
      *            indeterminate mode.
@@ -703,6 +641,7 @@ public abstract class AbstractUi
 
         SwingUtilities.invokeLater( new Runnable() {
 
+            @Override
             public void run() {
 
                 int progressLevel = 5 - level.intValue() / 100;
@@ -761,6 +700,7 @@ public abstract class AbstractUi
             private static final long serialVersionUID = 1L;
 
 
+            @Override
             public void actionPerformed(ActionEvent e) {
 
                 ui.actionPerformed( e );
@@ -778,7 +718,7 @@ public abstract class AbstractUi
 
     /**
      * Signal the UI to show a launch notification and start the platform's web browser to the given URL.
-     * 
+     *
      * @param url
      *            The URL to open in the web browser.
      */
@@ -948,15 +888,15 @@ public abstract class AbstractUi
         } );
 
         if (c instanceof JComponent)
-            for (Component cc : ((JComponent) c).getComponents())
-                overlayListener( cc );
+            for (Component child : ((JComponent) c).getComponents())
+                overlayListener( child );
     }
 
     /**
      * Build the overlay that will be shown when the user toggles it on.<br>
      * <br>
      * To make your own overlay, you are recommended to use the panel returned by super.getOverlay().
-     * 
+     *
      * @return The overlay panel.
      */
     protected JPanel getOverlay() {
@@ -985,6 +925,7 @@ public abstract class AbstractUi
         if (contentPanel == null)
             SwingUtilities.invokeLater( new Runnable() {
 
+                @Override
                 public void run() {
 
                     setBackgroundImage( image );
@@ -998,9 +939,10 @@ public abstract class AbstractUi
     /**
      * Feel free to override this method to perform actions before and after the panel changes, but DO NOT FORGET to
      * call the parent implementation.
-     * 
+     *
      * @{inheritDoc
      */
+    @Override
     public void setupNextScreen() {
 
         JToolBar toolbar = window.getToolBar();
@@ -1101,14 +1043,14 @@ public abstract class AbstractUi
      * "20dlu:g(3), r:p, 5dlu, f:100dlu:g(2), 10dlu, r:p, 5dlu, f:100dlu:g(2), 5dlu, l:20dlu:g(4)"</i><br>
      * <br>
      * You probably want to do something like:
-     * 
+     *
      * <pre>
      * builder.appendSeparator( &quot;Custom Settings&quot; );
      * builder.append( &quot;Foo:&quot;, new JCheckBox( &quot;Yes&quot; ) );
      * builder.append( &quot;Bar:&quot;, new JCheckBox( &quot;Yes&quot; ) );
      * builder.nextLine();
      * </pre>
-     * 
+     *
      * @param builder
      *            The {@link DefaultFormBuilder} to which you should add your settings components.
      */
@@ -1122,7 +1064,7 @@ public abstract class AbstractUi
 
         JButton button;
         PanelBuilder builder = new PanelBuilder( layout, new ScrollPanel() );
-        CellConstraints cc = new CellConstraints();
+        CellConstraints constraints = new CellConstraints();
 
         log = new JEditorPane( "text/html", "" );
         log.setOpaque( false );
@@ -1132,21 +1074,21 @@ public abstract class AbstractUi
         pane.setBorder( Borders.EMPTY_BORDER );
         pane.setOpaque( false );
         pane.getViewport().setOpaque( false );
-        builder.add( pane, cc.xyw( 2, 2, 5 ) );
+        builder.add( pane, constraints.xyw( 2, 2, 5 ) );
 
         button = new JButton( Locale.explain( "ui.clearLog" ), UIUtils.getIcon( "clear-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "logClear" ); //$NON-NLS-1$
         button.addActionListener( this );
-        builder.add( button, cc.xy( 3, 4 ) );
+        builder.add( button, constraints.xy( 3, 4 ) );
 
         button = new JButton( Locale.explain( "ui.saveLog" ), UIUtils.getIcon( "save-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "logSave" ); //$NON-NLS-1$
         button.addActionListener( this );
-        builder.add( button, cc.xy( 5, 4 ) );
+        builder.add( button, constraints.xy( 5, 4 ) );
 
         builder.getPanel().setOpaque( false );
         return builder.getPanel();
@@ -1161,7 +1103,7 @@ public abstract class AbstractUi
         String doc = "";
         JButton button;
         PanelBuilder builder = new PanelBuilder( layout, new ScrollPanel() );
-        CellConstraints cc = new CellConstraints();
+        CellConstraints constraints = new CellConstraints();
 
         try {
             doc = getLicense();
@@ -1178,14 +1120,14 @@ public abstract class AbstractUi
         pane.setBorder( Borders.EMPTY_BORDER );
         pane.setOpaque( false );
         pane.getViewport().setOpaque( false );
-        builder.add( pane, cc.xyw( 2, 2, 5 ) );
+        builder.add( pane, constraints.xyw( 2, 2, 5 ) );
 
         button = new JButton( Locale.explain( "ui.reportOffense" ), UIUtils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "reportOffense" ); //$NON-NLS-1$
         button.addActionListener( this );
-        builder.add( new ToolTip( Locale.explain( "ui.reportOffenceTip" ), button ), cc.xyw( 3, 4, 3 ) );
+        builder.add( new ToolTip( Locale.explain( "ui.reportOffenceTip" ), button ), constraints.xyw( 3, 4, 3 ) );
 
         builder.getPanel().setOpaque( false );
         return builder.getPanel();
@@ -1206,23 +1148,23 @@ public abstract class AbstractUi
 
         JButton button;
         PanelBuilder builder = new PanelBuilder( layout, new ScrollPanel() );
-        CellConstraints cc = new CellConstraints();
+        CellConstraints constraints = new CellConstraints();
 
-        builder.add( getDevelopmentComponent(), cc.xyw( 2, 2, 5 ) );
+        builder.add( getDevelopmentComponent(), constraints.xyw( 2, 2, 5 ) );
 
         button = new JButton( Locale.explain( "ui.reportProblem" ), UIUtils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "reportIssue" ); //$NON-NLS-1$
         button.addActionListener( this );
-        builder.add( new ToolTip( Locale.explain( "ui.reportProblemTip" ), button ), cc.xy( 3, 4 ) );
+        builder.add( new ToolTip( Locale.explain( "ui.reportProblemTip" ), button ), constraints.xy( 3, 4 ) );
 
         button = new JButton( Locale.explain( "ui.toggleConsole" ), UIUtils.getIcon( "terminal-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "toggleConsole" ); //$NON-NLS-1$
         button.addActionListener( this );
-        builder.add( new ToolTip( Locale.explain( "ui.toggleConsoleTip" ), button ), cc.xy( 5, 4 ) );
+        builder.add( new ToolTip( Locale.explain( "ui.toggleConsoleTip" ), button ), constraints.xy( 5, 4 ) );
 
         builder.getPanel().setOpaque( false );
         return builder.getPanel();
@@ -1283,6 +1225,7 @@ public abstract class AbstractUi
             if (frame != null && frame.isVisible())
                 SwingUtilities.invokeAndWait( new Runnable() {
 
+                    @Override
                     public void run() {
 
                         SwingUtilities.updateComponentTreeUI( frame );
@@ -1334,8 +1277,8 @@ public abstract class AbstractUi
      * Override this method to process custom requests.<br>
      * <br>
      * <b>Make sure you call super.process if you override this method!</b>
-     * 
-     * @param element
+     *
+     * @param element The request that should be processed.
      */
     protected void process(Request element) {
 
@@ -1543,7 +1486,7 @@ public abstract class AbstractUi
     /**
      * Override this method if you want to perform an action when the frame changes visibility state or has just been
      * made valid.
-     * 
+     *
      * @param newVisibilityState
      *            <code>true</code>: frame is visible.
      */
@@ -1554,7 +1497,7 @@ public abstract class AbstractUi
 
     /**
      * Override this method to add custom {@link MenuItem}s to the system tray menu.
-     * 
+     *
      * @param sysMenu
      *            The menu to add the items to.
      */
@@ -1562,56 +1505,5 @@ public abstract class AbstractUi
 
         for (Plugin plugin : plugins)
             plugin.buildSystray( sysMenu );
-    }
-}
-
-
-/**
- * Read line-based data from an input stream and write it out on a component.
- */
-class ConsoleThread extends Thread {
-
-    private static final Logger logger = Logger.get( ConsoleThread.class );
-
-    private InputStreamReader   in;
-    private JTextArea           console;
-
-
-    /**
-     * Create a new {@link ConsoleThread} instance.
-     * 
-     * @param in
-     *            The source of the data to write in the console.
-     * @param console
-     *            The component to output the console data to.
-     */
-    ConsoleThread(InputStream in, JTextArea console) {
-
-        super( "Redirect stdout to Virtual Console" );
-        setDaemon( true );
-
-        this.in = new InputStreamReader( in );
-        this.console = console;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void run() {
-
-        try {
-            int bytesRead;
-            char[] buf = new char[BaseConfig.BUFFER_SIZE];
-
-            while ((bytesRead = in.read( buf )) > 0) {
-                console.append( new String( buf, 0, bytesRead ) );
-
-                /* Scroll to the bottom. */
-                console.setCaretPosition( console.getDocument().getLength() );
-            }
-        } catch (IOException e) {
-            logger.err( e, "Could not read from the console source." );
-        }
     }
 }

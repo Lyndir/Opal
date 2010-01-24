@@ -23,7 +23,7 @@ import com.lyndir.lhunath.lib.system.Poller;
 
 /**
  * A poller that collects data received from the network.
- * 
+ *
  * @author lhunath
  */
 public class NetworkDataPoller extends Poller<SocketChannel, ByteBuffer> implements NetworkDataListener {
@@ -37,7 +37,7 @@ public class NetworkDataPoller extends Poller<SocketChannel, ByteBuffer> impleme
 
     /**
      * Create a new {@link NetworkDataPoller} instance that listens on the given network.
-     * 
+     *
      * @param network
      *            The network whose data we should be listening for.
      */
@@ -49,6 +49,7 @@ public class NetworkDataPoller extends Poller<SocketChannel, ByteBuffer> impleme
     /**
      * {@inheritDoc}
      */
+    @Override
     public void received(ByteBuffer dataBuffer, SocketChannel connectionSocket) {
 
         offer( connectionSocket, dataBuffer );

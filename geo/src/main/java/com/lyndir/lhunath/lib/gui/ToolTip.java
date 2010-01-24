@@ -15,41 +15,12 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.GraphicsEnvironment;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
-
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JWindow;
-import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 import com.lyndir.lhunath.lib.system.UIUtils;
 
@@ -61,7 +32,7 @@ import com.lyndir.lhunath.lib.system.UIUtils;
  * You can use the {@link #setContent(JComponent)} method to change the content of the panel. The content will have
  * listeners attached to show the tooltip on hover.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class ToolTip extends JPanel {
@@ -144,7 +115,7 @@ public class ToolTip extends JPanel {
 
     /**
      * Create a new {@link ToolTip} instance.
-     * 
+     *
      * @param toolTip
      *            The text to show when hovering this button.
      */
@@ -155,7 +126,7 @@ public class ToolTip extends JPanel {
 
     /**
      * Create a new {@link ToolTip} instance.
-     * 
+     *
      * @param toolTip
      *            The text to show when hovering this button.
      * @param c
@@ -173,6 +144,7 @@ public class ToolTip extends JPanel {
                 "stick" );
         toolTipPane.getActionMap().put( "stick", new AbstractAction( "stick" ) {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
 
                 toggleSticky();
@@ -186,7 +158,7 @@ public class ToolTip extends JPanel {
 
     /**
      * Check whether this {@link ToolTip} has a sticky frame popping up on click.
-     * 
+     *
      * @return Guess.
      */
     public boolean isStickable() {
@@ -196,7 +168,7 @@ public class ToolTip extends JPanel {
 
     /**
      * Set whether this {@link ToolTip} has a sticky frame popping up on click.
-     * 
+     *
      * @param stickable
      *            Guess.
      */
@@ -224,7 +196,7 @@ public class ToolTip extends JPanel {
 
     /**
      * Define the text that will show up in the tooltip. Set this to null to disable the tooltip momentarily.
-     * 
+     *
      * @param toolTip
      *            Guess.
      */
@@ -243,7 +215,7 @@ public class ToolTip extends JPanel {
 
     /**
      * Make the given object listen to sticky state changes of this tooltip.
-     * 
+     *
      * @param listener
      *            The object that will listen to the state changes.
      */
@@ -254,7 +226,7 @@ public class ToolTip extends JPanel {
 
     /**
      * Set the component used to show the tooltip on hover.
-     * 
+     *
      * @return Guess.
      */
     public JComponent getContent() {
@@ -264,7 +236,7 @@ public class ToolTip extends JPanel {
 
     /**
      * Set the component used to show the tooltip on hover.
-     * 
+     *
      * @param content
      *            Guess.
      */
@@ -280,15 +252,15 @@ public class ToolTip extends JPanel {
 
     /**
      * Recursively add the main mouse listener to the given component and its children.
-     * 
+     *
      * @param c
      *            The component to which the main mouse listener needs to be added.
      */
     private void listen(Component c) {
 
         if (c instanceof Container)
-            for (Component cc : ((Container) c).getComponents())
-                listen( cc );
+            for (Component child : ((Container) c).getComponents())
+                listen( child );
 
         c.addMouseListener( buttonListener );
         c.addMouseMotionListener( buttonListener );
@@ -296,15 +268,15 @@ public class ToolTip extends JPanel {
 
     /**
      * Recursively remove the main mouse listener from the given component and its children.
-     * 
+     *
      * @param c
      *            The component from which the main mouse listeners need to be removed.
      */
     private void unlisten(Component c) {
 
         if (c instanceof Container)
-            for (Component cc : ((Container) c).getComponents())
-                unlisten( cc );
+            for (Component child : ((Container) c).getComponents())
+                unlisten( child );
 
         c.removeMouseListener( buttonListener );
         c.removeMouseMotionListener( buttonListener );
@@ -328,7 +300,7 @@ public class ToolTip extends JPanel {
         toolTipFrame.addWindowListener( new WindowAdapter() {
 
             @Override
-            public void windowClosing(WindowEvent ee) {
+            public void windowClosing(WindowEvent windowEvent) {
 
                 for (ToolTipStickyListener listener : stickyListeners)
                     listener.stickyState( ToolTip.this, false );
@@ -450,6 +422,7 @@ public class ToolTip extends JPanel {
 
                     SwingUtilities.invokeLater( new Runnable() {
 
+                        @Override
                         public void run() {
 
                             try {
@@ -569,7 +542,7 @@ public class ToolTip extends JPanel {
 
         /**
          * Notifies the listener that this tooltip's sticky state has changed.
-         * 
+         *
          * @param toolTip
          *            The tooltip whose sticky state changed.
          * @param sticky

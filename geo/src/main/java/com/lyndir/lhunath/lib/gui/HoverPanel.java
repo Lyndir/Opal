@@ -15,24 +15,16 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.LayoutManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 import com.lyndir.lhunath.lib.system.UIUtils;
 
 
 /**
  * TODO: {@link HoverPanel}<br>
- * 
+ *
  * @author lhunath
  */
 public class HoverPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener {
@@ -45,7 +37,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
 
     /**
      * Create a new AddonPanel instance.
-     * 
+     *
      * @param layout
      *            The layout to use for this panel.
      */
@@ -68,7 +60,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
 
     /**
      * Check whether this panel's active background is its default background.
-     * 
+     *
      * @return <code>true</code> if this panel's active background is its default background.
      */
     public boolean isBackgroundRestored() {
@@ -79,8 +71,8 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
     protected void listen(Component c) {
 
         if (c instanceof Container)
-            for (Component cc : ((Container) c).getComponents())
-                listen( cc );
+            for (Component child : ((Container) c).getComponents())
+                listen( child );
 
         c.addMouseMotionListener( this );
         c.addMouseListener( this );
@@ -89,8 +81,8 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
     protected void unlisten(Component c) {
 
         if (c instanceof Container)
-            for (Component cc : ((Container) c).getComponents())
-                unlisten( cc );
+            for (Component child : ((Container) c).getComponents())
+                unlisten( child );
 
         c.removeMouseMotionListener( this );
         c.removeMouseListener( this );
@@ -99,6 +91,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
     /**
      * {@inheritDoc}
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
 
         if (getParent() != null)
@@ -118,6 +111,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseClicked(MouseEvent e) {
 
         if (!e.getComponent().equals( this ))
@@ -129,6 +123,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mousePressed(MouseEvent e) {
 
         if (!e.getComponent().equals( this ))
@@ -140,6 +135,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseReleased(MouseEvent e) {
 
         if (!e.getComponent().equals( this ))
@@ -151,6 +147,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseEntered(MouseEvent e) {
 
         setBackground( backgroundHover );
@@ -164,6 +161,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseExited(MouseEvent e) {
 
         restoreBackground();
@@ -177,6 +175,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseDragged(MouseEvent e) {
 
         if (!e.getComponent().equals( this ))
@@ -188,6 +187,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
     /**
      * {@inheritDoc}
      */
+    @Override
     public void mouseMoved(MouseEvent e) {
 
         if (!e.getComponent().equals( this ))

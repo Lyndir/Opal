@@ -21,7 +21,7 @@ import org.xml.sax.InputSource;
 
 /**
  * Utilities for evaluating XPath on XHTML.
- * 
+ *
  * @author mbillemo
  */
 public class XPathUtil {
@@ -31,7 +31,7 @@ public class XPathUtil {
 
     /**
      * Create a new XPathUtil instance.
-     * 
+     *
      * @param isXHTML
      *            <code>true</code>: Indicate that the document uses the XHTML namespace context and set it as the
      *            default context.
@@ -46,7 +46,7 @@ public class XPathUtil {
 
     /**
      * Evaluate an {@link XPath} expression.
-     * 
+     *
      * @param context
      *            The context to evaluate the XPath expression under.
      * @param expressionFormat
@@ -64,7 +64,7 @@ public class XPathUtil {
 
     /**
      * Evaluate an {@link XPath} expression.
-     * 
+     *
      * @param context
      *            The context to evaluate the XPath expression under.
      * @param expressionFormat
@@ -82,7 +82,7 @@ public class XPathUtil {
 
     /**
      * Evaluate an {@link XPath} expression.
-     * 
+     *
      * @param context
      *            The context to evaluate the XPath expression under.
      * @param expressionFormat
@@ -106,7 +106,7 @@ public class XPathUtil {
 
     /**
      * Evaluate an {@link XPath} expression.
-     * 
+     *
      * @param context
      *            The context to evaluate the XPath expression under.
      * @param expressionFormat
@@ -124,7 +124,7 @@ public class XPathUtil {
 
     /**
      * Evaluate an {@link XPath} expression.
-     * 
+     *
      * @param context
      *            The context to evaluate the XPath expression under.
      * @param expressionFormat
@@ -142,7 +142,7 @@ public class XPathUtil {
 
     /**
      * Evaluate an {@link XPath} expression.
-     * 
+     *
      * @param context
      *            The context to evaluate the XPath expression under.
      * @param expressionFormat
@@ -168,11 +168,11 @@ public class XPathUtil {
     /**
      * <h2>{@link XHTMLContext}<br>
      * <sub>Namespace context for XHTML tags and attributes.</sub></h2>
-     * 
+     *
      * <p>
      * <i>Apr 9, 2008</i>
      * </p>
-     * 
+     *
      * @author mbillemo
      */
     public class XHTMLContext implements NamespaceContext {
@@ -193,11 +193,12 @@ public class XPathUtil {
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * @param prefix
          *            The prefix of the namespace to retrieve.
          * @return The namespace mapped by the given prefix.
          */
+        @Override
         public String getNamespaceURI(String prefix) {
 
             return namespaces.get( prefix );
@@ -205,11 +206,12 @@ public class XPathUtil {
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * @param namespaceURI
          *            The namespace to retrieve the first set prefix for.
          * @return The first prefix that maps the given namespace.
          */
+        @Override
         public String getPrefix(String namespaceURI) {
 
             for (Map.Entry<String, String> namespace : namespaces.entrySet())
@@ -221,11 +223,12 @@ public class XPathUtil {
 
         /**
          * {@inheritDoc}
-         * 
+         *
          * @param namespaceURI
          *            The namespace to retrieve the prefixes for.
          * @return All prefixes that map the given namespace.
          */
+        @Override
         public Iterator<String> getPrefixes(String namespaceURI) {
 
             List<String> URIs = new ArrayList<String>();

@@ -47,7 +47,7 @@ import com.lyndir.lhunath.lib.system.UIUtils;
  * <p>
  * <i>Dec 13, 2007</i>
  * </p>
- * 
+ *
  * @author mbillemo
  */
 public class GButton extends JButton {
@@ -66,7 +66,7 @@ public class GButton extends JButton {
 
     /**
      * Create a new {@link GButton} instance.
-     * 
+     *
      * @param icon
      *            The icon to show on the button.
      */
@@ -77,7 +77,7 @@ public class GButton extends JButton {
 
     /**
      * Create a new {@link GButton} instance.
-     * 
+     *
      * @param text
      *            The text to put on the button.
      * @param icon
@@ -208,6 +208,7 @@ public class GButton extends JButton {
             if (getFont() == null) {
                 SwingUtilities.invokeLater( new Runnable() {
 
+                    @Override
                     public void run() {
 
                         updateSize();

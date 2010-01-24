@@ -30,7 +30,7 @@ import javax.swing.SwingConstants;
  * <br>
  * [description / usage].<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public abstract class SearchBox extends JTextField implements FocusListener, KeyListener {
@@ -43,7 +43,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
 
     /**
      * Create a new {@link SearchBox} instance.
-     * 
+     *
      * @param subject
      *            The name of what will be searched for (appears in the gray text).
      */
@@ -63,7 +63,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
 
     /**
      * Create a new {@link SearchBox} instance.
-     * 
+     *
      * @param subject
      *            The name of what will be searched for (appears in the gray text).
      * @param minChars
@@ -78,17 +78,17 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
     /**
      * This method will be called when the search string changes. Implement this to make the search string take effect
      * and return <code>true</code> if it did.
-     * 
+     *
      * @param text
      *            The text in the box.
-     * 
+     *
      * @return <code>true</code> will make the search text black, <code>false</code> will make the search text red.
      */
     protected abstract boolean isMatch(String text);
 
     /**
      * Retrieve the current string in the search box (trimmed).
-     * 
+     *
      * @return The trimmed search string.
      */
     @Override
@@ -99,7 +99,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
 
     /**
      * Retrieve the minChars of this {@link SearchBox}.
-     * 
+     *
      * @return Guess.
      */
     public int getMinChars() {
@@ -109,7 +109,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
 
     /**
      * Set the minChars of this {@link SearchBox}.
-     * 
+     *
      * @param minChars
      *            Guess.
      */
@@ -120,7 +120,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
 
     /**
      * Check whether there's any relevant search text in the field. This ignores the default gray search message.
-     * 
+     *
      * @return <code>true</code> if no search text is in the field.
      */
     public boolean isClear() {
@@ -139,6 +139,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
     /**
      * {@inheritDoc}
      */
+    @Override
     public void focusGained(FocusEvent e) {
 
         if (cleared)
@@ -151,6 +152,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
     /**
      * {@inheritDoc}
      */
+    @Override
     public void focusLost(FocusEvent e) {
 
         if (getText().length() != 0)
@@ -164,6 +166,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
     /**
      * {@inheritDoc}
      */
+    @Override
     public void keyReleased(KeyEvent e) {
 
         if (e.getKeyCode() == KeyEvent.VK_ENTER)
@@ -183,6 +186,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
     /**
      * {@inheritDoc}
      */
+    @Override
     public void keyPressed(KeyEvent e) {
 
     /* Not needed. */
@@ -191,6 +195,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
     /**
      * {@inheritDoc}
      */
+    @Override
     public void keyTyped(KeyEvent e) {
 
     /* Not needed. */

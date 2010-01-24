@@ -23,7 +23,7 @@ import com.lyndir.lhunath.lib.system.Poller;
 
 /**
  * A poller that collects state changes from the network.
- * 
+ *
  * @author lhunath
  */
 public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketChannel>
@@ -38,7 +38,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
 
     /**
      * Create a new {@link NetworkStatePoller} instance that listens on the given network.
-     * 
+     *
      * @param network
      *            The network whose messages we should be polling.
      */
@@ -51,6 +51,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
     /**
      * {@inheritDoc}
      */
+    @Override
     public void bound(ServerSocketChannel serverSocket) {
 
     // Not supported.
@@ -59,6 +60,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accepted(ServerSocketChannel serverSocket, SocketChannel connectionSocket) {
 
         offer( State.ACCEPTED, connectionSocket );
@@ -67,6 +69,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
     /**
      * {@inheritDoc}
      */
+    @Override
     public void connected(SocketChannel connectionSocket) {
 
         offer( State.CONNECTED, connectionSocket );
@@ -75,6 +78,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
     /**
      * {@inheritDoc}
      */
+    @Override
     public void closed(SocketChannel connectionSocket, boolean resetByPeer) {
 
         offer( State.CLOSED, connectionSocket );

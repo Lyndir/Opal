@@ -20,7 +20,7 @@ package com.lyndir.lhunath.lib.math;
  * <br>
  * The Vec3 object represents a three dimensional vector in a space.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class Vec3 extends Vec2 {
@@ -33,7 +33,7 @@ public class Vec3 extends Vec2 {
 
     /**
      * Convert a planar vector (2D) into a spatial vector (3D).
-     * 
+     *
      * @param vector
      *            The 2D vector to be converted.
      */
@@ -44,7 +44,7 @@ public class Vec3 extends Vec2 {
 
     /**
      * Convert a planar vector (2D) into a spatial vector (3D); placing it at a specified depth in space.
-     * 
+     *
      * @param vector
      *            The 2D vector to be converted.
      * @param z
@@ -65,7 +65,7 @@ public class Vec3 extends Vec2 {
 
     /**
      * Create a new three dimensional vector.
-     * 
+     *
      * @param x
      *            The x-coordinate of the new vector.
      * @param y
@@ -111,7 +111,7 @@ public class Vec3 extends Vec2 {
 
     /**
      * Rotate this vector over an angle along the specified axis.
-     * 
+     *
      * @param a
      *            The angle over which to rotate.
      * @param ax
@@ -157,7 +157,7 @@ public class Vec3 extends Vec2 {
 
     /**
      * Add another vector to this one.
-     * 
+     *
      * @param vector
      *            A vector that needs to be added to this.
      * @return A reference to the this vector, after it has been updated.
@@ -176,7 +176,7 @@ public class Vec3 extends Vec2 {
 
     /**
      * Subtract another vector from this one.
-     * 
+     *
      * @param vector
      *            The vector which will be subtracted from this.
      * @return A reference to the this vector, after it has been updated.
@@ -195,7 +195,7 @@ public class Vec3 extends Vec2 {
 
     /**
      * Multiply this vector with the coefficients of another.
-     * 
+     *
      * @param vector
      *            The vector whose coefficients will be used for the multiplication.
      * @return A reference to the this vector, after it has been updated.
@@ -229,13 +229,13 @@ public class Vec3 extends Vec2 {
      * <br>
      * <i>The length of the cross product of this vector with a given one is the area of the parallelogram having this
      * and the given vector as sides.<br>
-     * 
+     *
      * <pre>
      *          _______
      *          \      \  - Consider this paralellogram's horizontal side (either of the two) as a vector,
      *           \______\     and the vertical side as another. Their cross product returns the area.
      * </pre>
-     * 
+     *
      * <br>
      * The resulting vector is perpendicular to both vectors. The direction it will be pointing in is theoretically
      * undefined, but defined by convention as: <q>An easy way to compute the direction of the resultant vector is the
@@ -247,7 +247,7 @@ public class Vec3 extends Vec2 {
      * by the above parallelogram).<br>
      * This means that the product of the resultant of a cross product with a third gives the volume of the
      * parallelepiped thus formed.</i>
-     * 
+     *
      * @param vector
      *            The vector with which this vector must be multiplied.
      * @return A new vector, perpendicular to both given vectors, as described above.
@@ -267,7 +267,7 @@ public class Vec3 extends Vec2 {
      * As a result of this; the dot product of two perpendicular vectors is 0.<br>
      * <br>
      * Any vector in a plane, multiplied in this way with the plane's normal; will therefore result in 0.</i>
-     * 
+     *
      * @param vector
      *            The vector with which this vector must be multiplied.
      * @return The result of the dot product of this vector with the given one.
@@ -297,10 +297,8 @@ public class Vec3 extends Vec2 {
 
         if (o == this)
             return true;
-        if (!(o instanceof Vec3))
-            return false;
+        return o instanceof Vec3 && x == ((Vec3) o).x && y == ((Vec3) o).y && z == ((Vec3) o).z;
 
-        return x == ((Vec3) o).x && y == ((Vec3) o).y && z == ((Vec3) o).z;
     }
 
     /**

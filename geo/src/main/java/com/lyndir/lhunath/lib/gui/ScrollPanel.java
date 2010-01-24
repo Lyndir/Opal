@@ -32,7 +32,7 @@ import javax.swing.SwingConstants;
  * tedious), this attempt has been made to address the issue.<br> {@link ScrollPanel} uses its first visible child component
  * to determine the scroll unit.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class ScrollPanel extends JPanel implements Scrollable {
@@ -54,7 +54,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
     /**
      * Create a new {@link ScrollPanel} instance.<br>
      * The amount to scroll this panel will be calculated from the size of the first visible component of the panel.
-     * 
+     *
      * @param horizontal
      *            <code>true</code>: scroll horizontally.
      * @param vertical
@@ -67,7 +67,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
 
     /**
      * Create a new {@link ScrollPanel} instance.
-     * 
+     *
      * @param scrollUnit
      *            The amount in pixels to scroll this panel on every tick of the scroll wheel.
      */
@@ -78,7 +78,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
 
     /**
      * Create a new {@link ScrollPanel} instance.
-     * 
+     *
      * @param scrollUnit
      *            The amount in pixels to scroll this panel on every tick of the scroll wheel.
      * @param horizontal
@@ -96,6 +96,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dimension getPreferredScrollableViewportSize() {
 
         return getPreferredSize();
@@ -104,6 +105,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
 
         return getScrollableUnitIncrement( visibleRect, orientation, direction ) * 3;
@@ -112,6 +114,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getScrollableTracksViewportHeight() {
 
         return !vertical;
@@ -120,6 +123,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean getScrollableTracksViewportWidth() {
 
         return !horizontal;
@@ -128,6 +132,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
 
         if (scrollUnit > 0)

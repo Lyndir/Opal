@@ -21,20 +21,20 @@ import java.util.Map;
 /**
  * <h2>{@link Pair}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * [description / usage].
  * </p>
- * 
+ *
  * @param <K>
  *            The class of the keys.
  * @param <V>
  *            The class of the values.
- * 
+ *
  *            <p>
  *            <i>Apr 17, 2008</i>
  *            </p>
- * 
+ *
  * @author mbillemo
  */
 public class Pair<K, V> implements Map.Entry<K, V> {
@@ -45,7 +45,7 @@ public class Pair<K, V> implements Map.Entry<K, V> {
 
     /**
      * Create a new {@link Pair} instance.
-     * 
+     *
      * @param key
      *            The key of this pair.
      * @param value
@@ -60,6 +60,7 @@ public class Pair<K, V> implements Map.Entry<K, V> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public K getKey() {
 
         return key;
@@ -68,6 +69,7 @@ public class Pair<K, V> implements Map.Entry<K, V> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public V getValue() {
 
         return value;
@@ -76,6 +78,7 @@ public class Pair<K, V> implements Map.Entry<K, V> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public V setValue(V value) {
 
         V old = this.value;

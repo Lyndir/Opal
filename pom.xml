@@ -44,4 +44,22 @@
         <module>system</module>
     </modules>
 
+    <!-- REMOTE ARTIFACT REPOSITORIES -->
+    <repositories>
+        <repository>
+            <id>lyndir</id>
+            <name>Lyndir Repository</name>
+            <url>http://maven.lyndir.com</url>
+
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </repository>
+    </repositories>
+
 </project>

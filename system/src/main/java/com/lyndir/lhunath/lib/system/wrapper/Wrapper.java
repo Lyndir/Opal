@@ -37,15 +37,15 @@ import java.util.Map;
  * fail with an {@link UnsupportedOperationException} if the wrapper class is not available or accessible.<br>
  * <br>
  * It is REQUIRED for any implementing classes to provide this bit of code that initializes the wrapper:
- * 
+ *
  * <pre>
  * static {
  * 	 initWrapper([Proxy-Class].class, &quot;[Wrapped-Class]&quot;)
  * }
  * </pre>
- * 
+ *
  * <br>
- * 
+ *
  * @author lhunath
  */
 public abstract class Wrapper {

@@ -29,21 +29,21 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 /**
  * <h2>{@link LocalizerFactory}<br>
  * <sub>Create localizers from localization interfaces.</sub></h2>
- * 
+ *
  * <p>
  * This class builds localizers from interfaces annotated with the {@link UseBundle} and {@link UseKey} annotations.
  * </p>
- * 
+ *
  * <p>
  * This localizer can then be queried by invoking the methods provided by the interface used to create it. This way, you
  * can to obtain localized data from them as provided by the resource bundle that interface references in its
  * {@link UseBundle} annotation.
  * </p>
- * 
+ *
  * <p>
  * <i>Mar 28, 2009</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public abstract class LocalizerFactory {
@@ -90,6 +90,7 @@ public abstract class LocalizerFactory {
         /**
          * {@inheritDoc}
          */
+        @Override
         public Object invoke(Object proxy, Method method, Object[] args)
                 throws Throwable {
 

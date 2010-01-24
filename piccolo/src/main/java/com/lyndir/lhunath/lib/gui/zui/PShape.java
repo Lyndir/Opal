@@ -24,7 +24,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * TODO: {@link PShape}<br>
- * 
+ *
  * @author lhunath
  */
 public abstract class PShape extends PNode {
@@ -35,7 +35,7 @@ public abstract class PShape extends PNode {
 
     /**
      * Update the shape of this node. Called whenever the bounds change.
-     * 
+     *
      * @param x
      * @param y
      * @param w
@@ -76,7 +76,7 @@ public abstract class PShape extends PNode {
 
     /**
      * Update the scale of the shape using current values for location and dimension.
-     * 
+     *
      * @return true on success.
      */
     protected boolean scaleShape() {
@@ -90,10 +90,8 @@ public abstract class PShape extends PNode {
     @Override
     public boolean setBounds(double x, double y, double w, double h) {
 
-        if (!super.setBounds( x, y, w, h ))
-            return false;
+        return super.setBounds( x, y, w, h ) && scaleShape( x, y, w, h );
 
-        return scaleShape( x, y, w, h );
     }
 
     /**

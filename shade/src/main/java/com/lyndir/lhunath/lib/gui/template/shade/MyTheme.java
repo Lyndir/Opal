@@ -35,7 +35,7 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 
 /**
  * TODO: MyThemes<br>
- * 
+ *
  * @author lhunath
  */
 public enum MyTheme {
@@ -127,6 +127,7 @@ public enum MyTheme {
         if (name().equals( "CUSTOM" ))
             SwingUtilities.invokeLater( new Runnable() {
 
+                @Override
                 public void run() {
 
                     if (equals( MyTheme.activeTheme() ))
@@ -137,7 +138,7 @@ public enum MyTheme {
 
     /**
      * Return the look and feel theme for this template.
-     * 
+     *
      * @return Guess.
      */
     public MyLookAndFeel getLookAndFeel() {
@@ -147,7 +148,7 @@ public enum MyTheme {
 
     /**
      * Set the lookAndFeel of this template.
-     * 
+     *
      * @param lookAndFeel
      *            Guess.
      */
@@ -158,7 +159,7 @@ public enum MyTheme {
 
     /**
      * Find the theme that is currently used to provide colors for the look and feel.
-     * 
+     *
      * @return Guess.
      */
     public static MyTheme activeTheme() {
@@ -172,7 +173,7 @@ public enum MyTheme {
 
     /**
      * Create a label to describe this theme template.
-     * 
+     *
      * @return Guess.
      */
     public Component getButton() {
@@ -196,6 +197,7 @@ public enum MyTheme {
         };
         button.addActionListener( new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
 
                 ShadeConfig.theme.set( theme.getLookAndFeel() );
