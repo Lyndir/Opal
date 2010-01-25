@@ -15,19 +15,11 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import java.awt.AWTException;
-import java.awt.AlphaComposite;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Robot;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JWindow;
 
 import com.lyndir.lhunath.lib.system.UIUtils;
 import com.lyndir.lhunath.lib.system.logging.Logger;
@@ -40,7 +32,7 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  * transparent or translucent images.<br>
  * The splash screen normally disappears after a given delay, but you can also call the {@link #dispose()} method to get
  * rid of it as soon as your application's com.lyndir.lhunath.lib.gui *
- * 
+ *
  * @author lhunath
  */
 public class Splash extends JWindow {
@@ -60,12 +52,10 @@ public class Splash extends JWindow {
 
         int width = icon.getIconWidth();
         int height = icon.getIconHeight();
-        int initialWidth = width;
-        int initialHeight = height;
 
         if (initial != null) {
-            initial.getIconWidth();
-            initial.getIconHeight();
+            int initialWidth = initial.getIconWidth();
+            int initialHeight = initial.getIconHeight();
 
             if (initialWidth != width || initialHeight != height) {
                 logger.wrn( "Initial icon has a different width or height.  Disabling fade." );
@@ -105,7 +95,9 @@ public class Splash extends JWindow {
         try {
             BufferedImage capture = new Robot().createScreenCapture( getBounds() );
             g2.drawImage( capture, null, 0, 0 );
-        } catch (AWTException e) {}
+        }
+
+        catch (AWTException ignored) {}
 
         setVisible( true );
     }
@@ -137,7 +129,7 @@ public class Splash extends JWindow {
 
     /**
      * Fade the initial image over into the final image.
-     * 
+     *
      * @param duration
      *            The duration over which to fade.
      */
@@ -168,7 +160,7 @@ public class Splash extends JWindow {
 
     /**
      * Spawn a splash screen with the given splash image for five seconds.
-     * 
+     *
      * @param image
      *            The resource name of the image to load for the splash screen.
      * @return The splash screen.
@@ -180,7 +172,7 @@ public class Splash extends JWindow {
 
     /**
      * Spawn a splash screen with the given splash image and the given duration in milliseconds.
-     * 
+     *
      * @param image
      *            The resource name of the image to load for the splash screen.
      * @param duration
@@ -219,7 +211,7 @@ public class Splash extends JWindow {
 
     /**
      * Get the splash screen instance.
-     * 
+     *
      * @return The splash screen instance.
      */
     public static Splash getSplash() {

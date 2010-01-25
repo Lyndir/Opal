@@ -40,9 +40,9 @@ import com.lyndir.lhunath.lib.system.UIUtils;
  */
 public class HoverCellRenderer extends DefaultListCellRenderer implements MouseListener, MouseMotionListener {
 
-    private HoverPanel panel;
+    private final HoverPanel panel;
     private int        hoveredIndex = -1;
-    private JList      myList;
+    private final JList      myList;
 
 
     /**

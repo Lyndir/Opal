@@ -36,7 +36,7 @@ public class SystemTray extends Wrapper {
      */
     public static SystemTray getSystemTray() {
 
-        return new SystemTray( invoke( SystemTray.class, null, "getSystemTray", new Class[0] ) );
+        return new SystemTray( invoke( SystemTray.class, null, "getSystemTray" ) );
     }
 
     /**
@@ -46,10 +46,10 @@ public class SystemTray extends Wrapper {
     public static boolean isSupported() {
 
         try {
-            return (Boolean) invoke( SystemTray.class, null, "isSupported", new Class[0] );
+            return (Boolean) invoke( SystemTray.class, null, "isSupported" );
         }
 
-        catch (Exception e) {
+        catch (Exception ignored) {
             return false;
         }
     }
@@ -61,7 +61,7 @@ public class SystemTray extends Wrapper {
 
     /**
      * Add a tray icon to the system tray.
-     * 
+     *
      * @param trayIcon
      *            The wrapped TrayIcon.
      * @throws AWTException
@@ -75,7 +75,7 @@ public class SystemTray extends Wrapper {
 
     /**
      * Add a {@link PropertyChangeListener} for the given property.
-     * 
+     *
      * @param propertyName
      *            The property to listen for.
      * @param listener
@@ -89,7 +89,7 @@ public class SystemTray extends Wrapper {
 
     /**
      * Retrieve all active listeners for the given property.
-     * 
+     *
      * @param propertyName
      *            The property that is listened for.
      * @return The {@link PropertyChangeListener}s registered for the given property.
@@ -105,7 +105,7 @@ public class SystemTray extends Wrapper {
      */
     public TrayIcon[] getTrayIcons() {
 
-        Object[] trayIcons = (Object[]) invoke( "getTrayIcons", new Class[0] );
+        Object[] trayIcons = (Object[]) invoke( "getTrayIcons" );
         TrayIcon[] wrappedTrayIcons = new TrayIcon[trayIcons.length];
 
         for (int i = 0; i < trayIcons.length; ++i)
@@ -119,12 +119,12 @@ public class SystemTray extends Wrapper {
      */
     public Dimension getTrayIconSize() {
 
-        return (Dimension) invoke( "getTrayIconSize", new Class[0] );
+        return (Dimension) invoke( "getTrayIconSize" );
     }
 
     /**
      * Unregister the given tray icon removing it from the system tray.
-     * 
+     *
      * @param trayIcon
      *            The tray icon to remove.
      */
@@ -135,7 +135,7 @@ public class SystemTray extends Wrapper {
 
     /**
      * Stop listening for the given property with the given listener.
-     * 
+     *
      * @param propertyName
      *            The property to stop listening for with the given listener.
      * @param listener

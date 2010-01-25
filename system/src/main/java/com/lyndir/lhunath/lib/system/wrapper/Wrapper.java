@@ -37,21 +37,21 @@ import java.util.Map;
  * fail with an {@link UnsupportedOperationException} if the wrapper class is not available or accessible.<br>
  * <br>
  * It is REQUIRED for any implementing classes to provide this bit of code that initializes the wrapper:
- *
+ * 
  * <pre>
  * static {
  * 	 initWrapper([Proxy-Class].class, &quot;[Wrapped-Class]&quot;)
  * }
  * </pre>
- *
+ * 
  * <br>
- *
+ * 
  * @author lhunath
  */
 public abstract class Wrapper {
 
-    protected static boolean                                 classNotFound  = false;
-    protected static Map<Class<? extends Wrapper>, Class<?>> wrappedClasses = new HashMap<Class<? extends Wrapper>, Class<?>>();
+    protected static boolean                                       classNotFound;
+    protected static final Map<Class<? extends Wrapper>, Class<?>> wrappedClasses = new HashMap<Class<? extends Wrapper>, Class<?>>();
 
 
     protected static Object construct(Class<? extends Wrapper> proxyClass, Class<?>[] classes, Object... args)
@@ -110,11 +110,17 @@ public abstract class Wrapper {
             wrappedClasses.put( proxyClass, getClass( wrappedClassName ) );
 
             return true;
-        } catch (UnsupportedOperationException e) {
+        } catch (UnsupportedOperationException ignored) {
             classNotFound = true;
 
             return false;
         }
+    }
+
+    protected static Object invoke(Class<? extends Wrapper> proxyClass, Object wrappedInstance, String methodName)
+            throws UnsupportedOperationException {
+
+        return invoke( proxyClass, wrappedInstance, methodName, new Class[0] );
     }
 
     protected static Object invoke(Class<? extends Wrapper> proxyClass, Object wrappedInstance, String methodName,
@@ -149,7 +155,7 @@ public abstract class Wrapper {
     }
 
 
-    protected Object wrappedInstance;
+    protected final Object wrappedInstance;
 
 
     protected Wrapper(Object wrappedInstance) {
@@ -197,6 +203,14 @@ public abstract class Wrapper {
     protected Object getWrappedInstance() {
 
         return wrappedInstance;
+    }
+
+    // Assuming only classes that extend this
+    // class can call this method and play nice.
+    protected Object invoke(String methodName)
+            throws UnsupportedOperationException {
+
+        return invoke( methodName, new Class[0] );
     }
 
     // Assuming only classes that extend this

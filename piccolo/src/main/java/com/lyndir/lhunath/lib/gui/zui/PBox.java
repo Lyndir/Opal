@@ -43,7 +43,7 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  * <br>
  * [description / usage].<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class PBox extends PShape {
@@ -52,7 +52,7 @@ public class PBox extends PShape {
 
     private static final Vec2   tipOffset = new Vec2( -10, 30 );
 
-    protected PCanvas           canvas;
+    protected final PCanvas           canvas;
     private PBox                tooltipNode;
     private String              title;
     private Paint               outlinePaint;
@@ -67,7 +67,7 @@ public class PBox extends PShape {
 
     /**
      * Create a new PBox instance.
-     * 
+     *
      * @param canvas
      *        The canvas in which this node is contained.
      * @param title
@@ -84,7 +84,7 @@ public class PBox extends PShape {
 
     /**
      * Create a new PBox instance.
-     * 
+     *
      * @param canvas
      *        The canvas in which this node is contained.
      * @param title
@@ -99,7 +99,7 @@ public class PBox extends PShape {
 
     /**
      * Create a new PBox instance.
-     * 
+     *
      * @param canvas
      *        The canvas in which this node is contained.
      */
@@ -120,7 +120,7 @@ public class PBox extends PShape {
 
     /**
      * Lock this box into its parent. A locked box will group into its parent {@link PBox} and extend its minimum size.
-     * 
+     *
      * @param locked
      *        Set whether this box is locked into its parent.
      */
@@ -133,7 +133,7 @@ public class PBox extends PShape {
 
     /**
      * Retrieve the locked state of this PBox.
-     * 
+     *
      * @return Guess.
      */
     public boolean isLocked() {
@@ -142,8 +142,16 @@ public class PBox extends PShape {
     }
 
     /**
+     * @return The paint used to draw the outline.
+     */
+    public Paint getOutlinePaint() {
+
+        return outlinePaint;
+    }
+
+    /**
      * Define the paint used to draw the outline.
-     * 
+     *
      * @param paint
      *        Set this to null to disable outline painting.
      */
@@ -153,8 +161,15 @@ public class PBox extends PShape {
     }
 
     /**
+     * @return The paint used to draw the text.
+     */
+    public Paint getTextPaint() {
+        return textPaint;
+    }
+
+    /**
      * Define the paint used to draw the text.
-     * 
+     *
      * @param paint
      *        Guess.
      */
@@ -184,7 +199,7 @@ public class PBox extends PShape {
 
     /**
      * Assign an icon to display along with this node.
-     * 
+     *
      * @param icon
      *        The icon to use.
      */
@@ -195,7 +210,7 @@ public class PBox extends PShape {
 
     /**
      * Get the icon displayed along with this node.
-     * 
+     *
      * @return The icon used.
      */
     public Icon getIcon() {
@@ -205,7 +220,7 @@ public class PBox extends PShape {
 
     /**
      * Set the tooltip of this PBox.
-     * 
+     *
      * @param tooltip
      *        Guess.
      */
@@ -235,7 +250,7 @@ public class PBox extends PShape {
 
     /**
      * Display the tooltip at the given position relative to this node.
-     * 
+     *
      * @param offset
      *        The position relative to this node of the top left corner of the tooltip.<br>
      *        Set this to null to hide the tooltip.
@@ -258,7 +273,7 @@ public class PBox extends PShape {
 
     /**
      * Retrieve the title of this PBox.
-     * 
+     *
      * @return Guess.
      */
     public String getTitle() {
@@ -268,7 +283,7 @@ public class PBox extends PShape {
 
     /**
      * Set the title of this PBox.
-     * 
+     *
      * @param title
      *        Guess.
      */
@@ -285,8 +300,15 @@ public class PBox extends PShape {
     }
 
     /**
+     * @return Whether this box is being automatically sized.
+     */
+    public boolean isAutoSize() {
+        return autoSize;
+    }
+
+    /**
      * Set the autoSize of this PBox.
-     * 
+     *
      * @param autoSize
      *        Guess.
      */
@@ -303,7 +325,7 @@ public class PBox extends PShape {
 
     /**
      * Set the size of this PBox and disable autosizing.
-     * 
+     *
      * @param size
      *        Guess.
      */
@@ -319,7 +341,7 @@ public class PBox extends PShape {
 
     /**
      * Set the offset relative to the top left corner of the canvas for this box.
-     * 
+     *
      * @param offset
      *        Guess.
      */
@@ -334,7 +356,7 @@ public class PBox extends PShape {
 
     /**
      * Set the offset relative to the top left corner of the canvas for this box.
-     * 
+     *
      * @param offset
      *        Guess.
      */
@@ -350,7 +372,7 @@ public class PBox extends PShape {
 
     /**
      * Get the font to use for the title of this box.
-     * 
+     *
      * @return Guess.
      */
     public Font getFont() {
@@ -360,7 +382,7 @@ public class PBox extends PShape {
 
     /**
      * Set the font to use for the title of this box.
-     * 
+     *
      * @param font
      *        Guess.
      */
@@ -371,7 +393,7 @@ public class PBox extends PShape {
 
     /**
      * Retrieve the ratio of this {@link PBox}.
-     * 
+     *
      * @return Guess.
      */
     public int getRatio() {
@@ -381,7 +403,7 @@ public class PBox extends PShape {
 
     /**
      * Set the ratio of this {@link PBox}.
-     * 
+     *
      * @param ratio
      *        Guess.
      */

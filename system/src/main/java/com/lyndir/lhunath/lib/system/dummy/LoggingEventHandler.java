@@ -15,37 +15,14 @@
  */
 package com.lyndir.lhunath.lib.system.dummy;
 
-import java.awt.Component;
-import java.awt.Window;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.HierarchyBoundsListener;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-import javax.swing.JComponent;
+import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.MouseInputListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
@@ -67,11 +44,11 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 public class LoggingEventHandler
         implements ComponentListener, ContainerListener, FocusListener, AncestorListener, HierarchyBoundsListener,
         HierarchyListener, WindowFocusListener, WindowListener, WindowStateListener, PropertyChangeListener,
-        MouseListener, MouseInputListener, MouseMotionListener, MouseWheelListener, KeyListener, InputMethodListener {
+        MouseInputListener, MouseWheelListener, KeyListener, InputMethodListener {
 
     private static final Logger logger = Logger.get( LoggingEventHandler.class );
 
-    private String              name;
+    private final String              name;
 
 
     /**

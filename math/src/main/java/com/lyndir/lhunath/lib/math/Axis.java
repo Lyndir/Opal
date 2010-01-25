@@ -20,7 +20,7 @@ package com.lyndir.lhunath.lib.math;
  * <br>
  * Available axises are: X, Y, Z.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public enum Axis {
@@ -44,17 +44,17 @@ public enum Axis {
      */
     Z (new Vec3( 0, 0, 1 ));
 
-    private Vec3 vector;
+    private final Vec3 vector;
 
 
-    private Axis(Vec3 vector) {
+    Axis(Vec3 vector) {
 
         this.vector = vector != null? vector: new Vec3();
     }
 
     /**
      * Retrieve the vector for this axis in three dimentional space.
-     * 
+     *
      * @return The vector representation of this axis in space.
      */
     public Vec3 getVec3() {
@@ -64,11 +64,11 @@ public enum Axis {
 
     /**
      * Retrieve the vector for this axis in two dimentional space (trim z).
-     * 
+     *
      * @return The vector representation of this axis on a plane.
      */
     public Vec2 getVec2() {
 
-        return new Vec2( vector.x, vector.y );
+        return new Vec2( vector.getX(), vector.getY() );
     }
 }

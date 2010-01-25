@@ -16,6 +16,7 @@
 package com.lyndir.lhunath.lib.math;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import com.lyndir.lhunath.lib.system.util.Utils;
 
@@ -103,14 +104,31 @@ public class Version implements Comparable<Version>, Serializable {
         int compare = 0;
         for (int i = 0; i < Math.min( tags.length, o.tags.length ); ++i) {
             int len = Math.max( tags[i].length(), o.tags[i].length() );
-            String tagOne = String.format( "%" + len + "s", tags[i] );
-            String tagTwo = String.format( "%" + len + "s", o.tags[i] );
+            String tagOne = String.format( "%" + len + 's', tags[i] );
+            String tagTwo = String.format( "%" + len + 's', o.tags[i] );
 
             if ((compare = tagOne.compareToIgnoreCase( tagTwo )) != 0)
                 break;
         }
 
         return compare;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o)
+            return true;
+        if (o instanceof Version)
+            return Arrays.equals( tags, ((Version) o).tags ) && version.equals( ((Version) o).version);
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return 31 * version.hashCode() + Arrays.hashCode( tags );
     }
 
     /**

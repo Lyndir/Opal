@@ -24,12 +24,12 @@ package com.lyndir.lhunath.lib.math;
  * Both the retrieval of and mathematic functions applied upon these angles are optimized for repeated retrieval by
  * caching of all calculated results.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class Angle {
 
-    private final float rToD = 180 / (float) Math.PI;
+    private static final float rToD = 180 / (float) Math.PI;
 
     private float       degrees, radians, sin, cos;
     private boolean     hasDegrees, hasRadians, hasSin, hasCos;
@@ -37,7 +37,7 @@ public class Angle {
 
     /**
      * Create a new Angle, specifying degrees.
-     * 
+     *
      * @param degrees
      *            The degrees value of this Angle.
      */
@@ -48,7 +48,7 @@ public class Angle {
 
     /**
      * Create a new Angle.
-     * 
+     *
      * @param angle
      *            The angle of this Angle object.
      * @param isDegrees
@@ -64,7 +64,7 @@ public class Angle {
 
     /**
      * Calculate the sine of this angle.
-     * 
+     *
      * @return The sine of this angle.
      */
     public float sin() {
@@ -78,7 +78,7 @@ public class Angle {
 
     /**
      * Calculate the cosine of this angle.
-     * 
+     *
      * @return The cosine of this angle.
      */
     public float cos() {
@@ -92,7 +92,7 @@ public class Angle {
 
     /**
      * Retrieve the degrees of this Angle.
-     * 
+     *
      * @return This angle in degrees.
      */
     public float getDegrees() {
@@ -110,7 +110,7 @@ public class Angle {
 
     /**
      * Retrieve the radians of this Angle.
-     * 
+     *
      * @return This angle in radians.
      */
     public float getRadians() {
@@ -128,7 +128,7 @@ public class Angle {
 
     /**
      * Set the radians of this Angle.
-     * 
+     *
      * @param radians
      *            The radians to set this angle by.
      */
@@ -145,7 +145,7 @@ public class Angle {
 
     /**
      * Set the degrees of this Angle.
-     * 
+     *
      * @param degrees
      *            The degrees to set this angle by.
      */

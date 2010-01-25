@@ -17,28 +17,15 @@ package com.lyndir.lhunath.lib.network;
 
 import static com.lyndir.lhunath.lib.system.util.Utils.getCharset;
 
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.SSLEngineResult;
+import javax.net.ssl.SSLEngineResult.HandshakeStatus;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.nio.ByteBuffer;
-import java.nio.channels.ClosedChannelException;
-import java.nio.channels.SelectableChannel;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.SSLEngineResult;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLEngineResult.HandshakeStatus;
+import java.nio.channels.*;
+import java.util.*;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
@@ -71,20 +58,22 @@ public class Network implements Runnable {
 
     private Thread                                          networkThread;
 
-    private List<NetworkDataListener>                       dataListeners;
-    private List<NetworkServerStateListener>                serverStateListeners;
-    private List<NetworkConnectionStateListener>            connectionStateListeners;
+    private final List<NetworkDataListener>                       dataListeners;
+    private final List<NetworkServerStateListener>                serverStateListeners;
+    private final List<NetworkConnectionStateListener>            connectionStateListeners;
 
-    private Map<SelectableChannel, SSLEngine>               sslEngines;
-    private Map<SocketChannel, ByteBuffer>                  writeQueueBuffers;
-    private Map<SocketChannel, Object>                      writeQueueLocks;
+    // Collections that are modified by calling threads and the networking thread.
+    private final Map<SelectableChannel, SSLEngine>               sslEngines = Collections.synchronizedMap( new HashMap<SelectableChannel, SSLEngine>() );
+    private final Map<SocketChannel, ByteBuffer>                  writeQueueBuffers = Collections.synchronizedMap( new HashMap<SocketChannel, ByteBuffer>() );
+    private final Map<SocketChannel, Object>                      writeQueueLocks = Collections.synchronizedMap( new HashMap<SocketChannel, Object>() );
 
-    protected Object                                        selectorGuard      = new Object();
+    protected final Object                                        selectorGuard      = new Object();
     protected Selector                                      selector;
 
-    private Map<SocketChannel, ByteBuffer>                  readBuffers;
-    private Map<SocketChannel, ByteBuffer>                  writeBuffers;
-    private Map<SocketChannel, Boolean>                     closedChannels;
+    // Collections that are only modified by the networking thread.
+    private final Map<SocketChannel, ByteBuffer>                  readBuffers = new HashMap<SocketChannel, ByteBuffer>();
+    private final Map<SocketChannel, ByteBuffer>                  writeBuffers = new HashMap<SocketChannel, ByteBuffer>();
+    private final Map<SocketChannel, Boolean>                     closedChannels = new HashMap<SocketChannel, Boolean>();
     private boolean                                         running;
 
 
@@ -97,16 +86,6 @@ public class Network implements Runnable {
         dataListeners = new LinkedList<NetworkDataListener>();
         serverStateListeners = new LinkedList<NetworkServerStateListener>();
         connectionStateListeners = new LinkedList<NetworkConnectionStateListener>();
-
-        // Collections that are modified by calling threads and the networking thread.
-        sslEngines = Collections.synchronizedMap( new HashMap<SelectableChannel, SSLEngine>() );
-        writeQueueBuffers = Collections.synchronizedMap( new HashMap<SocketChannel, ByteBuffer>() );
-        writeQueueLocks = Collections.synchronizedMap( new HashMap<SocketChannel, Object>() );
-
-        // Collections that are only modified by the networking thread.
-        readBuffers = new HashMap<SocketChannel, ByteBuffer>();
-        writeBuffers = new HashMap<SocketChannel, ByteBuffer>();
-        closedChannels = new HashMap<SocketChannel, Boolean>();
     }
 
     /**
@@ -411,18 +390,14 @@ public class Network implements Runnable {
 
         logger.inf( "[>>>>: %s] Connecting to: %s", //
                     nameChannel( connectionChannel ), socketAddress );
-        if (!connectionChannel.connect( socketAddress ))
-            // The connection attempt has not yet finished: Set an interest in connection completion operations
-            setOps( connectionChannel, SelectionKey.OP_CONNECT );
-        else
-            // The connection attempt has already been completed.
-            finishConnect( connectionChannel );
+        if (connectionChannel.connect( socketAddress )) finishConnect( connectionChannel );
+        else setOps( connectionChannel, SelectionKey.OP_CONNECT );
 
         return connectionChannel;
     }
 
     /**
-     * Finish a connection initiated by {@link #connect(InetSocketAddress)}.
+     * Finish a connection initiated by {@link #connect(InetSocketAddress, SSLEngine)}.
      *
      * @param socketChannel
      *            The channel on which the connection happening.
@@ -445,7 +420,7 @@ public class Network implements Runnable {
     }
 
     /**
-     * Read available chatter from the given socket and {@link #process(ByteBuffer, Socket)} it.
+     * Read available chatter from the given socket and {@link #notifyRead(ByteBuffer, SocketChannel)} it.
      *
      * @throws IOException
      */
@@ -514,7 +489,7 @@ public class Network implements Runnable {
      *         </p>
      */
     private ByteBuffer toApplicationData(ByteBuffer readBuffer, SocketChannel socketChannel, ByteBuffer dataBuffer)
-            throws SSLException, IOException {
+            throws IOException {
 
         ByteBuffer newDataBuffer = dataBuffer;
 
@@ -657,7 +632,7 @@ public class Network implements Runnable {
      *         </p>
      */
     private ByteBuffer fromApplicationData(ByteBuffer dataBuffer, SocketChannel socketChannel, ByteBuffer writeBuffer)
-            throws SSLException, IOException {
+            throws IOException {
 
         ByteBuffer newWriteBuffer = writeBuffer;
 
@@ -1257,7 +1232,7 @@ public class Network implements Runnable {
                     // Wait for the networking framework to be brought up.
                     while (selector == null || !selector.isOpen())
                         synchronized (this) {
-                            wait( 10 * 1000 );
+                            wait( 10 * 1000L );
                         }
 
                     // Tasks.
@@ -1328,13 +1303,15 @@ public class Network implements Runnable {
                 }
 
                 catch (IOException e) {
-                    logger.err( e, "Network error occurred" ).toError();
-
                     // TODO: Easily DoS-able.
                     if (--errorThrottle <= 0)
                         // We're receiving a mass of errors.
                         // Throttle down retries by one second longer for each new error we receive.
-                        wait( -1000 * errorThrottle );
+                    {
+                        wait( -1000L * errorThrottle );
+                    }
+
+                    throw logger.err( e, "Network error occurred" ).toError();
                 }
             } catch (InterruptedException e) {
                 logger.wrn( e, "Operation was interrupted." );
@@ -1384,7 +1361,7 @@ public class Network implements Runnable {
         HandshakeStatus handshakeStatus = null, lastHandshakeStatus = lastHSStatus.get( key );
         if (sslEngine != null) {
             handshakeStatus = sslEngine.getHandshakeStatus();
-            if (sslUpdated |= !lastHandshakeStatus.equals( handshakeStatus ))
+            if (sslUpdated |= lastHandshakeStatus != handshakeStatus)
                 lastHSStatus.put( key, handshakeStatus );
         }
 
@@ -1423,7 +1400,7 @@ public class Network implements Runnable {
             } else
                 out.append( "       " );
 
-            if (sslEngine != null)
+            if (handshakeStatus != null)
                 out.append( " SSL: " ).append( handshakeStatus );
 
             logger.dbg( "[stat: %s] %s", name, out );
@@ -1436,7 +1413,7 @@ public class Network implements Runnable {
      *
      * @return A (short) string representation of the connection/socket on the given channel.
      */
-    private String nameChannel(SelectableChannel channel) {
+    private static String nameChannel(SelectableChannel channel) {
 
         if (channel instanceof SocketChannel) {
             SocketChannel socketChannel = (SocketChannel) channel;
@@ -1456,10 +1433,10 @@ public class Network implements Runnable {
     /**
      * Render a string representation of the given buffer's counters.
      */
-    private String renderBuffer(ByteBuffer buf) {
+    private static String renderBuffer(ByteBuffer buf) {
 
         float curStep = 0, length = 20;
-        StringBuffer bufString = new StringBuffer( (int) length + 2 ).append( '[' );
+        StringBuilder bufString = new StringBuilder( (int) length + 2 ).append( '[' );
 
         for (int i = 0; i < buf.capacity(); ++i) {
             float lastStep = curStep;

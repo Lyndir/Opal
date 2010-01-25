@@ -19,16 +19,16 @@ import com.lyndir.lhunath.lib.gui.zui.PDialog;
 
 /**
  * TODO: PDialogClosedListener<br>
- * 
+ *
  * @author lhunath
  */
 public interface PDialogClosedListener {
 
     /**
      * Notify the listener that the given dialog was closed.
-     * 
+     *
      * @param dialog
      *        The dialog that was closed.
      */
-    public void dialogClosed(PDialog dialog);
+    void dialogClosed(PDialog dialog);
 }

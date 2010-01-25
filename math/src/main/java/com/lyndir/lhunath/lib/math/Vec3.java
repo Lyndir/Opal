@@ -28,7 +28,7 @@ public class Vec3 extends Vec2 {
     /**
      * Z-Axis coordinate.
      */
-    public double z;
+    private double z;
 
 
     /**
@@ -52,7 +52,7 @@ public class Vec3 extends Vec2 {
      */
     public Vec3(Vec2 vector, double z) {
 
-        this( vector.x, vector.y, z );
+        this( vector.getX(), vector.getY(), z );
     }
 
     /**
@@ -76,16 +76,21 @@ public class Vec3 extends Vec2 {
     public Vec3(double x, double y, double z) {
 
         super( x, y );
-        this.z = z;
+        setZ( z );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Vec3 clone() {
+    public Vec3 clone() throws CloneNotSupportedException {
 
-        return new Vec3( x, y, z );
+        Vec3 newVec3 = (Vec3) super.clone();
+        newVec3.setX( x );
+        newVec3.setY( y );
+        newVec3.setZ( z );
+
+        return newVec3;
     }
 
     /**
@@ -94,7 +99,7 @@ public class Vec3 extends Vec2 {
     @Override
     public double lengthSq() {
 
-        return super.lengthSq() + z * z;
+        return super.lengthSq() + getZ() * getZ();
     }
 
     /**
@@ -104,7 +109,7 @@ public class Vec3 extends Vec2 {
     public double normalize() {
 
         double l = super.normalize();
-        z /= l;
+        setZ( getZ() / l );
 
         return l;
     }
@@ -124,27 +129,20 @@ public class Vec3 extends Vec2 {
             switch (ax) {
 
                 case X: {
-
-                    Vec2 rotated = new Vec2( y, z ).rotate( a );
-                    y = rotated.x;
-                    z = rotated.y;
-
+                    Vec2 rotated = new Vec2( getY(), getZ() ).rotate( a );
+                    setY( rotated.getX() );
+                    setZ( rotated.getY() );
                     break;
                 }
                 case Y: {
-
-                    Vec2 rotated = new Vec2( x, z ).rotate( a );
-                    x = rotated.x;
-                    z = rotated.y;
-
+                    Vec2 rotated = new Vec2( getX(), getZ() ).rotate( a );
+                    setX( rotated.getX() );
+                    setZ( rotated.getY() );
                     break;
                 }
-                case Z: {
-
-                    super.rotate( a );
-
+                case Z:
+                    rotate( a );
                     break;
-                }
                 case O:
                 break;
 
@@ -167,9 +165,9 @@ public class Vec3 extends Vec2 {
         if (vector == null)
             return this;
 
-        x += vector.x;
-        y += vector.y;
-        z += vector.z;
+        setX( getX() + vector.getX() );
+        setY( getY() + vector.y );
+        setZ( getZ() + vector.z );
 
         return this;
     }
@@ -186,9 +184,9 @@ public class Vec3 extends Vec2 {
         if (vector == null)
             return this;
 
-        x -= vector.x;
-        y -= vector.y;
-        z -= vector.z;
+        setX( getX() - vector.x );
+        setY( getY() - vector.y );
+        setZ( getZ() - vector.getZ() );
 
         return this;
     }
@@ -205,9 +203,9 @@ public class Vec3 extends Vec2 {
         if (vector == null)
             return this;
 
-        x *= vector.x;
-        y *= vector.y;
-        z *= vector.z;
+        setX( getX() * vector.x );
+        setY( getY() * vector.getY() );
+        setZ( getZ() * vector.z );
 
         return this;
     }
@@ -219,7 +217,7 @@ public class Vec3 extends Vec2 {
     public Vec3 multiply(double c) {
 
         super.multiply( c );
-        z *= c;
+        setZ( getZ() * c );
 
         return this;
     }
@@ -257,7 +255,7 @@ public class Vec3 extends Vec2 {
         if (vector == null)
             return new Vec3();
 
-        return new Vec3( y * vector.z - z * vector.y, z * vector.x - x * vector.z, x * vector.y - y * vector.x );
+        return new Vec3( getY() * vector.getZ() - getZ() * vector.getY(), getZ() * vector.getX() - getX() * vector.getZ(), getX() * vector.getY() - getY() * vector.getX() );
     }
 
     /**
@@ -277,7 +275,7 @@ public class Vec3 extends Vec2 {
         if (vector == null)
             return 0;
 
-        return x * vector.x + y * vector.y + z * vector.z;
+        return getX() * vector.getX() + getY() * vector.getY() + getZ() * vector.getZ();
     }
 
     /**
@@ -286,7 +284,7 @@ public class Vec3 extends Vec2 {
     @Override
     public String toString() {
 
-        return "vec(" + x + ", " + y + ", " + z + ")";
+        return "vec(" + getX() + ", " + getY() + ", " + getZ() + ')';
     }
 
     /**
@@ -297,7 +295,7 @@ public class Vec3 extends Vec2 {
 
         if (o == this)
             return true;
-        return o instanceof Vec3 && x == ((Vec3) o).x && y == ((Vec3) o).y && z == ((Vec3) o).z;
+        return o instanceof Vec3 && getX() == ((Vec3) o).getX() && getY() == ((Vec3) o).getY() && getZ() == ((Vec3) o).getZ();
 
     }
 
@@ -307,6 +305,14 @@ public class Vec3 extends Vec2 {
     @Override
     public int hashCode() {
 
-        return (int) (x + y + z);
+        return (int) (getX() + getY() + getZ());
+    }
+
+    public double getZ() {
+        return z;
+    }
+
+    public void setZ(double z) {
+        this.z = z;
     }
 }

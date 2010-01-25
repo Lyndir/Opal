@@ -73,7 +73,7 @@ import com.lyndir.lhunath.lib.system.util.Utils;
  * <p>
  * <i>Jan 8, 2008</i>
  * </p>
- * 
+ *
  * @author mbillemo
  */
 public class GPG {
@@ -87,7 +87,7 @@ public class GPG {
 
     /**
      * Parse a hexadecimal key Id into a wrapped long.
-     * 
+     *
      * @param keyId
      *            The ID to convert.
      * @return The long that represents the key ID.
@@ -116,7 +116,7 @@ public class GPG {
      * @throws PGPException
      */
     public static PGPPublicKey getPublicKey(File publicKeyFile, long publicKeyId)
-            throws FileNotFoundException, IOException, PGPException {
+            throws IOException, PGPException {
 
         PGPPublicKeyRing publicKeyRing = new PGPPublicKeyRing( new FileInputStream( publicKeyFile ) );
         return publicKeyRing.getPublicKey( publicKeyId );
@@ -133,7 +133,7 @@ public class GPG {
      * @throws PGPException
      */
     public static PGPSecretKey getPrivateKey(File privateKeyFile, long privateKeyId)
-            throws FileNotFoundException, IOException, PGPException {
+            throws IOException, PGPException {
 
         PGPSecretKeyRingCollection privateKeyRing = new PGPSecretKeyRingCollection(
                 PGPUtil.getDecoderStream( new FileInputStream( privateKeyFile ) ) );
@@ -196,9 +196,8 @@ public class GPG {
 
         /* Extract the public key out of the data and find the matching private key required to decrypt the data. */
         PGPSecretKey privateKey = null;
-        PGPPublicKeyEncryptedData encryptedData = null;
         while (privateKey == null && encryptedDataIterator.hasNext()) {
-            encryptedData = encryptedDataIterator.next();
+            PGPPublicKeyEncryptedData encryptedData = encryptedDataIterator.next();
             privateKey = getPrivateKey( privateKeyFile, encryptedData.getKeyID() );
         }
 
@@ -214,7 +213,7 @@ public class GPG {
      * @throws PGPException
      */
     public static List<PrintableKeyWrapper<PGPSecretKey>> getPrivateKeys(File privateKeyFile)
-            throws FileNotFoundException, IOException, PGPException {
+            throws IOException, PGPException {
 
         /* Open the key ring. */
         List<PrintableKeyWrapper<PGPSecretKey>> keys = new ArrayList<PrintableKeyWrapper<PGPSecretKey>>();
@@ -255,7 +254,7 @@ public class GPG {
      * @throws PGPException
      */
     public static List<PrintableKeyWrapper<PGPPublicKey>> getPublicKeys(File publicKeyFile)
-            throws FileNotFoundException, IOException, PGPException {
+            throws IOException, PGPException {
 
         /* Open the key ring. */
         List<PrintableKeyWrapper<PGPPublicKey>> keys = new ArrayList<PrintableKeyWrapper<PGPPublicKey>>();
@@ -289,7 +288,7 @@ public class GPG {
 
     /**
      * PGP Encrypt a file.
-     * 
+     *
      * @param plainFile
      *            The file that contains the plain-text data.
      * @param encryptedFile
@@ -313,7 +312,7 @@ public class GPG {
 
     /**
      * PGP Encrypt a string.
-     * 
+     *
      * @param plainTextData
      *            The plain-text data.
      * @param publicKey
@@ -333,7 +332,7 @@ public class GPG {
 
     /**
      * PGP Encrypt a stream.
-     * 
+     *
      * @param plainTextStream
      *            The stream that contains the plain-text data.
      * @param publicKey
@@ -378,7 +377,7 @@ public class GPG {
 
     /**
      * Decrypt a PGP encrypted file.
-     * 
+     *
      * @param encryptedFile
      *            The file that contains the encrypted data.
      * @param plainTextFile
@@ -402,16 +401,16 @@ public class GPG {
 
     /**
      * Decrypt a PGP encrypted string.
-     * 
+     *
      * @param encryptedData
      *            The string that contains the encrypted data.
      * @param privateKey
      *            The private key to use for decrypting the data.
      * @param passPhrase
      *            The passphrase the private key is encrypted with.
-     * 
+     *
      * @return The plain-text string.
-     * 
+     *
      * @throws NoSuchProviderException
      * @throws IOException
      * @throws PGPException
@@ -424,16 +423,16 @@ public class GPG {
 
     /**
      * Decrypt a PGP encrypted stream.
-     * 
+     *
      * @param encryptedStream
      *            The stream that contains the encrypted data.
      * @param privateKey
      *            The private key to use for decrypting the data.
      * @param passPhrase
      *            The passphrase the private key is encrypted with.
-     * 
+     *
      * @return The plain-text stream.
-     * 
+     *
      * @throws NoSuchProviderException
      * @throws IOException
      * @throws PGPException
@@ -502,7 +501,7 @@ public class GPG {
 
     /**
      * PGP sign a file.
-     * 
+     *
      * @param dataFile
      *            The file that contains the data to sign.
      * @param signedFile
@@ -513,7 +512,7 @@ public class GPG {
      *            The passphrase that the private key is locked with.
      * @param armoured
      *            <code>true</code>: ASCII armor the signature.
-     * 
+     *
      * @throws NoSuchAlgorithmException
      * @throws NoSuchProviderException
      * @throws SignatureException
@@ -523,8 +522,8 @@ public class GPG {
      */
     public static void signFile(File dataFile, File signedFile, PGPSecretKey privateKey, String passPhrase,
                                 boolean armoured)
-            throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException, FileNotFoundException,
-            PGPException, IOException {
+            throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException,
+                   PGPException, IOException {
 
         InputStream decryptedInputStream = sign( new FileInputStream( dataFile ), privateKey, passPhrase, armoured );
         FileOutputStream decryptedOutputStream = new FileOutputStream( signedFile );
@@ -534,7 +533,7 @@ public class GPG {
 
     /**
      * PGP sign some data.
-     * 
+     *
      * @param data
      *            The string that contains the data to sign.
      * @param privateKey
@@ -543,9 +542,9 @@ public class GPG {
      *            The passphrase that the private key is locked with.
      * @param armoured
      *            <code>true</code>: ASCII armor the signature.
-     * 
+     *
      * @return The signature.
-     * 
+     *
      * @throws NoSuchAlgorithmException
      * @throws NoSuchProviderException
      * @throws SignatureException
@@ -561,7 +560,7 @@ public class GPG {
 
     /**
      * PGP sign a stream.
-     * 
+     *
      * @param data
      *            The stream that contains the data to sign.
      * @param privateKey
@@ -570,9 +569,9 @@ public class GPG {
      *            The passphrase that the private key is locked with.
      * @param armoured
      *            <code>true</code>: ASCII armor the signature.
-     * 
+     *
      * @return The signature.
-     * 
+     *
      * @throws NoSuchAlgorithmException
      * @throws NoSuchProviderException
      * @throws SignatureException
@@ -611,25 +610,25 @@ public class GPG {
     /**
      * <h2>{@link PrintableKeyWrapper}<br>
      * <sub>A wrapper for wrapping a key id with a printable representation of it.</sub></h2>
-     * 
+     *
      * @param <K>
      *            The type of object to use for representing the key id.
-     * 
+     *
      *            <p>
      *            <i>Apr 9, 2008</i>
      *            </p>
-     * 
+     *
      * @author mbillemo
      */
-    public static class PrintableKeyWrapper<K> {
+    private static class PrintableKeyWrapper<K> {
 
-        private K    key;
-        private Long keyId;
+        private final K    key;
+        private final Long keyId;
 
 
         /**
-         * Create a new {@link GPG.PrintableKeyWrapper} instance.
-         * 
+         * Create a new {@link PrintableKeyWrapper} instance.
+         *
          * @param key
          *            The object to use for representing the key id.
          * @param keyId
@@ -642,7 +641,7 @@ public class GPG {
         }
 
         /**
-         * @return The key of this {@link GPG.PrintableKeyWrapper}.
+         * @return The key of this {@link PrintableKeyWrapper}.
          */
         public K getKey() {
 
@@ -650,7 +649,7 @@ public class GPG {
         }
 
         /**
-         * @return The keyId of this {@link GPG.PrintableKeyWrapper}.
+         * @return The keyId of this {@link PrintableKeyWrapper}.
          */
         public Long getKeyID() {
 

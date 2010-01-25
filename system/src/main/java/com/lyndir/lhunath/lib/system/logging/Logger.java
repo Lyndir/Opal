@@ -29,36 +29,33 @@ import org.slf4j.LoggerFactory;
 /**
  * <h2>{@link Logger}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * [description / usage].
  * </p>
- * 
+ *
  * <p>
  * <i>Mar 28, 2009</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public class Logger {
 
-    private static final Logger          loggerLogger   = Logger.get( Logger.class );
+    private static final Logger          loggerLogger   = get( Logger.class );
 
-    private static Map<Class<?>, Logger> loggers;
+    private static final Map<Class<?>, Logger> loggers = new HashMap<Class<?>, Logger>();
 
-    private org.slf4j.Logger             logger;
+    private final org.slf4j.Logger             logger;
 
-    private ThreadLocal<Throwable>       eventCause     = new ThreadLocal<Throwable>();
-    private ThreadLocal<String>          eventFormat    = new ThreadLocal<String>();
-    private ThreadLocal<Object[]>        eventArguments = new ThreadLocal<Object[]>();
+    private static final ThreadLocal<Throwable>       eventCause     = new ThreadLocal<Throwable>();
+    private static final ThreadLocal<String>          eventFormat    = new ThreadLocal<String>();
+    private static final ThreadLocal<Object[]>        eventArguments = new ThreadLocal<Object[]>();
 
 
     // Create a logger --
 
     public static Logger get(Class<?> type) {
-
-        if (loggers == null)
-            loggers = new HashMap<Class<?>, Logger>();
 
         Logger logger = loggers.get( type );
         if (logger == null) {
@@ -73,18 +70,18 @@ public class Logger {
 
     /**
      * Log a progress trace event.
-     * 
+     *
      * <p>
      * This level is for all events that describe the flow of execution.
      * </p>
-     * 
+     *
      * @param cause
      *            A throwable that details the stack at the time of this event.
      * @param descriptionFormat
      *            The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments
      *            The arguments to inject into the event message format.
-     * 
+     *
      * @return Self, for chaining.
      */
     public Logger trc(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
@@ -104,18 +101,18 @@ public class Logger {
 
     /**
      * Log a progress trace event.
-     * 
+     *
      * <p>
      * This level is for all events that describe the flow of execution.
      * </p>
-     * 
+     *
      * @see #trc(Throwable, String, Object...)
-     * 
+     *
      * @param descriptionFormat
      *            The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments
      *            The arguments to inject into the event message format.
-     * 
+     *
      * @return Self, for chaining.
      */
     public void trc(String descriptionFormat, Object... descriptionArguments) {
@@ -125,18 +122,18 @@ public class Logger {
 
     /**
      * Log a debugging event.
-     * 
+     *
      * <p>
      * This level is for all events that visualize the application's state.
      * </p>
-     * 
+     *
      * @param cause
      *            A throwable that details the stack at the time of this event.
      * @param descriptionFormat
      *            The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments
      *            The arguments to inject into the event message format.
-     * 
+     *
      * @return Self, for chaining.
      */
     public Logger dbg(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
@@ -156,16 +153,16 @@ public class Logger {
 
     /**
      * Log a debugging event.
-     * 
+     *
      * <p>
      * This level is for all events that visualize the application's state.
      * </p>
-     * 
+     *
      * @param descriptionFormat
      *            The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments
      *            The arguments to inject into the event message format.
-     * 
+     *
      * @return Self, for chaining.
      */
     public Logger dbg(String descriptionFormat, Object... descriptionArguments) {
@@ -175,18 +172,18 @@ public class Logger {
 
     /**
      * Log an informative statement.
-     * 
+     *
      * <p>
      * This level is for all events that detail an important evolution in the application's state.
      * </p>
-     * 
+     *
      * @param cause
      *            A throwable that details the stack at the time of this event.
      * @param descriptionFormat
      *            The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments
      *            The arguments to inject into the event message format.
-     * 
+     *
      * @return Self, for chaining.
      */
     public Logger inf(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
@@ -203,18 +200,18 @@ public class Logger {
 
     /**
      * Log an informative statement.
-     * 
+     *
      * <p>
      * This level is for all events that detail an important evolution in the application's state.
      * </p>
-     * 
+     *
      * @see #inf(Throwable, String, Object...)
-     * 
+     *
      * @param descriptionFormat
      *            The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments
      *            The arguments to inject into the event message format.
-     * 
+     *
      * @return Self, for chaining.
      */
     public Logger inf(String descriptionFormat, Object... descriptionArguments) {
@@ -224,18 +221,18 @@ public class Logger {
 
     /**
      * Log an application warning.
-     * 
+     *
      * <p>
      * This level is for all events that indicate a suboptimal / non-ideal flow.
      * </p>
-     * 
+     *
      * @param cause
      *            A throwable that details the stack at the time of this event.
      * @param descriptionFormat
      *            The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments
      *            The arguments to inject into the event message format.
-     * 
+     *
      * @return Self, for chaining.
      */
     public Logger wrn(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
@@ -255,16 +252,16 @@ public class Logger {
 
     /**
      * Log an application warning.
-     * 
+     *
      * <p>
      * This level is for all events that indicate a suboptimal / non-ideal flow.
      * </p>
-     * 
+     *
      * @param descriptionFormat
      *            The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments
      *            The arguments to inject into the event message format.
-     * 
+     *
      * @return Self, for chaining.
      */
     public Logger wrn(String descriptionFormat, Object... descriptionArguments) {
@@ -274,16 +271,16 @@ public class Logger {
 
     /**
      * Log an internal inconsistency.
-     * 
+     *
      * <p>
      * This level is for all events that occur unexpectedly. They indicate a bug in the application's flow.
      * </p>
-     * 
+     *
      * @see #bug(Throwable, String, Object...)
-     * 
+     *
      * @param cause
      *            A throwable that details the stack at the time of this event.
-     * 
+     *
      * @return Self, for chaining.
      */
     public Logger bug(Throwable cause) {
@@ -293,18 +290,18 @@ public class Logger {
 
     /**
      * Log an internal inconsistency.
-     * 
+     *
      * <p>
      * This level is for all events that occur unexpectedly. They indicate a bug in the application's flow.
      * </p>
-     * 
+     *
      * @param cause
      *            A throwable that details the stack at the time of this event.
      * @param descriptionFormat
      *            The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments
      *            The arguments to inject into the event message format.
-     * 
+     *
      * @return Self, for chaining.
      */
     public Logger bug(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
@@ -324,16 +321,16 @@ public class Logger {
 
     /**
      * Log an internal inconsistency.
-     * 
+     *
      * <p>
      * This level is for all events that occur unexpectedly. They indicate a bug in the application's flow.
      * </p>
-     * 
+     *
      * @param descriptionFormat
      *            The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments
      *            The arguments to inject into the event message format.
-     * 
+     *
      * @return Self, for chaining.
      */
     public Logger bug(String descriptionFormat, Object... descriptionArguments) {
@@ -343,18 +340,18 @@ public class Logger {
 
     /**
      * Log an application error.
-     * 
+     *
      * <p>
      * This level is for all events that indicate failure to comply with the request.
      * </p>
-     * 
+     *
      * @param cause
      *            A throwable that details the stack at the time of this event.
      * @param descriptionFormat
      *            The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments
      *            The arguments to inject into the event message format.
-     * 
+     *
      * @return Self, for chaining.
      */
     public Logger err(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
@@ -374,16 +371,16 @@ public class Logger {
 
     /**
      * Log an application error.
-     * 
+     *
      * <p>
      * This level is for all events that indicate failure to comply with the request.
      * </p>
-     * 
+     *
      * @param descriptionFormat
      *            The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments
      *            The arguments to inject into the event message format.
-     * 
+     *
      * @return Self, for chaining.
      */
     public Logger err(String descriptionFormat, Object... descriptionArguments) {
@@ -395,9 +392,9 @@ public class Logger {
 
     /**
      * Generate an unchecked {@link Error} of the previously logged event (and initialize its cause if set).
-     * 
+     *
      * The previous event details are kept in a thread-safe manner and local to this logger instance.
-     * 
+     *
      * @return An unchecked {@link Error}.
      */
     public RuntimeException toError() {
@@ -410,9 +407,9 @@ public class Logger {
 
     /**
      * Generate the given {@link Throwable} of the previously logged event (and initialize its cause if set).
-     * 
+     *
      * The previous event details are kept in a thread-safe manner and local to this logger instance.
-     * 
+     *
      * @param errorClass
      *            The type of {@link Throwable} to generate for the previously logged event. This method relies on the
      *            fact that the given class has a constructor that takes a {@link String} argument (the message) and a
@@ -423,7 +420,7 @@ public class Logger {
      *            should <b>follow</b> the message and cause arguments.
      * @param <E>
      *            The type of the requested exception must be a subclass of {@link Throwable}.
-     * 
+     *
      * @return The requested {@link Throwable}.
      */
     public <E extends Throwable> E toError(Class<E> errorClass, Object... args) {

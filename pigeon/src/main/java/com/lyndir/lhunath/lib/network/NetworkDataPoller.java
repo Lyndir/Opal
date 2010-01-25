@@ -50,8 +50,8 @@ public class NetworkDataPoller extends Poller<SocketChannel, ByteBuffer> impleme
      * {@inheritDoc}
      */
     @Override
-    public void received(ByteBuffer dataBuffer, SocketChannel connectionSocket) {
+    public void received(ByteBuffer dataBuffer, SocketChannel socketChannel) {
 
-        offer( connectionSocket, dataBuffer );
+        offer( socketChannel, dataBuffer );
     }
 }

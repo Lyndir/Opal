@@ -30,40 +30,39 @@ import com.lyndir.lhunath.lib.system.util.Utils;
  * This formatter attempts to format log messages to put most of the information in a structured log message without
  * looking too big or confusing.<br>
  * <br>
- * 
+ *
  * <pre>
  *   [ LEVEL | LINE:PACKAGE.CLASS.METHOD() ]-
  *    &gt;  MESSAGE
  * </pre>
- * 
+ *
  * <br>
- * 
+ *
  * @author lhunath
  */
 public abstract class LogFormatter extends Formatter {
 
     private static final String[] skipPackages = { "com.lyndir.lhunath.lib", "java", "sun", "com.sun" };
-    protected Map<Level, String>  levelColor;
+    protected final Map<Level, String>  levelColor = new HashMap<Level, String>();
     protected boolean             verbose;
 
 
     /**
      * Create a new LogFormatter instance.
      */
-    public LogFormatter() {
+    protected LogFormatter() {
 
-        levelColor = new HashMap<Level, String>();
         setVerbose( true );
         setColors();
     }
 
     /**
      * Create a new LogFormatter instance.
-     * 
+     *
      * @param verbosity
      *            Whether to use verbose mode or not (default: false).
      */
-    public LogFormatter(boolean verbosity) {
+    protected LogFormatter(boolean verbosity) {
 
         this();
         setVerbose( verbosity );
@@ -115,21 +114,20 @@ public abstract class LogFormatter extends Formatter {
             source = "[Unknown Source]";
 
         /* Generate a detail message for the problem: # (File:Line) Exception: Message */
-        String message = "";
+        StringBuilder messageBuilder = new StringBuilder();
         if (error != null)
             for (Throwable e = error; e != null; e = e.getCause())
-                message = String.format( "(%s:%d) %s: %s\n",
+                messageBuilder.insert(0, String.format( "(%s:%d) %s: %s\n",
                                          e.getStackTrace().length > 0? e.getStackTrace()[0].getFileName(): "n/a",
                                          e.getStackTrace().length > 0? e.getStackTrace()[0].getLineNumber(): -1,
-                                         e.getClass().getName(), e.getLocalizedMessage() )
-                          + message;
+                                         e.getClass().getName(), e.getLocalizedMessage() ));
 
         if (record.getMessage() != null && record.getMessage().length() > 0)
-            message = record.getMessage() + "\n" + message;
-        message = message.trim();
+            messageBuilder.insert(0, record.getMessage() + '\n' );
+        String message = messageBuilder.toString().trim();
 
         /* Put it all together and write it to the buffer. */
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         buffer.append( levelColor.get( record.getLevel() ) );
         String prefix = "$1 #  ";
         if (record.getLevel().intValue() > Level.INFO.intValue())
@@ -149,7 +147,7 @@ public abstract class LogFormatter extends Formatter {
         return buffer.toString();
     }
 
-    private boolean isIgnored(String classOrPackage) {
+    private static boolean isIgnored(String classOrPackage) {
 
         for (String skipPackage : skipPackages)
             if (classOrPackage.startsWith( skipPackage ))
@@ -160,7 +158,7 @@ public abstract class LogFormatter extends Formatter {
 
     /**
      * Retrieve the verbosity of this LogFormatter.
-     * 
+     *
      * @return Guess.
      */
     public boolean isVerbose() {
@@ -171,7 +169,7 @@ public abstract class LogFormatter extends Formatter {
     /**
      * Set the verbosity of this LogFormatter.<br>
      * Verbose mode shows stack traces for errors.
-     * 
+     *
      * @param verbose
      *            Guess.
      */

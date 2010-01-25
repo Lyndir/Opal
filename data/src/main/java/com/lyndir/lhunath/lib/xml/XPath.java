@@ -15,14 +15,13 @@
  */
 package com.lyndir.lhunath.lib.xml;
 
+import javax.xml.xpath.XPathExpressionException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.xml.xpath.XPathExpressionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,11 +32,11 @@ import org.xml.sax.SAXException;
 /**
  * <h2>{@link XPath}<br>
  * <sub>CLI utility to test and execute XPath expressions on XML/XHTML/HTML data.</sub></h2>
- * 
+ *
  * <p>
  * <i>Jun 10, 2008</i>
  * </p>
- * 
+ *
  * @author mbillemo
  */
 public class XPath {
@@ -55,33 +54,33 @@ public class XPath {
         /* Arguments. */
         boolean fileArg = false, expression = false, xhtml = false, tidy = false, value = false, trim = true;
         for (String arg : argList)
-            if (arg.equals( "-f" ) || arg.equals( "--file" ))
+            if ("-f".equals( arg ) || "--file".equals( arg ))
                 fileArg = true;
-            else if (fileArg == true) {
+            else if (fileArg) {
                 in = new FileInputStream( arg );
                 fileArg = false;
             }
 
-            else if (arg.equals( "-e" ) || arg.equals( "--expression" ))
+            else if ("-e".equals( arg ) || "--expression".equals( arg ))
                 expression = true;
-            else if (expression == true) {
+            else if (expression) {
                 xpathExpression = arg;
                 expression = false;
             }
 
-            else if (arg.equals( "-x" ) || arg.equals( "--xhtml" ))
+            else if ("-x".equals( arg ) || "--xhtml".equals( arg ))
                 tidy = xhtml = true;
 
-            else if (arg.equals( "-t" ) || arg.equals( "--tidy" ))
+            else if ("-t".equals( arg ) || "--tidy".equals( arg ))
                 tidy = true;
 
-            else if (arg.equals( "-v" ) || arg.equals( "--value" ))
+            else if ("-v".equals( arg ) || "--value".equals( arg ))
                 value = true;
 
-            else if (arg.equals( "-T" ) || arg.equals( "--no-trim" ))
+            else if ("-T".equals( arg ) || "--no-trim".equals( arg ))
                 trim = false;
 
-            else if (arg.equals( "-h" ) || arg.equals( "--help" )) {
+            else if ("-h".equals( arg ) || "--help".equals( arg )) {
                 System.out.println();
                 System.out.println( "\tXPath Utility" );
                 System.out.println( "\t\tlhunath" );

@@ -34,7 +34,7 @@ import com.lyndir.lhunath.lib.system.util.Utils;
 /**
  * <i>Shell - A convenience class to execute processes for different purposes.</i><br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class Shell {
@@ -46,7 +46,7 @@ public class Shell {
 
     /**
      * Run an application or shell script and redirect its stdout and stderr to our stdout and stderr.
-     * 
+     *
      * @param block
      *            Whether or not to block until the process has finished.
      * @param currDir
@@ -69,7 +69,7 @@ public class Shell {
 
     /**
      * Wait for the given process to exit and return its exit status.
-     * 
+     *
      * @param process
      *            The process to wait for.
      * @return The exit status of the given process.
@@ -94,7 +94,7 @@ public class Shell {
      * not block.<br>
      * <br>
      * Output and error streams will be closed, except if they are the application's standard output or standard error.
-     * 
+     *
      * @param out
      *            The stream to write the process' standard output into.
      * @param err
@@ -124,10 +124,10 @@ public class Shell {
         /* Check whether this is a shell script and if so, what interpreter to use. */
         // FIXME: Hashbang can contain one argument
         String head = new String( buffer );
-        int eol = head.indexOf( "\n" );
+        int eol = head.indexOf( '\n' );
         if (eol > 0) {
             head = head.substring( 0, eol );
-            if (head.substring( 0, 2 ).equals( "#!" )) {
+            if ("#!".equals( head.substring( 0, 2 ) )) {
                 String shell = head.substring( 2 );
                 LinkedList<String> cmdList = new LinkedList<String>( Arrays.asList( cmd ) );
                 cmdList.addFirst( shell.trim() );
@@ -152,7 +152,7 @@ public class Shell {
                         process.getInputStream().close();
                         if (!System.out.equals( out ) && !System.err.equals( err ))
                             out.close();
-                    } catch (IOException e) {
+                    } catch (IOException ignored) {
                         /* Already closed. */
                     }
                 }
@@ -172,7 +172,7 @@ public class Shell {
                         process.getErrorStream().close();
                         if (!err.equals( System.out ) && !err.equals( System.err ))
                             err.close();
-                    } catch (IOException e) {
+                    } catch (IOException ignored) {
                         /* Already closed. */
                     }
                 }
@@ -187,7 +187,7 @@ public class Shell {
 
     /**
      * Run an application or shell script and read its standard output and standard error into a string.
-     * 
+     *
      * @param currDir
      *            The current directory for the child process.
      * @param cmd
@@ -198,7 +198,7 @@ public class Shell {
 
         try {
             PipedOutputStream output = new PipedOutputStream();
-            Shell.exec( output, new NullOutputStream(), currDir, cmd );
+            exec( output, new NullOutputStream(), currDir, cmd );
 
             return Utils.readReader( new InputStreamReader( new PipedInputStream( output ) ) );
         } catch (FileNotFoundException e) {

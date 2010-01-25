@@ -32,7 +32,7 @@ import javax.swing.Icon;
  */
 public class ListenerAction extends AbstractAction {
 
-    private ActionListener listener;
+    private final ActionListener listener;
 
 
     /**
@@ -43,7 +43,6 @@ public class ListenerAction extends AbstractAction {
      */
     public ListenerAction(ActionListener listener) {
 
-        super();
         this.listener = listener;
     }
 

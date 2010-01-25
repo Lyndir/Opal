@@ -31,8 +31,10 @@ import javax.swing.event.ChangeListener;
  */
 public class OnOffButton extends GButton implements ChangeListener {
 
-    private String onText, offText;
-    private Icon   onIcon, offIcon;
+    private final String onText;
+    private final String offText;
+    private final Icon   onIcon;
+    private final Icon offIcon;
 
 
     /**

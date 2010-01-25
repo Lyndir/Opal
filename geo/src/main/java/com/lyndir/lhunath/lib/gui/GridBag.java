@@ -15,16 +15,9 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
-
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import com.lyndir.lhunath.lib.math.Vec2;
 import com.lyndir.lhunath.lib.system.UIUtils;
@@ -35,13 +28,13 @@ import com.lyndir.lhunath.lib.system.UIUtils;
  * <br>
  * [description / usage].<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class GridBag extends GridBagConstraints {
 
-    private ArrayList<ArrayList<Vec2>> grid;
-    private JComponent                 container;
+    private final ArrayList<ArrayList<Vec2>> grid;
+    private final JComponent                 container;
     private Font                       font;
     private Color                      back;
     private Color                      front;
@@ -57,7 +50,7 @@ public class GridBag extends GridBagConstraints {
 
     /**
      * Create a new {@link GridBag} instance.
-     * 
+     *
      * @param c
      *            The container that will have the grid applied to it and the components {@link #add(Component...)}ed to
      *            it.
@@ -87,7 +80,7 @@ public class GridBag extends GridBagConstraints {
 
     /**
      * Set the font to use for auto-created labels.
-     * 
+     *
      * @param font
      *            The font to use.
      * @return The {@link GridBag}.
@@ -109,7 +102,7 @@ public class GridBag extends GridBagConstraints {
 
     /**
      * Set the foreground to use for auto-created items.
-     * 
+     *
      * @param color
      *            The color to use.
      * @return The {@link GridBag}.
@@ -131,7 +124,7 @@ public class GridBag extends GridBagConstraints {
 
     /**
      * Set the background to use for auto-created items.
-     * 
+     *
      * @param color
      *            The color to use.
      * @return The {@link GridBag}.
@@ -177,7 +170,7 @@ public class GridBag extends GridBagConstraints {
 
     /**
      * Add the given title to the active grid and the given component in the {@link #nextGrid()}.
-     * 
+     *
      * @param title
      *            A string to use as text for a {@link JLabel} that will be added as title for the component.
      * @param component
@@ -191,7 +184,7 @@ public class GridBag extends GridBagConstraints {
 
     /**
      * Add the given title to the active grid and the given component in the {@link #nextGrid()}.
-     * 
+     *
      * @param title
      *            A string to use as text for a {@link JLabel} that will be added as title for the component.
      * @param components
@@ -216,7 +209,7 @@ public class GridBag extends GridBagConstraints {
 
     /**
      * Add the given component to the active grid.
-     * 
+     *
      * @param components
      *            The component to assign to the active grid.
      * @return The {@link GridBag}.
@@ -233,7 +226,7 @@ public class GridBag extends GridBagConstraints {
 
     /**
      * Add the given component to the active grid.
-     * 
+     *
      * @param components
      *            The component to assign to the active grid.
      * @param width
@@ -247,7 +240,7 @@ public class GridBag extends GridBagConstraints {
 
     /**
      * Add a dummy component that can be used to simply create an empty grid that adheres to weight values.
-     * 
+     *
      * @return The {@link GridBag}.
      */
     public GridBag addGlue() {
@@ -256,9 +249,9 @@ public class GridBag extends GridBagConstraints {
     }
 
     /**
-     * TODO: Describe method.
+     * Create a dummy component that can be used as layout glue.
      */
-    private Component createGlue() {
+    private static Component createGlue() {
 
         JComponent glue = new GLabel( UIUtils.RED );
         glue.setOpaque( false );
@@ -270,7 +263,7 @@ public class GridBag extends GridBagConstraints {
      * Move to the specified grid location.<br>
      * <br>
      * This method will set the active grid width and height to one.
-     * 
+     *
      * @param x
      *            The horizontal grid location (0-based).
      * @param y
@@ -286,7 +279,7 @@ public class GridBag extends GridBagConstraints {
      * Move to the specified grid location.<br>
      * <br>
      * This method will set the active grid height to one.
-     * 
+     *
      * @param x
      *            The horizontal grid location (0-based).
      * @param y
@@ -302,7 +295,7 @@ public class GridBag extends GridBagConstraints {
 
     /**
      * Move to the specified grid location.<br>
-     * 
+     *
      * @param x
      *            The horizontal grid location (0-based).
      * @param y
@@ -329,7 +322,7 @@ public class GridBag extends GridBagConstraints {
      * The amount of horizontal grids this operation will skip depends on the initial width of the active grid.<br>
      * <br>
      * This method will set the active grid width and height to one.
-     * 
+     *
      * @return The {@link GridBag}.
      */
     public GridBag nextGrid() {
@@ -340,7 +333,7 @@ public class GridBag extends GridBagConstraints {
     /**
      * Move to the next grid in this line.<br>
      * The amount of horizontal grids this operation will skip depends on the initial width of the active grid.
-     * 
+     *
      * @param w
      *            The width to assign to the new grid.
      * @param h
@@ -362,7 +355,7 @@ public class GridBag extends GridBagConstraints {
      * The amount of vertical grids this operation will descend depends on the initial height of the active grid.<br>
      * <br>
      * This method will set the active grid width and height to one.
-     * 
+     *
      * @return The {@link GridBag}.
      */
     public GridBag nextLine() {
@@ -373,7 +366,7 @@ public class GridBag extends GridBagConstraints {
     /**
      * Move to the the first available grid in the next line.<br>
      * The amount of vertical grids this operation will descend depends on the initial height of the active grid.
-     * 
+     *
      * @param w
      *            The width to assign to the new grid.
      * @param h
@@ -398,8 +391,8 @@ public class GridBag extends GridBagConstraints {
         for (int x = 0; x < grid.size() && x <= gridx; ++x)
             for (int y = 0; y < grid.get( x ).size() && y <= gridy; ++y) {
                 Vec2 gridSize = grid.get( x ).get( y );
-                if (gridSize.y > 0 && y + gridSize.y > gridy)
-                    if (gridSize.x > 0 && x + gridSize.x > firstGrid)
+                if (gridSize.getY() > 0 && y + gridSize.getY() > gridy)
+                    if (gridSize.getX() > 0 && x + gridSize.getX() > firstGrid)
                         ++firstGrid;
             }
 

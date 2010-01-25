@@ -37,7 +37,7 @@ import javax.swing.SwingUtilities;
  */
 public class TrayMenu extends JPopupMenu implements MouseListener {
 
-    protected Component invoker;
+    protected final Component invoker;
 
 
     /**

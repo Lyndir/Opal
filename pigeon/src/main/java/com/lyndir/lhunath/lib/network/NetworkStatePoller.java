@@ -52,7 +52,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
      * {@inheritDoc}
      */
     @Override
-    public void bound(ServerSocketChannel serverSocket) {
+    public void bound(ServerSocketChannel serverChannel) {
 
     // Not supported.
     }
@@ -61,27 +61,27 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
      * {@inheritDoc}
      */
     @Override
-    public void accepted(ServerSocketChannel serverSocket, SocketChannel connectionSocket) {
+    public void accepted(ServerSocketChannel serverChannel, SocketChannel connectionChannel) {
 
-        offer( State.ACCEPTED, connectionSocket );
+        offer( State.ACCEPTED, connectionChannel );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void connected(SocketChannel connectionSocket) {
+    public void connected(SocketChannel socketChannel) {
 
-        offer( State.CONNECTED, connectionSocket );
+        offer( State.CONNECTED, socketChannel );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void closed(SocketChannel connectionSocket, boolean resetByPeer) {
+    public void closed(SocketChannel channel, boolean resetByPeer) {
 
-        offer( State.CLOSED, connectionSocket );
+        offer( State.CLOSED, channel );
     }
 
 
@@ -103,6 +103,6 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
         /**
          * An active connection has been terminated. The element is the connection's socket.
          */
-        CLOSED;
+        CLOSED
     }
 }

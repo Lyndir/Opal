@@ -15,25 +15,14 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import java.awt.AlphaComposite;
-import java.awt.Composite;
-import java.awt.FontMetrics;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 import com.lyndir.lhunath.lib.math.Vec2;
 import com.lyndir.lhunath.lib.system.UIUtils;
@@ -115,8 +104,8 @@ public class GButton extends JButton {
             }
         } );
 
-        setHorizontalTextPosition( SwingConstants.RIGHT );
-        setVerticalTextPosition( SwingConstants.CENTER );
+        setHorizontalTextPosition( RIGHT );
+        setVerticalTextPosition( CENTER );
     }
 
     /**
@@ -229,25 +218,25 @@ public class GButton extends JButton {
         }
 
         switch (getHorizontalTextPosition()) {
-            case SwingConstants.LEFT:
-            case SwingConstants.RIGHT:
-                buttonSize.x = textSize.x + getIconTextGap() + iconSize.x;
+            case LEFT:
+            case RIGHT:
+                buttonSize.setX( textSize.getX() + getIconTextGap() + iconSize.getX() );
             break;
 
+            case CENTER:
             default:
-            case SwingConstants.CENTER:
-                buttonSize.x = Math.max( textSize.x, iconSize.x );
+                buttonSize.setX( Math.max( textSize.x, iconSize.getX() ) );
             break;
         }
         switch (getVerticalTextPosition()) {
-            case SwingConstants.TOP:
-            case SwingConstants.BOTTOM:
-                buttonSize.y = textSize.y + getIconTextGap() + iconSize.y;
+            case TOP:
+            case BOTTOM:
+                buttonSize.setY( textSize.y + getIconTextGap() + iconSize.y );
             break;
 
+            case CENTER:
             default:
-            case SwingConstants.CENTER:
-                buttonSize.y = Math.max( textSize.y, iconSize.y );
+                buttonSize.setY( Math.max( textSize.y, iconSize.y ) );
             break;
         }
 
@@ -288,10 +277,10 @@ public class GButton extends JButton {
     protected void paintComponent(Graphics g) {
 
         Graphics2D g2 = (Graphics2D) g;
-        Image image = null;
+        Image image;
 
         // Set 'image' to the currently active image.
-        boolean hovering = isEnabled()? hover: false;
+        boolean hovering = isEnabled() && hover;
         if (isEnabled()) {
             image = smallEnabledIcon;
             if (hovering)
@@ -323,50 +312,50 @@ public class GButton extends JButton {
         int horizontal = getHorizontalTextPosition();
         int vertical = getVerticalTextPosition();
         if (getText() == null || getText().length() == 0)
-            horizontal = vertical = SwingConstants.CENTER;
+            horizontal = vertical = CENTER;
 
         int iconX, iconY, textX, textY;
         switch (horizontal) {
-            default:
-            case SwingConstants.CENTER:
-                textX = (getWidth() - (int) textBounds.getWidth()) / 2;
-                iconX = (getWidth() - imageWidth) / 2;
-            break;
-
-            case SwingConstants.LEFT:
+            case LEFT:
                 textX = xPadding;
                 iconX = getWidth() - largeWidth - (hovering? xPadding: smallXPadding);
-            break;
+                break;
 
-            case SwingConstants.RIGHT:
+            case RIGHT:
                 textX = xPadding + largeWidth + getIconTextGap();
                 iconX = hovering? xPadding: smallXPadding;
+                break;
+
+            case CENTER:
+            default:
+            textX = (getWidth() - (int) textBounds.getWidth()) / 2;
+            iconX = (getWidth() - imageWidth) / 2;
             break;
         }
 
         switch (vertical) {
+            case TOP:
+            textY = yPadding + g2.getFont().getSize();
+            iconY = getHeight() - imageHeight - (hovering? yPadding: smallYPadding);
+            break;
+
+            case BOTTOM:
+            textY = yPadding + largeHeight + getIconTextGap() + g2.getFont().getSize();
+            iconY = hovering? yPadding: smallYPadding;
+            break;
+
+            case CENTER:
             default:
-            case SwingConstants.CENTER:
                 textY = (getHeight() - (int) textBounds.getHeight()) / 2 + getFont().getSize();
                 iconY = (getHeight() - imageHeight) / 2;
-            break;
-
-            case SwingConstants.TOP:
-                textY = yPadding + g2.getFont().getSize();
-                iconY = getHeight() - imageHeight - (hovering? yPadding: smallYPadding);
-            break;
-
-            case SwingConstants.BOTTOM:
-                textY = yPadding + largeHeight + getIconTextGap() + g2.getFont().getSize();
-                iconY = hovering? yPadding: smallYPadding;
-            break;
+                break;
         }
 
         if (image != null)
             g2.drawImage( image, iconX, iconY, this );
 
         if (getText() != null) {
-            if (Boolean.getBoolean( "swing.aatext" ))
+            if (Boolean.parseBoolean( System.getProperty( "swing.aatext" ) ))
                 g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 
             g2.drawString( getText(), textX, textY );

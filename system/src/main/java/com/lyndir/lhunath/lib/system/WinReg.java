@@ -31,7 +31,7 @@ import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
  * This accesses the windows registry through the use of C:\Windows\System32\reg.exe.<br>
  * This limits platform compatibility to Windows XP+.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class WinReg {
@@ -41,7 +41,7 @@ public class WinReg {
 
     /**
      * Check whether registry queries are supported on the running operating system.
-     * 
+     *
      * @return Guess.
      */
     public static boolean isSupported() {
@@ -49,14 +49,14 @@ public class WinReg {
         try {
             OutputStream out = new NullOutputStream();
             return Shell.waitFor( Shell.exec( out, out, new File( "C:\\Windows\\System32" ), "reg.exe", "query", "/?" ) ) == 0;
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException ignored) {
             return false;
         }
     }
 
     /**
      * Query the windows registry at the given location for a response in the given type.
-     * 
+     *
      * @param <T>
      *            See type.
      * @param key
@@ -74,7 +74,7 @@ public class WinReg {
 
         String output = Shell.execRead( new File( "C:\\Windows\\System32" ), "reg.exe", "query", key, "/v", value );
 
-        int pos = 0;
+        int pos;
         T result = null;
 
         if (type.equals( String.class )) {

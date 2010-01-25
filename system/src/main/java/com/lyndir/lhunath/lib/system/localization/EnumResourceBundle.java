@@ -25,24 +25,24 @@ import java.util.ResourceBundle;
 /**
  * <h2>{@link EnumResourceBundle}<br>
  * <sub>An implementation of {@link ResourceBundle} that uses {@link Enum}s with a value as the resource.</sub></h2>
- * 
+ *
  * <p>
  * The {@link Enum} must implement the {@link ValueEnum} interface.
  * </p>
- * 
+ *
  * <p>
  * <i>Mar 29, 2009</i>
  * </p>
- * 
+ *
  * @param <T>
  *            The type of values provided as resources.
- * 
+ *
  * @author lhunath
  */
 public class EnumResourceBundle<T> extends ResourceBundle {
 
-    private LinkedList<String>            keyList;
-    private Class<? extends ValueEnum<T>> enumType;
+    private final LinkedList<String>            keyList;
+    private final Class<? extends ValueEnum<T>> enumType;
 
 
     public EnumResourceBundle(Class<? extends ValueEnum<T>> enumType) {

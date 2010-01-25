@@ -94,7 +94,7 @@ public abstract class AbstractUi
     protected JCheckBox              systrayButton;
     protected JCheckBox              alwaysOnTop;
     protected JCheckBox              startMini;
-    protected File                   defaultLogo;
+    private File                   defaultLogo;
     private boolean                  showFrame;
     private DragListener             dragListener;
     private JComponent               themesPanel;
@@ -122,7 +122,7 @@ public abstract class AbstractUi
     }
 
     {
-        ShadeConfig.ui = this;
+        ShadeConfig.setUi( this );
 
         /*
          * Initialize the logger as early as possible. (before any subclass code other than the main method has ran.)
@@ -196,13 +196,13 @@ public abstract class AbstractUi
             showLogBrowser();
 
         else if ("close".equals( actionCommand )) { //$NON-NLS-1$
-            if (WindowConstants.DISPOSE_ON_CLOSE == frame.getDefaultCloseOperation())
+            if (frame.getDefaultCloseOperation() == WindowConstants.DISPOSE_ON_CLOSE)
                 frame.dispose();
 
-            else if (WindowConstants.HIDE_ON_CLOSE == frame.getDefaultCloseOperation())
+            else if (frame.getDefaultCloseOperation() == WindowConstants.HIDE_ON_CLOSE)
                 showFrame( false );
 
-            else if (JFrame.EXIT_ON_CLOSE == frame.getDefaultCloseOperation())
+            else if (frame.getDefaultCloseOperation() == JFrame.EXIT_ON_CLOSE)
                 System.exit( 0 );
         }
 
@@ -231,7 +231,7 @@ public abstract class AbstractUi
 
                 launchDelay( "stat.openingMail" ); //$NON-NLS-1$
                 Desktop.getDesktop().mail( uri );
-            } catch (NoClassDefFoundError err) {
+            } catch (NoClassDefFoundError ignored) {
                 showJavaVersionWarning();
             } catch (URISyntaxException err) {
                 logger.err( err, Locale.explain( "bug.invalidMailto" ) //$NON-NLS-1$
@@ -250,7 +250,7 @@ public abstract class AbstractUi
 
                 launchDelay( "stat.openingMail" ); //$NON-NLS-1$
                 Desktop.getDesktop().mail( uri );
-            } catch (NoClassDefFoundError err) {
+            } catch (NoClassDefFoundError ignored) {
                 showJavaVersionWarning();
             } catch (URISyntaxException err) {
                 logger.err( err, "bug.invalidMailto" //$NON-NLS-1$
@@ -296,6 +296,9 @@ public abstract class AbstractUi
 
     }
 
+    /**
+     * Show or hide the console.
+     */
     @SuppressWarnings({"AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull"})
     protected void toggleConsole() {
 
@@ -316,7 +319,7 @@ public abstract class AbstractUi
             /* Reset the FDs. */
             System.setOut( realStdOut );
             System.setErr( realStdErr );
-            resetConsoleLogger();
+            //resetConsoleLogger();
 
             /* Destroy the console. */
             console.dispose();
@@ -364,7 +367,7 @@ public abstract class AbstractUi
                 /* Replace the real FDs with pipes. */
                 System.setOut( new PrintStream( new PipedOutputStream( pipeStdOut = new PipedInputStream() ) ) );
                 System.setErr( new PrintStream( new PipedOutputStream( pipeStdErr = new PipedInputStream() ) ) );
-                resetConsoleLogger();
+                //resetConsoleLogger();
 
                 /* Make endpoint FDs for the console window. */
                 consoleStdOut = new PipedOutputStream();
@@ -378,21 +381,21 @@ public abstract class AbstractUi
         }
     }
 
-    private void resetConsoleLogger() {
-
-        ConsoleHandler newConsoleLogger = new ConsoleHandler();
-        newConsoleLogger.setErrorManager( ShadeConfig.console.getErrorManager() );
-        newConsoleLogger.setFormatter( ShadeConfig.console.getFormatter() );
-        newConsoleLogger.setFilter( ShadeConfig.console.getFilter() );
-        newConsoleLogger.setLevel( ShadeConfig.console.getLevel() );
-
-        // FIXME
-        ShadeConfig.console.close();
-        // Logger.getGlobal().silence( ShadeConfig.console );
-
-        ShadeConfig.console = newConsoleLogger;
-        // Logger.getGlobal().addHandler( ShadeConfig.console );
-    }
+//    private static void resetConsoleLogger() {
+//
+//        ConsoleHandler newConsoleLogger = new ConsoleHandler();
+//        newConsoleLogger.setErrorManager( ShadeConfig.console.getErrorManager() );
+//        newConsoleLogger.setFormatter( ShadeConfig.console.getFormatter() );
+//        newConsoleLogger.setFilter( ShadeConfig.console.getFilter() );
+//        newConsoleLogger.setLevel( ShadeConfig.console.getLevel() );
+//
+//        // FIXME
+//        ShadeConfig.console.close();
+//        // Logger.getGlobal().silence( ShadeConfig.console );
+//
+//        ShadeConfig.console = newConsoleLogger;
+//        // Logger.getGlobal().addHandler( ShadeConfig.console );
+//    }
 
     /**
      * {@inheritDoc}
@@ -607,7 +610,8 @@ public abstract class AbstractUi
                         }
 
                         else {
-                            message = messageStack.get( progressLevel ).isEmpty()? "": messageStack.get( progressLevel ).pop();
+                            if (messageStack.get( progressLevel ).isEmpty())
+                                messageStack.get( progressLevel ).pop();
 
                             setProgress( 0d, level );
                         }
@@ -727,7 +731,7 @@ public abstract class AbstractUi
         try {
             launchDelay( "stat.openingBrowser" );
             Desktop.getDesktop().browse( url.toURI() );
-        } catch (NoClassDefFoundError e) {
+        } catch (NoClassDefFoundError ignored) {
             showJavaVersionWarning();
         } catch (UnsupportedOperationException e) {
             logger.err( e, "err.browserSupported" );
@@ -1111,7 +1115,7 @@ public abstract class AbstractUi
             logger.err( e, "err.readLicense" );
         }
 
-        JEditorPane changelog = new JEditorPane( "text/html", doc.toString() ); //$NON-NLS-1$
+        JEditorPane changelog = new JEditorPane( "text/html", doc ); //$NON-NLS-1$
         changelog.setOpaque( false );
         changelog.setEditable( false );
         changelog.setFont( Font.decode( "Monospaced-15" ) ); //$NON-NLS-1$
@@ -1133,9 +1137,12 @@ public abstract class AbstractUi
         return builder.getPanel();
     }
 
+    /**
+     * @return The software's license.
+     */
     @SuppressWarnings("unused")
     protected String getLicense()
-            throws IOException {
+    throws IOException {
 
         return Locale.explain( "ui.licenseNotFound" );
     }
@@ -1182,7 +1189,7 @@ public abstract class AbstractUi
             logger.err( e, "err.readChangelog" );
         }
 
-        JEditorPane changelog = new JEditorPane( "text/html", doc.toString() ); //$NON-NLS-1$
+        JEditorPane changelog = new JEditorPane( "text/html", doc ); //$NON-NLS-1$
         changelog.setOpaque( false );
         changelog.setEditable( false );
         changelog.setFont( Font.decode( "Monospaced-15" ) ); //$NON-NLS-1$
@@ -1195,11 +1202,30 @@ public abstract class AbstractUi
         return pane;
     }
 
+    /**
+     * @return The software's change log.
+     */
     @SuppressWarnings("unused")
     protected String getChangeLog()
-            throws IOException {
+    throws IOException {
 
         return Locale.explain( "ui.changelogNotFound" );
+    }
+
+    /**
+     * @return The logo to use when no more specific logo is set.
+     */
+    protected File getDefaultLogo() {
+
+        return defaultLogo;
+    }
+
+    /**
+     * @param defaultLogo The logo to use when no more specific logo is set.
+     */
+    protected void setDefaultLogo(File defaultLogo) {
+
+        this.defaultLogo = defaultLogo;
     }
 
     private void setLookAndFeel() {
@@ -1236,9 +1262,17 @@ public abstract class AbstractUi
                                 SwingUtilities.updateComponentTreeUI( tab.getContent() );
                     }
                 } );
-        } catch (InterruptedException e) {} catch (InvocationTargetException e) {}
+        }
+
+        catch (InterruptedException ignored) {}
+        catch (InvocationTargetException ignored) {}
     }
 
+    /**
+     * Show or hide the application frame.
+     *
+     * @param shown Whether to show (<code>true</code>) or hide (<code>false</code>) the frame.
+     */
     protected void showFrame(boolean shown) {
 
         if (ShadeConfig.sysTray.get()) {
@@ -1373,7 +1407,7 @@ public abstract class AbstractUi
         /* Update the logos. */
         else if (element.equals( BasicRequest.LOGO )) {
             File iconFile = null;
-            if (ShadeConfig.logos.isSet() && ShadeConfig.logos.get().size() > 0)
+            if (ShadeConfig.logos.isSet() && !ShadeConfig.logos.get().isEmpty())
                 iconFile = ShadeConfig.logos.get().get( 0 );
 
             if (iconFile == null || !iconFile.isFile())
@@ -1426,7 +1460,7 @@ public abstract class AbstractUi
                             process( BasicRequest.SETTINGS );
                         }
                     }
-                } catch (UnsupportedOperationException err) {
+                } catch (UnsupportedOperationException ignored) {
                     showJavaVersionWarning();
 
                     showFrame = true;

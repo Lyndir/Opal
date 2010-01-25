@@ -23,7 +23,7 @@ import java.io.OutputStream;
  * <br>
  * Redirects output to nothingness..<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class NullOutputStream extends OutputStream {
@@ -34,6 +34,5 @@ public class NullOutputStream extends OutputStream {
     @Override
     public void write(int b) {
 
-        return;
     }
 }

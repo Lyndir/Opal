@@ -21,26 +21,26 @@ import java.nio.channels.SocketChannel;
 
 /**
  * This listener should be implemented by classes that wish to be notified of network events pertaining server sockets.<br>
- * 
+ *
  * @author lhunath
  */
 public interface NetworkServerStateListener {
 
     /**
      * A new server socket has begun listening for connections.
-     * 
+     *
      * @param serverChannel
      *            The channel on which new connections are now being accepted.
      */
-    public void bound(ServerSocketChannel serverChannel);
+    void bound(ServerSocketChannel serverChannel);
 
     /**
      * A new connection has been accepted by a listening server.
-     * 
+     *
      * @param serverChannel
      *            The channel on which the connection has been requested.
      * @param connectionChannel
      *            The channel over which the new connection will take place.
      */
-    public void accepted(ServerSocketChannel serverChannel, SocketChannel connectionChannel);
+    void accepted(ServerSocketChannel serverChannel, SocketChannel connectionChannel);
 }

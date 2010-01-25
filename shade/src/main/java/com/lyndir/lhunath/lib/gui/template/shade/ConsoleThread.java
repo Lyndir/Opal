@@ -15,12 +15,12 @@ public class ConsoleThread extends Thread {
 
     private static final Logger logger = Logger.get( ConsoleThread.class );
 
-    private InputStreamReader in;
-    private JTextArea console;
+    private final InputStreamReader in;
+    private final JTextArea console;
 
 
     /**
-     * Create a new {@link com.lyndir.lhunath.lib.gui.template.shade.ConsoleThread} instance.
+     * Create a new {@link ConsoleThread} instance.
      *
      * @param in
      *            The source of the data to write in the console.

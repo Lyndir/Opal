@@ -14,16 +14,16 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
  * A <code>JSplitPane</code> subclass that can try to remove the divider border. Useful if the splitted components
  * render their own borders. Note that this feature is not supported by all look&amp;feels. Some look&amp;feel
  * implementation will always show a divider border, and conversely, others will never show a divider border.
- * 
+ *
  * @author Karsten Lentzsch
  * @version $Revision: 1.2 $
- * @see javax.swing.plaf.basic.BasicSplitPaneUI
+ * @see BasicSplitPaneUI
  */
 public final class UIFSplitPane extends JSplitPane {
 
     /**
      * Holds the name of the bound property that tries to show or hide the split pane's divider border.
-     * 
+     *
      * @see #isDividerBorderVisible()
      * @see #setDividerBorderVisible(boolean)
      */
@@ -31,7 +31,7 @@ public final class UIFSplitPane extends JSplitPane {
 
     /**
      * Determines whether the divider border shall be removed when the UI is updated.
-     * 
+     *
      * @see #isDividerBorderVisible()
      * @see #setDividerBorderVisible(boolean)
      */
@@ -46,13 +46,13 @@ public final class UIFSplitPane extends JSplitPane {
      */
     public UIFSplitPane() {
 
-        this( JSplitPane.HORIZONTAL_SPLIT, false, new JButton( UIManager.getString( "SplitPane.leftButtonText" ) ),
+        this( HORIZONTAL_SPLIT, false, new JButton( UIManager.getString( "SplitPane.leftButtonText" ) ),
               new JButton( UIManager.getString( "SplitPane.rightButtonText" ) ) );
     }
 
     /**
      * Constructs a <code>UIFSplitPane</code> configured with the specified orientation and no continuous layout.
-     * 
+     *
      * @param newOrientation
      *            <code>JSplitPane.HORIZONTAL_SPLIT</code> or <code>JSplitPane.VERTICAL_SPLIT</code>
      * @throws IllegalArgumentException
@@ -65,7 +65,7 @@ public final class UIFSplitPane extends JSplitPane {
 
     /**
      * Constructs a <code>UIFSplitPane</code> with the specified orientation and redrawing style.
-     * 
+     *
      * @param newOrientation
      *            <code>JSplitPane.HORIZONTAL_SPLIT</code> or <code>JSplitPane.VERTICAL_SPLIT</code>
      * @param newContinuousLayout
@@ -81,7 +81,7 @@ public final class UIFSplitPane extends JSplitPane {
 
     /**
      * Constructs a <code>UIFSplitPane</code> with the specified orientation and the given componenents.
-     * 
+     *
      * @param orientation
      *            <code>JSplitPane.HORIZONTAL_SPLIT</code> or <code>JSplitPane.VERTICAL_SPLIT</code>
      * @param leftComponent
@@ -100,7 +100,7 @@ public final class UIFSplitPane extends JSplitPane {
 
     /**
      * Constructs a <code>UIFSplitPane</code> with the specified orientation, redrawing style, and given components.
-     * 
+     *
      * @param orientation
      *            <code>JSplitPane.HORIZONTAL_SPLIT</code> or <code>JSplitPane.VERTICAL_SPLIT</code>
      * @param continuousLayout
@@ -124,7 +124,7 @@ public final class UIFSplitPane extends JSplitPane {
     /**
      * Constructs a <code>UIFSplitPane</code>, i.e. a <code>JSplitPane</code> that has no borders. Also disabled the one
      * touch exandable property.
-     * 
+     *
      * @param orientation
      *            <code>JSplitPane.HORIZONTAL_SPLIT</code> or <code>JSplitPane.VERTICAL_SPLIT</code>
      * @param leftComponent
@@ -152,7 +152,7 @@ public final class UIFSplitPane extends JSplitPane {
      * Checks and answers whether the divider border shall be visible or invisible. Note that this feature is not
      * supported by all look&amp;feels. Some look&amp;feel implementation will always show a divider border, and
      * conversely, others will never show a divider border.
-     * 
+     *
      * @return the desired (but potentially inaccurate) divider border visiblity
      */
     public boolean isDividerBorderVisible() {
@@ -164,7 +164,7 @@ public final class UIFSplitPane extends JSplitPane {
      * Makes the divider border visible or invisible. Note that this feature is not supported by all look&amp;feels.
      * Some look&amp;feel implementation will always show a divider border, and conversely, others will never show a
      * divider border.
-     * 
+     *
      * @param newVisibility
      *            true for visible, false for invisible
      */

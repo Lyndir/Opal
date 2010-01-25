@@ -33,8 +33,8 @@ import com.lyndir.lhunath.lib.system.UIUtils;
 public class EditableList extends JList {
 
     private static final long  serialVersionUID = 1L;
-    protected DefaultListModel model;
-    protected String           a;
+    protected final DefaultListModel model;
+    protected final String           a;
 
 
     /**
@@ -58,8 +58,6 @@ public class EditableList extends JList {
      *            (ie. syntax/purpose).
      */
     public EditableList(final String contentTitle, final String newText) {
-
-        super();
 
         a = contentTitle.matches( "^(?i)[aeiou].*" )? Locale.explain( "ui.an" ): Locale.explain( "ui.a" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         final EditableList list = this;

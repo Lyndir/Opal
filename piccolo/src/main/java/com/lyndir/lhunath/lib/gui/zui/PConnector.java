@@ -186,8 +186,8 @@ public class PConnector extends PNode {
         if (!getOffset().equals( newOffset ))
             setOffset( newOffset );
 
-        return setBounds( new Rectangle( -stroke / 2 - 2, -stroke / 2 - 2, (int) path.getSize().x + stroke + 4,
-                (int) path.getSize().y + stroke + 4 ) );
+        return setBounds( new Rectangle( -stroke / 2 - 2, -stroke / 2 - 2, path.getSize().x + stroke + 4,
+                path.getSize().y + stroke + 4 ) );
     }
 
     /**
@@ -226,7 +226,7 @@ public class PConnector extends PNode {
         g2.dispose();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "RawUseOfParameterizedType"})
     private void moveConnectorsToFront() {
 
         boolean sane = true;

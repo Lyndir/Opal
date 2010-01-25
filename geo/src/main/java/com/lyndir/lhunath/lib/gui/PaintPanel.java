@@ -15,23 +15,12 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import java.awt.AlphaComposite;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Paint;
-import java.awt.Rectangle;
-import java.awt.TexturePaint;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-
-import javax.swing.UIManager;
 
 
 /**
@@ -41,7 +30,7 @@ import javax.swing.UIManager;
  * rather than {@link Color}.<br>
  * Several convenience methods exist to quickly generate a nice gradient for the panel's paint.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class PaintPanel extends ScrollPanel {
@@ -54,7 +43,7 @@ public class PaintPanel extends ScrollPanel {
 
     /**
      * Create a new {@link PaintPanel} instance.
-     * 
+     *
      * @param paint
      *            The paint to use to fill the background of this panel with.
      */
@@ -69,7 +58,7 @@ public class PaintPanel extends ScrollPanel {
     /**
      * Create a {@link PaintPanel} that has a gradient background paint spanning from the top-left corner to the
      * bottom-left corner using the current look and feel for getting the appropriate colors.
-     * 
+     *
      * @return The resulting {@link PaintPanel}.
      */
     public static PaintPanel gradientPanel() {
@@ -85,7 +74,7 @@ public class PaintPanel extends ScrollPanel {
      * Create a {@link PaintPanel} that has a gradient background paint spanning from the top-left corner to the
      * bottom-left corner using the current look and feel for getting the appropriate colors auto-corrected by the
      * specified identifier.
-     * 
+     *
      * @param autoColorControl
      *            &gt; 0: Choose color automatically from L&F. Higher is brighter.
      * @return The resulting {@link PaintPanel}.
@@ -102,7 +91,7 @@ public class PaintPanel extends ScrollPanel {
     /**
      * Create a {@link PaintPanel} that has a gradient background paint using the current look and feel for getting the
      * appropriate colors.
-     * 
+     *
      * @param startPos
      *            The start of the gradient.
      * @param endPos
@@ -121,7 +110,7 @@ public class PaintPanel extends ScrollPanel {
     /**
      * Create a {@link PaintPanel} that has a gradient background paint spanning from the top-left corner to the
      * bottom-left corner.
-     * 
+     *
      * @param startCol
      *            The color to start the gradient with.
      * @param endCol
@@ -135,7 +124,7 @@ public class PaintPanel extends ScrollPanel {
 
     /**
      * Create a {@link PaintPanel} that has a gradient background paint.
-     * 
+     *
      * @param startPos
      *            The start of the gradient.
      * @param startCol
@@ -153,7 +142,7 @@ public class PaintPanel extends ScrollPanel {
 
     /**
      * Create a gradient paint spanning from the top-left corner to the bottom-left corner.
-     * 
+     *
      * @param startCol
      *            The color to start the gradient with.
      * @param endCol
@@ -167,7 +156,7 @@ public class PaintPanel extends ScrollPanel {
 
     /**
      * Create a {@link PaintPanel} that has a tiled background picture.
-     * 
+     *
      * @param image
      *            The image to tile on the background.
      * @return The resulting {@link PaintPanel}.
@@ -181,9 +170,17 @@ public class PaintPanel extends ScrollPanel {
     }
 
     /**
+     * @return The automatic coloring brightness active on this panel.  Zero if not active.
+     */
+    public int getAutoColorControl() {
+
+        return autoColorControl;
+    }
+
+    /**
      * Automatically color this panel based on the active look and feel. Set this to a value higher than zero to enable
      * the effect. Higher values result in brighter backgrounds.
-     * 
+     *
      * @param autoColorControl
      *            Guess.
      * @return This instance.
@@ -197,8 +194,15 @@ public class PaintPanel extends ScrollPanel {
     }
 
     /**
+     * @return The paint of this panel.
+     */
+    public Paint getPaint() {
+        return paint;
+    }
+
+    /**
      * Set the paint of this {@link PaintPanel}.
-     * 
+     *
      * @param paint
      *            Guess.
      */
@@ -209,8 +213,16 @@ public class PaintPanel extends ScrollPanel {
     }
 
     /**
-     * Set the paint of this {@link PaintPanel}.
-     * 
+     * @return The background image of this {@link PaintPanel}.
+     */
+    public Image getBackgroundImage() {
+
+        return backgroundImage;
+    }
+
+    /**
+     * Set the background image of this {@link PaintPanel}.
+     *
      * @param image
      *            Guess.
      */
@@ -292,7 +304,7 @@ public class PaintPanel extends ScrollPanel {
     }
 
 
-    class PaintPanelComponentAdapter extends ComponentAdapter {
+    private class PaintPanelComponentAdapter extends ComponentAdapter {
 
         /**
          * {@inheritDoc}

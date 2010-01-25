@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.system.localization;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.text.MessageFormat;
@@ -29,21 +30,21 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 /**
  * <h2>{@link LocalizerFactory}<br>
  * <sub>Create localizers from localization interfaces.</sub></h2>
- *
+ * 
  * <p>
  * This class builds localizers from interfaces annotated with the {@link UseBundle} and {@link UseKey} annotations.
  * </p>
- *
+ * 
  * <p>
  * This localizer can then be queried by invoking the methods provided by the interface used to create it. This way, you
  * can to obtain localized data from them as provided by the resource bundle that interface references in its
  * {@link UseBundle} annotation.
  * </p>
- *
+ * 
  * <p>
  * <i>Mar 28, 2009</i>
  * </p>
- *
+ * 
  * @author lhunath
  */
 public abstract class LocalizerFactory {
@@ -70,19 +71,17 @@ public abstract class LocalizerFactory {
 
         // Create a localization interface proxy.
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        L queryObject = localizationInterface.cast( Proxy.newProxyInstance( classLoader, new Class[] {
-                localizationInterface, Serializable.class }, new LocalizationInvocationHandler( context ) ) );
-
-        return queryObject;
+        return localizationInterface.cast( Proxy.newProxyInstance( classLoader, new Class[] { localizationInterface,
+                Serializable.class }, new LocalizationInvocationHandler( context ) ) );
     }
 
 
-    static class LocalizationInvocationHandler implements InvocationHandler, Serializable {
+    private static class LocalizationInvocationHandler implements InvocationHandler, Serializable {
 
-        private Object context;
+        private final Object context;
 
 
-        public LocalizationInvocationHandler(Object context) {
+        LocalizationInvocationHandler(Object context) {
 
             this.context = context;
         }
@@ -92,7 +91,7 @@ public abstract class LocalizerFactory {
          */
         @Override
         public Object invoke(Object proxy, Method method, Object[] args)
-                throws Throwable {
+                throws NoSuchMethodException, InvocationTargetException {
 
             UseKey useKeyAnnotation = method.getAnnotation( UseKey.class );
             if (useKeyAnnotation == null)
@@ -107,7 +106,7 @@ public abstract class LocalizerFactory {
             UseBundle useBundleAnnotation = methodType.getAnnotation( UseBundle.class );
             if (useBundleAnnotation != null) {
                 Class<? extends ResourceBundle> bundleType = useBundleAnnotation.type();
-                String bundleResource = null;
+                String bundleResource;
                 if (bundleType != null && !bundleType.equals( UnspecifiedBundle.class ))
                     bundleResource = bundleType.getCanonicalName();
                 else
@@ -135,8 +134,21 @@ public abstract class LocalizerFactory {
             if (useLocalizationProviderAnnotation != null) {
                 Class<? extends LocalizationProvider> localizationProvider = useLocalizationProviderAnnotation.value();
 
-                return MessageFormat.format( localizationProvider.newInstance().getValueForKeyInContext(
-                        localizationKey, context ), args );
+                try {
+                    return MessageFormat.format(
+                            localizationProvider.getConstructor().newInstance().getValueForKeyInContext(
+                                    localizationKey, context ), args );
+                }
+
+                catch (IllegalArgumentException e) {
+                    logger.bug( e, "While instantiating localization provider: %s", localizationProvider );
+                } catch (SecurityException e) {
+                    logger.bug( e, "While instantiating localization provider: %s", localizationProvider );
+                } catch (InstantiationException e) {
+                    logger.bug( e, "While instantiating localization provider: %s", localizationProvider );
+                } catch (IllegalAccessException e) {
+                    logger.bug( e, "While instantiating localization provider: %s", localizationProvider );
+                }
             }
 
             throw new UnsupportedOperationException( MessageFormat.format( "No supported annotation found on: {0}",

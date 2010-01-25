@@ -33,7 +33,7 @@ import java.awt.event.MouseMotionListener;
  * <br>
  * The TrayIcon object ...<br>
  * <br>
- * 
+ *
  * @author mbillemo
  */
 public class TrayIcon extends Wrapper {
@@ -45,7 +45,7 @@ public class TrayIcon extends Wrapper {
 
     /**
      * Create a new {@link TrayIcon} instance.
-     * 
+     *
      * @param image
      *            The image to use to depict this tray icon in the system tray.
      */
@@ -56,7 +56,7 @@ public class TrayIcon extends Wrapper {
 
     /**
      * Create a new {@link TrayIcon} instance.
-     * 
+     *
      * @param image
      *            The image to use to depict this tray icon in the system tray.
      * @param tooltip
@@ -69,7 +69,7 @@ public class TrayIcon extends Wrapper {
 
     /**
      * Create a new {@link TrayIcon} instance.
-     * 
+     *
      * @param image
      *            The image to use to depict this tray icon in the system tray.
      * @param tooltip
@@ -117,7 +117,7 @@ public class TrayIcon extends Wrapper {
 
     /**
      * Show a notification message by this tray icon.
-     * 
+     *
      * @param caption
      *            The title of the message.
      * @param text
@@ -137,7 +137,7 @@ public class TrayIcon extends Wrapper {
      */
     public String getActionCommand() {
 
-        return (String) invoke( "getActionCommand", new Class[0] );
+        return (String) invoke( "getActionCommand" );
     }
 
     /**
@@ -145,7 +145,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized ActionListener[] getActionListeners() {
 
-        return (ActionListener[]) invoke( "getActionListeners", new Class[0] );
+        return (ActionListener[]) invoke( "getActionListeners" );
     }
 
     /**
@@ -153,7 +153,7 @@ public class TrayIcon extends Wrapper {
      */
     public Image getImage() {
 
-        return (Image) invoke( "getImage", new Class[0] );
+        return (Image) invoke( "getImage" );
     }
 
     /**
@@ -161,7 +161,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized MouseListener[] getMouseListeners() {
 
-        return (MouseListener[]) invoke( "getMouseListeners", new Class[0] );
+        return (MouseListener[]) invoke( "getMouseListeners" );
     }
 
     /**
@@ -169,7 +169,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized MouseMotionListener[] getMouseMotionListeners() {
 
-        return (MouseMotionListener[]) invoke( "getMouseMotionListeners", new Class[0] );
+        return (MouseMotionListener[]) invoke( "getMouseMotionListeners" );
     }
 
     /**
@@ -177,7 +177,7 @@ public class TrayIcon extends Wrapper {
      */
     public PopupMenu getPopupMenu() {
 
-        return (PopupMenu) invoke( "getPopupMenu", new Class[0] );
+        return (PopupMenu) invoke( "getPopupMenu" );
     }
 
     /**
@@ -185,7 +185,7 @@ public class TrayIcon extends Wrapper {
      */
     public Dimension getSize() {
 
-        return (Dimension) invoke( "getSize", new Class[0] );
+        return (Dimension) invoke( "getSize" );
     }
 
     /**
@@ -193,7 +193,7 @@ public class TrayIcon extends Wrapper {
      */
     public String getToolTip() {
 
-        return (String) invoke( "getToolTip", new Class[0] );
+        return (String) invoke( "getToolTip" );
     }
 
     /**
@@ -201,7 +201,7 @@ public class TrayIcon extends Wrapper {
      */
     public boolean isImageAutoSize() {
 
-        return (Boolean) invoke( "isImageAutoSize", new Class[0] );
+        return (Boolean) invoke( "isImageAutoSize" );
     }
 
     /**
@@ -261,7 +261,7 @@ public class TrayIcon extends Wrapper {
     /**
      * @param popup
      *            The menu to show when right-clicking the {@link TrayIcon}.
-     * 
+     *
      */
     public void setPopupMenu(PopupMenu popup) {
 
@@ -281,11 +281,11 @@ public class TrayIcon extends Wrapper {
     /**
      * <h2>{@link MessageType}<br>
      * <sub>Types of message notifications to show by the tray icon.</sub></h2>
-     * 
+     *
      * <p>
      * <i>Apr 9, 2008</i>
      * </p>
-     * 
+     *
      * @author mbillemo
      */
     public enum MessageType {

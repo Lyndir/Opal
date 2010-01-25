@@ -23,24 +23,24 @@ import javax.swing.JComponent;
 /**
  * <h2>{@link Tab}<br>
  * <sub>Configuration of a tab in the shade interface.</sub></h2>
- * 
+ *
  * <p>
  * <i>Jun 14, 2008</i>
  * </p>
- * 
+ *
  * @author mbillemo
  */
 public class Tab {
 
-    private String         title;
-    private Icon           icon;
-    private JComponent     content;
+    private final String         title;
+    private final Icon           icon;
+    private final JComponent     content;
     private AbstractAction action;
 
 
     /**
      * Create a new {@link Tab} instance.
-     * 
+     *
      * @param title
      *            The name of this tab. It will be displayed when the tab is selected.
      * @param icon

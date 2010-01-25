@@ -21,19 +21,19 @@ import java.nio.channels.SocketChannel;
 
 /**
  * This listener should be implemented by classes that wish to be notified of incoming network messages.<br>
- * 
+ *
  * @author lhunath
  */
 public interface NetworkDataListener {
 
     /**
      * Data has been received over the network.
-     * 
+     *
      * @param dataBuffer
      *            A byte buffer that contains the available data. It has been flipped and is ready to be read from. To
      *            read the data from it multiple times, flip it between complete read operations.
      * @param socketChannel
      *            The channel over which the message has arrived.
      */
-    public void received(ByteBuffer dataBuffer, SocketChannel socketChannel);
+    void received(ByteBuffer dataBuffer, SocketChannel socketChannel);
 }

@@ -39,7 +39,7 @@ public class Desktop extends Wrapper {
     public static Desktop getDesktop()
             throws UnsupportedOperationException {
 
-        return new Desktop( invoke( Desktop.class, null, "getDesktop", new Class[0] ) );
+        return new Desktop( invoke( Desktop.class, null, "getDesktop" ) );
     }
 
     /**
@@ -48,10 +48,10 @@ public class Desktop extends Wrapper {
     public static boolean isDesktopSupported() {
 
         try {
-            return (Boolean) invoke( Desktop.class, null, "isDesktopSupported", new Class[0] );
+            return (Boolean) invoke( Desktop.class, null, "isDesktopSupported" );
         }
 
-        catch (Exception e) {
+        catch (Exception ignored) {
             return false;
         }
     }
@@ -68,7 +68,9 @@ public class Desktop extends Wrapper {
             Object desktopAction = mapEnumValue( action, getClass( "java.awt.Desktop.Action" ) );
             return (Boolean) invoke( "isSupported", new Class[] { getClass( "java.awt.Desktop.Action" ) },
                                      desktopAction );
-        } catch (Exception e) {}
+        }
+
+        catch (Exception ignored) {}
 
         return false;
     }
@@ -115,7 +117,7 @@ public class Desktop extends Wrapper {
     public void mail()
             throws IOException {
 
-        invoke( "mail", new Class[0] );
+        invoke( "mail" );
     }
 
     /**

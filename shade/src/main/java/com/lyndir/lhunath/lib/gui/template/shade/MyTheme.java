@@ -15,20 +15,14 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.AbstractButton;
-import javax.swing.JButton;
-import javax.swing.JColorChooser;
-import javax.swing.SwingUtilities;
-
 import com.lyndir.lhunath.lib.gui.MyLookAndFeel;
-import com.lyndir.lhunath.lib.gui.ToolTip;
 import com.lyndir.lhunath.lib.gui.MyLookAndFeel.MyThemeType;
+import com.lyndir.lhunath.lib.gui.ToolTip;
 import com.lyndir.lhunath.lib.system.Locale;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
@@ -116,21 +110,21 @@ public enum MyTheme {
     CUSTOM (Color.DARK_GRAY);
 
     private static final MyTheme FALLBACK = OAK;
-    protected MyLookAndFeel      lookAndFeel;
+    MyLookAndFeel      lookAndFeel;
 
 
-    private MyTheme(Color base) {
+    MyTheme(Color base) {
 
         lookAndFeel = new MyLookAndFeel( base, MyThemeType.PLASTIC );
 
         /* Must load CUSTOM theme out of the config file if we're using it. */
-        if (name().equals( "CUSTOM" ))
+        if ("CUSTOM".equals( name() ))
             SwingUtilities.invokeLater( new Runnable() {
 
                 @Override
                 public void run() {
 
-                    if (equals( MyTheme.activeTheme() ))
+                    if (equals( activeTheme() ))
                         setLookAndFeel( ShadeConfig.theme.get() );
                 }
             } );
@@ -201,11 +195,11 @@ public enum MyTheme {
             public void actionPerformed(ActionEvent e) {
 
                 ShadeConfig.theme.set( theme.getLookAndFeel() );
-                ShadeConfig.ui.execute( BasicRequest.THEME );
+                ShadeConfig.getUi().execute( BasicRequest.THEME );
 
-                if (theme.equals( CUSTOM ))
-                    if (customThemeDialog( ShadeConfig.ui.getFrame() ))
-                        ShadeConfig.ui.execute( BasicRequest.THEME );
+                if (theme == CUSTOM)
+                    if (customThemeDialog( ShadeConfig.getUi().getFrame() ))
+                        ShadeConfig.getUi().execute( BasicRequest.THEME );
             }
         } );
         button.setPreferredSize( new Dimension( 20, 20 ) );
@@ -215,7 +209,7 @@ public enum MyTheme {
         return button;
     }
 
-    protected static boolean customThemeDialog(Component parent) {
+    static boolean customThemeDialog(Component parent) {
 
         Color customColor = JColorChooser.showDialog( parent, Locale.explain( "ui.chooseBase" ), //$NON-NLS-1$
                                                       ShadeConfig.theme.get().getBase() );
@@ -246,12 +240,12 @@ public enum MyTheme {
 
         MyTheme theme = null;
         if (System.getProperty( "theme" ) == null)
-            theme = MyTheme.FALLBACK;
+            theme = FALLBACK;
 
         else {
             try {
-                theme = MyTheme.valueOf( System.getProperty( "theme" ).trim().toUpperCase() );
-            } catch (IllegalArgumentException e) {
+                theme = valueOf( System.getProperty( "theme" ).trim().toUpperCase( java.util.Locale.ENGLISH ) );
+            } catch (IllegalArgumentException ignored) {
                 /* No theme by the name given in the property 'theme'. */
             }
 
@@ -267,9 +261,9 @@ public enum MyTheme {
 
                 if (customColor != null) {
                     MyTheme.CUSTOM.getLookAndFeel().setBase( customColor );
-                    theme = MyTheme.CUSTOM;
+                    theme = CUSTOM;
                 } else
-                    theme = MyTheme.FALLBACK;
+                    theme = FALLBACK;
             }
         }
 

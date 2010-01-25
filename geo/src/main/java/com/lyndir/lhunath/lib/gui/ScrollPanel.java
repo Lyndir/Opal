@@ -37,9 +37,9 @@ import javax.swing.SwingConstants;
  */
 public class ScrollPanel extends JPanel implements Scrollable {
 
-    private int     scrollUnit;
-    private boolean horizontal;
-    private boolean vertical;
+    private final int     scrollUnit;
+    private final boolean horizontal;
+    private final boolean vertical;
 
 
     /**

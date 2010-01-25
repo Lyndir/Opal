@@ -15,17 +15,13 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import java.awt.*;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.swing.LookAndFeel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.ColorUIResource;
 
 import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
@@ -47,7 +43,7 @@ public class MyLookAndFeel implements Serializable {
     private MyThemeType          themeType;
     Color                        base;
 
-    transient private MyTheme    cachedTheme;
+    private transient MyTheme    cachedTheme;
 
     /**
      * Version of the class.
@@ -101,9 +97,9 @@ public class MyLookAndFeel implements Serializable {
         for (Component c : container.getComponents()) {
 
             /* If this component uses the current default for its background, make it use ours. */
-            for (String key : defaults.keySet())
-                if (c.getBackground().equals( UIManager.getDefaults().get( key ) ))
-                    c.setBackground( defaults.get( key ) );
+            for (Map.Entry<String, Color> defaultEntry : defaults.entrySet())
+                if (c.getBackground().equals( UIManager.getDefaults().get( defaultEntry.getKey() ) ))
+                    c.setBackground( defaultEntry.getValue() );
 
             if (c instanceof Container)
                 reconfigure( (Container) c );
@@ -272,10 +268,10 @@ public class MyLookAndFeel implements Serializable {
          */
         PLASTIC (MyPlasticTheme.class); // , SUBSTANCE (MySubstanceTheme.class);
 
-        private Class<? extends MyTheme> type;
+        private final Class<? extends MyTheme> type;
 
 
-        private MyThemeType(Class<? extends MyTheme> type) {
+        MyThemeType(Class<? extends MyTheme> type) {
 
             this.type = type;
         }
@@ -288,11 +284,17 @@ public class MyLookAndFeel implements Serializable {
         public MyTheme create(MyLookAndFeel lnf) {
 
             try {
-                return type.newInstance();
-            } catch (InstantiationException e) {
-                // Logger.error( e, "[BUG] Couldn't instantiate %s!", type ); TODO
+                return type.getConstructor().newInstance();
+            }
+
+            catch (InstantiationException e) {
+                logger.bug( e, "Not instantiatable: %s!", type );
             } catch (IllegalAccessException e) {
-                logger.err( e, "[BUG] Couldn't instantiate %s!", type );
+                logger.bug( e, "No access to instantiate: %s!", type );
+            } catch (NoSuchMethodException e) {
+                logger.bug( e, "No default constructor: %s!", type );
+            } catch (InvocationTargetException e) {
+                logger.bug( e, "Instantiation failed: %s!", type );
             }
 
             return lnf.new MyPlasticTheme();
@@ -315,7 +317,7 @@ public class MyLookAndFeel implements Serializable {
         /**
          * Do any initialization required to make this theme active.
          */
-        public void setup();
+        void setup();
     }
 
 
@@ -345,7 +347,7 @@ public class MyLookAndFeel implements Serializable {
      *
      * @author mbillemo
      */
-    public class MyPlasticTheme extends AbstractSkyTheme implements MyTheme {
+    private class MyPlasticTheme extends AbstractSkyTheme implements MyTheme {
 
         private static final long serialVersionUID = 1L;
 

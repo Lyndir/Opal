@@ -37,12 +37,12 @@ public class Vec2 implements Cloneable {
     /**
      * X-Axis coordinate.
      */
-    public double x;
+    private double x;
 
     /**
      * Y-Axis coordinate.
      */
-    public double y;
+    private double y;
 
 
     /**
@@ -63,8 +63,8 @@ public class Vec2 implements Cloneable {
      */
     public Vec2(double x, double y) {
 
-        this.x = x;
-        this.y = y;
+        setX( x );
+        setY( y );
     }
 
     /**
@@ -75,8 +75,8 @@ public class Vec2 implements Cloneable {
      */
     public Vec2(Point2D p) {
 
-        x = p.getX();
-        y = p.getY();
+        setX( p.getX() );
+        setY( p.getY() );
     }
 
     /**
@@ -87,8 +87,8 @@ public class Vec2 implements Cloneable {
      */
     public Vec2(Dimension2D d) {
 
-        x = d.getWidth();
-        y = d.getHeight();
+        setX( d.getWidth() );
+        setY( d.getHeight() );
     }
 
     /**
@@ -98,7 +98,7 @@ public class Vec2 implements Cloneable {
      */
     public Point2D toPoint() {
 
-        return new Point2D.Double( x, y );
+        return new Point2D.Double( getX(), getY() );
     }
 
     /**
@@ -109,7 +109,7 @@ public class Vec2 implements Cloneable {
     public Dimension toDimension() {
 
         Dimension dim = new Dimension();
-        dim.setSize( x, y );
+        dim.setSize( getX(), getY() );
 
         return dim;
     }
@@ -118,9 +118,13 @@ public class Vec2 implements Cloneable {
      * {@inheritDoc}
      */
     @Override
-    public Vec2 clone() {
+    public Vec2 clone() throws CloneNotSupportedException {
 
-        return new Vec2( x, y );
+        Vec2 newVec2 = (Vec2) super.clone();
+        newVec2.setX( getX() );
+        newVec2.setY( y );
+
+        return newVec2;
     }
 
     /**
@@ -142,7 +146,7 @@ public class Vec2 implements Cloneable {
      */
     public double lengthSq() {
 
-        return x * x + y * y;
+        return getX() * getX() + getY() * getY();
     }
 
     /**
@@ -170,9 +174,9 @@ public class Vec2 implements Cloneable {
         if (a == null)
             return this;
 
-        double newX = x * a.cos() - y * a.sin();
-        y = x * a.sin() + y * a.cos();
-        x = newX;
+        double newX = getX() * a.cos() - getY() * a.sin();
+        setY( x * a.sin() + y * a.cos() );
+        setX( newX );
 
         return this;
     }
@@ -189,8 +193,8 @@ public class Vec2 implements Cloneable {
         if (vector == null)
             return this;
 
-        x += vector.x;
-        y += vector.y;
+        setX( getX() + vector.getX() );
+        setY( getY() + vector.y );
 
         return this;
     }
@@ -207,8 +211,8 @@ public class Vec2 implements Cloneable {
         if (vector == null)
             return this;
 
-        x -= vector.x;
-        y -= vector.y;
+        setX( getX() - vector.getX() );
+        setY( getY() - vector.getY() );
 
         return this;
     }
@@ -225,8 +229,8 @@ public class Vec2 implements Cloneable {
         if (vector == null)
             return this;
 
-        x *= vector.x;
-        y *= vector.y;
+        setX( getX() * vector.getX() );
+        setY( getY() * vector.y );
 
         return this;
     }
@@ -240,8 +244,8 @@ public class Vec2 implements Cloneable {
      */
     public Vec2 multiply(double c) {
 
-        x *= c;
-        y *= c;
+        setX( getX() * c );
+        setY( getY() * c );
 
         return this;
     }
@@ -278,7 +282,7 @@ public class Vec2 implements Cloneable {
         if (vector == null)
             return 0;
 
-        return x * vector.y - y * vector.x;
+        return getX() * vector.getY() - getY() * vector.getX();
     }
 
     /**
@@ -295,7 +299,7 @@ public class Vec2 implements Cloneable {
         if (vector == null)
             return 0;
 
-        return x * vector.x + y * vector.y;
+        return getX() * vector.getX() + getY() * vector.getY();
     }
 
     /**
@@ -304,7 +308,7 @@ public class Vec2 implements Cloneable {
     @Override
     public String toString() {
 
-        return "vec(" + x + ", " + y + ")";
+        return "vec(" + getX() + ", " + getY() + ')';
     }
 
     /**
@@ -324,7 +328,23 @@ public class Vec2 implements Cloneable {
 
         if (o == this)
             return true;
-        return o instanceof Vec2 && x == ((Vec2) o).x && y == ((Vec2) o).y;
+        return o instanceof Vec2 && getX() == ((Vec2) o).getX() && getY() == ((Vec2) o).getY();
 
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
     }
 }

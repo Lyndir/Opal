@@ -35,8 +35,8 @@ public class UpdateUi extends Thread {
 
     private static final Logger          logger = Logger.get( UpdateUi.class );
 
-    private BlockingQueue<UpdateRequest> requests;
-    private AbstractUi                   ui;
+    private final BlockingQueue<UpdateRequest> requests = new ArrayBlockingQueue<UpdateRequest>( 20 );
+    private final AbstractUi                   ui;
     private UpdateRequest                currentRequest;
 
 
@@ -51,7 +51,6 @@ public class UpdateUi extends Thread {
         super( "Update UI" );
         setDaemon( true );
 
-        requests = new ArrayBlockingQueue<UpdateRequest>( 20 );
         this.ui = ui;
     }
 
@@ -76,7 +75,7 @@ public class UpdateUi extends Thread {
                 if (!requests.offer( newRequest, 500, TimeUnit.MILLISECONDS ))
                     throw new InterruptedException( "Maximum wait time elapsed." );
             } catch (InterruptedException e) {
-                logger.err( "err.updateQueueFull", newRequest );
+                logger.err( e, "err.updateQueueFull", newRequest );
             }
         }
     }
@@ -98,7 +97,7 @@ public class UpdateUi extends Thread {
             }
 
             /* Interrupted? Well, try again! */
-            catch (InterruptedException e) {
+            catch (InterruptedException ignored) {
                 continue;
             }
 
@@ -118,26 +117,26 @@ public class UpdateUi extends Thread {
 
     private class UpdateRequest {
 
-        private Request   request;
-        private Throwable cause;
+        private final Request   request;
+        private final Throwable cause;
 
 
         /**
-         * Create a new {@link UpdateUi.UpdateRequest} instance.
+         * Create a new {@link UpdateRequest} instance.
          *
          * @param request
          *            The request this stack element should make.
          * @param cause
          *            In case an exception gets thrown during the request, this will be set as the exception's cause.
          */
-        public UpdateRequest(Request request, Throwable cause) {
+        UpdateRequest(Request request, Throwable cause) {
 
             this.request = request;
             this.cause = cause;
         }
 
         /**
-         * Retrieve the request of this {@link UpdateUi.UpdateRequest}.
+         * Retrieve the request of this {@link UpdateRequest}.
          *
          * @return Guess.
          */
@@ -147,7 +146,7 @@ public class UpdateUi extends Thread {
         }
 
         /**
-         * Retrieve the cause of this {@link UpdateUi.UpdateRequest}.
+         * Retrieve the cause of this {@link UpdateRequest}.
          *
          * @return Guess.
          */

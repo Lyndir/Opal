@@ -37,7 +37,7 @@ public abstract class Schedule implements Runnable, Serializable {
 
     private static final long   serialVersionUID = 1L;
 
-    private static Timer        scheduler        = new Timer( "Scheduler", true );
+    private static final Timer  scheduler        = new Timer( "Scheduler", true );
 
     private Calendar            nextSchedule;
     private int                 stepAmount;
@@ -150,7 +150,7 @@ public abstract class Schedule implements Runnable, Serializable {
             time.insert( 0, String.format( "%02d%s", nextSchedule.get( field ), Utils.calendarSuffix( field ) ) );
         }
 
-        String desc = Utils.calendarDesc.get( stepField ).toLowerCase();
+        String desc = Utils.calendarDesc.get( stepField ).toLowerCase( java.util.Locale.ENGLISH );
         if (stepAmount > 1)
             desc += 's';
 

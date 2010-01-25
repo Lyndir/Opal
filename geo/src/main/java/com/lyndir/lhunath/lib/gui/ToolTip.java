@@ -41,20 +41,20 @@ public class ToolTip extends JPanel {
     private static final int              PADDING   = 15;
 
     protected static ToolTip              activeTip;
-    protected static JLabel               stickyhint;
+    protected static final JLabel stickyHint;
     protected static JFrame               toolTipFrame;
     protected static JWindow              toolTipWindow;
-    protected static PaintPanel           toolTipContainer;
-    static WindowAdapter                  toolTipContentWindowListener;
+    protected static final PaintPanel           toolTipContainer;
+    static final WindowAdapter                  toolTipContentWindowListener;
     protected static TimerTask            toolTipSchedule;
-    protected static ScrollPanel          toolTipPanel;
-    protected static JEditorPane          toolTipPane;
+    protected static final ScrollPanel          toolTipPanel;
+    protected static final JEditorPane          toolTipPane;
 
-    protected static int                  maxWidth  = 0;
-    protected static int                  maxHeight = 0;
+    protected static final int                  maxWidth;
+    protected static final int                  maxHeight;
 
-    protected TipButtonListener           buttonListener;
-    protected List<ToolTipStickyListener> stickyListeners;
+    protected final TipButtonListener           buttonListener;
+    protected final List<ToolTipStickyListener> stickyListeners;
     protected boolean                     stickable;
     protected boolean                     stickOnly;
 
@@ -66,9 +66,9 @@ public class ToolTip extends JPanel {
         maxWidth = (int) maxBounds.getMaxX() * 1 / 3;
         maxHeight = (int) maxBounds.getMaxY() * 3 / 4;
 
-        stickyhint = new JLabel( "Press F2 to frame this tip." );
-        stickyhint.setFont( stickyhint.getFont().deriveFont( 10f ) );
-        stickyhint.setHorizontalAlignment( SwingConstants.CENTER );
+        stickyHint = new JLabel( "Press F2 to frame this tip." );
+        stickyHint.setFont( stickyHint.getFont().deriveFont( 10f ) );
+        stickyHint.setHorizontalAlignment( SwingConstants.CENTER );
 
         toolTipPane = new JEditorPane( "text/html", null );
         toolTipPane.setEditable( false );
@@ -81,7 +81,7 @@ public class ToolTip extends JPanel {
 
                 Dimension size = new Dimension( toolTipPane.getWidth() + 5, toolTipPane.getHeight()
                                                                             + (activeTip.stickable
-                                                                                    ? stickyhint.getHeight(): 0) );
+                                                                                    ? stickyHint.getHeight(): 0) );
                 Window window = toolTipWindow;
                 if (window == null || !window.isDisplayable())
                     window = toolTipFrame;
@@ -140,7 +140,7 @@ public class ToolTip extends JPanel {
         stickyListeners = new ArrayList<ToolTipStickyListener>();
         buttonListener = new TipButtonListener();
 
-        toolTipPane.getInputMap( JComponent.WHEN_IN_FOCUSED_WINDOW ).put( KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ),
+        toolTipPane.getInputMap( WHEN_IN_FOCUSED_WINDOW ).put( KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ),
                 "stick" );
         toolTipPane.getActionMap().put( "stick", new AbstractAction( "stick" ) {
 
@@ -293,7 +293,7 @@ public class ToolTip extends JPanel {
         activeTip = this;
 
         for (ToolTipStickyListener listener : stickyListeners)
-            listener.stickyState( ToolTip.this, true );
+            listener.stickyState( this, true );
 
         toolTipFrame = new JFrame();
         toolTipFrame.setUndecorated( true );
@@ -378,7 +378,7 @@ public class ToolTip extends JPanel {
 
 
     @SuppressWarnings("unused")
-    class TipButtonListener extends MouseAdapter implements MouseMotionListener {
+    protected class TipButtonListener extends MouseAdapter {
 
         private static final long TIP_SHOW_DELAY = 500;
 
@@ -457,12 +457,12 @@ public class ToolTip extends JPanel {
                                 toolTipContainer.removeAll();
                                 toolTipContainer.add( toolTipPanel, BorderLayout.CENTER );
                                 if (stickable)
-                                    toolTipContainer.add( stickyhint, BorderLayout.SOUTH );
+                                    toolTipContainer.add( stickyHint, BorderLayout.SOUTH );
 
                                 toolTipWindow.setContentPane( toolTipContainer );
                                 toolTipWindow.pack();
                                 toolTipWindow.setSize( toolTipPane.getWidth() + 5, toolTipPane.getHeight()
-                                                                                   + (stickable? stickyhint.getHeight()
+                                                                                   + (stickable? stickyHint.getHeight()
                                                                                            : 0) );
 
                                 /* Determine the window's location. */
@@ -482,7 +482,7 @@ public class ToolTip extends JPanel {
                                 if (!Arrays.asList( window.getWindowListeners() ).contains(
                                         toolTipContentWindowListener ))
                                     window.addWindowFocusListener( toolTipContentWindowListener );
-                            } catch (NullPointerException err) {
+                            } catch (NullPointerException ignored) {
                                 /* Tooltip has been removed while timer was running. */
                             }
                         }
@@ -538,7 +538,7 @@ public class ToolTip extends JPanel {
     /**
      * A listener that is used to listen for sticky state changes.
      */
-    public interface ToolTipStickyListener {
+    private interface ToolTipStickyListener {
 
         /**
          * Notifies the listener that this tooltip's sticky state has changed.
@@ -548,6 +548,6 @@ public class ToolTip extends JPanel {
          * @param sticky
          *            true if the tooltip has been made sticky.
          */
-        public void stickyState(ToolTip toolTip, boolean sticky);
+        void stickyState(ToolTip toolTip, boolean sticky);
     }
 }

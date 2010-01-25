@@ -15,31 +15,28 @@
  */
 package com.lyndir.lhunath.lib.network;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManagerFactory;
-
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
-
-import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
 /**
@@ -55,7 +52,6 @@ public class SslFactory implements SecureProtocolSocketFactory {
 
     private static final Logger logger = Logger.get( SslFactory.class );
 
-    private static SslFactory   instance;
     private SSLContext          context;
 
 
@@ -70,10 +66,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
      */
     public static SslFactory initialize(File keyStore, String password) {
 
-        if (instance == null)
-            instance = new SslFactory( keyStore, password );
-
-        return instance;
+        return new SslFactory( keyStore, password );
     }
 
     /**
@@ -81,12 +74,9 @@ public class SslFactory implements SecureProtocolSocketFactory {
      *
      * @return Guess.
      */
-    public static Protocol createHttpsProtocol() {
+    public Protocol createHttpsProtocol() {
 
-        if (instance == null)
-            throw new IllegalStateException( "The factory has not yet been initialized." );
-
-        return new Protocol( "https", (ProtocolSocketFactory) instance, 443 );
+        return new Protocol( "https", (ProtocolSocketFactory) this, 443 );
     }
 
     private SslFactory(File keyStore, String password) {
@@ -120,7 +110,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
      */
     @Override
     public Socket createSocket(Socket socket, String host, int port, boolean autoClose)
-            throws IOException, UnknownHostException {
+            throws IOException {
 
         return context.getSocketFactory().createSocket( socket, host, port, autoClose );
     }
@@ -130,7 +120,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
      */
     @Override
     public Socket createSocket(String host, int port)
-            throws IOException, UnknownHostException {
+            throws IOException {
 
         return context.getSocketFactory().createSocket( host, port );
     }
@@ -140,7 +130,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
      */
     @Override
     public Socket createSocket(String host, int port, InetAddress localAddress, int localPort)
-            throws IOException, UnknownHostException {
+            throws IOException {
 
         return context.getSocketFactory().createSocket( host, port, localAddress, localPort );
     }
@@ -154,7 +144,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
     @Deprecated
     public Socket createSocket(String host, int port, InetAddress localAddress, int localPort,
                                HttpConnectionParams params)
-            throws IOException, UnknownHostException, ConnectTimeoutException {
+            throws IOException {
 
         if (params == null)
             throw new IllegalArgumentException( "Parameters may not be null." );

@@ -18,18 +18,16 @@ package com.lyndir.lhunath.lib.gui.template.shade;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.logging.ConsoleHandler;
 
 import com.lyndir.lhunath.lib.gui.MyLookAndFeel;
 import com.lyndir.lhunath.lib.math.Version;
 import com.lyndir.lhunath.lib.system.BaseConfig;
 import com.lyndir.lhunath.lib.system.Locale;
-import com.lyndir.lhunath.lib.system.logging.LogFormatter;
 
 
 /**
  * TODO: {@link ShadeConfig}<br>
- * 
+ *
  * @author lhunath
  * @param <T>
  */
@@ -49,57 +47,57 @@ public class ShadeConfig<T extends Serializable> extends BaseConfig<T> {
     /**
      * The application's storage location.
      */
-    public static File                        res;
+    public static final File                        res;
 
     /**
      * The handler used to display logging messages on the console.
      */
-    public static ConsoleHandler              console;
+    //public static ConsoleHandler              console;
 
     /**
      * The formatter used to generate log messages on the console.
      */
-    public static LogFormatter                formatter;
+    //public static LogFormatter                formatter;
 
     /**
      * The application user interface.
      */
-    public static AbstractUi                  ui;
+    private static AbstractUi                  ui;
 
     /**
      * The active look and feel.
      */
-    public static BaseConfig<MyLookAndFeel>   theme            = create( MyLookAndFeel.class );
+    public static final BaseConfig<MyLookAndFeel>   theme            = create( MyLookAndFeel.class );
 
     /**
      * The local filename of the logos.
      */
-    public static BaseConfig<ArrayList<File>> logos            = create( new ArrayList<File>() );
+    public static final BaseConfig<ArrayList<File>> logos            = create( new ArrayList<File>() );
 
     /**
      * Show detailed errors and print stack traces on the console.
      */
-    public static BaseConfig<Boolean>         verbose          = create( true );
+    public static final BaseConfig<Boolean>         verbose          = create( true );
 
     /**
      * Whether or not to take up the whole screen, or use a window.
      */
-    public static BaseConfig<Boolean>         fullScreen       = create( false );
+    public static final BaseConfig<Boolean>         fullScreen       = create( false );
 
     /**
      * Whether or not to use the System Tray.
      */
-    public static BaseConfig<Boolean>         sysTray          = create( false );
+    public static final BaseConfig<Boolean>         sysTray          = create( false );
 
     /**
      * Always keep the jUniUploader window on top of others.
      */
-    public static BaseConfig<Boolean>         alwaysOnTop      = create( false );
+    public static final BaseConfig<Boolean>         alwaysOnTop      = create( false );
 
     /**
      * Start jUniUploader minimized (either in systray or on the taskbar).
      */
-    public static BaseConfig<Boolean>         startMini        = create( false );
+    public static final BaseConfig<Boolean>         startMini        = create( false );
 
     static {
         /* Determine the resources dir. */
@@ -134,12 +132,20 @@ public class ShadeConfig<T extends Serializable> extends BaseConfig<T> {
 
     /**
      * Create a new Config instance.
-     * 
+     *
      * @param defaultValue
      *            The default value for this config entry in case it is <code>null</code>.
      */
     protected ShadeConfig(T defaultValue) {
 
         super( defaultValue );
+    }
+
+    public static AbstractUi getUi() {
+        return ui;
+    }
+
+    public static void setUi(AbstractUi ui) {
+        ShadeConfig.ui = ui;
     }
 }

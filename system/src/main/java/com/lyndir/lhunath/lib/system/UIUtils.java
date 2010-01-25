@@ -224,7 +224,7 @@ public class UIUtils {
 
         try {
             return Desktop.isDesktopSupported();
-        } catch (NoClassDefFoundError e) {
+        } catch (NoClassDefFoundError ignored) {
             return false;
         }
     }
@@ -238,7 +238,7 @@ public class UIUtils {
 
         try {
             return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.BROWSE );
-        } catch (NoClassDefFoundError e) {
+        } catch (NoClassDefFoundError ignored) {
             return false;
         }
     }
@@ -252,7 +252,7 @@ public class UIUtils {
 
         try {
             return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.MAIL );
-        } catch (NoClassDefFoundError e) {
+        } catch (NoClassDefFoundError ignored) {
             return false;
         }
     }
@@ -266,7 +266,7 @@ public class UIUtils {
 
         try {
             return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.OPEN );
-        } catch (NoClassDefFoundError e) {
+        } catch (NoClassDefFoundError ignored) {
             return false;
         }
     }

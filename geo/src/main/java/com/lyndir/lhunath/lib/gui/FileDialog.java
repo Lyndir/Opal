@@ -28,17 +28,17 @@ import javax.swing.filechooser.FileFilter;
  * <br>
  * This is a convenience class for showing a file chooser in a dialog.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public abstract class FileDialog extends JFileChooser {
 
-    private JDialog dialog;
+    private final JDialog dialog;
 
 
     /**
      * Create a new JFileDialog instance.
-     * 
+     *
      * @param start
      *            The initial location to show when opening the dialog.
      * @param title
@@ -46,7 +46,7 @@ public abstract class FileDialog extends JFileChooser {
      * @param parent
      *            The parent frame that will be inaccessible until the dialog is closed (or null).
      */
-    public FileDialog(File start, String title, Frame parent) {
+    protected FileDialog(File start, String title, Frame parent) {
 
         super( start );
 
@@ -95,7 +95,7 @@ public abstract class FileDialog extends JFileChooser {
 
     /**
      * Create a {@link FileFilter} that filters out any non-directories.
-     * 
+     *
      * @return Guess.
      */
     public static FileFilter createDirectoryFilter() {
@@ -121,7 +121,7 @@ public abstract class FileDialog extends JFileChooser {
 
     /**
      * Creates a {@link FileFilter} that filters out any files that don't have the given extension.
-     * 
+     *
      * @param extension
      *            The extension to allow.
      * @param description

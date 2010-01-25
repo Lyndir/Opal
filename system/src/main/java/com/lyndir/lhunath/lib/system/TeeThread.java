@@ -31,20 +31,20 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  * <p>
  * <i>Dec 16, 2007</i>
  * </p>
- * 
+ *
  * @author mbillemo
  */
 public class TeeThread extends Thread {
 
     private static final Logger logger = Logger.get( TeeThread.class );
 
-    private InputStream         source;
-    private OutputStream[]      destinations;
+    private final InputStream         source;
+    private final OutputStream[]      destinations;
 
 
     /**
      * Create a new {@link TeeThread} instance.
-     * 
+     *
      * @param source
      *            The data source.
      * @param destinations

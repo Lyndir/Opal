@@ -18,18 +18,18 @@ package com.lyndir.lhunath.lib.system.util;
 /**
  * <h2>{@link StringUtils}<br>
  * <sub>Some utility methods for working with {@link String}s.</sub></h2>
- * 
+ *
  * <p>
  * <i>Jan 12, 2010</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public abstract class StringUtils {
 
     public static String concat(String delimitor, String... elements) {
 
-        StringBuffer concatenation = new StringBuffer();
+        StringBuilder concatenation = new StringBuilder();
         for (String element : elements)
             concatenation.append( element ).append( delimitor );
 

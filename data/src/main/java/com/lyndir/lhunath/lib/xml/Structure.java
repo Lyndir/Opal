@@ -15,6 +15,11 @@
  */
 package com.lyndir.lhunath.lib.xml;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.validation.Schema;
+import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -22,20 +27,13 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.validation.Schema;
-import javax.xml.xpath.XPathExpressionException;
-
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.tidy.Tidy;
 import org.xml.sax.SAXException;
-
-import com.lyndir.lhunath.lib.system.logging.Logger;
 
 
 /**
@@ -52,7 +50,7 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  * <p>
  * <i>Apr 8, 2008</i>
  * </p>
- * 
+ *
  * @author mbillemo
  */
 public class Structure {
@@ -75,32 +73,32 @@ public class Structure {
                 continue;
 
             try {
-                Object value = null;
+                Object value;
                 Class<?> valueType = field.getType();
                 field.setAccessible( true );
 
                 logger.dbg( "Setting (%s) '%s' to '%s' (xpath: %s)", valueType.getSimpleName(), field.getName(),
                             xmlpath.getString( root, annotation.value() ), annotation.value() );
 
-                if (Byte.class == valueType || Byte.TYPE == valueType)
+                if (valueType == Byte.class || Byte.TYPE == valueType)
                     value = xmlpath.getNumber( root, annotation.value() ).byteValue();
 
-                else if (Double.class == valueType || Double.TYPE == valueType)
+                else if (valueType == Double.class || Double.TYPE == valueType)
                     value = xmlpath.getNumber( root, annotation.value() ).doubleValue();
 
-                else if (Float.class == valueType || Float.TYPE == valueType)
+                else if (valueType == Float.class || Float.TYPE == valueType)
                     value = xmlpath.getNumber( root, annotation.value() ).floatValue();
 
-                else if (Integer.class == valueType || Integer.TYPE == valueType)
+                else if (valueType == Integer.class || Integer.TYPE == valueType)
                     value = xmlpath.getNumber( root, annotation.value() ).intValue();
 
-                else if (Long.class == valueType || Long.TYPE == valueType)
+                else if (valueType == Long.class || Long.TYPE == valueType)
                     value = xmlpath.getNumber( root, annotation.value() ).longValue();
 
-                else if (Short.class == valueType || Short.TYPE == valueType)
+                else if (valueType == Short.class || Short.TYPE == valueType)
                     value = xmlpath.getNumber( root, annotation.value() ).shortValue();
 
-                else if (Boolean.class == valueType || Boolean.TYPE == valueType)
+                else if (valueType == Boolean.class || Boolean.TYPE == valueType)
                     value = xmlpath.getBoolean( root, annotation.value() );
 
                 else
@@ -136,13 +134,13 @@ public class Structure {
 
     /**
      * Load XML data into an object that has the {@link FromXML} annotation on it.
-     * 
+     *
      * @param <T>
      * @param type
      *            The annotated class to create an object for.
-     * 
+     *
      * @return An object of the given type with XML data injected.
-     * 
+     *
      * @throws IOException
      * @throws SAXException
      * @throws XPathExpressionException
@@ -155,19 +153,21 @@ public class Structure {
             throw new IllegalArgumentException( "Object passed must have the FromXML annotation." );
 
         // Create an empty object of the specified type.
-        T structure = null;
+        T structure;
         try {
-            structure = type.newInstance();
+            structure = type.getConstructor().newInstance();
         } catch (InstantiationException e) {
-            logger.err( e, "FromXML class can't be instantiated." );
+            throw logger.err( e, "FromXML class may not be instantiated." ).toError();
         } catch (IllegalAccessException e) {
-            logger.err( e, "FromXML class isn't accessible." );
+            throw logger.err( e, "FromXML class isn't accessible." ).toError();
+        } catch (NoSuchMethodException e) {
+            throw logger.err( e, "FromXML class has no default constructor." ).toError();
+        } catch (InvocationTargetException e) {
+            throw logger.err( e, "FromXML class instantiation failed." ).toError();
         }
-        if (structure == null)
-            return null;
 
         // Set up our XML parser.
-        DocumentBuilder builder = Structure.getXMLBuilder();
+        DocumentBuilder builder = getXMLBuilder();
         String resourceName = type.getAnnotation( FromXML.class ).value();
 
         // Parse in our XML data.
@@ -180,13 +180,13 @@ public class Structure {
 
     /**
      * Load XML data into a list of objects that have the {@link FromXML} annotation on it.
-     * 
+     *
      * @param <T>
      * @param type
      *            The annotated class to create a objects for.
-     * 
+     *
      * @return A list of object of the given type with XML data injected.
-     * 
+     *
      * @throws IOException
      * @throws SAXException
      * @throws XPathExpressionException
@@ -199,7 +199,7 @@ public class Structure {
             throw new IllegalArgumentException( "Object passed must have the FromXML annotation." );
 
         // Set up our XML parser.
-        DocumentBuilder builder = Structure.getXMLBuilder();
+        DocumentBuilder builder = getXMLBuilder();
         String resourceName = type.getAnnotation( FromXML.class ).value();
 
         // Parse in our XML data.
@@ -209,16 +209,18 @@ public class Structure {
         List<Node> children = xmlpath.getNodes( root, "/*/*" );
         List<T> structures = new ArrayList<T>( children.size() );
         for (Node child : children) {
-            T structure = null;
+            T structure;
             try {
-                structure = type.newInstance();
+                structure = type.getConstructor().newInstance();
             } catch (InstantiationException e) {
-                logger.err( e, "FromXML class can't be instantiated." );
+                throw logger.err( e, "FromXML class can't be instantiated." ).toError();
             } catch (IllegalAccessException e) {
-                logger.err( e, "FromXML class isn't accessible." );
+                throw logger.err( e, "FromXML class isn't accessible." ).toError();
+            } catch (NoSuchMethodException e) {
+                throw logger.err( e, "FromXML class has no default constructor." ).toError();
+            } catch (InvocationTargetException e) {
+                throw logger.err( e, "FromXML class instantiation failed." ).toError();
             }
-            if (structure == null)
-                return null;
 
             // If an XInjectTag is defined; set it to the name of the child tag.
             for (Field field : structure.getClass().getDeclaredFields())
@@ -247,7 +249,7 @@ public class Structure {
 
     /**
      * Convert an object that has the {@link FromXML} annotation to an XML structured string.
-     * 
+     *
      * @param structure
      *            The object to render as XML.
      * @return the given object as an XML-formatted string.
@@ -257,7 +259,7 @@ public class Structure {
         if (structure.getClass().getAnnotation( FromXML.class ) == null)
             throw new IllegalArgumentException( "Object passed must have the FromXML annotation." );
 
-        StringBuffer out = new StringBuffer( String.format( "<%s>\n", structure.getClass().getSimpleName() ) );
+        StringBuilder out = new StringBuilder( String.format( "<%s>\n", structure.getClass().getSimpleName() ) );
         for (Field field : structure.getClass().getDeclaredFields()) {
             XInject annotation = field.getAnnotation( XInject.class );
             if (annotation == null)
@@ -280,7 +282,8 @@ public class Structure {
                 }
             }
 
-            catch (IllegalArgumentException e) {} catch (IllegalAccessException e) {}
+            catch (IllegalArgumentException ignored) {}
+            catch (IllegalAccessException ignored) {}
         }
         out.append( String.format( "</%s>", structure.getClass().getSimpleName() ) );
 
@@ -312,7 +315,7 @@ public class Structure {
      * <li>Is not XInclude-aware.</li>
      * <li>Is not validating.</li>
      * </ul>
-     * 
+     *
      * @return a builder that parses XML data according to the defaults highlighted above.
      */
     public static DocumentBuilder getXMLBuilder() {
@@ -331,7 +334,7 @@ public class Structure {
      * <li>Is not XInclude-aware.</li>
      * <li>Is validating using the given schema.</li>
      * </ul>
-     * 
+     *
      * @param schema
      *            The schema to validate against.
      * @return a builder that parses XML data according to the defaults highlighted above.
@@ -387,7 +390,7 @@ public class Structure {
 
     /**
      * This method trims text node data.
-     * 
+     *
      * @param node
      *            The XML node to render.
      * @return the given node as an XML-formatted string.
@@ -455,6 +458,6 @@ public class Structure {
 
     private static String indent(int indent) {
 
-        return String.format( "%" + indent * TAB_SIZE + "s", "" );
+        return String.format( "%" + indent * TAB_SIZE + 's', "" );
     }
 }

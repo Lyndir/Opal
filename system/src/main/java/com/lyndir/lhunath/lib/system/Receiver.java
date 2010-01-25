@@ -20,7 +20,7 @@ package com.lyndir.lhunath.lib.system;
  * <br>
  * [description / usage].<br>
  * <br>
- * 
+ *
  * @param <E>
  *            The type of event that can be processed.
  * @author lhunath
@@ -29,10 +29,10 @@ public interface Receiver<E> {
 
     /**
      * An event was fired by the given source object.
-     * 
+     *
      * @param event
      *            The event that was fired.
      * @return <code>false</code> if the event cannot be processed for some reason.
      */
-    public boolean fire(E event);
+    boolean fire(E event);
 }

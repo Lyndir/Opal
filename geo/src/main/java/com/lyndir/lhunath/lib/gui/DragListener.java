@@ -34,10 +34,10 @@ import java.awt.event.MouseMotionListener;
  *
  * @author lhunath
  */
-public class DragListener extends MouseAdapter implements MouseMotionListener {
+public class DragListener extends MouseAdapter {
 
     private Point     startDrag;
-    private Container dragComponent;
+    private final Container dragComponent;
     private Point     startLoc;
 
 

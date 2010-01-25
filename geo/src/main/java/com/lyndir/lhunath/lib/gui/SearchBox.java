@@ -37,7 +37,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
 
     private boolean cleared;
     private int     minChars;
-    private String  subject;
+    private final String  subject;
     private int     hit = 1;
 
 
@@ -47,12 +47,11 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      * @param subject
      *            The name of what will be searched for (appears in the gray text).
      */
-    public SearchBox(String subject) {
+    protected SearchBox(String subject) {
 
-        super();
         this.subject = subject;
 
-        setHorizontalAlignment( SwingConstants.CENTER );
+        setHorizontalAlignment( CENTER );
         addFocusListener( this );
         addKeyListener( this );
         minChars = 3;
@@ -69,7 +68,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      * @param minChars
      *            Minimum amount of characters required to activate the search.
      */
-    public SearchBox(String subject, int minChars) {
+    protected SearchBox(String subject, int minChars) {
 
         this( subject );
         setMinChars( minChars );

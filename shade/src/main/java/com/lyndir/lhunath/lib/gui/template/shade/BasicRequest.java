@@ -69,7 +69,7 @@ public enum BasicRequest implements Request {
      */
     SYSTRAY (-1);
 
-    private int autorunPriority;
+    private final int autorunPriority;
 
 
     /**
@@ -79,7 +79,7 @@ public enum BasicRequest implements Request {
      *            Lower or equal to zero: No auto-running.<br>
      *            Larger than zero: Ascending order in which the request will be processed.
      */
-    private BasicRequest(int autorunPriority) {
+    BasicRequest(int autorunPriority) {
 
         this.autorunPriority = autorunPriority;
     }
@@ -103,7 +103,7 @@ public enum BasicRequest implements Request {
     }
 
 
-    private static List<Request> requests = new ArrayList<Request>();
+    private static final List<Request> requests = new ArrayList<Request>();
 
 
     /**

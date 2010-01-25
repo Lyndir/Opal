@@ -25,65 +25,65 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 /**
  * <h2>{@link Plugin}<br>
  * <sub>A pluggable module that provides a feature to the shade application.</sub></h2>
- * 
+ *
  * <p>
  * [description / usage].
  * </p>
- * 
+ *
  * <p>
  * <i>Jun 14, 2008</i>
  * </p>
- * 
+ *
  * @author mbillemo
  */
 public interface Plugin {
 
     /**
      * Handle the given UI event; if supported by this plugin.
-     * 
+     *
      * @param e
      *            The UI event that was triggered in the shade interface and was not handled by the application.
      * @return <code>true</code> if the given event is handled by this plugin; <code>false</code> if not (so that other
      *         plugins can try to handle the event).
      */
-    public boolean handleEvent(EventObject e);
+    boolean handleEvent(EventObject e);
 
     /**
      * Handle the given application request; if supported by this plugin.
-     * 
+     *
      * @param element
      *            The application request that was triggered in the shade interface and was not handled by the
      *            application.
      * @return <code>true</code> if the given request is handled by this plugin; <code>false</code> if not (so that
      *         other plugins can try to handle the event).
      */
-    public boolean handleRequest(Request element);
+    boolean handleRequest(Request element);
 
     /**
      * @return The list of tabs that this plugin wants to add to the interface or <code>null</code> for none.
      */
-    public List<? extends Tab> buildTabs();
+    List<? extends Tab> buildTabs();
 
     /**
      * Use this method to add entries to the application's system tray menu.
-     * 
+     *
      * @param sysMenu
      *            The object that contains the system tray's menu.
      */
-    public void buildSystray(PopupMenu sysMenu);
+    void buildSystray(PopupMenu sysMenu);
 
     /**
      * Use this method to add entries to the application's configuration panel.
-     * 
+     *
      * @param builder
      *            The component builder used to create the configuration panel.
      * @see DefaultFormBuilder
      */
-    public void buildSettings(DefaultFormBuilder builder);
+    void buildSettings(DefaultFormBuilder builder);
 
     /**
      * @return The name of this plugin.
      */
-    public String getName();
+    String getName();
 
 }

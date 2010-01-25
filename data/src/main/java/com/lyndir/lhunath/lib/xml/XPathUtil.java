@@ -26,7 +26,7 @@ import org.xml.sax.InputSource;
  */
 public class XPathUtil {
 
-    private XPath xpath;
+    private final XPath xpath;
 
 
     /**
@@ -175,9 +175,9 @@ public class XPathUtil {
      *
      * @author mbillemo
      */
-    public class XHTMLContext implements NamespaceContext {
+    private class XHTMLContext implements NamespaceContext {
 
-        private Map<String, String> namespaces = new HashMap<String, String>();
+        private final Map<String, String> namespaces = new HashMap<String, String>();
 
 
         /**

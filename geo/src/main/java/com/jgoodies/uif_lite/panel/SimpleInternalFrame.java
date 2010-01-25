@@ -23,12 +23,12 @@ import com.lyndir.lhunath.lib.gui.PaintPanel;
  *
  * @author Karsten Lentzsch
  * @version $Revision: 1.3 $
- * @see javax.swing.JInternalFrame
- * @see javax.swing.JDesktopPane
+ * @see JInternalFrame
+ * @see JDesktopPane
  */
 public class SimpleInternalFrame extends JPanel {
 
-    protected JLabel   titleLabel;
+    protected final JLabel   titleLabel;
     private PaintPanel gradientPanel;
     private JPanel     headerPanel;
     private boolean    selected;

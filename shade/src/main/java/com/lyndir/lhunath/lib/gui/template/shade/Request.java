@@ -23,15 +23,15 @@ import java.io.Serializable;
  * <br>
  * [description / usage].<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public interface Request extends Serializable {
 
     /**
      * Retrieve the priority this element has in the autorun queue.
-     * 
+     *
      * @return lower runs before higher.
      */
-    public int getAutorunPriority();
+    int getAutorunPriority();
 }

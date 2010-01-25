@@ -33,19 +33,19 @@ import edu.umd.cs.piccolox.pswing.PSwingCanvas;
  * [description / usage].<br>
  * <br>
  * FIXME
- * 
+ *
  * @author lhunath
  */
 public class PDialog extends PBox {
 
-    private PDialogClosedListener listener;
-    private PSwing                pSwing;
-    private JPanel                panel;
-    private PSwingCanvas          swingCanvas;
+    private final PDialogClosedListener listener;
+    private final PSwing                pSwing;
+    private final JPanel                panel;
+    private final PSwingCanvas          swingCanvas;
 
     /**
      * Create a new PDialog instance.
-     * 
+     *
      * @param title
      * @param canvas
      * @param listener
@@ -65,7 +65,7 @@ public class PDialog extends PBox {
 
     /**
      * Retrieve the panel of this PDialog.
-     * 
+     *
      * @return Guess.
      */
     public JPanel getPanel() {
@@ -75,7 +75,7 @@ public class PDialog extends PBox {
 
     /**
      * Retrieve the Swing Environment of this PDialog.
-     * 
+     *
      * @return Guess.
      */
     public PSwing getSwing() {
@@ -85,7 +85,7 @@ public class PDialog extends PBox {
 
     /**
      * Retrieve the Swing Canvas used by this PDialog.
-     * 
+     *
      * @return Guess.
      */
     public PSwingCanvas getSwingCanvas() {
@@ -95,7 +95,7 @@ public class PDialog extends PBox {
 
     /**
      * Enable or disable components.
-     * 
+     *
      * @param enabled
      *        Guess.
      * @param components
@@ -135,7 +135,7 @@ public class PDialog extends PBox {
         }
     }
 
-    class PDialogInputHandler extends PBasicInputEventHandler {
+    private class PDialogInputHandler extends PBasicInputEventHandler {
 
         /**
          * @inheritDoc

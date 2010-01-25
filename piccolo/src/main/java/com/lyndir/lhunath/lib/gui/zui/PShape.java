@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.gui.zui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 import edu.umd.cs.piccolo.PNode;
@@ -29,9 +30,9 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  */
 public abstract class PShape extends PNode {
 
-    private java.awt.Shape shape;
+    private Shape shape;
 
-    protected abstract java.awt.Shape createShape();
+    protected abstract Shape createShape();
 
     /**
      * Update the shape of this node. Called whenever the bounds change.
@@ -47,9 +48,7 @@ public abstract class PShape extends PNode {
     /**
      * Create a new {@link PShape} instance.
      */
-    public PShape() {
-
-        super();
+    protected PShape() {
 
         setPaint( Color.BLACK );
     }
@@ -57,7 +56,7 @@ public abstract class PShape extends PNode {
     /**
      * @return The shape represented by this object.
      */
-    public java.awt.Shape getShape() {
+    public Shape getShape() {
 
         if (shape == null)
             shape = createShape();
@@ -98,9 +97,9 @@ public abstract class PShape extends PNode {
      * {@inheritDoc}
      */
     @Override
-    public void paint(PPaintContext aPaintContext) {
+    public void paint(PPaintContext paintContext) {
 
-        Graphics2D g2 = aPaintContext.getGraphics();
+        Graphics2D g2 = paintContext.getGraphics();
         g2.setPaint( getPaint() );
         g2.draw( getShape() );
     }

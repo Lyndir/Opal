@@ -16,17 +16,11 @@
 
 package com.lyndir.lhunath.lib.gui;
 
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-
-import javax.swing.Icon;
-import javax.swing.JLabel;
 
 import com.lyndir.lhunath.lib.math.Vec2;
 
@@ -34,11 +28,11 @@ import com.lyndir.lhunath.lib.math.Vec2;
 /**
  * <h2>{@link GLabel}<br>
  * <sub>A rounded replacement for the default {@link JLabel}.</sub></h2>
- * 
+ *
  * <p>
  * <i>Apr 9, 2008</i>
  * </p>
- * 
+ *
  * @author mbillemo
  */
 public class GLabel extends JLabel {
@@ -46,6 +40,7 @@ public class GLabel extends JLabel {
     private static final long serialVersionUID = 1L;
 
     protected boolean         hasMouse, isPressed;
+
     protected int             padding;
     private GradientPaint     gradientBase;
     private int               arc              = 5;
@@ -53,7 +48,7 @@ public class GLabel extends JLabel {
 
     /**
      * Create a new {@link GLabel} instance.
-     * 
+     *
      * @param text
      *            The text to render in the label.
      * @param icon
@@ -71,7 +66,7 @@ public class GLabel extends JLabel {
 
     /**
      * Create a new {@link GLabel} instance.
-     * 
+     *
      * @param text
      *            The text to render in the label.
      * @param horizontalAlignment
@@ -87,7 +82,7 @@ public class GLabel extends JLabel {
 
     /**
      * Create a new {@link GLabel} instance.
-     * 
+     *
      * @param text
      *            The text to render in the label.
      * @param gradient
@@ -101,7 +96,7 @@ public class GLabel extends JLabel {
 
     /**
      * Create a new {@link GLabel} instance.
-     * 
+     *
      * @param icon
      *            The icon to display next to the text on the label.
      * @param horizontalAlignment
@@ -117,7 +112,7 @@ public class GLabel extends JLabel {
 
     /**
      * Create a new {@link GLabel} instance.
-     * 
+     *
      * @param icon
      *            The icon to display next to the text on the label.
      * @param gradient
@@ -131,13 +126,12 @@ public class GLabel extends JLabel {
 
     /**
      * Create a new {@link GLabel} instance.
-     * 
+     *
      * @param gradient
      *            The gradient base color for the label.
      */
     public GLabel(Color gradient) {
 
-        super();
         init( gradient );
     }
 
@@ -148,6 +142,15 @@ public class GLabel extends JLabel {
         setGradient( gradient );
         setPadding( 1 );
     }
+
+    /**
+     * @return
+     *            The padding of this {@link GLabel}.
+     */
+    public int getPadding() {
+        return padding;
+    }
+
 
     /**
      * @param padding
@@ -169,6 +172,14 @@ public class GLabel extends JLabel {
         gradientBase = new GradientPaint( new Point2D.Double( 0, 0 ), src, new Point2D.Double( 0, 1 ), base );
     }
 
+    /**
+     * @return
+     *            The arc of this {@link GLabel}.
+     */
+    public int getArc() {
+
+        return arc;
+    }
     /**
      * @param arc
      *            The arc of this {@link GLabel}.
@@ -210,7 +221,7 @@ public class GLabel extends JLabel {
     }
 
 
-    class GLabelMouseAdapter extends MouseAdapter {
+    private class GLabelMouseAdapter extends MouseAdapter {
 
         private static final int CLICK_PADDING = 2;
         private int              originalPadding;

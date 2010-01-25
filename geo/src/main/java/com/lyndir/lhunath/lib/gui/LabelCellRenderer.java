@@ -26,7 +26,7 @@ import javax.swing.SwingConstants;
 /**
  * <i>LabelCellRenderer - A cell renderer for lists and combo boxes that sets up a {@link JLabel} for its cells.</i><br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class LabelCellRenderer extends DefaultListCellRenderer {
@@ -38,7 +38,7 @@ public class LabelCellRenderer extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
                                                   boolean cellHasFocus) {
 
-        setHorizontalTextPosition( SwingConstants.CENTER );
+        setHorizontalTextPosition( CENTER );
         if (value instanceof JLabel) {
             setBackground( ((JLabel) value).getBackground() );
             setForeground( ((JLabel) value).getForeground() );

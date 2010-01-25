@@ -32,7 +32,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
     private static final Color backgroundBase  = new Color( 0.9f, 0.9f, 1 );
     private static final Color backgroundHover = UIUtils.setAlpha( backgroundBase, 100 );
     private static boolean     alternateRow;
-    private Color              background;
+    private final Color              background;
 
 
     /**

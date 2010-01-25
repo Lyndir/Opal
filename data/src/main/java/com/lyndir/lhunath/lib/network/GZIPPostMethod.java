@@ -31,7 +31,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
  * Using this post method allows GZip compression of the upload stream if supported by the remote server; if and only if
  * enabled using {@link #useGZip(boolean)}.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class GZIPPostMethod extends PostMethod {
@@ -42,12 +42,11 @@ public class GZIPPostMethod extends PostMethod {
     /** Creates a new instance of GZIPAwarePostMethod */
     public GZIPPostMethod() {
 
-        super();
     }
 
     /**
      * Constructor specifying a URI.
-     * 
+     *
      * @param uri
      *            either an absolute or relative URI
      */
@@ -58,7 +57,7 @@ public class GZIPPostMethod extends PostMethod {
 
     /**
      * Check whether we're using GZip or not.
-     * 
+     *
      * @return Guess.
      */
     public boolean isUsingGZip() {
@@ -68,7 +67,7 @@ public class GZIPPostMethod extends PostMethod {
 
     /**
      * Set the useGZip of this GZIPPostMethod.
-     * 
+     *
      * @param enabled
      *            Guess.
      */
@@ -79,12 +78,12 @@ public class GZIPPostMethod extends PostMethod {
 
     /**
      * Notifies the server that we can process a GZIP-compressed response before sending the request.
-     * 
+     *
      * {@inheritDoc}
      */
     @Override
     public int execute(HttpState state, HttpConnection conn)
-            throws HttpException, IOException {
+            throws IOException {
 
         if (useGZip)
             addRequestHeader( "Accept-Encoding", "gzip" );
@@ -95,17 +94,17 @@ public class GZIPPostMethod extends PostMethod {
     /**
      * If the response body was GZIP-compressed, responseStream will be set to a GZIPInputStream wrapping the original
      * InputStream used by the superclass.
-     * 
+     *
      * {@inheritDoc}
      */
     @Override
     protected void readResponse(HttpState state, HttpConnection conn)
-            throws IOException, HttpException {
+            throws IOException {
 
         super.readResponse( state, conn );
 
         Header contentEncodingHeader = getResponseHeader( "Content-Encoding" );
-        if (contentEncodingHeader != null && contentEncodingHeader.getValue().equalsIgnoreCase( "gzip" ))
+        if (contentEncodingHeader != null && "gzip".equalsIgnoreCase( contentEncodingHeader.getValue() ))
             setResponseStream( new GZIPInputStream( getResponseStream() ) );
     }
 

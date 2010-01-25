@@ -15,15 +15,14 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
+import javax.swing.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
-
-import javax.swing.AbstractSpinnerModel;
-import javax.swing.JSpinner;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import com.lyndir.lhunath.lib.system.util.Utils;
@@ -41,7 +40,7 @@ public class TimeSpinner extends JSpinner {
 
     static final Logger      logger = Logger.get( TimeSpinner.class );
 
-    private TimeSpinnerModel model;
+    private final TimeSpinnerModel model;
     private int              jumpField;
 
 
@@ -104,7 +103,7 @@ public class TimeSpinner extends JSpinner {
     public void setJumpField(int jumpField) {
 
         this.jumpField = jumpField;
-        StringBuffer format = new StringBuffer();
+        StringBuilder format = new StringBuilder();
         for (int field : Utils.calendarFields) {
             if (field == jumpField)
                 break;
@@ -181,17 +180,17 @@ public class TimeSpinner extends JSpinner {
     }
 
 
-    class TimeSpinnerModel extends AbstractSpinnerModel {
+    private class TimeSpinnerModel extends AbstractSpinnerModel {
 
         private Date             value;
         private SimpleDateFormat format;
-        private long             step;
+        private final long             step;
 
 
         /**
          * Create a new {@link TimeSpinnerModel} instance.
          */
-        public TimeSpinnerModel() {
+        TimeSpinnerModel() {
 
             this( null, null, 0 );
         }
@@ -209,7 +208,7 @@ public class TimeSpinner extends JSpinner {
          *            The jump in milliseconds that the spinner's next and previous actions will perform on the current
          *            value. You may use 0 for a default jump value of one minute.
          */
-        public TimeSpinnerModel(String timeFormat, String initialValue, long step) {
+        TimeSpinnerModel(String timeFormat, String initialValue, long step) {
 
             if (step == 0)
                 step = 60000;
@@ -220,7 +219,7 @@ public class TimeSpinner extends JSpinner {
         }
 
         /**
-         * Retrieve the format of this {@link TimeSpinner.TimeSpinnerModel}.
+         * Retrieve the format of this {@link TimeSpinnerModel}.
          *
          * @return Guess.
          */
@@ -230,7 +229,7 @@ public class TimeSpinner extends JSpinner {
         }
 
         /**
-         * Set the format of this {@link TimeSpinner.TimeSpinnerModel}.
+         * Set the format of this {@link TimeSpinnerModel}.
          *
          * @param formatPattern
          *            The pattern of the new format to use for this spinner.
@@ -245,7 +244,7 @@ public class TimeSpinner extends JSpinner {
             if (format != null)
                 format.applyPattern( formatPattern );
             else {
-                format = new SimpleDateFormat( formatPattern );
+                format = new SimpleDateFormat( formatPattern, Locale.ENGLISH );
                 format.setTimeZone( TimeZone.getTimeZone( "GMT" ) );
             }
 
@@ -305,7 +304,7 @@ public class TimeSpinner extends JSpinner {
     }
 
 
-    private class TimeSpinnerEditor extends JSpinner.DefaultEditor {
+    private class TimeSpinnerEditor extends DefaultEditor {
 
         /**
          * Create a new {@link TimeSpinnerEditor} instance.
@@ -313,7 +312,7 @@ public class TimeSpinner extends JSpinner {
          * @param spinner
          *            The spinner that contains this editor.
          */
-        public TimeSpinnerEditor(JSpinner spinner) {
+        TimeSpinnerEditor(JSpinner spinner) {
 
             super( spinner );
             getTextField().setEditable( true );
