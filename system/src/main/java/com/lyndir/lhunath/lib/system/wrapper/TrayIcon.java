@@ -83,6 +83,9 @@ public class TrayIcon extends Wrapper {
                          popup ) );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected TrayIcon(Object wrappedInstance) {
 
         super( wrappedInstance );

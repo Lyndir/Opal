@@ -70,8 +70,9 @@ public class Splash extends JWindow {
     }
 
     /**
+     * @param initial The icon to show in the splash screen in the beginning of the transition or <code>null</code> to not use a transition.
      * @param icon
-     *            The icon to show in the splash screen.
+     *            The icon to show in the splash screen at the end of the transition.
      */
     private void setIcons(Icon initial, Icon icon) {
 

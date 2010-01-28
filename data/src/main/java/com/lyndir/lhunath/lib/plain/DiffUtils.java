@@ -28,6 +28,8 @@ import jlibdiff.Hunk;
 
 /**
  * TODO: Needs cleanup.
+ *
+ * @author lhunath
  */
 public class DiffUtils {
 
@@ -91,6 +93,7 @@ public class DiffUtils {
 
     /**
      * Render the difference as configured in the given diff object.
+     * @param diff The diff that should be rendered.
      */
     private static String renderDiff(Diff diff) {
 

@@ -354,6 +354,9 @@ public class ToolTip extends JPanel {
         toolTipContainer.setBorder( BorderFactory.createLineBorder( toolTipContainer.getBackground().darker().darker() ) );
     }
 
+    /**
+     * Toggle the stickyness of the active tooltip.
+     */
     protected static void toggleSticky() {
 
         if (toolTipFrame != null) {
@@ -363,6 +366,9 @@ public class ToolTip extends JPanel {
             activeTip.stick();
     }
 
+    /**
+     * Close the active tooltip.
+     */
     protected static void closeTip() {
 
         if (toolTipSchedule != null)
@@ -377,6 +383,16 @@ public class ToolTip extends JPanel {
     }
 
 
+    /**
+     * <h2>{@link ToolTipButton}<br>
+     * <sub>[in short] (TODO).</sub></h2>
+     *
+     * <p>
+     * <i>Jan 28, 2010</i>
+     * </p>
+     *
+     * @author lhunath
+     */
     @SuppressWarnings("unused")
     protected class TipButtonListener extends MouseAdapter {
 

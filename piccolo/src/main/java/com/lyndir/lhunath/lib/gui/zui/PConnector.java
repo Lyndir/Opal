@@ -235,7 +235,7 @@ public class PConnector extends PNode {
         Object child;
 
         while (it.hasPrevious() && (child = it.previous()) != null)
-            if (!(child instanceof PConnector))
+            if (!(child instanceof PNode))
                 sane = false;
             else if (!sane)
                 ((PNode) child).moveToFront();

@@ -15,17 +15,11 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
 
 import com.lyndir.lhunath.lib.system.UIUtils;
 
@@ -100,6 +94,11 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      * <b>Override this method instead of {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
      * !</b>
      *
+     * @param list See {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
+     * @param value See {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
+     * @param index See {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
+     * @param isSelected See {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
+     * @param cellHasFocus See {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
      * @return The {@link Component} that will be painted to represent the given data.
      */
     private Component getObjectComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

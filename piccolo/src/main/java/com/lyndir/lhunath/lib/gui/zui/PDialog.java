@@ -46,8 +46,8 @@ public class PDialog extends PBox {
     /**
      * Create a new PDialog instance.
      *
-     * @param title
-     * @param canvas
+     * @param title The title to show on the dialog.
+     * @param canvas The canvas the dialog will be showed in.
      * @param listener
      *        The object that will be notified when the dialog is closed.
      */

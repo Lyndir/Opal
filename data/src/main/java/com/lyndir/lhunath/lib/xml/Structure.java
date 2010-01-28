@@ -57,8 +57,8 @@ public class Structure {
 
     private static final Logger   logger    = Logger.get( Structure.class );
 
-    public static final XPathUtil xmlpath   = new XPathUtil( false );
-    public static final XPathUtil xhtmlpath = new XPathUtil( true );
+    private static final XPathUtil xmlpath   = new XPathUtil( false );
+    private static final XPathUtil xhtmlpath = new XPathUtil( true );
 
     private static final int      TAB_SIZE  = 4;
 
@@ -135,7 +135,7 @@ public class Structure {
     /**
      * Load XML data into an object that has the {@link FromXML} annotation on it.
      *
-     * @param <T>
+     * @param <T> The type of the class instance to inject XML data into.
      * @param type
      *            The annotated class to create an object for.
      *
@@ -181,7 +181,7 @@ public class Structure {
     /**
      * Load XML data into a list of objects that have the {@link FromXML} annotation on it.
      *
-     * @param <T>
+     * @param <T> The type of the class instance to inject XML data into.
      * @param type
      *            The annotated class to create a objects for.
      *

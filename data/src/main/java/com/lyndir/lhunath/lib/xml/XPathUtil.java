@@ -183,7 +183,7 @@ public class XPathUtil {
         /**
          * Create a new AuthDriver.XHTMLContext instance.
          */
-        public XHTMLContext() {
+        private XHTMLContext() {
 
             namespaces.put( XMLConstants.XMLNS_ATTRIBUTE, XMLConstants.XMLNS_ATTRIBUTE_NS_URI );
             namespaces.put( XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI );

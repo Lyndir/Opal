@@ -31,7 +31,6 @@ import java.net.URLEncoder;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
@@ -1385,7 +1384,7 @@ public abstract class AbstractUi
 
             // FIXME
             // logger.setLevel( ShadeConfig.verbose.get()? Level.FINEST: Level.INFO );
-            ShadeConfig.formatter.setVerbose( ShadeConfig.verbose.get() );
+            // ShadeConfig.formatter.setVerbose( ShadeConfig.verbose.get() );
             logFormatter.setVerbose( ShadeConfig.verbose.get() );
 
             if (verboseLogs != null)

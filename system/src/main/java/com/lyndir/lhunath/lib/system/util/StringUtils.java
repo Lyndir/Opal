@@ -27,6 +27,13 @@ package com.lyndir.lhunath.lib.system.util;
  */
 public abstract class StringUtils {
 
+    /**
+     * Concatenate several strings into one.
+     *
+     * @param delimitor The delimitor to use to separate the strings.
+     * @param elements The strings that should be concatenated, in order form left to right.
+     * @return A long string containing all the given strings delimited by the delimitor.
+     */
     public static String concat(String delimitor, String... elements) {
 
         StringBuilder concatenation = new StringBuilder();

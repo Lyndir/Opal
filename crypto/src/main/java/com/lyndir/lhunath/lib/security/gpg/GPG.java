@@ -634,7 +634,7 @@ public class GPG {
          * @param keyId
          *            The key id to wrap.
          */
-        public PrintableKeyWrapper(K key, Long keyId) {
+        private PrintableKeyWrapper(K key, Long keyId) {
 
             this.key = key;
             this.keyId = keyId;

@@ -18,6 +18,7 @@ package com.lyndir.lhunath.lib.system;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,7 +31,7 @@ import com.lyndir.lhunath.lib.system.util.Utils;
  * <br>
  * [description / usage].<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public abstract class Schedule implements Runnable, Serializable {
@@ -48,7 +49,7 @@ public abstract class Schedule implements Runnable, Serializable {
 
     /**
      * Update this schedule's timings.
-     * 
+     *
      * @param time
      *            The time at which this scheduled event must take place.
      * @param steps
@@ -131,7 +132,7 @@ public abstract class Schedule implements Runnable, Serializable {
 
     /**
      * Get a description of this schedule.
-     * 
+     *
      * @return A string that describes what this schedule does.
      */
     public abstract String getDescription();
@@ -150,7 +151,7 @@ public abstract class Schedule implements Runnable, Serializable {
             time.insert( 0, String.format( "%02d%s", nextSchedule.get( field ), Utils.calendarSuffix( field ) ) );
         }
 
-        String desc = Utils.calendarDesc.get( stepField ).toLowerCase( java.util.Locale.ENGLISH );
+        String desc = Utils.calendarDesc.get( stepField ).toLowerCase( Locale.ENGLISH );
         if (stepAmount > 1)
             desc += 's';
 

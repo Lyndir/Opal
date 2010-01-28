@@ -30,10 +30,10 @@ public class Path {
 
     private boolean srcHorizontal;
     private boolean dstHorizontal;
-    private final Vec2    src;
-    private final Vec2    dst;
-    private final Vec2    size;
-    private final Vec2    offset;
+    private final Vec2 src;
+    private final Vec2 dst;
+    private final Vec2 size;
+    private final Vec2 offset;
 
 
     /**
@@ -47,59 +47,64 @@ public class Path {
 
     /**
      * Create a new {@link Path} instance.
+     * @param src The vector that points at the origin of this path.
+     * @param dst The vector that points at the destination of this path.
+     * @param offset The vector that points at the lower bound of this path's bounding box.
+     * @param size The vector that indicates the diagonal distance of the path's bounding box.
      */
-    public Path() {
+    public Path(Vec2 src, Vec2 dst, Vec2 offset, Vec2 size) {
 
-        src = new Vec2();
-        dst = new Vec2();
-        size = new Vec2();
-        offset = new Vec2();
+        this.src = src;
+        this.dst = dst;
+        this.offset = offset;
+        this.size = size;
     }
 
     /**
      * Calculate geometry needed for defining a path between two rectangular shapes that does not intersect with either
      * shape by attaching the path to the center of either top, left, bottom or right side of each shape.
      *
-     * @param srcBounds
-     *            The rectangle that the path originates from.
-     * @param dstBounds
-     *            The rectangle that the path arrives at.
+     * @param srcBounds The rectangle that the path originates from.
+     * @param dstBounds The rectangle that the path arrives at.
+     *
      * @return A {@link Path} object that provides the geometry needed to define the requested path.
      */
     public static Path calculatePath(RectangularShape srcBounds, RectangularShape dstBounds) {
 
-        Path path = new Path();
+        Vec2 src = new Vec2();
+        Vec2 dst = new Vec2();
+        boolean srcHorizontal, dstHorizontal;
 
         /* left side of connector is SRC */
         if (dstBounds.getCenterX() > srcBounds.getCenterX()) {
 
             if (dstBounds.getCenterY() > srcBounds.getCenterY()) {
                 /* top side of connector is SRC */
-                path.src.setX( srcBounds.getCenterX() );
-                path.src.setY( srcBounds.getMaxY() );
-                path.srcHorizontal = false;
+                src.setX( srcBounds.getCenterX() );
+                src.setY( srcBounds.getMaxY() );
+                srcHorizontal = false;
 
-                path.dst.setX( dstBounds.getCenterX() );
-                path.dst.setY( dstBounds.getY() );
-                path.dstHorizontal = false;
+                dst.setX( dstBounds.getCenterX() );
+                dst.setY( dstBounds.getY() );
+                dstHorizontal = false;
             } else if (dstBounds.getCenterY() == srcBounds.getCenterY()) {
                 /* top side of connector is both SRC and DST -> horizontal line. */
-                path.src.setX( srcBounds.getMaxX() );
-                path.src.setY( srcBounds.getCenterY() );
-                path.srcHorizontal = true;
+                src.setX( srcBounds.getMaxX() );
+                src.setY( srcBounds.getCenterY() );
+                srcHorizontal = true;
 
-                path.dst.setX( dstBounds.getX() );
-                path.dst.setY( dstBounds.getCenterY() );
-                path.dstHorizontal = true;
+                dst.setX( dstBounds.getX() );
+                dst.setY( dstBounds.getCenterY() );
+                dstHorizontal = true;
             } else {
                 /* top side of connector is DST */
-                path.src.setX( srcBounds.getCenterX() );
-                path.src.setY( srcBounds.getY() );
-                path.srcHorizontal = false;
+                src.setX( srcBounds.getCenterX() );
+                src.setY( srcBounds.getY() );
+                srcHorizontal = false;
 
-                path.dst.setX( dstBounds.getCenterX() );
-                path.dst.setY( dstBounds.getMaxY() );
-                path.dstHorizontal = false;
+                dst.setX( dstBounds.getCenterX() );
+                dst.setY( dstBounds.getMaxY() );
+                dstHorizontal = false;
             }
         }
         /* left side of connector is both SRC and DST -> vertical line. */
@@ -107,107 +112,107 @@ public class Path {
 
             if (dstBounds.getCenterY() > srcBounds.getCenterY()) {
                 /* top side of connector is SRC -> vertical line. */
-                path.src.setX( srcBounds.getCenterX() );
-                path.src.setY( srcBounds.getMaxY() );
-                path.srcHorizontal = false;
+                src.setX( srcBounds.getCenterX() );
+                src.setY( srcBounds.getMaxY() );
+                srcHorizontal = false;
 
-                path.dst.setX( dstBounds.getCenterX() );
-                path.dst.setY( dstBounds.getY() );
-                path.dstHorizontal = false;
+                dst.setX( dstBounds.getCenterX() );
+                dst.setY( dstBounds.getY() );
+                dstHorizontal = false;
             } else if (dstBounds.getCenterY() == srcBounds.getCenterY())
                 /* top side of connector is both SRC and DST -> centers collapse, don't draw. */
-                return path;
+                ;
 
             else {
                 /* top side of connector is DST -> vertical line. */
-                path.src.setX( srcBounds.getCenterX() );
-                path.src.setY( srcBounds.getY() );
-                path.srcHorizontal = false;
+                src.setX( srcBounds.getCenterX() );
+                src.setY( srcBounds.getY() );
+                srcHorizontal = false;
 
-                path.dst.setX( dstBounds.getCenterX() );
-                path.dst.setY( dstBounds.getMaxY() );
-                path.dstHorizontal = false;
+                dst.setX( dstBounds.getCenterX() );
+                dst.setY( dstBounds.getMaxY() );
+                dstHorizontal = false;
             }
         } else if (dstBounds.getCenterY() > srcBounds.getCenterY()) {
             /* top side of connector is SRC */
-            path.src.setX( srcBounds.getCenterX() );
-            path.src.setY( srcBounds.getMaxY() );
-            path.srcHorizontal = false;
+            src.setX( srcBounds.getCenterX() );
+            src.setY( srcBounds.getMaxY() );
+            srcHorizontal = false;
 
-            path.dst.setX( dstBounds.getCenterX() );
-            path.dst.setY( dstBounds.getY() );
-            path.dstHorizontal = false;
+            dst.setX( dstBounds.getCenterX() );
+            dst.setY( dstBounds.getY() );
+            dstHorizontal = false;
         } else if (dstBounds.getCenterY() == srcBounds.getCenterY()) {
             /* top side of connector is both SRC and DST -> horizontal line. */
-            path.src.setX( srcBounds.getX() );
-            path.src.setY( srcBounds.getCenterY() );
-            path.srcHorizontal = true;
+            src.setX( srcBounds.getX() );
+            src.setY( srcBounds.getCenterY() );
+            srcHorizontal = true;
 
-            path.dst.setX( dstBounds.getMaxX() );
-            path.dst.setY( dstBounds.getCenterY() );
-            path.dstHorizontal = true;
+            dst.setX( dstBounds.getMaxX() );
+            dst.setY( dstBounds.getCenterY() );
+            dstHorizontal = true;
         } else {
             /* top side of connector is DST */
-            path.src.setX( srcBounds.getCenterX() );
-            path.src.setY( srcBounds.getY() );
-            path.srcHorizontal = false;
+            src.setX( srcBounds.getCenterX() );
+            src.setY( srcBounds.getY() );
+            srcHorizontal = false;
 
-            path.dst.setX( dstBounds.getCenterX() );
-            path.dst.setY( dstBounds.getMaxY() );
-            path.dstHorizontal = false;
+            dst.setX( dstBounds.getCenterX() );
+            dst.setY( dstBounds.getMaxY() );
+            dstHorizontal = false;
         }
 
         if (srcBounds.getY() >= dstBounds.getY() && srcBounds.getY() <= dstBounds.getMaxY()
             || dstBounds.getY() >= srcBounds.getY() && dstBounds.getY() <= srcBounds.getMaxY()) {
 
             if (dstBounds.getCenterX() > srcBounds.getCenterX()) {
-                path.src.setX( srcBounds.getMaxX() );
-                path.src.setY( srcBounds.getCenterY() );
-                path.srcHorizontal = true;
+                src.setX( srcBounds.getMaxX() );
+                src.setY( srcBounds.getCenterY() );
+                srcHorizontal = true;
 
-                path.dst.setX( dstBounds.getX() );
-                path.dst.setY( dstBounds.getCenterY() );
-                path.dstHorizontal = true;
+                dst.setX( dstBounds.getX() );
+                dst.setY( dstBounds.getCenterY() );
+                dstHorizontal = true;
             } else if (dstBounds.getCenterX() == srcBounds.getCenterX())
-                return path;
+                ;
 
             else {
-                path.src.setX( srcBounds.getX() );
-                path.src.setY( srcBounds.getCenterY() );
-                path.srcHorizontal = true;
+                src.setX( srcBounds.getX() );
+                src.setY( srcBounds.getCenterY() );
+                srcHorizontal = true;
 
-                path.dst.setX( dstBounds.getMaxX() );
-                path.dst.setY( dstBounds.getCenterY() );
-                path.dstHorizontal = true;
+                dst.setX( dstBounds.getMaxX() );
+                dst.setY( dstBounds.getCenterY() );
+                dstHorizontal = true;
             }
         } else if (srcBounds.getMaxX() < dstBounds.getX() || srcBounds.getX() > dstBounds.getMaxX())
             if (dstBounds.getCenterX() > srcBounds.getCenterX()) {
-                path.src.setX( srcBounds.getMaxX() );
-                path.src.setY( srcBounds.getCenterY() );
-                path.srcHorizontal = true;
+                src.setX( srcBounds.getMaxX() );
+                src.setY( srcBounds.getCenterY() );
+                srcHorizontal = true;
 
-                path.dst.setX( dstBounds.getX() );
-                path.dst.setY( dstBounds.getCenterY() );
-                path.dstHorizontal = true;
+                dst.setX( dstBounds.getX() );
+                dst.setY( dstBounds.getCenterY() );
+                dstHorizontal = true;
             } else if (dstBounds.getCenterX() == srcBounds.getCenterX())
-                return path;
+                ;
 
             else {
-                path.src.setX( srcBounds.getX() );
-                path.src.setY( srcBounds.getCenterY() );
-                path.srcHorizontal = true;
+                src.setX( srcBounds.getX() );
+                src.setY( srcBounds.getCenterY() );
+                srcHorizontal = true;
 
-                path.dst.setX( dstBounds.getMaxX() );
-                path.dst.setY( dstBounds.getCenterY() );
-                path.dstHorizontal = true;
+                dst.setX( dstBounds.getMaxX() );
+                dst.setY( dstBounds.getCenterY() );
+                dstHorizontal = true;
             }
 
-        path.offset = new Vec2( Math.min( path.src.getX(), path.dst.getX() ), Math.min( path.src.getY(), path.dst.getY() ) );
-        path.size = new Vec2( Math.abs( path.dst.getX() - path.src.getX() ), Math.abs( path.dst.getY() - path.src.getY() ) );
+        Vec2 offset = new Vec2( Math.min( src.getX(), dst.getX() ), Math.min( src.getY(), dst.getY() ) );
+        Vec2 size = new Vec2( Math.abs( dst.getX() - src.getX() ), Math.abs( dst.getY() - src.getY() ) );
         // path.size = new Vec2( Math.max( Math.abs( path.dst.x - path.src.x ), 1 ), Math.max(
         // Math.abs( path.dst.y - path.src.y ), 1 ) );
 
-        return path;
+        return new Path(src, dst, offset, size);
     }
 
     /**

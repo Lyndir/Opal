@@ -30,6 +30,9 @@ package com.lyndir.lhunath.lib.system.localization;
  */
 public interface ValueEnum<T> {
 
+    /**
+     * @return The key for the value.
+     */
     String name();
 
     /**

@@ -68,6 +68,9 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
         return getBackground().equals( background );
     }
 
+    /**
+     * @param c The component (and all children of it) this panel should listen to for mouse events.
+     */
     protected void listen(Component c) {
 
         if (c instanceof Container)
@@ -78,6 +81,9 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
         c.addMouseListener( this );
     }
 
+    /**
+     * @param c The component (and all children of it) this panel should remove mouse its event mouse listeners for.
+     */
     protected void unlisten(Component c) {
 
         if (c instanceof Container)

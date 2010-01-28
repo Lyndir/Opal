@@ -332,18 +332,30 @@ public class Vec2 implements Cloneable {
 
     }
 
+    /**
+     * @return The horizontal destination of this vector.
+     */
     public double getX() {
         return x;
     }
 
+    /**
+     * @param x The horizontal destination of this vector.
+     */
     public void setX(double x) {
         this.x = x;
     }
 
+    /**
+     * @return The vertical destination of this vector.
+     */
     public double getY() {
         return y;
     }
 
+    /**
+     * @param y The vertical destination of this vector.
+     */
     public void setY(double y) {
         this.y = y;
     }

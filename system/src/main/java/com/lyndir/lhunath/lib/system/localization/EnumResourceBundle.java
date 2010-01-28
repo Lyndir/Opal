@@ -45,6 +45,9 @@ public class EnumResourceBundle<T> extends ResourceBundle {
     private final Class<? extends ValueEnum<T>> enumType;
 
 
+    /**
+     * @param enumType The enum that will provide values for this resource bundle.
+     */
     public EnumResourceBundle(Class<? extends ValueEnum<T>> enumType) {
 
         if (!enumType.isEnum())

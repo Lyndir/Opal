@@ -141,10 +141,16 @@ public class ShadeConfig<T extends Serializable> extends BaseConfig<T> {
         super( defaultValue );
     }
 
+    /**
+     * @return A reference to the {@link AbstractUi} implementation the application uses.
+     */
     public static AbstractUi getUi() {
         return ui;
     }
 
+    /**
+     * @param ui A reference to the {@link AbstractUi} implementation the application uses.
+     */
     public static void setUi(AbstractUi ui) {
         ShadeConfig.ui = ui;
     }

@@ -53,5 +53,15 @@ public @interface UseBundle {
     Class<? extends ResourceBundle> type() default UnspecifiedBundle.class;
 
 
+    /**
+     * <h2>{@link UnspecifiedBundle}<br>
+     * <sub>[in short] (TODO).</sub></h2>
+     *
+     * <p>
+     * <i>Jan 28, 2010</i>
+     * </p>
+     *
+     * @author lhunath
+     */
     abstract class UnspecifiedBundle extends ResourceBundle {}
 }

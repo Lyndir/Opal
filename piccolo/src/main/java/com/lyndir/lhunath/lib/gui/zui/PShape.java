@@ -32,15 +32,18 @@ public abstract class PShape extends PNode {
 
     private Shape shape;
 
+    /**
+     * @return Create the AWT shape that this PShape renders.
+     */
     protected abstract Shape createShape();
 
     /**
      * Update the shape of this node. Called whenever the bounds change.
      *
-     * @param x
-     * @param y
-     * @param w
-     * @param h
+     * @param x The new X-origin of the shape.
+     * @param y The new Y-origin of the shape.
+     * @param w The new width of the shape.
+     * @param h The new height of the shape.
      * @return <code>true</code> if this method modified the shape.
      */
     protected abstract boolean scaleShape(double x, double y, double w, double h);

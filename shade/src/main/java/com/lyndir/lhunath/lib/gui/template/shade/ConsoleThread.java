@@ -10,6 +10,8 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 
 /**
  * Read line-based data from an input stream and write it out on a component.
+ * 
+ * @author lhunath
  */
 public class ConsoleThread extends Thread {
 

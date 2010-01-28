@@ -86,8 +86,8 @@ public class Vec3 extends Vec2 {
     public Vec3 clone() throws CloneNotSupportedException {
 
         Vec3 newVec3 = (Vec3) super.clone();
-        newVec3.setX( x );
-        newVec3.setY( y );
+        newVec3.setX( getX() );
+        newVec3.setY( getY() );
         newVec3.setZ( z );
 
         return newVec3;
@@ -166,7 +166,7 @@ public class Vec3 extends Vec2 {
             return this;
 
         setX( getX() + vector.getX() );
-        setY( getY() + vector.y );
+        setY( getY() + vector.getY() );
         setZ( getZ() + vector.z );
 
         return this;
@@ -184,8 +184,8 @@ public class Vec3 extends Vec2 {
         if (vector == null)
             return this;
 
-        setX( getX() - vector.x );
-        setY( getY() - vector.y );
+        setX( getX() - vector.getX() );
+        setY( getY() - vector.getY() );
         setZ( getZ() - vector.getZ() );
 
         return this;
@@ -203,7 +203,7 @@ public class Vec3 extends Vec2 {
         if (vector == null)
             return this;
 
-        setX( getX() * vector.x );
+        setX( getX() * vector.getX() );
         setY( getY() * vector.getY() );
         setZ( getZ() * vector.z );
 
@@ -308,10 +308,16 @@ public class Vec3 extends Vec2 {
         return (int) (getX() + getY() + getZ());
     }
 
+    /**
+     * @return The depth destination of this vector.
+     */
     public double getZ() {
         return z;
     }
 
+    /**
+     * @param z The depth destination of this vector.
+     */
     public void setZ(double z) {
         this.z = z;
     }

@@ -55,6 +55,10 @@ public class Logger {
 
     // Create a logger --
 
+    /**
+     * @param type The type of the class that is responsible for the events logged through the logger that is returned.
+     * @return A logger.
+     */
     public static Logger get(Class<?> type) {
 
         Logger logger = loggers.get( type );
@@ -112,8 +116,6 @@ public class Logger {
      *            The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments
      *            The arguments to inject into the event message format.
-     *
-     * @return Self, for chaining.
      */
     public void trc(String descriptionFormat, Object... descriptionArguments) {
 

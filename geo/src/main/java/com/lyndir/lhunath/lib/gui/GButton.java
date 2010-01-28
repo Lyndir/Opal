@@ -225,18 +225,18 @@ public class GButton extends JButton {
 
             case CENTER:
             default:
-                buttonSize.setX( Math.max( textSize.x, iconSize.getX() ) );
+                buttonSize.setX( Math.max( textSize.getX(), iconSize.getX() ) );
             break;
         }
         switch (getVerticalTextPosition()) {
             case TOP:
             case BOTTOM:
-                buttonSize.setY( textSize.y + getIconTextGap() + iconSize.y );
+                buttonSize.setY( textSize.getY() + getIconTextGap() + iconSize.getY() );
             break;
 
             case CENTER:
             default:
-                buttonSize.setY( Math.max( textSize.y, iconSize.y ) );
+                buttonSize.setY( Math.max( textSize.getY(), iconSize.getY() ) );
             break;
         }
 

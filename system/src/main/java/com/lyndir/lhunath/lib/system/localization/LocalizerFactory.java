@@ -30,21 +30,21 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 /**
  * <h2>{@link LocalizerFactory}<br>
  * <sub>Create localizers from localization interfaces.</sub></h2>
- * 
+ *
  * <p>
  * This class builds localizers from interfaces annotated with the {@link UseBundle} and {@link UseKey} annotations.
  * </p>
- * 
+ *
  * <p>
  * This localizer can then be queried by invoking the methods provided by the interface used to create it. This way, you
  * can to obtain localized data from them as provided by the resource bundle that interface references in its
  * {@link UseBundle} annotation.
  * </p>
- * 
+ *
  * <p>
  * <i>Mar 28, 2009</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public abstract class LocalizerFactory {
@@ -52,6 +52,13 @@ public abstract class LocalizerFactory {
     static final Logger logger = Logger.get( LocalizerFactory.class );
 
 
+    /**
+     * Create a localizer that can be used to obtain localized data for keys specified by the given localizationInterface.
+     * @param localizationInterface The interface that declares the localization keys that should be resolved by this localizer.
+     * @param context The provider-specific context that should help the localization provider resolve values for keys.
+     * @param <L> The type of the localizationInterface.
+     * @return A proxy of the given localizationInterface that will provide localized values for the methods in the interface.
+     */
     public static <L> L getLocalizer(Class<L> localizationInterface, Object context) {
 
         // Do some validation on the localization interface.

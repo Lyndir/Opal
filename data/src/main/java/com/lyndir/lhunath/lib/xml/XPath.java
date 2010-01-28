@@ -44,6 +44,13 @@ public class XPath {
     private static final Logger logger = LoggerFactory.getLogger( XPath.class );
 
 
+    /**
+     * Entry point of the command-line XPath utility.
+     * @param args Command-line arguments to the utility.
+     * @throws SAXException
+     * @throws IOException
+     * @throws XPathExpressionException
+     */
     public static void main(String[] args)
             throws SAXException, IOException, XPathExpressionException {
 
