@@ -33,7 +33,7 @@ import java.awt.event.MouseMotionListener;
  * <br>
  * The TrayIcon object ...<br>
  * <br>
- *
+ * 
  * @author mbillemo
  */
 public class TrayIcon extends Wrapper {
@@ -45,7 +45,7 @@ public class TrayIcon extends Wrapper {
 
     /**
      * Create a new {@link TrayIcon} instance.
-     *
+     * 
      * @param image
      *            The image to use to depict this tray icon in the system tray.
      */
@@ -56,7 +56,7 @@ public class TrayIcon extends Wrapper {
 
     /**
      * Create a new {@link TrayIcon} instance.
-     *
+     * 
      * @param image
      *            The image to use to depict this tray icon in the system tray.
      * @param tooltip
@@ -69,7 +69,7 @@ public class TrayIcon extends Wrapper {
 
     /**
      * Create a new {@link TrayIcon} instance.
-     *
+     * 
      * @param image
      *            The image to use to depict this tray icon in the system tray.
      * @param tooltip
@@ -80,11 +80,12 @@ public class TrayIcon extends Wrapper {
     public TrayIcon(Image image, String tooltip, PopupMenu popup) {
 
         this( construct( TrayIcon.class, new Class[] { Image.class, String.class, PopupMenu.class }, image, tooltip,
-                         popup ) );
+                popup ) );
     }
 
     /**
-     * {@inheritDoc}
+     * @param wrappedInstance
+     *            The real {@link java.awt.TrayIcon} object.
      */
     protected TrayIcon(Object wrappedInstance) {
 
@@ -120,7 +121,7 @@ public class TrayIcon extends Wrapper {
 
     /**
      * Show a notification message by this tray icon.
-     *
+     * 
      * @param caption
      *            The title of the message.
      * @param text
@@ -264,7 +265,7 @@ public class TrayIcon extends Wrapper {
     /**
      * @param popup
      *            The menu to show when right-clicking the {@link TrayIcon}.
-     *
+     * 
      */
     public void setPopupMenu(PopupMenu popup) {
 
@@ -284,11 +285,11 @@ public class TrayIcon extends Wrapper {
     /**
      * <h2>{@link MessageType}<br>
      * <sub>Types of message notifications to show by the tray icon.</sub></h2>
-     *
+     * 
      * <p>
      * <i>Apr 9, 2008</i>
      * </p>
-     *
+     * 
      * @author mbillemo
      */
     public enum MessageType {
