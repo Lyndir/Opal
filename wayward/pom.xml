@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- PROJECT METADATA -->
+	<parent>
+        <groupId>com.lyndir.lhunath.jlibs</groupId>
+        <artifactId>jlibs</artifactId>
+        <version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.lyndir.lhunath.jlibs</groupId>
+	<artifactId>wayward</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>JLibs Wayward</name>
+	<description>
+        JLibs: Generic wicket components
+	</description>
+
+	<!-- BUILD CONFIGURATION -->
+	<build>
+	</build>
+
+	<!-- DEPENDENCY MANAGEMENT -->
+	<dependencies>
+
+        <!-- PROJECT REFERENCES -->
+        <dependency>
+            <groupId>com.lyndir.lhunath.jlibs</groupId>
+            <artifactId>system</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- WICKET -->
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-extensions</artifactId>
+		</dependency>
+
+        <dependency>
+            <groupId>com.google.collections</groupId>
+            <artifactId>google-collections</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+        </dependency>
+
+	</dependencies>
+
+</project>
