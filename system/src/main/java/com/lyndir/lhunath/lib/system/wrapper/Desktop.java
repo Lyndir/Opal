@@ -82,7 +82,7 @@ public class Desktop extends Wrapper {
 
     /**
      * Browse to the given {@link URI} natively.
-     *
+     * 
      * @param uri
      *            The {@link URI} to browse to.
      * @throws IOException
@@ -96,7 +96,7 @@ public class Desktop extends Wrapper {
 
     /**
      * Edit the given file natively.
-     *
+     * 
      * @param file
      *            The {@link File} to edit.
      * @throws IOException
@@ -110,7 +110,7 @@ public class Desktop extends Wrapper {
 
     /**
      * Send an email natively.
-     *
+     * 
      * @throws IOException
      */
     @SuppressWarnings("unused")
@@ -122,7 +122,7 @@ public class Desktop extends Wrapper {
 
     /**
      * Send an email to the given {@link URI} natively.
-     *
+     * 
      * @param mailtoURI
      *            The {@link URI} address to direct the mail to.
      * @throws IOException
@@ -136,7 +136,7 @@ public class Desktop extends Wrapper {
 
     /**
      * Open the given file as configured natively.
-     *
+     * 
      * @param file
      *            The {@link File} to open.
      * @throws IOException
@@ -150,11 +150,11 @@ public class Desktop extends Wrapper {
 
     /**
      * Print the given {@link File} as configured natively.
-     *
+     * 
      * @param file
      *            The {@link File} to print.
      * @throws IOException
-     *
+     * 
      */
     @SuppressWarnings("unused")
     public void print(File file)
@@ -167,11 +167,11 @@ public class Desktop extends Wrapper {
     /**
      * <h2>{@link Action}<br>
      * <sub>Wrapper class for the Java6 Desktop.Action enum.</sub></h2>
-     *
+     * 
      * <p>
      * <i>Apr 9, 2008</i>
      * </p>
-     *
+     * 
      * @author mbillemo
      */
     public enum Action {

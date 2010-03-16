@@ -20,7 +20,7 @@ import java.lang.reflect.Field;
 
 /**
  * An interface that allows public access to an instance's private and protected fields.
- *
+ * 
  * @author lhunath
  */
 public interface Reflective {
@@ -28,11 +28,11 @@ public interface Reflective {
     /**
      * Retrieve the object in the given field for this instance.<br>
      * Put this in here:
-     *
+     * 
      * <pre>
      * return field.get( this );
      * </pre>
-     *
+     * 
      * @param field
      *            The field that contains the object that's being requested.
      * @return The field's value.

@@ -29,13 +29,13 @@ import java.util.ResourceBundle;
  * method will return the strings requested by unique keys in the set language. If the string is not available in that
  * language, it will fall back to the default locale.<br>
  * <br>
- *
+ * 
  * @author lhunath
  */
 public class Locale {
 
     private static final Locale instance = new Locale();
-    private ResourceBundle resources;
+    private ResourceBundle      resources;
 
 
     private Locale() {
@@ -45,7 +45,7 @@ public class Locale {
 
     /**
      * Retrieve a reference to this singleton.
-     *
+     * 
      * @return The instance of this class.
      */
     public static Locale getLocale() {
@@ -55,7 +55,7 @@ public class Locale {
 
     /**
      * Switch to a new locale.
-     *
+     * 
      * @param lang
      *            The new locale.
      * @return Reference to this locale instance.
@@ -83,9 +83,9 @@ public class Locale {
 
     /**
      * Retrieves an externalized string for the given key, or the key if none was found.<br>
-     * The result is parsed by {@link String#format(java.util.Locale, String, Object...)} using the
-     * optional additional arguments as input values.
-     *
+     * The result is parsed by {@link String#format(java.util.Locale, String, Object...)} using the optional additional
+     * arguments as input values.
+     * 
      * @param messageKey
      *            The key of the message or the message to format.
      * @param args
@@ -99,9 +99,9 @@ public class Locale {
 
     /**
      * Retrieves an externalized string for the given key, or the key if none was found.<br>
-     * The result is parsed by {@link String#format(java.util.Locale, String, Object...)} using the
-     * optional additional arguments as input values.
-     *
+     * The result is parsed by {@link String#format(java.util.Locale, String, Object...)} using the optional additional
+     * arguments as input values.
+     * 
      * @param messageKey
      *            The key of the message or the message to format.
      * @param args
@@ -118,13 +118,13 @@ public class Locale {
                 return String.format( resources.getLocale(), resources.getString( messageKey ), args );
             return resources.getString( messageKey );
         } catch (MissingResourceException ignored) {
-            StringBuilder messageBuilder = new StringBuilder(messageKey);
+            StringBuilder messageBuilder = new StringBuilder( messageKey );
 
             if (args == null || args.length == (messageKey + ' ').split( "%[-#+ 0,\\(\\.]*\\w" ).length - 1)
                 return String.format( resources.getLocale(), messageKey, args );
 
             for (Object arg : args)
-                messageBuilder.append( arg);
+                messageBuilder.append( arg );
 
             return messageBuilder.toString();
         }

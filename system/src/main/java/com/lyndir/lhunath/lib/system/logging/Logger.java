@@ -458,11 +458,11 @@ public class Logger {
             }
             if (constructors.isEmpty())
                 throw loggerLogger.err( "No constructors found for %s that match argument types %s", //
-                        errorClass, Arrays.asList( types ) ) //
+                                        errorClass, Arrays.asList( types ) ) //
                                   .toError( IllegalArgumentException.class );
             if (constructors.size() > 1)
                 throw loggerLogger.err( "Ambiguous argument types %s for constructors of %s.  Constructors: %s", //
-                        Arrays.asList( types ), errorClass, constructors ) //
+                                        Arrays.asList( types ), errorClass, constructors ) //
                                   .toError( IllegalArgumentException.class );
 
             return constructors.get( 0 ).newInstance( arguments );

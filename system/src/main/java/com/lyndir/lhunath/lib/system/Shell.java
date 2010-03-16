@@ -34,7 +34,7 @@ import com.lyndir.lhunath.lib.system.util.Utils;
 /**
  * <i>Shell - A convenience class to execute processes for different purposes.</i><br>
  * <br>
- *
+ * 
  * @author lhunath
  */
 public class Shell {
@@ -46,7 +46,7 @@ public class Shell {
 
     /**
      * Run an application or shell script and redirect its stdout and stderr to our stdout and stderr.
-     *
+     * 
      * @param block
      *            Whether or not to block until the process has finished.
      * @param currDir
@@ -69,7 +69,7 @@ public class Shell {
 
     /**
      * Wait for the given process to exit and return its exit status.
-     *
+     * 
      * @param process
      *            The process to wait for.
      * @return The exit status of the given process.
@@ -94,7 +94,7 @@ public class Shell {
      * not block.<br>
      * <br>
      * Output and error streams will be closed, except if they are the application's standard output or standard error.
-     *
+     * 
      * @param out
      *            The stream to write the process' standard output into.
      * @param err
@@ -187,7 +187,7 @@ public class Shell {
 
     /**
      * Run an application or shell script and read its standard output and standard error into a string.
-     *
+     * 
      * @param currDir
      *            The current directory for the child process.
      * @param cmd

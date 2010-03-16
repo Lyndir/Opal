@@ -30,15 +30,15 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 /**
  * <h2>{@link LoggingEventHandler}<br>
  * <sub>[in short] (TODO).</sub></h2>
- *
+ * 
  * <p>
  * [description / usage].
  * </p>
- *
+ * 
  * <p>
  * <i>Apr 19, 2008</i>
  * </p>
- *
+ * 
  * @author mbillemo
  */
 public class LoggingEventHandler
@@ -48,12 +48,12 @@ public class LoggingEventHandler
 
     private static final Logger logger = Logger.get( LoggingEventHandler.class );
 
-    private final String              name;
+    private final String        name;
 
 
     /**
      * Watch all non-input events that can occur on the given component.
-     *
+     * 
      * @param name
      *            The name to use in the log output for identifying this component.
      * @param c
@@ -73,7 +73,7 @@ public class LoggingEventHandler
 
     /**
      * Watch all events that can occur on the given window.
-     *
+     * 
      * @param name
      *            The name to use in the log output for identifying this window.
      * @param w
@@ -95,7 +95,7 @@ public class LoggingEventHandler
 
     /**
      * Watch all input events that can occur on the given component.
-     *
+     * 
      * @param name
      *            The name to use in the log output for identifying this component.
      * @param c
@@ -113,7 +113,7 @@ public class LoggingEventHandler
 
     /**
      * Create a new {@link LoggingEventHandler} instance.
-     *
+     * 
      * @param name
      *            The name to use for the components handled by this handler.
      */

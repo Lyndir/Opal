@@ -1,5 +1,5 @@
 /*
- *   Copyright 2009, Maarten Billemont
+ *   Copyright 2010, Maarten Billemont
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -13,30 +13,35 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.lib.system.localization;
+package com.lyndir.lhunath.lib.system.logging.exception;
 
 /**
- * <h2>{@link ValueEnum}<br>
- * <sub>An interface for {@link Enum}s whose keys provide a simple value.</sub></h2>
+ * <h2>{@link TodoException}<br>
+ * <sub>[in short] (TODO).</sub></h2>
  * 
  * <p>
- * <i>Mar 29, 2009</i>
+ * <i>Feb 28, 2010</i>
  * </p>
- * 
- * @param <T>
- *            The type of values provided by this {@link Enum} class.
  * 
  * @author lhunath
  */
-public interface ValueEnum<T> {
+public class TodoException extends UnsupportedOperationException {
 
     /**
-     * @return The key for the value.
+     * A generic constructor indicating this part is not yet implemented.
      */
-    String name();
+    public TodoException() {
+
+        this( "TODO" );
+    }
 
     /**
-     * @return The value provided by the {@link Enum} instance.
+     * 
+     * @param message
+     *            Some context with what was going on or what caused this.
      */
-    T value();
+    public TodoException(String message) {
+
+        super( message, null );
+    }
 }

@@ -34,6 +34,8 @@
 
 	<!-- ALL MODULES THAT ARE ENABLED BY DEFAULT -->
 	<modules>
+        <!--module>eclipse-config</module-->
+
         <module>crypto</module>
         <module>data</module>
         <module>geo</module>
@@ -42,6 +44,7 @@
         <module>pigeon</module>
         <module>shade</module>
         <module>system</module>
+        <module>wayward</module>
     </modules>
 
     <!-- REMOTE ARTIFACT REPOSITORIES -->

@@ -30,21 +30,21 @@ import com.lyndir.lhunath.lib.system.util.Utils;
  * This formatter attempts to format log messages to put most of the information in a structured log message without
  * looking too big or confusing.<br>
  * <br>
- *
+ * 
  * <pre>
  *   [ LEVEL | LINE:PACKAGE.CLASS.METHOD() ]-
  *    &gt;  MESSAGE
  * </pre>
- *
+ * 
  * <br>
- *
+ * 
  * @author lhunath
  */
 public abstract class LogFormatter extends Formatter {
 
-    private static final String[] skipPackages = { "com.lyndir.lhunath.lib", "java", "sun", "com.sun" };
-    protected final Map<Level, String>  levelColor = new HashMap<Level, String>();
-    protected boolean             verbose;
+    private static final String[]      skipPackages = { "com.lyndir.lhunath.lib", "java", "sun", "com.sun" };
+    protected final Map<Level, String> levelColor   = new HashMap<Level, String>();
+    protected boolean                  verbose;
 
 
     /**
@@ -58,7 +58,7 @@ public abstract class LogFormatter extends Formatter {
 
     /**
      * Create a new LogFormatter instance.
-     *
+     * 
      * @param verbosity
      *            Whether to use verbose mode or not (default: false).
      */
@@ -117,13 +117,12 @@ public abstract class LogFormatter extends Formatter {
         StringBuilder messageBuilder = new StringBuilder();
         if (error != null)
             for (Throwable e = error; e != null; e = e.getCause())
-                messageBuilder.insert(0, String.format( "(%s:%d) %s: %s\n",
-                                         e.getStackTrace().length > 0? e.getStackTrace()[0].getFileName(): "n/a",
-                                         e.getStackTrace().length > 0? e.getStackTrace()[0].getLineNumber(): -1,
-                                         e.getClass().getName(), e.getLocalizedMessage() ));
+                messageBuilder.insert( 0, String.format( "(%s:%d) %s: %s\n", e.getStackTrace().length > 0
+                        ? e.getStackTrace()[0].getFileName(): "n/a", e.getStackTrace().length > 0
+                        ? e.getStackTrace()[0].getLineNumber(): -1, e.getClass().getName(), e.getLocalizedMessage() ) );
 
         if (record.getMessage() != null && record.getMessage().length() > 0)
-            messageBuilder.insert(0, record.getMessage() + '\n' );
+            messageBuilder.insert( 0, record.getMessage() + '\n' );
         String message = messageBuilder.toString().trim();
 
         /* Put it all together and write it to the buffer. */
@@ -158,7 +157,7 @@ public abstract class LogFormatter extends Formatter {
 
     /**
      * Retrieve the verbosity of this LogFormatter.
-     *
+     * 
      * @return Guess.
      */
     public boolean isVerbose() {
@@ -169,7 +168,7 @@ public abstract class LogFormatter extends Formatter {
     /**
      * Set the verbosity of this LogFormatter.<br>
      * Verbose mode shows stack traces for errors.
-     *
+     * 
      * @param verbose
      *            Guess.
      */

@@ -28,7 +28,6 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.lang.StringBuilder;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -61,7 +60,7 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  * <br>
  * My toolbox.<br>
  * <br>
- *
+ * 
  * @author lhunath
  */
 public class Utils {
@@ -76,8 +75,8 @@ public class Utils {
     /**
      * Calendar fields in order.
      */
-    public static final int[]                calendarFields = { Calendar.MILLISECOND, Calendar.SECOND,
-            Calendar.MINUTE, Calendar.HOUR_OF_DAY, Calendar.DAY_OF_MONTH, Calendar.MONTH, Calendar.YEAR };
+    public static final int[]                calendarFields = { Calendar.MILLISECOND, Calendar.SECOND, Calendar.MINUTE,
+            Calendar.HOUR_OF_DAY, Calendar.DAY_OF_MONTH, Calendar.MONTH, Calendar.YEAR };
 
     /**
      * Description of the calendar fields.
@@ -118,7 +117,7 @@ public class Utils {
     /**
      * Default buffer size.
      */
-    public static final int                        BUFFER_SIZE    = 4096;
+    public static final int                  BUFFER_SIZE    = 4096;
 
     /**
      * Ratio of the long part of the golden section.
@@ -133,7 +132,7 @@ public class Utils {
 
     /**
      * Get the charset that should be used for all encoding and decoding of externalized messages and communication.
-     *
+     * 
      * @return Guess.
      */
     public static Charset getCharset() {
@@ -144,7 +143,7 @@ public class Utils {
     /**
      * Convert an object into a double in a semi-safe way. We parse {@link Object#toString()} and choose to return
      * <code>null</code> rather than throw an exception if the result is not a valid {@link Double}.
-     *
+     * 
      * @param object
      *            The object that may represent a double.
      * @return The resulting double.
@@ -167,7 +166,7 @@ public class Utils {
     /**
      * Convert an object into an integer in a semi-safe way. We parse {@link Object#toString()} and choose to return
      * <code>null</code> rather than throw an exception if the result is not a valid {@link Integer}.
-     *
+     * 
      * @param object
      *            The object that may represent an integer.
      * @return The resulting integer.
@@ -190,7 +189,7 @@ public class Utils {
     /**
      * Convert an object into a long in a semi-safe way. We parse {@link Object#toString()} and choose to return
      * <code>null</code> rather than throw an exception if the result is not a valid {@link Long}.
-     *
+     * 
      * @param object
      *            The object that may represent an long.
      * @return The resulting integer.
@@ -213,7 +212,7 @@ public class Utils {
     /**
      * Convert the given object into a {@link String} using {@link Object#toString()}. If the <code>null</code> is
      * passed, don't return a string "null", but return <code>null</code> explicitly.
-     *
+     * 
      * @param object
      *            The object to convert into a string.
      * @return The string representation of the object.
@@ -231,7 +230,7 @@ public class Utils {
 
     /**
      * Calculate the MD5 hash for the given file.
-     *
+     * 
      * @param file
      *            The file to calculate the sum for.
      * @return The hash as a string of hexadecimal characters.
@@ -243,7 +242,7 @@ public class Utils {
 
     /**
      * Calculate a digest hash for the given string.
-     *
+     * 
      * @param data
      *            The data to calculate the sum for.
      * @return The hash as a string of hexadecimal characters.
@@ -255,7 +254,7 @@ public class Utils {
 
     /**
      * Calculate a digest hash for the given bytes.
-     *
+     * 
      * @param data
      *            The data to calculate the sum for.
      * @return The hash as a string of hexadecimal characters.
@@ -267,7 +266,7 @@ public class Utils {
 
     /**
      * Calculate a digest hash for the given file.
-     *
+     * 
      * @param file
      *            The file to calculate the sum for.
      * @param digestType
@@ -286,7 +285,7 @@ public class Utils {
 
     /**
      * Calculate a digest hash for the given file.
-     *
+     * 
      * @param data
      *            The data to calculate the sum for.
      * @param digestType
@@ -300,7 +299,7 @@ public class Utils {
 
     /**
      * Calculate a digest hash for the given file.
-     *
+     * 
      * @param data
      *            The data to calculate the sum for.
      * @param digestType
@@ -314,7 +313,7 @@ public class Utils {
 
     /**
      * Calculate a digest hash for the given file.
-     *
+     * 
      * @param in
      *            The stream to read the data from needed to calculate the sum.
      * @param digestType
@@ -356,8 +355,7 @@ public class Utils {
 
 
     /**
-     * Digests that can be calculated with the {@link Utils#getDigest(File, Digest)}
-     * method.
+     * Digests that can be calculated with the {@link Utils#getDigest(File, Digest)} method.
      */
     public enum Digest {
 
@@ -401,7 +399,7 @@ public class Utils {
 
         /**
          * Return the official name for this digest.
-         *
+         * 
          * @return Guess.
          */
         public String getName() {
@@ -413,7 +411,7 @@ public class Utils {
          * Try to guess which type of hash the given digest is. This works fairly flawlessly for every supported hash
          * except for {@link Digest#MD2}; since its hash string is not exclusively different from that of
          * {@link Digest#MD5}. {@link Digest#MD5} will be the result of this function in this case.
-         *
+         * 
          * @param digest
          *            The hexadecimal-formatted hash string to estimate the type of.
          * @return The guessed digest type.
@@ -438,14 +436,15 @@ public class Utils {
                     return SHA_512;
             }
 
-            throw new IllegalArgumentException( "The digest in the argument is cannot be recougnized: '" + digest + '\'' );
+            throw new IllegalArgumentException( "The digest in the argument is cannot be recougnized: '" + digest
+                                                + '\'' );
         }
     }
 
 
     /**
      * Get a {@link File} object for a resource.
-     *
+     * 
      * @param resource
      *            The filename of the resource. This is relative to the classpath of the context classloader.
      * @return Guess.
@@ -461,7 +460,7 @@ public class Utils {
 
     /**
      * Get a {@link File} object for a resource.
-     *
+     * 
      * @param url
      *            The url of the resource.
      * @return Guess.
@@ -494,7 +493,7 @@ public class Utils {
 
     /**
      * Check whether the given string is in a valid URL format.
-     *
+     * 
      * @param url
      *            The string that could represent a URL.
      * @return Guess.
@@ -502,8 +501,9 @@ public class Utils {
     public static boolean isUrl(String url) {
 
         try {
-            //noinspection ResultOfObjectAllocationIgnored
-            new URL( url );
+            @SuppressWarnings("unused")
+            // noinspection ResultOfObjectAllocationIgnored
+            URL unused = new URL( url );
             return true;
         } catch (MalformedURLException ignored) {
             return false;
@@ -512,7 +512,7 @@ public class Utils {
 
     /**
      * Convenience method of building a URL without the annoying exception thing.
-     *
+     * 
      * @param url
      *            The URL string.
      * @return The URL string in a URL object.
@@ -530,14 +530,14 @@ public class Utils {
     /**
      * Read a stream in and return it as a string. This method will block until the stream is closed or reaches EOF.
      * This method will close both streams before it returns. It uses the default buffer size.
-     *
+     * 
      * @param reader
      *            The reader to get the data from.
-     *
+     * 
      * @return The stream's data as a string decoded with the default character set.
-     *
+     * 
      * @throws IOException
-     *
+     * 
      * @see BaseConfig#BUFFER_SIZE
      */
     public static String readReader(Reader reader)
@@ -549,16 +549,16 @@ public class Utils {
     /**
      * Read a stream in and return it as a string. This method will block until the stream is closed or reaches EOF.
      * This method will close both streams before it returns.
-     *
+     * 
      * @param reader
      *            The reader to get the data from.
      * @param bufferSize
      *            The size of the buffer to use for reading.
      * @param callback
      *            The callback object to notify each time a chunk of data was written.
-     *
+     * 
      * @return The stream's data as a string decoded with the default character set.
-     *
+     * 
      * @throws IOException
      */
     public static String readReader(Reader reader, int bufferSize, StreamCallback callback)
@@ -570,7 +570,7 @@ public class Utils {
     /**
      * Read a stream in and return it as a string. This method will block until the stream is closed or reaches EOF.
      * This method will close the reader before it returns.
-     *
+     * 
      * @param reader
      *            The reader to get the data from.
      * @param bufferSize
@@ -579,9 +579,9 @@ public class Utils {
      *            The callback object to notify each time a chunk of data was written.
      * @param autoclose
      *            Whether or not to close all streams involved automatically after completion.
-     *
+     * 
      * @return The stream's data as a string decoded with the default character set.
-     *
+     * 
      * @throws IOException
      */
     public static String readReader(Reader reader, int bufferSize, StreamCallback callback, boolean autoclose)
@@ -610,14 +610,14 @@ public class Utils {
     /**
      * Read a stream in and return it as a string. This method will block until the stream is closed. This method will
      * close both streams before it returns. It uses the default buffer size.
-     *
+     * 
      * @param stream
      *            The stream to get the data from.
-     *
+     * 
      * @return The stream's data as a string decoded with the default character set.
-     *
+     * 
      * @throws IOException
-     *
+     * 
      * @see BaseConfig#BUFFER_SIZE
      */
     public static byte[] readStream(InputStream stream)
@@ -629,16 +629,16 @@ public class Utils {
     /**
      * Read a stream in and return it as a string. This method will block until the stream is closed. This method will
      * close both streams before it returns.
-     *
+     * 
      * @param stream
      *            The stream to get the data from.
      * @param bufferSize
      *            The size of the buffer to use for reading.
      * @param callback
      *            The callback object to notify each time a chunk of data was written.
-     *
+     * 
      * @return The stream's data as a string decoded with the default character set.
-     *
+     * 
      * @throws IOException
      */
     public static byte[] readStream(InputStream stream, int bufferSize, StreamCallback callback)
@@ -649,7 +649,7 @@ public class Utils {
 
     /**
      * Read a stream in and return it as a string. This method will block until the stream is closed.
-     *
+     * 
      * @param stream
      *            The reader to get the data from.
      * @param bufferSize
@@ -658,9 +658,9 @@ public class Utils {
      *            The callback object to notify each time a chunk of data was written.
      * @param autoclose
      *            Whether or not to close all streams involved automatically after completion.
-     *
+     * 
      * @return The stream's data as a string decoded with the default character set.
-     *
+     * 
      * @throws IOException
      */
     public static byte[] readStream(InputStream stream, int bufferSize, StreamCallback callback, boolean autoclose)
@@ -690,14 +690,14 @@ public class Utils {
      * Read a stream in and write it to the given stream in a BUFFERED byte-safe manner. This method will block until
      * the input stream is closed. This method will close all streams before it returns. It uses the default buffer
      * size.
-     *
+     * 
      * @param in
      *            The stream to get the data from.
      * @param out
      *            The destination of the output stream.
-     *
+     * 
      * @throws IOException
-     *
+     * 
      * @see BaseConfig#BUFFER_SIZE
      */
     public static void pipeStream(InputStream in, OutputStream out)
@@ -709,7 +709,7 @@ public class Utils {
     /**
      * Read a stream in and write it to the given stream in a BUFFERED byte-safe manner. This method will block until
      * the input stream is closed. This method will close all streams before it returns.
-     *
+     * 
      * @param in
      *            The stream to get the data from.
      * @param bufferSize
@@ -729,7 +729,7 @@ public class Utils {
     /**
      * Read a stream in and write it to the given stream in a BUFFERED byte-safe manner. This method will block until
      * the input stream is closed.
-     *
+     * 
      * @param in
      *            The stream to get the data from.
      * @param bufferSize
@@ -740,7 +740,7 @@ public class Utils {
      *            The callback object to notify each time a chunk of data was written.
      * @param autoclose
      *            Whether or not to close all streams involved automatically after completion.
-     *
+     * 
      * @throws IOException
      */
     public static void pipeStream(InputStream in, int bufferSize, OutputStream out, StreamCallback callback,
@@ -774,7 +774,7 @@ public class Utils {
 
         /**
          * A chunk of data has just been written. The size of the chunk is no greater than the write buffer used.
-         *
+         * 
          * @param totalBytesWritten
          *            The total amount of bytes that have been written so far.
          */
@@ -785,7 +785,7 @@ public class Utils {
     /**
      * Extend the java library search path by adding the path of a library that will need to be loaded at some point in
      * the application's lifecycle.
-     *
+     * 
      * @param libName
      *            The name of the library that will be loaded.
      */
@@ -817,7 +817,7 @@ public class Utils {
 
     /**
      * A sane way of retrieving an entry from a {@link ZipFile} based on its /-delimited pathname.
-     *
+     * 
      * @param zipFile
      *            The {@link ZipFile} to retrieve the entry for.
      * @param zippedName
@@ -838,7 +838,7 @@ public class Utils {
 
     /**
      * Get the name of the field in the given owner that contains the given object.
-     *
+     * 
      * @param owner
      *            The object that contains the field.
      * @param fieldValue
@@ -854,9 +854,7 @@ public class Utils {
                     return field.getName();
             }
 
-            catch (IllegalArgumentException ignored) {
-            } catch (IllegalAccessException ignored) {
-            }
+            catch (IllegalArgumentException ignored) {} catch (IllegalAccessException ignored) {}
 
         return null;
     }
@@ -868,7 +866,7 @@ public class Utils {
      * <br>
      * If the given file is a directory, a recursive search will take place and a newline-separated list of matches will
      * be returned.
-     *
+     * 
      * @param pattern
      *            The pattern to search for.
      * @param file
@@ -889,7 +887,7 @@ public class Utils {
      * <br>
      * If the given file is a directory, a recursive search will take place and a newline-separated list of matches will
      * be returned.
-     *
+     * 
      * @param pattern
      *            The pattern to search for.
      * @param file
@@ -904,8 +902,8 @@ public class Utils {
 
         if (file.isDirectory())
             for (File child : file.listFiles())
-                resultBuilder.append( resultBuilder.length() > 0? "\n": "").append( grep( pattern, child, group ));
-        else if (file.isFile()) {
+                resultBuilder.append( resultBuilder.length() > 0? "\n": "" ).append( grep( pattern, child, group ) );
+        else if (file.isFile())
             try {
                 String content = readReader( new FileReader( file ), 4096, null, true );
 
@@ -919,7 +917,7 @@ public class Utils {
             } catch (IOException e) {
                 logger.err( e, "Couldn't read file '%s'!", file );
             }
-        } else
+        else
             logger.wrn( "File %s was not found.  Could not grep it.", file );
 
         return resultBuilder.toString();
@@ -928,7 +926,7 @@ public class Utils {
     /**
      * Recursively iterate the given {@link Collection} and all {@link Collection}s within it. When an element is
      * encountered that equals the given {@link Object}, the method returns <code>true</code>.
-     *
+     * 
      * @param c
      *            The collection to iterate recursively.
      * @param o
@@ -948,7 +946,7 @@ public class Utils {
 
     /**
      * Format suffix for the given calendar field.
-     *
+     * 
      * @param field
      *            {@link Calendar} field.
      * @return The suffix in the format specification of the given field.
@@ -960,7 +958,7 @@ public class Utils {
 
     /**
      * Check whether the given array contains the given search object.
-     *
+     * 
      * @param array
      *            The array to search through.
      * @param search
@@ -979,7 +977,7 @@ public class Utils {
     /**
      * Compress the generic form of the method's signature. Trim off throws declarations.<br>
      * java.lang.method -> j~l~method
-     *
+     * 
      * @param signature
      *            The signature that needs to be compressed.
      * @return The compressed signature.
@@ -992,7 +990,7 @@ public class Utils {
 
     /**
      * Trim all <code>trim</code> strings off of the <code>source</code> string, operating only on the left side.
-     *
+     * 
      * @param source
      *            The source object that needs to be converted to a string and trimmed.
      * @param trim
@@ -1015,7 +1013,7 @@ public class Utils {
 
     /**
      * Trim all <code>trim</code> strings off of the <code>source</code> string, operating only on the left side.
-     *
+     * 
      * @param source
      *            The source object that needs to be converted to a string and trimmed.
      * @param trim
@@ -1038,7 +1036,7 @@ public class Utils {
 
     /**
      * Trim all <code>trim</code> strings off of the <code>source</code> string, operating on both sides.
-     *
+     * 
      * @param source
      *            The source object that needs to be converted to a string and trimmed.
      * @param trim

@@ -61,7 +61,7 @@ public class SystemTray extends Wrapper {
 
     /**
      * Add a tray icon to the system tray.
-     *
+     * 
      * @param trayIcon
      *            The wrapped TrayIcon.
      * @throws AWTException
@@ -75,7 +75,7 @@ public class SystemTray extends Wrapper {
 
     /**
      * Add a {@link PropertyChangeListener} for the given property.
-     *
+     * 
      * @param propertyName
      *            The property to listen for.
      * @param listener
@@ -89,7 +89,7 @@ public class SystemTray extends Wrapper {
 
     /**
      * Retrieve all active listeners for the given property.
-     *
+     * 
      * @param propertyName
      *            The property that is listened for.
      * @return The {@link PropertyChangeListener}s registered for the given property.
@@ -124,7 +124,7 @@ public class SystemTray extends Wrapper {
 
     /**
      * Unregister the given tray icon removing it from the system tray.
-     *
+     * 
      * @param trayIcon
      *            The tray icon to remove.
      */
@@ -135,7 +135,7 @@ public class SystemTray extends Wrapper {
 
     /**
      * Stop listening for the given property with the given listener.
-     *
+     * 
      * @param propertyName
      *            The property to stop listening for with the given listener.
      * @param listener

@@ -31,7 +31,7 @@ import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
  * This accesses the windows registry through the use of C:\Windows\System32\reg.exe.<br>
  * This limits platform compatibility to Windows XP+.<br>
  * <br>
- *
+ * 
  * @author lhunath
  */
 public class WinReg {
@@ -41,7 +41,7 @@ public class WinReg {
 
     /**
      * Check whether registry queries are supported on the running operating system.
-     *
+     * 
      * @return Guess.
      */
     public static boolean isSupported() {
@@ -56,7 +56,7 @@ public class WinReg {
 
     /**
      * Query the windows registry at the given location for a response in the given type.
-     *
+     * 
      * @param <T>
      *            See type.
      * @param key

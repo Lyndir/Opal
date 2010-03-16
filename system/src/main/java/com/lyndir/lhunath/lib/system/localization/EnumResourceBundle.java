@@ -25,18 +25,18 @@ import java.util.ResourceBundle;
 /**
  * <h2>{@link EnumResourceBundle}<br>
  * <sub>An implementation of {@link ResourceBundle} that uses {@link Enum}s with a value as the resource.</sub></h2>
- *
+ * 
  * <p>
  * The {@link Enum} must implement the {@link ValueEnum} interface.
  * </p>
- *
+ * 
  * <p>
  * <i>Mar 29, 2009</i>
  * </p>
- *
+ * 
  * @param <T>
  *            The type of values provided as resources.
- *
+ * 
  * @author lhunath
  */
 public class EnumResourceBundle<T> extends ResourceBundle {
@@ -46,7 +46,8 @@ public class EnumResourceBundle<T> extends ResourceBundle {
 
 
     /**
-     * @param enumType The enum that will provide values for this resource bundle.
+     * @param enumType
+     *            The enum that will provide values for this resource bundle.
      */
     public EnumResourceBundle(Class<? extends ValueEnum<T>> enumType) {
 

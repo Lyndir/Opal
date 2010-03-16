@@ -80,7 +80,7 @@ public class TrayIcon extends Wrapper {
     public TrayIcon(Image image, String tooltip, PopupMenu popup) {
 
         this( construct( TrayIcon.class, new Class[] { Image.class, String.class, PopupMenu.class }, image, tooltip,
-                popup ) );
+                         popup ) );
     }
 
     /**

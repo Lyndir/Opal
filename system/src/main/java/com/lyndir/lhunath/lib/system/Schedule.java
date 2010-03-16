@@ -31,7 +31,7 @@ import com.lyndir.lhunath.lib.system.util.Utils;
  * <br>
  * [description / usage].<br>
  * <br>
- *
+ * 
  * @author lhunath
  */
 public abstract class Schedule implements Runnable, Serializable {
@@ -49,7 +49,7 @@ public abstract class Schedule implements Runnable, Serializable {
 
     /**
      * Update this schedule's timings.
-     *
+     * 
      * @param time
      *            The time at which this scheduled event must take place.
      * @param steps
@@ -132,7 +132,7 @@ public abstract class Schedule implements Runnable, Serializable {
 
     /**
      * Get a description of this schedule.
-     *
+     * 
      * @return A string that describes what this schedule does.
      */
     public abstract String getDescription();
