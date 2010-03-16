@@ -9,13 +9,13 @@
 	<parent>
         <groupId>com.lyndir.lhunath</groupId>
         <artifactId>lyndir</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
 	</parent>
 
 	<groupId>com.lyndir.lhunath.jlibs</groupId>
 	<artifactId>jlibs</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>JLibs</name>
 	<description>
         Java library for programming convenience.
@@ -23,10 +23,14 @@
 
 	<!-- CODE ACCESS -->
 	<scm>
-        <url>http://lhunath.lyndir.com</url>
+        <url>http://codaset.com/lhunath/jlibs</url>
         <connection>${scm.git.pubbase}/JLibs.git</connection>
         <developerConnection>${scm.git.devbase}/JLibs.git</developerConnection>
 	</scm>
+	<issueManagement>
+		<system>Codaset</system>
+        <url>http://codaset.com/lhunath/jlibs/tickets</url>
+	</issueManagement>
 
 	<!-- DEFAULT PROPERTIES -->
 	<properties>
@@ -34,8 +38,6 @@
 
 	<!-- ALL MODULES THAT ARE ENABLED BY DEFAULT -->
 	<modules>
-        <!--module>eclipse-config</module-->
-
         <module>crypto</module>
         <module>data</module>
         <module>geo</module>

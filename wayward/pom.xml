@@ -9,13 +9,13 @@
 	<parent>
         <groupId>com.lyndir.lhunath.jlibs</groupId>
         <artifactId>jlibs</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
 	</parent>
 
 	<groupId>com.lyndir.lhunath.jlibs</groupId>
 	<artifactId>wayward</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>JLibs Wayward</name>
 	<description>
         JLibs: Generic wicket components
@@ -32,7 +32,7 @@
         <dependency>
             <groupId>com.lyndir.lhunath.jlibs</groupId>
             <artifactId>system</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
 
         <!-- WICKET -->

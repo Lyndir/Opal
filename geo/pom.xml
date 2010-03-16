@@ -9,13 +9,13 @@
 	<parent>
         <groupId>com.lyndir.lhunath.jlibs</groupId>
         <artifactId>jlibs</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
 	</parent>
 
 	<groupId>com.lyndir.lhunath.jlibs</groupId>
 	<artifactId>geo</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>JLibs Geo</name>
 	<description>
         JLibs: Graphical Objects And Graphic Processing Utilities
@@ -32,12 +32,12 @@
         <dependency>
             <groupId>com.lyndir.lhunath.jlibs</groupId>
             <artifactId>system</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>com.lyndir.lhunath.jlibs</groupId>
             <artifactId>math</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->

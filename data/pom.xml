@@ -9,13 +9,13 @@
 	<parent>
         <groupId>com.lyndir.lhunath.jlibs</groupId>
         <artifactId>jlibs</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
 	</parent>
 
 	<groupId>com.lyndir.lhunath.jlibs</groupId>
 	<artifactId>data</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>JLibs Data</name>
 	<description>
         JLibs: Data Parsing And Processing Utilities
@@ -50,7 +50,7 @@
         <dependency>
             <groupId>com.lyndir.lhunath.jlibs</groupId>
             <artifactId>system</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
