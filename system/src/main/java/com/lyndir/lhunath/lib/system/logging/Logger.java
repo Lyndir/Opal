@@ -15,6 +15,7 @@
  */
 package com.lyndir.lhunath.lib.system.logging;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -38,15 +39,15 @@ import org.slf4j.LoggerFactory;
  * 
  * @author lhunath
  */
-public class Logger {
+public class Logger implements Serializable {
 
-    private static final Logger                 loggerLogger   = get( Logger.class );
+    private static final Logger loggerLogger = get( Logger.class );
 
-    private final org.slf4j.Logger              logger;
+    private final org.slf4j.Logger logger;
 
-    private static final ThreadLocal<Throwable> eventCause     = new ThreadLocal<Throwable>();
-    private static final ThreadLocal<String>    eventFormat    = new ThreadLocal<String>();
-    private static final ThreadLocal<Object[]>  eventArguments = new ThreadLocal<Object[]>();
+    private static final ThreadLocal<Throwable> eventCause = new ThreadLocal<Throwable>();
+    private static final ThreadLocal<String> eventFormat = new ThreadLocal<String>();
+    private static final ThreadLocal<Object[]> eventArguments = new ThreadLocal<Object[]>();
 
 
     // Create a logger --

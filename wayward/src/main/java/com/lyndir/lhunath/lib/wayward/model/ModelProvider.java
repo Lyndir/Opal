@@ -15,9 +15,6 @@
  */
 package com.lyndir.lhunath.lib.wayward.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import org.apache.wicket.Component;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
@@ -48,25 +45,19 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  * 
  * @param <P>
  *            This type.
- * @param <C>
- *            The type of the component we'll be attached to.
  * @param <M>
  *            The type of the base model for this provider.
  * @author lhunath
  */
-public abstract class ModelProvider<P extends ModelProvider<P, C, M>, C extends Component, M> implements IWrapModel<M> {
+public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements IWrapModel<M> {
 
     static final Logger logger = Logger.get( ModelProvider.class );
 
-    // TODO: Evaluate whether component attachment to model providers is useful at all.
-    private C component;
     private transient IModel<P> model;
     private IModel<M> wrappedModel;
 
 
     /**
-     * <b>Do NOT forget to attach your component before using this model using {@link #attach(AlbumTabPanel)}</b>
-     * 
      * @param model
      *            The base model.
      */
@@ -74,42 +65,6 @@ public abstract class ModelProvider<P extends ModelProvider<P, C, M>, C extends 
 
         if (model != null)
             setWrappedModel( model );
-    }
-
-    /**
-     * @param component
-     *            The component we'll be attached to.
-     * @param model
-     *            The base model.
-     */
-    public ModelProvider(C component, IModel<M> model) {
-
-        if (component != null)
-            setComponent( component );
-        if (model != null)
-            setWrappedModel( model );
-    }
-
-    private void setComponent(C component) {
-
-        this.component = component;
-    }
-
-    /**
-     * @param component
-     *            The component we have been or will be attached to.
-     */
-    public void attach(@SuppressWarnings("hiding") C component) {
-
-        setComponent( checkNotNull( component, "Can't attach model provider (%s) to null.", this ) );
-    }
-
-    /**
-     * @return The component we've been attached to.
-     */
-    public C getComponent() {
-
-        return checkNotNull( component, "Model provider (%s) hasn't been attached yet.", this );
     }
 
     /**

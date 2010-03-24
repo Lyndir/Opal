@@ -15,7 +15,6 @@
  */
 package com.lyndir.lhunath.lib.wayward.model;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 
 
@@ -29,28 +28,16 @@ import org.apache.wicket.model.IModel;
  * 
  * @param <P>
  *            This type.
- * @param <C>
- *            The type of the component this model will be attached to.
  * @author lhunath
  */
-public abstract class EmptyModelProvider<P extends EmptyModelProvider<P, C>, C extends Component>
-        extends ModelProvider<P, C, Object> {
+public abstract class EmptyModelProvider<P extends EmptyModelProvider<P>> extends ModelProvider<P, Object> {
 
     /**
-     * <b>Do NOT forget to attach your component before using this model using {@link #attach(AlbumTabPanel)}</b>
+     * Create a new {@link EmptyModelProvider} instance.
      */
     public EmptyModelProvider() {
 
         super( null );
-    }
-
-    /**
-     * @param component
-     *            The component this model will be attached to.
-     */
-    public EmptyModelProvider(C component) {
-
-        super( component, null );
     }
 
     /**
