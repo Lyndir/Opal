@@ -35,11 +35,25 @@ import org.apache.wicket.request.target.basic.RedirectRequestTarget;
  */
 public class RedirectToPageException extends AbstractRestartResponseException {
 
+    /**
+     * Create a new {@link RedirectToPageException} instance.
+     * 
+     * @param pageClass
+     *            The class of the page to redirect to.
+     */
     public RedirectToPageException(Class<? extends Page> pageClass) {
 
         this( pageClass, null );
     }
 
+    /**
+     * Create a new {@link RedirectToPageException} instance.
+     * 
+     * @param pageClass
+     *            The class of the page to redirect to.
+     * @param parameters
+     *            The parameters to pass to the page.
+     */
     public RedirectToPageException(Class<? extends Page> pageClass, PageParameters parameters) {
 
         RequestCycle rc = RequestCycle.get();

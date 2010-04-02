@@ -38,11 +38,27 @@ public class DefaultLabel extends Label {
     private IModel<String> defaultValue;
 
 
+    /**
+     * Create a new {@link DefaultLabel} instance.
+     * 
+     * @param id
+     *            The component's wicket ID.
+     * @param modelObject
+     *            The component's model value.
+     */
     public DefaultLabel(String id, String modelObject) {
 
         this( id, new Model<String>( modelObject ) );
     }
 
+    /**
+     * Create a new {@link DefaultLabel} instance.
+     * 
+     * @param id
+     *            The component's wicket ID.
+     * @param model
+     *            The component's model.
+     */
     public DefaultLabel(String id, IModel<String> model) {
 
         super( id, model );
@@ -50,6 +66,16 @@ public class DefaultLabel extends Label {
         setDefaultValue( new StringResourceModel( "none", this, null ) );
     }
 
+    /**
+     * Create a new {@link DefaultLabel} instance.
+     * 
+     * @param id
+     *            The component's wicket ID.
+     * @param model
+     *            The component's model.
+     * @param defaultValue
+     *            The model that provides the default value which will be used when the model doesn't provide an object.
+     */
     public DefaultLabel(String id, IModel<String> model, IModel<String> defaultValue) {
 
         super( id, model );

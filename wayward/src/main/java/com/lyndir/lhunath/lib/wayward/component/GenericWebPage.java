@@ -33,6 +33,12 @@ import org.apache.wicket.model.IModel;
  */
 public class GenericWebPage<T> extends WebPage {
 
+    /**
+     * Create a new {@link GenericWebPage} instance.
+     * 
+     * @param model
+     *            The component's model.
+     */
     public GenericWebPage(IModel<T> model) {
 
         super( model );

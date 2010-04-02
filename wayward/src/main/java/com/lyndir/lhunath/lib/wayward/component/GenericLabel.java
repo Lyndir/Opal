@@ -35,6 +35,14 @@ import org.apache.wicket.model.IModel;
  */
 public class GenericLabel<T> extends GenericWebMarkupContainer<T> {
 
+    /**
+     * Create a new {@link GenericLabel} instance.
+     * 
+     * @param id
+     *            The component's wicket ID.
+     * @param model
+     *            The component's model.
+     */
     public GenericLabel(String id, IModel<T> model) {
 
         super( id, model );

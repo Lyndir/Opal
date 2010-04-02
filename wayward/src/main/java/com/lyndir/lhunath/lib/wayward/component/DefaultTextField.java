@@ -37,6 +37,14 @@ public class DefaultTextField<T> extends TextField<T> {
     private IModel<String> defaultValue;
 
 
+    /**
+     * Create a new {@link DefaultTextField} instance.
+     * 
+     * @param id
+     *            The component's wicket ID.
+     * @param model
+     *            The component's model.
+     */
     public DefaultTextField(String id, IModel<T> model) {
 
         super( id, model );
@@ -44,6 +52,16 @@ public class DefaultTextField<T> extends TextField<T> {
         setDefaultValue( new StringResourceModel( "none", this, null ) );
     }
 
+    /**
+     * Create a new {@link DefaultTextField} instance.
+     * 
+     * @param id
+     *            The component's wicket ID.
+     * @param model
+     *            The component's model.
+     * @param defaultValue
+     *            The model that provides the default value which will be used when the model doesn't provide an object.
+     */
     public DefaultTextField(String id, IModel<T> model, IModel<String> defaultValue) {
 
         super( id, model );

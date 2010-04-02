@@ -73,6 +73,9 @@ public class LanguageLink extends Link<String> {
         }, ";" ) );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onClick() {
 

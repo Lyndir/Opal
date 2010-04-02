@@ -38,6 +38,12 @@ import org.apache.wicket.protocol.http.WebResponse;
  */
 public class RedirectResponseException extends AbstractRestartResponseException {
 
+    /**
+     * Create a new {@link RedirectResponseException} instance.
+     * 
+     * @param target
+     *            The target to set as the request's target.
+     */
     public RedirectResponseException(IRequestTarget target) {
 
         RequestCycle rc = RequestCycle.get();

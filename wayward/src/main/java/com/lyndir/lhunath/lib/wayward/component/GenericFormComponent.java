@@ -33,6 +33,14 @@ import org.apache.wicket.model.IModel;
  */
 public class GenericFormComponent<T> extends GenericWebMarkupContainer<T> {
 
+    /**
+     * Create a new {@link GenericFormComponent} instance.
+     * 
+     * @param id
+     *            The component's wicket ID.
+     * @param model
+     *            The component's model.
+     */
     public GenericFormComponent(String id, IModel<T> model) {
 
         super( id, model );

@@ -50,8 +50,6 @@ public abstract class AjaxLabelLink extends AjaxLink<String> {
 
     /**
      * {@inheritDoc}
-     * 
-     * @see Label#onComponentTagBody(org.apache.wicket.markup.MarkupStream, org.apache.wicket.markup.ComponentTag)
      */
     @Override
     protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
@@ -61,8 +59,6 @@ public abstract class AjaxLabelLink extends AjaxLink<String> {
 
     /**
      * {@inheritDoc}
-     * 
-     * @see Label#onComponentTag(org.apache.wicket.markup.ComponentTag)
      */
     @Override
     protected void onComponentTag(ComponentTag tag) {

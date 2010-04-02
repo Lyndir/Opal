@@ -15,6 +15,9 @@
  */
 package com.lyndir.lhunath.lib.wayward.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import org.apache.wicket.Component;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
@@ -55,6 +58,8 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
 
     private transient IModel<P> model;
     private IModel<M> wrappedModel;
+
+    private Component component;
 
 
     /**
@@ -167,5 +172,27 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
         }
 
         getWrappedModel().setObject( object );
+    }
+
+    private void setComponent(Component component) {
+
+        this.component = component;
+    }
+
+    /**
+     * @param component
+     *            The component we have been or will be attached to.
+     */
+    public void attach(@SuppressWarnings("hiding") Component component) {
+
+        setComponent( checkNotNull( component, "Can't attach model provider (%s) to null.", this ) );
+    }
+
+    /**
+     * @return The component we've been attached to.
+     */
+    public Component getComponent() {
+
+        return checkNotNull( component, "Model provider (%s) hasn't been attached yet.", this );
     }
 }

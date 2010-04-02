@@ -33,6 +33,14 @@ import org.apache.wicket.model.IModel;
  */
 public class GenericPanel<T> extends Panel {
 
+    /**
+     * Create a new {@link GenericPanel} instance.
+     * 
+     * @param id
+     *            The component's wicket ID.
+     * @param model
+     *            The component's model.
+     */
     public GenericPanel(String id, IModel<T> model) {
 
         super( id, model );

@@ -33,6 +33,14 @@ import org.apache.wicket.model.IModel;
  */
 public class GenericWebComponent<T> extends WebComponent {
 
+    /**
+     * Create a new {@link GenericWebComponent} instance.
+     * 
+     * @param id
+     *            The component's wicket ID.
+     * @param model
+     *            The component's model.
+     */
     public GenericWebComponent(String id, IModel<T> model) {
 
         super( id, model );
