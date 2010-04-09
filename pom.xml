@@ -22,9 +22,9 @@
 
 	<!-- CODE ACCESS -->
 	<scm>
-        <url>http://lhunath.lyndir.com</url>
-        <connection>${scm.git.pubbase}/JLibs.git</connection>
-        <developerConnection>${scm.git.devbase}/JLibs.git</developerConnection>
+        <url>http://codaset.com/lhunath/jlibs</url>
+        <connection>${scm.git.pubbase}/jlibs.git</connection>
+        <developerConnection>${scm.git.devbase}/jlibs.git</developerConnection>
 	</scm>
 
 	<!-- DEFAULT PROPERTIES -->
