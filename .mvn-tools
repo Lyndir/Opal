@@ -1,0 +1,9 @@
+# Maven build tools
+# -----------------
+#
+# Configuration script
+#
+#   distribution        -- Specify the name/path of the distribution artifact that should be deployed remotely.
+#   remote=[user@]host  -- Specify the remote username and host to log into in order to deploy a distribution.
+#   remoteRepo          -- Specify the path on the remote that the local repository should be synchronized with.
+

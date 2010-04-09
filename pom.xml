@@ -9,13 +9,12 @@
 	<parent>
         <groupId>com.lyndir.lhunath</groupId>
         <artifactId>lyndir</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.lyndir.lhunath.jlibs</groupId>
 	<artifactId>jlibs</artifactId>
 	<packaging>pom</packaging>
-	<version>1.1-SNAPSHOT</version>
 	<name>JLibs</name>
 	<description>
         Java library for programming convenience.

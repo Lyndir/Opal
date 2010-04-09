@@ -27,24 +27,23 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.apache.wicket.Session;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.lyndir.lhunath.lib.system.logging.Logger;
+import org.apache.wicket.Session;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 
 
 /**
  * <h2>{@link MessagesFactory}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * <i>Mar 26, 2010</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public abstract class MessagesFactory {
@@ -53,10 +52,9 @@ public abstract class MessagesFactory {
 
 
     /**
-     * @param localizationInterface
-     *            The interface that declares the localization keys.
-     * @param <M>
-     *            The type of the localization interface.
+     * @param localizationInterface The interface that declares the localization keys.
+     * @param <M>                   The type of the localization interface.
+     *
      * @return The localization proxy that provides localized values.
      */
     public static <M> M create(Class<M> localizationInterface) {
@@ -65,21 +63,19 @@ public abstract class MessagesFactory {
     }
 
     /**
-     * @param localizationInterface
-     *            The interface that declares the localization keys.
-     * @param <M>
-     *            The type of the localization interface.
-     * @param baseClass
-     *            The class on which to base the name resource name to load the resource bundle from. The baseName of
-     *            the resource bundle will be the {@link Class#getSimpleName()} and the class' classloader will be used
-     *            to resolve it.
+     * @param localizationInterface The interface that declares the localization keys.
+     * @param <M>                   The type of the localization interface.
+     * @param baseClass             The class on which to base the name resource name to load the resource bundle from. The baseName of
+     *                              the resource bundle will be the {@link Class#getSimpleName()} and the class' classloader will be used
+     *                              to resolve it.
+     *
      * @return The localization proxy that provides localized values.
      */
     public static <M> M create(Class<M> localizationInterface, Class<?> baseClass) {
 
         // Create a localization interface proxy.
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        Class<?>[] proxyInterfaces = new Class[] { localizationInterface, Serializable.class };
+        Class<?>[] proxyInterfaces = new Class[] {localizationInterface, Serializable.class};
         return localizationInterface.cast( Proxy.newProxyInstance( classLoader, proxyInterfaces,
                                                                    new MessagesInvocationHandler( baseClass ) ) );
     }
@@ -152,9 +148,7 @@ public abstract class MessagesFactory {
                                     else if (!match.elseKey().equals( KeyMatch.STRING_UNSET ))
                                         appendKey( keyBuilder, match.elseKey() );
                                 }
-                        }
-
-                        else if (BooleanKeyAppender.class.isAssignableFrom( argAnnotation.getClass() )) {
+                        } else if (BooleanKeyAppender.class.isAssignableFrom( argAnnotation.getClass() )) {
                             BooleanKeyAppender annotation = (BooleanKeyAppender) argAnnotation;
                             useValue = false;
                             logger.dbg( "Has appender: %s, ", annotation );
@@ -172,10 +166,8 @@ public abstract class MessagesFactory {
                 }
 
             final String key = keyBuilder.toString();
-            final String baseName = baseClass.getCanonicalName();
-            final ClassLoader classLoader = baseClass.getClassLoader();
             logger.dbg( "Resolving localization value of key: %s, in baseName: %s, with arguments: %s", //
-                        key, baseName, methodArgs );
+                        key, baseClass.getSimpleName(), methodArgs );
 
             // Construct a model to allow lazy evaluation of the key's value.
             IModel<String> valueModel = new AbstractReadOnlyModel<String>() {
@@ -184,9 +176,8 @@ public abstract class MessagesFactory {
                 public String getObject() {
 
                     // Find the resource bundle for the current locale and the given baseName.
-                    ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle( baseName,
-                                                                                    Session.get().getLocale(),
-                                                                                    classLoader );
+                    ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle(
+                            baseClass.getSimpleName(), Session.get().getLocale(), baseClass.getClassLoader() );
 
                     // Evaluate IModel arguments.
                     List<Object> valueArgs = Lists.transform( methodArgs, new Function<Object, Object>() {
