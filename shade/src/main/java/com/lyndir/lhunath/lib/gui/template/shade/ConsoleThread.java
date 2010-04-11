@@ -10,7 +10,7 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 
 /**
  * Read line-based data from an input stream and write it out on a component.
- * 
+ *
  * @author lhunath
  */
 public class ConsoleThread extends Thread {
@@ -24,10 +24,8 @@ public class ConsoleThread extends Thread {
     /**
      * Create a new {@link ConsoleThread} instance.
      *
-     * @param in
-     *            The source of the data to write in the console.
-     * @param console
-     *            The component to output the console data to.
+     * @param in      The source of the data to write in the console.
+     * @param console The component to output the console data to.
      */
     ConsoleThread(InputStream in, JTextArea console) {
 
@@ -54,7 +52,8 @@ public class ConsoleThread extends Thread {
                 /* Scroll to the bottom. */
                 console.setCaretPosition( console.getDocument().getLength() );
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             logger.err( e, "Could not read from the console source." );
         }
     }

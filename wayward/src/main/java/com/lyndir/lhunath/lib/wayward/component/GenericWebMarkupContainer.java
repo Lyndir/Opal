@@ -22,24 +22,22 @@ import org.apache.wicket.model.IModel;
 /**
  * <h2>{@link GenericWebMarkupContainer}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * <i>Jan 18, 2010</i>
  * </p>
- * 
- * @param <T>
- *            The model type.
+ *
  * @author lhunath
+ * @param <T>
+ * The model type.
  */
 public class GenericWebMarkupContainer<T> extends WebMarkupContainer {
 
     /**
      * Create a new {@link GenericWebMarkupContainer} instance.
-     * 
-     * @param id
-     *            The component's wicket ID.
-     * @param model
-     *            The component's model.
+     *
+     * @param id    The component's wicket ID.
+     * @param model The component's model.
      */
     public GenericWebMarkupContainer(String id, IModel<T> model) {
 
@@ -48,7 +46,7 @@ public class GenericWebMarkupContainer<T> extends WebMarkupContainer {
 
     /**
      * Gets model
-     * 
+     *
      * @return model
      */
     @SuppressWarnings("unchecked")
@@ -59,7 +57,7 @@ public class GenericWebMarkupContainer<T> extends WebMarkupContainer {
 
     /**
      * Sets model
-     * 
+     *
      * @param model
      */
     public final void setModel(IModel<T> model) {
@@ -69,7 +67,7 @@ public class GenericWebMarkupContainer<T> extends WebMarkupContainer {
 
     /**
      * Gets model object
-     * 
+     *
      * @return model object
      */
     @SuppressWarnings("unchecked")
@@ -80,7 +78,7 @@ public class GenericWebMarkupContainer<T> extends WebMarkupContainer {
 
     /**
      * Sets model object
-     * 
+     *
      * @param object
      */
     public final void setModelObject(T object) {

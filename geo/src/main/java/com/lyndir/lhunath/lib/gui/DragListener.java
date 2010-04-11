@@ -15,13 +15,9 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Event;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 
 
 /**
@@ -36,16 +32,15 @@ import java.awt.event.MouseMotionListener;
  */
 public class DragListener extends MouseAdapter {
 
-    private Point     startDrag;
+    private Point startDrag;
     private final Container dragComponent;
-    private Point     startLoc;
+    private Point startLoc;
 
 
     /**
      * Create a new {@link DragListener} instance.
      *
-     * @param dragComponent
-     *            The component that shall be dragged using this listener.
+     * @param dragComponent The component that shall be dragged using this listener.
      */
     public DragListener(Container dragComponent) {
 
@@ -63,8 +58,7 @@ public class DragListener extends MouseAdapter {
     /**
      * Install the listeners on the given container, recursively.
      *
-     * @param container
-     *            The container in which to install this {@link DragListener}.
+     * @param container The container in which to install this {@link DragListener}.
      */
     public void install(Container container) {
 
@@ -87,8 +81,7 @@ public class DragListener extends MouseAdapter {
     /**
      * Remove the listeners from the given container, recursively.
      *
-     * @param container
-     *            The container from which to remove this {@link DragListener}.
+     * @param container The container from which to remove this {@link DragListener}.
      */
     public void uninstall(Container container) {
 
@@ -137,8 +130,7 @@ public class DragListener extends MouseAdapter {
         if (startDrag != null) {
 
             /* Calculate the event point on screen. */
-            Point point = e.getPoint(); // FIXME: After changing the size of the component, this
-            // bugs out.
+            Point point = e.getPoint(); // FIXME: After changing the size of the component, this bugs out.
             Point pointRef = e.getComponent().getLocationOnScreen();
             point.translate( pointRef.x, pointRef.y );
 
@@ -159,6 +151,6 @@ public class DragListener extends MouseAdapter {
     @Override
     public void mouseMoved(MouseEvent e) {
 
-    /* Don't care. */
+        /* Don't care. */
     }
 }

@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.lib.system.logging;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.logging.Level;
 
 import com.lyndir.lhunath.lib.system.UIUtils;
@@ -26,7 +26,7 @@ import com.lyndir.lhunath.lib.system.UIUtils;
  * <br>
  * Uses HTML to style the output of {@link LogFormatter} and color it depending on the log level.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class HTMLFormatter extends LogFormatter {

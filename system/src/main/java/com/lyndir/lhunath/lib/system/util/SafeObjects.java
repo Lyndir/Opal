@@ -18,36 +18,32 @@ package com.lyndir.lhunath.lib.system.util;
 /**
  * <h2>{@link SafeObjects}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * <i>Mar 22, 2010</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public abstract class SafeObjects {
 
     /**
      * Check whether two objects are equal according to {@link #equals(Object)}.
-     * 
+     *
      * <p>
      * <b>NOTE:</b> This method is <code>null</code>-safe and two <code>null</code> objects are also considered equal.
      * </p>
-     * 
+     *
      * <p>
      * <b>NOTE:</b> This method attempts to aid in type safety of the objects that are being compared.
      * </p>
-     * 
-     * @param <A>
-     *            The type of the first object. The higher type in the hierarchy.
-     * @param <B>
-     *            The type of the second object must be of the same type or an assignment-compatible type (see
+     *
+     * @param <A> The type of the first object. The higher type in the hierarchy.
+     * @param <B> The type of the second object must be of the same type or an assignment-compatible type (see
      *            {@link Class#isAssignableFrom(Class)}) of A.
-     * 
-     * @param a
-     *            The first object, or <code>null</code>.
-     * @param b
-     *            The second object, or <code>null</code>.
+     * @param a   The first object, or <code>null</code>.
+     * @param b   The second object, or <code>null</code>.
+     *
      * @return <code>true</code> if both objects are <code>null</code> or if neither are and {@link #equals(Object)}
      *         considers them equal.
      */

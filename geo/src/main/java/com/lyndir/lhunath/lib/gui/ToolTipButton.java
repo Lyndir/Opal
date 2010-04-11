@@ -15,8 +15,7 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.AbstractButton;
-import javax.swing.JButton;
+import javax.swing.*;
 
 import com.lyndir.lhunath.lib.system.UIUtils;
 import com.lyndir.lhunath.lib.system.logging.Logger;
@@ -28,7 +27,7 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  * If you plan on showing the tooltip for a button, you may prefer this more specialized class. It currently does not
  * implement special behavior.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class ToolTipButton extends ToolTip {
@@ -38,11 +37,9 @@ public class ToolTipButton extends ToolTip {
 
     /**
      * Create a new {@link ToolTipButton} instance.
-     * 
-     * @param toolTip
-     *            The text to show when hovering this button.
-     * @param b
-     *            The button to use as content.
+     *
+     * @param toolTip The text to show when hovering this button.
+     * @param b       The button to use as content.
      */
     public ToolTipButton(String toolTip, AbstractButton b) {
 
@@ -51,9 +48,8 @@ public class ToolTipButton extends ToolTip {
 
     /**
      * Create a new {@link ToolTipButton} instance.
-     * 
-     * @param toolTip
-     *            The text to show when hovering this button.
+     *
+     * @param toolTip The text to show when hovering this button.
      */
     public ToolTipButton(String toolTip) {
 
@@ -62,7 +58,7 @@ public class ToolTipButton extends ToolTip {
 
     /**
      * Get the button content.
-     * 
+     *
      * @return Guess.
      */
     public AbstractButton getButton() {
@@ -79,9 +75,8 @@ public class ToolTipButton extends ToolTip {
 
     /**
      * Set the button content.
-     * 
-     * @param button
-     *            The button to use for content.
+     *
+     * @param button The button to use for content.
      */
     public void setButton(AbstractButton button) {
 

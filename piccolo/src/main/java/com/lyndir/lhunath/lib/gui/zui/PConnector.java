@@ -15,19 +15,13 @@
  */
 package com.lyndir.lhunath.lib.gui.zui;
 
+import java.awt.*;
+import java.awt.geom.CubicCurve2D;
+import java.awt.geom.Point2D;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.CubicCurve2D;
-import java.awt.geom.Point2D;
-
 import com.lyndir.lhunath.lib.math.Path;
-
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.util.PBounds;
@@ -40,12 +34,12 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  */
 public class PConnector extends PNode {
 
-    private PNode   src, dst;
-    private int     stroke;
-    private double  srcX;
-    private double  srcY;
-    private double  dstX;
-    private double  dstY;
+    private PNode src, dst;
+    private int stroke;
+    private double srcX;
+    private double srcY;
+    private double dstX;
+    private double dstY;
     private boolean srcHorizontal;
     private boolean dstHorizontal;
 
@@ -63,10 +57,8 @@ public class PConnector extends PNode {
     /**
      * Create a new PConnector instance.
      *
-     * @param src
-     *        The connector's source.
-     * @param dst
-     *        The connector's destination.
+     * @param src The connector's source.
+     * @param dst The connector's destination.
      */
     public PConnector(PNode src, PNode dst) {
 
@@ -79,8 +71,7 @@ public class PConnector extends PNode {
     /**
      * Set the strokeWidth of this PConnector.
      *
-     * @param strokeWidth
-     *        Guess.
+     * @param strokeWidth Guess.
      */
     public void setStrokeWidth(int strokeWidth) {
 
@@ -110,8 +101,8 @@ public class PConnector extends PNode {
     /**
      * Add a node connected through this connector, if possible.
      *
-     * @param node
-     *        The node to connect as either source or destination.
+     * @param node The node to connect as either source or destination.
+     *
      * @return true If a source or destination was unset and has now been assigned.
      */
     public boolean addNode(PNode node) {
@@ -125,14 +116,10 @@ public class PConnector extends PNode {
                 n = n.getParent();
             n.addChild( this );
             setOffset( src.getGlobalTranslation() );
-        }
-
-        else if (dst == null) {
+        } else if (dst == null) {
             dst = node;
             calculateNewBounds();
-        }
-
-        else
+        } else
             return false;
 
         return true;
@@ -141,8 +128,8 @@ public class PConnector extends PNode {
     /**
      * Remove a node connected through this connector, if present.
      *
-     * @param node
-     *        The node to remove as either source or destination.
+     * @param node The node to remove as either source or destination.
+     *
      * @return true If the given node was a source or destination node and has now been removed.
      */
     public boolean removeNode(PNode node) {
@@ -157,9 +144,7 @@ public class PConnector extends PNode {
                 n = n.getParent();
             n.addChild( this );
             setOffset( src.getGlobalTranslation() );
-        }
-
-        else if (dst == node)
+        } else if (dst == node)
             dst = null;
 
         else
@@ -187,7 +172,7 @@ public class PConnector extends PNode {
             setOffset( newOffset );
 
         return setBounds( new Rectangle( -stroke / 2 - 2, -stroke / 2 - 2, path.getSize().x + stroke + 4,
-                path.getSize().y + stroke + 4 ) );
+                                         path.getSize().y + stroke + 4 ) );
     }
 
     /**
@@ -212,13 +197,13 @@ public class PConnector extends PNode {
 
         if (src.getPaint() instanceof Color && dst.getPaint() instanceof Color)
             g2.setPaint( new GradientPaint( new Point2D.Double( srcX, srcY ), (Color) src.getPaint(),
-                    new Point2D.Double( dstX, dstY ), (Color) dst.getPaint() ) );
+                                            new Point2D.Double( dstX, dstY ), (Color) dst.getPaint() ) );
         else
             g2.setPaint( getPaint() );
 
-        CubicCurve2D curve = new CubicCurve2D.Double( srcX, srcY, srcHorizontal ? (srcX + dstX) / 2 : srcX,
-                srcHorizontal ? srcY : (srcY + dstY) / 2, dstHorizontal ? (srcX + dstX) / 2 : dstX,
-                dstHorizontal ? dstY : (srcY + dstY) / 2, dstX, dstY );
+        CubicCurve2D curve = new CubicCurve2D.Double( srcX, srcY, srcHorizontal? (srcX + dstX) / 2: srcX,
+                                                      srcHorizontal? srcY: (srcY + dstY) / 2, dstHorizontal? (srcX + dstX) / 2: dstX,
+                                                      dstHorizontal? dstY: (srcY + dstY) / 2, dstX, dstY );
 
         g2.clip( getBounds() );
         g2.setStroke( new BasicStroke( stroke, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND ) );

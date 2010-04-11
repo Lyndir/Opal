@@ -36,16 +36,15 @@ import java.awt.image.BufferedImage;
 public class PaintPanel extends ScrollPanel {
 
     protected Image backgroundImage;
-    private int     autoColorControl;
-    GradientPaint   autoPaint;
-    Paint           paint;
+    private int autoColorControl;
+    GradientPaint autoPaint;
+    Paint paint;
 
 
     /**
      * Create a new {@link PaintPanel} instance.
      *
-     * @param paint
-     *            The paint to use to fill the background of this panel with.
+     * @param paint The paint to use to fill the background of this panel with.
      */
     public PaintPanel(Paint paint) {
 
@@ -75,8 +74,8 @@ public class PaintPanel extends ScrollPanel {
      * bottom-left corner using the current look and feel for getting the appropriate colors auto-corrected by the
      * specified identifier.
      *
-     * @param autoColorControl
-     *            &gt; 0: Choose color automatically from L&F. Higher is brighter.
+     * @param autoColorControl &gt; 0: Choose color automatically from L&F. Higher is brighter.
+     *
      * @return The resulting {@link PaintPanel}.
      */
     public static PaintPanel gradientPanel(int autoColorControl) {
@@ -92,10 +91,9 @@ public class PaintPanel extends ScrollPanel {
      * Create a {@link PaintPanel} that has a gradient background paint using the current look and feel for getting the
      * appropriate colors.
      *
-     * @param startPos
-     *            The start of the gradient.
-     * @param endPos
-     *            The end of the gradient.
+     * @param startPos The start of the gradient.
+     * @param endPos   The end of the gradient.
+     *
      * @return The resulting {@link PaintPanel}.
      */
     public static PaintPanel gradientPanel(Point2D startPos, Point2D endPos) {
@@ -111,10 +109,9 @@ public class PaintPanel extends ScrollPanel {
      * Create a {@link PaintPanel} that has a gradient background paint spanning from the top-left corner to the
      * bottom-left corner.
      *
-     * @param startCol
-     *            The color to start the gradient with.
-     * @param endCol
-     *            The color to end the gradient with.
+     * @param startCol The color to start the gradient with.
+     * @param endCol   The color to end the gradient with.
+     *
      * @return The resulting {@link PaintPanel}.
      */
     public static PaintPanel gradientPanel(Color startCol, Color endCol) {
@@ -125,14 +122,11 @@ public class PaintPanel extends ScrollPanel {
     /**
      * Create a {@link PaintPanel} that has a gradient background paint.
      *
-     * @param startPos
-     *            The start of the gradient.
-     * @param startCol
-     *            The color to start the gradient with.
-     * @param endPos
-     *            The end of the gradient.
-     * @param endCol
-     *            The color to end the gradient with.
+     * @param startPos The start of the gradient.
+     * @param startCol The color to start the gradient with.
+     * @param endPos   The end of the gradient.
+     * @param endCol   The color to end the gradient with.
+     *
      * @return The resulting {@link PaintPanel}.
      */
     public static PaintPanel gradientPanel(Point2D startPos, Color startCol, Point2D endPos, Color endCol) {
@@ -143,10 +137,9 @@ public class PaintPanel extends ScrollPanel {
     /**
      * Create a gradient paint spanning from the top-left corner to the bottom-left corner.
      *
-     * @param startCol
-     *            The color to start the gradient with.
-     * @param endCol
-     *            The color to end the gradient with.
+     * @param startCol The color to start the gradient with.
+     * @param endCol   The color to end the gradient with.
+     *
      * @return Guess.
      */
     public static GradientPaint gradientPaint(Color startCol, Color endCol) {
@@ -157,14 +150,14 @@ public class PaintPanel extends ScrollPanel {
     /**
      * Create a {@link PaintPanel} that has a tiled background picture.
      *
-     * @param image
-     *            The image to tile on the background.
+     * @param image The image to tile on the background.
+     *
      * @return The resulting {@link PaintPanel}.
      */
     public static PaintPanel tiledPanel(Image image) {
 
         BufferedImage buffer = new BufferedImage( image.getWidth( null ), image.getHeight( null ),
-                BufferedImage.TYPE_INT_ARGB );
+                                                  BufferedImage.TYPE_INT_ARGB );
         buffer.getGraphics().drawImage( image, 0, 0, null );
         return new PaintPanel( new TexturePaint( buffer, new Rectangle( 0, 0, buffer.getWidth(), buffer.getHeight() ) ) );
     }
@@ -181,8 +174,8 @@ public class PaintPanel extends ScrollPanel {
      * Automatically color this panel based on the active look and feel. Set this to a value higher than zero to enable
      * the effect. Higher values result in brighter backgrounds.
      *
-     * @param autoColorControl
-     *            Guess.
+     * @param autoColorControl Guess.
+     *
      * @return This instance.
      */
     public PaintPanel setAutoColorControl(int autoColorControl) {
@@ -203,8 +196,7 @@ public class PaintPanel extends ScrollPanel {
     /**
      * Set the paint of this {@link PaintPanel}.
      *
-     * @param paint
-     *            Guess.
+     * @param paint Guess.
      */
     public void setPaint(Paint paint) {
 
@@ -223,8 +215,7 @@ public class PaintPanel extends ScrollPanel {
     /**
      * Set the background image of this {@link PaintPanel}.
      *
-     * @param image
-     *            Guess.
+     * @param image Guess.
      */
     public void setBackgroundImage(Image image) {
 
@@ -250,7 +241,7 @@ public class PaintPanel extends ScrollPanel {
 
             if (paint instanceof GradientPaint)
                 paint = new GradientPaint( ((GradientPaint) paint).getPoint1(), MyLookAndFeel.getActiveBright(),
-                        ((GradientPaint) paint).getPoint2(), background );
+                                           ((GradientPaint) paint).getPoint2(), background );
             else
                 paint = gradientPaint( MyLookAndFeel.getActiveBright(), background );
         }
@@ -305,6 +296,9 @@ public class PaintPanel extends ScrollPanel {
 
 
     private class PaintPanelComponentAdapter extends ComponentAdapter {
+
+        PaintPanelComponentAdapter() {
+        }
 
         /**
          * {@inheritDoc}

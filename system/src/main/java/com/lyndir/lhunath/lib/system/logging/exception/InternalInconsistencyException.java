@@ -18,20 +18,19 @@ package com.lyndir.lhunath.lib.system.logging.exception;
 /**
  * <h2>{@link InternalInconsistencyException}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * <i>Feb 28, 2010</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public class InternalInconsistencyException extends RuntimeException {
 
     /**
      * Create a new {@link InternalInconsistencyException} instance.
-     * 
-     * @param message
-     *            Some context with what was going on or what caused this.
+     *
+     * @param message Some context with what was going on or what caused this.
      */
     public InternalInconsistencyException(String message) {
 
@@ -40,11 +39,9 @@ public class InternalInconsistencyException extends RuntimeException {
 
     /**
      * Create a new {@link InternalInconsistencyException} instance.
-     * 
-     * @param message
-     *            Some context with what was going on or what caused this.
-     * @param cause
-     *            The optional exception cause of this.
+     *
+     * @param message Some context with what was going on or what caused this.
+     * @param cause   The optional exception cause of this.
      */
     public InternalInconsistencyException(String message, Throwable cause) {
 

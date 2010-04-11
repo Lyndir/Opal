@@ -26,7 +26,7 @@ import javax.swing.event.ListSelectionEvent;
  * NOTE: This might cause odd behaviour if the method triggered with this object relies on properties other than the
  * source object.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class NullListEvent extends ListSelectionEvent {
@@ -36,9 +36,8 @@ public class NullListEvent extends ListSelectionEvent {
 
     /**
      * Create a new NullListEvent instance.
-     * 
-     * @param source
-     *            The object upon which the list event takes place.
+     *
+     * @param source The object upon which the list event takes place.
      */
     public NullListEvent(Object source) {
 
@@ -47,15 +46,11 @@ public class NullListEvent extends ListSelectionEvent {
 
     /**
      * Create a new NullListEvent instance.
-     * 
-     * @param source
-     *            The object upon which the list event takes place.
-     * @param firstIndex
-     *            The first index in the range, &lt;= lastIndex
-     * @param lastIndex
-     *            The last index in the range, &gt;= firstIndex
-     * @param isAdjusting
-     *            Whether or not this is one in a series of multiple events, where changes are still being made
+     *
+     * @param source      The object upon which the list event takes place.
+     * @param firstIndex  The first index in the range, &lt;= lastIndex
+     * @param lastIndex   The last index in the range, &gt;= firstIndex
+     * @param isAdjusting Whether or not this is one in a series of multiple events, where changes are still being made
      */
     public NullListEvent(Object source, int firstIndex, int lastIndex, boolean isAdjusting) {
 

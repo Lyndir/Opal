@@ -15,26 +15,16 @@
  */
 package com.lyndir.lhunath.lib.gui.zui;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Point;
-import java.awt.Shape;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
-import javax.swing.Icon;
-import javax.swing.UIManager;
-
 import com.lyndir.lhunath.lib.math.Vec2;
 import com.lyndir.lhunath.lib.system.Utils;
-
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
@@ -48,32 +38,29 @@ import edu.umd.cs.piccolo.util.PPaintContext;
  */
 public class PBox extends PShape {
 
-    private static final double PADDING   = 10;
+    private static final double PADDING = 10;
 
-    private static final Vec2   tipOffset = new Vec2( -10, 30 );
+    private static final Vec2 tipOffset = new Vec2( -10, 30 );
 
-    protected final PCanvas           canvas;
-    private PBox                tooltipNode;
-    private String              title;
-    private Paint               outlinePaint;
-    private Paint               textPaint;
-    private boolean             autoSize;
-    private boolean             locked;
-    private int                 ratio;
+    protected final PCanvas canvas;
+    private PBox tooltipNode;
+    private String title;
+    private Paint outlinePaint;
+    private Paint textPaint;
+    private boolean autoSize;
+    private boolean locked;
+    private int ratio;
 
-    private Font                font;
+    private Font font;
 
-    private Icon                icon;
+    private Icon icon;
 
     /**
      * Create a new PBox instance.
      *
-     * @param canvas
-     *        The canvas in which this node is contained.
-     * @param title
-     *        The title text of this box.
-     * @param location
-     *        The offset relative to the top left corner of the canvas for this box.
+     * @param canvas   The canvas in which this node is contained.
+     * @param title    The title text of this box.
+     * @param location The offset relative to the top left corner of the canvas for this box.
      */
     public PBox(PCanvas canvas, String title, Point location) {
 
@@ -85,10 +72,8 @@ public class PBox extends PShape {
     /**
      * Create a new PBox instance.
      *
-     * @param canvas
-     *        The canvas in which this node is contained.
-     * @param title
-     *        The title text of this box.
+     * @param canvas The canvas in which this node is contained.
+     * @param title  The title text of this box.
      */
     public PBox(PCanvas canvas, String title) {
 
@@ -100,8 +85,7 @@ public class PBox extends PShape {
     /**
      * Create a new PBox instance.
      *
-     * @param canvas
-     *        The canvas in which this node is contained.
+     * @param canvas The canvas in which this node is contained.
      */
     public PBox(PCanvas canvas) {
 
@@ -121,8 +105,7 @@ public class PBox extends PShape {
     /**
      * Lock this box into its parent. A locked box will group into its parent {@link PBox} and extend its minimum size.
      *
-     * @param locked
-     *        Set whether this box is locked into its parent.
+     * @param locked Set whether this box is locked into its parent.
      */
     public void setLocked(boolean locked) {
 
@@ -152,8 +135,7 @@ public class PBox extends PShape {
     /**
      * Define the paint used to draw the outline.
      *
-     * @param paint
-     *        Set this to null to disable outline painting.
+     * @param paint Set this to null to disable outline painting.
      */
     public void setOutlinePaint(Paint paint) {
 
@@ -170,8 +152,7 @@ public class PBox extends PShape {
     /**
      * Define the paint used to draw the text.
      *
-     * @param paint
-     *        Guess.
+     * @param paint Guess.
      */
     public void setTextPaint(Paint paint) {
 
@@ -200,8 +181,7 @@ public class PBox extends PShape {
     /**
      * Assign an icon to display along with this node.
      *
-     * @param icon
-     *        The icon to use.
+     * @param icon The icon to use.
      */
     public void setIcon(Icon icon) {
 
@@ -221,8 +201,7 @@ public class PBox extends PShape {
     /**
      * Set the tooltip of this PBox.
      *
-     * @param tooltip
-     *        Guess.
+     * @param tooltip Guess.
      */
     public void setToolTip(String tooltip) {
 
@@ -251,9 +230,8 @@ public class PBox extends PShape {
     /**
      * Display the tooltip at the given position relative to this node.
      *
-     * @param offset
-     *        The position relative to this node of the top left corner of the tooltip.<br>
-     *        Set this to null to hide the tooltip.
+     * @param offset The position relative to this node of the top left corner of the tooltip.<br>
+     *               Set this to null to hide the tooltip.
      */
     public void showTooltip(Point2D offset) {
 
@@ -284,8 +262,7 @@ public class PBox extends PShape {
     /**
      * Set the title of this PBox.
      *
-     * @param title
-     *        Guess.
+     * @param title Guess.
      */
     public void setTitle(String title) {
 
@@ -309,8 +286,7 @@ public class PBox extends PShape {
     /**
      * Set the autoSize of this PBox.
      *
-     * @param autoSize
-     *        Guess.
+     * @param autoSize Guess.
      */
     public void setAutoSize(boolean autoSize) {
 
@@ -326,8 +302,7 @@ public class PBox extends PShape {
     /**
      * Set the size of this PBox and disable autosizing.
      *
-     * @param size
-     *        Guess.
+     * @param size Guess.
      */
     public void setSize(Dimension2D size) {
 
@@ -342,8 +317,7 @@ public class PBox extends PShape {
     /**
      * Set the offset relative to the top left corner of the canvas for this box.
      *
-     * @param offset
-     *        Guess.
+     * @param offset Guess.
      */
     @Override
     public void setOffset(Point2D offset) {
@@ -357,8 +331,7 @@ public class PBox extends PShape {
     /**
      * Set the offset relative to the top left corner of the canvas for this box.
      *
-     * @param offset
-     *        Guess.
+     * @param offset Guess.
      */
     public void setCenter(Point2D offset) {
 
@@ -383,8 +356,7 @@ public class PBox extends PShape {
     /**
      * Set the font to use for the title of this box.
      *
-     * @param font
-     *        Guess.
+     * @param font Guess.
      */
     public void setFont(Font font) {
 
@@ -404,8 +376,7 @@ public class PBox extends PShape {
     /**
      * Set the ratio of this {@link PBox}.
      *
-     * @param ratio
-     *        Guess.
+     * @param ratio Guess.
      */
     public void setRatio(int ratio) {
 
@@ -426,7 +397,7 @@ public class PBox extends PShape {
         if (title != null)
             titleBounds = g2.getFontMetrics( getFont() ).getStringBounds( title, g2 );
 
-        double padLocked = isLocked() ? ratio : 0, padUnlocked = isLocked() ? 0 : ratio;
+        double padLocked = isLocked()? ratio: 0, padUnlocked = isLocked()? 0: ratio;
         double maxWidth = Math.max( titleBounds.getWidth() + PADDING * 3 + padLocked * 2, getWidth() );
         double y = titleBounds.getHeight() + PADDING;
         ArrayList<Object> children = new ArrayList<Object>( getChildrenReference() );
@@ -478,7 +449,7 @@ public class PBox extends PShape {
             g2.setPaint( textPaint );
             g2.setStroke( new BasicStroke( 1 ) );
             g2.drawString( title, (int) (getBounds().getCenterX() - titleBounds.getCenterX()),
-                    (int) (getY() + titleBounds.getHeight() + 3) );
+                           (int) (getY() + titleBounds.getHeight() + 3) );
         }
 
         g2.dispose();

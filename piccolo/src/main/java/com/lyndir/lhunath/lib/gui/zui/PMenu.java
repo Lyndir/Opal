@@ -15,14 +15,12 @@
  */
 package com.lyndir.lhunath.lib.gui.zui;
 
-import java.awt.Font;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-
-import javax.swing.Action;
-import javax.swing.Icon;
 
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -33,7 +31,7 @@ import edu.umd.cs.piccolo.event.PInputEventListener;
  * <br>
  * [description / usage].<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class PMenu extends PBox implements PInputEventListener {
@@ -42,11 +40,9 @@ public class PMenu extends PBox implements PInputEventListener {
 
     /**
      * Create a new {@link PMenu} instance that will act as a <b>menu container</b.
-     * 
-     * @param canvas
-     *        The canvas on which this {@link PMenu} will act.
-     * @param title
-     *        The title of the menu.
+     *
+     * @param canvas The canvas on which this {@link PMenu} will act.
+     * @param title  The title of the menu.
      */
     public PMenu(PCanvas canvas, String title) {
 
@@ -57,15 +53,13 @@ public class PMenu extends PBox implements PInputEventListener {
 
     /**
      * Create a new {@link PMenu} instance that will act as a <b>menu item</b>.
-     * 
-     * @param canvas
-     *        The canvas on which this {@link PMenu} will act.
-     * @param action
-     *        The action that will be triggered with this menu item.
+     *
+     * @param canvas The canvas on which this {@link PMenu} will act.
+     * @param action The action that will be triggered with this menu item.
      */
     public PMenu(PCanvas canvas, Action action) {
 
-        super( canvas, action.getValue( Action.NAME ) == null ? null : action.getValue( Action.NAME ).toString() );
+        super( canvas, action.getValue( Action.NAME ) == null? null: action.getValue( Action.NAME ).toString() );
 
         setIcon( (Icon) action.getValue( Action.SMALL_ICON ) );
         setOutlinePaint( null );
@@ -75,9 +69,8 @@ public class PMenu extends PBox implements PInputEventListener {
 
     /**
      * Create a new {@link PMenu} instance that will act as a <b>separator</b>.
-     * 
-     * @param canvas
-     *        The canvas on which this {@link PMenu} will act.
+     *
+     * @param canvas The canvas on which this {@link PMenu} will act.
      */
     public PMenu(PCanvas canvas) {
 
@@ -90,9 +83,8 @@ public class PMenu extends PBox implements PInputEventListener {
 
     /**
      * Add a new item to this {@link PMenu}.
-     * 
-     * @param item
-     *        The action that will be triggered with this item.
+     *
+     * @param item The action that will be triggered with this item.
      */
     public void addItem(Action item) {
 
@@ -111,9 +103,8 @@ public class PMenu extends PBox implements PInputEventListener {
 
     /**
      * Show this menu at the given position.
-     * 
-     * @param position
-     *        The position to show this menu in global canvas coordinates.
+     *
+     * @param position The position to show this menu in global canvas coordinates.
      */
     public void show(Point2D position) {
 
@@ -152,11 +143,11 @@ public class PMenu extends PBox implements PInputEventListener {
 
         InputEvent sEvent = event.getSourceSwingEvent();
         Action childAction = ((PMenu) event.getPickedNode()).action;
-        String command = childAction.getValue( Action.ACTION_COMMAND_KEY ) == null ? null : childAction.getValue(
+        String command = childAction.getValue( Action.ACTION_COMMAND_KEY ) == null? null: childAction.getValue(
                 Action.ACTION_COMMAND_KEY ).toString();
 
         if (type == MouseEvent.MOUSE_CLICKED && event.isLeftMouseButton())
             childAction.actionPerformed( new ActionEvent( sEvent.getSource(), sEvent.getID(), command,
-                    sEvent.getWhen(), sEvent.getModifiers() ) );
+                                                          sEvent.getWhen(), sEvent.getModifiers() ) );
     }
 }

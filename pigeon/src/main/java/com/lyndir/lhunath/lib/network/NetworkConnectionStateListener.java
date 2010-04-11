@@ -29,19 +29,16 @@ public interface NetworkConnectionStateListener {
     /**
      * A new connection has been established to a remote server.
      *
-     * @param socketChannel
-     *            The channel over which the new connection will take place.
+     * @param socketChannel The channel over which the new connection will take place.
      */
     void connected(SocketChannel socketChannel);
 
     /**
      * A channel has been closed.
      *
-     * @param channel
-     *            The channel whose connection has been terminated.
-     * @param resetByPeer
-     *            <code>true</code> if the remote side closed the connection, <code>false</code> if the local side hung
-     *            up.
+     * @param channel     The channel whose connection has been terminated.
+     * @param resetByPeer <code>true</code> if the remote side closed the connection, <code>false</code> if the local side hung
+     *                    up.
      */
     void closed(SocketChannel channel, boolean resetByPeer);
 }

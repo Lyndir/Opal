@@ -1,20 +1,13 @@
 package com.jgoodies.uif_lite.component;
 
-import java.awt.Component;
-import java.awt.Insets;
-
-import javax.swing.AbstractButton;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
+import javax.swing.*;
+import java.awt.*;
 
 
 /**
  * A very light version of the JGoodies <code>UIFactory</code> class. It consists only of static methods to create
  * frequently used components.
- * 
+ *
  * @author Karsten Lentzsch
  * @version $Revision: 1.2 $
  */
@@ -22,19 +15,21 @@ public final class Factory {
 
     private Factory() {
 
-    // Overrides default constructor; prevents instantiation.
+        // Overrides default constructor; prevents instantiation.
     }
 
 
-    /** Defines the margin used in toolbar buttons. */
+    /**
+     * Defines the margin used in toolbar buttons.
+     */
     private static final Insets TOOLBAR_BUTTON_MARGIN = new Insets( 1, 1, 1, 1 );
 
 
     /**
      * Creates and answers a <code>JScrollPane</code> that has an empty border.
-     * 
-     * @param component
-     *            The component to scroll in the pane.
+     *
+     * @param component The component to scroll in the pane.
+     *
      * @return Guess.
      */
     public static JScrollPane createStrippedScrollPane(Component component) {
@@ -47,15 +42,12 @@ public final class Factory {
     /**
      * Creates and returns a <code>JSplitPane</code> that has empty borders. Useful to avoid duplicate decorations, for
      * example if the split pane is contained by other components that already provide a border.
-     * 
-     * @param orientation
-     *            the split pane's orientation: horizontal or vertical
-     * @param comp1
-     *            the top/left component
-     * @param comp2
-     *            the bottom/right component
-     * @param resizeWeight
-     *            indicates how to distribute extra space
+     *
+     * @param orientation  the split pane's orientation: horizontal or vertical
+     * @param comp1        the top/left component
+     * @param comp2        the bottom/right component
+     * @param resizeWeight indicates how to distribute extra space
+     *
      * @return a split panes that has an empty border
      */
     public static JSplitPane createStrippedSplitPane(int orientation, Component comp1, Component comp2,
@@ -70,9 +62,9 @@ public final class Factory {
      * Creates and answers an <code>AbstractButton</code> configured for use in a JToolBar.
      * <p>
      * Superceded by ToolBarButton from the JGoodies UI framework.
-     * 
-     * @param action
-     *            The action to perform when the button gets clicked.
+     *
+     * @param action The action to perform when the button gets clicked.
+     *
      * @return Guess.
      */
     public static AbstractButton createToolBarButton(Action action) {

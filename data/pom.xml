@@ -1,47 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<!-- PROJECT METADATA -->
-	<parent>
+    <!-- PROJECT METADATA -->
+    <parent>
         <groupId>com.lyndir.lhunath.jlibs</groupId>
         <artifactId>jlibs</artifactId>
         <version>SNAPSHOT</version>
-	</parent>
+    </parent>
 
-	<groupId>com.lyndir.lhunath.jlibs</groupId>
-	<artifactId>data</artifactId>
-	<packaging>jar</packaging>
-	<name>JLibs Data</name>
-	<description>
+    <groupId>com.lyndir.lhunath.jlibs</groupId>
+    <artifactId>data</artifactId>
+    <packaging>jar</packaging>
+    <name>JLibs Data</name>
+    <description>
         JLibs: Data Parsing And Processing Utilities
-	</description>
+    </description>
 
-	<!-- BUILD CONFIGURATION -->
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>
-								com.lyndir.lhunath.lib.xml.XPath
-							</mainClass>
-							<addClasspath>true</addClasspath>
+    <!-- BUILD CONFIGURATION -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>
+                                com.lyndir.lhunath.lib.xml.XPath
+                            </mainClass>
+                            <addClasspath>true</addClasspath>
                             <classpathMavenRepositoryLayout>true</classpathMavenRepositoryLayout>
                             <classpathPrefix>./</classpathPrefix>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
-	<!-- DEPENDENCY MANAGEMENT -->
-	<dependencies>
+    <!-- DEPENDENCY MANAGEMENT -->
+    <dependencies>
 
         <!-- PROJECT REFERENCES -->
         <dependency>
@@ -80,6 +81,6 @@
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
         </dependency>
-	</dependencies>
+    </dependencies>
 
 </project>

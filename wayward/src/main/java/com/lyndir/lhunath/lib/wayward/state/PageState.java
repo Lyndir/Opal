@@ -15,21 +15,20 @@
  */
 package com.lyndir.lhunath.lib.wayward.state;
 
-import org.apache.wicket.Page;
-import org.apache.wicket.RequestCycle;
-
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import com.lyndir.lhunath.lib.wayward.component.RedirectToPageException;
+import org.apache.wicket.Page;
+import org.apache.wicket.RequestCycle;
 
 
 /**
  * <h2>{@link PageState}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * <i>Mar 21, 2010</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public abstract class PageState implements ComponentState {
@@ -40,8 +39,7 @@ public abstract class PageState implements ComponentState {
 
 
     /**
-     * @param pageClass
-     *            The page that we're activating when the state is right.
+     * @param pageClass The page that we're activating when the state is right.
      */
     public PageState(Class<? extends Page> pageClass) {
 

@@ -26,11 +26,11 @@ import org.apache.wicket.model.StringResourceModel;
 /**
  * <h2>{@link DefaultLabel}<br>
  * <sub>Text field that uses a default value if its model object is <code>null</code>.</sub></h2>
- * 
+ *
  * <p>
  * <i>Jan 21, 2010</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public class DefaultLabel extends Label {
@@ -40,11 +40,9 @@ public class DefaultLabel extends Label {
 
     /**
      * Create a new {@link DefaultLabel} instance.
-     * 
-     * @param id
-     *            The component's wicket ID.
-     * @param modelObject
-     *            The component's model value.
+     *
+     * @param id          The component's wicket ID.
+     * @param modelObject The component's model value.
      */
     public DefaultLabel(String id, String modelObject) {
 
@@ -53,11 +51,9 @@ public class DefaultLabel extends Label {
 
     /**
      * Create a new {@link DefaultLabel} instance.
-     * 
-     * @param id
-     *            The component's wicket ID.
-     * @param model
-     *            The component's model.
+     *
+     * @param id    The component's wicket ID.
+     * @param model The component's model.
      */
     public DefaultLabel(String id, IModel<String> model) {
 
@@ -68,13 +64,10 @@ public class DefaultLabel extends Label {
 
     /**
      * Create a new {@link DefaultLabel} instance.
-     * 
-     * @param id
-     *            The component's wicket ID.
-     * @param model
-     *            The component's model.
-     * @param defaultValue
-     *            The model that provides the default value which will be used when the model doesn't provide an object.
+     *
+     * @param id           The component's wicket ID.
+     * @param model        The component's model.
+     * @param defaultValue The model that provides the default value which will be used when the model doesn't provide an object.
      */
     public DefaultLabel(String id, IModel<String> model, IModel<String> defaultValue) {
 
@@ -92,8 +85,7 @@ public class DefaultLabel extends Label {
     }
 
     /**
-     * @param defaultValue
-     *            The defaultValue of this {@link DefaultLabel}.
+     * @param defaultValue The defaultValue of this {@link DefaultLabel}.
      */
     public void setDefaultValue(IModel<String> defaultValue) {
 

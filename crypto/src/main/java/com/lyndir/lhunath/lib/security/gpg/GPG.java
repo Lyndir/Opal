@@ -15,54 +15,23 @@
  */
 package com.lyndir.lhunath.lib.security.gpg;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SecureRandom;
-import java.security.Security;
-import java.security.SignatureException;
+import java.io.*;
+import java.security.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import com.lyndir.lhunath.lib.system.BaseConfig;
+import com.lyndir.lhunath.lib.system.util.Utils;
 import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.bcpg.CompressionAlgorithmTags;
 import org.bouncycastle.bcpg.HashAlgorithmTags;
 import org.bouncycastle.bcpg.SymmetricKeyAlgorithmTags;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.openpgp.PGPCompressedData;
-import org.bouncycastle.openpgp.PGPCompressedDataGenerator;
-import org.bouncycastle.openpgp.PGPEncryptedDataGenerator;
-import org.bouncycastle.openpgp.PGPEncryptedDataList;
-import org.bouncycastle.openpgp.PGPException;
-import org.bouncycastle.openpgp.PGPLiteralData;
-import org.bouncycastle.openpgp.PGPLiteralDataGenerator;
-import org.bouncycastle.openpgp.PGPObjectFactory;
-import org.bouncycastle.openpgp.PGPOnePassSignatureList;
-import org.bouncycastle.openpgp.PGPPublicKey;
-import org.bouncycastle.openpgp.PGPPublicKeyEncryptedData;
-import org.bouncycastle.openpgp.PGPPublicKeyRing;
-import org.bouncycastle.openpgp.PGPPublicKeyRingCollection;
-import org.bouncycastle.openpgp.PGPSecretKey;
-import org.bouncycastle.openpgp.PGPSecretKeyRing;
-import org.bouncycastle.openpgp.PGPSecretKeyRingCollection;
-import org.bouncycastle.openpgp.PGPSignature;
-import org.bouncycastle.openpgp.PGPSignatureGenerator;
-import org.bouncycastle.openpgp.PGPUtil;
+import org.bouncycastle.openpgp.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.lyndir.lhunath.lib.system.BaseConfig;
-import com.lyndir.lhunath.lib.system.util.Utils;
 
 
 /**
@@ -88,8 +57,8 @@ public class GPG {
     /**
      * Parse a hexadecimal key Id into a wrapped long.
      *
-     * @param keyId
-     *            The ID to convert.
+     * @param keyId The ID to convert.
+     *
      * @return The long that represents the key ID.
      */
     public static long parseKeyId(String keyId) {
@@ -106,11 +75,11 @@ public class GPG {
     }
 
     /**
-     * @param publicKeyFile
-     *            The file that contains the public key.
-     * @param publicKeyId
-     *            The ID of the key to retrieve from the file.
+     * @param publicKeyFile The file that contains the public key.
+     * @param publicKeyId   The ID of the key to retrieve from the file.
+     *
      * @return a public key from file.
+     *
      * @throws FileNotFoundException
      * @throws IOException
      * @throws PGPException
@@ -123,11 +92,11 @@ public class GPG {
     }
 
     /**
-     * @param privateKeyFile
-     *            The file that contains the private key.
-     * @param privateKeyId
-     *            The ID of the key to retrieve from the file.
+     * @param privateKeyFile The file that contains the private key.
+     * @param privateKeyId   The ID of the key to retrieve from the file.
+     *
      * @return a private key from file.
+     *
      * @throws FileNotFoundException
      * @throws IOException
      * @throws PGPException
@@ -142,11 +111,11 @@ public class GPG {
     }
 
     /**
-     * @param encryptedFile
-     *            The file to decrypt.
-     * @param privateKeyFile
-     *            The file that contains the private key that can decrypt the file.
+     * @param encryptedFile  The file to decrypt.
+     * @param privateKeyFile The file that contains the private key that can decrypt the file.
+     *
      * @return a private key required to decrypt the given file from file.
+     *
      * @throws IOException
      * @throws PGPException
      */
@@ -157,11 +126,11 @@ public class GPG {
     }
 
     /**
-     * @param encryptedString
-     *            The string that can be decrypted with the private key.
-     * @param privateKeyFile
-     *            The file that contains the private key that can decrypt the string.
+     * @param encryptedString The string that can be decrypted with the private key.
+     * @param privateKeyFile  The file that contains the private key that can decrypt the string.
+     *
      * @return a private key required to decrypt the given string from file.
+     *
      * @throws IOException
      * @throws PGPException
      */
@@ -172,11 +141,11 @@ public class GPG {
     }
 
     /**
-     * @param encryptedStream
-     *            The stream of data that can be decrypted with the private key.
-     * @param privateKeyFile
-     *            The file that contains the private key that can decrypt the stream data.
+     * @param encryptedStream The stream of data that can be decrypted with the private key.
+     * @param privateKeyFile  The file that contains the private key that can decrypt the stream data.
+     *
      * @return a private key required to decrypt the given stream from file.
+     *
      * @throws IOException
      * @throws PGPException
      */
@@ -205,9 +174,10 @@ public class GPG {
     }
 
     /**
-     * @param privateKeyFile
-     *            The file that contains the private keys.
+     * @param privateKeyFile The file that contains the private keys.
+     *
      * @return all master key IDs available in the given key ring.
+     *
      * @throws FileNotFoundException
      * @throws IOException
      * @throws PGPException
@@ -246,9 +216,10 @@ public class GPG {
     }
 
     /**
-     * @param publicKeyFile
-     *            The file that contains the public keys.
+     * @param publicKeyFile The file that contains the public keys.
+     *
      * @return all master key IDs available in the given key ring.
+     *
      * @throws FileNotFoundException
      * @throws IOException
      * @throws PGPException
@@ -289,14 +260,11 @@ public class GPG {
     /**
      * PGP Encrypt a file.
      *
-     * @param plainFile
-     *            The file that contains the plain-text data.
-     * @param encryptedFile
-     *            The file to write encrypted data into.
-     * @param publicKey
-     *            The public key to use for encryption.
-     * @param armoured
-     *            <code>true</code>: ASCII armor the encrypted data.
+     * @param plainFile     The file that contains the plain-text data.
+     * @param encryptedFile The file to write encrypted data into.
+     * @param publicKey     The public key to use for encryption.
+     * @param armoured      <code>true</code>: ASCII armor the encrypted data.
+     *
      * @throws NoSuchProviderException
      * @throws IOException
      * @throws PGPException
@@ -313,13 +281,12 @@ public class GPG {
     /**
      * PGP Encrypt a string.
      *
-     * @param plainTextData
-     *            The plain-text data.
-     * @param publicKey
-     *            The public key to use for encryption.
-     * @param armoured
-     *            <code>true</code>: ASCII armor the encrypted data.
+     * @param plainTextData The plain-text data.
+     * @param publicKey     The public key to use for encryption.
+     * @param armoured      <code>true</code>: ASCII armor the encrypted data.
+     *
      * @return The encrypted string data.
+     *
      * @throws NoSuchProviderException
      * @throws IOException
      * @throws PGPException
@@ -333,13 +300,12 @@ public class GPG {
     /**
      * PGP Encrypt a stream.
      *
-     * @param plainTextStream
-     *            The stream that contains the plain-text data.
-     * @param publicKey
-     *            The public key to use for encryption.
-     * @param armoured
-     *            <code>true</code>: ASCII armor the encrypted data.
+     * @param plainTextStream The stream that contains the plain-text data.
+     * @param publicKey       The public key to use for encryption.
+     * @param armoured        <code>true</code>: ASCII armor the encrypted data.
+     *
      * @return The encrypted data stream.
+     *
      * @throws NoSuchProviderException
      * @throws IOException
      * @throws PGPException
@@ -352,13 +318,13 @@ public class GPG {
         ByteArrayOutputStream decryptedStream = new ByteArrayOutputStream();
         PGPCompressedDataGenerator compressor = new PGPCompressedDataGenerator( CompressionAlgorithmTags.ZLIB );
         OutputStream literalStream = literator.open( compressor.open( decryptedStream ), PGPLiteralData.BINARY, "",
-                new Date(), new byte[BaseConfig.BUFFER_SIZE] );
+                                                     new Date(), new byte[BaseConfig.BUFFER_SIZE] );
         Utils.pipeStream( plainTextStream, literalStream );
         compressor.close();
 
         /* Encrypt compressed data. */
         PGPEncryptedDataGenerator encryptor = new PGPEncryptedDataGenerator( SymmetricKeyAlgorithmTags.CAST5,
-                new SecureRandom(), BouncyCastleProvider.PROVIDER_NAME );
+                                                                             new SecureRandom(), BouncyCastleProvider.PROVIDER_NAME );
         encryptor.addMethod( publicKey );
 
         /* Create the encrypted output stream, armour if necessary. */
@@ -378,14 +344,11 @@ public class GPG {
     /**
      * Decrypt a PGP encrypted file.
      *
-     * @param encryptedFile
-     *            The file that contains the encrypted data.
-     * @param plainTextFile
-     *            The file to write the plain-text data into.
-     * @param privateKey
-     *            The private key to use for decrypting the data.
-     * @param passPhrase
-     *            The passphrase the private key is encrypted with.
+     * @param encryptedFile The file that contains the encrypted data.
+     * @param plainTextFile The file to write the plain-text data into.
+     * @param privateKey    The private key to use for decrypting the data.
+     * @param passPhrase    The passphrase the private key is encrypted with.
+     *
      * @throws NoSuchProviderException
      * @throws IOException
      * @throws PGPException
@@ -402,12 +365,9 @@ public class GPG {
     /**
      * Decrypt a PGP encrypted string.
      *
-     * @param encryptedData
-     *            The string that contains the encrypted data.
-     * @param privateKey
-     *            The private key to use for decrypting the data.
-     * @param passPhrase
-     *            The passphrase the private key is encrypted with.
+     * @param encryptedData The string that contains the encrypted data.
+     * @param privateKey    The private key to use for decrypting the data.
+     * @param passPhrase    The passphrase the private key is encrypted with.
      *
      * @return The plain-text string.
      *
@@ -424,12 +384,9 @@ public class GPG {
     /**
      * Decrypt a PGP encrypted stream.
      *
-     * @param encryptedStream
-     *            The stream that contains the encrypted data.
-     * @param privateKey
-     *            The private key to use for decrypting the data.
-     * @param passPhrase
-     *            The passphrase the private key is encrypted with.
+     * @param encryptedStream The stream that contains the encrypted data.
+     * @param privateKey      The private key to use for decrypting the data.
+     * @param passPhrase      The passphrase the private key is encrypted with.
      *
      * @return The plain-text stream.
      *
@@ -449,7 +406,8 @@ public class GPG {
         do
             try {
                 encryptedDataObjects = encryptedDataFactory.nextObject();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 logger.warn( e.getMessage() );
             }
         while (!(encryptedDataObjects instanceof PGPEncryptedDataList) && encryptedDataObjects != null);
@@ -502,16 +460,11 @@ public class GPG {
     /**
      * PGP sign a file.
      *
-     * @param dataFile
-     *            The file that contains the data to sign.
-     * @param signedFile
-     *            The file to write the signature into.
-     * @param privateKey
-     *            The private key to use for signing.
-     * @param passPhrase
-     *            The passphrase that the private key is locked with.
-     * @param armoured
-     *            <code>true</code>: ASCII armor the signature.
+     * @param dataFile   The file that contains the data to sign.
+     * @param signedFile The file to write the signature into.
+     * @param privateKey The private key to use for signing.
+     * @param passPhrase The passphrase that the private key is locked with.
+     * @param armoured   <code>true</code>: ASCII armor the signature.
      *
      * @throws NoSuchAlgorithmException
      * @throws NoSuchProviderException
@@ -534,14 +487,10 @@ public class GPG {
     /**
      * PGP sign some data.
      *
-     * @param data
-     *            The string that contains the data to sign.
-     * @param privateKey
-     *            The private key to use for signing.
-     * @param passPhrase
-     *            The passphrase that the private key is locked with.
-     * @param armoured
-     *            <code>true</code>: ASCII armor the signature.
+     * @param data       The string that contains the data to sign.
+     * @param privateKey The private key to use for signing.
+     * @param passPhrase The passphrase that the private key is locked with.
+     * @param armoured   <code>true</code>: ASCII armor the signature.
      *
      * @return The signature.
      *
@@ -561,14 +510,10 @@ public class GPG {
     /**
      * PGP sign a stream.
      *
-     * @param data
-     *            The stream that contains the data to sign.
-     * @param privateKey
-     *            The private key to use for signing.
-     * @param passPhrase
-     *            The passphrase that the private key is locked with.
-     * @param armoured
-     *            <code>true</code>: ASCII armor the signature.
+     * @param data       The stream that contains the data to sign.
+     * @param privateKey The private key to use for signing.
+     * @param passPhrase The passphrase that the private key is locked with.
+     * @param armoured   <code>true</code>: ASCII armor the signature.
      *
      * @return The signature.
      *
@@ -584,9 +529,9 @@ public class GPG {
 
         /* Build the signature generator. */
         PGPSignatureGenerator signer = new PGPSignatureGenerator( privateKey.getPublicKey().getAlgorithm(),
-                HashAlgorithmTags.SHA1, BouncyCastleProvider.PROVIDER_NAME );
+                                                                  HashAlgorithmTags.SHA1, BouncyCastleProvider.PROVIDER_NAME );
         signer.initSign( PGPSignature.BINARY_DOCUMENT, privateKey.extractPrivateKey( passPhrase.toCharArray(),
-                BouncyCastleProvider.PROVIDER_NAME ) );
+                                                                                     BouncyCastleProvider.PROVIDER_NAME ) );
 
         /* Write the data into the generator. */
         byte[] buffer = new byte[BaseConfig.BUFFER_SIZE];
@@ -611,30 +556,27 @@ public class GPG {
      * <h2>{@link PrintableKeyWrapper}<br>
      * <sub>A wrapper for wrapping a key id with a printable representation of it.</sub></h2>
      *
-     * @param <K>
-     *            The type of object to use for representing the key id.
-     *
-     *            <p>
-     *            <i>Apr 9, 2008</i>
-     *            </p>
-     *
      * @author mbillemo
+     * @param <K>
+     * The type of object to use for representing the key id.
+     *
+     * <p>
+     * <i>Apr 9, 2008</i>
+     * </p>
      */
     private static class PrintableKeyWrapper<K> {
 
-        private final K    key;
+        private final K key;
         private final Long keyId;
 
 
         /**
          * Create a new {@link PrintableKeyWrapper} instance.
          *
-         * @param key
-         *            The object to use for representing the key id.
-         * @param keyId
-         *            The key id to wrap.
+         * @param key   The object to use for representing the key id.
+         * @param keyId The key id to wrap.
          */
-        private PrintableKeyWrapper(K key, Long keyId) {
+        PrintableKeyWrapper(K key, Long keyId) {
 
             this.key = key;
             this.keyId = keyId;

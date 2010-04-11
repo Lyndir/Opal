@@ -15,11 +15,9 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
 
 
 /**
@@ -38,8 +36,7 @@ public class ListenerAction extends AbstractAction {
     /**
      * Create a new {@link ListenerAction} instance.
      *
-     * @param listener
-     *            The listener that will be notified of this action.
+     * @param listener The listener that will be notified of this action.
      */
     public ListenerAction(ActionListener listener) {
 
@@ -49,10 +46,8 @@ public class ListenerAction extends AbstractAction {
     /**
      * Create a new {@link ListenerAction} instance.
      *
-     * @param name
-     *            The name of the action.
-     * @param listener
-     *            The listener that will be notified of this action.
+     * @param name     The name of the action.
+     * @param listener The listener that will be notified of this action.
      */
     public ListenerAction(String name, ActionListener listener) {
 
@@ -63,14 +58,10 @@ public class ListenerAction extends AbstractAction {
     /**
      * Create a new {@link ListenerAction} instance.
      *
-     * @param name
-     *            The name of the action.
-     * @param command
-     *            The string that will identify the action that must be taken.
-     * @param icon
-     *            The icon of the action.
-     * @param listener
-     *            The listener that will be notified of this action.
+     * @param name     The name of the action.
+     * @param command  The string that will identify the action that must be taken.
+     * @param icon     The icon of the action.
+     * @param listener The listener that will be notified of this action.
      */
     public ListenerAction(String name, String command, Icon icon, ActionListener listener) {
 
@@ -82,8 +73,7 @@ public class ListenerAction extends AbstractAction {
     /**
      * Specify an action command string for this action.
      *
-     * @param command
-     *            The string that will identify the action that must be taken.
+     * @param command The string that will identify the action that must be taken.
      */
     public void setActionCommand(String command) {
 

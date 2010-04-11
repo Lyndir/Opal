@@ -16,8 +16,7 @@
 
 package com.lyndir.lhunath.lib.system.wrapper;
 
-import java.awt.AWTException;
-import java.awt.Dimension;
+import java.awt.*;
 import java.beans.PropertyChangeListener;
 
 
@@ -61,42 +60,40 @@ public class SystemTray extends Wrapper {
 
     /**
      * Add a tray icon to the system tray.
-     * 
-     * @param trayIcon
-     *            The wrapped TrayIcon.
+     *
+     * @param trayIcon The wrapped TrayIcon.
+     *
      * @throws AWTException
      */
     @SuppressWarnings("unused")
     public void add(TrayIcon trayIcon)
             throws AWTException {
 
-        invoke( "add", new Class[] { getWrappedClass( TrayIcon.class ) }, trayIcon.getWrappedInstance() );
+        invoke( "add", new Class[] {getWrappedClass( TrayIcon.class )}, trayIcon.getWrappedInstance() );
     }
 
     /**
      * Add a {@link PropertyChangeListener} for the given property.
-     * 
-     * @param propertyName
-     *            The property to listen for.
-     * @param listener
-     *            The listener to invoke.
+     *
+     * @param propertyName The property to listen for.
+     * @param listener     The listener to invoke.
      */
     public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 
-        invoke( "addPropertyChangeListener", new Class[] { String.class, PropertyChangeListener.class }, propertyName,
+        invoke( "addPropertyChangeListener", new Class[] {String.class, PropertyChangeListener.class}, propertyName,
                 listener );
     }
 
     /**
      * Retrieve all active listeners for the given property.
-     * 
-     * @param propertyName
-     *            The property that is listened for.
+     *
+     * @param propertyName The property that is listened for.
+     *
      * @return The {@link PropertyChangeListener}s registered for the given property.
      */
     public synchronized PropertyChangeListener[] getPropertyChangeListeners(String propertyName) {
 
-        return (PropertyChangeListener[]) invoke( "getPropertyChangeListeners", new Class[] { String.class },
+        return (PropertyChangeListener[]) invoke( "getPropertyChangeListeners", new Class[] {String.class},
                                                   propertyName );
     }
 
@@ -124,26 +121,23 @@ public class SystemTray extends Wrapper {
 
     /**
      * Unregister the given tray icon removing it from the system tray.
-     * 
-     * @param trayIcon
-     *            The tray icon to remove.
+     *
+     * @param trayIcon The tray icon to remove.
      */
     public void remove(TrayIcon trayIcon) {
 
-        invoke( "remove", new Class[] { getWrappedClass( TrayIcon.class ) }, trayIcon.getWrappedInstance() );
+        invoke( "remove", new Class[] {getWrappedClass( TrayIcon.class )}, trayIcon.getWrappedInstance() );
     }
 
     /**
      * Stop listening for the given property with the given listener.
-     * 
-     * @param propertyName
-     *            The property to stop listening for with the given listener.
-     * @param listener
-     *            The listener that should stop listening to the given property.
+     *
+     * @param propertyName The property to stop listening for with the given listener.
+     * @param listener     The listener that should stop listening to the given property.
      */
     public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 
-        invoke( "removePropertyChangeListener", new Class[] { String.class, PropertyChangeListener.class },
+        invoke( "removePropertyChangeListener", new Class[] {String.class, PropertyChangeListener.class},
                 propertyName, listener );
     }
 }

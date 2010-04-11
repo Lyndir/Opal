@@ -26,22 +26,20 @@ import org.apache.wicket.model.IModel;
 /**
  * <h2>{@link AjaxLabelLink}<br>
  * <sub>An {@link AjaxLink} with the body of a {@link Label}.</sub></h2>
- * 
+ *
  * <p>
  * <i>Mar 12, 2010</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public abstract class AjaxLabelLink extends AjaxLink<String> {
 
     /**
      * Create a new {@link LabelLink} instance.
-     * 
-     * @param id
-     *            The wicket ID of this component.
-     * @param model
-     *            The model that provides the label text.
+     *
+     * @param id    The wicket ID of this component.
+     * @param model The model that provides the label text.
      */
     public AjaxLabelLink(String id, IModel<String> model) {
 

@@ -15,12 +15,10 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import java.awt.Frame;
-import java.io.File;
-
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
+import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+import java.awt.*;
+import java.io.File;
 
 
 /**
@@ -39,12 +37,9 @@ public abstract class FileDialog extends JFileChooser {
     /**
      * Create a new JFileDialog instance.
      *
-     * @param start
-     *            The initial location to show when opening the dialog.
-     * @param title
-     *            The title of this dialog.
-     * @param parent
-     *            The parent frame that will be inaccessible until the dialog is closed (or null).
+     * @param start  The initial location to show when opening the dialog.
+     * @param title  The title of this dialog.
+     * @param parent The parent frame that will be inaccessible until the dialog is closed (or null).
      */
     protected FileDialog(File start, String title, Frame parent) {
 
@@ -122,10 +117,9 @@ public abstract class FileDialog extends JFileChooser {
     /**
      * Creates a {@link FileFilter} that filters out any files that don't have the given extension.
      *
-     * @param extension
-     *            The extension to allow.
-     * @param description
-     *            The description for the filetype that has this extension.
+     * @param extension   The extension to allow.
+     * @param description The description for the filetype that has this extension.
+     *
      * @return Guess.
      */
     public static FileFilter createExtensionFilter(final String extension, final String description) {

@@ -18,11 +18,11 @@ package com.lyndir.lhunath.lib.system.logging.exception;
 /**
  * <h2>{@link TodoException}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * <i>Feb 28, 2010</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public class TodoException extends UnsupportedOperationException {
@@ -36,9 +36,7 @@ public class TodoException extends UnsupportedOperationException {
     }
 
     /**
-     * 
-     * @param message
-     *            Some context with what was going on or what caused this.
+     * @param message Some context with what was going on or what caused this.
      */
     public TodoException(String message) {
 

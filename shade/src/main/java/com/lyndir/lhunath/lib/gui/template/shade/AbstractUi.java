@@ -66,55 +66,55 @@ public abstract class AbstractUi
         implements ActionListener, LogListener, CaretListener, ListSelectionListener, ItemListener, Reflective,
         ListDataListener, FocusListener, TransitionTarget {
 
-    static final Logger              logger               = Logger.get( AbstractUi.class );
+    static final Logger logger = Logger.get( AbstractUi.class );
 
-    protected static final long      LAUNCH_DELAY         = 5000;
-    protected static final int       FONT_SIZE            = 12;
-    protected static final String    FONT_FACE            = Locale.explain( "conf.font" );
-    protected static final Dimension MINIMUM_SIZE         = new Dimension( 1000, 700 );
+    protected static final long LAUNCH_DELAY = 5000;
+    protected static final int FONT_SIZE = 12;
+    protected static final String FONT_FACE = Locale.explain( "conf.font" );
+    protected static final Dimension MINIMUM_SIZE = new Dimension( 1000, 700 );
 
-    private static final String      reportEmail          = Locale.explain( "conf.author" );
-    private static final String      reportIssueSubject   = Locale.explain( "ui.reportSubject" ) + ShadeConfig.VERSION;
-    private static final String      reportLicenseSubject = Locale.explain( "ui.licenseSubject" );
-    private static boolean           startup              = true;
+    private static final String reportEmail = Locale.explain( "conf.author" );
+    private static final String reportIssueSubject = Locale.explain( "ui.reportSubject" ) + ShadeConfig.VERSION;
+    private static final String reportLicenseSubject = Locale.explain( "ui.licenseSubject" );
+    private static boolean startup = true;
 
-    protected Tab                    showingTab;
-    protected Map<Action, Tab>       panelTabs;
-    protected List<Stack<String>>    messageStack;
-    protected List<Double>           progressStack;
-    protected HTMLFormatter          logFormatter;
-    protected TrayIcon               systray;
-    protected SimpleInternalFrame    window;
-    protected JProgressBar           progress;
-    protected JEditorPane            log;
-    protected JFrame                 frame;
-    protected JLabel                 logo;
-    protected JPanel                 contentPane;
-    protected JCheckBox              systrayButton;
-    protected JCheckBox              alwaysOnTop;
-    protected JCheckBox              startMini;
-    private File                   defaultLogo;
-    private boolean                  showFrame;
-    private DragListener             dragListener;
-    private JComponent               themesPanel;
-    private JCheckBox                verboseLogs;
-    private JButton                  windowedTitleButton;
-    private JButton                  fullscreenTitleButton;
-    private JButton                  closeTitleButton;
-    private JDialog                  console;
-    private JPanel                   titleBar;
-    private PipedInputStream         pipeStdOut;
-    private PipedInputStream         pipeStdErr;
-    private PrintStream              realStdOut;
-    private PrintStream              realStdErr;
-    private UpdateUi                 updateUi;
-    protected Animator               panelAnimation;
-    private ScreenTransition         panelTransition;
-    private PaintPanel               contentPanel;
-    private PipedOutputStream        consoleStdOut;
-    private Tab                      settingsTab;
-    private boolean                  overlayed;
-    private HashSet<Plugin>          plugins;
+    protected Tab showingTab;
+    protected Map<Action, Tab> panelTabs;
+    protected List<Stack<String>> messageStack;
+    protected List<Double> progressStack;
+    protected HTMLFormatter logFormatter;
+    protected TrayIcon systray;
+    protected SimpleInternalFrame window;
+    protected JProgressBar progress;
+    protected JEditorPane log;
+    protected JFrame frame;
+    protected JLabel logo;
+    protected JPanel contentPane;
+    protected JCheckBox systrayButton;
+    protected JCheckBox alwaysOnTop;
+    protected JCheckBox startMini;
+    private File defaultLogo;
+    private boolean showFrame;
+    private DragListener dragListener;
+    private JComponent themesPanel;
+    private JCheckBox verboseLogs;
+    private JButton windowedTitleButton;
+    private JButton fullscreenTitleButton;
+    private JButton closeTitleButton;
+    private JDialog console;
+    private JPanel titleBar;
+    private PipedInputStream pipeStdOut;
+    private PipedInputStream pipeStdErr;
+    private PrintStream realStdOut;
+    private PrintStream realStdErr;
+    private UpdateUi updateUi;
+    protected Animator panelAnimation;
+    private ScreenTransition panelTransition;
+    private PaintPanel contentPanel;
+    private PipedOutputStream consoleStdOut;
+    private Tab settingsTab;
+    private boolean overlayed;
+    private HashSet<Plugin> plugins;
 
     static {
         System.setProperty( "swing.aatext", "true" );
@@ -157,7 +157,8 @@ public abstract class AbstractUi
                 /* Build user interface. */
                 try {
                     buildUi();
-                } catch (RuntimeException e) {
+                }
+                catch (RuntimeException e) {
                     if (frame != null)
                         frame.dispose();
                     panelAnimation.cancel();
@@ -176,12 +177,9 @@ public abstract class AbstractUi
      * When overriding this method; call the original method (super.event(..)) if the event is not processed by your
      * code. This code processes default interface events.
      *
-     * @param e
-     *            The event that triggered this method call.
-     * @param source
-     *            The component upon which this event was executed.
-     * @param actionCommand
-     *            If the event was an {@link ActionEvent}, this contains the action command string.
+     * @param e             The event that triggered this method call.
+     * @param source        The component upon which this event was executed.
+     * @param actionCommand If the event was an {@link ActionEvent}, this contains the action command string.
      */
     public void event(EventObject e, Object source, String actionCommand) {
 
@@ -203,40 +201,35 @@ public abstract class AbstractUi
 
             else if (frame.getDefaultCloseOperation() == JFrame.EXIT_ON_CLOSE)
                 System.exit( 0 );
-        }
-
-        else if ("exit".equals( actionCommand )) //$NON-NLS-1$
+        } else if ("exit".equals( actionCommand )) //$NON-NLS-1$
             System.exit( 0 );
 
         else if ("fullscreen".equals( actionCommand )) { //$NON-NLS-1$
             if (ShadeConfig.fullScreen.set( true ))
                 execute( BasicRequest.FULLSCREEN, true );
-        }
-
-        else if ("windowed".equals( actionCommand )) { //$NON-NLS-1$
+        } else if ("windowed".equals( actionCommand )) { //$NON-NLS-1$
             if (ShadeConfig.fullScreen.set( false ))
                 execute( BasicRequest.FULLSCREEN, true );
-        }
-
-        else if (verboseLogs.equals( source )) {
+        } else if (verboseLogs.equals( source )) {
             if (ShadeConfig.verbose.set( verboseLogs.isSelected() ))
                 execute( BasicRequest.SETTINGS );
-        }
-
-        else if ("reportIssue".equals( actionCommand )) //$NON-NLS-1$
+        } else if ("reportIssue".equals( actionCommand )) //$NON-NLS-1$
             try {
                 URI uri = new URI( "mailto:" + reportEmail + "?subject=" //$NON-NLS-1$ //$NON-NLS-2$
                                    + URLEncoder.encode( reportIssueSubject, "ISO-8859-1" ) ); //$NON-NLS-1$
 
                 launchDelay( "stat.openingMail" ); //$NON-NLS-1$
                 Desktop.getDesktop().mail( uri );
-            } catch (NoClassDefFoundError ignored) {
+            }
+            catch (NoClassDefFoundError ignored) {
                 showJavaVersionWarning();
-            } catch (URISyntaxException err) {
+            }
+            catch (URISyntaxException err) {
                 logger.err( err, Locale.explain( "bug.invalidMailto" ) //$NON-NLS-1$
                                  + Locale.explain( "err.reportManually", Locale.explain( "ui.issue" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                                  + reportEmail );
-            } catch (IOException err) {
+            }
+            catch (IOException err) {
                 logger.err( err, Locale.explain( "err.openingMail" ) //$NON-NLS-1$
                                  + Locale.explain( "err.reportManually", Locale.explain( "ui.issue" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                                  + reportEmail );
@@ -249,13 +242,16 @@ public abstract class AbstractUi
 
                 launchDelay( "stat.openingMail" ); //$NON-NLS-1$
                 Desktop.getDesktop().mail( uri );
-            } catch (NoClassDefFoundError ignored) {
+            }
+            catch (NoClassDefFoundError ignored) {
                 showJavaVersionWarning();
-            } catch (URISyntaxException err) {
+            }
+            catch (URISyntaxException err) {
                 logger.err( err, "bug.invalidMailto" //$NON-NLS-1$
                                  + Locale.explain( "err.reportManually", Locale.explain( "ui.offense" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                                  + reportEmail );
-            } catch (IOException err) {
+            }
+            catch (IOException err) {
                 logger.err( err, "err.openingMail" //$NON-NLS-1$
                                  + Locale.explain( "err.reportManually", Locale.explain( "ui.offense" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                                  + reportEmail );
@@ -264,28 +260,20 @@ public abstract class AbstractUi
         else if (systrayButton.equals( source )) {
             if (ShadeConfig.sysTray.set( systrayButton.isSelected() ))
                 execute( BasicRequest.SYSTRAY );
-        }
-
-        else if (alwaysOnTop.equals( source )) {
+        } else if (alwaysOnTop.equals( source )) {
             if (ShadeConfig.alwaysOnTop.set( alwaysOnTop.isSelected() ))
                 execute( BasicRequest.FULLSCREEN );
-        }
-
-        else if (startMini.equals( source ))
+        } else if (startMini.equals( source ))
             ShadeConfig.startMini.set( startMini.isSelected() );
 
         else if ("openSettings".equals( actionCommand )) { //$NON-NLS-1$
             showingTab = settingsTab;
             execute( BasicRequest.PANEL, false );
             showFrame( true );
-        }
-
-        else if (source instanceof AbstractButton && panelTabs.containsKey( ((AbstractButton) source).getAction() )) {
+        } else if (source instanceof AbstractButton && panelTabs.containsKey( ((AbstractButton) source).getAction() )) {
             showingTab = panelTabs.get( ((AbstractButton) source).getAction() );
             execute( BasicRequest.PANEL, false );
-        }
-
-        else {
+        } else {
             for (Plugin plugin : plugins)
                 if (plugin.handleEvent( e ))
                     return;
@@ -329,12 +317,11 @@ public abstract class AbstractUi
                 pipeStdOut.close();
                 pipeStdErr.close();
                 consoleStdOut.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 logger.err( e, "Couldn't properly close console output." );
             }
-        }
-
-        else {
+        } else {
             /* Build the console. */
             JTextArea terminal = new JTextArea();
             terminal.setFont( Font.decode( "Monospaced" ) );
@@ -374,7 +361,8 @@ public abstract class AbstractUi
                 new TeeThread( pipeStdOut, realStdOut, consoleStdOut ).start();
                 new TeeThread( pipeStdErr, realStdErr, consoleStdOut ).start();
                 new ConsoleThread( new PipedInputStream( consoleStdOut ), terminal ).start();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 logger.err( e, "Couldn't create replacement stdout/stderr." );
             }
         }
@@ -481,7 +469,7 @@ public abstract class AbstractUi
 
         if (e instanceof ActionEvent)
             logger.wrn( "warn.actionNotImplemented", e.getClass(), ((ActionEvent) e).getActionCommand(), //$NON-NLS-1$
-                    Utils.getFieldName( this, e.getSource() ) );
+                        Utils.getFieldName( this, e.getSource() ) );
         else
             logger.wrn( "warn.eventNotImplemented", e.getClass(), Utils.getFieldName( this, e.getSource() ) ); //$NON-NLS-1$
     }
@@ -497,8 +485,7 @@ public abstract class AbstractUi
     /**
      * Update a given element in this UI in the {@link UpdateUi} thread.
      *
-     * @param element
-     *            The element to update, or null to update them all.
+     * @param element The element to update, or null to update them all.
      */
     public void execute(final Request element) {
 
@@ -508,10 +495,8 @@ public abstract class AbstractUi
     /**
      * Update a given element in this UI.
      *
-     * @param element
-     *            The element to update, or null to update them all.
-     * @param useThread
-     *            Use the UpdateUI thread for this update.
+     * @param element   The element to update, or null to update them all.
+     * @param useThread Use the UpdateUI thread for this update.
      */
     protected void execute(final Request element, final boolean useThread) {
 
@@ -549,10 +534,8 @@ public abstract class AbstractUi
      * Send out a log message about a task being launched. After {@link AbstractUi#LAUNCH_DELAY} milliseconds, the
      * message will be removed from the progress bar.
      *
-     * @param desc
-     *            Description of the launch event.
-     * @param args
-     *            Arguments used to format the description string.
+     * @param desc Description of the launch event.
+     * @param args Arguments used to format the description string.
      */
     public void launchDelay(String desc, Object... args) {
 
@@ -590,10 +573,12 @@ public abstract class AbstractUi
                     if (message != null || record.getThrown() != null)
                         try {
                             log.getEditorKit().read( new StringReader( logFormatter.format( record ) ),
-                                    log.getDocument(), log.getDocument().getLength() );
-                        } catch (IOException e) {
+                                                     log.getDocument(), log.getDocument().getLength() );
+                        }
+                        catch (IOException e) {
                             logger.err( e, "Couldn't read the log message from the record!" );
-                        } catch (BadLocationException e) {
+                        }
+                        catch (BadLocationException e) {
                             logger.err( e, "Invalid location in the log pane specified for log record insertion!" );
                         }
 
@@ -606,9 +591,7 @@ public abstract class AbstractUi
                         if (message != null) {
                             messageStack.get( progressLevel ).push( message );
                             setProgress( null, level );
-                        }
-
-                        else {
+                        } else {
                             if (messageStack.get( progressLevel ).isEmpty())
                                 messageStack.get( progressLevel ).pop();
 
@@ -634,11 +617,9 @@ public abstract class AbstractUi
     /**
      * Set the value of the progress bar.
      *
-     * @param percent
-     *            Set the percent to show completed. Use a decimal value in the range 0-1. Use null to switch to
-     *            indeterminate mode.
-     * @param level
-     *            The level of progress bar to use. See {@link Level} (fine, finer, finest).
+     * @param percent Set the percent to show completed. Use a decimal value in the range 0-1. Use null to switch to
+     *                indeterminate mode.
+     * @param level   The level of progress bar to use. See {@link Level} (fine, finer, finest).
      */
     public void setProgress(final Double percent, final Level level) {
 
@@ -664,9 +645,7 @@ public abstract class AbstractUi
                         else
                             progress.setString( String.format( "[ %s ]", messageStack.get( i ).peek() ) );
                         return;
-                    }
-
-                    else if (levelValue > 0 || i == 0) {
+                    } else if (levelValue > 0 || i == 0) {
                         progress.setIndeterminate( false );
                         progress.setMaximum( 100 );
                         progress.setMinimum( 0 );
@@ -722,21 +701,24 @@ public abstract class AbstractUi
     /**
      * Signal the UI to show a launch notification and start the platform's web browser to the given URL.
      *
-     * @param url
-     *            The URL to open in the web browser.
+     * @param url The URL to open in the web browser.
      */
     public void browseTo(URL url) {
 
         try {
             launchDelay( "stat.openingBrowser" );
             Desktop.getDesktop().browse( url.toURI() );
-        } catch (NoClassDefFoundError ignored) {
+        }
+        catch (NoClassDefFoundError ignored) {
             showJavaVersionWarning();
-        } catch (UnsupportedOperationException e) {
+        }
+        catch (UnsupportedOperationException e) {
             logger.err( e, "err.browserSupported" );
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             logger.err( e, "err.openingBrowser" );
-        } catch (URISyntaxException e) {
+        }
+        catch (URISyntaxException e) {
             logger.err( e, "err.browseUri", url );
         }
     }
@@ -753,7 +735,7 @@ public abstract class AbstractUi
         contentPane.add( contentPanel = PaintPanel.gradientPanel() );
         FormLayout layout = new FormLayout( "0dlu, 0dlu, 0dlu:g, 0dlu, r:p", "t:m, f:0dlu:g, 4dlu, m" );
         DefaultFormBuilder builder = new DefaultFormBuilder( layout, contentPanel );
-        layout.setColumnGroups( new int[][] { { 1, 5 } } );
+        layout.setColumnGroups( new int[][] {{1, 5}} );
         builder.setDefaultDialogBorder();
 
         /* Prepare the look and feel. */
@@ -920,8 +902,7 @@ public abstract class AbstractUi
     }
 
     /**
-     * @param image
-     *            The image to use as a background on the main content pane.
+     * @param image The image to use as a background on the main content pane.
      */
     protected void setBackgroundImage(final Image image) {
 
@@ -968,13 +949,13 @@ public abstract class AbstractUi
 
         List<Tab> tabs = new LinkedList<Tab>();
         tabs.add( settingsTab = new Tab( Locale.explain( "ui.configuration" ), UIUtils.getIcon( "settings-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
-                getSettingsPane() ) );
+                                         getSettingsPane() ) );
         tabs.add( new Tab( Locale.explain( "ui.logs" ), UIUtils.getIcon( "log-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
-                getOperationsPane() ) );
+                           getOperationsPane() ) );
         tabs.add( new Tab( Locale.explain( "ui.licensing" ), UIUtils.getIcon( "license-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
-                getLicensePane() ) );
+                           getLicensePane() ) );
         tabs.add( new Tab( Locale.explain( "ui.development" ), UIUtils.getIcon( "develop-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
-                getDevelopmentPane() ) );
+                           getDevelopmentPane() ) );
 
         return tabs;
     }
@@ -999,18 +980,18 @@ public abstract class AbstractUi
 
         builder.append( Locale.explain( "ui.systray" ), new ToolTip( Locale.explain( "ui.systrayTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
                                                                      + Locale.explain( "ui.systrayTip" ), //$NON-NLS-1$
-                systrayButton = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+                                                                     systrayButton = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
         builder.append( Locale.explain( "ui.ontop" ), new ToolTip( Locale.explain( "ui.ontopTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
                                                                    + Locale.explain( "ui.ontopTip" ), //$NON-NLS-1$
-                alwaysOnTop = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+                                                                   alwaysOnTop = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
         builder.nextLine();
 
         builder.append( Locale.explain( "ui.startmini" ), new ToolTip( Locale.explain( "ui.startminiTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
                                                                        + Locale.explain( "ui.startminiTip" ), //$NON-NLS-1$
-                startMini = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+                                                                       startMini = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
         builder.append( Locale.explain( "ui.verbose" ), new ToolTip( Locale.explain( "ui.verboseTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
                                                                      + Locale.explain( "ui.verboseTip" ), //$NON-NLS-1$
-                verboseLogs = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+                                                                     verboseLogs = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
         builder.nextLine();
 
         appendCustomSettings( builder );
@@ -1054,16 +1035,15 @@ public abstract class AbstractUi
      * builder.nextLine();
      * </pre>
      *
-     * @param builder
-     *            The {@link DefaultFormBuilder} to which you should add your settings components.
+     * @param builder The {@link DefaultFormBuilder} to which you should add your settings components.
      */
     protected abstract void appendCustomSettings(DefaultFormBuilder builder);
 
     private JComponent getOperationsPane() {
 
         FormLayout layout = new FormLayout( "10dlu, 15dlu, p:g, 10dlu, p:g, 15dlu, 10dlu", //$NON-NLS-1$
-                "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
-        layout.setColumnGroups( new int[][] { { 3, 5 } } );
+                                            "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
+        layout.setColumnGroups( new int[][] {{3, 5}} );
 
         JButton button;
         PanelBuilder builder = new PanelBuilder( layout, new ScrollPanel() );
@@ -1100,8 +1080,8 @@ public abstract class AbstractUi
     private JComponent getLicensePane() {
 
         FormLayout layout = new FormLayout( "10dlu, 15dlu, p:g, 10dlu, p:g, 15dlu, 10dlu", //$NON-NLS-1$
-                "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
-        layout.setColumnGroups( new int[][] { { 3, 5 } } );
+                                            "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
+        layout.setColumnGroups( new int[][] {{3, 5}} );
 
         String doc = "";
         JButton button;
@@ -1110,7 +1090,8 @@ public abstract class AbstractUi
 
         try {
             doc = getLicense();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             logger.err( e, "err.readLicense" );
         }
 
@@ -1138,10 +1119,12 @@ public abstract class AbstractUi
 
     /**
      * @return The software's license.
+     *
+     * @throws IOException Never.
      */
     @SuppressWarnings("unused")
     protected String getLicense()
-    throws IOException {
+            throws IOException {
 
         return Locale.explain( "ui.licenseNotFound" );
     }
@@ -1149,8 +1132,8 @@ public abstract class AbstractUi
     private JComponent getDevelopmentPane() {
 
         FormLayout layout = new FormLayout( "10dlu, 15dlu, p:g, 10dlu, p:g, 15dlu, 10dlu", //$NON-NLS-1$
-                "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
-        layout.setColumnGroups( new int[][] { { 3, 5 } } );
+                                            "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
+        layout.setColumnGroups( new int[][] {{3, 5}} );
 
         JButton button;
         PanelBuilder builder = new PanelBuilder( layout, new ScrollPanel() );
@@ -1184,7 +1167,8 @@ public abstract class AbstractUi
         String doc = "";
         try {
             doc = getChangeLog();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             logger.err( e, "err.readChangelog" );
         }
 
@@ -1203,10 +1187,12 @@ public abstract class AbstractUi
 
     /**
      * @return The software's change log.
+     *
+     * @throws IOException Never.
      */
     @SuppressWarnings("unused")
     protected String getChangeLog()
-    throws IOException {
+            throws IOException {
 
         return Locale.explain( "ui.changelogNotFound" );
     }
@@ -1243,8 +1229,8 @@ public abstract class AbstractUi
             /* Set some look and feel properties. */
             UIUtils.setUIFont( new Font( FONT_FACE, Font.PLAIN, FONT_SIZE ) );
             contentPane.setBorder( BorderFactory.createBevelBorder( BevelBorder.RAISED, ShadeConfig.theme.get()
-                                                                                                         .getBright(),
-                    ShadeConfig.theme.get().getDark() ) );
+                    .getBright(),
+                                                                    ShadeConfig.theme.get().getDark() ) );
 
             /* Force update on hidden panels. */
             if (frame != null && frame.isVisible())
@@ -1263,8 +1249,10 @@ public abstract class AbstractUi
                 } );
         }
 
-        catch (InterruptedException ignored) {}
-        catch (InvocationTargetException ignored) {}
+        catch (InterruptedException ignored) {
+        }
+        catch (InvocationTargetException ignored) {
+        }
     }
 
     /**
@@ -1294,7 +1282,8 @@ public abstract class AbstractUi
                     FileWriter writer = new FileWriter( getSelectedFile() );
                     writer.write( log.getText() );
                     writer.close();
-                } catch (IOException err) {
+                }
+                catch (IOException err) {
                     logger.err( err, "err.saveLog" ); //$NON-NLS-1$
                 }
             }
@@ -1451,7 +1440,8 @@ public abstract class AbstractUi
                         try {
                             SystemTray.getSystemTray().add( systray );
                             frame.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
-                        } catch (AWTException e) {
+                        }
+                        catch (AWTException e) {
                             logger.err( e, "err.sysTray" );
 
                             showFrame = true;
@@ -1459,7 +1449,8 @@ public abstract class AbstractUi
                             process( BasicRequest.SETTINGS );
                         }
                     }
-                } catch (UnsupportedOperationException ignored) {
+                }
+                catch (UnsupportedOperationException ignored) {
                     showJavaVersionWarning();
 
                     showFrame = true;
@@ -1502,12 +1493,13 @@ public abstract class AbstractUi
             else
                 setupNextScreen();
 
-        /* Change the color theme of UI elements. */
+            /* Change the color theme of UI elements. */
         else if (element.equals( BasicRequest.THEME )) {
             logger.inf( "stat.theme" ); //$NON-NLS-1$
             try {
                 setLookAndFeel();
-            } finally {
+            }
+            finally {
                 logger.inf( null );
             }
         } else
@@ -1520,19 +1512,17 @@ public abstract class AbstractUi
      * Override this method if you want to perform an action when the frame changes visibility state or has just been
      * made valid.
      *
-     * @param newVisibilityState
-     *            <code>true</code>: frame is visible.
+     * @param newVisibilityState <code>true</code>: frame is visible.
      */
     protected void frameVisibilityChanged(@SuppressWarnings("unused") boolean newVisibilityState) {
 
-    /* Nothing custom here. */
+        /* Nothing custom here. */
     }
 
     /**
      * Override this method to add custom {@link MenuItem}s to the system tray menu.
      *
-     * @param sysMenu
-     *            The menu to add the items to.
+     * @param sysMenu The menu to add the items to.
      */
     protected void appendCustomSystrayMenuItems(@SuppressWarnings("unused") PopupMenu sysMenu) {
 

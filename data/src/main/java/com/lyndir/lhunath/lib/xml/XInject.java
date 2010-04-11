@@ -24,15 +24,15 @@ import java.lang.annotation.Target;
 /**
  * <h2>{@link XInject}<br>
  * <sub>Mark a field that accepts XML data from an XML resource.</sub></h2>
- * 
+ *
  * <p>
  * A field with this annotation will be used during XML data injection.
  * </p>
- * 
+ *
  * <p>
  * <i>Dec 15, 2008</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 @Target(ElementType.FIELD)

@@ -23,14 +23,14 @@ import com.google.common.base.Predicate;
 /**
  * <h2>{@link IPredicate}<br>
  * <sub>A {@link Serializable} {@link Predicate}.</sub></h2>
- * 
+ *
  * <p>
  * <i>Mar 23, 2010</i>
  * </p>
- * 
- * @param <T>
- *            The type that the predicate can be applied to.
+ *
  * @author lhunath
+ * @param <T>
+ * The type that the predicate can be applied to.
  */
 public interface IPredicate<T> extends Predicate<T>, Serializable {
 

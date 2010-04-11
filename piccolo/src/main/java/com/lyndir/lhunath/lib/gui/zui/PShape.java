@@ -15,9 +15,7 @@
  */
 package com.lyndir.lhunath.lib.gui.zui;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 import edu.umd.cs.piccolo.PNode;
@@ -44,6 +42,7 @@ public abstract class PShape extends PNode {
      * @param y The new Y-origin of the shape.
      * @param w The new width of the shape.
      * @param h The new height of the shape.
+     *
      * @return <code>true</code> if this method modified the shape.
      */
     protected abstract boolean scaleShape(double x, double y, double w, double h);

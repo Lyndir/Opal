@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<!-- PROJECT METADATA -->
-	<parent>
+    <!-- PROJECT METADATA -->
+    <parent>
         <groupId>com.lyndir.lhunath</groupId>
         <artifactId>lyndir</artifactId>
         <version>SNAPSHOT</version>
-	</parent>
+    </parent>
 
-	<groupId>com.lyndir.lhunath.jlibs</groupId>
-	<artifactId>jlibs</artifactId>
+    <groupId>com.lyndir.lhunath.jlibs</groupId>
+    <artifactId>jlibs</artifactId>
     <version>SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>JLibs</name>
-	<description>
+    <packaging>pom</packaging>
+    <name>JLibs</name>
+    <description>
         Java library for programming convenience.
-	</description>
+    </description>
 
-	<!-- CODE ACCESS -->
-	<scm>
+    <!-- CODE ACCESS -->
+    <scm>
         <url>http://codaset.com/lhunath/jlibs</url>
         <connection>${scm.git.pubbase}/jlibs.git</connection>
         <developerConnection>${scm.git.devbase}/jlibs.git</developerConnection>
-	</scm>
+    </scm>
 
-	<!-- DEFAULT PROPERTIES -->
-	<properties>
+    <!-- DEFAULT PROPERTIES -->
+    <properties>
     </properties>
 
-	<!-- ALL MODULES THAT ARE ENABLED BY DEFAULT -->
-	<modules>
+    <!-- ALL MODULES THAT ARE ENABLED BY DEFAULT -->
+    <modules>
         <!--module>eclipse-config</module-->
 
         <module>crypto</module>

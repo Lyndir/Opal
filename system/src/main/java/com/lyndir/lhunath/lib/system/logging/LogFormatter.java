@@ -30,21 +30,21 @@ import com.lyndir.lhunath.lib.system.util.Utils;
  * This formatter attempts to format log messages to put most of the information in a structured log message without
  * looking too big or confusing.<br>
  * <br>
- * 
+ *
  * <pre>
  *   [ LEVEL | LINE:PACKAGE.CLASS.METHOD() ]-
  *    &gt;  MESSAGE
  * </pre>
- * 
+ *
  * <br>
- * 
+ *
  * @author lhunath
  */
 public abstract class LogFormatter extends Formatter {
 
-    private static final String[]      skipPackages = { "com.lyndir.lhunath.lib", "java", "sun", "com.sun" };
-    protected final Map<Level, String> levelColor   = new HashMap<Level, String>();
-    protected boolean                  verbose;
+    private static final String[] skipPackages = {"com.lyndir.lhunath.lib", "java", "sun", "com.sun"};
+    protected final Map<Level, String> levelColor = new HashMap<Level, String>();
+    protected boolean verbose;
 
 
     /**
@@ -58,9 +58,8 @@ public abstract class LogFormatter extends Formatter {
 
     /**
      * Create a new LogFormatter instance.
-     * 
-     * @param verbosity
-     *            Whether to use verbose mode or not (default: false).
+     *
+     * @param verbosity Whether to use verbose mode or not (default: false).
      */
     protected LogFormatter(boolean verbosity) {
 
@@ -157,7 +156,7 @@ public abstract class LogFormatter extends Formatter {
 
     /**
      * Retrieve the verbosity of this LogFormatter.
-     * 
+     *
      * @return Guess.
      */
     public boolean isVerbose() {
@@ -168,9 +167,8 @@ public abstract class LogFormatter extends Formatter {
     /**
      * Set the verbosity of this LogFormatter.<br>
      * Verbose mode shows stack traces for errors.
-     * 
-     * @param verbose
-     *            Guess.
+     *
+     * @param verbose Guess.
      */
     public void setVerbose(boolean verbose) {
 

@@ -20,7 +20,6 @@ import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpConnection;
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpState;
 import org.apache.commons.httpclient.methods.PostMethod;
 
@@ -39,7 +38,9 @@ public class GZIPPostMethod extends PostMethod {
     private boolean useGZip;
 
 
-    /** Creates a new instance of GZIPAwarePostMethod */
+    /**
+     * Creates a new instance of GZIPAwarePostMethod
+     */
     public GZIPPostMethod() {
 
     }
@@ -47,8 +48,7 @@ public class GZIPPostMethod extends PostMethod {
     /**
      * Constructor specifying a URI.
      *
-     * @param uri
-     *            either an absolute or relative URI
+     * @param uri either an absolute or relative URI
      */
     public GZIPPostMethod(String uri) {
 
@@ -68,8 +68,7 @@ public class GZIPPostMethod extends PostMethod {
     /**
      * Set the useGZip of this GZIPPostMethod.
      *
-     * @param enabled
-     *            Guess.
+     * @param enabled Guess.
      */
     public void useGZip(boolean enabled) {
 

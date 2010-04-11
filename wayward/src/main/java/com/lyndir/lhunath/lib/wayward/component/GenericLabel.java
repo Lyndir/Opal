@@ -24,24 +24,22 @@ import org.apache.wicket.model.IModel;
 /**
  * <h2>{@link GenericLabel}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * <i>Jan 18, 2010</i>
  * </p>
- * 
- * @param <T>
- *            The model type.
+ *
  * @author lhunath
+ * @param <T>
+ * The model type.
  */
 public class GenericLabel<T> extends GenericWebMarkupContainer<T> {
 
     /**
      * Create a new {@link GenericLabel} instance.
-     * 
-     * @param id
-     *            The component's wicket ID.
-     * @param model
-     *            The component's model.
+     *
+     * @param id    The component's wicket ID.
+     * @param model The component's model.
      */
     public GenericLabel(String id, IModel<T> model) {
 

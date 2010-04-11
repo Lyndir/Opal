@@ -15,14 +15,8 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.Scrollable;
-import javax.swing.SwingConstants;
+import javax.swing.*;
+import java.awt.*;
 
 
 /**
@@ -37,7 +31,7 @@ import javax.swing.SwingConstants;
  */
 public class ScrollPanel extends JPanel implements Scrollable {
 
-    private final int     scrollUnit;
+    private final int scrollUnit;
     private final boolean horizontal;
     private final boolean vertical;
 
@@ -55,10 +49,8 @@ public class ScrollPanel extends JPanel implements Scrollable {
      * Create a new {@link ScrollPanel} instance.<br>
      * The amount to scroll this panel will be calculated from the size of the first visible component of the panel.
      *
-     * @param horizontal
-     *            <code>true</code>: scroll horizontally.
-     * @param vertical
-     *            <code>true</code>: scroll vertically.
+     * @param horizontal <code>true</code>: scroll horizontally.
+     * @param vertical   <code>true</code>: scroll vertically.
      */
     public ScrollPanel(boolean horizontal, boolean vertical) {
 
@@ -68,8 +60,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
     /**
      * Create a new {@link ScrollPanel} instance.
      *
-     * @param scrollUnit
-     *            The amount in pixels to scroll this panel on every tick of the scroll wheel.
+     * @param scrollUnit The amount in pixels to scroll this panel on every tick of the scroll wheel.
      */
     public ScrollPanel(int scrollUnit) {
 
@@ -79,12 +70,9 @@ public class ScrollPanel extends JPanel implements Scrollable {
     /**
      * Create a new {@link ScrollPanel} instance.
      *
-     * @param scrollUnit
-     *            The amount in pixels to scroll this panel on every tick of the scroll wheel.
-     * @param horizontal
-     *            <code>true</code>: track the horizontal size of the panel.
-     * @param vertical
-     *            <code>true</code>: track the vertical size of the panel.
+     * @param scrollUnit The amount in pixels to scroll this panel on every tick of the scroll wheel.
+     * @param horizontal <code>true</code>: track the horizontal size of the panel.
+     * @param vertical   <code>true</code>: track the vertical size of the panel.
      */
     public ScrollPanel(int scrollUnit, boolean horizontal, boolean vertical) {
 

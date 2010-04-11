@@ -47,17 +47,22 @@ public class Path {
 
     /**
      * Create a new {@link Path} instance.
-     * @param src The vector that points at the origin of this path.
-     * @param dst The vector that points at the destination of this path.
-     * @param offset The vector that points at the lower bound of this path's bounding box.
-     * @param size The vector that indicates the diagonal distance of the path's bounding box.
+     *
+     * @param src           The vector that points at the origin of this path.
+     * @param dst           The vector that points at the destination of this path.
+     * @param offset        The vector that points at the lower bound of this path's bounding box.
+     * @param size          The vector that indicates the diagonal distance of the path's bounding box.
+     * @param srcHorizontal Whether this path exits its source horizontally.
+     * @param dstHorizontal Whether this path enters its destination horizontally.
      */
-    public Path(Vec2 src, Vec2 dst, Vec2 offset, Vec2 size) {
+    public Path(Vec2 src, Vec2 dst, Vec2 offset, Vec2 size, boolean srcHorizontal, boolean dstHorizontal) {
 
         this.src = src;
         this.dst = dst;
         this.offset = offset;
         this.size = size;
+        this.srcHorizontal = srcHorizontal;
+        this.dstHorizontal = dstHorizontal;
     }
 
     /**
@@ -73,7 +78,7 @@ public class Path {
 
         Vec2 src = new Vec2();
         Vec2 dst = new Vec2();
-        boolean srcHorizontal, dstHorizontal;
+        boolean srcHorizontal = false, dstHorizontal = false;
 
         /* left side of connector is SRC */
         if (dstBounds.getCenterX() > srcBounds.getCenterX()) {
@@ -212,7 +217,7 @@ public class Path {
         // path.size = new Vec2( Math.max( Math.abs( path.dst.x - path.src.x ), 1 ), Math.max(
         // Math.abs( path.dst.y - path.src.y ), 1 ) );
 
-        return new Path(src, dst, offset, size);
+        return new Path( src, dst, offset, size, srcHorizontal, dstHorizontal );
     }
 
     /**

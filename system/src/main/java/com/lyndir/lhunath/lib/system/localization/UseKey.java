@@ -11,11 +11,11 @@ import java.util.ResourceBundle;
 /**
  * <h2>{@link UseKey}<br>
  * <sub>Identifies the annotated method as yielding a localized result value from the {@link Properties}.</sub></h2>
- * 
+ *
  * <p>
  * <i>Mar 28, 2009</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 @Target(ElementType.METHOD)
@@ -24,11 +24,11 @@ public @interface UseKey {
 
     /**
      * The key in the resource bundle that references the localization value for the annotated method.
-     * 
+     *
      * <p>
      * An empty string indicates that the annotated method's name should be used as the key.
      * </p>
-     * 
+     *
      * <p>
      * This is the key in {@link ResourceBundle} that yields the localization data as value.
      * </p>

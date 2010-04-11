@@ -25,24 +25,23 @@ import org.apache.wicket.protocol.http.WebResponse;
 /**
  * <h2>{@link RedirectResponseException}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * [description / usage].
  * </p>
- * 
+ *
  * <p>
  * <i>Nov 18, 2008</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public class RedirectResponseException extends AbstractRestartResponseException {
 
     /**
      * Create a new {@link RedirectResponseException} instance.
-     * 
-     * @param target
-     *            The target to set as the request's target.
+     *
+     * @param target The target to set as the request's target.
      */
     public RedirectResponseException(IRequestTarget target) {
 

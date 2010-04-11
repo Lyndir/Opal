@@ -24,10 +24,10 @@ import java.util.List;
  * <br>
  * [description / usage].<br>
  * <br>
- * 
- * @param <E>
- *            The type of event that can be triggered.
+ *
  * @author lhunath
+ * @param <E>
+ * The type of event that can be triggered.
  */
 public abstract class Emitter<E> {
 
@@ -44,9 +44,8 @@ public abstract class Emitter<E> {
 
     /**
      * Add a receiver that will receive messages emitted by this {@link Emitter}.
-     * 
-     * @param receiver
-     *            The object that will receive this object's messages.
+     *
+     * @param receiver The object that will receive this object's messages.
      */
     public void addReceiver(Receiver<E> receiver) {
 
@@ -55,10 +54,9 @@ public abstract class Emitter<E> {
 
     /**
      * Trigger an event so that all {@link Receiver}s process it.
-     * 
-     * @param event
-     *            The event that needs to be sent out.
-     * 
+     *
+     * @param event The event that needs to be sent out.
+     *
      * @return <code>true</code> if at least one {@link Receiver} successfully processed the event.
      */
     protected boolean trigger(E event) {

@@ -24,14 +24,14 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 /**
  * <h2>{@link AbstractListProvider}<br>
  * <sub>Provides data from a lazy loaded detachable list.</sub></h2>
- * 
+ *
  * <p>
  * <i>Mar 7, 2010</i>
  * </p>
- * 
- * @param <T>
- *            The type of data that will be provided.
+ *
  * @author lhunath
+ * @param <T>
+ * The type of data that will be provided.
  */
 public abstract class AbstractListProvider<T> implements IDataProvider<T> {
 

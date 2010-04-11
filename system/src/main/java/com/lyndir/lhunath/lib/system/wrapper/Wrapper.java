@@ -37,15 +37,15 @@ import java.util.Map;
  * fail with an {@link UnsupportedOperationException} if the wrapper class is not available or accessible.<br>
  * <br>
  * It is REQUIRED for any implementing classes to provide this bit of code that initializes the wrapper:
- * 
+ *
  * <pre>
  * static {
  * 	 initWrapper([Proxy-Class].class, &quot;[Wrapped-Class]&quot;)
  * }
  * </pre>
- * 
+ *
  * <br>
- * 
+ *
  * @author lhunath
  */
 public abstract class Wrapper {
@@ -56,16 +56,14 @@ public abstract class Wrapper {
 
     /**
      * Construct an instance of this wrapper's wrapped class.
-     * 
-     * @param proxyClass
-     *            The wrapped class.
-     * @param classes
-     *            The constructor's argument types.
-     * @param args
-     *            The constructor's argument values.
+     *
+     * @param proxyClass The wrapped class.
+     * @param classes    The constructor's argument types.
+     * @param args       The constructor's argument values.
+     *
      * @return An instance of the proxyClass type.
-     * @throws UnsupportedOperationException
-     *             The wrapper could not be instantiated.
+     *
+     * @throws UnsupportedOperationException The wrapper could not be instantiated.
      */
     protected static Object construct(Class<? extends Wrapper> proxyClass, Class<?>[] classes, Object... args)
             throws UnsupportedOperationException {
@@ -77,44 +75,30 @@ public abstract class Wrapper {
 
         catch (SecurityException e) {
             throw new UnsupportedOperationException( e );
-        } catch (NoSuchMethodException e) {
+        }
+        catch (NoSuchMethodException e) {
             throw new UnsupportedOperationException( e );
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             throw new UnsupportedOperationException( e );
-        } catch (IllegalAccessException e) {
+        }
+        catch (IllegalAccessException e) {
             throw new UnsupportedOperationException( e );
-        } catch (InvocationTargetException e) {
+        }
+        catch (InvocationTargetException e) {
             throw new UnsupportedOperationException( e );
-        } catch (InstantiationException e) {
+        }
+        catch (InstantiationException e) {
             throw new UnsupportedOperationException( e );
         }
     }
 
     /**
-     * Convenience method for class loading using the system classloader.
-     * 
-     * @param className
-     *            The class to load.
-     * @return The loaded class named by className.
-     * @throws UnsupportedOperationException
-     *             The class could not be found.
-     */
-    protected static Class<?> getClass(String className)
-            throws UnsupportedOperationException {
-
-        try {
-            return ClassLoader.getSystemClassLoader().loadClass( className );
-        } catch (ClassNotFoundException e) {
-            throw new UnsupportedOperationException( e );
-        }
-    }
-
-    /**
-     * @param proxyClass
-     *            The wrapper whose wrapped class we're after.
+     * @param proxyClass The wrapper whose wrapped class we're after.
+     *
      * @return The class wrapped by the given wrapper.
-     * @throws UnsupportedOperationException
-     *             If the wrapper's class is not available.
+     *
+     * @throws UnsupportedOperationException If the wrapper's class is not available.
      */
     protected static Class<?> getWrappedClass(Class<? extends Wrapper> proxyClass)
             throws UnsupportedOperationException {
@@ -128,18 +112,38 @@ public abstract class Wrapper {
                                                  + " yet!" );
 
             return wrappedClasses.get( proxyClass );
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
+            throw new UnsupportedOperationException( e );
+        }
+    }
+
+    /**
+     * Convenience method for class loading using the system classloader.
+     *
+     * @param className The class to load.
+     *
+     * @return The loaded class named by className.
+     *
+     * @throws UnsupportedOperationException The class could not be found.
+     */
+    protected static Class<?> getClass(String className)
+            throws UnsupportedOperationException {
+
+        try {
+            return ClassLoader.getSystemClassLoader().loadClass( className );
+        }
+        catch (ClassNotFoundException e) {
             throw new UnsupportedOperationException( e );
         }
     }
 
     /**
      * Initialize a wrapper so that it wraps a class by the given name.
-     * 
-     * @param proxyClass
-     *            The wrapper class.
-     * @param wrappedClassName
-     *            The class that should be wrapped.
+     *
+     * @param proxyClass       The wrapper class.
+     * @param wrappedClassName The class that should be wrapped.
+     *
      * @return <code>true</code> if the wrapped class is supported.
      */
     protected static boolean initWrapper(Class<? extends Wrapper> proxyClass, String wrappedClassName) {
@@ -148,7 +152,8 @@ public abstract class Wrapper {
             wrappedClasses.put( proxyClass, getClass( wrappedClassName ) );
 
             return true;
-        } catch (UnsupportedOperationException ignored) {
+        }
+        catch (UnsupportedOperationException ignored) {
             classNotFound = true;
 
             return false;
@@ -157,14 +162,13 @@ public abstract class Wrapper {
 
     /**
      * Invoke a method on the wrapper's wrapped instance.
-     * 
-     * @param proxyClass
-     *            The wrapper.
-     * @param wrappedInstance
-     *            The wrapped instance that is wrapped by the wrapper.
-     * @param methodName
-     *            The name of the method to invoke.
+     *
+     * @param proxyClass      The wrapper.
+     * @param wrappedInstance The wrapped instance that is wrapped by the wrapper.
+     * @param methodName      The name of the method to invoke.
+     *
      * @return The return value of the invoked method.
+     *
      * @throws UnsupportedOperationException
      */
     protected static Object invoke(Class<? extends Wrapper> proxyClass, Object wrappedInstance, String methodName)
@@ -175,18 +179,15 @@ public abstract class Wrapper {
 
     /**
      * Invoke a method on the wrapper's wrapped instance.
-     * 
-     * @param proxyClass
-     *            The wrapper.
-     * @param wrappedInstance
-     *            The wrapped instance that is wrapped by the wrapper.
-     * @param methodName
-     *            The name of the method to invoke.
-     * @param classes
-     *            The method's argument types.
-     * @param args
-     *            The method's argument values.
+     *
+     * @param proxyClass      The wrapper.
+     * @param wrappedInstance The wrapped instance that is wrapped by the wrapper.
+     * @param methodName      The name of the method to invoke.
+     * @param classes         The method's argument types.
+     * @param args            The method's argument values.
+     *
      * @return The return value of the invoked method.
+     *
      * @throws UnsupportedOperationException
      */
     protected static Object invoke(Class<? extends Wrapper> proxyClass, Object wrappedInstance, String methodName,
@@ -200,22 +201,25 @@ public abstract class Wrapper {
 
         catch (SecurityException e) {
             throw new UnsupportedOperationException( e );
-        } catch (NoSuchMethodException e) {
+        }
+        catch (NoSuchMethodException e) {
             throw new UnsupportedOperationException( e );
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             throw new UnsupportedOperationException( e );
-        } catch (IllegalAccessException e) {
+        }
+        catch (IllegalAccessException e) {
             throw new UnsupportedOperationException( e );
-        } catch (InvocationTargetException e) {
+        }
+        catch (InvocationTargetException e) {
             throw new UnsupportedOperationException( e );
         }
     }
 
     /**
-     * @param proxyEnum
-     *            The enum wrapper instance.
-     * @param wrappedEnumClass
-     *            The wrapped enum class.
+     * @param proxyEnum        The enum wrapper instance.
+     * @param wrappedEnumClass The wrapped enum class.
+     *
      * @return The instance of the wrapped enum class that has the same value as that of the given enum wrapper
      *         instance.
      */
@@ -233,8 +237,7 @@ public abstract class Wrapper {
 
 
     /**
-     * @param wrappedInstance
-     *            The instance of the class that should be proxied by this wrapper.
+     * @param wrappedInstance The instance of the class that should be proxied by this wrapper.
      */
     protected Wrapper(Object wrappedInstance) {
 
@@ -288,12 +291,12 @@ public abstract class Wrapper {
 
     /**
      * Invoke a method on the wrapped instance.
-     * 
-     * @param methodName
-     *            The method to invoke.
+     *
+     * @param methodName The method to invoke.
+     *
      * @return The return value of the invoked method.
-     * @throws UnsupportedOperationException
-     *             The method or invoking it is not supported or failed.
+     *
+     * @throws UnsupportedOperationException The method or invoking it is not supported or failed.
      */
     // Assuming only classes that extend this
     // class can call this method and play nice.
@@ -305,16 +308,14 @@ public abstract class Wrapper {
 
     /**
      * Invoke a method on the wrapped instance.
-     * 
-     * @param methodName
-     *            The method to invoke.
-     * @param classes
-     *            The method's argument types.
-     * @param args
-     *            The method's argument values.
+     *
+     * @param methodName The method to invoke.
+     * @param classes    The method's argument types.
+     * @param args       The method's argument values.
+     *
      * @return The return value of the invoked method.
-     * @throws UnsupportedOperationException
-     *             The method or invoking it is not supported or failed.
+     *
+     * @throws UnsupportedOperationException The method or invoking it is not supported or failed.
      */
     // Assuming only classes that extend this
     // class can call this method and play nice.

@@ -16,12 +16,8 @@
 package com.lyndir.lhunath.lib.system;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 import java.util.Locale;
-import java.util.TimeZone;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import com.lyndir.lhunath.lib.system.util.Utils;
 
@@ -31,31 +27,28 @@ import com.lyndir.lhunath.lib.system.util.Utils;
  * <br>
  * [description / usage].<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public abstract class Schedule implements Runnable, Serializable {
 
-    private static final long   serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    private static final Timer  scheduler        = new Timer( "Scheduler", true );
+    private static final Timer scheduler = new Timer( "Scheduler", true );
 
-    private Calendar            nextSchedule;
-    private int                 stepAmount;
-    private int                 stepField;
-    private transient boolean   isScheduled;
+    private Calendar nextSchedule;
+    private int stepAmount;
+    private int stepField;
+    private transient boolean isScheduled;
     private transient TimerTask scheduleTask;
 
 
     /**
      * Update this schedule's timings.
-     * 
-     * @param time
-     *            The time at which this scheduled event must take place.
-     * @param steps
-     *            The amount of steps specified by the step field that apply.
-     * @param step
-     *            An enumeration of the relevant {@link Calendar} fields in the given time specification.
+     *
+     * @param time  The time at which this scheduled event must take place.
+     * @param steps The amount of steps specified by the step field that apply.
+     * @param step  An enumeration of the relevant {@link Calendar} fields in the given time specification.
      */
     public void setSchedule(long time, int steps, int step) {
 
@@ -132,7 +125,7 @@ public abstract class Schedule implements Runnable, Serializable {
 
     /**
      * Get a description of this schedule.
-     * 
+     *
      * @return A string that describes what this schedule does.
      */
     public abstract String getDescription();

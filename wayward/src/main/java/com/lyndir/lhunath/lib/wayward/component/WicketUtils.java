@@ -15,20 +15,15 @@
  */
 package com.lyndir.lhunath.lib.wayward.component;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.wicket.Component;
-import org.apache.wicket.Request;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.Response;
-import org.apache.wicket.Session;
+import org.apache.wicket.*;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebResponse;
@@ -37,15 +32,15 @@ import org.apache.wicket.protocol.http.WebResponse;
 /**
  * <h2>{@link WicketUtils}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * [description / usage].
  * </p>
- * 
+ *
  * <p>
  * <i>Sep 17, 2008</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public abstract class WicketUtils {
@@ -59,8 +54,8 @@ public abstract class WicketUtils {
     }
 
     /**
-     * @param date
-     *            The date that should be formatted.
+     * @param date The date that should be formatted.
+     *
      * @return A string that is the formatted representation of the given date according to the given locale in short
      *         form.
      */
@@ -78,8 +73,8 @@ public abstract class WicketUtils {
     }
 
     /**
-     * @param number
-     *            The number that should be formatted.
+     * @param number The number that should be formatted.
+     *
      * @return A string that is the formatted representation of the given amount of currency according to the given
      *         locale.
      */
@@ -118,15 +113,12 @@ public abstract class WicketUtils {
 
     /**
      * Convenience localization provider method.
-     * 
-     * @param component
-     *            The component in whose context to resolve localization keys.
-     * @param key
-     *            The localization key that provides the locale-specific value. The value may be a
-     *            {@link MessageFormat#format(Object)}-string. In this case, the args will be used to fill in variables.
-     * @param args
-     *            The arguments that contain the data to fill into the locale-specific format specification.
-     * 
+     *
+     * @param component The component in whose context to resolve localization keys.
+     * @param key       The localization key that provides the locale-specific value. The value may be a
+     *                  {@link MessageFormat#format(Object)}-string. In this case, the args will be used to fill in variables.
+     * @param args      The arguments that contain the data to fill into the locale-specific format specification.
+     *
      * @return The localized value according to the application's default localizer.
      */
     public static String localize(Component component, String key, Object... args) {

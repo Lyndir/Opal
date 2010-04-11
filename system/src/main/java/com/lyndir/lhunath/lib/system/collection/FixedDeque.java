@@ -24,31 +24,30 @@ import java.util.LinkedList;
 /**
  * <h2>{@link FixedDeque}<br>
  * <sub>A {@link Deque} implementation with a maximum size.</sub></h2>
- * 
+ *
  * <p>
  * This implementation will begin to pop off old elements when it's reached its maximum size and adding new elements to
  * the head of the queue (or pop off head elements when adding new elements to the tail of the queue).
  * </p>
- * 
+ *
  * <p>
  * <i>Mar 2, 2010</i>
  * </p>
- * 
- * @param <E>
- *            The type of elements held in this collection.
+ *
  * @author lhunath
+ * @param <E>
+ * The type of elements held in this collection.
  */
 public class FixedDeque<E> implements Deque<E> {
 
-    private int      maxSize;
+    private int maxSize;
     private Deque<E> deque;
 
 
     /**
      * Create a new {@link FixedDeque} instance.
-     * 
-     * @param maxSize
-     *            The fixed size of this {@link Deque}.
+     *
+     * @param maxSize The fixed size of this {@link Deque}.
      */
     public FixedDeque(int maxSize) {
 
@@ -58,12 +57,9 @@ public class FixedDeque<E> implements Deque<E> {
 
     /**
      * Create a new {@link FixedDeque} instance initialized by copying elements form another collection.
-     * 
-     * 
-     * @param maxSize
-     *            The fixed size of this {@link Deque}.
-     * @param c
-     *            The collection whose elements are to be placed into this list.
+     *
+     * @param maxSize The fixed size of this {@link Deque}.
+     * @param c       The collection whose elements are to be placed into this list.
      */
     public FixedDeque(int maxSize, Collection<? extends E> c) {
 

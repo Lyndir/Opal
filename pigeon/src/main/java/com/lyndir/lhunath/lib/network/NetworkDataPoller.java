@@ -38,8 +38,7 @@ public class NetworkDataPoller extends Poller<SocketChannel, ByteBuffer> impleme
     /**
      * Create a new {@link NetworkDataPoller} instance that listens on the given network.
      *
-     * @param network
-     *            The network whose data we should be listening for.
+     * @param network The network whose data we should be listening for.
      */
     public NetworkDataPoller(Network network) {
 

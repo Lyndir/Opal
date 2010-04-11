@@ -21,14 +21,14 @@ import org.apache.wicket.model.IModel;
 /**
  * <h2>{@link EmptyModelProvider}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * <i>Mar 11, 2010</i>
  * </p>
- * 
- * @param <P>
- *            This type.
+ *
  * @author lhunath
+ * @param <P>
+ * This type.
  */
 public abstract class EmptyModelProvider<P extends EmptyModelProvider<P>> extends ModelProvider<P, Object> {
 

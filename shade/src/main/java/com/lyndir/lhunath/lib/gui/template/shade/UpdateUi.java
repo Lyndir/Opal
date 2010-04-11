@@ -33,18 +33,17 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  */
 public class UpdateUi extends Thread {
 
-    private static final Logger          logger = Logger.get( UpdateUi.class );
+    private static final Logger logger = Logger.get( UpdateUi.class );
 
     private final BlockingQueue<UpdateRequest> requests = new ArrayBlockingQueue<UpdateRequest>( 20 );
-    private final AbstractUi                   ui;
-    private UpdateRequest                currentRequest;
+    private final AbstractUi ui;
+    private UpdateRequest currentRequest;
 
 
     /**
      * Create a new {@link UpdateUi} instance.
      *
-     * @param ui
-     *            The user interface that will process the request.
+     * @param ui The user interface that will process the request.
      */
     public UpdateUi(AbstractUi ui) {
 
@@ -57,8 +56,7 @@ public class UpdateUi extends Thread {
     /**
      * Add a request to the stack of requests to execute in the update thread.
      *
-     * @param uiRequest
-     *            The request to execute in the update thread.
+     * @param uiRequest The request to execute in the update thread.
      */
     public void request(Request uiRequest) {
 
@@ -74,7 +72,8 @@ public class UpdateUi extends Thread {
             try {
                 if (!requests.offer( newRequest, 500, TimeUnit.MILLISECONDS ))
                     throw new InterruptedException( "Maximum wait time elapsed." );
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 logger.err( e, "err.updateQueueFull", newRequest );
             }
         }
@@ -117,17 +116,15 @@ public class UpdateUi extends Thread {
 
     private class UpdateRequest {
 
-        private final Request   request;
+        private final Request request;
         private final Throwable cause;
 
 
         /**
          * Create a new {@link UpdateRequest} instance.
          *
-         * @param request
-         *            The request this stack element should make.
-         * @param cause
-         *            In case an exception gets thrown during the request, this will be set as the exception's cause.
+         * @param request The request this stack element should make.
+         * @param cause   In case an exception gets thrown during the request, this will be set as the exception's cause.
          */
         UpdateRequest(Request request, Throwable cause) {
 

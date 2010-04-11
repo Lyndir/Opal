@@ -9,11 +9,11 @@ import java.lang.annotation.Target;
 /**
  * <h2>{@link UseLocalizationProvider}<br>
  * <sub>References the provider which will provide values for the keys in the annotated class.</sub></h2>
- * 
+ *
  * <p>
  * <i>Mar 28, 2009</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 @Target(ElementType.TYPE)

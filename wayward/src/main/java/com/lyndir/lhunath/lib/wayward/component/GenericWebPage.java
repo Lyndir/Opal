@@ -22,22 +22,21 @@ import org.apache.wicket.model.IModel;
 /**
  * <h2>{@link GenericWebPage}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * <i>Jan 18, 2010</i>
  * </p>
- * 
- * @param <T>
- *            The model type.
+ *
  * @author lhunath
+ * @param <T>
+ * The model type.
  */
 public class GenericWebPage<T> extends WebPage {
 
     /**
      * Create a new {@link GenericWebPage} instance.
-     * 
-     * @param model
-     *            The component's model.
+     *
+     * @param model The component's model.
      */
     public GenericWebPage(IModel<T> model) {
 
@@ -46,7 +45,7 @@ public class GenericWebPage<T> extends WebPage {
 
     /**
      * Gets model
-     * 
+     *
      * @return model
      */
     @SuppressWarnings("unchecked")
@@ -57,7 +56,7 @@ public class GenericWebPage<T> extends WebPage {
 
     /**
      * Sets model
-     * 
+     *
      * @param model
      */
     public final void setModel(IModel<T> model) {
@@ -67,7 +66,7 @@ public class GenericWebPage<T> extends WebPage {
 
     /**
      * Gets model object
-     * 
+     *
      * @return model object
      */
     @SuppressWarnings("unchecked")
@@ -78,7 +77,7 @@ public class GenericWebPage<T> extends WebPage {
 
     /**
      * Sets model object
-     * 
+     *
      * @param object
      */
     public final void setModelObject(T object) {

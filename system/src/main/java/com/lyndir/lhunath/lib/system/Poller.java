@@ -25,13 +25,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * A poller maintains a queue for responsible objects. Each responsible object has a queue of elements that it needs to
  * process.
- * 
- * @param <K>
- *            The responsible objects type.
- * @param <E>
- *            The responsible objects' element type.
- * 
+ *
  * @author lhunath
+ * @param <K>
+ * The responsible objects type.
+ * @param <E>
+ * The responsible objects' element type.
  */
 public class Poller<K, E> {
 
@@ -48,11 +47,9 @@ public class Poller<K, E> {
 
     /**
      * Offer a new element to the responsible object's queue.
-     * 
-     * @param owner
-     *            The responsible object.
-     * @param element
-     *            The element that should be processed for the responsible object.
+     *
+     * @param owner   The responsible object.
+     * @param element The element that should be processed for the responsible object.
      */
     public void offer(K owner, E element) {
 
@@ -65,10 +62,9 @@ public class Poller<K, E> {
 
     /**
      * Poll an element from the responsible object's queue.
-     * 
-     * @param owner
-     *            The responsible object whose queue to poll.
-     * 
+     *
+     * @param owner The responsible object whose queue to poll.
+     *
      * @return The element that has been on the responsible object's queue the longest, or <code>null</code> if its
      *         queue is empty.
      */
@@ -82,7 +78,7 @@ public class Poller<K, E> {
 
     /**
      * Check whether there is a responsible object that has available elements.
-     * 
+     *
      * @return A responsible object that has elements on its queue or <code>null</code> if no queues need polling. When
      *         there are multiple candidates, it is undefined which will be returned. You should continue to check this
      *         method and poll elements until it returns <code>null</code>.

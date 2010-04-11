@@ -41,23 +41,22 @@ import com.lyndir.lhunath.lib.system.UIUtils;
  */
 public class GButton extends JButton {
 
-    protected static final float ZOOM         = 0.9f;
+    protected static final float ZOOM = 0.9f;
     protected static final float ARC_FRACTION = 0.1f;
     protected static final float TRANSLUCENCY = 0.8f;
 
-    protected Image              smallEnabledIcon, largeEnabledIcon;
-    protected boolean            hover;
-    protected GradientPaint      backgroundPaint;
-    protected GradientPaint      borderPaint;
-    private BufferedImage        smallDisabledIcon;
-    private BufferedImage        largeDisabledIcon;
+    protected Image smallEnabledIcon, largeEnabledIcon;
+    protected boolean hover;
+    protected GradientPaint backgroundPaint;
+    protected GradientPaint borderPaint;
+    private BufferedImage smallDisabledIcon;
+    private BufferedImage largeDisabledIcon;
 
 
     /**
      * Create a new {@link GButton} instance.
      *
-     * @param icon
-     *            The icon to show on the button.
+     * @param icon The icon to show on the button.
      */
     public GButton(Icon icon) {
 
@@ -67,10 +66,8 @@ public class GButton extends JButton {
     /**
      * Create a new {@link GButton} instance.
      *
-     * @param text
-     *            The text to put on the button.
-     * @param icon
-     *            The icon to show next to the button text.
+     * @param text The text to put on the button.
+     * @param icon The icon to show next to the button text.
      */
     public GButton(String text, Icon icon) {
 
@@ -167,21 +164,21 @@ public class GButton extends JButton {
         largeEnabledIcon = new BufferedImage( icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB );
         icon.paintIcon( null, largeEnabledIcon.getGraphics(), 0, 0 );
         smallEnabledIcon = new BufferedImage( (int) (icon.getIconWidth() * ZOOM), (int) (icon.getIconHeight() * ZOOM),
-                BufferedImage.TYPE_INT_ARGB );
+                                              BufferedImage.TYPE_INT_ARGB );
         g2 = (Graphics2D) smallEnabledIcon.getGraphics();
         g2.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
         g2.drawImage( largeEnabledIcon, 0, 0, smallEnabledIcon.getWidth( this ), smallEnabledIcon.getHeight( this ),
-                this );
+                      this );
 
         icon = getDisabledIcon();
         largeDisabledIcon = new BufferedImage( icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB );
         icon.paintIcon( null, largeDisabledIcon.getGraphics(), 0, 0 );
         smallDisabledIcon = new BufferedImage( (int) (icon.getIconWidth() * ZOOM), (int) (icon.getIconHeight() * ZOOM),
-                BufferedImage.TYPE_INT_ARGB );
+                                               BufferedImage.TYPE_INT_ARGB );
         g2 = (Graphics2D) smallDisabledIcon.getGraphics();
         g2.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
         g2.drawImage( largeDisabledIcon, 0, 0, smallDisabledIcon.getWidth( this ), smallDisabledIcon.getHeight( this ),
-                this );
+                      this );
 
         updateSize();
     }
@@ -221,23 +218,23 @@ public class GButton extends JButton {
             case LEFT:
             case RIGHT:
                 buttonSize.setX( textSize.getX() + getIconTextGap() + iconSize.getX() );
-            break;
+                break;
 
             case CENTER:
             default:
                 buttonSize.setX( Math.max( textSize.getX(), iconSize.getX() ) );
-            break;
+                break;
         }
         switch (getVerticalTextPosition()) {
             case TOP:
             case BOTTOM:
                 buttonSize.setY( textSize.getY() + getIconTextGap() + iconSize.getY() );
-            break;
+                break;
 
             case CENTER:
             default:
                 buttonSize.setY( Math.max( textSize.getY(), iconSize.getY() ) );
-            break;
+                break;
         }
 
         buttonSize.multiply( 1 / (ZOOM * ZOOM) );
@@ -255,7 +252,7 @@ public class GButton extends JButton {
         backgroundPaint = new GradientPaint( 0, 0, MyLookAndFeel.getActiveBright(), 0, getHeight(), UIUtils.setAlpha(
                 MyLookAndFeel.getActiveDark(), 50 ) );
         borderPaint = new GradientPaint( 0, 0, MyLookAndFeel.getActiveBright().brighter(), 0, getHeight(),
-                UIUtils.setAlpha( MyLookAndFeel.getActiveBright(), 50 ) );
+                                         UIUtils.setAlpha( MyLookAndFeel.getActiveBright(), 50 ) );
     }
 
     /**
@@ -328,21 +325,21 @@ public class GButton extends JButton {
 
             case CENTER:
             default:
-            textX = (getWidth() - (int) textBounds.getWidth()) / 2;
-            iconX = (getWidth() - imageWidth) / 2;
-            break;
+                textX = (getWidth() - (int) textBounds.getWidth()) / 2;
+                iconX = (getWidth() - imageWidth) / 2;
+                break;
         }
 
         switch (vertical) {
             case TOP:
-            textY = yPadding + g2.getFont().getSize();
-            iconY = getHeight() - imageHeight - (hovering? yPadding: smallYPadding);
-            break;
+                textY = yPadding + g2.getFont().getSize();
+                iconY = getHeight() - imageHeight - (hovering? yPadding: smallYPadding);
+                break;
 
             case BOTTOM:
-            textY = yPadding + largeHeight + getIconTextGap() + g2.getFont().getSize();
-            iconY = hovering? yPadding: smallYPadding;
-            break;
+                textY = yPadding + largeHeight + getIconTextGap() + g2.getFont().getSize();
+                iconY = hovering? yPadding: smallYPadding;
+                break;
 
             case CENTER:
             default:
@@ -366,11 +363,11 @@ public class GButton extends JButton {
 
         g2.setPaint( backgroundPaint );
         g2.fillRoundRect( 0, 0, getWidth(), getHeight(), (int) (getWidth() * ARC_FRACTION),
-                (int) (getWidth() * ARC_FRACTION) );
+                          (int) (getWidth() * ARC_FRACTION) );
 
         g2.setPaint( borderPaint );
         g2.drawRoundRect( 0, 0, getWidth() - 1, getHeight() - 1, (int) (getWidth() * ARC_FRACTION),
-                (int) (getWidth() * ARC_FRACTION) );
+                          (int) (getWidth() * ARC_FRACTION) );
 
         g2.setComposite( origComposite );
     }

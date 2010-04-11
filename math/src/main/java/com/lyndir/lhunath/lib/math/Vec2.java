@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.lib.math;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
@@ -56,10 +56,8 @@ public class Vec2 implements Cloneable {
     /**
      * Create a new two dimensional vector.
      *
-     * @param x
-     *            The x-coordinate of the new vector.
-     * @param y
-     *            The y-coordinate of the new vector.
+     * @param x The x-coordinate of the new vector.
+     * @param y The y-coordinate of the new vector.
      */
     public Vec2(double x, double y) {
 
@@ -70,8 +68,7 @@ public class Vec2 implements Cloneable {
     /**
      * Create a new two dimensional vector.
      *
-     * @param p
-     *            A 2D point that describes the endpoint of the vector.
+     * @param p A 2D point that describes the endpoint of the vector.
      */
     public Vec2(Point2D p) {
 
@@ -82,8 +79,7 @@ public class Vec2 implements Cloneable {
     /**
      * Create a new two dimensional vector.
      *
-     * @param d
-     *            A 2D dimension that describes the endpoint of the vector.
+     * @param d A 2D dimension that describes the endpoint of the vector.
      */
     public Vec2(Dimension2D d) {
 
@@ -165,8 +161,8 @@ public class Vec2 implements Cloneable {
     /**
      * Rotate this vector over an angle.
      *
-     * @param a
-     *            The angle over which to rotate.
+     * @param a The angle over which to rotate.
+     *
      * @return A reference to the this vector, after it has been updated.
      */
     public Vec2 rotate(Angle a) {
@@ -184,8 +180,8 @@ public class Vec2 implements Cloneable {
     /**
      * Add another vector to this one.
      *
-     * @param vector
-     *            The vector which will be added to this.
+     * @param vector The vector which will be added to this.
+     *
      * @return A reference to the this vector, after it has been updated.
      */
     public Vec2 add(Vec2 vector) {
@@ -202,8 +198,8 @@ public class Vec2 implements Cloneable {
     /**
      * Subtract another vector from this one.
      *
-     * @param vector
-     *            The vector which will be subtracted from this.
+     * @param vector The vector which will be subtracted from this.
+     *
      * @return A reference to the this vector, after it has been updated.
      */
     public Vec2 substract(Vec2 vector) {
@@ -220,8 +216,8 @@ public class Vec2 implements Cloneable {
     /**
      * Multiply this vector with the coefficients of another.
      *
-     * @param vector
-     *            The vector whose coefficients will be used for the multiplication.
+     * @param vector The vector whose coefficients will be used for the multiplication.
+     *
      * @return A reference to the this vector, after it has been updated.
      */
     public Vec2 multiply(Vec2 vector) {
@@ -238,8 +234,8 @@ public class Vec2 implements Cloneable {
     /**
      * Multiply this vector with a scalar number.
      *
-     * @param c
-     *            The scalar value with which to multiply this vector.
+     * @param c The scalar value with which to multiply this vector.
+     *
      * @return A reference to the this vector, after it has been updated.
      */
     public Vec2 multiply(double c) {
@@ -273,8 +269,8 @@ public class Vec2 implements Cloneable {
      *     \______\     and the vertical side as another. Their cross product returns the area.
      * </pre>
      *
-     * @param vector
-     *            The vector with which this vector will be multiplied.
+     * @param vector The vector with which this vector will be multiplied.
+     *
      * @return The result of the cross product of this vector with the given one.
      */
     public double crossMultiply(Vec2 vector) {
@@ -290,8 +286,8 @@ public class Vec2 implements Cloneable {
      * projection of this vector on the given one.<br>
      * As a result of this; the dot product of two perpendicular vectors is 0.</i>
      *
-     * @param vector
-     *            The vector with which this vector will be multiplied.
+     * @param vector The vector with which this vector will be multiplied.
+     *
      * @return The result of the dot product of this vector with the given one.
      */
     public double dotMultiply(Vec2 vector) {

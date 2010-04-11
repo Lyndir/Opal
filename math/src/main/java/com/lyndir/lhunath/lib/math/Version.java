@@ -35,15 +35,14 @@ public class Version implements Comparable<Version>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String            version;
-    private String[]          tags;
+    private String version;
+    private String[] tags;
 
 
     /**
      * Create a new {@link Version} instance.
      *
-     * @param version
-     *            The string version tag.
+     * @param version The string version tag.
      */
     public Version(Number version) {
 
@@ -53,8 +52,7 @@ public class Version implements Comparable<Version>, Serializable {
     /**
      * Create a new {@link Version} instance.
      *
-     * @param version
-     *            The string version tag.
+     * @param version The string version tag.
      */
     public Version(String version) {
 
@@ -64,8 +62,7 @@ public class Version implements Comparable<Version>, Serializable {
     /**
      * Change the version represented by this {@link Version} object.
      *
-     * @param version
-     *            The string representation of the version to set this object to.
+     * @param version The string representation of the version to set this object to.
      */
     public void set(String version) {
 
@@ -120,7 +117,7 @@ public class Version implements Comparable<Version>, Serializable {
         if (this == o)
             return true;
         if (o instanceof Version)
-            return Arrays.equals( tags, ((Version) o).tags ) && version.equals( ((Version) o).version);
+            return Arrays.equals( tags, ((Version) o).tags ) && version.equals( ((Version) o).version );
 
         return false;
     }
@@ -143,8 +140,8 @@ public class Version implements Comparable<Version>, Serializable {
     /**
      * Check whether this version is newer than the given one.
      *
-     * @param v
-     *            The possibly older version.
+     * @param v The possibly older version.
+     *
      * @return Guess.
      */
     public boolean newerThan(Version v) {
@@ -155,8 +152,8 @@ public class Version implements Comparable<Version>, Serializable {
     /**
      * Check whether this version is older than the given one.
      *
-     * @param v
-     *            The possibly newer version.
+     * @param v The possibly newer version.
+     *
      * @return Guess.
      */
     public boolean olderThan(Version v) {

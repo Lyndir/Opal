@@ -15,8 +15,6 @@
  */
 package com.lyndir.lhunath.lib.system;
 
-import java.lang.Object;
-import java.lang.String;
 import java.util.ListResourceBundle;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -29,13 +27,13 @@ import java.util.ResourceBundle;
  * method will return the strings requested by unique keys in the set language. If the string is not available in that
  * language, it will fall back to the default locale.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class Locale {
 
     private static final Locale instance = new Locale();
-    private ResourceBundle      resources;
+    private ResourceBundle resources;
 
 
     private Locale() {
@@ -45,7 +43,7 @@ public class Locale {
 
     /**
      * Retrieve a reference to this singleton.
-     * 
+     *
      * @return The instance of this class.
      */
     public static Locale getLocale() {
@@ -55,9 +53,9 @@ public class Locale {
 
     /**
      * Switch to a new locale.
-     * 
-     * @param lang
-     *            The new locale.
+     *
+     * @param lang The new locale.
+     *
      * @return Reference to this locale instance.
      */
     public Locale setLang(java.util.Locale lang) {
@@ -67,7 +65,8 @@ public class Locale {
                 resources = ResourceBundle.getBundle( "messages" );
             else
                 resources = ResourceBundle.getBundle( "messages", lang );
-        } catch (MissingResourceException ignored) {
+        }
+        catch (MissingResourceException ignored) {
             resources = new ListResourceBundle() {
 
                 @Override
@@ -85,11 +84,10 @@ public class Locale {
      * Retrieves an externalized string for the given key, or the key if none was found.<br>
      * The result is parsed by {@link String#format(java.util.Locale, String, Object...)} using the optional additional
      * arguments as input values.
-     * 
-     * @param messageKey
-     *            The key of the message or the message to format.
-     * @param args
-     *            Arguments to use in formatting of the result.
+     *
+     * @param messageKey The key of the message or the message to format.
+     * @param args       Arguments to use in formatting of the result.
+     *
      * @return The formatted externalized string, or key if none was found.
      */
     public static String explain(String messageKey, Object... args) {
@@ -101,11 +99,10 @@ public class Locale {
      * Retrieves an externalized string for the given key, or the key if none was found.<br>
      * The result is parsed by {@link String#format(java.util.Locale, String, Object...)} using the optional additional
      * arguments as input values.
-     * 
-     * @param messageKey
-     *            The key of the message or the message to format.
-     * @param args
-     *            Arguments to use in formatting of the result.
+     *
+     * @param messageKey The key of the message or the message to format.
+     * @param args       Arguments to use in formatting of the result.
+     *
      * @return The formatted externalized string, or key if none was found.
      */
     private String _explain(String messageKey, Object... args) {
@@ -117,7 +114,8 @@ public class Locale {
             if (args != null && args.length > 0)
                 return String.format( resources.getLocale(), resources.getString( messageKey ), args );
             return resources.getString( messageKey );
-        } catch (MissingResourceException ignored) {
+        }
+        catch (MissingResourceException ignored) {
             StringBuilder messageBuilder = new StringBuilder( messageKey );
 
             if (args == null || args.length == (messageKey + ' ').split( "%[-#+ 0,\\(\\.]*\\w" ).length - 1)

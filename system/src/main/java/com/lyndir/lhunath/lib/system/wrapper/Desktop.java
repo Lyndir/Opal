@@ -33,8 +33,8 @@ public class Desktop extends Wrapper {
 
     /**
      * @return See {@link "http://java.sun.com/javase/6/docs/api/java/awt/Desktop.html#getDesktop()"}
-     * @throws UnsupportedOperationException
-     *             If the native class wrapped by this class is not available.
+     *
+     * @throws UnsupportedOperationException If the native class wrapped by this class is not available.
      */
     public static Desktop getDesktop()
             throws UnsupportedOperationException {
@@ -57,8 +57,8 @@ public class Desktop extends Wrapper {
     }
 
     /**
-     * @param action
-     *            The wrapped action to check support for.
+     * @param action The wrapped action to check support for.
+     *
      * @return <code>true</code> If the Java6 Desktop class is available and the given action is supported by the
      *         current environment.
      */
@@ -66,11 +66,12 @@ public class Desktop extends Wrapper {
 
         try {
             Object desktopAction = mapEnumValue( action, getClass( "java.awt.Desktop.Action" ) );
-            return (Boolean) invoke( "isSupported", new Class[] { getClass( "java.awt.Desktop.Action" ) },
+            return (Boolean) invoke( "isSupported", new Class[] {getClass( "java.awt.Desktop.Action" )},
                                      desktopAction );
         }
 
-        catch (Exception ignored) {}
+        catch (Exception ignored) {
+        }
 
         return false;
     }
@@ -82,35 +83,35 @@ public class Desktop extends Wrapper {
 
     /**
      * Browse to the given {@link URI} natively.
-     * 
-     * @param uri
-     *            The {@link URI} to browse to.
+     *
+     * @param uri The {@link URI} to browse to.
+     *
      * @throws IOException
      */
     @SuppressWarnings("unused")
     public void browse(URI uri)
             throws IOException {
 
-        invoke( "browse", new Class[] { URI.class }, uri );
+        invoke( "browse", new Class[] {URI.class}, uri );
     }
 
     /**
      * Edit the given file natively.
-     * 
-     * @param file
-     *            The {@link File} to edit.
+     *
+     * @param file The {@link File} to edit.
+     *
      * @throws IOException
      */
     @SuppressWarnings("unused")
     public void edit(File file)
             throws IOException {
 
-        invoke( "edit", new Class[] { File.class }, file );
+        invoke( "edit", new Class[] {File.class}, file );
     }
 
     /**
      * Send an email natively.
-     * 
+     *
      * @throws IOException
      */
     @SuppressWarnings("unused")
@@ -122,56 +123,55 @@ public class Desktop extends Wrapper {
 
     /**
      * Send an email to the given {@link URI} natively.
-     * 
-     * @param mailtoURI
-     *            The {@link URI} address to direct the mail to.
+     *
+     * @param mailtoURI The {@link URI} address to direct the mail to.
+     *
      * @throws IOException
      */
     @SuppressWarnings("unused")
     public void mail(URI mailtoURI)
             throws IOException {
 
-        invoke( "mail", new Class[] { URI.class }, mailtoURI );
+        invoke( "mail", new Class[] {URI.class}, mailtoURI );
     }
 
     /**
      * Open the given file as configured natively.
-     * 
-     * @param file
-     *            The {@link File} to open.
+     *
+     * @param file The {@link File} to open.
+     *
      * @throws IOException
      */
     @SuppressWarnings("unused")
     public void open(File file)
             throws IOException {
 
-        invoke( "open", new Class[] { File.class }, file );
+        invoke( "open", new Class[] {File.class}, file );
     }
 
     /**
      * Print the given {@link File} as configured natively.
-     * 
-     * @param file
-     *            The {@link File} to print.
+     *
+     * @param file The {@link File} to print.
+     *
      * @throws IOException
-     * 
      */
     @SuppressWarnings("unused")
     public void print(File file)
             throws IOException {
 
-        invoke( "print", new Class[] { File.class }, file );
+        invoke( "print", new Class[] {File.class}, file );
     }
 
 
     /**
      * <h2>{@link Action}<br>
      * <sub>Wrapper class for the Java6 Desktop.Action enum.</sub></h2>
-     * 
+     *
      * <p>
      * <i>Apr 9, 2008</i>
      * </p>
-     * 
+     *
      * @author mbillemo
      */
     public enum Action {

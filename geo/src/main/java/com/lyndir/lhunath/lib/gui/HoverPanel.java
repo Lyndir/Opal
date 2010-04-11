@@ -29,17 +29,16 @@ import com.lyndir.lhunath.lib.system.UIUtils;
  */
 public class HoverPanel extends JPanel implements ActionListener, MouseListener, MouseMotionListener {
 
-    private static final Color backgroundBase  = new Color( 0.9f, 0.9f, 1 );
+    private static final Color backgroundBase = new Color( 0.9f, 0.9f, 1 );
     private static final Color backgroundHover = UIUtils.setAlpha( backgroundBase, 100 );
-    private static boolean     alternateRow;
-    private final Color              background;
+    private static boolean alternateRow;
+    private final Color background;
 
 
     /**
      * Create a new AddonPanel instance.
      *
-     * @param layout
-     *            The layout to use for this panel.
+     * @param layout The layout to use for this panel.
      */
     public HoverPanel(LayoutManager layout) {
 

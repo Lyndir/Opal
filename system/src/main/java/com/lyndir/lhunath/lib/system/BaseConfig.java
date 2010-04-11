@@ -15,30 +15,11 @@
  */
 package com.lyndir.lhunath.lib.system;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import com.lyndir.lhunath.lib.system.util.Utils;
@@ -53,38 +34,38 @@ import com.thoughtworks.xstream.XStream;
  * <br>
  * NOTE: Any subclass needs to follow the directions outlined in {@link #initClass(Class)}!<br>
  * <br>
- * 
+ *
  * @author lhunath
  * @param <T>
- *            The type of this entry's value.
+ * The type of this entry's value.
  */
 public class BaseConfig<T extends Serializable> implements Serializable {
 
-    static final Logger                               logger           = Logger.get( BaseConfig.class );
+    static final Logger logger = Logger.get( BaseConfig.class );
 
     /**
      * Version of the class. Augment this whenever the class type of a config entry field changes, or the context of a
      * field becomes incompatible.
      */
-    public static final long                          serialVersionUID = 210L;
+    public static final long serialVersionUID = 210L;
 
     /**
      * The size of the file/web read buffer.
      */
-    public static final int                           BUFFER_SIZE      = 1024;
+    public static final int BUFFER_SIZE = 1024;
 
     /**
      * The file in which to save the config settings.
      */
-    public static final BaseConfig<File>              configFile       = create( File.class );
+    public static final BaseConfig<File> configFile = create( File.class );
 
     /**
      * Whether to write out this configuration file in XML format.
      */
-    public static final BaseConfig<Boolean>           writeAsXML       = create( true );
+    public static final BaseConfig<Boolean> writeAsXML = create( true );
 
-    protected static final Set<Runnable>              shutdownHooks    = new HashSet<Runnable>();
-    protected static final Map<BaseConfig<?>, String> names            = new HashMap<BaseConfig<?>, String>();
+    protected static final Set<Runnable> shutdownHooks = new HashSet<Runnable>();
+    protected static final Map<BaseConfig<?>, String> names = new HashMap<BaseConfig<?>, String>();
 
     static {
         /* CALL THIS METHOD IN EVERY SUBCLASS! */
@@ -117,29 +98,33 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                         try {
                             xstream.toXML( names, configWriter );
                             // xstream.toXML( types, configWriter );
-                        } finally {
+                        }
+                        finally {
                             configWriter.close();
                         }
-                    }
-
-                    else {
+                    } else {
                         FileOutputStream out = new FileOutputStream( configFile.get() );
                         ObjectOutputStream objects = new ObjectOutputStream( out );
 
                         try {
                             objects.writeObject( names );
                             // objects.writeObject( types );
-                        } finally {
+                        }
+                        finally {
                             objects.close();
                         }
                     }
-                } catch (UnsupportedEncodingException e) {
+                }
+                catch (UnsupportedEncodingException e) {
                     logger.err( e, "Charset %s is unsupported!", Utils.getCharset().name() );
-                } catch (FileNotFoundException e) {
+                }
+                catch (FileNotFoundException e) {
                     logger.err( e, "Could not find the config file '%s'!", configFile.get() );
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     logger.err( e, "Could not create/write to the config file '%s'!", configFile.get() );
-                } finally {
+                }
+                finally {
                     logger.dbg( null );
                 }
             }
@@ -149,11 +134,10 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     /**
      * Create a new {@link BaseConfig} that defaults to being unset.
-     * 
-     * @param t
-     *            The type of value for this {@link BaseConfig}.
-     * @param <T>
-     *            See type.
+     *
+     * @param t   The type of value for this {@link BaseConfig}.
+     * @param <T> See type.
+     *
      * @return The {@link BaseConfig} object for this entry.
      */
     public static <T extends Serializable> BaseConfig<T> create(@SuppressWarnings("unused") Class<T> t) {
@@ -163,11 +147,10 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     /**
      * Create a new {@link BaseConfig} with the given default value.
-     * 
-     * @param defaultValue
-     *            The value that will be used if no other value is defined.
-     * @param <T>
-     *            The type of value for this {@link BaseConfig}.
+     *
+     * @param defaultValue The value that will be used if no other value is defined.
+     * @param <T>          The type of value for this {@link BaseConfig}.
+     *
      * @return The {@link BaseConfig} object for this entry.
      */
     public static <T extends Serializable> BaseConfig<T> create(T defaultValue) {
@@ -177,9 +160,9 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     /**
      * Create a new {@link BaseConfig} with the given default value that will be parsed into a URL.
-     * 
-     * @param defaultValue
-     *            The value that will be used if no other value is defined.
+     *
+     * @param defaultValue The value that will be used if no other value is defined.
+     *
      * @return The {@link BaseConfig} object for this entry.
      */
     public static BaseConfig<URL> createUrl(String defaultValue) {
@@ -198,9 +181,9 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     /**
      * Create a new {@link BaseConfig} that defaults to being unset.
-     * 
-     * @param <T>
-     *            The type of value for this {@link BaseConfig}.
+     *
+     * @param <T> The type of value for this {@link BaseConfig}.
+     *
      * @return The {@link BaseConfig} object for this entry.
      */
     public static <T extends Serializable> BaseConfig<T> empty() {
@@ -213,11 +196,10 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * that will be used for serialization of the settings.<br>
      * <br>
      * <b>YOU MUST CALL THIS FUNCTION IN A STATIC BLOCK WHENEVER YOU SUBCLASS THIS CLASS!</b>
-     * 
-     * @param configClass
-     *            The class that is being initialized. This is the Class object of the {@link BaseConfig} subclass.
+     *
+     * @param configClass The class that is being initialized. This is the Class object of the {@link BaseConfig} subclass.
      */
-    @SuppressWarnings({ "rawtypes", "RawUseOfParameterizedType" })
+    @SuppressWarnings({"unchecked", "rawtypes", "RawUseOfParameterizedType"})
     public static void initClass(Class<? extends BaseConfig> configClass) {
 
         flushConfig( configClass );
@@ -226,9 +208,8 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     /**
      * Change the location of the config file and reload the config from the new location.
-     * 
-     * @param config
-     *            The new config file.
+     *
+     * @param config The new config file.
      */
     public static void setConfig(File config) {
 
@@ -239,11 +220,10 @@ public class BaseConfig<T extends Serializable> implements Serializable {
     /**
      * Read in all static fields of the given class and if they're {@link BaseConfig} fields, add them to the settings
      * list so that they will be serialized.
-     * 
-     * @param configClass
-     *            The name of the class whose static {@link BaseConfig} fields should be flushed into the settings list.
+     *
+     * @param configClass The name of the class whose static {@link BaseConfig} fields should be flushed into the settings list.
      */
-    @SuppressWarnings({ "rawtypes", "RawUseOfParameterizedType" })
+    @SuppressWarnings({"unchecked", "rawtypes", "RawUseOfParameterizedType"})
     private static void flushConfig(Class<? extends BaseConfig> configClass) {
 
         for (Field field : configClass.getFields())
@@ -259,14 +239,17 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                 }
             }
 
-            catch (IllegalArgumentException ignored) {} catch (IllegalAccessException ignored) {}
+            catch (IllegalArgumentException ignored) {
+            }
+            catch (IllegalAccessException ignored) {
+            }
     }
 
     /**
      * Load config settings from the config file and change every existing setting with the same field name to reflect
      * its value from the config file.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes", "RawUseOfParameterizedType" })
+    @SuppressWarnings({"unchecked", "rawtypes", "RawUseOfParameterizedType"})
     private static void loadConfig() {
 
         try {
@@ -289,12 +272,14 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                     try {
                         configNames = names.getClass().cast( xstream.fromXML( configReader ) );
                         // configTypes = types.getClass().cast( xstream.fromXML( configReader ) );
-                    } finally {
+                    }
+                    finally {
                         configReader.close();
                     }
 
                     loaded = true;
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     loadProblems.add( e );
                     useXML = false;
                 }
@@ -308,14 +293,17 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                     try {
                         configNames = names.getClass().cast( objects.readObject() );
                         // configTypes = types.getClass().cast( objects.readObject() );
-                    } finally {
+                    }
+                    finally {
                         objects.close();
                     }
 
                     loaded = true;
-                } catch (InvalidClassException e) {
+                }
+                catch (InvalidClassException e) {
                     logger.wrn( e, "Config file is incompatible, reverting to defaults." );
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     loadProblems.add( e );
                 }
 
@@ -364,7 +352,8 @@ public class BaseConfig<T extends Serializable> implements Serializable {
         catch (ClassCastException e) {
             logger.wrn( e, "Config file is incompatible, reverting to defaults." );
             revert();
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
             logger.err( e, "Object in config file not supported, reverting to defaults." );
             revert();
         }
@@ -377,9 +366,8 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     /**
      * Add a {@link Runnable} to execute as we are shutting down.
-     * 
-     * @param hook
-     *            The hook to execute during shutdown.
+     *
+     * @param hook The hook to execute during shutdown.
      */
     public static void addShutdownHook(Runnable hook) {
 
@@ -387,18 +375,17 @@ public class BaseConfig<T extends Serializable> implements Serializable {
     }
 
 
-    private T                                             value;
-    private int                                           hashCode;
-    private String                                        type;
+    private T value;
+    private int hashCode;
+    private String type;
 
     private final transient Set<ConfigChangedListener<T>> listeners;
 
 
     /**
      * Create a new {@link BaseConfig} instance.
-     * 
-     * @param defaultValue
-     *            The default value for this entry.
+     *
+     * @param defaultValue The default value for this entry.
      */
     protected BaseConfig(T defaultValue) {
 
@@ -408,7 +395,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     /**
      * Get the configured value for this setting.
-     * 
+     *
      * @return Guess.
      */
     public T get() {
@@ -418,7 +405,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     /**
      * Get the name of this {@link BaseConfig}.
-     * 
+     *
      * @return The field name of this {@link BaseConfig}.
      */
     public String getName() {
@@ -433,7 +420,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     /**
      * Get the name of this {@link BaseConfig}.
-     * 
+     *
      * @return The field name of this {@link BaseConfig}.
      */
     public String getType() {
@@ -451,7 +438,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
     /**
      * Check whether this {@link BaseConfig} is unset (<code>null</code> or empty {@link #toString()} or
      * {@link Collection#isEmpty()}).
-     * 
+     *
      * @return Guess.
      */
     public boolean isEmpty() {
@@ -467,7 +454,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     /**
      * Check whether there is a value defined for this {@link BaseConfig}.
-     * 
+     *
      * @return Guess.
      */
     public boolean isSet() {
@@ -477,12 +464,12 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     /**
      * Change the configured value for this setting.
-     * 
-     * @param newValue
-     *            The setting's new value.
+     *
+     * @param newValue The setting's new value.
+     *
      * @return <code>true</code> in case the original value was not the same as the new value.
-     * @throws ClassCastException
-     *             If the object is not null and is not assignable to the setting's type.
+     *
+     * @throws ClassCastException If the object is not null and is not assignable to the setting's type.
      */
     public boolean set(T newValue)
             throws ClassCastException {
@@ -504,9 +491,9 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * Forcefully change the configured value for this setting, even if the current setting is already equal to the new
      * value.<br>
      * You should use this if you need the object in the config file to be a reference to the new value.
-     * 
-     * @param newValue
-     *            The setting's new value.
+     *
+     * @param newValue The setting's new value.
+     *
      * @return true if the value was changed.
      */
     public boolean force(T newValue) {
@@ -517,9 +504,8 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     /**
      * Register an event handler that will be called when this value changes.
-     * 
-     * @param listener
-     *            The {@link ConfigChangedListener} to register.
+     *
+     * @param listener The {@link ConfigChangedListener} to register.
      */
     public void register(ConfigChangedListener<T> listener) {
 
@@ -544,7 +530,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
         value = null;
     }
 
-    @SuppressWarnings({ "rawtypes", "RawUseOfParameterizedType" })
+    @SuppressWarnings({"unchecked", "rawtypes", "RawUseOfParameterizedType"})
     private String getName(Class<? extends BaseConfig> configClass) {
 
         for (Field field : configClass.getFields())
@@ -553,7 +539,10 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                     return field.getName();
             }
 
-            catch (IllegalArgumentException ignored) {} catch (IllegalAccessException ignored) {}
+            catch (IllegalArgumentException ignored) {
+            }
+            catch (IllegalAccessException ignored) {
+            }
 
         logger.wrn( "Could not find the name of config entry with value: %s", get() );
         return null;

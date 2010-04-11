@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.Icon;
+import javax.swing.*;
 import javax.swing.JToggleButton.ToggleButtonModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -33,7 +33,7 @@ public class OnOffButton extends GButton implements ChangeListener {
 
     private final String onText;
     private final String offText;
-    private final Icon   onIcon;
+    private final Icon onIcon;
     private final Icon offIcon;
 
 
@@ -48,10 +48,8 @@ public class OnOffButton extends GButton implements ChangeListener {
     /**
      * Create a new OnOffButton instance.
      *
-     * @param onText
-     *            The text that shows on the button when it is selected.
-     * @param offText
-     *            The text that shows on the button when it is not selected.
+     * @param onText  The text that shows on the button when it is selected.
+     * @param offText The text that shows on the button when it is not selected.
      */
     public OnOffButton(String onText, String offText) {
 
@@ -61,10 +59,8 @@ public class OnOffButton extends GButton implements ChangeListener {
     /**
      * Create a new OnOffButton instance.
      *
-     * @param onIcon
-     *            The icon that shows on the button when it is selected.
-     * @param offIcon
-     *            The icon that shows on the button when it is not selected.
+     * @param onIcon  The icon that shows on the button when it is selected.
+     * @param offIcon The icon that shows on the button when it is not selected.
      */
     public OnOffButton(Icon onIcon, Icon offIcon) {
 
@@ -74,14 +70,10 @@ public class OnOffButton extends GButton implements ChangeListener {
     /**
      * Create a new OnOffButton instance.
      *
-     * @param onText
-     *            The text that shows on the button when it is selected.
-     * @param onIcon
-     *            The icon that shows on the button when it is selected.
-     * @param offText
-     *            The text that shows on the button when it is not selected.
-     * @param offIcon
-     *            The icon that shows on the button when it is not selected.
+     * @param onText  The text that shows on the button when it is selected.
+     * @param onIcon  The icon that shows on the button when it is selected.
+     * @param offText The text that shows on the button when it is not selected.
+     * @param offIcon The icon that shows on the button when it is not selected.
      */
     public OnOffButton(String onText, Icon onIcon, String offText, Icon offIcon) {
 

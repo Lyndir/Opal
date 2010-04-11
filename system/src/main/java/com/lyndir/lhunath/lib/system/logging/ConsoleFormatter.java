@@ -23,16 +23,15 @@ import java.util.logging.Level;
  * <br>
  * It just adds a carriage-return new-line at the end of log lines, fit for most console output.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class ConsoleFormatter extends LogFormatter {
 
     /**
      * Create a new ConsoleFormatter instance.
-     * 
-     * @param verbosity
-     *            Whether to use verbose mode.
+     *
+     * @param verbosity Whether to use verbose mode.
      */
     public ConsoleFormatter(boolean verbosity) {
 

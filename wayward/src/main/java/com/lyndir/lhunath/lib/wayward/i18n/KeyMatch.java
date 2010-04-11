@@ -24,11 +24,11 @@ import java.lang.annotation.Target;
 /**
  * <h2>{@link KeyMatch}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * <i>Mar 31, 2010</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 @Retention(RetentionPolicy.RUNTIME)

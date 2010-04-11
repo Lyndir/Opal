@@ -39,24 +39,20 @@ public class GLabel extends JLabel {
 
     private static final long serialVersionUID = 1L;
 
-    protected boolean         hasMouse, isPressed;
+    protected boolean hasMouse, isPressed;
 
-    protected int             padding;
-    private GradientPaint     gradientBase;
-    private int               arc              = 5;
+    protected int padding;
+    private GradientPaint gradientBase;
+    private int arc = 5;
 
 
     /**
      * Create a new {@link GLabel} instance.
      *
-     * @param text
-     *            The text to render in the label.
-     * @param icon
-     *            The icon to display next to the text on the label.
-     * @param horizontalAlignment
-     *            The alignment of the text in the label.
-     * @param gradient
-     *            The gradient base color for the label.
+     * @param text                The text to render in the label.
+     * @param icon                The icon to display next to the text on the label.
+     * @param horizontalAlignment The alignment of the text in the label.
+     * @param gradient            The gradient base color for the label.
      */
     public GLabel(String text, Icon icon, int horizontalAlignment, Color gradient) {
 
@@ -67,12 +63,9 @@ public class GLabel extends JLabel {
     /**
      * Create a new {@link GLabel} instance.
      *
-     * @param text
-     *            The text to render in the label.
-     * @param horizontalAlignment
-     *            The alignment of the text in the label.
-     * @param gradient
-     *            The gradient base color for the label.
+     * @param text                The text to render in the label.
+     * @param horizontalAlignment The alignment of the text in the label.
+     * @param gradient            The gradient base color for the label.
      */
     public GLabel(String text, int horizontalAlignment, Color gradient) {
 
@@ -83,10 +76,8 @@ public class GLabel extends JLabel {
     /**
      * Create a new {@link GLabel} instance.
      *
-     * @param text
-     *            The text to render in the label.
-     * @param gradient
-     *            The gradient base color for the label.
+     * @param text     The text to render in the label.
+     * @param gradient The gradient base color for the label.
      */
     public GLabel(String text, Color gradient) {
 
@@ -97,12 +88,9 @@ public class GLabel extends JLabel {
     /**
      * Create a new {@link GLabel} instance.
      *
-     * @param icon
-     *            The icon to display next to the text on the label.
-     * @param horizontalAlignment
-     *            The alignment of the text in the label.
-     * @param gradient
-     *            The gradient base color for the label.
+     * @param icon                The icon to display next to the text on the label.
+     * @param horizontalAlignment The alignment of the text in the label.
+     * @param gradient            The gradient base color for the label.
      */
     public GLabel(Icon icon, int horizontalAlignment, Color gradient) {
 
@@ -113,10 +101,8 @@ public class GLabel extends JLabel {
     /**
      * Create a new {@link GLabel} instance.
      *
-     * @param icon
-     *            The icon to display next to the text on the label.
-     * @param gradient
-     *            The gradient base color for the label.
+     * @param icon     The icon to display next to the text on the label.
+     * @param gradient The gradient base color for the label.
      */
     public GLabel(Icon icon, Color gradient) {
 
@@ -127,8 +113,7 @@ public class GLabel extends JLabel {
     /**
      * Create a new {@link GLabel} instance.
      *
-     * @param gradient
-     *            The gradient base color for the label.
+     * @param gradient The gradient base color for the label.
      */
     public GLabel(Color gradient) {
 
@@ -144,8 +129,7 @@ public class GLabel extends JLabel {
     }
 
     /**
-     * @return
-     *            The padding of this {@link GLabel}.
+     * @return The padding of this {@link GLabel}.
      */
     public int getPadding() {
         return padding;
@@ -153,8 +137,7 @@ public class GLabel extends JLabel {
 
 
     /**
-     * @param padding
-     *            The padding of this {@link GLabel}.
+     * @param padding The padding of this {@link GLabel}.
      */
     public void setPadding(int padding) {
 
@@ -163,8 +146,7 @@ public class GLabel extends JLabel {
     }
 
     /**
-     * @param base
-     *            The base color of the gradient for this {@link GLabel}'s background.
+     * @param base The base color of the gradient for this {@link GLabel}'s background.
      */
     private void setGradient(Color base) {
 
@@ -173,16 +155,15 @@ public class GLabel extends JLabel {
     }
 
     /**
-     * @return
-     *            The arc of this {@link GLabel}.
+     * @return The arc of this {@link GLabel}.
      */
     public int getArc() {
 
         return arc;
     }
+
     /**
-     * @param arc
-     *            The arc of this {@link GLabel}.
+     * @param arc The arc of this {@link GLabel}.
      */
     public void setArc(int arc) {
 
@@ -224,8 +205,10 @@ public class GLabel extends JLabel {
     private class GLabelMouseAdapter extends MouseAdapter {
 
         private static final int CLICK_PADDING = 2;
-        private int              originalPadding;
+        private int originalPadding;
 
+        GLabelMouseAdapter() {
+        }
 
         /**
          * {@inheritDoc}

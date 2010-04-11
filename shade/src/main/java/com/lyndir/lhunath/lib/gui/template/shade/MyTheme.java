@@ -37,80 +37,80 @@ public enum MyTheme {
     /**
      * Guess.
      */
-    FOG (Color.decode( "#9999BB" )), //$NON-NLS-1$
+    FOG( Color.decode( "#9999BB" ) ), //$NON-NLS-1$
 
     /**
      * Guess.
      */
-    DEW (Color.decode( "#CCFFFF" )),
+    DEW( Color.decode( "#CCFFFF" ) ),
 
     /**
      * Guess.
      */
-    CANDY (Color.decode( "#FF6666" )),
+    CANDY( Color.decode( "#FF6666" ) ),
 
     /**
      * Guess.
      */
-    AZTEK (Color.decode( "#FF9933" )),
+    AZTEK( Color.decode( "#FF9933" ) ),
 
     /**
      * Guess.
      */
-    NATURE (Color.decode( "#99CC66" )),
+    NATURE( Color.decode( "#99CC66" ) ),
 
     /**
      * Guess.
      */
-    FOREST (Color.decode( "#223922" )),
+    FOREST( Color.decode( "#223922" ) ),
 
     /**
      * Guess.
      */
-    OAK (Color.decode( "#DD9966" )),
+    OAK( Color.decode( "#DD9966" ) ),
 
     /**
      * Guess.
      */
-    SALT (Color.decode( "#6666BB" )),
+    SALT( Color.decode( "#6666BB" ) ),
 
     /**
      * Guess.
      */
-    BABY (Color.decode( "#FFCCCC" )),
+    BABY( Color.decode( "#FFCCCC" ) ),
 
     /**
      * Guess.
      */
-    SUNLIT (Color.decode( "#CCBB44" )),
+    SUNLIT( Color.decode( "#CCBB44" ) ),
 
     /**
      * Guess.
      */
-    CORAL (Color.decode( "#558899" )),
+    CORAL( Color.decode( "#558899" ) ),
 
     /**
      * Guess.
      */
-    TECH (Color.decode( "#333333" )),
+    TECH( Color.decode( "#333333" ) ),
 
     /**
      * Guess.
      */
-    AURORA (Color.decode( "#332244" )),
+    AURORA( Color.decode( "#332244" ) ),
 
     /**
      * Guess.
      */
-    BLOOD (Color.decode( "#551919" )),
+    BLOOD( Color.decode( "#551919" ) ),
 
     /**
      * Guess.
      */
-    CUSTOM (Color.DARK_GRAY);
+    CUSTOM( Color.DARK_GRAY );
 
     private static final MyTheme FALLBACK = OAK;
-    MyLookAndFeel      lookAndFeel;
+    MyLookAndFeel lookAndFeel;
 
 
     MyTheme(Color base) {
@@ -143,8 +143,7 @@ public enum MyTheme {
     /**
      * Set the lookAndFeel of this template.
      *
-     * @param lookAndFeel
-     *            Guess.
+     * @param lookAndFeel Guess.
      */
     public void setLookAndFeel(MyLookAndFeel lookAndFeel) {
 
@@ -245,7 +244,8 @@ public enum MyTheme {
         else {
             try {
                 theme = valueOf( System.getProperty( "theme" ).trim().toUpperCase( java.util.Locale.ENGLISH ) );
-            } catch (IllegalArgumentException ignored) {
+            }
+            catch (IllegalArgumentException ignored) {
                 /* No theme by the name given in the property 'theme'. */
             }
 
@@ -253,7 +253,8 @@ public enum MyTheme {
                 Color customColor = null;
                 try {
                     customColor = Color.decode( System.getProperty( "theme" ).trim() );
-                } catch (NumberFormatException e) {
+                }
+                catch (NumberFormatException e) {
                     if (System.getProperty( "theme" ).trim().length() > 0)
                         Logger.get( MyTheme.class ).err( e, "err.invalidDefaultTheme",
                                                          System.getProperty( "theme" ).trim() );

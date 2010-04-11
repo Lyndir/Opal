@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<!-- PROJECT METADATA -->
-	<parent>
+    <!-- PROJECT METADATA -->
+    <parent>
         <groupId>com.lyndir.lhunath.jlibs</groupId>
         <artifactId>jlibs</artifactId>
         <version>SNAPSHOT</version>
-	</parent>
+    </parent>
 
-	<groupId>com.lyndir.lhunath.jlibs</groupId>
-	<artifactId>shade</artifactId>
-	<packaging>jar</packaging>
-	<name>JLibs Shade</name>
-	<description>
+    <groupId>com.lyndir.lhunath.jlibs</groupId>
+    <artifactId>shade</artifactId>
+    <packaging>jar</packaging>
+    <name>JLibs Shade</name>
+    <description>
         JLibs: Shade UI Template
-	</description>
+    </description>
 
-	<!-- BUILD CONFIGURATION -->
-	<build>
-	</build>
+    <!-- BUILD CONFIGURATION -->
+    <build>
+    </build>
 
-	<!-- DEPENDENCY MANAGEMENT -->
-	<dependencies>
+    <!-- DEPENDENCY MANAGEMENT -->
+    <dependencies>
 
         <!-- PROJECT REFERENCES -->
         <dependency>
@@ -63,6 +64,6 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib/AnimatedTransitions-0.11.jar</systemPath>
         </dependency>
-	</dependencies>
+    </dependencies>
 
 </project>

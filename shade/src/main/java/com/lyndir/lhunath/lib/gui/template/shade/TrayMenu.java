@@ -15,16 +15,10 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Event;
-import java.awt.Point;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 
 
 /**
@@ -43,8 +37,7 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
     /**
      * Create a new {@link TrayMenu} instance.
      *
-     * @param invoker
-     *            The component that is responsible for the invocation of this menu.
+     * @param invoker The component that is responsible for the invocation of this menu.
      */
     public TrayMenu(Component invoker) {
 
@@ -67,8 +60,8 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
 
             SwingUtilities.invokeLater( new Runnable() {
 
-                private static final int PADDING      = 10;
-                private final Dimension  screenBounds = Toolkit.getDefaultToolkit().getScreenSize();
+                private static final int PADDING = 10;
+                private final Dimension screenBounds = Toolkit.getDefaultToolkit().getScreenSize();
 
 
                 @Override
@@ -92,7 +85,7 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
 
-    /* Not interested. */
+        /* Not interested. */
     }
 
     /**
@@ -101,7 +94,7 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
-    /* Not interested. */
+        /* Not interested. */
     }
 
     /**
@@ -110,7 +103,7 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
     @Override
     public void mousePressed(final MouseEvent e) {
 
-    /* Not interested. */
+        /* Not interested. */
     }
 
     /**
@@ -119,6 +112,6 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
     @Override
     public void mouseReleased(MouseEvent e) {
 
-    /* Not interested. */
+        /* Not interested. */
     }
 }

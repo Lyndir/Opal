@@ -30,21 +30,21 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 /**
  * <h2>{@link LocalizerFactory}<br>
  * <sub>Create localizers from localization interfaces.</sub></h2>
- * 
+ *
  * <p>
  * This class builds localizers from interfaces annotated with the {@link UseBundle} and {@link UseKey} annotations.
  * </p>
- * 
+ *
  * <p>
  * This localizer can then be queried by invoking the methods provided by the interface used to create it. This way, you
  * can to obtain localized data from them as provided by the resource bundle that interface references in its
  * {@link UseBundle} annotation.
  * </p>
- * 
+ *
  * <p>
  * <i>Mar 28, 2009</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public abstract class LocalizerFactory {
@@ -55,11 +55,10 @@ public abstract class LocalizerFactory {
     /**
      * Create a localizer that can be used to obtain localized data for keys specified by the given
      * localizationInterface.
-     * 
-     * @param localizationInterface
-     *            The interface that declares the localization keys that should be resolved by this localizer.
-     * @param <L>
-     *            The type of the localizationInterface.
+     *
+     * @param localizationInterface The interface that declares the localization keys that should be resolved by this localizer.
+     * @param <L>                   The type of the localizationInterface.
+     *
      * @return A proxy of the given localizationInterface that will provide localized values for the methods in the
      *         interface.
      */
@@ -71,13 +70,11 @@ public abstract class LocalizerFactory {
     /**
      * Create a localizer that can be used to obtain localized data for keys specified by the given
      * localizationInterface.
-     * 
-     * @param localizationInterface
-     *            The interface that declares the localization keys that should be resolved by this localizer.
-     * @param context
-     *            The provider-specific context that should help the localization provider resolve values for keys.
-     * @param <L>
-     *            The type of the localizationInterface.
+     *
+     * @param localizationInterface The interface that declares the localization keys that should be resolved by this localizer.
+     * @param context               The provider-specific context that should help the localization provider resolve values for keys.
+     * @param <L>                   The type of the localizationInterface.
+     *
      * @return A proxy of the given localizationInterface that will provide localized values for the methods in the
      *         interface.
      */
@@ -101,8 +98,8 @@ public abstract class LocalizerFactory {
 
         // Create a localization interface proxy.
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        return localizationInterface.cast( Proxy.newProxyInstance( classLoader, new Class[] { localizationInterface,
-                Serializable.class }, new LocalizationInvocationHandler( context ) ) );
+        return localizationInterface.cast( Proxy.newProxyInstance( classLoader, new Class[] {localizationInterface,
+                Serializable.class}, new LocalizationInvocationHandler( context ) ) );
     }
 
 
@@ -166,19 +163,22 @@ public abstract class LocalizerFactory {
 
                 try {
                     return MessageFormat.format(
-                                                 localizationProvider.getConstructor()
-                                                                     .newInstance()
-                                                                     .getValueForKeyInContext( localizationKey, context ),
-                                                 args );
+                            localizationProvider.getConstructor()
+                                    .newInstance()
+                                    .getValueForKeyInContext( localizationKey, context ),
+                            args );
                 }
 
                 catch (IllegalArgumentException e) {
                     logger.bug( e, "While instantiating localization provider: %s", localizationProvider );
-                } catch (SecurityException e) {
+                }
+                catch (SecurityException e) {
                     logger.bug( e, "While instantiating localization provider: %s", localizationProvider );
-                } catch (InstantiationException e) {
+                }
+                catch (InstantiationException e) {
                     logger.bug( e, "While instantiating localization provider: %s", localizationProvider );
-                } catch (IllegalAccessException e) {
+                }
+                catch (IllegalAccessException e) {
                     logger.bug( e, "While instantiating localization provider: %s", localizationProvider );
                 }
             }

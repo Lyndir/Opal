@@ -46,7 +46,9 @@ public class XPath {
 
     /**
      * Entry point of the command-line XPath utility.
+     *
      * @param args Command-line arguments to the utility.
+     *
      * @throws SAXException
      * @throws IOException
      * @throws XPathExpressionException
@@ -66,16 +68,12 @@ public class XPath {
             else if (fileArg) {
                 in = new FileInputStream( arg );
                 fileArg = false;
-            }
-
-            else if ("-e".equals( arg ) || "--expression".equals( arg ))
+            } else if ("-e".equals( arg ) || "--expression".equals( arg ))
                 expression = true;
             else if (expression) {
                 xpathExpression = arg;
                 expression = false;
-            }
-
-            else if ("-x".equals( arg ) || "--xhtml".equals( arg ))
+            } else if ("-x".equals( arg ) || "--xhtml".equals( arg ))
                 tidy = xhtml = true;
 
             else if ("-t".equals( arg ) || "--tidy".equals( arg ))
@@ -124,9 +122,7 @@ public class XPath {
 
                 System.out.println();
                 return;
-            }
-
-            else {
+            } else {
                 logger.error( "'%s' is not a valid argument.", arg );
                 System.exit( 1 );
             }

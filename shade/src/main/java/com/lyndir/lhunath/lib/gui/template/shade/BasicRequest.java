@@ -15,12 +15,7 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 
 /**
@@ -36,38 +31,38 @@ public enum BasicRequest implements Request {
     /**
      * Update the logos in the UI.
      */
-    LOGO (100),
+    LOGO( 100 ),
 
     /**
      * Show the UI panel that is selected and make sure the tab toggle buttons are set properly.
      */
-    PANEL (200),
+    PANEL( 200 ),
 
     /**
      * Update settings fields and buttons in the UI.
      */
-    SETTINGS (300),
+    SETTINGS( 300 ),
 
     /**
      * Configure the logging backend's verbosity and output level.
      */
-    LOGGER (-1),
+    LOGGER( -1 ),
 
     /**
      * Causes the UI to redraw its components to accommodate for theme setting changes.
      */
-    THEME (-1),
+    THEME( -1 ),
 
     /**
      * Convert the application to use fullscreen or windowed mode depending on the config.<br>
      * This setting is not set to auto because it is called manually at application invocation.
      */
-    FULLSCREEN (-1),
+    FULLSCREEN( -1 ),
 
     /**
      * Update the systray setting button and create/update the systray.
      */
-    SYSTRAY (-1);
+    SYSTRAY( -1 );
 
     private final int autorunPriority;
 
@@ -75,9 +70,8 @@ public enum BasicRequest implements Request {
     /**
      * Create a new {@link BasicRequest} instance.
      *
-     * @param autorunPriority
-     *            Lower or equal to zero: No auto-running.<br>
-     *            Larger than zero: Ascending order in which the request will be processed.
+     * @param autorunPriority Lower or equal to zero: No auto-running.<br>
+     *                        Larger than zero: Ascending order in which the request will be processed.
      */
     BasicRequest(int autorunPriority) {
 
@@ -124,8 +118,7 @@ public enum BasicRequest implements Request {
     /**
      * Register new requests that should be made available through this class' utility methods.
      *
-     * @param newRequests
-     *            The new requests.
+     * @param newRequests The new requests.
      */
     public static void register(Request[] newRequests) {
 

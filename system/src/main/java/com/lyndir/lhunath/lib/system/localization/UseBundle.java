@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 /**
  * <h2>{@link UseBundle}<br>
  * <sub>References the resource bundle that provides the values for the keys in the annotated class.</sub></h2>
- * 
+ *
  * <p>
  * You can choose between several methods of referencing the source for the resource bundle. You may also specify
  * multiple sources, in which case precedence is as follows (highest to lowest):
@@ -20,11 +20,11 @@ import java.util.ResourceBundle;
  * <li>{@link #resource()}</li>
  * </ol>
  * </p>
- * 
+ *
  * <p>
  * <i>Mar 28, 2009</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 @Target(ElementType.TYPE)
@@ -33,19 +33,19 @@ public @interface UseBundle {
 
     /**
      * A property file resource.
-     * 
+     *
      * <p>
      * Use this to load the resource bundle from {@link Properties}. {@link Thread#getContextClassLoader()} is used to
      * load the given resource.
      * </p>
-     * 
+     *
      * @see ClassLoader#getResourceAsStream(String)
      */
     String resource() default "";
 
     /**
      * A {@link ResourceBundle} class.
-     * 
+     *
      * <p>
      * Use this to load the resource bundle by instantiating the given class.
      * </p>
@@ -56,12 +56,14 @@ public @interface UseBundle {
     /**
      * <h2>{@link UnspecifiedBundle}<br>
      * <sub>[in short] (TODO).</sub></h2>
-     * 
+     *
      * <p>
      * <i>Jan 28, 2010</i>
      * </p>
-     * 
+     *
      * @author lhunath
      */
-    abstract class UnspecifiedBundle extends ResourceBundle {}
+    abstract class UnspecifiedBundle extends ResourceBundle {
+
+    }
 }

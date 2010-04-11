@@ -15,9 +15,7 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
-import javax.swing.JComponent;
+import javax.swing.*;
 
 
 /**
@@ -32,21 +30,18 @@ import javax.swing.JComponent;
  */
 public class Tab {
 
-    private final String         title;
-    private final Icon           icon;
-    private final JComponent     content;
+    private final String title;
+    private final Icon icon;
+    private final JComponent content;
     private AbstractAction action;
 
 
     /**
      * Create a new {@link Tab} instance.
      *
-     * @param title
-     *            The name of this tab. It will be displayed when the tab is selected.
-     * @param icon
-     *            An icon to show on the tab selection button.
-     * @param content
-     *            The component that will be shown when the tab is activated.
+     * @param title   The name of this tab. It will be displayed when the tab is selected.
+     * @param icon    An icon to show on the tab selection button.
+     * @param content The component that will be shown when the tab is activated.
      */
     public Tab(String title, Icon icon, JComponent content) {
 
@@ -80,8 +75,7 @@ public class Tab {
     }
 
     /**
-     * @param action
-     *            The action performed by the button that opens this tab.
+     * @param action The action performed by the button that opens this tab.
      */
     public void setAction(AbstractAction action) {
 

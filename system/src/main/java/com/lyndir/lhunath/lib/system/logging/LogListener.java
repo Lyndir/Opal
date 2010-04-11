@@ -23,16 +23,15 @@ import java.util.logging.LogRecord;
  * <br>
  * Implement this if you wish to be notified of log messages that are being dispatched.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public interface LogListener {
 
     /**
      * A log message was triggered on this listener.
-     * 
-     * @param record
-     *            The record that was logged through this listener.
+     *
+     * @param record The record that was logged through this listener.
      */
     void logMessage(LogRecord record);
 }

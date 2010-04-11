@@ -29,18 +29,15 @@ public interface NetworkServerStateListener {
     /**
      * A new server socket has begun listening for connections.
      *
-     * @param serverChannel
-     *            The channel on which new connections are now being accepted.
+     * @param serverChannel The channel on which new connections are now being accepted.
      */
     void bound(ServerSocketChannel serverChannel);
 
     /**
      * A new connection has been accepted by a listening server.
      *
-     * @param serverChannel
-     *            The channel on which the connection has been requested.
-     * @param connectionChannel
-     *            The channel over which the new connection will take place.
+     * @param serverChannel     The channel on which the connection has been requested.
+     * @param connectionChannel The channel over which the new connection will take place.
      */
     void accepted(ServerSocketChannel serverChannel, SocketChannel connectionChannel);
 }

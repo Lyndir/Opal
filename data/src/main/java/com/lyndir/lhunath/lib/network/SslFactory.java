@@ -31,7 +31,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
-import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
@@ -52,16 +51,15 @@ public class SslFactory implements SecureProtocolSocketFactory {
 
     private static final Logger logger = Logger.get( SslFactory.class );
 
-    private SSLContext          context;
+    private SSLContext context;
 
 
     /**
      * Initialize this factory with the given keystore.
      *
-     * @param keyStore
-     *            The keystore that contains the trusted server keys.
-     * @param password
-     *            The password to access the keystore.
+     * @param keyStore The keystore that contains the trusted server keys.
+     * @param password The password to access the keystore.
+     *
      * @return The factory.
      */
     public static SslFactory initialize(File keyStore, String password) {
@@ -90,17 +88,23 @@ public class SslFactory implements SecureProtocolSocketFactory {
 
             context = SSLContext.getInstance( "TLS" );
             context.init( null, tFactory.getTrustManagers(), null );
-        } catch (KeyStoreException e) {
+        }
+        catch (KeyStoreException e) {
             logger.err( e, "Keystore type not supported or keystore could not be initialized." );
-        } catch (NoSuchAlgorithmException e) {
+        }
+        catch (NoSuchAlgorithmException e) {
             logger.err( e, "Key algorithm not supported." );
-        } catch (CertificateException e) {
+        }
+        catch (CertificateException e) {
             logger.err( e, "An unexpected error has occurred!" );
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e) {
             logger.err( e, "Keystore not found!" );
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             logger.err( e, "Could not read the keys from the keystore!" );
-        } catch (KeyManagementException e) {
+        }
+        catch (KeyManagementException e) {
             logger.err( e, "Could not add the keys as trusted!" );
         }
     }

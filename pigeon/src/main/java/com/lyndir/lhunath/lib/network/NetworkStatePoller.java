@@ -39,8 +39,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
     /**
      * Create a new {@link NetworkStatePoller} instance that listens on the given network.
      *
-     * @param network
-     *            The network whose messages we should be polling.
+     * @param network The network whose messages we should be polling.
      */
     public NetworkStatePoller(Network network) {
 
@@ -54,7 +53,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
     @Override
     public void bound(ServerSocketChannel serverChannel) {
 
-    // Not supported.
+        // Not supported.
     }
 
     /**

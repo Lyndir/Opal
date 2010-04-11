@@ -37,15 +37,15 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  */
 public class Splash extends JWindow {
 
-    private static final Logger logger           = Logger.get( Splash.class );
+    private static final Logger logger = Logger.get( Splash.class );
 
-    private static final long   serialVersionUID = 1L;
-    protected static Splash     instance;
-    private Icon                icon;
-    private Icon                initial;
-    private BufferedImage       background;
-    private long                startTime;
-    private long                endTime;
+    private static final long serialVersionUID = 1L;
+    protected static Splash instance;
+    private Icon icon;
+    private Icon initial;
+    private BufferedImage background;
+    private long startTime;
+    private long endTime;
 
 
     private Splash(Icon initial, Icon icon) {
@@ -71,8 +71,7 @@ public class Splash extends JWindow {
 
     /**
      * @param initial The icon to show in the splash screen in the beginning of the transition or <code>null</code> to not use a transition.
-     * @param icon
-     *            The icon to show in the splash screen at the end of the transition.
+     * @param icon    The icon to show in the splash screen at the end of the transition.
      */
     private void setIcons(Icon initial, Icon icon) {
 
@@ -98,7 +97,8 @@ public class Splash extends JWindow {
             g2.drawImage( capture, null, 0, 0 );
         }
 
-        catch (AWTException ignored) {}
+        catch (AWTException ignored) {
+        }
 
         setVisible( true );
     }
@@ -131,8 +131,7 @@ public class Splash extends JWindow {
     /**
      * Fade the initial image over into the final image.
      *
-     * @param duration
-     *            The duration over which to fade.
+     * @param duration The duration over which to fade.
      */
     public void fade(int duration) {
 
@@ -162,8 +161,8 @@ public class Splash extends JWindow {
     /**
      * Spawn a splash screen with the given splash image for five seconds.
      *
-     * @param image
-     *            The resource name of the image to load for the splash screen.
+     * @param image The resource name of the image to load for the splash screen.
+     *
      * @return The splash screen.
      */
     public static Splash spawn(String image) {
@@ -174,10 +173,9 @@ public class Splash extends JWindow {
     /**
      * Spawn a splash screen with the given splash image and the given duration in milliseconds.
      *
-     * @param image
-     *            The resource name of the image to load for the splash screen.
-     * @param duration
-     *            How long the splash screen should remain visible.
+     * @param image    The resource name of the image to load for the splash screen.
+     * @param duration How long the splash screen should remain visible.
+     *
      * @return The splash screen.
      */
     public static Splash spawn(final String image, final long duration) {

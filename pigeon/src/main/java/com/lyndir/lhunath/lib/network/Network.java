@@ -371,8 +371,10 @@ public class Network implements Runnable {
 
         logger.inf( "[>>>>: %s] Connecting to: %s", //
                     nameChannel( connectionChannel ), socketAddress );
-        if (connectionChannel.connect( socketAddress )) finishConnect( connectionChannel );
-        else setOps( connectionChannel, SelectionKey.OP_CONNECT );
+        if (connectionChannel.connect( socketAddress ))
+            finishConnect( connectionChannel );
+        else
+            setOps( connectionChannel, SelectionKey.OP_CONNECT );
 
         return connectionChannel;
     }
@@ -453,6 +455,11 @@ public class Network implements Runnable {
     /**
      * Convert a buffer of network data into application data.
      *
+     * <p>
+     * <b>Use the return value for processing, not the original data buffer!</b><br>
+     * The buffer might have been reallocated in which case the original buffer is obsolete.
+     * </p>
+     *
      * @param readBuffer    The buffer that contains the network data, ready to be read (position set to zero, limit set to the
      *                      end of the received network data).
      * @param socketChannel The channel over which the network data was received.
@@ -460,10 +467,8 @@ public class Network implements Runnable {
      *                      to be read (position set to zero, limit set to the end of the application data).
      *
      * @return The (possibly new) dataBuffer.
-     *         <p>
-     *         <b>Use the return value for processing, not the original data buffer!</b><br>
-     *         The buffer might have been reallocated in which case the original buffer is obsolete.
-     *         </p>
+     *
+     * @throws IOException
      */
     private ByteBuffer toApplicationData(ByteBuffer readBuffer, SocketChannel socketChannel, ByteBuffer dataBuffer)
             throws IOException {
@@ -591,6 +596,11 @@ public class Network implements Runnable {
     /**
      * Convert a buffer of application data into network data.
      *
+     * <p>
+     * <b>Use the return value for writing, not the original write buffer!</b><br>
+     * The buffer might have been reallocated in which case the original buffer is obsolete.
+     * </p>
+     *
      * @param dataBuffer    The buffer that contains the application data, ready to be written (position set to zero, limit set to
      *                      the end of the application data).
      * @param socketChannel The channel over which the network data will be sent.
@@ -599,10 +609,8 @@ public class Network implements Runnable {
      *                      to be read/sent/written out (position set to zero, limit set to the end of the network data).
      *
      * @return The (possibly new) writeBuffer.
-     *         <p>
-     *         <b>Use the return value for writing, not the original write buffer!</b><br>
-     *         The buffer might have been reallocated in which case the original buffer is obsolete.
-     *         </p>
+     *
+     * @throws IOException
      */
     private ByteBuffer fromApplicationData(ByteBuffer dataBuffer, SocketChannel socketChannel, ByteBuffer writeBuffer)
             throws IOException {
@@ -1015,6 +1023,8 @@ public class Network implements Runnable {
 
     /**
      * Close all channels that requested closure.
+     *
+     * @throws IOException
      */
     private void processClosure()
             throws IOException {
@@ -1256,7 +1266,8 @@ public class Network implements Runnable {
 
                     throw logger.err( e, "Network error occurred" ).toError();
                 }
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 logger.wrn( e, "Operation was interrupted." );
             }
     }
@@ -1372,8 +1383,9 @@ public class Network implements Runnable {
     }
 
     /**
-     * Render a string representation of the given buffer's counters.
      * @param buf The buffer to represent.
+     *
+     * @return A string representation of the given buffer's counters.
      */
     private static String renderBuffer(ByteBuffer buf) {
 

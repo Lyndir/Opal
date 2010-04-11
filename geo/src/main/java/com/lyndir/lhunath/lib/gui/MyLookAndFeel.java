@@ -36,34 +36,32 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  */
 public class MyLookAndFeel implements Serializable {
 
-    static final Logger          logger           = Logger.get( MyLookAndFeel.class );
+    static final Logger logger = Logger.get( MyLookAndFeel.class );
 
     private static MyLookAndFeel active;
-    private Map<String, Color>   defaults;
-    private MyThemeType          themeType;
-    Color                        base;
+    private Map<String, Color> defaults;
+    private MyThemeType themeType;
+    Color base;
 
-    private transient MyTheme    cachedTheme;
+    private transient MyTheme cachedTheme;
 
     /**
      * Version of the class.
      */
-    public static final long     serialVersionUID = 5L;
+    public static final long serialVersionUID = 5L;
 
     static {
         // Make a default MyLookAndFeel for environments that don't load a specific one.
         active = new MyLookAndFeel( UIManager.getLookAndFeelDefaults().getColor( "Button.background" ),
-                MyThemeType.PLASTIC );
+                                    MyThemeType.PLASTIC );
     }
 
 
     /**
      * Create a new {@link MyLookAndFeel} instance.
      *
-     * @param base
-     *            The shade upon which to base this theme's colors.
-     * @param themeType
-     *            The type of theme to use.
+     * @param base      The shade upon which to base this theme's colors.
+     * @param themeType The type of theme to use.
      */
     public MyLookAndFeel(Color base, MyThemeType themeType) {
 
@@ -88,8 +86,8 @@ public class MyLookAndFeel implements Serializable {
     /**
      * Reconfigure components that used UI defaults that change in this theme, recursively.
      *
-     * @param container
-     *            The container from which to remove this {@link DragListener}.
+     * @param container The container from which to remove this {@link DragListener}.
+     *
      * @return This instance.
      */
     public MyLookAndFeel reconfigure(Container container) {
@@ -111,8 +109,8 @@ public class MyLookAndFeel implements Serializable {
     /**
      * Set the base shade.
      *
-     * @param base
-     *            Guess.
+     * @param base Guess.
+     *
      * @return This instance.
      */
     public MyLookAndFeel setBase(Color base) {
@@ -266,7 +264,7 @@ public class MyLookAndFeel implements Serializable {
         /**
          * JGoodies Plastic theme.
          */
-        PLASTIC (MyPlasticTheme.class); // , SUBSTANCE (MySubstanceTheme.class);
+        PLASTIC( MyPlasticTheme.class ); // , SUBSTANCE (MySubstanceTheme.class);
 
         private final Class<? extends MyTheme> type;
 
@@ -277,8 +275,8 @@ public class MyLookAndFeel implements Serializable {
         }
 
         /**
-         * @param lnf
-         *            The {@link LookAndFeel} that colors the theme.
+         * @param lnf The {@link LookAndFeel} that colors the theme.
+         *
          * @return Create a {@link MyTheme} of this type.
          */
         public MyTheme create(MyLookAndFeel lnf) {
@@ -289,11 +287,14 @@ public class MyLookAndFeel implements Serializable {
 
             catch (InstantiationException e) {
                 logger.bug( e, "Not instantiatable: %s!", type );
-            } catch (IllegalAccessException e) {
+            }
+            catch (IllegalAccessException e) {
                 logger.bug( e, "No access to instantiate: %s!", type );
-            } catch (NoSuchMethodException e) {
+            }
+            catch (NoSuchMethodException e) {
                 logger.bug( e, "No default constructor: %s!", type );
-            } catch (InvocationTargetException e) {
+            }
+            catch (InvocationTargetException e) {
                 logger.bug( e, "Instantiation failed: %s!", type );
             }
 
@@ -351,6 +352,8 @@ public class MyLookAndFeel implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
+        MyPlasticTheme() {
+        }
 
         /**
          * {@inheritDoc}
@@ -361,7 +364,8 @@ public class MyLookAndFeel implements Serializable {
             try {
                 PlasticLookAndFeel.setPlasticTheme( this );
                 UIManager.setLookAndFeel( new PlasticXPLookAndFeel() );
-            } catch (UnsupportedLookAndFeelException e) {
+            }
+            catch (UnsupportedLookAndFeelException e) {
                 logger.err( e, "err.lookAndFeel" );
             }
         }

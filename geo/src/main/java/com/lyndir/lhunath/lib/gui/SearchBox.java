@@ -15,14 +15,12 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 
 /**
@@ -36,16 +34,15 @@ import javax.swing.SwingConstants;
 public abstract class SearchBox extends JTextField implements FocusListener, KeyListener {
 
     private boolean cleared;
-    private int     minChars;
-    private final String  subject;
-    private int     hit = 1;
+    private int minChars;
+    private final String subject;
+    private int hit = 1;
 
 
     /**
      * Create a new {@link SearchBox} instance.
      *
-     * @param subject
-     *            The name of what will be searched for (appears in the gray text).
+     * @param subject The name of what will be searched for (appears in the gray text).
      */
     protected SearchBox(String subject) {
 
@@ -63,10 +60,8 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
     /**
      * Create a new {@link SearchBox} instance.
      *
-     * @param subject
-     *            The name of what will be searched for (appears in the gray text).
-     * @param minChars
-     *            Minimum amount of characters required to activate the search.
+     * @param subject  The name of what will be searched for (appears in the gray text).
+     * @param minChars Minimum amount of characters required to activate the search.
      */
     protected SearchBox(String subject, int minChars) {
 
@@ -78,8 +73,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      * This method will be called when the search string changes. Implement this to make the search string take effect
      * and return <code>true</code> if it did.
      *
-     * @param text
-     *            The text in the box.
+     * @param text The text in the box.
      *
      * @return <code>true</code> will make the search text black, <code>false</code> will make the search text red.
      */
@@ -109,8 +103,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
     /**
      * Set the minChars of this {@link SearchBox}.
      *
-     * @param minChars
-     *            Guess.
+     * @param minChars Guess.
      */
     public void setMinChars(int minChars) {
 
@@ -188,7 +181,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
     @Override
     public void keyPressed(KeyEvent e) {
 
-    /* Not needed. */
+        /* Not needed. */
     }
 
     /**
@@ -197,6 +190,6 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
     @Override
     public void keyTyped(KeyEvent e) {
 
-    /* Not needed. */
+        /* Not needed. */
     }
 }

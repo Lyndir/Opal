@@ -15,13 +15,10 @@
  */
 package com.lyndir.lhunath.lib.gui.zui;
 
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import com.lyndir.lhunath.lib.math.Vec2;
 import com.lyndir.lhunath.lib.system.Utils;
-
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolox.pswing.PSwing;
@@ -39,17 +36,16 @@ import edu.umd.cs.piccolox.pswing.PSwingCanvas;
 public class PDialog extends PBox {
 
     private final PDialogClosedListener listener;
-    private final PSwing                pSwing;
-    private final JPanel                panel;
-    private final PSwingCanvas          swingCanvas;
+    private final PSwing pSwing;
+    private final JPanel panel;
+    private final PSwingCanvas swingCanvas;
 
     /**
      * Create a new PDialog instance.
      *
-     * @param title The title to show on the dialog.
-     * @param canvas The canvas the dialog will be showed in.
-     * @param listener
-     *        The object that will be notified when the dialog is closed.
+     * @param title    The title to show on the dialog.
+     * @param canvas   The canvas the dialog will be showed in.
+     * @param listener The object that will be notified when the dialog is closed.
      */
     public PDialog(PSwingCanvas canvas, String title, PDialogClosedListener listener) {
 
@@ -96,10 +92,8 @@ public class PDialog extends PBox {
     /**
      * Enable or disable components.
      *
-     * @param enabled
-     *        Guess.
-     * @param components
-     *        The components to enable/disable.
+     * @param enabled    Guess.
+     * @param components The components to enable/disable.
      */
     public void setEnabled(boolean enabled, JComponent... components) {
 

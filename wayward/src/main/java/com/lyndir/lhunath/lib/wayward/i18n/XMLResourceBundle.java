@@ -33,17 +33,19 @@ import com.google.common.collect.ImmutableList;
 /**
  * <h2>{@link XMLResourceBundle}<br>
  * <sub>A {@link PropertiesResourceBundle} that loads its values from a Java XML {@link Properties} file.</sub></h2>
- * 
+ *
  * <p>
  * <i>Mar 26, 2010</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public class XMLResourceBundle extends PropertiesResourceBundle {
 
     /**
      * Create a new {@link XMLResourceBundle} instance.
+     *
+     * @param props The properties to load into this XML based resource bundle.
      */
     XMLResourceBundle(Properties props) {
 
@@ -51,9 +53,10 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
     }
 
     /**
-     * @param baseName
-     *            The base name for the XML properties file.
+     * @param baseName The base name for the XML properties file.
+     *
      * @return A resource bundle for the given base name and the default locale.
+     *
      * @see ResourceBundle#getBundle(String)
      */
     public static ResourceBundle getXMLBundle(String baseName) {
@@ -62,11 +65,11 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
     }
 
     /**
-     * @param baseName
-     *            The base name for the XML properties file.
-     * @param locale
-     *            The locale for which a resource bundle is desired.
+     * @param baseName The base name for the XML properties file.
+     * @param locale   The locale for which a resource bundle is desired.
+     *
      * @return A resource bundle for the given base name and the given locale.
+     *
      * @see ResourceBundle#getBundle(String, Locale)
      */
     public static ResourceBundle getXMLBundle(String baseName, Locale locale) {
@@ -75,13 +78,12 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
     }
 
     /**
-     * @param baseName
-     *            The base name for the XML properties file.
-     * @param locale
-     *            The locale for which a resource bundle is desired.
-     * @param loader
-     *            The class loader from which to load the resource bundle.
+     * @param baseName The base name for the XML properties file.
+     * @param locale   The locale for which a resource bundle is desired.
+     * @param loader   The class loader from which to load the resource bundle.
+     *
      * @return A resource bundle for the given base name and the given locale.
+     *
      * @see ResourceBundle#getBundle(String, Locale, ClassLoader)
      */
     public static ResourceBundle getXMLBundle(String baseName, Locale locale, ClassLoader loader) {

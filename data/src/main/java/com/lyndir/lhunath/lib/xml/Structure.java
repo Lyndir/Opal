@@ -55,12 +55,12 @@ import org.xml.sax.SAXException;
  */
 public class Structure {
 
-    private static final Logger   logger    = Logger.get( Structure.class );
+    private static final Logger logger = Logger.get( Structure.class );
 
-    private static final XPathUtil xmlpath   = new XPathUtil( false );
-    private static final XPathUtil xhtmlpath = new XPathUtil( true );
+    private static final XPathUtil xmlpath = new XPathUtil( false );
+    // private static final XPathUtil xhtmlpath = new XPathUtil( true );
 
-    private static final int      TAB_SIZE  = 4;
+    private static final int TAB_SIZE = 4;
 
 
     private static <T> void inject(Node root, T structure)
@@ -110,7 +110,8 @@ public class Structure {
             // In case data to the field goes wrong (shouldn't).
             catch (IllegalArgumentException e) {
                 logger.err( e, "Unexpected data type." );
-            } catch (IllegalAccessException e) {
+            }
+            catch (IllegalAccessException e) {
                 logger.err( e, "Field not accessible." );
             }
         }
@@ -125,9 +126,11 @@ public class Structure {
 
                 catch (IllegalArgumentException e) {
                     logger.err( e, "XAfterInject method shouldn't take any arguments." );
-                } catch (IllegalAccessException e) {
+                }
+                catch (IllegalAccessException e) {
                     logger.err( e, "XAfterInject method must be accessible." );
-                } catch (InvocationTargetException e) {
+                }
+                catch (InvocationTargetException e) {
                     logger.err( e, "XAfterInject method throw an exception." );
                 }
     }
@@ -135,9 +138,8 @@ public class Structure {
     /**
      * Load XML data into an object that has the {@link FromXML} annotation on it.
      *
-     * @param <T> The type of the class instance to inject XML data into.
-     * @param type
-     *            The annotated class to create an object for.
+     * @param <T>  The type of the class instance to inject XML data into.
+     * @param type The annotated class to create an object for.
      *
      * @return An object of the given type with XML data injected.
      *
@@ -156,13 +158,17 @@ public class Structure {
         T structure;
         try {
             structure = type.getConstructor().newInstance();
-        } catch (InstantiationException e) {
+        }
+        catch (InstantiationException e) {
             throw logger.err( e, "FromXML class may not be instantiated." ).toError();
-        } catch (IllegalAccessException e) {
+        }
+        catch (IllegalAccessException e) {
             throw logger.err( e, "FromXML class isn't accessible." ).toError();
-        } catch (NoSuchMethodException e) {
+        }
+        catch (NoSuchMethodException e) {
             throw logger.err( e, "FromXML class has no default constructor." ).toError();
-        } catch (InvocationTargetException e) {
+        }
+        catch (InvocationTargetException e) {
             throw logger.err( e, "FromXML class instantiation failed." ).toError();
         }
 
@@ -181,9 +187,8 @@ public class Structure {
     /**
      * Load XML data into a list of objects that have the {@link FromXML} annotation on it.
      *
-     * @param <T> The type of the class instance to inject XML data into.
-     * @param type
-     *            The annotated class to create a objects for.
+     * @param <T>  The type of the class instance to inject XML data into.
+     * @param type The annotated class to create a objects for.
      *
      * @return A list of object of the given type with XML data injected.
      *
@@ -212,13 +217,17 @@ public class Structure {
             T structure;
             try {
                 structure = type.getConstructor().newInstance();
-            } catch (InstantiationException e) {
+            }
+            catch (InstantiationException e) {
                 throw logger.err( e, "FromXML class can't be instantiated." ).toError();
-            } catch (IllegalAccessException e) {
+            }
+            catch (IllegalAccessException e) {
                 throw logger.err( e, "FromXML class isn't accessible." ).toError();
-            } catch (NoSuchMethodException e) {
+            }
+            catch (NoSuchMethodException e) {
                 throw logger.err( e, "FromXML class has no default constructor." ).toError();
-            } catch (InvocationTargetException e) {
+            }
+            catch (InvocationTargetException e) {
                 throw logger.err( e, "FromXML class instantiation failed." ).toError();
             }
 
@@ -235,7 +244,8 @@ public class Structure {
 
                     catch (IllegalArgumentException e) {
                         logger.err( e, "XInjectTag field of the wrong type." );
-                    } catch (IllegalAccessException e) {
+                    }
+                    catch (IllegalAccessException e) {
                         logger.err( e, "XInjectTag field not accessible." );
                     }
 
@@ -250,8 +260,8 @@ public class Structure {
     /**
      * Convert an object that has the {@link FromXML} annotation to an XML structured string.
      *
-     * @param structure
-     *            The object to render as XML.
+     * @param structure The object to render as XML.
+     *
      * @return the given object as an XML-formatted string.
      */
     public static String toString(Object structure) {
@@ -282,8 +292,10 @@ public class Structure {
                 }
             }
 
-            catch (IllegalArgumentException ignored) {}
-            catch (IllegalAccessException ignored) {}
+            catch (IllegalArgumentException ignored) {
+            }
+            catch (IllegalAccessException ignored) {
+            }
         }
         out.append( String.format( "</%s>", structure.getClass().getSimpleName() ) );
 
@@ -335,8 +347,8 @@ public class Structure {
      * <li>Is validating using the given schema.</li>
      * </ul>
      *
-     * @param schema
-     *            The schema to validate against.
+     * @param schema The schema to validate against.
+     *
      * @return a builder that parses XML data according to the defaults highlighted above.
      */
     public static DocumentBuilder getXMLBuilder(Schema schema) {
@@ -345,22 +357,15 @@ public class Structure {
     }
 
     /**
-     * @param coalescing
-     *            <code>true</code> to convert CDATA to text nodes.
-     * @param expandEntityRef
-     *            <code>true</code> to expand entity reference nodes.
-     * @param ignoreComments
-     *            <code>true</code> to ignore comment nodes.
-     * @param whitespace
-     *            <code>true</code> to remove 'ignorable whitespace'.
-     * @param awareness
-     *            <code>true</code> to be namespace-aware.
-     * @param xIncludes
-     *            <code>true</code> to be XInclude-aware.
-     * @param validating
-     *            <code>true</code> to validate the XML data against a schema.
-     * @param schema
-     *            The schema to validate against. Specify <code>null</code> if not validating.
+     * @param coalescing      <code>true</code> to convert CDATA to text nodes.
+     * @param expandEntityRef <code>true</code> to expand entity reference nodes.
+     * @param ignoreComments  <code>true</code> to ignore comment nodes.
+     * @param whitespace      <code>true</code> to remove 'ignorable whitespace'.
+     * @param awareness       <code>true</code> to be namespace-aware.
+     * @param xIncludes       <code>true</code> to be XInclude-aware.
+     * @param validating      <code>true</code> to validate the XML data against a schema.
+     * @param schema          The schema to validate against. Specify <code>null</code> if not validating.
+     *
      * @return a builder that parses XML data according to the rules specified by the arguments.
      */
     public static DocumentBuilder getXMLBuilder(boolean coalescing, boolean expandEntityRef, boolean ignoreComments,
@@ -391,8 +396,8 @@ public class Structure {
     /**
      * This method trims text node data.
      *
-     * @param node
-     *            The XML node to render.
+     * @param node The XML node to render.
+     *
      * @return the given node as an XML-formatted string.
      */
     public static String toString(Node node) {
@@ -401,10 +406,9 @@ public class Structure {
     }
 
     /**
-     * @param node
-     *            The XML node to render.
-     * @param trim
-     *            <code>false</code>: Don't trim whitespace from text node data.
+     * @param node The XML node to render.
+     * @param trim <code>false</code>: Don't trim whitespace from text node data.
+     *
      * @return the given node as an XML-formatted string.
      */
     public static String toString(Node node, boolean trim) {
@@ -420,7 +424,7 @@ public class Structure {
 
         if (node.getNodeType() == Node.TEXT_NODE)
             return new StringBuffer( indent( indent ) ).append( trim? node.getNodeValue().trim(): node.getNodeValue() ).append(
-                                                                                                                                '\n' );
+                    '\n' );
 
         StringBuffer out = new StringBuffer();
         out.append( indent( indent ) );

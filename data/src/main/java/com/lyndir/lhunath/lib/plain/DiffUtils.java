@@ -36,11 +36,11 @@ public class DiffUtils {
     /**
      * Get the contextual difference between the data from two streams.
      *
-     * @param from
-     *            Original stream
-     * @param to
-     *            Modified stream
+     * @param from Original stream
+     * @param to   Modified stream
+     *
      * @return The diff string.
+     *
      * @throws FileNotFoundException
      * @throws IOException
      */
@@ -54,11 +54,11 @@ public class DiffUtils {
     /**
      * Get the contextual difference between the data from two streams.
      *
-     * @param from
-     *            Original stream
-     * @param to
-     *            Modified stream
+     * @param from Original stream
+     * @param to   Modified stream
+     *
      * @return The diff string.
+     *
      * @throws FileNotFoundException
      * @throws IOException
      */
@@ -74,11 +74,11 @@ public class DiffUtils {
     /**
      * Get the contextual difference between the data from two strings.
      *
-     * @param from
-     *            Original stream
-     * @param to
-     *            Modified stream
+     * @param from Original stream
+     * @param to   Modified stream
+     *
      * @return The diff string.
+     *
      * @throws FileNotFoundException
      * @throws IOException
      */
@@ -93,11 +93,14 @@ public class DiffUtils {
 
     /**
      * Render the difference as configured in the given diff object.
+     *
      * @param diff The diff that should be rendered.
+     *
+     * @return A HTML-formatted representation of the given diff.
      */
     private static String renderDiff(Diff diff) {
 
-        @SuppressWarnings( { "cast", "unchecked" })
+        @SuppressWarnings({"cast", "unchecked"})
         List<Hunk> hunks = (List<Hunk>) diff.getHunks();
         StringBuilder out = new StringBuilder( "<pre>" );
 

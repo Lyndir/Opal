@@ -83,7 +83,7 @@ public abstract class MessagesFactory {
 
     static class MessagesInvocationHandler implements InvocationHandler, Serializable {
 
-        private Class<?> baseClass;
+        Class<?> baseClass;
 
 
         MessagesInvocationHandler(Class<?> baseClass) {
@@ -174,6 +174,9 @@ public abstract class MessagesFactory {
 
                 @Override
                 public String getObject() {
+
+                    logger.dbg( "Resolving localization value of key: %s, in baseClass: %s, with arguments: %s", //
+                                key, baseClass, methodArgs );
 
                     // Find the resource bundle for the current locale and the given baseName.
                     ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle(

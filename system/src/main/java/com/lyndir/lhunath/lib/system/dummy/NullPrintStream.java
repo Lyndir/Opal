@@ -27,7 +27,7 @@ import java.io.PrintStream;
  * <p>
  * <i>Dec 1, 2007</i>
  * </p>
- * 
+ *
  * @author mbillemo
  */
 public class NullPrintStream extends PrintStream {

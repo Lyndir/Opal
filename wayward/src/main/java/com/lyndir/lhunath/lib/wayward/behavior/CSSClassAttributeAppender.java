@@ -27,11 +27,11 @@ import org.apache.wicket.model.IModel;
 /**
  * <h2>{@link CSSClassAttributeAppender}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * <i>Mar 12, 2010</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public class CSSClassAttributeAppender extends AttributeAppender {
@@ -41,9 +41,8 @@ public class CSSClassAttributeAppender extends AttributeAppender {
 
 
     /**
-     * @param cssClassesModel
-     *            A model that provides CSS classes to append to the element's <code>class</class> attribute.
-     * 
+     * @param cssClassesModel A model that provides CSS classes to append to the element's <code>class</class> attribute.
+     *
      * @return An appender which appends all the CSS classes in the collection from the given model to a component's
      *         HTML element.
      */
@@ -53,9 +52,8 @@ public class CSSClassAttributeAppender extends AttributeAppender {
     }
 
     /**
-     * @param cssClassModel
-     *            A model that provides a CSS class to append to the element's <code>class</class> attribute.
-     * 
+     * @param cssClassModel A model that provides a CSS class to append to the element's <code>class</class> attribute.
+     *
      * @return An appender which appends the CSS class in the model to a component's HTML element.
      */
     public static CSSClassAttributeAppender ofString(final IModel<String> cssClassModel) {
@@ -64,8 +62,7 @@ public class CSSClassAttributeAppender extends AttributeAppender {
     }
 
     /**
-     * @param cssClass
-     *            The CSS class to append to the element's <code>class</class> attribute.
+     * @param cssClass The CSS class to append to the element's <code>class</class> attribute.
      */
     public CSSClassAttributeAppender(final String cssClass) {
 
@@ -80,8 +77,7 @@ public class CSSClassAttributeAppender extends AttributeAppender {
     }
 
     /**
-     * @param cssClasses
-     *            An array of CSS classes to append to the element's <code>class</class> attribute.
+     * @param cssClasses An array of CSS classes to append to the element's <code>class</class> attribute.
      */
     public CSSClassAttributeAppender(final String... cssClasses) {
 

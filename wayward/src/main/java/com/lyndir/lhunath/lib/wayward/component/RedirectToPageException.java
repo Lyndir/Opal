@@ -12,13 +12,10 @@
  *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
- */package com.lyndir.lhunath.lib.wayward.component;
+ */
+package com.lyndir.lhunath.lib.wayward.component;
 
-import org.apache.wicket.AbstractRestartResponseException;
-import org.apache.wicket.Page;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.Response;
+import org.apache.wicket.*;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 
@@ -26,20 +23,19 @@ import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 /**
  * <h2>{@link RedirectToPageException}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * <i>Feb 5, 2010</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public class RedirectToPageException extends AbstractRestartResponseException {
 
     /**
      * Create a new {@link RedirectToPageException} instance.
-     * 
-     * @param pageClass
-     *            The class of the page to redirect to.
+     *
+     * @param pageClass The class of the page to redirect to.
      */
     public RedirectToPageException(Class<? extends Page> pageClass) {
 
@@ -48,11 +44,9 @@ public class RedirectToPageException extends AbstractRestartResponseException {
 
     /**
      * Create a new {@link RedirectToPageException} instance.
-     * 
-     * @param pageClass
-     *            The class of the page to redirect to.
-     * @param parameters
-     *            The parameters to pass to the page.
+     *
+     * @param pageClass  The class of the page to redirect to.
+     * @param parameters The parameters to pass to the page.
      */
     public RedirectToPageException(Class<? extends Page> pageClass, PageParameters parameters) {
 

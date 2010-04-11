@@ -34,8 +34,7 @@ public class Vec3 extends Vec2 {
     /**
      * Convert a planar vector (2D) into a spatial vector (3D).
      *
-     * @param vector
-     *            The 2D vector to be converted.
+     * @param vector The 2D vector to be converted.
      */
     public Vec3(Vec2 vector) {
 
@@ -45,10 +44,8 @@ public class Vec3 extends Vec2 {
     /**
      * Convert a planar vector (2D) into a spatial vector (3D); placing it at a specified depth in space.
      *
-     * @param vector
-     *            The 2D vector to be converted.
-     * @param z
-     *            The depth at which to place the vector in space.
+     * @param vector The 2D vector to be converted.
+     * @param z      The depth at which to place the vector in space.
      */
     public Vec3(Vec2 vector, double z) {
 
@@ -66,12 +63,9 @@ public class Vec3 extends Vec2 {
     /**
      * Create a new three dimensional vector.
      *
-     * @param x
-     *            The x-coordinate of the new vector.
-     * @param y
-     *            The y-coordinate of the new vector.
-     * @param z
-     *            The z-coordinate of the new vector.
+     * @param x The x-coordinate of the new vector.
+     * @param y The y-coordinate of the new vector.
+     * @param z The z-coordinate of the new vector.
      */
     public Vec3(double x, double y, double z) {
 
@@ -117,10 +111,9 @@ public class Vec3 extends Vec2 {
     /**
      * Rotate this vector over an angle along the specified axis.
      *
-     * @param a
-     *            The angle over which to rotate.
-     * @param ax
-     *            The axis around which to rotate.
+     * @param a  The angle over which to rotate.
+     * @param ax The axis around which to rotate.
+     *
      * @return A reference to this vector, after it has been updated.
      */
     public Vec3 rotate(Angle a, Axis ax) {
@@ -144,7 +137,7 @@ public class Vec3 extends Vec2 {
                     rotate( a );
                     break;
                 case O:
-                break;
+                    break;
 
                 default:
                     throw new RuntimeException( "Cannot rotate over the given axis." );
@@ -156,8 +149,8 @@ public class Vec3 extends Vec2 {
     /**
      * Add another vector to this one.
      *
-     * @param vector
-     *            A vector that needs to be added to this.
+     * @param vector A vector that needs to be added to this.
+     *
      * @return A reference to the this vector, after it has been updated.
      */
     public Vec3 add(Vec3 vector) {
@@ -175,8 +168,8 @@ public class Vec3 extends Vec2 {
     /**
      * Subtract another vector from this one.
      *
-     * @param vector
-     *            The vector which will be subtracted from this.
+     * @param vector The vector which will be subtracted from this.
+     *
      * @return A reference to the this vector, after it has been updated.
      */
     public Vec3 substract(Vec3 vector) {
@@ -194,8 +187,8 @@ public class Vec3 extends Vec2 {
     /**
      * Multiply this vector with the coefficients of another.
      *
-     * @param vector
-     *            The vector whose coefficients will be used for the multiplication.
+     * @param vector The vector whose coefficients will be used for the multiplication.
+     *
      * @return A reference to the this vector, after it has been updated.
      */
     public Vec3 multiply(Vec3 vector) {
@@ -246,8 +239,8 @@ public class Vec3 extends Vec2 {
      * This means that the product of the resultant of a cross product with a third gives the volume of the
      * parallelepiped thus formed.</i>
      *
-     * @param vector
-     *            The vector with which this vector must be multiplied.
+     * @param vector The vector with which this vector must be multiplied.
+     *
      * @return A new vector, perpendicular to both given vectors, as described above.
      */
     public Vec3 crossMultiply(Vec3 vector) {
@@ -266,8 +259,8 @@ public class Vec3 extends Vec2 {
      * <br>
      * Any vector in a plane, multiplied in this way with the plane's normal; will therefore result in 0.</i>
      *
-     * @param vector
-     *            The vector with which this vector must be multiplied.
+     * @param vector The vector with which this vector must be multiplied.
+     *
      * @return The result of the dot product of this vector with the given one.
      */
     public double dotMultiply(Vec3 vector) {

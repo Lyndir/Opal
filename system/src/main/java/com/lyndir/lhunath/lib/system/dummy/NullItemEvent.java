@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.lib.system.dummy;
 
-import java.awt.ItemSelectable;
+import java.awt.*;
 import java.awt.event.ItemEvent;
 
 
@@ -27,7 +27,7 @@ import java.awt.event.ItemEvent;
  * NOTE: This might cause odd behaviour if the method triggered with this object relies on properties other than the
  * source object.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class NullItemEvent extends ItemEvent {
@@ -37,9 +37,8 @@ public class NullItemEvent extends ItemEvent {
 
     /**
      * Create a new NullItemEvent instance.
-     * 
-     * @param source
-     *            the <code>ItemSelectable</code> object that originated the event
+     *
+     * @param source the <code>ItemSelectable</code> object that originated the event
      */
     public NullItemEvent(ItemSelectable source) {
 
@@ -48,15 +47,11 @@ public class NullItemEvent extends ItemEvent {
 
     /**
      * Create a new NullItemEvent instance.
-     * 
-     * @param source
-     *            the <code>ItemSelectable</code> object that originated the event
-     * @param id
-     *            an integer that identifies the event type
-     * @param item
-     *            an object -- the item affected by the event
-     * @param stateChange
-     *            an integer that indicates whether the item was selected or deselected
+     *
+     * @param source      the <code>ItemSelectable</code> object that originated the event
+     * @param id          an integer that identifies the event type
+     * @param item        an object -- the item affected by the event
+     * @param stateChange an integer that indicates whether the item was selected or deselected
      */
     public NullItemEvent(ItemSelectable source, int id, Object item, int stateChange) {
 

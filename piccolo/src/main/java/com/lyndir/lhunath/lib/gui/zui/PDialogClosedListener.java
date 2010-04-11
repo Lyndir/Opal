@@ -27,8 +27,7 @@ public interface PDialogClosedListener {
     /**
      * Notify the listener that the given dialog was closed.
      *
-     * @param dialog
-     *        The dialog that was closed.
+     * @param dialog The dialog that was closed.
      */
     void dialogClosed(PDialog dialog);
 }

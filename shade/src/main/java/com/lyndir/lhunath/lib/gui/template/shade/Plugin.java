@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
-import java.awt.PopupMenu;
+import java.awt.*;
 import java.util.EventObject;
 import java.util.List;
 
@@ -41,8 +41,8 @@ public interface Plugin {
     /**
      * Handle the given UI event; if supported by this plugin.
      *
-     * @param e
-     *            The UI event that was triggered in the shade interface and was not handled by the application.
+     * @param e The UI event that was triggered in the shade interface and was not handled by the application.
+     *
      * @return <code>true</code> if the given event is handled by this plugin; <code>false</code> if not (so that other
      *         plugins can try to handle the event).
      */
@@ -51,9 +51,9 @@ public interface Plugin {
     /**
      * Handle the given application request; if supported by this plugin.
      *
-     * @param element
-     *            The application request that was triggered in the shade interface and was not handled by the
-     *            application.
+     * @param element The application request that was triggered in the shade interface and was not handled by the
+     *                application.
+     *
      * @return <code>true</code> if the given request is handled by this plugin; <code>false</code> if not (so that
      *         other plugins can try to handle the event).
      */
@@ -67,16 +67,15 @@ public interface Plugin {
     /**
      * Use this method to add entries to the application's system tray menu.
      *
-     * @param sysMenu
-     *            The object that contains the system tray's menu.
+     * @param sysMenu The object that contains the system tray's menu.
      */
     void buildSystray(PopupMenu sysMenu);
 
     /**
      * Use this method to add entries to the application's configuration panel.
      *
-     * @param builder
-     *            The component builder used to create the configuration panel.
+     * @param builder The component builder used to create the configuration panel.
+     *
      * @see DefaultFormBuilder
      */
     void buildSettings(DefaultFormBuilder builder);

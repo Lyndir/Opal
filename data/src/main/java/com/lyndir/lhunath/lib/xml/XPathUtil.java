@@ -1,11 +1,5 @@
 package com.lyndir.lhunath.lib.xml;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
@@ -13,6 +7,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import java.util.*;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -32,9 +27,8 @@ public class XPathUtil {
     /**
      * Create a new XPathUtil instance.
      *
-     * @param isXHTML
-     *            <code>true</code>: Indicate that the document uses the XHTML namespace context and set it as the
-     *            default context.
+     * @param isXHTML <code>true</code>: Indicate that the document uses the XHTML namespace context and set it as the
+     *                default context.
      */
     public XPathUtil(boolean isXHTML) {
 
@@ -47,13 +41,12 @@ public class XPathUtil {
     /**
      * Evaluate an {@link XPath} expression.
      *
-     * @param context
-     *            The context to evaluate the XPath expression under.
-     * @param expressionFormat
-     *            The XPath expression format. See {@link String#format(String, Object...)}.
-     * @param arguments
-     *            The data used to satisfy the format parameters in the expressionFormat.
+     * @param context          The context to evaluate the XPath expression under.
+     * @param expressionFormat The XPath expression format. See {@link String#format(String, Object...)}.
+     * @param arguments        The data used to satisfy the format parameters in the expressionFormat.
+     *
      * @return The text from the selected nodes
+     *
      * @throws XPathExpressionException
      */
     public Boolean getBoolean(Object context, String expressionFormat, Object... arguments)
@@ -65,13 +58,12 @@ public class XPathUtil {
     /**
      * Evaluate an {@link XPath} expression.
      *
-     * @param context
-     *            The context to evaluate the XPath expression under.
-     * @param expressionFormat
-     *            The XPath expression format. See {@link String#format(String, Object...)}.
-     * @param arguments
-     *            The data used to satisfy the format parameters in the expressionFormat.
+     * @param context          The context to evaluate the XPath expression under.
+     * @param expressionFormat The XPath expression format. See {@link String#format(String, Object...)}.
+     * @param arguments        The data used to satisfy the format parameters in the expressionFormat.
+     *
      * @return The first of the selected nodes.
+     *
      * @throws XPathExpressionException
      */
     public Node getNode(Object context, String expressionFormat, Object... arguments)
@@ -83,13 +75,12 @@ public class XPathUtil {
     /**
      * Evaluate an {@link XPath} expression.
      *
-     * @param context
-     *            The context to evaluate the XPath expression under.
-     * @param expressionFormat
-     *            The XPath expression format. See {@link String#format(String, Object...)}.
-     * @param arguments
-     *            The data used to satisfy the format parameters in the expressionFormat.
+     * @param context          The context to evaluate the XPath expression under.
+     * @param expressionFormat The XPath expression format. See {@link String#format(String, Object...)}.
+     * @param arguments        The data used to satisfy the format parameters in the expressionFormat.
+     *
      * @return A list of the selected nodes.
+     *
      * @throws XPathExpressionException
      */
     public List<Node> getNodes(Object context, String expressionFormat, Object... arguments)
@@ -107,13 +98,12 @@ public class XPathUtil {
     /**
      * Evaluate an {@link XPath} expression.
      *
-     * @param context
-     *            The context to evaluate the XPath expression under.
-     * @param expressionFormat
-     *            The XPath expression format. See {@link String#format(String, Object...)}.
-     * @param arguments
-     *            The data used to satisfy the format parameters in the expressionFormat.
+     * @param context          The context to evaluate the XPath expression under.
+     * @param expressionFormat The XPath expression format. See {@link String#format(String, Object...)}.
+     * @param arguments        The data used to satisfy the format parameters in the expressionFormat.
+     *
      * @return The text from the selected nodes.
+     *
      * @throws XPathExpressionException
      */
     public Double getNumber(Object context, String expressionFormat, Object... arguments)
@@ -125,13 +115,12 @@ public class XPathUtil {
     /**
      * Evaluate an {@link XPath} expression.
      *
-     * @param context
-     *            The context to evaluate the XPath expression under.
-     * @param expressionFormat
-     *            The XPath expression format. See {@link String#format(String, Object...)}.
-     * @param arguments
-     *            The data used to satisfy the format parameters in the expressionFormat.
+     * @param context          The context to evaluate the XPath expression under.
+     * @param expressionFormat The XPath expression format. See {@link String#format(String, Object...)}.
+     * @param arguments        The data used to satisfy the format parameters in the expressionFormat.
+     *
      * @return The text from the selected nodes.
+     *
      * @throws XPathExpressionException
      */
     public String getString(Object context, String expressionFormat, Object... arguments)
@@ -143,15 +132,14 @@ public class XPathUtil {
     /**
      * Evaluate an {@link XPath} expression.
      *
-     * @param context
-     *            The context to evaluate the XPath expression under.
-     * @param expressionFormat
-     *            The XPath expression format. See {@link String#format(String, Object...)}.
-     * @param result
-     *            The type of result to return the selected nodes as.
-     * @param arguments
-     *            The data used to satisfy the format parameters in the expressionFormat.
+     * @param context          The context to evaluate the XPath expression under.
+     * @param expressionFormat The XPath expression format. See {@link String#format(String, Object...)}.
+     * @param result           The type of result to return the selected nodes as.
+     * @param arguments        The data used to satisfy the format parameters in the expressionFormat.
+     *
      * @return The selected nodes as the given result type.
+     *
+     * @throws XPathExpressionException If the given expression is invalid or does not match the context.
      */
     private Object getObject(Object context, String expressionFormat, QName result, Object... arguments)
             throws XPathExpressionException {
@@ -183,7 +171,7 @@ public class XPathUtil {
         /**
          * Create a new AuthDriver.XHTMLContext instance.
          */
-        private XHTMLContext() {
+        XHTMLContext() {
 
             namespaces.put( XMLConstants.XMLNS_ATTRIBUTE, XMLConstants.XMLNS_ATTRIBUTE_NS_URI );
             namespaces.put( XMLConstants.XML_NS_PREFIX, XMLConstants.XML_NS_URI );
@@ -194,8 +182,8 @@ public class XPathUtil {
         /**
          * {@inheritDoc}
          *
-         * @param prefix
-         *            The prefix of the namespace to retrieve.
+         * @param prefix The prefix of the namespace to retrieve.
+         *
          * @return The namespace mapped by the given prefix.
          */
         @Override
@@ -207,8 +195,8 @@ public class XPathUtil {
         /**
          * {@inheritDoc}
          *
-         * @param namespaceURI
-         *            The namespace to retrieve the first set prefix for.
+         * @param namespaceURI The namespace to retrieve the first set prefix for.
+         *
          * @return The first prefix that maps the given namespace.
          */
         @Override
@@ -224,8 +212,8 @@ public class XPathUtil {
         /**
          * {@inheritDoc}
          *
-         * @param namespaceURI
-         *            The namespace to retrieve the prefixes for.
+         * @param namespaceURI The namespace to retrieve the prefixes for.
+         *
          * @return All prefixes that map the given namespace.
          */
         @Override

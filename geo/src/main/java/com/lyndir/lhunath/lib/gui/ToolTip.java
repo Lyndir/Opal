@@ -37,29 +37,29 @@ import com.lyndir.lhunath.lib.system.UIUtils;
  */
 public class ToolTip extends JPanel {
 
-    protected static final Timer          tipTimer  = new Timer( "Tip Timer", true );
-    private static final int              PADDING   = 15;
+    protected static final Timer tipTimer = new Timer( "Tip Timer", true );
+    private static final int PADDING = 15;
 
-    protected static ToolTip              activeTip;
+    protected static ToolTip activeTip;
     protected static final JLabel stickyHint;
-    protected static JFrame               toolTipFrame;
-    protected static JWindow              toolTipWindow;
-    protected static final PaintPanel           toolTipContainer;
-    static final WindowAdapter                  toolTipContentWindowListener;
-    protected static TimerTask            toolTipSchedule;
-    protected static final ScrollPanel          toolTipPanel;
-    protected static final JEditorPane          toolTipPane;
+    protected static JFrame toolTipFrame;
+    protected static JWindow toolTipWindow;
+    protected static final PaintPanel toolTipContainer;
+    static final WindowAdapter toolTipContentWindowListener;
+    protected static TimerTask toolTipSchedule;
+    protected static final ScrollPanel toolTipPanel;
+    protected static final JEditorPane toolTipPane;
 
-    protected static final int                  maxWidth;
-    protected static final int                  maxHeight;
+    protected static final int maxWidth;
+    protected static final int maxHeight;
 
-    protected final TipButtonListener           buttonListener;
+    protected final TipButtonListener buttonListener;
     protected final List<ToolTipStickyListener> stickyListeners;
-    protected boolean                     stickable;
-    protected boolean                     stickOnly;
+    protected boolean stickable;
+    protected boolean stickOnly;
 
-    private JComponent                    toolTipContent;
-    protected String                      toolTipText;
+    private JComponent toolTipContent;
+    protected String toolTipText;
 
     static {
         Rectangle maxBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
@@ -81,7 +81,7 @@ public class ToolTip extends JPanel {
 
                 Dimension size = new Dimension( toolTipPane.getWidth() + 5, toolTipPane.getHeight()
                                                                             + (activeTip.stickable
-                                                                                    ? stickyHint.getHeight(): 0) );
+                        ? stickyHint.getHeight(): 0) );
                 Window window = toolTipWindow;
                 if (window == null || !window.isDisplayable())
                     window = toolTipFrame;
@@ -116,8 +116,7 @@ public class ToolTip extends JPanel {
     /**
      * Create a new {@link ToolTip} instance.
      *
-     * @param toolTip
-     *            The text to show when hovering this button.
+     * @param toolTip The text to show when hovering this button.
      */
     public ToolTip(final String toolTip) {
 
@@ -127,10 +126,8 @@ public class ToolTip extends JPanel {
     /**
      * Create a new {@link ToolTip} instance.
      *
-     * @param toolTip
-     *            The text to show when hovering this button.
-     * @param c
-     *            The component to use as content.
+     * @param toolTip The text to show when hovering this button.
+     * @param c       The component to use as content.
      */
     public ToolTip(String toolTip, final JComponent c) {
 
@@ -141,7 +138,7 @@ public class ToolTip extends JPanel {
         buttonListener = new TipButtonListener();
 
         toolTipPane.getInputMap( WHEN_IN_FOCUSED_WINDOW ).put( KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ),
-                "stick" );
+                                                               "stick" );
         toolTipPane.getActionMap().put( "stick", new AbstractAction( "stick" ) {
 
             @Override
@@ -169,8 +166,7 @@ public class ToolTip extends JPanel {
     /**
      * Set whether this {@link ToolTip} has a sticky frame popping up on click.
      *
-     * @param stickable
-     *            Guess.
+     * @param stickable Guess.
      */
     public void setStickable(boolean stickable) {
 
@@ -186,8 +182,7 @@ public class ToolTip extends JPanel {
     }
 
     /**
-     * @param stickOnly
-     *            <code>true</code> if this tip should only be sticked not shown on hover.
+     * @param stickOnly <code>true</code> if this tip should only be sticked not shown on hover.
      */
     public void setStickOnly(boolean stickOnly) {
 
@@ -197,8 +192,7 @@ public class ToolTip extends JPanel {
     /**
      * Define the text that will show up in the tooltip. Set this to null to disable the tooltip momentarily.
      *
-     * @param toolTip
-     *            Guess.
+     * @param toolTip Guess.
      */
     public void setTip(String toolTip) {
 
@@ -216,8 +210,7 @@ public class ToolTip extends JPanel {
     /**
      * Make the given object listen to sticky state changes of this tooltip.
      *
-     * @param listener
-     *            The object that will listen to the state changes.
+     * @param listener The object that will listen to the state changes.
      */
     public void addStickyListener(ToolTipStickyListener listener) {
 
@@ -237,8 +230,7 @@ public class ToolTip extends JPanel {
     /**
      * Set the component used to show the tooltip on hover.
      *
-     * @param content
-     *            Guess.
+     * @param content Guess.
      */
     public void setContent(final JComponent content) {
 
@@ -253,8 +245,7 @@ public class ToolTip extends JPanel {
     /**
      * Recursively add the main mouse listener to the given component and its children.
      *
-     * @param c
-     *            The component to which the main mouse listener needs to be added.
+     * @param c The component to which the main mouse listener needs to be added.
      */
     private void listen(Component c) {
 
@@ -269,8 +260,7 @@ public class ToolTip extends JPanel {
     /**
      * Recursively remove the main mouse listener from the given component and its children.
      *
-     * @param c
-     *            The component from which the main mouse listeners need to be removed.
+     * @param c The component from which the main mouse listeners need to be removed.
      */
     private void unlisten(Component c) {
 
@@ -329,7 +319,7 @@ public class ToolTip extends JPanel {
         toolTipFrame.setContentPane( gradient );
         toolTipFrame.pack();
         toolTipFrame.setSize( Math.min( toolTipFrame.getWidth(), maxWidth ), Math.min( toolTipFrame.getHeight(),
-                maxHeight ) );
+                                                                                       maxHeight ) );
         toolTipFrame.setLocationRelativeTo( null );
 
         pane.getViewport().scrollRectToVisible( new Rectangle( 0, 0, 0, 0 ) );
@@ -398,8 +388,8 @@ public class ToolTip extends JPanel {
 
         private static final long TIP_SHOW_DELAY = 500;
 
-        protected int             x;
-        protected int             y;
+        protected int x;
+        protected int y;
 
 
         /**
@@ -479,7 +469,7 @@ public class ToolTip extends JPanel {
                                 toolTipWindow.pack();
                                 toolTipWindow.setSize( toolTipPane.getWidth() + 5, toolTipPane.getHeight()
                                                                                    + (stickable? stickyHint.getHeight()
-                                                                                           : 0) );
+                                        : 0) );
 
                                 /* Determine the window's location. */
                                 Point location = getContent().getLocationOnScreen();
@@ -498,7 +488,8 @@ public class ToolTip extends JPanel {
                                 if (!Arrays.asList( window.getWindowListeners() ).contains(
                                         toolTipContentWindowListener ))
                                     window.addWindowFocusListener( toolTipContentWindowListener );
-                            } catch (NullPointerException ignored) {
+                            }
+                            catch (NullPointerException ignored) {
                                 /* Tooltip has been removed while timer was running. */
                             }
                         }
@@ -534,7 +525,7 @@ public class ToolTip extends JPanel {
 
             if (e.getSource() instanceof Component) {
                 Point pointOnContent = SwingUtilities.convertPoint( (Component) e.getSource(), e.getPoint(),
-                        getContent() );
+                                                                    getContent() );
                 x = pointOnContent.x;
                 y = pointOnContent.y;
             }
@@ -546,7 +537,7 @@ public class ToolTip extends JPanel {
         @Override
         public void mouseDragged(MouseEvent e) {
 
-        /* Nothing. */
+            /* Nothing. */
         }
     }
 
@@ -559,10 +550,8 @@ public class ToolTip extends JPanel {
         /**
          * Notifies the listener that this tooltip's sticky state has changed.
          *
-         * @param toolTip
-         *            The tooltip whose sticky state changed.
-         * @param sticky
-         *            true if the tooltip has been made sticky.
+         * @param toolTip The tooltip whose sticky state changed.
+         * @param sticky  true if the tooltip has been made sticky.
          */
         void stickyState(ToolTip toolTip, boolean sticky);
     }

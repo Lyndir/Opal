@@ -17,20 +17,19 @@ package com.lyndir.lhunath.lib.wayward.state;
 
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import org.apache.wicket.Component;
 import org.apache.wicket.application.IComponentOnBeforeRenderListener;
-
-import com.google.common.collect.ImmutableList;
 
 
 /**
  * <h2>{@link ComponentStateListener}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * <i>Mar 21, 2010</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public class ComponentStateListener implements IComponentOnBeforeRenderListener {
@@ -39,8 +38,7 @@ public class ComponentStateListener implements IComponentOnBeforeRenderListener 
 
 
     /**
-     * @param componentStates
-     *            Component states that should be checked during session attachment.
+     * @param componentStates Component states that should be checked during session attachment.
      */
     public ComponentStateListener(ComponentState... componentStates) {
 

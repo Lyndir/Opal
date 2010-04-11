@@ -23,14 +23,14 @@ import org.apache.wicket.model.StringResourceModel;
 /**
  * <h2>{@link DefaultTextField}<br>
  * <sub>Text field that uses a default value if its model object is <code>null</code>.</sub></h2>
- * 
+ *
  * <p>
  * <i>Jan 21, 2010</i>
  * </p>
- * 
- * @param <T>
- *            The model type.
+ *
  * @author lhunath
+ * @param <T>
+ * The model type.
  */
 public class DefaultTextField<T> extends TextField<T> {
 
@@ -39,11 +39,9 @@ public class DefaultTextField<T> extends TextField<T> {
 
     /**
      * Create a new {@link DefaultTextField} instance.
-     * 
-     * @param id
-     *            The component's wicket ID.
-     * @param model
-     *            The component's model.
+     *
+     * @param id    The component's wicket ID.
+     * @param model The component's model.
      */
     public DefaultTextField(String id, IModel<T> model) {
 
@@ -54,13 +52,10 @@ public class DefaultTextField<T> extends TextField<T> {
 
     /**
      * Create a new {@link DefaultTextField} instance.
-     * 
-     * @param id
-     *            The component's wicket ID.
-     * @param model
-     *            The component's model.
-     * @param defaultValue
-     *            The model that provides the default value which will be used when the model doesn't provide an object.
+     *
+     * @param id           The component's wicket ID.
+     * @param model        The component's model.
+     * @param defaultValue The model that provides the default value which will be used when the model doesn't provide an object.
      */
     public DefaultTextField(String id, IModel<T> model, IModel<String> defaultValue) {
 
@@ -78,8 +73,7 @@ public class DefaultTextField<T> extends TextField<T> {
     }
 
     /**
-     * @param defaultValue
-     *            The defaultValue of this {@link DefaultTextField}.
+     * @param defaultValue The defaultValue of this {@link DefaultTextField}.
      */
     public void setDefaultValue(IModel<String> defaultValue) {
 

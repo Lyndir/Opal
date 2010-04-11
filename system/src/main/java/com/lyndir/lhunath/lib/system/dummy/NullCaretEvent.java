@@ -26,7 +26,7 @@ import javax.swing.event.CaretEvent;
  * NOTE: This might cause odd behaviour if the method triggered with this object relies on properties other than the
  * source object.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class NullCaretEvent extends CaretEvent {
@@ -36,9 +36,8 @@ public class NullCaretEvent extends CaretEvent {
 
     /**
      * Create a new NullCaretEvent instance.
-     * 
-     * @param source
-     *            The source of the caret event.
+     *
+     * @param source The source of the caret event.
      */
     public NullCaretEvent(Object source) {
 

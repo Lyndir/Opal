@@ -27,15 +27,15 @@ import com.lyndir.lhunath.lib.system.wrapper.Desktop;
 /**
  * <h2>{@link UIUtils}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * [description / usage].
  * </p>
- * 
+ *
  * <p>
  * <i>Oct 25, 2009</i>
  * </p>
- * 
+ *
  * @author lhunath
  */
 public class UIUtils {
@@ -43,84 +43,82 @@ public class UIUtils {
     /**
      * The transparent color.
      */
-    public static final Color     TRANSPARENT  = new Color( 0, 0, 0, 0 );
+    public static final Color TRANSPARENT = new Color( 0, 0, 0, 0 );
 
     /**
      * A slightly custom RED color.
      */
-    public static final Color     LIGHT_RED    = Color.decode( "#FFDDDD" );
+    public static final Color LIGHT_RED = Color.decode( "#FFDDDD" );
 
     /**
      * A slightly custom GREEN color.
      */
-    public static final Color     LIGHT_GREEN  = Color.decode( "#DDFFDD" );
+    public static final Color LIGHT_GREEN = Color.decode( "#DDFFDD" );
 
     /**
      * A slightly custom BLUE color.
      */
-    public static final Color     LIGHT_BLUE   = Color.decode( "#DDDDFF" );
+    public static final Color LIGHT_BLUE = Color.decode( "#DDDDFF" );
 
     /**
      * A slightly custom YELLOW color.
      */
-    public static final Color     LIGHT_YELLOW = Color.decode( "#FFFFDD" );
+    public static final Color LIGHT_YELLOW = Color.decode( "#FFFFDD" );
 
     /**
      * A slightly custom RED color.
      */
-    public static final Color     RED          = Color.decode( "#FF9999" );
+    public static final Color RED = Color.decode( "#FF9999" );
 
     /**
      * A slightly custom GREEN color.
      */
-    public static final Color     GREEN        = Color.decode( "#99FF99" );
+    public static final Color GREEN = Color.decode( "#99FF99" );
 
     /**
      * A slightly custom BLUE color.
      */
-    public static final Color     BLUE         = Color.decode( "#9999FF" );
+    public static final Color BLUE = Color.decode( "#9999FF" );
 
     /**
      * A slightly custom YELLOW color.
      */
-    public static final Color     YELLOW       = Color.decode( "#FFFF99" );
+    public static final Color YELLOW = Color.decode( "#FFFF99" );
 
     /**
      * A slightly custom RED color.
      */
-    public static final Color     DARK_RED     = Color.decode( "#993333" );
+    public static final Color DARK_RED = Color.decode( "#993333" );
 
     /**
      * A slightly custom GREEN color.
      */
-    public static final Color     DARK_GREEN   = Color.decode( "#339933" );
+    public static final Color DARK_GREEN = Color.decode( "#339933" );
 
     /**
      * A slightly custom BLUE color.
      */
-    public static final Color     DARK_BLUE    = Color.decode( "#333399" );
+    public static final Color DARK_BLUE = Color.decode( "#333399" );
 
     /**
      * A slightly custom YELLOW color.
      */
-    public static final Color     DARK_YELLOW  = Color.decode( "#999933" );
+    public static final Color DARK_YELLOW = Color.decode( "#999933" );
 
     /**
      * The maximum size for a component. Very useful to make components in a BoxLayout fill all available space.
      */
-    public static final Dimension MAX_SIZE     = new Dimension( Short.MAX_VALUE, Short.MAX_VALUE );
+    public static final Dimension MAX_SIZE = new Dimension( Short.MAX_VALUE, Short.MAX_VALUE );
 
 
     /**
      * Calculate the width in pixels that are necessary to draw the given string in the given font on the given
      * graphics.
-     * 
-     * @param graphics
-     *            The graphics configuration the string would be drawn on.
-     * @param font
-     *            The font to use for rendering the string.
-     * @param str
-     *            The string to measure.
+     *
+     * @param graphics The graphics configuration the string would be drawn on.
+     * @param font     The font to use for rendering the string.
+     * @param str      The string to measure.
+     *
      * @return Guess.
      */
     public static double fontWidth(Graphics2D graphics, Font font, String str) {
@@ -131,13 +129,11 @@ public class UIUtils {
     /**
      * Calculate the height in pixels that are necessary to draw the given string in the given font on the given
      * graphics.
-     * 
-     * @param graphics
-     *            The graphics configuration the string would be drawn on.
-     * @param font
-     *            The font to use for rendering the string.
-     * @param str
-     *            The string to measure.
+     *
+     * @param graphics The graphics configuration the string would be drawn on.
+     * @param font     The font to use for rendering the string.
+     * @param str      The string to measure.
+     *
      * @return Guess.
      */
     public static double fontHeight(Graphics2D graphics, Font font, String str) {
@@ -147,13 +143,11 @@ public class UIUtils {
 
     /**
      * Align the given point on the given grid.
-     * 
-     * @param point
-     *            The point that needs to be aligned.
-     * @param gridX
-     *            The length of the grid cells.
-     * @param gridY
-     *            The height of the grid cells.
+     *
+     * @param point The point that needs to be aligned.
+     * @param gridX The length of the grid cells.
+     * @param gridY The height of the grid cells.
+     *
      * @return A new point as close to the given as possible, nicely aligned on the given grid.
      */
     public static Point2D gridAlign(Point2D point, double gridX, double gridY) {
@@ -164,12 +158,10 @@ public class UIUtils {
 
     /**
      * Check whether a component is the child of another, anywhere down the line.
-     * 
-     * @param child
-     *            The possible child.
-     * @param parent
-     *            The container that possibly contains the child.
-     * 
+     *
+     * @param child  The possible child.
+     * @param parent The container that possibly contains the child.
+     *
      * @return The given child component exists in parent's hierarchy.
      */
     public static boolean isChild(Component child, Container parent) {
@@ -188,9 +180,9 @@ public class UIUtils {
 
     /**
      * Convert a color into an HTML-type hex string (#RRGGBB). This does not take transparency into account.
-     * 
-     * @param color
-     *            The color to convert to hexadecimal notation.
+     *
+     * @param color The color to convert to hexadecimal notation.
+     *
      * @return The hex string.
      */
     public static String colorToHex(Color color) {
@@ -200,11 +192,10 @@ public class UIUtils {
 
     /**
      * Return a new color based on the given color with the given alpha.
-     * 
-     * @param color
-     *            The base color.
-     * @param alpha
-     *            The alpha to apply to the color (0-255).
+     *
+     * @param color The base color.
+     * @param alpha The alpha to apply to the color (0-255).
+     *
      * @return The resulting color.
      */
     public static Color setAlpha(Color color, int alpha) {
@@ -217,65 +208,68 @@ public class UIUtils {
 
     /**
      * Check whether the Java 6+ Desktop API is supported.
-     * 
+     *
      * @return Guess.
      */
     public static boolean isDesktopSupported() {
 
         try {
             return Desktop.isDesktopSupported();
-        } catch (NoClassDefFoundError ignored) {
+        }
+        catch (NoClassDefFoundError ignored) {
             return false;
         }
     }
 
     /**
      * Check whether the Java 6+ Desktop API is supported for the BROWSE action.
-     * 
+     *
      * @return Guess.
      */
     public static boolean isBrowseSupported() {
 
         try {
             return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.BROWSE );
-        } catch (NoClassDefFoundError ignored) {
+        }
+        catch (NoClassDefFoundError ignored) {
             return false;
         }
     }
 
     /**
      * Check whether the Java 6+ Desktop API is supported for the MAIL action.
-     * 
+     *
      * @return Guess.
      */
     public static boolean isMailSupported() {
 
         try {
             return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.MAIL );
-        } catch (NoClassDefFoundError ignored) {
+        }
+        catch (NoClassDefFoundError ignored) {
             return false;
         }
     }
 
     /**
      * Check whether the Java 6+ Desktop API is supported for the OPEN action.
-     * 
+     *
      * @return Guess.
      */
     public static boolean isOpenSupported() {
 
         try {
             return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.OPEN );
-        } catch (NoClassDefFoundError ignored) {
+        }
+        catch (NoClassDefFoundError ignored) {
             return false;
         }
     }
 
     /**
      * Change the default font for all components.
-     * 
-     * @param font
-     *            The new default font.
+     *
+     * @param font The new default font.
      */
     public static void setUIFont(Font font) {
 
@@ -299,9 +293,9 @@ public class UIUtils {
 
     /**
      * Load an icon for the given resource file.
-     * 
-     * @param resource
-     *            URI of the resource.
+     *
+     * @param resource URI of the resource.
+     *
      * @return The icon.
      */
     public static ImageIcon getIcon(String resource) {
@@ -315,9 +309,9 @@ public class UIUtils {
 
     /**
      * Create a debug border with a red coloured line bevel and a text label.
-     * 
-     * @param text
-     *            The text to put on the label.
+     *
+     * @param text The text to put on the label.
+     *
      * @return The label component.
      */
     public static Component createDebugLabel(String text) {

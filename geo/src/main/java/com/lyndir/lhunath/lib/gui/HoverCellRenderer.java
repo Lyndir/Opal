@@ -35,15 +35,14 @@ import com.lyndir.lhunath.lib.system.UIUtils;
 public class HoverCellRenderer extends DefaultListCellRenderer implements MouseListener, MouseMotionListener {
 
     private final HoverPanel panel;
-    private int        hoveredIndex = -1;
-    private final JList      myList;
+    private int hoveredIndex = -1;
+    private final JList myList;
 
 
     /**
      * Create a new {@link HoverCellRenderer} instance.
      *
-     * @param list
-     *            The list this renderer works for.
+     * @param list The list this renderer works for.
      */
     public HoverCellRenderer(JList list) {
 
@@ -94,11 +93,12 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      * <b>Override this method instead of {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
      * !</b>
      *
-     * @param list See {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
-     * @param value See {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
-     * @param index See {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
-     * @param isSelected See {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
+     * @param list         See {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
+     * @param value        See {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
+     * @param index        See {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
+     * @param isSelected   See {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
      * @param cellHasFocus See {@link #getListCellRendererComponent(JList, Object, int, boolean, boolean)}
+     *
      * @return The {@link Component} that will be painted to represent the given data.
      */
     private Component getObjectComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -115,7 +115,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
 
         hoveredIndex = myList.locationToIndex( e.getPoint() );
         if (!entered || hoveredIndex != -1
-            && !myList.getCellBounds( hoveredIndex, hoveredIndex ).contains( e.getPoint() ))
+                        && !myList.getCellBounds( hoveredIndex, hoveredIndex ).contains( e.getPoint() ))
             hoveredIndex = -1;
 
         myList.repaint();
@@ -127,7 +127,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
     @Override
     public void mouseClicked(MouseEvent e) {
 
-    // Not interested.
+        // Not interested.
     }
 
     /**
@@ -154,7 +154,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
     @Override
     public void mousePressed(MouseEvent e) {
 
-    // Not interested.
+        // Not interested.
     }
 
     /**
@@ -163,7 +163,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
     @Override
     public void mouseReleased(MouseEvent e) {
 
-    // Not interested.
+        // Not interested.
     }
 
     /**

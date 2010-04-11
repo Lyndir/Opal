@@ -21,35 +21,32 @@ import java.util.Map;
 /**
  * <h2>{@link Pair}<br>
  * <sub>[in short] (TODO).</sub></h2>
- * 
+ *
  * <p>
  * [description / usage].
  * </p>
- * 
- * @param <K>
- *            The class of the keys.
- * @param <V>
- *            The class of the values.
- * 
- *            <p>
- *            <i>Apr 17, 2008</i>
- *            </p>
- * 
+ *
  * @author mbillemo
+ * @param <K>
+ * The class of the keys.
+ * @param <V>
+ * The class of the values.
+ *
+ * <p>
+ * <i>Apr 17, 2008</i>
+ * </p>
  */
 public class Pair<K, V> implements Map.Entry<K, V> {
 
     private final K key;
-    private V       value;
+    private V value;
 
 
     /**
      * Create a new {@link Pair} instance.
-     * 
-     * @param key
-     *            The key of this pair.
-     * @param value
-     *            The value of this pair.
+     *
+     * @param key   The key of this pair.
+     * @param value The value of this pair.
      */
     public Pair(K key, V value) {
 

@@ -17,22 +17,21 @@ package com.lyndir.lhunath.lib.wayward.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
 
-import com.lyndir.lhunath.lib.system.logging.Logger;
-
 
 /**
  * <h2>{@link ModelProvider}<br>
  * <sub>A base class for {@link IModel} providers.</sub></h2>
- * 
+ *
  * <p>
  * Model providers are classes that serve to extract the maintenance of a component's models from the component's logic.
  * </p>
- * 
+ *
  * <p>
  * Generally, you would create a {@link ModelProvider} for each component that you have a top-level class for. The
  * {@link ModelProvider} for your component should be the component's model.<br />
@@ -41,16 +40,16 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  * {@link ModelProvider} classes, providing accessor methods for them in their parent and setting them as the model for
  * your component's child components.
  * </p>
- * 
+ *
  * <p>
  * <i>Mar 11, 2010</i>
  * </p>
- * 
- * @param <P>
- *            This type.
- * @param <M>
- *            The type of the base model for this provider.
+ *
  * @author lhunath
+ * @param <P>
+ * This type.
+ * @param <M>
+ * The type of the base model for this provider.
  */
 public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements IWrapModel<M> {
 
@@ -63,8 +62,7 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
 
 
     /**
-     * @param model
-     *            The base model.
+     * @param model The base model.
      */
     public ModelProvider(IModel<M> model) {
 
@@ -92,8 +90,7 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
     }
 
     /**
-     * @param wrappedModel
-     *            The base model.
+     * @param wrappedModel The base model.
      */
     public void setWrappedModel(IModel<M> wrappedModel) {
 
@@ -161,8 +158,7 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
     }
 
     /**
-     * @param object
-     *            The new object of the base model.
+     * @param object The new object of the base model.
      */
     public void setModelObject(M object) {
 
@@ -180,8 +176,7 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
     }
 
     /**
-     * @param component
-     *            The component we have been or will be attached to.
+     * @param component The component we have been or will be attached to.
      */
     public void attach(@SuppressWarnings("hiding") Component component) {
 

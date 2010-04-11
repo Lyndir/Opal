@@ -24,25 +24,26 @@ package com.lyndir.lhunath.lib.math;
  * @author lhunath
  */
 public enum Axis {
+
     /**
      * Origin vector.
      */
-    O (null),
+    O( null ),
 
     /**
      * X-Axis oriented base vector.
      */
-    X (new Vec3( 1, 0, 0 )),
+    X( new Vec3( 1, 0, 0 ) ),
 
     /**
      * Y-Axis oriented base vector.
      */
-    Y (new Vec3( 0, 1, 0 )),
+    Y( new Vec3( 0, 1, 0 ) ),
 
     /**
      * Z-Axis oriented base vector.
      */
-    Z (new Vec3( 0, 0, 1 ));
+    Z( new Vec3( 0, 0, 1 ) );
 
     private final Vec3 vector;
 

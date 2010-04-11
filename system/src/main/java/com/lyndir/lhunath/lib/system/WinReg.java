@@ -19,10 +19,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
 
+import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
 
 
 /**
@@ -31,7 +30,7 @@ import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
  * This accesses the windows registry through the use of C:\Windows\System32\reg.exe.<br>
  * This limits platform compatibility to Windows XP+.<br>
  * <br>
- * 
+ *
  * @author lhunath
  */
 public class WinReg {
@@ -41,7 +40,7 @@ public class WinReg {
 
     /**
      * Check whether registry queries are supported on the running operating system.
-     * 
+     *
      * @return Guess.
      */
     public static boolean isSupported() {
@@ -49,22 +48,20 @@ public class WinReg {
         try {
             OutputStream out = new NullOutputStream();
             return Shell.waitFor( Shell.exec( out, out, new File( "C:\\Windows\\System32" ), "reg.exe", "query", "/?" ) ) == 0;
-        } catch (FileNotFoundException ignored) {
+        }
+        catch (FileNotFoundException ignored) {
             return false;
         }
     }
 
     /**
      * Query the windows registry at the given location for a response in the given type.
-     * 
-     * @param <T>
-     *            See type.
-     * @param key
-     *            The key name to query.
-     * @param value
-     *            The value in the given key to query.
-     * @param type
-     *            The type of the reply (String or Integer).
+     *
+     * @param <T>   See type.
+     * @param key   The key name to query.
+     * @param value The value in the given key to query.
+     * @param type  The type of the reply (String or Integer).
+     *
      * @return The reply from the windows registry parsed into the requested type.
      */
     public static <T> T query(String key, String value, Class<T> type) {

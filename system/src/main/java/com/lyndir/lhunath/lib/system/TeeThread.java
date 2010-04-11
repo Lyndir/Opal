@@ -31,24 +31,22 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  * <p>
  * <i>Dec 16, 2007</i>
  * </p>
- * 
+ *
  * @author mbillemo
  */
 public class TeeThread extends Thread {
 
-    private static final Logger  logger = Logger.get( TeeThread.class );
+    private static final Logger logger = Logger.get( TeeThread.class );
 
-    private final InputStream    source;
+    private final InputStream source;
     private final OutputStream[] destinations;
 
 
     /**
      * Create a new {@link TeeThread} instance.
-     * 
-     * @param source
-     *            The data source.
-     * @param destinations
-     *            The destination streams to write the source data to.
+     *
+     * @param source       The data source.
+     * @param destinations The destination streams to write the source data to.
      */
     public TeeThread(InputStream source, OutputStream... destinations) {
 
@@ -73,7 +71,8 @@ public class TeeThread extends Thread {
                 for (OutputStream destination : destinations)
                     destination.write( buf, 0, bytesRead );
 
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             if (!(source instanceof PipedInputStream))
                 logger.err( e, "Could not read from the console source." );
         }
