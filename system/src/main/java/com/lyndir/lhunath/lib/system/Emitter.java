@@ -47,7 +47,7 @@ public abstract class Emitter<E> {
      *
      * @param receiver The object that will receive this object's messages.
      */
-    public void addReceiver(Receiver<E> receiver) {
+    public void addReceiver(final Receiver<E> receiver) {
 
         receivers.add( receiver );
     }
@@ -59,10 +59,10 @@ public abstract class Emitter<E> {
      *
      * @return <code>true</code> if at least one {@link Receiver} successfully processed the event.
      */
-    protected boolean trigger(E event) {
+    protected boolean trigger(final E event) {
 
         boolean success = false;
-        for (Receiver<E> receiver : receivers)
+        for (final Receiver<E> receiver : receivers)
             success &= receiver.fire( event );
 
         return success;

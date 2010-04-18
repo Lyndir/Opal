@@ -70,7 +70,7 @@ public abstract class PShape extends PNode {
      * {@inheritDoc}
      */
     @Override
-    public boolean intersects(Rectangle2D aBounds) {
+    public boolean intersects(final Rectangle2D aBounds) {
 
         return getShape().intersects( aBounds );
     }
@@ -89,7 +89,7 @@ public abstract class PShape extends PNode {
      * {@inheritDoc}
      */
     @Override
-    public boolean setBounds(double x, double y, double w, double h) {
+    public boolean setBounds(final double x, final double y, final double w, final double h) {
 
         return super.setBounds( x, y, w, h ) && scaleShape( x, y, w, h );
 
@@ -99,7 +99,7 @@ public abstract class PShape extends PNode {
      * {@inheritDoc}
      */
     @Override
-    public void paint(PPaintContext paintContext) {
+    public void paint(final PPaintContext paintContext) {
 
         Graphics2D g2 = paintContext.getGraphics();
         g2.setPaint( getPaint() );

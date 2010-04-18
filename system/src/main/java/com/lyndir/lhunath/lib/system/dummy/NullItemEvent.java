@@ -40,7 +40,7 @@ public class NullItemEvent extends ItemEvent {
      *
      * @param source the <code>ItemSelectable</code> object that originated the event
      */
-    public NullItemEvent(ItemSelectable source) {
+    public NullItemEvent(final ItemSelectable source) {
 
         this( source, 0, null, 0 );
     }
@@ -53,7 +53,7 @@ public class NullItemEvent extends ItemEvent {
      * @param item        an object -- the item affected by the event
      * @param stateChange an integer that indicates whether the item was selected or deselected
      */
-    public NullItemEvent(ItemSelectable source, int id, Object item, int stateChange) {
+    public NullItemEvent(final ItemSelectable source, final int id, final Object item, final int stateChange) {
 
         super( source, id, item, stateChange );
     }

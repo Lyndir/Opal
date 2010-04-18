@@ -62,7 +62,7 @@ public class Desktop extends Wrapper {
      * @return <code>true</code> If the Java6 Desktop class is available and the given action is supported by the
      *         current environment.
      */
-    public boolean isSupported(Action action) {
+    public boolean isSupported(final Action action) {
 
         try {
             Object desktopAction = mapEnumValue( action, getClass( "java.awt.Desktop.Action" ) );
@@ -76,7 +76,7 @@ public class Desktop extends Wrapper {
         return false;
     }
 
-    private Desktop(Object wrappedInstance) {
+    private Desktop(final Object wrappedInstance) {
 
         super( wrappedInstance );
     }
@@ -88,8 +88,8 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings("unused")
-    public void browse(URI uri)
+    @SuppressWarnings({"unused", "RedundantThrows"})
+    public void browse(final URI uri)
             throws IOException {
 
         invoke( "browse", new Class[] {URI.class}, uri );
@@ -102,8 +102,8 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings("unused")
-    public void edit(File file)
+    @SuppressWarnings({"unused", "RedundantThrows"})
+    public void edit(final File file)
             throws IOException {
 
         invoke( "edit", new Class[] {File.class}, file );
@@ -114,7 +114,7 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantThrows"})
     public void mail()
             throws IOException {
 
@@ -128,8 +128,8 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings("unused")
-    public void mail(URI mailtoURI)
+    @SuppressWarnings({"unused", "RedundantThrows"})
+    public void mail(final URI mailtoURI)
             throws IOException {
 
         invoke( "mail", new Class[] {URI.class}, mailtoURI );
@@ -142,8 +142,8 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings("unused")
-    public void open(File file)
+    @SuppressWarnings({"unused", "RedundantThrows"})
+    public void open(final File file)
             throws IOException {
 
         invoke( "open", new Class[] {File.class}, file );
@@ -156,8 +156,8 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings("unused")
-    public void print(File file)
+    @SuppressWarnings({"unused", "RedundantThrows"})
+    public void print(final File file)
             throws IOException {
 
         invoke( "print", new Class[] {File.class}, file );

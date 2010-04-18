@@ -32,7 +32,7 @@ public class NullOutputStream extends OutputStream {
      * {@inheritDoc}
      */
     @Override
-    public void write(int b) {
+    public void write(final int iByte) {
 
     }
 }

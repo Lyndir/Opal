@@ -39,7 +39,7 @@ public class NullCaretEvent extends CaretEvent {
      *
      * @param source The source of the caret event.
      */
-    public NullCaretEvent(Object source) {
+    public NullCaretEvent(final Object source) {
 
         super( source );
     }

@@ -39,11 +39,11 @@ public class ToolTipButton extends ToolTip {
      * Create a new {@link ToolTipButton} instance.
      *
      * @param toolTip The text to show when hovering this button.
-     * @param b       The button to use as content.
+     * @param button  The button to use as content.
      */
-    public ToolTipButton(String toolTip, AbstractButton b) {
+    public ToolTipButton(final String toolTip, final AbstractButton button) {
 
-        super( toolTip, b );
+        super( toolTip, button );
     }
 
     /**
@@ -51,7 +51,7 @@ public class ToolTipButton extends ToolTip {
      *
      * @param toolTip The text to show when hovering this button.
      */
-    public ToolTipButton(String toolTip) {
+    public ToolTipButton(final String toolTip) {
 
         super( toolTip, new JButton( UIUtils.getIcon( "help.png" ) ) );
     }
@@ -78,7 +78,7 @@ public class ToolTipButton extends ToolTip {
      *
      * @param button The button to use for content.
      */
-    public void setButton(AbstractButton button) {
+    public void setButton(final AbstractButton button) {
 
         setContent( button );
     }

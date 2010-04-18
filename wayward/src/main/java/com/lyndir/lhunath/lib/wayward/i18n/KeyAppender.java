@@ -38,27 +38,31 @@ public @interface KeyAppender {
     /**
      * Value for {@link #nullKey()} and {@link #notNullKey()} that prevent them from appending.
      */
-    static final String STRING_UNSET = "KeyAppender.unset";
+    String STRING_UNSET = "KeyAppender.unset";
 
 
     /**
-     * Matchers are used to append a specific key part when the parameter's value passes (or fails) a certain test.
+     * @return An array optionally filled with matchers to test the value against.
+     *
+     *         <p>
+     *         Matchers are used to append a specific key part when the parameter's value passes (or fails) a certain
+     *         test.
+     *         </p>
      */
     KeyMatch[] value() default {};
 
     /**
-     * Key to append when the value for this parameter is <code>null</code>.
+     * @return Key to append when the value for this parameter is <code>null</code>.
      */
     String nullKey() default STRING_UNSET;
 
     /**
-     * Key to append when the value for this parameter is not <code>null</code>.
+     * @return Key to append when the value for this parameter is not <code>null</code>.
      */
     String notNullKey() default STRING_UNSET;
 
     /**
-     * Determines whether to pass the value for this parameter to the evaluation of the localization value's format
-     * string.
+     * @return Whether to pass the value for this parameter to the evaluation of the localization value's format string.
      */
     boolean useValue() default false;
 }

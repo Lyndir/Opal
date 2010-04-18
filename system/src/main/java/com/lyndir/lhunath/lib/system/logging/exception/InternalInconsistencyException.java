@@ -32,7 +32,7 @@ public class InternalInconsistencyException extends RuntimeException {
      *
      * @param message Some context with what was going on or what caused this.
      */
-    public InternalInconsistencyException(String message) {
+    public InternalInconsistencyException(final String message) {
 
         this( message, null );
     }
@@ -43,7 +43,7 @@ public class InternalInconsistencyException extends RuntimeException {
      * @param message Some context with what was going on or what caused this.
      * @param cause   The optional exception cause of this.
      */
-    public InternalInconsistencyException(String message, Throwable cause) {
+    public InternalInconsistencyException(final String message, final Throwable cause) {
 
         super( message, cause );
     }

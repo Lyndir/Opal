@@ -32,7 +32,7 @@ public final class Factory {
      *
      * @return Guess.
      */
-    public static JScrollPane createStrippedScrollPane(Component component) {
+    public static JScrollPane createStrippedScrollPane(final Component component) {
 
         JScrollPane scrollPane = new JScrollPane( component );
         scrollPane.setBorder( BorderFactory.createEmptyBorder() );
@@ -50,8 +50,9 @@ public final class Factory {
      *
      * @return a split panes that has an empty border
      */
-    public static JSplitPane createStrippedSplitPane(int orientation, Component comp1, Component comp2,
-                                                     double resizeWeight) {
+    public static JSplitPane createStrippedSplitPane(
+            int orientation, final Component comp1,
+            Component comp2, final double resizeWeight) {
 
         JSplitPane split = UIFSplitPane.createStrippedSplitPane( orientation, comp1, comp2 );
         split.setResizeWeight( resizeWeight );
@@ -67,7 +68,7 @@ public final class Factory {
      *
      * @return Guess.
      */
-    public static AbstractButton createToolBarButton(Action action) {
+    public static AbstractButton createToolBarButton(final Action action) {
 
         JButton button = new JButton( action );
         button.setFocusPainted( false );

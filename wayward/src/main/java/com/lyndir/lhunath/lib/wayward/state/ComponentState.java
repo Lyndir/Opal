@@ -30,15 +30,15 @@ public interface ComponentState {
     /**
      * @return <code>true</code>: if the session state requires the attention of this page.
      */
-    public boolean isNecessary();
+    boolean isNecessary();
 
     /**
      * @return <code>true</code>: The component that handles this {@link ComponentState} is being presented to the user.
      */
-    public boolean isActive();
+    boolean isActive();
 
     /**
      * When invoked, the implementation should cause itself to be presented to the user.
      */
-    public void activate();
+    void activate();
 }

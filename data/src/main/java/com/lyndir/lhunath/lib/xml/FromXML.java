@@ -41,9 +41,11 @@ import java.lang.annotation.Target;
 public @interface FromXML {
 
     /**
-     * The name of the resource which contains the XML source data to inject.<br>
-     * <br>
-     * The resource will be loaded using the {@link ClassLoader#getSystemResource(String)} method.
+     * @return The name of the resource which contains the XML source data to inject.
+     *
+     *         <p>
+     *         The resource will be loaded using the {@link ClassLoader#getSystemResource(String)} method.
+     *         </p>
      */
     String value();
 }

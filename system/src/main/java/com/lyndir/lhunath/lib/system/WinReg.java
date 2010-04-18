@@ -47,7 +47,9 @@ public class WinReg {
 
         try {
             OutputStream out = new NullOutputStream();
-            return Shell.waitFor( Shell.exec( out, out, new File( "C:\\Windows\\System32" ), "reg.exe", "query", "/?" ) ) == 0;
+            return Shell
+                    .waitFor( Shell.exec( out, out, new File( "C:\\Windows\\System32" ), "reg.exe", "query", "/?" ) )
+                   == 0;
         }
         catch (FileNotFoundException ignored) {
             return false;
@@ -64,12 +66,13 @@ public class WinReg {
      *
      * @return The reply from the windows registry parsed into the requested type.
      */
-    public static <T> T query(String key, String value, Class<T> type) {
+    public static <T> T query(final String key, final String value, final Class<T> type) {
 
         if (!(type.equals( String.class ) || type.equals( Integer.class )))
             throw new IllegalArgumentException( "Can only query the registry for String or Integer types." );
 
-        String output = Shell.execRead( new File( "C:\\Windows\\System32" ), "reg.exe", "query", key, "/v", value );
+        String output = Shell
+                .execRead( new File( "C:\\Windows\\System32" ), "reg.exe", "query", key, "/v", value );
 
         int pos;
         T result = null;

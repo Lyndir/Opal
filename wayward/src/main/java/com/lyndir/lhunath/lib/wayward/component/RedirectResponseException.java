@@ -43,7 +43,7 @@ public class RedirectResponseException extends AbstractRestartResponseException 
      *
      * @param target The target to set as the request's target.
      */
-    public RedirectResponseException(IRequestTarget target) {
+    public RedirectResponseException(final IRequestTarget target) {
 
         RequestCycle rc = RequestCycle.get();
         if (rc == null)

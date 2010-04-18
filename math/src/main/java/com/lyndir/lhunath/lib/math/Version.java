@@ -35,8 +35,8 @@ public class Version implements Comparable<Version>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String version;
-    private String[] tags;
+    private String version = null;
+    private String[] tags = null;
 
 
     /**
@@ -44,7 +44,7 @@ public class Version implements Comparable<Version>, Serializable {
      *
      * @param version The string version tag.
      */
-    public Version(Number version) {
+    public Version(final Number version) {
 
         this( version == null? null: version.toString() );
     }
@@ -54,7 +54,7 @@ public class Version implements Comparable<Version>, Serializable {
      *
      * @param version The string version tag.
      */
-    public Version(String version) {
+    public Version(final String version) {
 
         set( version );
     }
@@ -64,7 +64,7 @@ public class Version implements Comparable<Version>, Serializable {
      *
      * @param version The string representation of the version to set this object to.
      */
-    public void set(String version) {
+    public void set(final String version) {
 
         if (version == null)
             this.version = "0";
@@ -90,7 +90,7 @@ public class Version implements Comparable<Version>, Serializable {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(Version o) {
+    public int compareTo(final Version o) {
 
         if (o == null)
             return 1;
@@ -112,12 +112,12 @@ public class Version implements Comparable<Version>, Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object obj) {
 
-        if (this == o)
+        if (this == obj)
             return true;
-        if (o instanceof Version)
-            return Arrays.equals( tags, ((Version) o).tags ) && version.equals( ((Version) o).version );
+        if (obj instanceof Version)
+            return Arrays.equals( tags, ((Version) obj).tags ) && version.equals( ((Version) obj).version );
 
         return false;
     }
@@ -144,7 +144,7 @@ public class Version implements Comparable<Version>, Serializable {
      *
      * @return Guess.
      */
-    public boolean newerThan(Version v) {
+    public boolean newerThan(final Version v) {
 
         return compareTo( v ) > 0;
     }
@@ -156,7 +156,7 @@ public class Version implements Comparable<Version>, Serializable {
      *
      * @return Guess.
      */
-    public boolean olderThan(Version v) {
+    public boolean olderThan(final Version v) {
 
         return compareTo( v ) < 0;
     }

@@ -21,7 +21,7 @@ import java.lang.annotation.Target;
 public @interface UseLocalizationProvider {
 
     /**
-     * The {@link LocalizationProvider} that provides values for keys.
+     * @return The {@link LocalizationProvider} that provides values for keys.
      */
     Class<? extends LocalizationProvider> value();
 }

@@ -43,7 +43,7 @@ public class EnumResourceBundle<T> extends ResourceBundle {
     /**
      * @param enumType The enum that will provide values for this resource bundle.
      */
-    public EnumResourceBundle(Class<? extends ValueEnum<T>> enumType) {
+    public EnumResourceBundle(final Class<? extends ValueEnum<T>> enumType) {
 
         if (!enumType.isEnum())
             throw new IllegalArgumentException( "Expected an enum, got: " + enumType );
@@ -51,7 +51,7 @@ public class EnumResourceBundle<T> extends ResourceBundle {
         this.enumType = enumType;
 
         keyList = new LinkedList<String>();
-        for (ValueEnum<T> element : enumType.getEnumConstants())
+        for (final ValueEnum<T> element : enumType.getEnumConstants())
             keyList.add( element.name() );
     }
 
@@ -68,9 +68,9 @@ public class EnumResourceBundle<T> extends ResourceBundle {
      * {@inheritDoc}
      */
     @Override
-    protected T handleGetObject(String key) {
+    protected T handleGetObject(final String key) {
 
-        for (ValueEnum<T> element : enumType.getEnumConstants())
+        for (final ValueEnum<T> element : enumType.getEnumConstants())
             if (element.name().equals( key ))
                 return element.value();
 

@@ -40,8 +40,8 @@ import java.util.LinkedList;
  */
 public class FixedDeque<E> implements Deque<E> {
 
-    private int maxSize;
-    private Deque<E> deque;
+    private final int maxSize;
+    private final Deque<E> deque;
 
 
     /**
@@ -49,7 +49,7 @@ public class FixedDeque<E> implements Deque<E> {
      *
      * @param maxSize The fixed size of this {@link Deque}.
      */
-    public FixedDeque(int maxSize) {
+    public FixedDeque(final int maxSize) {
 
         this.maxSize = maxSize;
         deque = new LinkedList<E>();
@@ -58,13 +58,13 @@ public class FixedDeque<E> implements Deque<E> {
     /**
      * Create a new {@link FixedDeque} instance initialized by copying elements form another collection.
      *
-     * @param maxSize The fixed size of this {@link Deque}.
-     * @param c       The collection whose elements are to be placed into this list.
+     * @param maxSize    The fixed size of this {@link Deque}.
+     * @param collection The collection whose elements are to be placed into this list.
      */
-    public FixedDeque(int maxSize, Collection<? extends E> c) {
+    public FixedDeque(final int maxSize, final Collection<? extends E> collection) {
 
         this.maxSize = maxSize;
-        deque = new LinkedList<E>( c );
+        deque = new LinkedList<E>( collection );
     }
 
     /**
@@ -89,7 +89,8 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    public <T> T[] toArray(T[] a) {
+    @SuppressWarnings({"SuspiciousToArrayCall"})
+    public <T> T[] toArray(final T[] a) {
 
         return deque.toArray( a );
     }
@@ -98,18 +99,18 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    public boolean containsAll(Collection<?> c) {
+    public boolean containsAll(final Collection<?> collection) {
 
-        return deque.containsAll( c );
+        return deque.containsAll( collection );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean addAll(Collection<? extends E> c) {
+    public boolean addAll(final Collection<? extends E> collection) {
 
-        if (!deque.addAll( c ))
+        if (!deque.addAll( collection ))
             return false;
 
         while (deque.size() > maxSize)
@@ -122,18 +123,18 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    public boolean removeAll(Collection<?> c) {
+    public boolean removeAll(final Collection<?> collection) {
 
-        return deque.removeAll( c );
+        return deque.removeAll( collection );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean retainAll(Collection<?> c) {
+    public boolean retainAll(final Collection<?> collection) {
 
-        return deque.retainAll( c );
+        return deque.retainAll( collection );
     }
 
     /**
@@ -149,7 +150,7 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    public void addFirst(E e) {
+    public void addFirst(final E e) {
 
         if (deque.size() >= maxSize)
             deque.removeLast();
@@ -160,7 +161,7 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    public void addLast(E e) {
+    public void addLast(final E e) {
 
         if (deque.size() >= maxSize)
             deque.removeFirst();
@@ -171,7 +172,7 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    public boolean offerFirst(E e) {
+    public boolean offerFirst(final E e) {
 
         if (deque.size() >= maxSize)
             return false;
@@ -183,7 +184,7 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    public boolean offerLast(E e) {
+    public boolean offerLast(final E e) {
 
         if (deque.size() >= maxSize)
             return false;
@@ -267,7 +268,7 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    public boolean removeFirstOccurrence(Object o) {
+    public boolean removeFirstOccurrence(final Object o) {
 
         return deque.removeFirstOccurrence( o );
     }
@@ -276,7 +277,7 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    public boolean removeLastOccurrence(Object o) {
+    public boolean removeLastOccurrence(final Object o) {
 
         return deque.removeLastOccurrence( o );
     }
@@ -285,7 +286,7 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    public boolean add(E e) {
+    public boolean add(final E e) {
 
         addLast( e );
 
@@ -296,7 +297,7 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    public boolean offer(E e) {
+    public boolean offer(final E e) {
 
         return offerLast( e );
     }
@@ -341,7 +342,7 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    public void push(E e) {
+    public void push(final E e) {
 
         addFirst( e );
     }
@@ -359,7 +360,7 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    public boolean remove(Object o) {
+    public boolean remove(final Object o) {
 
         return removeFirstOccurrence( o );
     }
@@ -368,7 +369,7 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    public boolean contains(Object o) {
+    public boolean contains(final Object o) {
 
         return deque.contains( o );
     }

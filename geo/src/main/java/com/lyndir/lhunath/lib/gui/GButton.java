@@ -58,7 +58,7 @@ public class GButton extends JButton {
      *
      * @param icon The icon to show on the button.
      */
-    public GButton(Icon icon) {
+    public GButton(final Icon icon) {
 
         this( null, icon );
     }
@@ -69,7 +69,7 @@ public class GButton extends JButton {
      * @param text The text to put on the button.
      * @param icon The icon to show next to the button text.
      */
-    public GButton(String text, Icon icon) {
+    public GButton(final String text, final Icon icon) {
 
         super( text, icon );
         setBorderPainted( false );
@@ -78,14 +78,14 @@ public class GButton extends JButton {
         addMouseListener( new MouseAdapter() {
 
             @Override
-            public void mouseEntered(MouseEvent e) {
+            public void mouseEntered(final MouseEvent e) {
 
                 hover = true;
                 repaint();
             }
 
             @Override
-            public void mouseExited(MouseEvent e) {
+            public void mouseExited(final MouseEvent e) {
 
                 hover = false;
                 repaint();
@@ -95,7 +95,7 @@ public class GButton extends JButton {
         addComponentListener( new ComponentAdapter() {
 
             @Override
-            public void componentResized(ComponentEvent e) {
+            public void componentResized(final ComponentEvent e) {
 
                 updateUI();
             }
@@ -109,7 +109,7 @@ public class GButton extends JButton {
      * {@inheritDoc}
      */
     @Override
-    public void setText(String text) {
+    public void setText(final String text) {
 
         super.setText( text );
 
@@ -120,7 +120,7 @@ public class GButton extends JButton {
      * {@inheritDoc}
      */
     @Override
-    public void setHorizontalTextPosition(int textPosition) {
+    public void setHorizontalTextPosition(final int textPosition) {
 
         super.setHorizontalTextPosition( textPosition );
 
@@ -131,7 +131,7 @@ public class GButton extends JButton {
      * {@inheritDoc}
      */
     @Override
-    public void setVerticalTextPosition(int textPosition) {
+    public void setVerticalTextPosition(final int textPosition) {
 
         super.setVerticalTextPosition( textPosition );
 
@@ -142,7 +142,7 @@ public class GButton extends JButton {
      * {@inheritDoc}
      */
     @Override
-    public void setIconTextGap(int iconTextGap) {
+    public void setIconTextGap(final int iconTextGap) {
 
         super.setIconTextGap( iconTextGap );
 
@@ -153,7 +153,7 @@ public class GButton extends JButton {
      * {@inheritDoc}
      */
     @Override
-    public void setIcon(Icon newIcon) {
+    public void setIcon(final Icon newIcon) {
 
         super.setIcon( newIcon );
         if (newIcon == null)
@@ -188,7 +188,9 @@ public class GButton extends JButton {
      */
     protected void updateSize() {
 
-        Vec2 textSize = new Vec2(), iconSize = new Vec2(), buttonSize = new Vec2();
+        Vec2 textSize = new Vec2();
+        Vec2 iconSize = new Vec2();
+        Vec2 buttonSize = new Vec2();
 
         if (getText() != null && getText().length() > 0) {
             if (getFont() == null) {
@@ -249,8 +251,8 @@ public class GButton extends JButton {
 
         super.updateUI();
 
-        backgroundPaint = new GradientPaint( 0, 0, MyLookAndFeel.getActiveBright(), 0, getHeight(), UIUtils.setAlpha(
-                MyLookAndFeel.getActiveDark(), 50 ) );
+        backgroundPaint = new GradientPaint( 0, 0, MyLookAndFeel.getActiveBright(), 0, getHeight(),
+                                             UIUtils.setAlpha( MyLookAndFeel.getActiveDark(), 50 ) );
         borderPaint = new GradientPaint( 0, 0, MyLookAndFeel.getActiveBright().brighter(), 0, getHeight(),
                                          UIUtils.setAlpha( MyLookAndFeel.getActiveBright(), 50 ) );
     }
@@ -259,7 +261,7 @@ public class GButton extends JButton {
      * {@inheritDoc}
      */
     @Override
-    public void repaint(long tm, int x, int y, int width, int height) {
+    public void repaint(final long tm, final int x, final int y, final int width, final int height) {
 
         if (getParent() != null)
             getParent().repaint( tm, x, y, width, height );
@@ -271,7 +273,7 @@ public class GButton extends JButton {
      * {@inheritDoc}
      */
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(final Graphics g) {
 
         Graphics2D g2 = (Graphics2D) g;
         Image image;
@@ -311,7 +313,10 @@ public class GButton extends JButton {
         if (getText() == null || getText().length() == 0)
             horizontal = vertical = CENTER;
 
-        int iconX, iconY, textX, textY;
+        int iconX;
+        int iconY;
+        int textX;
+        int textY;
         switch (horizontal) {
             case LEFT:
                 textX = xPadding;

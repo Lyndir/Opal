@@ -51,7 +51,7 @@ public class Poller<K, E> {
      * @param owner   The responsible object.
      * @param element The element that should be processed for the responsible object.
      */
-    public void offer(K owner, E element) {
+    public void offer(final K owner, final E element) {
 
         Queue<E> queue = queues.get( owner );
         if (queue == null)
@@ -68,7 +68,7 @@ public class Poller<K, E> {
      * @return The element that has been on the responsible object's queue the longest, or <code>null</code> if its
      *         queue is empty.
      */
-    public E poll(K owner) {
+    public E poll(final K owner) {
 
         if (owner != null && queues.containsKey( owner ))
             return queues.get( owner ).poll();
@@ -85,7 +85,7 @@ public class Poller<K, E> {
      */
     public K pollKey() {
 
-        for (Map.Entry<K, Queue<E>> queueEntry : queues.entrySet())
+        for (final Map.Entry<K, Queue<E>> queueEntry : queues.entrySet())
             if (!queueEntry.getValue().isEmpty())
                 return queueEntry.getKey();
 

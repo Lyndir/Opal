@@ -48,15 +48,12 @@ public class Utils {
     private static final Logger logger = Logger.get( Utils.class );
 
     /**
-     * The default character set.
-     */
-    public static final Charset charset = Charset.forName( "UTF-8" );
-
-    /**
      * Calendar fields in order.
      */
-    public static final int[] calendarFields = {Calendar.MILLISECOND, Calendar.SECOND, Calendar.MINUTE,
-            Calendar.HOUR_OF_DAY, Calendar.DAY_OF_MONTH, Calendar.MONTH, Calendar.YEAR};
+    public static final int[] calendarFields = {
+            Calendar.MILLISECOND, Calendar.SECOND, Calendar.MINUTE,
+            Calendar.HOUR_OF_DAY, Calendar.DAY_OF_MONTH, Calendar.MONTH,
+            Calendar.YEAR};
 
     /**
      * Description of the calendar fields.
@@ -117,7 +114,7 @@ public class Utils {
      */
     public static Charset getCharset() {
 
-        return charset;
+        return Charset.forName( "UTF-8" );
     }
 
     /**
@@ -128,7 +125,7 @@ public class Utils {
      *
      * @return The resulting double.
      */
-    public static Double parseDouble(Object object) {
+    public static Double parseDouble(final Object object) {
 
         try {
             if (object == null)
@@ -152,7 +149,7 @@ public class Utils {
      *
      * @return The resulting integer.
      */
-    public static Integer parseInt(Object object) {
+    public static Integer parseInt(final Object object) {
 
         try {
             if (object == null)
@@ -176,7 +173,7 @@ public class Utils {
      *
      * @return The resulting integer.
      */
-    public static Long parseLong(Object object) {
+    public static Long parseLong(final Object object) {
 
         try {
             if (object == null)
@@ -200,7 +197,7 @@ public class Utils {
      *
      * @return The string representation of the object.
      */
-    public static String toString(Object object) {
+    public static String toString(final Object object) {
 
         if (object == null)
             return null;
@@ -218,7 +215,7 @@ public class Utils {
      *
      * @return The hash as a string of hexadecimal characters.
      */
-    public static String getMD5(File file) {
+    public static String getMD5(final File file) {
 
         return getDigest( file, Digest.MD5 );
     }
@@ -230,7 +227,7 @@ public class Utils {
      *
      * @return The hash as a string of hexadecimal characters.
      */
-    public static String getMD5(String data) {
+    public static String getMD5(final String data) {
 
         return getDigest( new ByteArrayInputStream( data.getBytes() ), Digest.MD5 );
     }
@@ -242,7 +239,7 @@ public class Utils {
      *
      * @return The hash as a string of hexadecimal characters.
      */
-    public static String getMD5(byte[] data) {
+    public static String getMD5(final byte[] data) {
 
         return getDigest( new ByteArrayInputStream( data ), Digest.MD5 );
     }
@@ -255,7 +252,7 @@ public class Utils {
      *
      * @return The hash as a string of hexadecimal characters.
      */
-    public static String getDigest(File file, Digest digestType) {
+    public static String getDigest(final File file, final Digest digestType) {
 
         try {
             return getDigest( new BufferedInputStream( new FileInputStream( file ) ), digestType );
@@ -274,7 +271,7 @@ public class Utils {
      *
      * @return The hash as a string of hexadecimal characters.
      */
-    public static String getDigest(String data, Digest digestType) {
+    public static String getDigest(final String data, final Digest digestType) {
 
         return getDigest( new ByteArrayInputStream( data.getBytes() ), digestType );
     }
@@ -287,7 +284,7 @@ public class Utils {
      *
      * @return The hash as a string of hexadecimal characters.
      */
-    public static String getDigest(byte[] data, Digest digestType) {
+    public static String getDigest(final byte[] data, final Digest digestType) {
 
         return getDigest( new ByteArrayInputStream( data ), digestType );
     }
@@ -300,12 +297,12 @@ public class Utils {
      *
      * @return The hash as a string of hexadecimal characters.
      */
-    public static String getDigest(InputStream in, Digest digestType) {
+    public static String getDigest(final InputStream in, final Digest digestType) {
 
         Checksum checksum = new CRC32();
         try {
             MessageDigest digest = null;
-            if (digestType != Digest.CRC_32)
+            if (digestType != Digest.CRC32)
                 digest = MessageDigest.getInstance( digestType.getName() );
 
             byte[] buffer = new byte[BUFFER_SIZE];
@@ -320,7 +317,7 @@ public class Utils {
             if (digest == null)
                 digestHex.append( String.format( "%08x", checksum.getValue() ) );
             else
-                for (byte b : digest.digest())
+                for (final byte b : digest.digest())
                     digestHex.append( String.format( "%02x", b ) );
 
             return digestHex.toString();
@@ -344,7 +341,7 @@ public class Utils {
         /**
          * The CRC-32 message digest algorithm.
          */
-        CRC_32,
+        CRC32,
 
         /**
          * The MD2 message digest algorithm as defined in RFC 1319.
@@ -365,19 +362,19 @@ public class Utils {
          * Hash algorithms defined in the FIPS PUB 180-2.<br>
          * SHA-256 is a 256-bit hash function intended to provide 128 bits of security against collision attacks.
          */
-        SHA_256,
+        SHA256,
 
         /**
          * Hash algorithms defined in the FIPS PUB 180-2.<br>
          * A 384-bit hash may be obtained by truncating the SHA-512 output.
          */
-        SHA_384,
+        SHA384,
 
         /**
          * Hash algorithms defined in the FIPS PUB 180-2.<br>
          * SHA-512 is a 512-bit hash function intended to provide 256 bits of security.
          */
-        SHA_512;
+        SHA512;
 
         /**
          * Return the official name for this digest.
@@ -400,22 +397,22 @@ public class Utils {
          *
          * @throws IllegalArgumentException If the digest could not be guessed.
          */
-        public static Digest guessType(String digest)
+        public static Digest guessType(final String digest)
                 throws IllegalArgumentException {
 
             switch (digest.length()) {
                 case 8:
-                    return CRC_32;
+                    return CRC32;
                 case 32:
                     return MD5;
                 case 40:
                     return SHA1;
                 case 64:
-                    return SHA_256;
+                    return SHA256;
                 case 96:
-                    return SHA_384;
+                    return SHA384;
                 case 512:
-                    return SHA_512;
+                    return SHA512;
             }
 
             throw new IllegalArgumentException( "The digest in the argument is cannot be recougnized: '" + digest
@@ -431,7 +428,7 @@ public class Utils {
      *
      * @return Guess.
      */
-    public static File res(String resource) {
+    public static File res(final String resource) {
 
         URL url = Thread.currentThread().getContextClassLoader().getResource( resource );
         if (url == null)
@@ -447,13 +444,13 @@ public class Utils {
      *
      * @return Guess.
      */
-    public static File res(URL url) {
+    public static File res(final URL url) {
 
         /* In case the URI is invalid. */
         URI uri;
         String path = null;
         try {
-            path = URLDecoder.decode( url.toExternalForm(), charset.name() ).replaceFirst( "^[^:]+:", "" );
+            path = URLDecoder.decode( url.toExternalForm(), getCharset().name() ).replaceFirst( "^[^:]+:", "" );
         }
         catch (UnsupportedEncodingException ignored) {
             /* Ignore. */
@@ -483,12 +480,11 @@ public class Utils {
      *
      * @return Guess.
      */
-    public static boolean isUrl(String url) {
+    public static boolean isUrl(final String url) {
 
         try {
-            @SuppressWarnings("unused")
-            // noinspection ResultOfObjectAllocationIgnored
-                    URL unused = new URL( url );
+            @SuppressWarnings({"unused", "UnusedAssignment"})
+            URL unused = new URL( url );
             return true;
         }
         catch (MalformedURLException ignored) {
@@ -503,7 +499,7 @@ public class Utils {
      *
      * @return The URL string in a URL object.
      */
-    public static URL url(String url) {
+    public static URL url(final String url) {
 
         try {
             return url == null || url.length() == 0? null: new URL( url );
@@ -525,7 +521,7 @@ public class Utils {
      * @throws IOException
      * @see BaseConfig#BUFFER_SIZE
      */
-    public static String readReader(Reader reader)
+    public static String readReader(final Reader reader)
             throws IOException {
 
         return readReader( reader, BaseConfig.BUFFER_SIZE, null );
@@ -543,7 +539,7 @@ public class Utils {
      *
      * @throws IOException
      */
-    public static String readReader(Reader reader, int bufferSize, StreamCallback callback)
+    public static String readReader(final Reader reader, final int bufferSize, final StreamCallback callback)
             throws IOException {
 
         return readReader( reader, bufferSize, callback, true );
@@ -562,7 +558,9 @@ public class Utils {
      *
      * @throws IOException
      */
-    public static String readReader(Reader reader, int bufferSize, StreamCallback callback, boolean autoclose)
+    public static String readReader(
+            Reader reader, final int bufferSize, final StreamCallback callback,
+            boolean autoclose)
             throws IOException {
 
         StringWriter output = new StringWriter();
@@ -597,7 +595,7 @@ public class Utils {
      * @throws IOException
      * @see BaseConfig#BUFFER_SIZE
      */
-    public static byte[] readStream(InputStream stream)
+    public static byte[] readStream(final InputStream stream)
             throws IOException {
 
         return readStream( stream, BaseConfig.BUFFER_SIZE, null );
@@ -615,7 +613,7 @@ public class Utils {
      *
      * @throws IOException
      */
-    public static byte[] readStream(InputStream stream, int bufferSize, StreamCallback callback)
+    public static byte[] readStream(final InputStream stream, final int bufferSize, final StreamCallback callback)
             throws IOException {
 
         return readStream( stream, bufferSize, callback, true );
@@ -633,7 +631,9 @@ public class Utils {
      *
      * @throws IOException
      */
-    public static byte[] readStream(InputStream stream, int bufferSize, StreamCallback callback, boolean autoclose)
+    public static byte[] readStream(
+            InputStream stream, final int bufferSize, final StreamCallback callback,
+            boolean autoclose)
             throws IOException {
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -668,7 +668,7 @@ public class Utils {
      * @throws IOException
      * @see BaseConfig#BUFFER_SIZE
      */
-    public static void pipeStream(InputStream in, OutputStream out)
+    public static void pipeStream(final InputStream in, final OutputStream out)
             throws IOException {
 
         pipeStream( in, BaseConfig.BUFFER_SIZE, out, null );
@@ -685,7 +685,9 @@ public class Utils {
      *
      * @throws IOException
      */
-    public static void pipeStream(InputStream in, int bufferSize, OutputStream out, StreamCallback callback)
+    public static void pipeStream(
+            InputStream in, final int bufferSize, final OutputStream out,
+            StreamCallback callback)
             throws IOException {
 
         pipeStream( in, bufferSize, out, callback, true );
@@ -703,8 +705,9 @@ public class Utils {
      *
      * @throws IOException
      */
-    public static void pipeStream(InputStream in, int bufferSize, OutputStream out, StreamCallback callback,
-                                  boolean autoclose)
+    public static void pipeStream(
+            InputStream in, final int bufferSize, final OutputStream out,
+            StreamCallback callback, final boolean autoclose)
             throws IOException {
 
         try {
@@ -748,7 +751,7 @@ public class Utils {
      *
      * @param libName The name of the library that will be loaded.
      */
-    public static void initNativeLibPath(String libName) {
+    public static void initNativeLibPath(final String libName) {
 
         String libFileName = libName;
         if (System.getProperty( "os.name" ).matches( "Windows.*" ))
@@ -782,7 +785,7 @@ public class Utils {
      *
      * @return The {@link ZipEntry} for the pathname or <code>null</code> if none was present.
      */
-    public static ZipEntry getZipEntry(ZipFile zipFile, String zippedName) {
+    public static ZipEntry getZipEntry(final ZipFile zipFile, final String zippedName) {
 
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         while (entries.hasMoreElements()) {
@@ -802,9 +805,9 @@ public class Utils {
      *
      * @return The name of the field.
      */
-    public static String getFieldName(Reflective owner, Object fieldValue) {
+    public static String getFieldName(final Reflective owner, final Object fieldValue) {
 
-        for (Field field : owner.getClass().getDeclaredFields())
+        for (final Field field : owner.getClass().getDeclaredFields())
             try {
                 Object value = owner.getFieldValue( field );
                 if (fieldValue == value)
@@ -833,7 +836,7 @@ public class Utils {
      *
      * @return The matching line or given group in the matching line.
      */
-    public static String grep(String pattern, File file, int group) {
+    public static String grep(final String pattern, final File file, final int group) {
 
         return grep( Pattern.compile( pattern ), file, group );
     }
@@ -852,18 +855,18 @@ public class Utils {
      *
      * @return The matching line or given group in the matching line.
      */
-    public static String grep(Pattern pattern, File file, int group) {
+    public static String grep(final Pattern pattern, final File file, final int group) {
 
         StringBuilder resultBuilder = new StringBuilder();
 
         if (file.isDirectory())
-            for (File child : file.listFiles())
+            for (final File child : file.listFiles())
                 resultBuilder.append( resultBuilder.length() > 0? "\n": "" ).append( grep( pattern, child, group ) );
         else if (file.isFile())
             try {
                 String content = readReader( new FileReader( file ), 4096, null, true );
 
-                for (String line : content.split( "\n" )) {
+                for (final String line : content.split( "\n" )) {
                     Matcher matcher = pattern.matcher( line );
                     if (matcher.find())
                         return matcher.group( group );
@@ -885,14 +888,14 @@ public class Utils {
      * Recursively iterate the given {@link Collection} and all {@link Collection}s within it. When an element is
      * encountered that equals the given {@link Object}, the method returns <code>true</code>.
      *
-     * @param c The collection to iterate recursively.
-     * @param o The object to look for in the collection.
+     * @param collection The collection to iterate recursively.
+     * @param o          The object to look for in the collection.
      *
      * @return <code>true</code> if the object was found anywhere within the collection or any of its sub-collections.
      */
-    public static boolean recurseContains(Collection<?> c, Object o) {
+    public static boolean recurseContains(final Collection<?> collection, final Object o) {
 
-        for (Object co : c)
+        for (final Object co : collection)
             if (co.equals( o ))
                 return true;
             else if (co instanceof Collection<?> && recurseContains( (Collection<?>) co, o ))
@@ -908,7 +911,7 @@ public class Utils {
      *
      * @return The suffix in the format specification of the given field.
      */
-    public static String calendarSuffix(int field) {
+    public static String calendarSuffix(final int field) {
 
         return calendarFormat.get( field ).replaceAll( "[a-zA-Z]", "" );
     }
@@ -921,9 +924,9 @@ public class Utils {
      *
      * @return <code>true</code> if the search object was found in the array.
      */
-    public static boolean inArray(Object[] array, Object search) {
+    public static boolean inArray(final Object[] array, final Object search) {
 
-        for (Object element : array)
+        for (final Object element : array)
             if (element == search || element != null && element.equals( search ))
                 return true;
 
@@ -938,7 +941,7 @@ public class Utils {
      *
      * @return The compressed signature.
      */
-    public static String compressSignature(String signature) {
+    public static String compressSignature(final String signature) {
 
         String compressed = signature.replaceAll( "(\\w)\\w{2,}\\.", "$1~" );
         return compressed.replaceFirst( " throws [^\\(\\)]*", "" );
@@ -952,7 +955,7 @@ public class Utils {
      *
      * @return The result of the trimming.
      */
-    public static String ltrim(Object source, Object trim) {
+    public static String ltrim(final Object source, final Object trim) {
 
         if (source == null || trim == null)
             return source == null? null: source.toString();
@@ -974,7 +977,7 @@ public class Utils {
      *
      * @return The result of the trimming.
      */
-    public static String rtrim(Object source, Object trim) {
+    public static String rtrim(final Object source, final Object trim) {
 
         if (source == null || trim == null)
             return source == null? null: source.toString();
@@ -996,7 +999,7 @@ public class Utils {
      *
      * @return The result of the trimming.
      */
-    public static String trim(Object source, Object trim) {
+    public static String trim(final Object source, final Object trim) {
 
         return rtrim( ltrim( source, trim ), trim );
     }
@@ -1006,7 +1009,7 @@ public class Utils {
      *
      * @return A concise representation of the URL showing only the root domain and final path of the path.
      */
-    public static String shortUrl(URL home) {
+    public static String shortUrl(final URL home) {
 
         String shortHome = home.getHost().replaceFirst( "^.*?([^\\.]+\\.[^\\.]+)$", "$1" );
         String path = home.getPath().replaceFirst( "/+$", "" ).replaceFirst( "^.*/", "" );

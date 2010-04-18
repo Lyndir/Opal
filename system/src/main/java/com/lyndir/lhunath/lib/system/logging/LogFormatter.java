@@ -61,7 +61,7 @@ public abstract class LogFormatter extends Formatter {
      *
      * @param verbosity Whether to use verbose mode or not (default: false).
      */
-    protected LogFormatter(boolean verbosity) {
+    protected LogFormatter(final boolean verbosity) {
 
         this();
         setVerbose( verbosity );
@@ -76,10 +76,11 @@ public abstract class LogFormatter extends Formatter {
      * {@inheritDoc}
      */
     @Override
-    public String format(LogRecord record) {
+    public String format(final LogRecord record) {
 
         /* Initialize some convenience variables for this record. */
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        @SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})
         Throwable error = record.getThrown();
 
         /* If this log message has a throwable, use it(s cause) to make the log output more accurate. */
@@ -94,21 +95,21 @@ public abstract class LogFormatter extends Formatter {
         StackTraceElement sourceElement = null;
         if (stackTrace.length > 0)
             sourceElement = stackTrace[0];
-        for (StackTraceElement element : stackTrace)
+        for (final StackTraceElement element : stackTrace)
             if (!isIgnored( (sourceElement = element).getClassName() ))
                 break;
 
         /* Pretty print the source: Line:Package.Class.Method() */
-        String realSource = "", relevSource = "";
+        String realSource = "", relSource = "";
         if (stackTrace.length > 0 && !stackTrace[0].equals( sourceElement ))
             realSource = String.format( "(%s:%d) %s.%s()", stackTrace[0].getFileName(), stackTrace[0].getLineNumber(),
                                         Utils.compressSignature( stackTrace[0].getClassName() ),
                                         stackTrace[0].getMethodName() );
         if (sourceElement != null)
-            relevSource = String.format( "(%s:%d) %s.%s()", sourceElement.getFileName(), sourceElement.getLineNumber(),
-                                         Utils.compressSignature( sourceElement.getClassName() ),
-                                         sourceElement.getMethodName() );
-        String source = realSource + (realSource.length() > 0? ", ": "") + relevSource;
+            relSource = String.format( "(%s:%d) %s.%s()", sourceElement.getFileName(), sourceElement.getLineNumber(),
+                                       Utils.compressSignature( sourceElement.getClassName() ),
+                                       sourceElement.getMethodName() );
+        String source = realSource + (realSource.length() > 0? ", ": "") + relSource;
         if (source.length() == 0)
             source = "[Unknown Source]";
 
@@ -138,16 +139,16 @@ public abstract class LogFormatter extends Formatter {
         if (isVerbose() && error != null)
             /* Write the stack trace to the buffer. */
             if (stackTrace.length > 0)
-                for (StackTraceElement e : stackTrace)
+                for (final StackTraceElement e : stackTrace)
                     buffer.append( String.format( "\n %s      %s", isIgnored( e.getClassName() )? '-': '>', e ) );
         buffer.append( levelColor.get( null ) );
 
         return buffer.toString();
     }
 
-    private static boolean isIgnored(String classOrPackage) {
+    private static boolean isIgnored(final String classOrPackage) {
 
-        for (String skipPackage : skipPackages)
+        for (final String skipPackage : skipPackages)
             if (classOrPackage.startsWith( skipPackage ))
                 return true;
 
@@ -170,7 +171,7 @@ public abstract class LogFormatter extends Formatter {
      *
      * @param verbose Guess.
      */
-    public void setVerbose(boolean verbose) {
+    public void setVerbose(final boolean verbose) {
 
         this.verbose = verbose;
     }

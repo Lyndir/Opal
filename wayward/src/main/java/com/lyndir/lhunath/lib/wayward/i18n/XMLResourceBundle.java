@@ -47,7 +47,7 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
      *
      * @param props The properties to load into this XML based resource bundle.
      */
-    XMLResourceBundle(Properties props) {
+    XMLResourceBundle(final Properties props) {
 
         super( props );
     }
@@ -59,9 +59,9 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
      *
      * @see ResourceBundle#getBundle(String)
      */
-    public static ResourceBundle getXMLBundle(String baseName) {
+    public static ResourceBundle getXMLBundle(final String baseName) {
 
-        return getBundle( baseName, new Control() );
+        return getBundle( baseName, new XMLControl() );
     }
 
     /**
@@ -72,9 +72,9 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
      *
      * @see ResourceBundle#getBundle(String, Locale)
      */
-    public static ResourceBundle getXMLBundle(String baseName, Locale locale) {
+    public static ResourceBundle getXMLBundle(final String baseName, final Locale locale) {
 
-        return getBundle( baseName, locale, new Control() );
+        return getBundle( baseName, locale, new XMLControl() );
     }
 
     /**
@@ -86,27 +86,24 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
      *
      * @see ResourceBundle#getBundle(String, Locale, ClassLoader)
      */
-    public static ResourceBundle getXMLBundle(String baseName, Locale locale, ClassLoader loader) {
+    public static ResourceBundle getXMLBundle(final String baseName, final Locale locale, final ClassLoader loader) {
 
-        return getBundle( baseName, locale, loader, new Control() );
+        return getBundle( baseName, locale, loader, new XMLControl() );
     }
 
 
-    static class Control extends ResourceBundle.Control {
-
-        Control() {
-
-        }
+    static class XMLControl extends Control {
 
         @Override
-        public List<String> getFormats(String baseName) {
+        public List<String> getFormats(final String baseName) {
 
             return ImmutableList.of( "xml" );
         }
 
         @Override
-        public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader,
-                                        boolean reload)
+        public ResourceBundle newBundle(
+                String baseName, final Locale locale, final String format,
+                ClassLoader loader, final boolean reload)
                 throws IllegalAccessException, InstantiationException, IOException {
 
             checkNotNull( baseName );
@@ -114,7 +111,7 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
             checkNotNull( format );
             checkNotNull( loader );
 
-            if (!format.equals( "xml" ))
+            if (!"xml".equals( format ))
                 return null;
 
             String bundleName = toBundleName( baseName, locale );

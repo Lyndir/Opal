@@ -39,7 +39,7 @@ public class NullListEvent extends ListSelectionEvent {
      *
      * @param source The object upon which the list event takes place.
      */
-    public NullListEvent(Object source) {
+    public NullListEvent(final Object source) {
 
         this( source, 0, 0, false );
     }
@@ -52,7 +52,7 @@ public class NullListEvent extends ListSelectionEvent {
      * @param lastIndex   The last index in the range, &gt;= firstIndex
      * @param isAdjusting Whether or not this is one in a series of multiple events, where changes are still being made
      */
-    public NullListEvent(Object source, int firstIndex, int lastIndex, boolean isAdjusting) {
+    public NullListEvent(final Object source, final int firstIndex, final int lastIndex, final boolean isAdjusting) {
 
         super( source, firstIndex, lastIndex, isAdjusting );
     }

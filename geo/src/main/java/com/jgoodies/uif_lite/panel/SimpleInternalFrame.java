@@ -42,7 +42,7 @@ public class SimpleInternalFrame extends JPanel {
      *
      * @param title the initial title
      */
-    public SimpleInternalFrame(String title) {
+    public SimpleInternalFrame(final String title) {
 
         this( null, title, null, null, true );
     }
@@ -53,7 +53,7 @@ public class SimpleInternalFrame extends JPanel {
      * @param icon  the initial icon
      * @param title the initial title
      */
-    public SimpleInternalFrame(Icon icon, String title) {
+    public SimpleInternalFrame(final Icon icon, final String title) {
 
         this( icon, title, null, null, true );
     }
@@ -66,7 +66,9 @@ public class SimpleInternalFrame extends JPanel {
      * @param content   the initial content pane
      * @param headerTop Add the header to the top of the frame (or to the bottom).
      */
-    public SimpleInternalFrame(String title, JToolBar toolbar, JComponent content, boolean headerTop) {
+    public SimpleInternalFrame(
+            String title, final JToolBar toolbar, final JComponent content,
+            boolean headerTop) {
 
         this( null, title, toolbar, content, headerTop );
     }
@@ -80,7 +82,9 @@ public class SimpleInternalFrame extends JPanel {
      * @param content   the initial content pane
      * @param headerTop Add the header to the top of the frame (or to the bottom).
      */
-    public SimpleInternalFrame(Icon icon, String title, JToolBar toolbar, JComponent content, boolean headerTop) {
+    public SimpleInternalFrame(
+            Icon icon, final String title, final JToolBar toolbar, final JComponent content,
+            boolean headerTop) {
 
         super( new BorderLayout() );
         selected = false;
@@ -112,7 +116,7 @@ public class SimpleInternalFrame extends JPanel {
      *
      * @param newIcon the icon to be set
      */
-    public void setFrameIcon(Icon newIcon) {
+    public void setFrameIcon(final Icon newIcon) {
 
         Icon oldIcon = getFrameIcon();
         titleLabel.setIcon( newIcon );
@@ -134,7 +138,7 @@ public class SimpleInternalFrame extends JPanel {
      *
      * @param newText the title text tp be set
      */
-    public void setTitle(String newText) {
+    public void setTitle(final String newText) {
 
         String oldText = getTitle();
         titleLabel.setText( newText );
@@ -156,7 +160,7 @@ public class SimpleInternalFrame extends JPanel {
      *
      * @param newToolBar the tool bar to be set in the header
      */
-    public void setToolBar(JToolBar newToolBar) {
+    public void setToolBar(final JToolBar newToolBar) {
 
         JToolBar oldToolBar = getToolBar();
         if (oldToolBar == newToolBar)
@@ -186,7 +190,7 @@ public class SimpleInternalFrame extends JPanel {
      *
      * @param newContent the panel's new content
      */
-    public void setContent(Component newContent) {
+    public void setContent(final Component newContent) {
 
         Component oldContent = getContent();
         if (hasContent())
@@ -215,7 +219,7 @@ public class SimpleInternalFrame extends JPanel {
      *
      * @param newValue a boolean, where true means the frame is selected (currently active) and false means it is not
      */
-    public void setSelected(boolean newValue) {
+    public void setSelected(final boolean newValue) {
 
         boolean oldValue = isSelected();
         selected = newValue;
@@ -234,7 +238,7 @@ public class SimpleInternalFrame extends JPanel {
      *
      * @return the panel's built header area
      */
-    private JPanel buildHeader(JLabel label, JToolBar toolbar) {
+    private JPanel buildHeader(final JLabel label, final JToolBar toolbar) {
 
         gradientPanel = PaintPanel.gradientPanel( getHeaderBackground(), UIManager.getColor( "control" ) );
         label.setOpaque( false );
@@ -298,12 +302,12 @@ public class SimpleInternalFrame extends JPanel {
      *
      * @return the color of the foreground text
      */
-    protected Color getTextForeground(boolean isSelected) {
+    protected Color getTextForeground(final boolean isSelected) {
 
-        Color c = UIManager.getColor( isSelected? "SimpleInternalFrame.activeTitleForeground"
+        Color color = UIManager.getColor( isSelected? "SimpleInternalFrame.activeTitleForeground"
                 : "SimpleInternalFrame.inactiveTitleForeground" );
-        if (c != null)
-            return c;
+        if (color != null)
+            return color;
         return UIManager.getColor( isSelected? "InternalFrame.activeTitleForeground": "Label.foreground" );
 
     }
@@ -316,8 +320,8 @@ public class SimpleInternalFrame extends JPanel {
      */
     protected Color getHeaderBackground() {
 
-        Color c = UIManager.getColor( "SimpleInternalFrame.activeTitleBackground" );
-        return c != null? c: UIManager.getColor( "InternalFrame.activeTitleBackground" );
+        Color color = UIManager.getColor( "SimpleInternalFrame.activeTitleBackground" );
+        return color != null? color: UIManager.getColor( "InternalFrame.activeTitleBackground" );
     }
 
 
@@ -329,14 +333,16 @@ public class SimpleInternalFrame extends JPanel {
 
         private static final Insets INSETS = new Insets( 1, 1, 1, 0 );
 
+
         RaisedHeaderBorder() {
+
         }
 
         /**
          * @inheritDoc
          */
         @Override
-        public Insets getBorderInsets(Component c) {
+        public Insets getBorderInsets(final Component component) {
 
             return INSETS;
         }
@@ -345,15 +351,17 @@ public class SimpleInternalFrame extends JPanel {
          * @inheritDoc
          */
         @Override
-        public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
+        public void paintBorder(
+                Component component, final Graphics graphics, final int x, final int y,
+                int w, final int h) {
 
-            g.translate( x, y );
-            g.setColor( UIManager.getColor( "controlLtHighlight" ) );
-            g.fillRect( 0, 0, w, 1 );
-            g.fillRect( 0, 1, 1, h - 1 );
-            g.setColor( UIManager.getColor( "controlShadow" ) );
-            g.fillRect( 0, h - 1, w, 1 );
-            g.translate( -x, -y );
+            graphics.translate( x, y );
+            graphics.setColor( UIManager.getColor( "controlLtHighlight" ) );
+            graphics.fillRect( 0, 0, w, 1 );
+            graphics.fillRect( 0, 1, 1, h - 1 );
+            graphics.setColor( UIManager.getColor( "controlShadow" ) );
+            graphics.fillRect( 0, h - 1, w, 1 );
+            graphics.translate( -x, -y );
         }
     }
 
@@ -364,14 +372,16 @@ public class SimpleInternalFrame extends JPanel {
 
         private static final Insets INSETS = new Insets( 1, 1, 3, 3 );
 
+
         ShadowBorder() {
+
         }
 
         /**
          * @inheritDoc
          */
         @Override
-        public Insets getBorderInsets(Component c) {
+        public Insets getBorderInsets(final Component component) {
 
             return INSETS;
         }
@@ -380,34 +390,36 @@ public class SimpleInternalFrame extends JPanel {
          * @inheritDoc
          */
         @Override
-        public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
+        public void paintBorder(
+                Component component, final Graphics graphics, final int x, final int y,
+                int w, final int h) {
 
             Color shadow = UIManager.getColor( "controlShadow" );
             if (shadow == null)
                 shadow = Color.GRAY;
             Color lightShadow = new Color( shadow.getRed(), shadow.getGreen(), shadow.getBlue(), 170 );
             Color lighterShadow = new Color( shadow.getRed(), shadow.getGreen(), shadow.getBlue(), 70 );
-            g.translate( x, y );
+            graphics.translate( x, y );
 
-            g.setColor( shadow );
-            g.fillRect( 0, 0, w - 3, 1 );
-            g.fillRect( 0, 0, 1, h - 3 );
-            g.fillRect( w - 3, 1, 1, h - 3 );
-            g.fillRect( 1, h - 3, w - 3, 1 );
+            graphics.setColor( shadow );
+            graphics.fillRect( 0, 0, w - 3, 1 );
+            graphics.fillRect( 0, 0, 1, h - 3 );
+            graphics.fillRect( w - 3, 1, 1, h - 3 );
+            graphics.fillRect( 1, h - 3, w - 3, 1 );
             // Shadow line 1
-            g.setColor( lightShadow );
-            g.fillRect( w - 3, 0, 1, 1 );
-            g.fillRect( 0, h - 3, 1, 1 );
-            g.fillRect( w - 2, 1, 1, h - 3 );
-            g.fillRect( 1, h - 2, w - 3, 1 );
+            graphics.setColor( lightShadow );
+            graphics.fillRect( w - 3, 0, 1, 1 );
+            graphics.fillRect( 0, h - 3, 1, 1 );
+            graphics.fillRect( w - 2, 1, 1, h - 3 );
+            graphics.fillRect( 1, h - 2, w - 3, 1 );
             // Shadow line2
-            g.setColor( lighterShadow );
-            g.fillRect( w - 2, 0, 1, 1 );
-            g.fillRect( 0, h - 2, 1, 1 );
-            g.fillRect( w - 2, h - 2, 1, 1 );
-            g.fillRect( w - 1, 1, 1, h - 2 );
-            g.fillRect( 1, h - 1, w - 2, 1 );
-            g.translate( -x, -y );
+            graphics.setColor( lighterShadow );
+            graphics.fillRect( w - 2, 0, 1, 1 );
+            graphics.fillRect( 0, h - 2, 1, 1 );
+            graphics.fillRect( w - 2, h - 2, 1, 1 );
+            graphics.fillRect( w - 1, 1, 1, h - 2 );
+            graphics.fillRect( 1, h - 1, w - 2, 1 );
+            graphics.translate( -x, -y );
         }
     }
 }

@@ -38,42 +38,43 @@ public @interface KeyMatch {
     /**
      * Value for {@link #ifNum()} that disables the check.
      */
-    static final double NUM_UNSET = Double.NaN;
+    double NUM_UNSET = Double.NaN;
 
     /**
      * Value for {@link #ifString()} that disables the check.
      */
 
-    static final String STRING_UNSET = "KeyMatch.unset";
+    String STRING_UNSET = "KeyMatch.unset";
 
     /**
      * Value for {@link #ifClass()} that disables the check.
      */
-    static final Class<?> CLASS_UNSET = KeyMatch.class;
+    Class<?> CLASS_UNSET = KeyMatch.class;
 
 
     /**
-     * Trigger the {@link KeyAppender} if the parameter's value equals the given number.
+     * @return The number the parameter's value should equal to trigger the {@link KeyAppender}.
      */
     double ifNum() default NUM_UNSET;
 
     /**
-     * Trigger the {@link KeyAppender} if the parameter's value equals the given string.
+     * @return The string the parameter's value should equal to trigger the {@link KeyAppender}.
      */
     String ifString() default STRING_UNSET;
 
     /**
-     * Trigger the {@link KeyAppender} if the parameter's value is assignable to the given class.
+     * @return The class the parameter's value's type should extend to trigger the {@link KeyAppender}.
      */
     Class<?> ifClass() default KeyMatch.class;
 
     /**
-     * The key part to append when one of the if* conditions holds <code>true</code>.
+     * @return The key part to append when one of the if* conditions holds <code>true</code>.
      */
     String key();
 
     /**
-     * The key part to append when all of the if* conditions holds <code>false</code>. Set to append nothing by default.
+     * @return The key part to append when all of the if* conditions holds <code>false</code>. Set to append nothing by
+     *         default.
      */
     String elseKey() default STRING_UNSET;
 }

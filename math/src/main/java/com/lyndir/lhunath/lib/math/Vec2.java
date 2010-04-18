@@ -59,7 +59,7 @@ public class Vec2 implements Cloneable {
      * @param x The x-coordinate of the new vector.
      * @param y The y-coordinate of the new vector.
      */
-    public Vec2(double x, double y) {
+    public Vec2(final double x, final double y) {
 
         setX( x );
         setY( y );
@@ -70,7 +70,7 @@ public class Vec2 implements Cloneable {
      *
      * @param p A 2D point that describes the endpoint of the vector.
      */
-    public Vec2(Point2D p) {
+    public Vec2(final Point2D p) {
 
         setX( p.getX() );
         setY( p.getY() );
@@ -79,12 +79,12 @@ public class Vec2 implements Cloneable {
     /**
      * Create a new two dimensional vector.
      *
-     * @param d A 2D dimension that describes the endpoint of the vector.
+     * @param dimension A 2D dimension that describes the endpoint of the vector.
      */
-    public Vec2(Dimension2D d) {
+    public Vec2(final Dimension2D dimension) {
 
-        setX( d.getWidth() );
-        setY( d.getHeight() );
+        setX( dimension.getWidth() );
+        setY( dimension.getHeight() );
     }
 
     /**
@@ -114,7 +114,8 @@ public class Vec2 implements Cloneable {
      * {@inheritDoc}
      */
     @Override
-    public Vec2 clone() throws CloneNotSupportedException {
+    public Vec2 clone()
+            throws CloneNotSupportedException {
 
         Vec2 newVec2 = (Vec2) super.clone();
         newVec2.setX( getX() );
@@ -152,10 +153,10 @@ public class Vec2 implements Cloneable {
      */
     public double normalize() {
 
-        double l = length();
-        multiply( l );
+        double length = length();
+        multiply( length );
 
-        return l;
+        return length;
     }
 
     /**
@@ -165,7 +166,7 @@ public class Vec2 implements Cloneable {
      *
      * @return A reference to the this vector, after it has been updated.
      */
-    public Vec2 rotate(Angle a) {
+    public Vec2 rotate(final Angle a) {
 
         if (a == null)
             return this;
@@ -184,7 +185,7 @@ public class Vec2 implements Cloneable {
      *
      * @return A reference to the this vector, after it has been updated.
      */
-    public Vec2 add(Vec2 vector) {
+    public Vec2 add(final Vec2 vector) {
 
         if (vector == null)
             return this;
@@ -202,7 +203,7 @@ public class Vec2 implements Cloneable {
      *
      * @return A reference to the this vector, after it has been updated.
      */
-    public Vec2 substract(Vec2 vector) {
+    public Vec2 subtract(final Vec2 vector) {
 
         if (vector == null)
             return this;
@@ -220,7 +221,7 @@ public class Vec2 implements Cloneable {
      *
      * @return A reference to the this vector, after it has been updated.
      */
-    public Vec2 multiply(Vec2 vector) {
+    public Vec2 multiply(final Vec2 vector) {
 
         if (vector == null)
             return this;
@@ -234,14 +235,14 @@ public class Vec2 implements Cloneable {
     /**
      * Multiply this vector with a scalar number.
      *
-     * @param c The scalar value with which to multiply this vector.
+     * @param multiplier The scalar value with which to multiply this vector.
      *
      * @return A reference to the this vector, after it has been updated.
      */
-    public Vec2 multiply(double c) {
+    public Vec2 multiply(final double multiplier) {
 
-        setX( getX() * c );
-        setY( getY() * c );
+        setX( getX() * multiplier );
+        setY( getY() * multiplier );
 
         return this;
     }
@@ -273,7 +274,7 @@ public class Vec2 implements Cloneable {
      *
      * @return The result of the cross product of this vector with the given one.
      */
-    public double crossMultiply(Vec2 vector) {
+    public double crossMultiply(final Vec2 vector) {
 
         if (vector == null)
             return 0;
@@ -290,7 +291,7 @@ public class Vec2 implements Cloneable {
      *
      * @return The result of the dot product of this vector with the given one.
      */
-    public double dotMultiply(Vec2 vector) {
+    public double dotMultiply(final Vec2 vector) {
 
         if (vector == null)
             return 0;
@@ -320,11 +321,11 @@ public class Vec2 implements Cloneable {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object obj) {
 
-        if (o == this)
+        if (obj == this)
             return true;
-        return o instanceof Vec2 && getX() == ((Vec2) o).getX() && getY() == ((Vec2) o).getY();
+        return obj instanceof Vec2 && getX() == ((Vec2) obj).getX() && getY() == ((Vec2) obj).getY();
 
     }
 
@@ -332,13 +333,15 @@ public class Vec2 implements Cloneable {
      * @return The horizontal destination of this vector.
      */
     public double getX() {
+
         return x;
     }
 
     /**
      * @param x The horizontal destination of this vector.
      */
-    public void setX(double x) {
+    public void setX(final double x) {
+
         this.x = x;
     }
 
@@ -346,13 +349,15 @@ public class Vec2 implements Cloneable {
      * @return The vertical destination of this vector.
      */
     public double getY() {
+
         return y;
     }
 
     /**
      * @param y The vertical destination of this vector.
      */
-    public void setY(double y) {
+    public void setY(final double y) {
+
         this.y = y;
     }
 }

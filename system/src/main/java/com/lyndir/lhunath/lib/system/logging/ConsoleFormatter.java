@@ -33,7 +33,7 @@ public class ConsoleFormatter extends LogFormatter {
      *
      * @param verbosity Whether to use verbose mode.
      */
-    public ConsoleFormatter(boolean verbosity) {
+    public ConsoleFormatter(final boolean verbosity) {
 
         super( verbosity );
     }

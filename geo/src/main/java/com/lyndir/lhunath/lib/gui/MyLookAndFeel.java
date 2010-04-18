@@ -63,7 +63,7 @@ public class MyLookAndFeel implements Serializable {
      * @param base      The shade upon which to base this theme's colors.
      * @param themeType The type of theme to use.
      */
-    public MyLookAndFeel(Color base, MyThemeType themeType) {
+    public MyLookAndFeel(final Color base, final MyThemeType themeType) {
 
         setBase( base );
         this.themeType = themeType;
@@ -90,17 +90,17 @@ public class MyLookAndFeel implements Serializable {
      *
      * @return This instance.
      */
-    public MyLookAndFeel reconfigure(Container container) {
+    public MyLookAndFeel reconfigure(final Container container) {
 
-        for (Component c : container.getComponents()) {
+        for (final Component component : container.getComponents()) {
 
             /* If this component uses the current default for its background, make it use ours. */
-            for (Map.Entry<String, Color> defaultEntry : defaults.entrySet())
-                if (c.getBackground().equals( UIManager.getDefaults().get( defaultEntry.getKey() ) ))
-                    c.setBackground( defaultEntry.getValue() );
+            for (final Map.Entry<String, Color> defaultEntry : defaults.entrySet())
+                if (component.getBackground().equals( UIManager.getDefaults().get( defaultEntry.getKey() ) ))
+                    component.setBackground( defaultEntry.getValue() );
 
-            if (c instanceof Container)
-                reconfigure( (Container) c );
+            if (component instanceof Container)
+                reconfigure( (Container) component );
         }
 
         return this;
@@ -113,7 +113,7 @@ public class MyLookAndFeel implements Serializable {
      *
      * @return This instance.
      */
-    public MyLookAndFeel setBase(Color base) {
+    public MyLookAndFeel setBase(final Color base) {
 
         this.base = base;
 
@@ -219,7 +219,7 @@ public class MyLookAndFeel implements Serializable {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
 
         if (o == null)
             return false;
@@ -269,7 +269,7 @@ public class MyLookAndFeel implements Serializable {
         private final Class<? extends MyTheme> type;
 
 
-        MyThemeType(Class<? extends MyTheme> type) {
+        MyThemeType(final Class<? extends MyTheme> type) {
 
             this.type = type;
         }
@@ -279,7 +279,7 @@ public class MyLookAndFeel implements Serializable {
          *
          * @return Create a {@link MyTheme} of this type.
          */
-        public MyTheme create(MyLookAndFeel lnf) {
+        public MyTheme create(final MyLookAndFeel lnf) {
 
             try {
                 return type.getConstructor().newInstance();
@@ -352,7 +352,9 @@ public class MyLookAndFeel implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
+
         MyPlasticTheme() {
+
         }
 
         /**

@@ -35,10 +35,10 @@ public abstract class StringUtils {
      *
      * @return A long string containing all the given strings delimited by the delimitor.
      */
-    public static String concat(String delimitor, String... elements) {
+    public static String concat(final String delimitor, final String... elements) {
 
         StringBuilder concatenation = new StringBuilder();
-        for (String element : elements)
+        for (final String element : elements)
             concatenation.append( element ).append( delimitor );
 
         return concatenation.substring( 0, concatenation.length() - delimitor.length() );

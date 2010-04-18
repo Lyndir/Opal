@@ -59,7 +59,7 @@ public class TimeSpinner extends JSpinner {
      * @param jumpField The calendar field that defines the format to use (all fields up to but not including the jumpField
      *                  will be included in the spinner's format).
      */
-    public TimeSpinner(int stepField, int jumpField) {
+    public TimeSpinner(final int stepField, final int jumpField) {
 
         Calendar cal = Calendar.getInstance( TimeZone.getTimeZone( "GMT" ) );
         cal.setTimeInMillis( 0 );
@@ -82,7 +82,7 @@ public class TimeSpinner extends JSpinner {
      * @param step    The jump in milliseconds that the spinner's next and previous actions will perform on the current
      *                value. You may use 0 for a default jump value of one minute.
      */
-    public TimeSpinner(String format, String initial, long step) {
+    public TimeSpinner(final String format, final String initial, final long step) {
 
         setModel( model = new TimeSpinnerModel( format, initial, step ) );
         getEditor().setEnabled( true );
@@ -94,11 +94,11 @@ public class TimeSpinner extends JSpinner {
      *
      * @param jumpField A {@link Calendar} field.
      */
-    public void setJumpField(int jumpField) {
+    public void setJumpField(final int jumpField) {
 
         this.jumpField = jumpField;
         StringBuilder format = new StringBuilder();
-        for (int field : Utils.calendarFields) {
+        for (final int field : Utils.calendarFields) {
             if (field == jumpField)
                 break;
 
@@ -200,7 +200,7 @@ public class TimeSpinner extends JSpinner {
          * @param step         The jump in milliseconds that the spinner's next and previous actions will perform on the current
          *                     value. You may use 0 for a default jump value of one minute.
          */
-        TimeSpinnerModel(String timeFormat, String initialValue, long step) {
+        TimeSpinnerModel(final String timeFormat, final String initialValue, long step) {
 
             if (step == 0)
                 step = 60000;
@@ -274,7 +274,7 @@ public class TimeSpinner extends JSpinner {
          * {@inheritDoc}
          */
         @Override
-        public void setValue(Object value) {
+        public void setValue(final Object value) {
 
             if (value == null)
                 this.value = new Date( 0 );
@@ -303,7 +303,7 @@ public class TimeSpinner extends JSpinner {
          *
          * @param spinner The spinner that contains this editor.
          */
-        TimeSpinnerEditor(JSpinner spinner) {
+        TimeSpinnerEditor(final JSpinner spinner) {
 
             super( spinner );
             getTextField().setEditable( true );

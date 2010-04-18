@@ -40,12 +40,12 @@ import java.lang.annotation.Target;
 public @interface XInject {
 
     /**
-     * The XPath expression that evaluates to the XML data to inject into this field.
+     * @return The XPath expression that evaluates to the XML data to inject into this field.
      */
     String value();
 
     /**
-     * The name of the XML node's attribute to serialize this field's data into.
+     * @return The name of the XML node's attribute to serialize this field's data into.
      */
     String attribute() default "";
 }

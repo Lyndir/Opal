@@ -35,7 +35,7 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
  */
 public abstract class AbstractListProvider<T> implements IDataProvider<T> {
 
-    private transient List<T> transientList;
+    private transient List<T> transientList = null;
 
 
     private List<T> getObject() {
@@ -64,7 +64,7 @@ public abstract class AbstractListProvider<T> implements IDataProvider<T> {
      * {@inheritDoc}
      */
     @Override
-    public Iterator<T> iterator(int first, int count) {
+    public Iterator<T> iterator(final int first, final int count) {
 
         List<T> list = getObject();
         int from = Math.min( first, list.size() );

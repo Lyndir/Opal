@@ -63,11 +63,11 @@ public class Structure {
     private static final int TAB_SIZE = 4;
 
 
-    private static <T> void inject(Node root, T structure)
+    private static <T> void inject(final Node root, final T structure)
             throws XPathExpressionException {
 
         // Inject the XML data into the XInject fields.
-        for (Field field : structure.getClass().getDeclaredFields()) {
+        for (final Field field : structure.getClass().getDeclaredFields()) {
             XInject annotation = field.getAnnotation( XInject.class );
             if (annotation == null)
                 continue;
@@ -84,6 +84,7 @@ public class Structure {
                     value = xmlpath.getNumber( root, annotation.value() ).byteValue();
 
                 else if (valueType == Double.class || Double.TYPE == valueType)
+                    // noinspection UnnecessaryUnboxing
                     value = xmlpath.getNumber( root, annotation.value() ).doubleValue();
 
                 else if (valueType == Float.class || Float.TYPE == valueType)
@@ -117,7 +118,7 @@ public class Structure {
         }
 
         // Look for XAfterInject methods.
-        for (Method method : structure.getClass().getDeclaredMethods())
+        for (final Method method : structure.getClass().getDeclaredMethods())
             if (method.getAnnotation( XAfterInject.class ) != null)
                 try {
                     method.setAccessible( true );
@@ -147,7 +148,7 @@ public class Structure {
      * @throws SAXException
      * @throws XPathExpressionException
      */
-    public static <T> T load(Class<T> type)
+    public static <T> T load(final Class<T> type)
             throws IOException, SAXException, XPathExpressionException {
 
         // Test whether the given type actually has a FromXML annotation on it.
@@ -177,7 +178,8 @@ public class Structure {
         String resourceName = type.getAnnotation( FromXML.class ).value();
 
         // Parse in our XML data.
-        Element root = builder.parse( ClassLoader.getSystemResourceAsStream( resourceName ) ).getDocumentElement();
+        Element root = builder.parse( ClassLoader.getSystemResourceAsStream( resourceName ) )
+                .getDocumentElement();
 
         inject( root, structure );
 
@@ -196,7 +198,7 @@ public class Structure {
      * @throws SAXException
      * @throws XPathExpressionException
      */
-    public static <T> List<T> loadAll(Class<T> type)
+    public static <T> List<T> loadAll(final Class<T> type)
             throws IOException, SAXException, XPathExpressionException {
 
         // Test whether the given type actually has a FromXML annotation on it.
@@ -208,12 +210,13 @@ public class Structure {
         String resourceName = type.getAnnotation( FromXML.class ).value();
 
         // Parse in our XML data.
-        Element root = builder.parse( ClassLoader.getSystemResourceAsStream( resourceName ) ).getDocumentElement();
+        Element root = builder.parse( ClassLoader.getSystemResourceAsStream( resourceName ) )
+                .getDocumentElement();
 
         // Create an empty object of the specified type.
         List<Node> children = xmlpath.getNodes( root, "/*/*" );
         List<T> structures = new ArrayList<T>( children.size() );
-        for (Node child : children) {
+        for (final Node child : children) {
             T structure;
             try {
                 structure = type.getConstructor().newInstance();
@@ -232,7 +235,7 @@ public class Structure {
             }
 
             // If an XInjectTag is defined; set it to the name of the child tag.
-            for (Field field : structure.getClass().getDeclaredFields())
+            for (final Field field : structure.getClass().getDeclaredFields())
                 if (field.isAnnotationPresent( XInjectTag.class ))
                     try {
                         logger.dbg( "Setting (%s) '%s' to tagname '%s'", field.getType().getSimpleName(),
@@ -264,13 +267,13 @@ public class Structure {
      *
      * @return the given object as an XML-formatted string.
      */
-    public static String toString(Object structure) {
+    public static String toString(final Object structure) {
 
         if (structure.getClass().getAnnotation( FromXML.class ) == null)
             throw new IllegalArgumentException( "Object passed must have the FromXML annotation." );
 
         StringBuilder out = new StringBuilder( String.format( "<%s>\n", structure.getClass().getSimpleName() ) );
-        for (Field field : structure.getClass().getDeclaredFields()) {
+        for (final Field field : structure.getClass().getDeclaredFields()) {
             XInject annotation = field.getAnnotation( XInject.class );
             if (annotation == null)
                 continue;
@@ -351,7 +354,7 @@ public class Structure {
      *
      * @return a builder that parses XML data according to the defaults highlighted above.
      */
-    public static DocumentBuilder getXMLBuilder(Schema schema) {
+    public static DocumentBuilder getXMLBuilder(final Schema schema) {
 
         return getXMLBuilder( false, true, false, false, false, false, true, schema );
     }
@@ -368,9 +371,11 @@ public class Structure {
      *
      * @return a builder that parses XML data according to the rules specified by the arguments.
      */
-    public static DocumentBuilder getXMLBuilder(boolean coalescing, boolean expandEntityRef, boolean ignoreComments,
-                                                boolean whitespace, boolean awareness, boolean xIncludes,
-                                                boolean validating, Schema schema) {
+    public static DocumentBuilder getXMLBuilder(
+            boolean coalescing, final boolean expandEntityRef,
+            boolean ignoreComments, final boolean whitespace,
+            boolean awareness, final boolean xIncludes,
+            boolean validating, final Schema schema) {
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -400,7 +405,7 @@ public class Structure {
      *
      * @return the given node as an XML-formatted string.
      */
-    public static String toString(Node node) {
+    public static String toString(final Node node) {
 
         return toString( node, true );
     }
@@ -411,20 +416,20 @@ public class Structure {
      *
      * @return the given node as an XML-formatted string.
      */
-    public static String toString(Node node, boolean trim) {
+    public static String toString(final Node node, final boolean trim) {
 
         StringBuffer result = toString( node, 1, trim );
         return result == null? null: result.toString().replaceFirst( "\n$", "" );
     }
 
-    private static StringBuffer toString(Node node, int indent, boolean trim) {
+    private static StringBuffer toString(final Node node, final int indent, final boolean trim) {
 
         if (node == null)
             return null;
 
         if (node.getNodeType() == Node.TEXT_NODE)
-            return new StringBuffer( indent( indent ) ).append( trim? node.getNodeValue().trim(): node.getNodeValue() ).append(
-                    '\n' );
+            return new StringBuffer( indent( indent ) ).append( trim? node.getNodeValue().trim(): node.getNodeValue() )
+                    .append( '\n' );
 
         StringBuffer out = new StringBuffer();
         out.append( indent( indent ) );
@@ -460,7 +465,7 @@ public class Structure {
         return out;
     }
 
-    private static String indent(int indent) {
+    private static String indent(final int indent) {
 
         return String.format( "%" + indent * TAB_SIZE + 's', "" );
     }

@@ -226,12 +226,14 @@ public abstract class AbstractUi
             }
             catch (URISyntaxException err) {
                 logger.err( err, Locale.explain( "bug.invalidMailto" ) //$NON-NLS-1$
-                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.issue" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.issue" ) )
+                                 //$NON-NLS-1$ //$NON-NLS-2$
                                  + reportEmail );
             }
             catch (IOException err) {
                 logger.err( err, Locale.explain( "err.openingMail" ) //$NON-NLS-1$
-                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.issue" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.issue" ) )
+                                 //$NON-NLS-1$ //$NON-NLS-2$
                                  + reportEmail );
             }
 
@@ -248,12 +250,14 @@ public abstract class AbstractUi
             }
             catch (URISyntaxException err) {
                 logger.err( err, "bug.invalidMailto" //$NON-NLS-1$
-                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.offense" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.offense" ) )
+                                 //$NON-NLS-1$ //$NON-NLS-2$
                                  + reportEmail );
             }
             catch (IOException err) {
                 logger.err( err, "err.openingMail" //$NON-NLS-1$
-                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.offense" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.offense" ) )
+                                 //$NON-NLS-1$ //$NON-NLS-2$
                                  + reportEmail );
             }
 
@@ -286,7 +290,9 @@ public abstract class AbstractUi
     /**
      * Show or hide the console.
      */
-    @SuppressWarnings({"AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull"})
+    @SuppressWarnings({
+            "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull",
+            "AssignmentToNull", "AssignmentToNull"})
     protected void toggleConsole() {
 
         if (!SwingUtilities.isEventDispatchThread()) {
@@ -306,7 +312,7 @@ public abstract class AbstractUi
             /* Reset the FDs. */
             System.setOut( realStdOut );
             System.setErr( realStdErr );
-            //resetConsoleLogger();
+            // resetConsoleLogger();
 
             /* Destroy the console. */
             console.dispose();
@@ -353,7 +359,7 @@ public abstract class AbstractUi
                 /* Replace the real FDs with pipes. */
                 System.setOut( new PrintStream( new PipedOutputStream( pipeStdOut = new PipedInputStream() ) ) );
                 System.setErr( new PrintStream( new PipedOutputStream( pipeStdErr = new PipedInputStream() ) ) );
-                //resetConsoleLogger();
+                // resetConsoleLogger();
 
                 /* Make endpoint FDs for the console window. */
                 consoleStdOut = new PipedOutputStream();
@@ -368,21 +374,21 @@ public abstract class AbstractUi
         }
     }
 
-//    private static void resetConsoleLogger() {
-//
-//        ConsoleHandler newConsoleLogger = new ConsoleHandler();
-//        newConsoleLogger.setErrorManager( ShadeConfig.console.getErrorManager() );
-//        newConsoleLogger.setFormatter( ShadeConfig.console.getFormatter() );
-//        newConsoleLogger.setFilter( ShadeConfig.console.getFilter() );
-//        newConsoleLogger.setLevel( ShadeConfig.console.getLevel() );
-//
-//        // FIXME
-//        ShadeConfig.console.close();
-//        // Logger.getGlobal().silence( ShadeConfig.console );
-//
-//        ShadeConfig.console = newConsoleLogger;
-//        // Logger.getGlobal().addHandler( ShadeConfig.console );
-//    }
+    // private static void resetConsoleLogger() {
+    //
+    // ConsoleHandler newConsoleLogger = new ConsoleHandler();
+    // newConsoleLogger.setErrorManager( ShadeConfig.console.getErrorManager() );
+    // newConsoleLogger.setFormatter( ShadeConfig.console.getFormatter() );
+    // newConsoleLogger.setFilter( ShadeConfig.console.getFilter() );
+    // newConsoleLogger.setLevel( ShadeConfig.console.getLevel() );
+    //
+    // // FIXME
+    // ShadeConfig.console.close();
+    // // Logger.getGlobal().silence( ShadeConfig.console );
+    //
+    // ShadeConfig.console = newConsoleLogger;
+    // // Logger.getGlobal().addHandler( ShadeConfig.console );
+    // }
 
     /**
      * {@inheritDoc}
@@ -471,7 +477,8 @@ public abstract class AbstractUi
             logger.wrn( "warn.actionNotImplemented", e.getClass(), ((ActionEvent) e).getActionCommand(), //$NON-NLS-1$
                         Utils.getFieldName( this, e.getSource() ) );
         else
-            logger.wrn( "warn.eventNotImplemented", e.getClass(), Utils.getFieldName( this, e.getSource() ) ); //$NON-NLS-1$
+            logger.wrn( "warn.eventNotImplemented", e.getClass(),
+                        Utils.getFieldName( this, e.getSource() ) ); //$NON-NLS-1$
     }
 
     /**
@@ -676,7 +683,7 @@ public abstract class AbstractUi
     private AbstractAction addPanelButton(Tab tab) {
 
         AbstractAction action;
-        final AbstractUi ui = this;
+        AbstractUi ui = this;
         JToggleButton button = new JToggleButton( action = new AbstractAction( tab.getTitle(), tab.getIcon() ) {
 
             private static final long serialVersionUID = 1L;
@@ -886,7 +893,7 @@ public abstract class AbstractUi
      */
     protected JPanel getOverlay() {
 
-        final JPanel pane = new JPanel( new BorderLayout() );
+        JPanel pane = new JPanel( new BorderLayout() );
         pane.setBackground( UIUtils.setAlpha( Color.black, 150 ) );
         pane.addFocusListener( new FocusAdapter() {
 
@@ -948,13 +955,16 @@ public abstract class AbstractUi
     private List<Tab> buildTabs() {
 
         List<Tab> tabs = new LinkedList<Tab>();
-        tabs.add( settingsTab = new Tab( Locale.explain( "ui.configuration" ), UIUtils.getIcon( "settings-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
+        tabs.add( settingsTab = new Tab( Locale.explain( "ui.configuration" ), UIUtils.getIcon( "settings-s.png" ),
+                                         //$NON-NLS-1$ //$NON-NLS-2$
                                          getSettingsPane() ) );
         tabs.add( new Tab( Locale.explain( "ui.logs" ), UIUtils.getIcon( "log-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
                            getOperationsPane() ) );
-        tabs.add( new Tab( Locale.explain( "ui.licensing" ), UIUtils.getIcon( "license-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
+        tabs.add( new Tab( Locale.explain( "ui.licensing" ), UIUtils.getIcon( "license-s.png" ),
+                           //$NON-NLS-1$ //$NON-NLS-2$
                            getLicensePane() ) );
-        tabs.add( new Tab( Locale.explain( "ui.development" ), UIUtils.getIcon( "develop-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
+        tabs.add( new Tab( Locale.explain( "ui.development" ), UIUtils.getIcon( "develop-s.png" ),
+                           //$NON-NLS-1$ //$NON-NLS-2$
                            getDevelopmentPane() ) );
 
         return tabs;
@@ -972,26 +982,31 @@ public abstract class AbstractUi
 
         builder.append(
                 Locale.explain( "ui.theme" ), new ToolTip( Locale.explain( "ui.themeTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                                                           + Locale.explain( "ui.themeTip" ), themesPanel = new JPanel() ), 5 ); //$NON-NLS-1$
+                                                           + Locale.explain( "ui.themeTip" ),
+                                                           themesPanel = new JPanel() ), 5 ); //$NON-NLS-1$
         for (MyTheme theme : MyTheme.values())
             themesPanel.add( theme.getButton() );
         themesPanel.setOpaque( false );
         builder.nextLine();
 
-        builder.append( Locale.explain( "ui.systray" ), new ToolTip( Locale.explain( "ui.systrayTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                                                                     + Locale.explain( "ui.systrayTip" ), //$NON-NLS-1$
-                                                                     systrayButton = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
-        builder.append( Locale.explain( "ui.ontop" ), new ToolTip( Locale.explain( "ui.ontopTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                                                                   + Locale.explain( "ui.ontopTip" ), //$NON-NLS-1$
-                                                                   alwaysOnTop = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.systray" ),
+                        new ToolTip( Locale.explain( "ui.systrayTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                     + Locale.explain( "ui.systrayTip" ), //$NON-NLS-1$
+                                     systrayButton = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.ontop" ),
+                        new ToolTip( Locale.explain( "ui.ontopTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                     + Locale.explain( "ui.ontopTip" ), //$NON-NLS-1$
+                                     alwaysOnTop = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
         builder.nextLine();
 
-        builder.append( Locale.explain( "ui.startmini" ), new ToolTip( Locale.explain( "ui.startminiTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                                                                       + Locale.explain( "ui.startminiTip" ), //$NON-NLS-1$
-                                                                       startMini = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
-        builder.append( Locale.explain( "ui.verbose" ), new ToolTip( Locale.explain( "ui.verboseTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                                                                     + Locale.explain( "ui.verboseTip" ), //$NON-NLS-1$
-                                                                     verboseLogs = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.startmini" ),
+                        new ToolTip( Locale.explain( "ui.startminiTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                     + Locale.explain( "ui.startminiTip" ), //$NON-NLS-1$
+                                     startMini = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.verbose" ),
+                        new ToolTip( Locale.explain( "ui.verboseTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                     + Locale.explain( "ui.verboseTip" ), //$NON-NLS-1$
+                                     verboseLogs = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
         builder.nextLine();
 
         appendCustomSettings( builder );
@@ -1059,14 +1074,16 @@ public abstract class AbstractUi
         pane.getViewport().setOpaque( false );
         builder.add( pane, constraints.xyw( 2, 2, 5 ) );
 
-        button = new JButton( Locale.explain( "ui.clearLog" ), UIUtils.getIcon( "clear-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.clearLog" ),
+                              UIUtils.getIcon( "clear-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "logClear" ); //$NON-NLS-1$
         button.addActionListener( this );
         builder.add( button, constraints.xy( 3, 4 ) );
 
-        button = new JButton( Locale.explain( "ui.saveLog" ), UIUtils.getIcon( "save-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.saveLog" ),
+                              UIUtils.getIcon( "save-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "logSave" ); //$NON-NLS-1$
@@ -1106,7 +1123,8 @@ public abstract class AbstractUi
         pane.getViewport().setOpaque( false );
         builder.add( pane, constraints.xyw( 2, 2, 5 ) );
 
-        button = new JButton( Locale.explain( "ui.reportOffense" ), UIUtils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.reportOffense" ),
+                              UIUtils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "reportOffense" ); //$NON-NLS-1$
@@ -1141,14 +1159,16 @@ public abstract class AbstractUi
 
         builder.add( getDevelopmentComponent(), constraints.xyw( 2, 2, 5 ) );
 
-        button = new JButton( Locale.explain( "ui.reportProblem" ), UIUtils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.reportProblem" ),
+                              UIUtils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "reportIssue" ); //$NON-NLS-1$
         button.addActionListener( this );
         builder.add( new ToolTip( Locale.explain( "ui.reportProblemTip" ), button ), constraints.xy( 3, 4 ) );
 
-        button = new JButton( Locale.explain( "ui.toggleConsole" ), UIUtils.getIcon( "terminal-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.toggleConsole" ),
+                              UIUtils.getIcon( "terminal-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "toggleConsole" ); //$NON-NLS-1$
@@ -1270,7 +1290,8 @@ public abstract class AbstractUi
 
     private void showLogBrowser() {
 
-        FileDialog chooser = new FileDialog( ShadeConfig.res, Locale.explain( "ui.saveLogDialog" ), frame ) { //$NON-NLS-1$
+        FileDialog chooser = new FileDialog( ShadeConfig.res, Locale.explain( "ui.saveLogDialog" ),
+                                             frame ) { //$NON-NLS-1$
 
             private static final long serialVersionUID = 1L;
 
@@ -1291,7 +1312,8 @@ public abstract class AbstractUi
 
         /* Filters. */
         chooser.setAcceptAllFileFilterUsed( false );
-        chooser.setFileFilter( FileDialog.createExtensionFilter( "log", Locale.explain( "ui.logExtension" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        chooser.setFileFilter( FileDialog.createExtensionFilter( "log", Locale.explain(
+                "ui.logExtension" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
         chooser.activate();
     }
 

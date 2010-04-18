@@ -54,55 +54,55 @@ public class LoggingEventHandler
     /**
      * Watch all non-input events that can occur on the given component.
      *
-     * @param name The name to use in the log output for identifying this component.
-     * @param c    The component to watch events on.
+     * @param name      The name to use in the log output for identifying this component.
+     * @param component The component to watch events on.
      */
-    public static void watchComponentEvents(String name, JComponent c) {
+    public static void watchComponentEvents(final String name, final JComponent component) {
 
         LoggingEventHandler handler = new LoggingEventHandler( name );
-        c.addAncestorListener( handler );
-        c.addComponentListener( handler );
-        c.addContainerListener( handler );
-        c.addFocusListener( handler );
-        c.addHierarchyBoundsListener( handler );
-        c.addHierarchyListener( handler );
-        c.addPropertyChangeListener( handler );
+        component.addAncestorListener( handler );
+        component.addComponentListener( handler );
+        component.addContainerListener( handler );
+        component.addFocusListener( handler );
+        component.addHierarchyBoundsListener( handler );
+        component.addHierarchyListener( handler );
+        component.addPropertyChangeListener( handler );
     }
 
     /**
      * Watch all events that can occur on the given window.
      *
-     * @param name The name to use in the log output for identifying this window.
-     * @param w    The window to watch events on.
+     * @param name   The name to use in the log output for identifying this window.
+     * @param window The window to watch events on.
      */
-    public static void watchWindowEvents(String name, Window w) {
+    public static void watchWindowEvents(final String name, final Window window) {
 
         LoggingEventHandler handler = new LoggingEventHandler( name );
-        w.addComponentListener( handler );
-        w.addContainerListener( handler );
-        w.addFocusListener( handler );
-        w.addHierarchyBoundsListener( handler );
-        w.addHierarchyListener( handler );
-        w.addPropertyChangeListener( handler );
-        w.addWindowFocusListener( handler );
-        w.addWindowListener( handler );
-        w.addWindowStateListener( handler );
+        window.addComponentListener( handler );
+        window.addContainerListener( handler );
+        window.addFocusListener( handler );
+        window.addHierarchyBoundsListener( handler );
+        window.addHierarchyListener( handler );
+        window.addPropertyChangeListener( handler );
+        window.addWindowFocusListener( handler );
+        window.addWindowListener( handler );
+        window.addWindowStateListener( handler );
     }
 
     /**
      * Watch all input events that can occur on the given component.
      *
-     * @param name The name to use in the log output for identifying this component.
-     * @param c    The component to watch events on.
+     * @param name      The name to use in the log output for identifying this component.
+     * @param component The component to watch events on.
      */
-    public static void watchInputEvents(String name, Component c) {
+    public static void watchInputEvents(final String name, final Component component) {
 
         LoggingEventHandler handler = new LoggingEventHandler( name );
-        c.addInputMethodListener( handler );
-        c.addKeyListener( handler );
-        c.addMouseListener( handler );
-        c.addMouseMotionListener( handler );
-        c.addMouseWheelListener( handler );
+        component.addInputMethodListener( handler );
+        component.addKeyListener( handler );
+        component.addMouseListener( handler );
+        component.addMouseMotionListener( handler );
+        component.addMouseWheelListener( handler );
     }
 
     /**
@@ -110,7 +110,7 @@ public class LoggingEventHandler
      *
      * @param name The name to use for the components handled by this handler.
      */
-    public LoggingEventHandler(String name) {
+    public LoggingEventHandler(final String name) {
 
         this.name = name;
     }
@@ -119,375 +119,378 @@ public class LoggingEventHandler
      * {@inheritDoc}
      */
     @Override
-    public void componentHidden(ComponentEvent e) {
+    public void componentHidden(final ComponentEvent event) {
 
-        logger.dbg( "%s: hidden [Id: %d]", name, e.getID() );
+        logger.dbg( "%s: hidden [Id: %d]", name, event.getID() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void componentMoved(ComponentEvent e) {
+    public void componentMoved(final ComponentEvent event) {
 
-        logger.dbg( "%s: moved [Id: %d]", name, e.getID() );
+        logger.dbg( "%s: moved [Id: %d]", name, event.getID() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void componentResized(ComponentEvent e) {
+    public void componentResized(final ComponentEvent event) {
 
-        logger.dbg( "%s: sized [Id: %d]", name, e.getID() );
+        logger.dbg( "%s: sized [Id: %d]", name, event.getID() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void componentShown(ComponentEvent e) {
+    public void componentShown(final ComponentEvent event) {
 
-        logger.dbg( "%s: shown [Id: %d]", name, e.getID() );
+        logger.dbg( "%s: shown [Id: %d]", name, event.getID() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void componentAdded(ContainerEvent e) {
+    public void componentAdded(final ContainerEvent event) {
 
-        logger.dbg( "%s: added [Id: %d]", name, e.getID() );
+        logger.dbg( "%s: added [Id: %d]", name, event.getID() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void componentRemoved(ContainerEvent e) {
+    public void componentRemoved(final ContainerEvent event) {
 
-        logger.dbg( "%s: removed [Id: %d]", name, e.getID() );
+        logger.dbg( "%s: removed [Id: %d]", name, event.getID() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void focusGained(FocusEvent e) {
+    public void focusGained(final FocusEvent event) {
 
-        logger.dbg( "%s: focussed [Id: %d]", name, e.getID() );
+        logger.dbg( "%s: focused [Id: %d]", name, event.getID() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void focusLost(FocusEvent e) {
+    public void focusLost(final FocusEvent event) {
 
-        logger.dbg( "%s: unfocussed [Id: %d]", name, e.getID() );
+        logger.dbg( "%s: unfocused [Id: %d]", name, event.getID() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void ancestorAdded(AncestorEvent e) {
+    public void ancestorAdded(final AncestorEvent event) {
 
-        logger.dbg( "%s: ancestor added [Id: %d]", name, e.getID() );
+        logger.dbg( "%s: ancestor added [Id: %d]", name, event.getID() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void ancestorMoved(AncestorEvent e) {
+    public void ancestorMoved(final AncestorEvent event) {
 
-        logger.dbg( "%s: ancestor moved [Id: %d]", name, e.getID() );
+        logger.dbg( "%s: ancestor moved [Id: %d]", name, event.getID() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void ancestorRemoved(AncestorEvent e) {
+    public void ancestorRemoved(final AncestorEvent event) {
 
-        logger.dbg( "%s: ancestor removed [Id: %d]", name, e.getID() );
+        logger.dbg( "%s: ancestor removed [Id: %d]", name, event.getID() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void ancestorMoved(HierarchyEvent e) {
+    public void ancestorMoved(final HierarchyEvent event) {
 
-        logger.dbg( "%s: hierarchy ancestor moved [Id: %d, Flags: %d]", name, e.getID(), e.getChangeFlags() );
+        logger.dbg( "%s: hierarchy ancestor moved [Id: %d, Flags: %d]", name, event.getID(), event.getChangeFlags() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void ancestorResized(HierarchyEvent e) {
+    public void ancestorResized(final HierarchyEvent event) {
 
-        logger.dbg( "%s: hierarchy ancestor sized [Id: %d, Flags: %d]", name, e.getID(), e.getChangeFlags() );
+        logger.dbg( "%s: hierarchy ancestor sized [Id: %d, Flags: %d]", name, event.getID(), event.getChangeFlags() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void hierarchyChanged(HierarchyEvent e) {
+    public void hierarchyChanged(final HierarchyEvent event) {
 
-        logger.dbg( "%s: hierarchy changed [Id: %d, Flags: %d]", name, e.getID(), e.getChangeFlags() );
+        logger.dbg( "%s: hierarchy changed [Id: %d, Flags: %d]", name, event.getID(), event.getChangeFlags() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void windowGainedFocus(WindowEvent e) {
+    public void windowGainedFocus(final WindowEvent event) {
 
-        logger.dbg( "%s: window focussed [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                    e.getNewState() );
+        logger.dbg( "%s: window focused [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
+                    event.getNewState() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void windowLostFocus(WindowEvent e) {
+    public void windowLostFocus(final WindowEvent event) {
 
-        logger.dbg( "%s: window unfocussed [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                    e.getNewState() );
+        logger.dbg( "%s: window unfocused [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
+                    event.getNewState() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void windowActivated(WindowEvent e) {
+    public void windowActivated(final WindowEvent event) {
 
-        logger.dbg( "%s: window activated [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                    e.getNewState() );
+        logger.dbg( "%s: window activated [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
+                    event.getNewState() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void windowClosed(WindowEvent e) {
+    public void windowClosed(final WindowEvent event) {
 
-        logger.dbg( "%s: window closed [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                    e.getNewState() );
+        logger.dbg( "%s: window closed [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
+                    event.getNewState() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void windowClosing(WindowEvent e) {
+    public void windowClosing(final WindowEvent event) {
 
-        logger.dbg( "%s: window closing [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                    e.getNewState() );
+        logger.dbg( "%s: window closing [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
+                    event.getNewState() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void windowDeactivated(WindowEvent e) {
+    public void windowDeactivated(final WindowEvent event) {
 
-        logger.dbg( "%s: window deactivated [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                    e.getNewState() );
+        logger.dbg( "%s: window deactivated [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
+                    event.getNewState() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void windowDeiconified(WindowEvent e) {
+    public void windowDeiconified(final WindowEvent event) {
 
-        logger.dbg( "%s: window deiconified [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                    e.getNewState() );
+        logger.dbg( "%s: window deiconified [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
+                    event.getNewState() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void windowIconified(WindowEvent e) {
+    public void windowIconified(final WindowEvent event) {
 
-        logger.dbg( "%s: window iconified [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                    e.getNewState() );
+        logger.dbg( "%s: window iconified [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
+                    event.getNewState() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void windowOpened(WindowEvent e) {
+    public void windowOpened(final WindowEvent event) {
 
-        logger.dbg( "%s: window opened [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                    e.getNewState() );
+        logger.dbg( "%s: window opened [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
+                    event.getNewState() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void windowStateChanged(WindowEvent e) {
+    public void windowStateChanged(final WindowEvent event) {
 
-        logger.dbg( "%s: window state [Id: %d, State: From %d to %d]", name, e.getID(), e.getOldState(),
-                    e.getNewState() );
+        logger.dbg( "%s: window state [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
+                    event.getNewState() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void propertyChange(PropertyChangeEvent e) {
+    public void propertyChange(final PropertyChangeEvent event) {
 
-        logger.dbg( "%s: property [Name: %s, Value: From %s to %s]", name, e.getPropertyName(), e.getOldValue(),
-                    e.getNewValue() );
+        logger.dbg( "%s: property [Name: %s, Value: From %s to %s]", name, event.getPropertyName(),
+                    event.getOldValue(), event.getNewValue() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(final MouseEvent event) {
 
         logger.dbg( "%s: clicked [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                    name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                    e.getY(), System.currentTimeMillis() - e.getWhen() );
+                    name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
+                    event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(final MouseEvent event) {
 
         logger.dbg( "%s: entered [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                    name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                    e.getY(), System.currentTimeMillis() - e.getWhen() );
+                    name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
+                    event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(final MouseEvent event) {
 
         logger.dbg( "%s: exited [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                    name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                    e.getY(), System.currentTimeMillis() - e.getWhen() );
+                    name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
+                    event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(final MouseEvent event) {
 
         logger.dbg( "%s: pressed [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                    name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                    e.getY(), System.currentTimeMillis() - e.getWhen() );
+                    name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
+                    event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(final MouseEvent event) {
 
         logger.dbg( "%s: released [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                    name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                    e.getY(), System.currentTimeMillis() - e.getWhen() );
+                    name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
+                    event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void mouseDragged(MouseEvent e) {
+    public void mouseDragged(final MouseEvent event) {
 
         logger.dbg( "%s: dragged [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                    name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                    e.getY(), System.currentTimeMillis() - e.getWhen() );
+                    name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
+                    event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void mouseMoved(MouseEvent e) {
+    public void mouseMoved(final MouseEvent event) {
 
         logger.dbg( "%s: moved [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                    name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                    e.getY(), System.currentTimeMillis() - e.getWhen() );
+                    name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
+                    event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
+    public void mouseWheelMoved(final MouseWheelEvent event) {
 
         logger.dbg(
                 "%s: wheeled [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), ScrollType: %d, ScrollAmount: %d, ScrollRotation: %d, Time: %dms ago]",
-                name, e.getID(), e.getModifiers(), e.getModifiersEx(), e.getButton(), e.getClickCount(), e.getX(),
-                e.getY(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation(), System.currentTimeMillis()
-                                                                                        - e.getWhen() );
+                name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
+                event.getClickCount(), event.getX(), event.getY(), event.getScrollType(), event.getScrollAmount(),
+                event.getWheelRotation(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(final KeyEvent event) {
 
-        logger.dbg( "%s: key pressed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, e.getID(),
-                    e.getKeyChar(), e.getKeyCode(), e.getKeyLocation(), System.currentTimeMillis() - e.getWhen() );
+        logger.dbg( "%s: key pressed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(),
+                    event.getKeyChar(), event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis()
+                                                                                    - event.getWhen() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(final KeyEvent event) {
 
-        logger.dbg( "%s: key released [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, e.getID(),
-                    e.getKeyChar(), e.getKeyCode(), e.getKeyLocation(), System.currentTimeMillis() - e.getWhen() );
+        logger.dbg( "%s: key released [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(),
+                    event.getKeyChar(), event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis()
+                                                                                    - event.getWhen() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void keyTyped(KeyEvent e) {
+    public void keyTyped(final KeyEvent event) {
 
-        logger.dbg( "%s: key typed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, e.getID(),
-                    e.getKeyChar(), e.getKeyCode(), e.getKeyLocation(), System.currentTimeMillis() - e.getWhen() );
+        logger.dbg( "%s: key typed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(),
+                    event.getKeyChar(), event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis()
+                                                                                    - event.getWhen() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void caretPositionChanged(InputMethodEvent e) {
+    public void caretPositionChanged(final InputMethodEvent event) {
 
-        logger.dbg( "%s: caret [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", name, e.getID(),
-                    e.getCommittedCharacterCount(), e.getText(), System.currentTimeMillis() - e.getWhen() );
+        logger.dbg( "%s: caret [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", name, event.getID(),
+                    event.getCommittedCharacterCount(), event.getText(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void inputMethodTextChanged(InputMethodEvent e) {
+    public void inputMethodTextChanged(final InputMethodEvent event) {
 
-        logger.dbg( "%s: text changed [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", name, e.getID(),
-                    e.getCommittedCharacterCount(), e.getText(), System.currentTimeMillis() - e.getWhen() );
+        logger.dbg( "%s: text changed [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", name, event.getID(),
+                    event.getCommittedCharacterCount(), event.getText(), System.currentTimeMillis() - event.getWhen() );
     }
 }

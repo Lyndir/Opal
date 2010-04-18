@@ -50,7 +50,7 @@ public class GZIPPostMethod extends PostMethod {
      *
      * @param uri either an absolute or relative URI
      */
-    public GZIPPostMethod(String uri) {
+    public GZIPPostMethod(final String uri) {
 
         super( uri );
     }
@@ -70,7 +70,7 @@ public class GZIPPostMethod extends PostMethod {
      *
      * @param enabled Guess.
      */
-    public void useGZip(boolean enabled) {
+    public void useGZip(final boolean enabled) {
 
         useGZip = enabled;
     }
@@ -81,7 +81,7 @@ public class GZIPPostMethod extends PostMethod {
      * {@inheritDoc}
      */
     @Override
-    public int execute(HttpState state, HttpConnection conn)
+    public int execute(final HttpState state, final HttpConnection conn)
             throws IOException {
 
         if (useGZip)
@@ -92,12 +92,12 @@ public class GZIPPostMethod extends PostMethod {
 
     /**
      * If the response body was GZIP-compressed, responseStream will be set to a GZIPInputStream wrapping the original
-     * InputStream used by the superclass.
+     * InputStream used by the super class.
      *
      * {@inheritDoc}
      */
     @Override
-    protected void readResponse(HttpState state, HttpConnection conn)
+    protected void readResponse(final HttpState state, final HttpConnection conn)
             throws IOException {
 
         super.readResponse( state, conn );

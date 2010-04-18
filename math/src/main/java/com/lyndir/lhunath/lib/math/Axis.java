@@ -48,13 +48,13 @@ public enum Axis {
     private final Vec3 vector;
 
 
-    Axis(Vec3 vector) {
+    Axis(final Vec3 vector) {
 
         this.vector = vector != null? vector: new Vec3();
     }
 
     /**
-     * Retrieve the vector for this axis in three dimentional space.
+     * Retrieve the vector for this axis in three dimensional space.
      *
      * @return The vector representation of this axis in space.
      */
@@ -64,7 +64,7 @@ public enum Axis {
     }
 
     /**
-     * Retrieve the vector for this axis in two dimentional space (trim z).
+     * Retrieve the vector for this axis in two dimensional space (trim z).
      *
      * @return The vector representation of this axis on a plane.
      */

@@ -15,6 +15,7 @@
  */
 package com.lyndir.lhunath.lib.wayward.component;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.model.IModel;
 
@@ -39,16 +40,16 @@ public class GenericFormComponent<T> extends GenericWebMarkupContainer<T> {
      * @param id    The component's wicket ID.
      * @param model The component's model.
      */
-    public GenericFormComponent(String id, IModel<T> model) {
+    public GenericFormComponent(final String id, final IModel<T> model) {
 
         super( id, model );
     }
 
     /**
-     * @see org.apache.wicket.Component#onComponentTag(org.apache.wicket.markup.ComponentTag)
+     * @see Component#onComponentTag(ComponentTag)
      */
     @Override
-    protected void onComponentTag(ComponentTag tag) {
+    protected void onComponentTag(final ComponentTag tag) {
 
         tag.put( "value", getDefaultModelObjectAsString() );
 

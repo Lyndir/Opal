@@ -54,7 +54,7 @@ public class GLabel extends JLabel {
      * @param horizontalAlignment The alignment of the text in the label.
      * @param gradient            The gradient base color for the label.
      */
-    public GLabel(String text, Icon icon, int horizontalAlignment, Color gradient) {
+    public GLabel(final String text, final Icon icon, final int horizontalAlignment, final Color gradient) {
 
         super( text, icon, horizontalAlignment );
         init( gradient );
@@ -67,7 +67,7 @@ public class GLabel extends JLabel {
      * @param horizontalAlignment The alignment of the text in the label.
      * @param gradient            The gradient base color for the label.
      */
-    public GLabel(String text, int horizontalAlignment, Color gradient) {
+    public GLabel(final String text, final int horizontalAlignment, final Color gradient) {
 
         super( text, horizontalAlignment );
         init( gradient );
@@ -79,7 +79,7 @@ public class GLabel extends JLabel {
      * @param text     The text to render in the label.
      * @param gradient The gradient base color for the label.
      */
-    public GLabel(String text, Color gradient) {
+    public GLabel(final String text, final Color gradient) {
 
         super( text );
         init( gradient );
@@ -92,7 +92,7 @@ public class GLabel extends JLabel {
      * @param horizontalAlignment The alignment of the text in the label.
      * @param gradient            The gradient base color for the label.
      */
-    public GLabel(Icon icon, int horizontalAlignment, Color gradient) {
+    public GLabel(final Icon icon, final int horizontalAlignment, final Color gradient) {
 
         super( icon, horizontalAlignment );
         init( gradient );
@@ -104,7 +104,7 @@ public class GLabel extends JLabel {
      * @param icon     The icon to display next to the text on the label.
      * @param gradient The gradient base color for the label.
      */
-    public GLabel(Icon icon, Color gradient) {
+    public GLabel(final Icon icon, final Color gradient) {
 
         super( icon );
         init( gradient );
@@ -115,12 +115,12 @@ public class GLabel extends JLabel {
      *
      * @param gradient The gradient base color for the label.
      */
-    public GLabel(Color gradient) {
+    public GLabel(final Color gradient) {
 
         init( gradient );
     }
 
-    private void init(Color gradient) {
+    private void init(final Color gradient) {
 
         addMouseListener( new GLabelMouseAdapter() );
         setHorizontalAlignment( HORIZONTAL );
@@ -132,14 +132,14 @@ public class GLabel extends JLabel {
      * @return The padding of this {@link GLabel}.
      */
     public int getPadding() {
+
         return padding;
     }
-
 
     /**
      * @param padding The padding of this {@link GLabel}.
      */
-    public void setPadding(int padding) {
+    public void setPadding(final int padding) {
 
         this.padding = padding;
         repaint();
@@ -148,7 +148,7 @@ public class GLabel extends JLabel {
     /**
      * @param base The base color of the gradient for this {@link GLabel}'s background.
      */
-    private void setGradient(Color base) {
+    private void setGradient(final Color base) {
 
         Color src = new Color( base.getRed() / 255f, base.getGreen() / 255f, base.getBlue() / 255f, 50 / 255f );
         gradientBase = new GradientPaint( new Point2D.Double( 0, 0 ), src, new Point2D.Double( 0, 1 ), base );
@@ -165,7 +165,7 @@ public class GLabel extends JLabel {
     /**
      * @param arc The arc of this {@link GLabel}.
      */
-    public void setArc(int arc) {
+    public void setArc(final int arc) {
 
         this.arc = arc;
     }
@@ -174,7 +174,7 @@ public class GLabel extends JLabel {
      * {@inheritDoc}
      */
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(final Graphics g) {
 
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
@@ -207,14 +207,16 @@ public class GLabel extends JLabel {
         private static final int CLICK_PADDING = 2;
         private int originalPadding;
 
+
         GLabelMouseAdapter() {
+
         }
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public void mouseEntered(MouseEvent e) {
+        public void mouseEntered(final MouseEvent e) {
 
             hasMouse = true;
             repaint();
@@ -224,7 +226,7 @@ public class GLabel extends JLabel {
          * {@inheritDoc}
          */
         @Override
-        public void mouseExited(MouseEvent e) {
+        public void mouseExited(final MouseEvent e) {
 
             hasMouse = false;
             repaint();
@@ -234,7 +236,7 @@ public class GLabel extends JLabel {
          * {@inheritDoc}
          */
         @Override
-        public void mousePressed(MouseEvent e) {
+        public void mousePressed(final MouseEvent e) {
 
             isPressed = true;
             originalPadding = padding;
@@ -245,7 +247,7 @@ public class GLabel extends JLabel {
          * {@inheritDoc}
          */
         @Override
-        public void mouseReleased(MouseEvent e) {
+        public void mouseReleased(final MouseEvent e) {
 
             isPressed = false;
             setPadding( originalPadding );

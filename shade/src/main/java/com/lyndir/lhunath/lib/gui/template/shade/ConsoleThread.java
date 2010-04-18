@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import com.lyndir.lhunath.lib.system.BaseConfig;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 
+
 /**
  * Read line-based data from an input stream and write it out on a component.
  *

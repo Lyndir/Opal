@@ -31,8 +31,9 @@ public class LabelCellRenderer extends DefaultListCellRenderer {
      * @inheritDoc
      */
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-                                                  boolean cellHasFocus) {
+    public Component getListCellRendererComponent(
+            JList list, final Object value, final int index,
+            boolean isSelected, final boolean cellHasFocus) {
 
         setHorizontalTextPosition( CENTER );
         if (value instanceof JLabel) {

@@ -35,7 +35,7 @@ public abstract class EmptyModelProvider<P extends EmptyModelProvider<P>> extend
     /**
      * Create a new {@link EmptyModelProvider} instance.
      */
-    public EmptyModelProvider() {
+    protected EmptyModelProvider() {
 
         super( null );
     }
@@ -55,7 +55,7 @@ public abstract class EmptyModelProvider<P extends EmptyModelProvider<P>> extend
      */
     @Override
     @Deprecated
-    public void setObject(Object object) {
+    public void setObject(final Object object) {
 
         throw new UnsupportedOperationException();
     }
@@ -65,7 +65,7 @@ public abstract class EmptyModelProvider<P extends EmptyModelProvider<P>> extend
      */
     @Override
     @Deprecated
-    public void setWrappedModel(IModel<Object> wrappedModel) {
+    public void setWrappedModel(final IModel<Object> wrappedModel) {
 
         throw new UnsupportedOperationException();
     }
@@ -95,7 +95,7 @@ public abstract class EmptyModelProvider<P extends EmptyModelProvider<P>> extend
      */
     @Override
     @Deprecated
-    public void setModelObject(Object object) {
+    public void setModelObject(final Object object) {
 
         throw new UnsupportedOperationException();
     }

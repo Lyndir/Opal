@@ -48,7 +48,7 @@ public class Pair<K, V> implements Map.Entry<K, V> {
      * @param key   The key of this pair.
      * @param value The value of this pair.
      */
-    public Pair(K key, V value) {
+    public Pair(final K key, final V value) {
 
         this.key = key;
         this.value = value;
@@ -76,7 +76,8 @@ public class Pair<K, V> implements Map.Entry<K, V> {
      * {@inheritDoc}
      */
     @Override
-    public V setValue(V value) {
+    @SuppressWarnings({"ParameterHidesMemberVariable"})
+    public V setValue(final V value) {
 
         V old = this.value;
         this.value = value;

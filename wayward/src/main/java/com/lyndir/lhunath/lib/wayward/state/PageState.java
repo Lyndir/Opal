@@ -35,13 +35,13 @@ public abstract class PageState implements ComponentState {
 
     static final Logger logger = Logger.get( PageState.class );
 
-    private Class<? extends Page> pageClass;
+    private final Class<? extends Page> pageClass;
 
 
     /**
      * @param pageClass The page that we're activating when the state is right.
      */
-    public PageState(Class<? extends Page> pageClass) {
+    protected PageState(final Class<? extends Page> pageClass) {
 
         this.pageClass = pageClass;
     }

@@ -56,8 +56,9 @@ public class EditableList extends JList {
      */
     public EditableList(final String contentTitle, final String newText) {
 
-        a = contentTitle.matches( "^(?i)[aeiou].*" )? Locale.explain( "ui.an" ): Locale.explain( "ui.a" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        final EditableList list = this;
+        a = contentTitle.matches( "^(?i)[aeiou].*" )? Locale.explain( "ui.an" )
+                : Locale.explain( "ui.a" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        EditableList list = this;
         setModel( model = new DefaultListModel() );
 
         addMouseListener( new MouseAdapter() {
@@ -84,7 +85,8 @@ public class EditableList extends JList {
 
                 /* Add. */
                 item = new JMenuItem( new AbstractAction(
-                        Locale.explain( "ui.add" ) + a + contentTitle + ' ' + Locale.explain( "ui.addsuffix" ), //$NON-NLS-1$ //$NON-NLS-2$
+                        Locale.explain( "ui.add" ) + a + contentTitle + ' ' + Locale.explain( "ui.addsuffix" ),
+                        //$NON-NLS-1$ //$NON-NLS-2$
                         UIUtils.getIcon( "add-ss.png" ) ) { //$NON-NLS-1$
 
                     private static final long serialVersionUID = 1L;
@@ -93,9 +95,10 @@ public class EditableList extends JList {
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
 
-                        String element = JOptionPane.showInputDialog( list,
-                                                                      Locale.explain( "ui.new" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
-                                                                      + newText );
+                        String element = JOptionPane.showInputDialog(
+                                list,
+                                Locale.explain( "ui.new" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
+                                + newText );
 
                         if (element != null)
                             model.addElement( element );
@@ -129,9 +132,10 @@ public class EditableList extends JList {
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
 
-                        String newVar = JOptionPane.showInputDialog( list,
-                                                                     Locale.explain( "ui.modify" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
-                                                                     + newText, getSelectedValue() );
+                        String newVar = JOptionPane.showInputDialog(
+                                list,
+                                Locale.explain( "ui.modify" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
+                                + newText, getSelectedValue() );
                         model.remove( getSelectedIndex() );
                         model.addElement( newVar );
                     }

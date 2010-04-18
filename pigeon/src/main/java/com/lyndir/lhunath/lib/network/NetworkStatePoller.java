@@ -41,7 +41,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
      *
      * @param network The network whose messages we should be polling.
      */
-    public NetworkStatePoller(Network network) {
+    public NetworkStatePoller(final Network network) {
 
         network.registerServerStateListener( this );
         network.registerConnectionStateListener( this );
@@ -51,7 +51,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
      * {@inheritDoc}
      */
     @Override
-    public void bound(ServerSocketChannel serverChannel) {
+    public void bound(final ServerSocketChannel serverChannel) {
 
         // Not supported.
     }
@@ -60,7 +60,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
      * {@inheritDoc}
      */
     @Override
-    public void accepted(ServerSocketChannel serverChannel, SocketChannel connectionChannel) {
+    public void accepted(final ServerSocketChannel serverChannel, final SocketChannel connectionChannel) {
 
         offer( State.ACCEPTED, connectionChannel );
     }
@@ -69,7 +69,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
      * {@inheritDoc}
      */
     @Override
-    public void connected(SocketChannel socketChannel) {
+    public void connected(final SocketChannel socketChannel) {
 
         offer( State.CONNECTED, socketChannel );
     }
@@ -78,7 +78,7 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
      * {@inheritDoc}
      */
     @Override
-    public void closed(SocketChannel channel, boolean resetByPeer) {
+    public void closed(final SocketChannel channel, final boolean resetByPeer) {
 
         offer( State.CLOSED, channel );
     }

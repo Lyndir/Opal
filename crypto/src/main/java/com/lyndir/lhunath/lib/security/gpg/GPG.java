@@ -61,7 +61,7 @@ public class GPG {
      *
      * @return The long that represents the key ID.
      */
-    public static long parseKeyId(String keyId) {
+    public static long parseKeyId(final String keyId) {
 
         String trimmedKeyId = keyId.startsWith( "0x" )? keyId.substring( 2 ): keyId;
         long firstChar = Long.decode( "0x" + trimmedKeyId.substring( 0, 1 ) );
@@ -84,7 +84,7 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static PGPPublicKey getPublicKey(File publicKeyFile, long publicKeyId)
+    public static PGPPublicKey getPublicKey(final File publicKeyFile, final long publicKeyId)
             throws IOException, PGPException {
 
         PGPPublicKeyRing publicKeyRing = new PGPPublicKeyRing( new FileInputStream( publicKeyFile ) );
@@ -101,7 +101,7 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static PGPSecretKey getPrivateKey(File privateKeyFile, long privateKeyId)
+    public static PGPSecretKey getPrivateKey(final File privateKeyFile, final long privateKeyId)
             throws IOException, PGPException {
 
         PGPSecretKeyRingCollection privateKeyRing = new PGPSecretKeyRingCollection(
@@ -119,7 +119,7 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static PGPSecretKey getPrivateKeyFor(File encryptedFile, File privateKeyFile)
+    public static PGPSecretKey getPrivateKeyFor(final File encryptedFile, final File privateKeyFile)
             throws IOException, PGPException {
 
         return getPrivateKeyFor( new FileInputStream( encryptedFile ), privateKeyFile );
@@ -134,7 +134,7 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static PGPSecretKey getPrivateKeyFor(String encryptedString, File privateKeyFile)
+    public static PGPSecretKey getPrivateKeyFor(final String encryptedString, final File privateKeyFile)
             throws IOException, PGPException {
 
         return getPrivateKeyFor( new ByteArrayInputStream( encryptedString.getBytes() ), privateKeyFile );
@@ -149,7 +149,7 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static PGPSecretKey getPrivateKeyFor(InputStream encryptedStream, File privateKeyFile)
+    public static PGPSecretKey getPrivateKeyFor(final InputStream encryptedStream, final File privateKeyFile)
             throws IOException, PGPException {
 
         /* Open the encrypted file. */
@@ -161,7 +161,8 @@ public class GPG {
         if (!(encryptedDataObjects instanceof PGPEncryptedDataList))
             encryptedDataObjects = encryptedDataFactory.nextObject();
         @SuppressWarnings("unchecked")
-        Iterator<PGPPublicKeyEncryptedData> encryptedDataIterator = ((PGPEncryptedDataList) encryptedDataObjects).getEncryptedDataObjects();
+        Iterator<PGPPublicKeyEncryptedData> encryptedDataIterator = ((PGPEncryptedDataList) encryptedDataObjects)
+                .getEncryptedDataObjects();
 
         /* Extract the public key out of the data and find the matching private key required to decrypt the data. */
         PGPSecretKey privateKey = null;
@@ -182,7 +183,7 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static List<PrintableKeyWrapper<PGPSecretKey>> getPrivateKeys(File privateKeyFile)
+    public static List<PrintableKeyWrapper<PGPSecretKey>> getPrivateKeys(final File privateKeyFile)
             throws IOException, PGPException {
 
         /* Open the key ring. */
@@ -224,7 +225,7 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static List<PrintableKeyWrapper<PGPPublicKey>> getPublicKeys(File publicKeyFile)
+    public static List<PrintableKeyWrapper<PGPPublicKey>> getPublicKeys(final File publicKeyFile)
             throws IOException, PGPException {
 
         /* Open the key ring. */
@@ -269,7 +270,9 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static void encryptFile(File plainFile, File encryptedFile, PGPPublicKey publicKey, boolean armoured)
+    public static void encryptFile(
+            File plainFile, final File encryptedFile, final PGPPublicKey publicKey,
+            boolean armoured)
             throws NoSuchProviderException, IOException, PGPException {
 
         InputStream encryptedInputStream = encrypt( new FileInputStream( plainFile ), publicKey, armoured );
@@ -291,7 +294,7 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static byte[] encrypt(byte[] plainTextData, PGPPublicKey publicKey, boolean armoured)
+    public static byte[] encrypt(final byte[] plainTextData, final PGPPublicKey publicKey, final boolean armoured)
             throws NoSuchProviderException, IOException, PGPException {
 
         return Utils.readStream( encrypt( new ByteArrayInputStream( plainTextData ), publicKey, armoured ) );
@@ -310,22 +313,25 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static InputStream encrypt(InputStream plainTextStream, PGPPublicKey publicKey, boolean armoured)
+    public static InputStream encrypt(
+            InputStream plainTextStream, final PGPPublicKey publicKey,
+            boolean armoured)
             throws IOException, NoSuchProviderException, PGPException {
 
         /* Compress and extract literal data packets that can be encrypted. */
-        PGPLiteralDataGenerator literator = new PGPLiteralDataGenerator();
+        PGPLiteralDataGenerator literalDataGenerator = new PGPLiteralDataGenerator();
         ByteArrayOutputStream decryptedStream = new ByteArrayOutputStream();
         PGPCompressedDataGenerator compressor = new PGPCompressedDataGenerator( CompressionAlgorithmTags.ZLIB );
-        OutputStream literalStream = literator.open( compressor.open( decryptedStream ), PGPLiteralData.BINARY, "",
-                                                     new Date(), new byte[BaseConfig.BUFFER_SIZE] );
+        OutputStream literalStream = literalDataGenerator.open( compressor.open( decryptedStream ),
+                                                                PGPLiteralData.BINARY, "", new Date(),
+                                                                new byte[BaseConfig.BUFFER_SIZE] );
         Utils.pipeStream( plainTextStream, literalStream );
         compressor.close();
 
         /* Encrypt compressed data. */
-        PGPEncryptedDataGenerator encryptor = new PGPEncryptedDataGenerator( SymmetricKeyAlgorithmTags.CAST5,
-                                                                             new SecureRandom(), BouncyCastleProvider.PROVIDER_NAME );
-        encryptor.addMethod( publicKey );
+        PGPEncryptedDataGenerator encryptedDataGenerator = new PGPEncryptedDataGenerator(
+                SymmetricKeyAlgorithmTags.CAST5, new SecureRandom(), BouncyCastleProvider.PROVIDER_NAME );
+        encryptedDataGenerator.addMethod( publicKey );
 
         /* Create the encrypted output stream, armour if necessary. */
         ByteArrayOutputStream encryptedByteStream = new ByteArrayOutputStream();
@@ -334,9 +340,10 @@ public class GPG {
             encryptedStream = new ArmoredOutputStream( encryptedStream );
 
         /* Create and write out the encrypted file. */
-        OutputStream encryptionStream = encryptor.open( encryptedStream, new byte[BaseConfig.BUFFER_SIZE] );
+        OutputStream encryptionStream = encryptedDataGenerator.open( encryptedStream,
+                                                                     new byte[BaseConfig.BUFFER_SIZE] );
         Utils.pipeStream( new ByteArrayInputStream( decryptedStream.toByteArray() ), encryptionStream );
-        encryptor.close();
+        encryptedDataGenerator.close();
 
         return new ByteArrayInputStream( encryptedByteStream.toByteArray() );
     }
@@ -353,10 +360,13 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static void decryptFile(File encryptedFile, File plainTextFile, PGPSecretKey privateKey, String passPhrase)
+    public static void decryptFile(
+            File encryptedFile, final File plainTextFile, final PGPSecretKey privateKey,
+            String passPhrase)
             throws NoSuchProviderException, IOException, PGPException {
 
-        InputStream decryptedInputStream = decrypt( new FileInputStream( encryptedFile ), privateKey, passPhrase );
+        InputStream decryptedInputStream = decrypt( new FileInputStream( encryptedFile ), privateKey,
+                                                    passPhrase );
         FileOutputStream decryptedOutputStream = new FileOutputStream( plainTextFile );
 
         Utils.pipeStream( decryptedInputStream, decryptedOutputStream );
@@ -375,7 +385,7 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static byte[] decrypt(byte[] encryptedData, PGPSecretKey privateKey, String passPhrase)
+    public static byte[] decrypt(final byte[] encryptedData, final PGPSecretKey privateKey, final String passPhrase)
             throws NoSuchProviderException, IOException, PGPException {
 
         return Utils.readStream( decrypt( new ByteArrayInputStream( encryptedData ), privateKey, passPhrase ) );
@@ -394,7 +404,9 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static InputStream decrypt(InputStream encryptedStream, PGPSecretKey privateKey, String passPhrase)
+    public static InputStream decrypt(
+            InputStream encryptedStream, final PGPSecretKey privateKey,
+            String passPhrase)
             throws IOException, PGPException, NoSuchProviderException {
 
         /* Open the encrypted file. */
@@ -415,7 +427,8 @@ public class GPG {
             throw new PGPException( "No encrypted objects found." );
 
         @SuppressWarnings("unchecked")
-        Iterator<PGPPublicKeyEncryptedData> encryptedDataIterator = ((PGPEncryptedDataList) encryptedDataObjects).getEncryptedDataObjects();
+        Iterator<PGPPublicKeyEncryptedData> encryptedDataIterator = ((PGPEncryptedDataList) encryptedDataObjects)
+                .getEncryptedDataObjects();
 
         /* Extract the public key out of the data and find the matching private key required to decrypt the data. */
         PGPPublicKeyEncryptedData encryptedData = null;
@@ -428,8 +441,11 @@ public class GPG {
             throw new PGPException( "No encrypted data found." );
 
         /* Decrypt the data. */
-        InputStream unencryptedStream = encryptedData.getDataStream( privateKey.extractPrivateKey(
-                passPhrase.toCharArray(), BouncyCastleProvider.PROVIDER_NAME ), BouncyCastleProvider.PROVIDER_NAME );
+        InputStream unencryptedStream = encryptedData.getDataStream(
+                privateKey.extractPrivateKey(
+                        passPhrase.toCharArray(),
+                        BouncyCastleProvider.PROVIDER_NAME ),
+                BouncyCastleProvider.PROVIDER_NAME );
         PGPObjectFactory pgpFactory = new PGPObjectFactory( unencryptedStream );
         Object unencryptedObject = pgpFactory.nextObject();
 
@@ -450,7 +466,7 @@ public class GPG {
         if (unencryptedObject instanceof PGPOnePassSignatureList)
             throw new PGPException( "Encrypted data is a signature, not an encrypted message." );
         else if (!(unencryptedObject instanceof PGPLiteralData))
-            throw new PGPException( "Message type unrecougnized: " + unencryptedObject.getClass() );
+            throw new PGPException( "Message type unrecognized: " + unencryptedObject.getClass() );
 
         /* Write out decrypted data. */
         PGPLiteralData unencryptedData = (PGPLiteralData) unencryptedObject;
@@ -473,12 +489,13 @@ public class GPG {
      * @throws PGPException
      * @throws IOException
      */
-    public static void signFile(File dataFile, File signedFile, PGPSecretKey privateKey, String passPhrase,
-                                boolean armoured)
-            throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException,
-                   PGPException, IOException {
+    public static void signFile(
+            File dataFile, final File signedFile, final PGPSecretKey privateKey,
+            String passPhrase, final boolean armoured)
+            throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException, PGPException, IOException {
 
-        InputStream decryptedInputStream = sign( new FileInputStream( dataFile ), privateKey, passPhrase, armoured );
+        InputStream decryptedInputStream = sign( new FileInputStream( dataFile ), privateKey, passPhrase,
+                                                 armoured );
         FileOutputStream decryptedOutputStream = new FileOutputStream( signedFile );
 
         Utils.pipeStream( decryptedInputStream, decryptedOutputStream );
@@ -501,7 +518,9 @@ public class GPG {
      * @throws PGPException
      * @throws IOException
      */
-    public static byte[] sign(byte[] data, PGPSecretKey privateKey, String passPhrase, boolean armoured)
+    public static byte[] sign(
+            byte[] data, final PGPSecretKey privateKey, final String passPhrase,
+            boolean armoured)
             throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException, IOException, PGPException {
 
         return Utils.readStream( sign( new ByteArrayInputStream( data ), privateKey, passPhrase, armoured ) );
@@ -524,14 +543,17 @@ public class GPG {
      * @throws PGPException
      * @throws IOException
      */
-    public static InputStream sign(InputStream data, PGPSecretKey privateKey, String passPhrase, boolean armoured)
+    public static InputStream sign(
+            InputStream data, final PGPSecretKey privateKey, final String passPhrase,
+            boolean armoured)
             throws NoSuchAlgorithmException, NoSuchProviderException, PGPException, SignatureException, IOException {
 
         /* Build the signature generator. */
         PGPSignatureGenerator signer = new PGPSignatureGenerator( privateKey.getPublicKey().getAlgorithm(),
-                                                                  HashAlgorithmTags.SHA1, BouncyCastleProvider.PROVIDER_NAME );
-        signer.initSign( PGPSignature.BINARY_DOCUMENT, privateKey.extractPrivateKey( passPhrase.toCharArray(),
-                                                                                     BouncyCastleProvider.PROVIDER_NAME ) );
+                                                                  HashAlgorithmTags.SHA1,
+                                                                  BouncyCastleProvider.PROVIDER_NAME );
+        signer.initSign( PGPSignature.BINARY_DOCUMENT,
+                         privateKey.extractPrivateKey( passPhrase.toCharArray(), BouncyCastleProvider.PROVIDER_NAME ) );
 
         /* Write the data into the generator. */
         byte[] buffer = new byte[BaseConfig.BUFFER_SIZE];
@@ -576,7 +598,7 @@ public class GPG {
          * @param key   The object to use for representing the key id.
          * @param keyId The key id to wrap.
          */
-        PrintableKeyWrapper(K key, Long keyId) {
+        PrintableKeyWrapper(final K key, final Long keyId) {
 
             this.key = key;
             this.keyId = keyId;

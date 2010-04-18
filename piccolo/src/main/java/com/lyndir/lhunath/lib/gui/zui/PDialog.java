@@ -47,7 +47,7 @@ public class PDialog extends PBox {
      * @param canvas   The canvas the dialog will be showed in.
      * @param listener The object that will be notified when the dialog is closed.
      */
-    public PDialog(PSwingCanvas canvas, String title, PDialogClosedListener listener) {
+    public PDialog(final PSwingCanvas canvas, final String title, final PDialogClosedListener listener) {
 
         super( canvas, title );
         this.listener = listener;
@@ -95,9 +95,9 @@ public class PDialog extends PBox {
      * @param enabled    Guess.
      * @param components The components to enable/disable.
      */
-    public void setEnabled(boolean enabled, JComponent... components) {
+    public void setEnabled(final boolean enabled, final JComponent... components) {
 
-        for (JComponent component : components) {
+        for (final JComponent component : components) {
             /*if (enabled ^ component.isEnabled())
              if (enabled) {
              component.setFont( component.getFont().deriveFont( Font.PLAIN ) );
@@ -135,7 +135,7 @@ public class PDialog extends PBox {
          * @inheritDoc
          */
         @Override
-        public void mouseClicked(PInputEvent event) {
+        public void mouseClicked(final PInputEvent event) {
 
             if (event.isLeftMouseButton())
                 close();

@@ -21,7 +21,7 @@ package com.lyndir.lhunath.lib.math;
  * The Angle object handles angles in their dual form (degree / radian). After an Angle object has been created (either
  * through degrees or radians); both degree and radial form are available at all times.<br>
  * <br>
- * Both the retrieval of and mathematic functions applied upon these angles are optimized for repeated retrieval by
+ * Both the retrieval of and mathematical functions applied upon these angles are optimized for repeated retrieval by
  * caching of all calculated results.<br>
  * <br>
  *
@@ -29,7 +29,7 @@ package com.lyndir.lhunath.lib.math;
  */
 public class Angle {
 
-    private static final float rToD = 180 / (float) Math.PI;
+    private static final float R_TO_D = 180 / (float) Math.PI;
 
     private float degrees, radians, sin, cos;
     private boolean hasDegrees, hasRadians, hasSin, hasCos;
@@ -40,7 +40,7 @@ public class Angle {
      *
      * @param degrees The degrees value of this Angle.
      */
-    public Angle(float degrees) {
+    public Angle(final float degrees) {
 
         this( degrees, true );
     }
@@ -51,7 +51,7 @@ public class Angle {
      * @param angle     The angle of this Angle object.
      * @param isDegrees Whether the specified angles are in degrees (<code>true</code>), or radians (<code>false</code>).
      */
-    public Angle(float angle, boolean isDegrees) {
+    public Angle(final float angle, final boolean isDegrees) {
 
         if (isDegrees)
             setDegrees( angle );
@@ -98,7 +98,7 @@ public class Angle {
             if (!hasRadians)
                 return 0;
 
-            degrees = radians * rToD;
+            degrees = radians * R_TO_D;
             hasDegrees = true;
         }
 
@@ -116,7 +116,7 @@ public class Angle {
             if (!hasDegrees)
                 return 0;
 
-            radians = degrees / rToD;
+            radians = degrees / R_TO_D;
             hasRadians = true;
         }
 
@@ -128,10 +128,7 @@ public class Angle {
      *
      * @param radians The radians to set this angle by.
      */
-    public void setRadians(float radians) {
-
-        if (hasRadians && this.radians == radians)
-            return;
+    public void setRadians(final float radians) {
 
         reset();
 
@@ -144,10 +141,7 @@ public class Angle {
      *
      * @param degrees The degrees to set this angle by.
      */
-    public void setDegrees(float degrees) {
-
-        if (hasDegrees && this.degrees == degrees)
-            return;
+    public void setDegrees(final float degrees) {
 
         reset();
 

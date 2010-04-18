@@ -51,12 +51,12 @@ public class GridBag extends GridBagConstraints {
     /**
      * Create a new {@link GridBag} instance.
      *
-     * @param c The container that will have the grid applied to it and the components {@link #add(Component...)}ed to
-     *          it.
+     * @param component The container that will have the grid applied to it and the components {@link #add(Component...)}ed to
+     *                  it.
      */
-    public GridBag(JComponent c) {
+    public GridBag(final JComponent component) {
 
-        container = c;
+        container = component;
 
         grid = new ArrayList<ArrayList<Vec2>>();
         container.setLayout( new GridBagLayout() );
@@ -84,7 +84,7 @@ public class GridBag extends GridBagConstraints {
      *
      * @return The {@link GridBag}.
      */
-    public GridBag setFont(Font font) {
+    public GridBag setFont(final Font font) {
 
         this.font = font;
 
@@ -106,7 +106,7 @@ public class GridBag extends GridBagConstraints {
      *
      * @return The {@link GridBag}.
      */
-    public GridBag setForeground(Color color) {
+    public GridBag setForeground(final Color color) {
 
         front = color;
 
@@ -128,7 +128,7 @@ public class GridBag extends GridBagConstraints {
      *
      * @return The {@link GridBag}.
      */
-    public GridBag setBackground(Color color) {
+    public GridBag setBackground(final Color color) {
 
         back = color;
 
@@ -148,7 +148,7 @@ public class GridBag extends GridBagConstraints {
      *
      * @return The {@link GridBag}.
      */
-    public GridBag setWeightX(int weightx) {
+    public GridBag setWeightX(final int weightx) {
 
         this.weightx = weightx;
 
@@ -160,7 +160,7 @@ public class GridBag extends GridBagConstraints {
      *
      * @return The {@link GridBag}.
      */
-    public GridBag setWeightY(int weighty) {
+    public GridBag setWeightY(final int weighty) {
 
         this.weighty = weighty;
 
@@ -175,7 +175,7 @@ public class GridBag extends GridBagConstraints {
      *
      * @return The {@link GridBag}.
      */
-    public GridBag add(String title, Component component) {
+    public GridBag add(final String title, final Component component) {
 
         return add( title, gridwidth, component );
     }
@@ -189,7 +189,7 @@ public class GridBag extends GridBagConstraints {
      *
      * @return The {@link GridBag}.
      */
-    public GridBag add(String title, int width, Component components) {
+    public GridBag add(final String title, final int width, final Component components) {
 
         JLabel label = new JLabel( title );
         if (font != null)
@@ -210,10 +210,10 @@ public class GridBag extends GridBagConstraints {
      *
      * @return The {@link GridBag}.
      */
-    public GridBag add(Component... components) {
+    public GridBag add(final Component... components) {
 
-        for (Component c : components) {
-            container.add( c, this );
+        for (final Component component : components) {
+            container.add( component, this );
             nextGrid();
         }
 
@@ -228,7 +228,7 @@ public class GridBag extends GridBagConstraints {
      *
      * @return The {@link GridBag}.
      */
-    public GridBag add(int width, Component... components) {
+    public GridBag add(final int width, final Component... components) {
 
         return xyw( gridx, gridy, width ).add( components );
     }
@@ -264,7 +264,7 @@ public class GridBag extends GridBagConstraints {
      *
      * @return The {@link GridBag}.
      */
-    public GridBag xy(int x, int y) {
+    public GridBag xy(final int x, final int y) {
 
         return xywh( x, y, 1, 1 );
     }
@@ -280,7 +280,7 @@ public class GridBag extends GridBagConstraints {
      *
      * @return The {@link GridBag}.
      */
-    public GridBag xyw(int x, int y, int w) {
+    public GridBag xyw(final int x, final int y, final int w) {
 
         return xywh( x, y, w, 1 );
     }
@@ -295,7 +295,7 @@ public class GridBag extends GridBagConstraints {
      *
      * @return The {@link GridBag}.
      */
-    public GridBag xywh(int x, int y, int w, int h) {
+    public GridBag xywh(final int x, final int y, final int w, final int h) {
 
         gridx = x;
         gridy = y;
@@ -328,7 +328,7 @@ public class GridBag extends GridBagConstraints {
      *
      * @return The {@link GridBag}.
      */
-    public GridBag nextGrid(int w, int h) {
+    public GridBag nextGrid(final int w, final int h) {
 
         gridx += gridwidth;
         gridwidth = w;
@@ -360,7 +360,7 @@ public class GridBag extends GridBagConstraints {
      *
      * @return The {@link GridBag}.
      */
-    public GridBag nextLine(int w, int h) {
+    public GridBag nextLine(final int w, final int h) {
 
         gridy += gridheight;
         gridx = getFirstGridInLine();

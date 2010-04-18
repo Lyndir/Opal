@@ -46,7 +46,7 @@ public class PaintPanel extends ScrollPanel {
      *
      * @param paint The paint to use to fill the background of this panel with.
      */
-    public PaintPanel(Paint paint) {
+    public PaintPanel(final Paint paint) {
 
         setPaint( paint );
         setAutoColorControl( 0 );
@@ -78,7 +78,7 @@ public class PaintPanel extends ScrollPanel {
      *
      * @return The resulting {@link PaintPanel}.
      */
-    public static PaintPanel gradientPanel(int autoColorControl) {
+    public static PaintPanel gradientPanel(final int autoColorControl) {
 
         PaintPanel panel = new PaintPanel( null );
         panel.setAutoColorControl( autoColorControl );
@@ -96,7 +96,7 @@ public class PaintPanel extends ScrollPanel {
      *
      * @return The resulting {@link PaintPanel}.
      */
-    public static PaintPanel gradientPanel(Point2D startPos, Point2D endPos) {
+    public static PaintPanel gradientPanel(final Point2D startPos, final Point2D endPos) {
 
         PaintPanel panel = new PaintPanel( new GradientPaint( startPos, Color.WHITE, endPos, Color.BLACK ) );
         panel.setAutoColorControl( 1 );
@@ -114,7 +114,7 @@ public class PaintPanel extends ScrollPanel {
      *
      * @return The resulting {@link PaintPanel}.
      */
-    public static PaintPanel gradientPanel(Color startCol, Color endCol) {
+    public static PaintPanel gradientPanel(final Color startCol, final Color endCol) {
 
         return new PaintPanel( gradientPaint( startCol, endCol ) );
     }
@@ -129,7 +129,9 @@ public class PaintPanel extends ScrollPanel {
      *
      * @return The resulting {@link PaintPanel}.
      */
-    public static PaintPanel gradientPanel(Point2D startPos, Color startCol, Point2D endPos, Color endCol) {
+    public static PaintPanel gradientPanel(
+            Point2D startPos, final Color startCol, final Point2D endPos,
+            Color endCol) {
 
         return new PaintPanel( new GradientPaint( startPos, startCol, endPos, endCol ) );
     }
@@ -142,7 +144,7 @@ public class PaintPanel extends ScrollPanel {
      *
      * @return Guess.
      */
-    public static GradientPaint gradientPaint(Color startCol, Color endCol) {
+    public static GradientPaint gradientPaint(final Color startCol, final Color endCol) {
 
         return new GradientPaint( new Point2D.Double( 1, 1 ), startCol, new Point2D.Double( -1, -1 ), endCol );
     }
@@ -154,16 +156,17 @@ public class PaintPanel extends ScrollPanel {
      *
      * @return The resulting {@link PaintPanel}.
      */
-    public static PaintPanel tiledPanel(Image image) {
+    public static PaintPanel tiledPanel(final Image image) {
 
         BufferedImage buffer = new BufferedImage( image.getWidth( null ), image.getHeight( null ),
                                                   BufferedImage.TYPE_INT_ARGB );
         buffer.getGraphics().drawImage( image, 0, 0, null );
-        return new PaintPanel( new TexturePaint( buffer, new Rectangle( 0, 0, buffer.getWidth(), buffer.getHeight() ) ) );
+        return new PaintPanel(
+                new TexturePaint( buffer, new Rectangle( 0, 0, buffer.getWidth(), buffer.getHeight() ) ) );
     }
 
     /**
-     * @return The automatic coloring brightness active on this panel.  Zero if not active.
+     * @return The automatic coloring brightness active on this panel. Zero if not active.
      */
     public int getAutoColorControl() {
 
@@ -178,7 +181,7 @@ public class PaintPanel extends ScrollPanel {
      *
      * @return This instance.
      */
-    public PaintPanel setAutoColorControl(int autoColorControl) {
+    public PaintPanel setAutoColorControl(final int autoColorControl) {
 
         this.autoColorControl = autoColorControl;
         updateUI();
@@ -190,6 +193,7 @@ public class PaintPanel extends ScrollPanel {
      * @return The paint of this panel.
      */
     public Paint getPaint() {
+
         return paint;
     }
 
@@ -198,7 +202,7 @@ public class PaintPanel extends ScrollPanel {
      *
      * @param paint Guess.
      */
-    public void setPaint(Paint paint) {
+    public void setPaint(final Paint paint) {
 
         this.paint = paint;
         updateUI();
@@ -217,7 +221,7 @@ public class PaintPanel extends ScrollPanel {
      *
      * @param image Guess.
      */
-    public void setBackgroundImage(Image image) {
+    public void setBackgroundImage(final Image image) {
 
         backgroundImage = image;
     }
@@ -277,7 +281,7 @@ public class PaintPanel extends ScrollPanel {
      * {@inheritDoc}
      */
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(final Graphics g) {
 
         Graphics2D g2 = (Graphics2D) g;
 
@@ -298,13 +302,14 @@ public class PaintPanel extends ScrollPanel {
     private class PaintPanelComponentAdapter extends ComponentAdapter {
 
         PaintPanelComponentAdapter() {
+
         }
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public void componentResized(ComponentEvent e) {
+        public void componentResized(final ComponentEvent e) {
 
             updateUI();
         }

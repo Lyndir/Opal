@@ -39,15 +39,13 @@ public class GenericWebComponent<T> extends WebComponent {
      * @param id    The component's wicket ID.
      * @param model The component's model.
      */
-    public GenericWebComponent(String id, IModel<T> model) {
+    public GenericWebComponent(final String id, final IModel<T> model) {
 
         super( id, model );
     }
 
     /**
-     * Gets model
-     *
-     * @return model
+     * @return The component's model.
      */
     @SuppressWarnings("unchecked")
     public final IModel<T> getModel() {
@@ -56,19 +54,15 @@ public class GenericWebComponent<T> extends WebComponent {
     }
 
     /**
-     * Sets model
-     *
-     * @param model
+     * @param model The component's model.
      */
-    public final void setModel(IModel<T> model) {
+    public final void setModel(final IModel<T> model) {
 
         setDefaultModel( model );
     }
 
     /**
-     * Gets model object
-     *
-     * @return model object
+     * @return The object of the component's model.
      */
     @SuppressWarnings("unchecked")
     public final T getModelObject() {
@@ -77,11 +71,9 @@ public class GenericWebComponent<T> extends WebComponent {
     }
 
     /**
-     * Sets model object
-     *
-     * @param object
+     * @param object The new object of the component's model.
      */
-    public final void setModelObject(T object) {
+    public final void setModelObject(final T object) {
 
         setDefaultModelObject( object );
     }

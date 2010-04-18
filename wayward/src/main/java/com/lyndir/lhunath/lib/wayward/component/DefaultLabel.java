@@ -35,7 +35,7 @@ import org.apache.wicket.model.StringResourceModel;
  */
 public class DefaultLabel extends Label {
 
-    private IModel<String> defaultValue;
+    private IModel<String> defaultValue = null;
 
 
     /**
@@ -44,7 +44,7 @@ public class DefaultLabel extends Label {
      * @param id          The component's wicket ID.
      * @param modelObject The component's model value.
      */
-    public DefaultLabel(String id, String modelObject) {
+    public DefaultLabel(final String id, final String modelObject) {
 
         this( id, new Model<String>( modelObject ) );
     }
@@ -55,7 +55,7 @@ public class DefaultLabel extends Label {
      * @param id    The component's wicket ID.
      * @param model The component's model.
      */
-    public DefaultLabel(String id, IModel<String> model) {
+    public DefaultLabel(final String id, final IModel<String> model) {
 
         super( id, model );
 
@@ -69,7 +69,7 @@ public class DefaultLabel extends Label {
      * @param model        The component's model.
      * @param defaultValue The model that provides the default value which will be used when the model doesn't provide an object.
      */
-    public DefaultLabel(String id, IModel<String> model, IModel<String> defaultValue) {
+    public DefaultLabel(final String id, final IModel<String> model, final IModel<String> defaultValue) {
 
         super( id, model );
 
@@ -87,7 +87,7 @@ public class DefaultLabel extends Label {
     /**
      * @param defaultValue The defaultValue of this {@link DefaultLabel}.
      */
-    public void setDefaultValue(IModel<String> defaultValue) {
+    public void setDefaultValue(final IModel<String> defaultValue) {
 
         this.defaultValue = defaultValue;
     }
@@ -96,7 +96,7 @@ public class DefaultLabel extends Label {
      * {@inheritDoc}
      */
     @Override
-    protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
+    protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
 
         if (getDefaultModelObject() == null)
             replaceComponentTagBody( markupStream, openTag, getDefaultModelObjectAsString( defaultValue.getObject() ) );

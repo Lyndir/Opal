@@ -46,7 +46,7 @@ public class TrayIcon extends Wrapper {
      *
      * @param image The image to use to depict this tray icon in the system tray.
      */
-    public TrayIcon(Image image) {
+    public TrayIcon(final Image image) {
 
         this( construct( TrayIcon.class, new Class[] {Image.class}, image ) );
     }
@@ -57,7 +57,7 @@ public class TrayIcon extends Wrapper {
      * @param image   The image to use to depict this tray icon in the system tray.
      * @param tooltip The tooltip to show when hovering over the tray icon.
      */
-    public TrayIcon(Image image, String tooltip) {
+    public TrayIcon(final Image image, final String tooltip) {
 
         this( construct( TrayIcon.class, new Class[] {Image.class, String.class}, image, tooltip ) );
     }
@@ -69,7 +69,7 @@ public class TrayIcon extends Wrapper {
      * @param tooltip The tooltip to show when hovering over the tray icon.
      * @param popup   The popup menu to show when right-clicking the tray icon.
      */
-    public TrayIcon(Image image, String tooltip, PopupMenu popup) {
+    public TrayIcon(final Image image, final String tooltip, final PopupMenu popup) {
 
         this( construct( TrayIcon.class, new Class[] {Image.class, String.class, PopupMenu.class}, image, tooltip,
                          popup ) );
@@ -78,7 +78,7 @@ public class TrayIcon extends Wrapper {
     /**
      * @param wrappedInstance The real {@link java.awt.TrayIcon} object.
      */
-    protected TrayIcon(Object wrappedInstance) {
+    protected TrayIcon(final Object wrappedInstance) {
 
         super( wrappedInstance );
     }
@@ -86,7 +86,7 @@ public class TrayIcon extends Wrapper {
     /**
      * @param listener The {@link ActionListener} to add to this {@link TrayIcon}.
      */
-    public synchronized void addActionListener(ActionListener listener) {
+    public synchronized void addActionListener(final ActionListener listener) {
 
         invoke( "addActionListener", new Class[] {ActionListener.class}, listener );
     }
@@ -94,7 +94,7 @@ public class TrayIcon extends Wrapper {
     /**
      * @param listener The {@link MouseListener} to add to this {@link TrayIcon}.
      */
-    public synchronized void addMouseListener(MouseListener listener) {
+    public synchronized void addMouseListener(final MouseListener listener) {
 
         invoke( "addMouseListener", new Class[] {MouseListener.class}, listener );
     }
@@ -102,7 +102,7 @@ public class TrayIcon extends Wrapper {
     /**
      * @param listener The {@link MouseMotionListener} to add to this {@link TrayIcon}.
      */
-    public synchronized void addMouseMotionListener(MouseMotionListener listener) {
+    public synchronized void addMouseMotionListener(final MouseMotionListener listener) {
 
         invoke( "addMouseMotionListener", new Class[] {MouseMotionListener.class}, listener );
     }
@@ -114,7 +114,7 @@ public class TrayIcon extends Wrapper {
      * @param text        The body of the message.
      * @param messageType The type of message.
      */
-    public void displayMessage(String caption, String text, MessageType messageType) {
+    public void displayMessage(final String caption, final String text, final MessageType messageType) {
 
         Class<?> wrappedEnumClass = getClass( "java.awt.TrayIcon$MessageType" );
         invoke( "displayMessage", new Class[] {String.class, String.class, wrappedEnumClass}, caption, text,
@@ -196,7 +196,7 @@ public class TrayIcon extends Wrapper {
     /**
      * @param listener The listener to unregister from this {@link TrayIcon}.
      */
-    public synchronized void removeActionListener(ActionListener listener) {
+    public synchronized void removeActionListener(final ActionListener listener) {
 
         invoke( "removeActionListener", new Class[] {ActionListener.class}, listener );
     }
@@ -204,7 +204,7 @@ public class TrayIcon extends Wrapper {
     /**
      * @param listener The {@link MouseListener} to unregister from this {@link TrayIcon}.
      */
-    public synchronized void removeMouseListener(MouseListener listener) {
+    public synchronized void removeMouseListener(final MouseListener listener) {
 
         invoke( "removeMouseListener", new Class[] {MouseListener.class}, listener );
     }
@@ -212,7 +212,7 @@ public class TrayIcon extends Wrapper {
     /**
      * @param listener The {@link MouseMotionListener} to unregister from this {@link TrayIcon}.
      */
-    public synchronized void removeMouseMotionListener(MouseMotionListener listener) {
+    public synchronized void removeMouseMotionListener(final MouseMotionListener listener) {
 
         invoke( "removeMouseMotionListener", new Class[] {MouseMotionListener.class}, listener );
     }
@@ -220,7 +220,7 @@ public class TrayIcon extends Wrapper {
     /**
      * @param command The action command string to set on action events.
      */
-    public void setActionCommand(String command) {
+    public void setActionCommand(final String command) {
 
         invoke( "setActionCommand", new Class[] {String.class}, command );
     }
@@ -228,7 +228,7 @@ public class TrayIcon extends Wrapper {
     /**
      * @param image The image to use for depicting this {@link TrayIcon}.
      */
-    public void setImage(Image image) {
+    public void setImage(final Image image) {
 
         invoke( "setImage", new Class[] {Image.class}, image );
     }
@@ -236,7 +236,7 @@ public class TrayIcon extends Wrapper {
     /**
      * @param autosize <code>true</code>: auto scale the image used to depict the {@link TrayIcon}.
      */
-    public void setImageAutoSize(boolean autosize) {
+    public void setImageAutoSize(final boolean autosize) {
 
         invoke( "setImageAutoSize", new Class[] {boolean.class}, autosize );
     }
@@ -244,7 +244,7 @@ public class TrayIcon extends Wrapper {
     /**
      * @param popup The menu to show when right-clicking the {@link TrayIcon}.
      */
-    public void setPopupMenu(PopupMenu popup) {
+    public void setPopupMenu(final PopupMenu popup) {
 
         invoke( "setPopupMenu", new Class[] {PopupMenu.class}, popup );
     }
@@ -252,7 +252,7 @@ public class TrayIcon extends Wrapper {
     /**
      * @param tooltip The tooltip message to show when hovering the {@link TrayIcon}.
      */
-    public void setToolTip(String tooltip) {
+    public void setToolTip(final String tooltip) {
 
         invoke( "setToolTip", new Class[] {String.class}, tooltip );
     }

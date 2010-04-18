@@ -36,11 +36,11 @@ public abstract class Schedule implements Runnable, Serializable {
 
     private static final Timer scheduler = new Timer( "Scheduler", true );
 
-    private Calendar nextSchedule;
+    private Calendar nextSchedule = null;
     private int stepAmount;
     private int stepField;
     private transient boolean isScheduled;
-    private transient TimerTask scheduleTask;
+    private transient TimerTask scheduleTask = null;
 
 
     /**
@@ -50,7 +50,7 @@ public abstract class Schedule implements Runnable, Serializable {
      * @param steps The amount of steps specified by the step field that apply.
      * @param step  An enumeration of the relevant {@link Calendar} fields in the given time specification.
      */
-    public void setSchedule(long time, int steps, int step) {
+    public void setSchedule(final long time, final int steps, final int step) {
 
         stepAmount = steps;
         stepField = step;
@@ -59,7 +59,7 @@ public abstract class Schedule implements Runnable, Serializable {
         nextSchedule = Calendar.getInstance();
         Calendar baseSchedule = Calendar.getInstance( TimeZone.getTimeZone( "GMT" ) );
         baseSchedule.setTimeInMillis( time );
-        for (int field : Utils.calendarFields) {
+        for (final int field : Utils.calendarFields) {
             if (field == stepField)
                 break;
 
@@ -137,7 +137,7 @@ public abstract class Schedule implements Runnable, Serializable {
     public String toString() {
 
         StringBuffer time = new StringBuffer();
-        for (int field : Utils.calendarFields) {
+        for (final int field : Utils.calendarFields) {
             if (field == stepField)
                 break;
 

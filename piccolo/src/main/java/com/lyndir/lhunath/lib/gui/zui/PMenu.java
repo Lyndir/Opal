@@ -44,7 +44,7 @@ public class PMenu extends PBox implements PInputEventListener {
      * @param canvas The canvas on which this {@link PMenu} will act.
      * @param title  The title of the menu.
      */
-    public PMenu(PCanvas canvas, String title) {
+    public PMenu(final PCanvas canvas, final String title) {
 
         super( canvas, title );
 
@@ -57,7 +57,7 @@ public class PMenu extends PBox implements PInputEventListener {
      * @param canvas The canvas on which this {@link PMenu} will act.
      * @param action The action that will be triggered with this menu item.
      */
-    public PMenu(PCanvas canvas, Action action) {
+    public PMenu(final PCanvas canvas, final Action action) {
 
         super( canvas, action.getValue( Action.NAME ) == null? null: action.getValue( Action.NAME ).toString() );
 
@@ -72,7 +72,7 @@ public class PMenu extends PBox implements PInputEventListener {
      *
      * @param canvas The canvas on which this {@link PMenu} will act.
      */
-    public PMenu(PCanvas canvas) {
+    public PMenu(final PCanvas canvas) {
 
         super( canvas, null );
 
@@ -86,7 +86,7 @@ public class PMenu extends PBox implements PInputEventListener {
      *
      * @param item The action that will be triggered with this item.
      */
-    public void addItem(Action item) {
+    public void addItem(final Action item) {
 
         PMenu menuItem = new PMenu( canvas, item );
         addChild( menuItem );
@@ -106,7 +106,7 @@ public class PMenu extends PBox implements PInputEventListener {
      *
      * @param position The position to show this menu in global canvas coordinates.
      */
-    public void show(Point2D position) {
+    public void show(final Point2D position) {
 
         canvas.getCamera().addChild( this );
         setOffset( position );
@@ -133,7 +133,7 @@ public class PMenu extends PBox implements PInputEventListener {
     /**
      * {@inheritDoc}
      */
-    public void processEvent(PInputEvent event, int type) {
+    public void processEvent(final PInputEvent event, final int type) {
 
         if (type == MouseEvent.MOUSE_CLICKED)
             hide();

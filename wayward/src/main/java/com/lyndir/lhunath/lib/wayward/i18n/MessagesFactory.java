@@ -57,7 +57,7 @@ public abstract class MessagesFactory {
      *
      * @return The localization proxy that provides localized values.
      */
-    public static <M> M create(Class<M> localizationInterface) {
+    public static <M> M create(final Class<M> localizationInterface) {
 
         return create( localizationInterface, null );
     }
@@ -71,11 +71,11 @@ public abstract class MessagesFactory {
      *
      * @return The localization proxy that provides localized values.
      */
-    public static <M> M create(Class<M> localizationInterface, Class<?> baseClass) {
+    public static <M> M create(final Class<M> localizationInterface, final Class<?> baseClass) {
 
         // Create a localization interface proxy.
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        Class<?>[] proxyInterfaces = new Class[] {localizationInterface, Serializable.class};
+        Class<?>[] proxyInterfaces = {localizationInterface, Serializable.class};
         return localizationInterface.cast( Proxy.newProxyInstance( classLoader, proxyInterfaces,
                                                                    new MessagesInvocationHandler( baseClass ) ) );
     }
@@ -86,7 +86,7 @@ public abstract class MessagesFactory {
         Class<?> baseClass;
 
 
-        MessagesInvocationHandler(Class<?> baseClass) {
+        MessagesInvocationHandler(final Class<?> baseClass) {
 
             this.baseClass = baseClass;
         }
@@ -95,8 +95,7 @@ public abstract class MessagesFactory {
          * {@inheritDoc}
          */
         @Override
-        public Object invoke(Object proxy, Method method, Object[] args)
-                throws Throwable {
+        public Object invoke(final Object proxy, final Method method, final Object[] args) {
 
             // Figure out what bundle to load from where and what the key is.
             if (baseClass == null) {
@@ -108,7 +107,7 @@ public abstract class MessagesFactory {
             StringBuilder keyBuilder = new StringBuilder( method.getName() );
             logger.dbg( "Base key: %s", keyBuilder.toString() );
 
-            final List<Object> methodArgs = new LinkedList<Object>();
+            List<Object> methodArgs = new LinkedList<Object>();
             if (args != null)
                 for (int a = 0; a < args.length; ++a) {
                     Object arg = args[a];
@@ -116,7 +115,7 @@ public abstract class MessagesFactory {
                     boolean useValue = true;
                     logger.dbg( "Considering arg: %s, with annotations: %s.", arg, argAnnotations );
 
-                    for (Annotation argAnnotation : argAnnotations)
+                    for (final Annotation argAnnotation : argAnnotations)
                         if (KeyAppender.class.isAssignableFrom( argAnnotation.getClass() )) {
                             KeyAppender annotation = (KeyAppender) argAnnotation;
                             useValue = annotation.useValue();
@@ -139,7 +138,7 @@ public abstract class MessagesFactory {
 
                             else
                                 // else (if KeyMatches) => evaluate KeyMatches and append accordingly.
-                                for (KeyMatch match : annotation.value()) {
+                                for (final KeyMatch match : annotation.value()) {
                                     logger.dbg( "With match: %s, ", match );
 
                                     if (match.ifNum() == Double.parseDouble( arg.toString() )
@@ -165,7 +164,7 @@ public abstract class MessagesFactory {
                     }
                 }
 
-            final String key = keyBuilder.toString();
+            String key = keyBuilder.toString();
             logger.dbg( "Resolving localization value of key: %s, in baseName: %s, with arguments: %s", //
                         key, baseClass.getSimpleName(), methodArgs );
 
@@ -179,14 +178,15 @@ public abstract class MessagesFactory {
                                 key, baseClass, methodArgs );
 
                     // Find the resource bundle for the current locale and the given baseName.
-                    ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle(
-                            baseClass.getSimpleName(), Session.get().getLocale(), baseClass.getClassLoader() );
+                    ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle( baseClass.getSimpleName(),
+                                                                                    Session.get().getLocale(),
+                                                                                    baseClass.getClassLoader() );
 
                     // Evaluate IModel arguments.
                     List<Object> valueArgs = Lists.transform( methodArgs, new Function<Object, Object>() {
 
                         @Override
-                        public Object apply(Object from) {
+                        public Object apply(final Object from) {
 
                             if (from == null)
                                 return null;
@@ -211,7 +211,7 @@ public abstract class MessagesFactory {
             return valueModel.getObject();
         }
 
-        private StringBuilder appendKey(StringBuilder keyBuilder, String keyPart) {
+        private static StringBuilder appendKey(final StringBuilder keyBuilder, final String keyPart) {
 
             logger.dbg( "Appending key part: %s", keyPart );
             return keyBuilder.append( '.' ).append( keyPart );

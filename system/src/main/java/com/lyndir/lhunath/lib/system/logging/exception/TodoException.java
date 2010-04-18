@@ -38,7 +38,7 @@ public class TodoException extends UnsupportedOperationException {
     /**
      * @param message Some context with what was going on or what caused this.
      */
-    public TodoException(String message) {
+    public TodoException(final String message) {
 
         super( message, null );
     }

@@ -40,7 +40,7 @@ public class NetworkDataPoller extends Poller<SocketChannel, ByteBuffer> impleme
      *
      * @param network The network whose data we should be listening for.
      */
-    public NetworkDataPoller(Network network) {
+    public NetworkDataPoller(final Network network) {
 
         network.registerDataListener( this );
     }
@@ -49,7 +49,7 @@ public class NetworkDataPoller extends Poller<SocketChannel, ByteBuffer> impleme
      * {@inheritDoc}
      */
     @Override
-    public void received(ByteBuffer dataBuffer, SocketChannel socketChannel) {
+    public void received(final ByteBuffer dataBuffer, final SocketChannel socketChannel) {
 
         offer( socketChannel, dataBuffer );
     }

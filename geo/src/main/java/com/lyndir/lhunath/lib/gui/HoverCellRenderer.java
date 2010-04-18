@@ -44,7 +44,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      *
      * @param list The list this renderer works for.
      */
-    public HoverCellRenderer(JList list) {
+    public HoverCellRenderer(final JList list) {
 
         panel = new HoverPanel( new BorderLayout() );
 
@@ -57,8 +57,9 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      * {@inheritDoc}
      */
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-                                                  boolean cellHasFocus) {
+    public Component getListCellRendererComponent(
+            JList list, final Object value, final int index,
+            boolean isSelected, final boolean cellHasFocus) {
 
         Component label = getObjectComponent( list, value, index, isSelected, cellHasFocus );
         if (label instanceof JComponent)
@@ -101,9 +102,12 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      *
      * @return The {@link Component} that will be painted to represent the given data.
      */
-    private Component getObjectComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    private Component getObjectComponent(
+            JList list, final Object value, final int index,
+            boolean isSelected, final boolean cellHasFocus) {
 
-        JLabel label = (JLabel) super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+        JLabel label = (JLabel) super
+                .getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
 
         int padding = list.getFont().getSize() / 2;
         label.setBorder( BorderFactory.createEmptyBorder( padding, padding, padding, padding ) );
@@ -111,7 +115,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
         return label;
     }
 
-    private void hovered(MouseEvent e, boolean entered) {
+    private void hovered(final MouseEvent e, final boolean entered) {
 
         hoveredIndex = myList.locationToIndex( e.getPoint() );
         if (!entered || hoveredIndex != -1
@@ -125,7 +129,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      * {@inheritDoc}
      */
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(final MouseEvent e) {
 
         // Not interested.
     }
@@ -134,7 +138,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      * {@inheritDoc}
      */
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(final MouseEvent e) {
 
         hovered( e, true );
     }
@@ -143,7 +147,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      * {@inheritDoc}
      */
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(final MouseEvent e) {
 
         hovered( e, false );
     }
@@ -152,7 +156,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      * {@inheritDoc}
      */
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(final MouseEvent e) {
 
         // Not interested.
     }
@@ -161,7 +165,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      * {@inheritDoc}
      */
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(final MouseEvent e) {
 
         // Not interested.
     }
@@ -170,7 +174,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      * {@inheritDoc}
      */
     @Override
-    public void mouseDragged(MouseEvent e) {
+    public void mouseDragged(final MouseEvent e) {
 
         hovered( e, true );
     }
@@ -179,7 +183,7 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      * {@inheritDoc}
      */
     @Override
-    public void mouseMoved(MouseEvent e) {
+    public void mouseMoved(final MouseEvent e) {
 
         hovered( e, true );
     }

@@ -38,15 +38,13 @@ public class GenericWebPage<T> extends WebPage {
      *
      * @param model The component's model.
      */
-    public GenericWebPage(IModel<T> model) {
+    public GenericWebPage(final IModel<T> model) {
 
         super( model );
     }
 
     /**
-     * Gets model
-     *
-     * @return model
+     * @return The component's model.
      */
     @SuppressWarnings("unchecked")
     public final IModel<T> getModel() {
@@ -55,19 +53,15 @@ public class GenericWebPage<T> extends WebPage {
     }
 
     /**
-     * Sets model
-     *
-     * @param model
+     * @param model The component's new model.
      */
-    public final void setModel(IModel<T> model) {
+    public final void setModel(final IModel<T> model) {
 
         setDefaultModel( model );
     }
 
     /**
-     * Gets model object
-     *
-     * @return model object
+     * @return The object of the component's model.
      */
     @SuppressWarnings("unchecked")
     public final T getModelObject() {
@@ -76,11 +70,9 @@ public class GenericWebPage<T> extends WebPage {
     }
 
     /**
-     * Sets model object
-     *
-     * @param object
+     * @param object The new object of the component's model.
      */
-    public final void setModelObject(T object) {
+    public final void setModelObject(final T object) {
 
         setDefaultModelObject( object );
     }

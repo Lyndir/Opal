@@ -41,7 +41,7 @@ public abstract class FileDialog extends JFileChooser {
      * @param title  The title of this dialog.
      * @param parent The parent frame that will be inaccessible until the dialog is closed (or null).
      */
-    protected FileDialog(File start, String title, Frame parent) {
+    protected FileDialog(final File start, final String title, final Frame parent) {
 
         super( start );
 
@@ -101,9 +101,9 @@ public abstract class FileDialog extends JFileChooser {
              * @inheritDoc
              */
             @Override
-            public boolean accept(File f) {
+            public boolean accept(final File file) {
 
-                return f.isDirectory();
+                return file.isDirectory();
             }
 
             @Override
@@ -130,9 +130,9 @@ public abstract class FileDialog extends JFileChooser {
              * @inheritDoc
              */
             @Override
-            public boolean accept(File f) {
+            public boolean accept(final File file) {
 
-                return f.getName().matches( ".*\\." + extension ) || f.isDirectory();
+                return file.getName().matches( ".*\\." + extension ) || file.isDirectory();
             }
 
             @Override

@@ -30,7 +30,7 @@ public class XPathUtil {
      * @param isXHTML <code>true</code>: Indicate that the document uses the XHTML namespace context and set it as the
      *                default context.
      */
-    public XPathUtil(boolean isXHTML) {
+    public XPathUtil(final boolean isXHTML) {
 
         xpath = XPathFactory.newInstance().newXPath();
 
@@ -49,7 +49,7 @@ public class XPathUtil {
      *
      * @throws XPathExpressionException
      */
-    public Boolean getBoolean(Object context, String expressionFormat, Object... arguments)
+    public Boolean getBoolean(final Object context, final String expressionFormat, final Object... arguments)
             throws XPathExpressionException {
 
         return (Boolean) getObject( context, expressionFormat, XPathConstants.BOOLEAN, arguments );
@@ -66,7 +66,7 @@ public class XPathUtil {
      *
      * @throws XPathExpressionException
      */
-    public Node getNode(Object context, String expressionFormat, Object... arguments)
+    public Node getNode(final Object context, final String expressionFormat, final Object... arguments)
             throws XPathExpressionException {
 
         return (Node) getObject( context, expressionFormat, XPathConstants.NODE, arguments );
@@ -83,11 +83,12 @@ public class XPathUtil {
      *
      * @throws XPathExpressionException
      */
-    public List<Node> getNodes(Object context, String expressionFormat, Object... arguments)
+    public List<Node> getNodes(final Object context, final String expressionFormat, final Object... arguments)
             throws XPathExpressionException {
 
         List<Node> nodeList = new ArrayList<Node>();
-        NodeList annoyingNodeList = (NodeList) getObject( context, expressionFormat, XPathConstants.NODESET, arguments );
+        NodeList annoyingNodeList = (NodeList) getObject( context, expressionFormat, XPathConstants.NODESET,
+                                                          arguments );
 
         for (int node = 0; node < annoyingNodeList.getLength(); ++node)
             nodeList.add( annoyingNodeList.item( node ) );
@@ -106,7 +107,7 @@ public class XPathUtil {
      *
      * @throws XPathExpressionException
      */
-    public Double getNumber(Object context, String expressionFormat, Object... arguments)
+    public Double getNumber(final Object context, final String expressionFormat, final Object... arguments)
             throws XPathExpressionException {
 
         return (Double) getObject( context, expressionFormat, XPathConstants.NUMBER, arguments );
@@ -123,7 +124,7 @@ public class XPathUtil {
      *
      * @throws XPathExpressionException
      */
-    public String getString(Object context, String expressionFormat, Object... arguments)
+    public String getString(final Object context, final String expressionFormat, final Object... arguments)
             throws XPathExpressionException {
 
         return (String) getObject( context, expressionFormat, XPathConstants.STRING, arguments );
@@ -141,7 +142,9 @@ public class XPathUtil {
      *
      * @throws XPathExpressionException If the given expression is invalid or does not match the context.
      */
-    private Object getObject(Object context, String expressionFormat, QName result, Object... arguments)
+    private Object getObject(
+            Object context, final String expressionFormat, final QName result,
+            Object... arguments)
             throws XPathExpressionException {
 
         String expression = String.format( expressionFormat, arguments );
@@ -187,7 +190,7 @@ public class XPathUtil {
          * @return The namespace mapped by the given prefix.
          */
         @Override
-        public String getNamespaceURI(String prefix) {
+        public String getNamespaceURI(final String prefix) {
 
             return namespaces.get( prefix );
         }
@@ -200,9 +203,9 @@ public class XPathUtil {
          * @return The first prefix that maps the given namespace.
          */
         @Override
-        public String getPrefix(String namespaceURI) {
+        public String getPrefix(final String namespaceURI) {
 
-            for (Map.Entry<String, String> namespace : namespaces.entrySet())
+            for (final Map.Entry<String, String> namespace : namespaces.entrySet())
                 if (namespaceURI.equals( namespace.getValue() ))
                     return namespace.getKey();
 
@@ -217,14 +220,14 @@ public class XPathUtil {
          * @return All prefixes that map the given namespace.
          */
         @Override
-        public Iterator<String> getPrefixes(String namespaceURI) {
+        public Iterator<String> getPrefixes(final String namespaceURI) {
 
-            List<String> URIs = new ArrayList<String>();
-            for (Map.Entry<String, String> namespace : namespaces.entrySet())
+            List<String> uris = new ArrayList<String>();
+            for (final Map.Entry<String, String> namespace : namespaces.entrySet())
                 if (namespaceURI.equals( namespace.getValue() ))
-                    URIs.add( namespace.getKey() );
+                    uris.add( namespace.getKey() );
 
-            return URIs.iterator();
+            return uris.iterator();
         }
 
     }

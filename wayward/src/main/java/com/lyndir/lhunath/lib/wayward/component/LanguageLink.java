@@ -46,7 +46,7 @@ public class LanguageLink extends Link<String> {
      * @param id       The wicket ID.
      * @param language The 2-letter ISO language code.
      */
-    public LanguageLink(String id, String language) {
+    public LanguageLink(final String id, final String language) {
 
         this( id, new Model<String>( language ) );
     }
@@ -55,7 +55,7 @@ public class LanguageLink extends Link<String> {
      * @param id    The wicket ID.
      * @param model The 2-letter ISO language code.
      */
-    public LanguageLink(String id, IModel<String> model) {
+    public LanguageLink(final String id, final IModel<String> model) {
 
         super( id, model );
 

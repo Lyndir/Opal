@@ -32,7 +32,7 @@ package com.lyndir.lhunath.lib.system.localization;
 public interface LocalizationProvider {
 
     /**
-     * @param key     The localization key that identifies the requesed value.
+     * @param key     The localization key that identifies the requested value.
      * @param context An optional provider-specific context object that can help the provider resolve the value.
      *
      * @return The value for the given localization key.

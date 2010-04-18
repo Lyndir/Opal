@@ -52,12 +52,12 @@ public class ShadeConfig<T extends Serializable> extends BaseConfig<T> {
     /**
      * The handler used to display logging messages on the console.
      */
-    //public static ConsoleHandler              console;
+    // public static ConsoleHandler console;
 
     /**
      * The formatter used to generate log messages on the console.
      */
-    //public static LogFormatter                formatter;
+    // public static LogFormatter formatter;
 
     /**
      * The application user interface.
@@ -144,6 +144,7 @@ public class ShadeConfig<T extends Serializable> extends BaseConfig<T> {
      * @return A reference to the {@link AbstractUi} implementation the application uses.
      */
     public static AbstractUi getUi() {
+
         return ui;
     }
 
@@ -151,6 +152,7 @@ public class ShadeConfig<T extends Serializable> extends BaseConfig<T> {
      * @param ui A reference to the {@link AbstractUi} implementation the application uses.
      */
     public static void setUi(AbstractUi ui) {
+
         ShadeConfig.ui = ui;
     }
 }

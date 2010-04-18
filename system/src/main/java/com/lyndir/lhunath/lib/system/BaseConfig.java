@@ -27,7 +27,7 @@ import com.thoughtworks.xstream.XStream;
 
 
 /**
- * <i>BaseConfig - A configuration backend system with built-in persistence.</i><br>
+ * <i>BaseConfig - A configuration back-end system with built-in persistence.</i><br>
  * <br>
  * You should extend this class and create configurable entries as demonstrated by the implementation of
  * {@link #configFile}.<br>
@@ -47,7 +47,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * Version of the class. Augment this whenever the class type of a config entry field changes, or the context of a
      * field becomes incompatible.
      */
-    public static final long serialVersionUID = 210L;
+    private static final long serialVersionUID = 210L;
 
     /**
      * The size of the file/web read buffer.
@@ -79,7 +79,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
                 logger.dbg( "stat.saveConfig", configFile.get() );
                 try {
-                    for (Runnable hook : shutdownHooks)
+                    for (final Runnable hook : shutdownHooks)
                         hook.run();
 
                     if (configFile.isEmpty()) {
@@ -140,7 +140,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      *
      * @return The {@link BaseConfig} object for this entry.
      */
-    public static <T extends Serializable> BaseConfig<T> create(@SuppressWarnings("unused") Class<T> t) {
+    public static <T extends Serializable> BaseConfig<T> create(@SuppressWarnings("unused") final Class<T> t) {
 
         return new BaseConfig<T>( null );
     }
@@ -153,7 +153,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      *
      * @return The {@link BaseConfig} object for this entry.
      */
-    public static <T extends Serializable> BaseConfig<T> create(T defaultValue) {
+    public static <T extends Serializable> BaseConfig<T> create(final T defaultValue) {
 
         return new BaseConfig<T>( defaultValue );
     }
@@ -165,7 +165,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      *
      * @return The {@link BaseConfig} object for this entry.
      */
-    public static BaseConfig<URL> createUrl(String defaultValue) {
+    public static BaseConfig<URL> createUrl(final String defaultValue) {
 
         return create( Utils.url( defaultValue ) );
     }
@@ -175,7 +175,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      */
     public static void dump() {
 
-        for (BaseConfig<?> entry : names.keySet())
+        for (final BaseConfig<?> entry : names.keySet())
             System.out.println( entry.toString() );
     }
 
@@ -200,7 +200,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * @param configClass The class that is being initialized. This is the Class object of the {@link BaseConfig} subclass.
      */
     @SuppressWarnings({"unchecked", "rawtypes", "RawUseOfParameterizedType"})
-    public static void initClass(Class<? extends BaseConfig> configClass) {
+    public static void initClass(final Class<? extends BaseConfig> configClass) {
 
         flushConfig( configClass );
         loadConfig();
@@ -211,7 +211,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      *
      * @param config The new config file.
      */
-    public static void setConfig(File config) {
+    public static void setConfig(final File config) {
 
         configFile.set( config );
         loadConfig();
@@ -224,9 +224,9 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * @param configClass The name of the class whose static {@link BaseConfig} fields should be flushed into the settings list.
      */
     @SuppressWarnings({"unchecked", "rawtypes", "RawUseOfParameterizedType"})
-    private static void flushConfig(Class<? extends BaseConfig> configClass) {
+    private static void flushConfig(final Class<? extends BaseConfig> configClass) {
 
-        for (Field field : configClass.getFields())
+        for (final Field field : configClass.getFields())
             try {
                 if (field.get( null ) instanceof BaseConfig) {
                     BaseConfig<?> config = (BaseConfig<?>) field.get( null );
@@ -310,7 +310,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
             /* Failed. */
             if (!loaded) {
                 logger.err( "Failed to load config file %s.  Reason follows.", configFile.get() );
-                for (Exception loadProblem : loadProblems)
+                for (final Exception loadProblem : loadProblems)
                     logger.err( "Reason:", loadProblem );
 
                 revert();
@@ -318,8 +318,8 @@ public class BaseConfig<T extends Serializable> implements Serializable {
             }
 
             /* Apply config file and check its settings for any keys not defined by the application. */
-            for (Map.Entry<BaseConfig<? extends Serializable>, String> configNameEntry : configNames.entrySet())
-                for (BaseConfig currEntry : names.keySet()) {
+            for (final Map.Entry<BaseConfig<? extends Serializable>, String> configNameEntry : configNames.entrySet())
+                for (final BaseConfig currEntry : names.keySet()) {
 
                     /* Don't load the config file entry.. */
                     if (currEntry.equals( configFile ))
@@ -369,7 +369,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      *
      * @param hook The hook to execute during shutdown.
      */
-    public static void addShutdownHook(Runnable hook) {
+    public static void addShutdownHook(final Runnable hook) {
 
         shutdownHooks.add( hook );
     }
@@ -377,7 +377,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     private T value;
     private int hashCode;
-    private String type;
+    private final String type = null;
 
     private final transient Set<ConfigChangedListener<T>> listeners;
 
@@ -387,7 +387,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      *
      * @param defaultValue The default value for this entry.
      */
-    protected BaseConfig(T defaultValue) {
+    protected BaseConfig(final T defaultValue) {
 
         value = defaultValue;
         listeners = new HashSet<ConfigChangedListener<T>>();
@@ -468,11 +468,8 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * @param newValue The setting's new value.
      *
      * @return <code>true</code> in case the original value was not the same as the new value.
-     *
-     * @throws ClassCastException If the object is not null and is not assignable to the setting's type.
      */
-    public boolean set(T newValue)
-            throws ClassCastException {
+    public boolean set(final T newValue) {
 
         if (value == null && newValue == null)
             return false;
@@ -481,7 +478,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
         value = newValue;
 
-        for (ConfigChangedListener<T> listener : listeners)
+        for (final ConfigChangedListener<T> listener : listeners)
             listener.configValueChanged( this, value, newValue );
 
         return true;
@@ -496,7 +493,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      *
      * @return true if the value was changed.
      */
-    public boolean force(T newValue) {
+    public boolean force(final T newValue) {
 
         value = null;
         return set( newValue );
@@ -507,7 +504,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      *
      * @param listener The {@link ConfigChangedListener} to register.
      */
-    public void register(ConfigChangedListener<T> listener) {
+    public void register(final ConfigChangedListener<T> listener) {
 
         listeners.add( listener );
     }
@@ -531,9 +528,9 @@ public class BaseConfig<T extends Serializable> implements Serializable {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes", "RawUseOfParameterizedType"})
-    private String getName(Class<? extends BaseConfig> configClass) {
+    private String getName(final Class<? extends BaseConfig> configClass) {
 
-        for (Field field : configClass.getFields())
+        for (final Field field : configClass.getFields())
             try {
                 if (field.get( null ) != null && field.get( null ) == this)
                     return field.getName();
@@ -566,7 +563,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
 
         if (obj == this)
             return true;

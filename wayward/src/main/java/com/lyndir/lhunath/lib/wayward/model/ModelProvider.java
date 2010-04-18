@@ -55,16 +55,16 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
 
     static final Logger logger = Logger.get( ModelProvider.class );
 
-    private transient IModel<P> model;
-    private IModel<M> wrappedModel;
+    private transient IModel<P> model = null;
+    private IModel<M> wrappedModel = null;
 
-    private Component component;
+    private Component component = null;
 
 
     /**
      * @param model The base model.
      */
-    public ModelProvider(IModel<M> model) {
+    protected ModelProvider(final IModel<M> model) {
 
         if (model != null)
             setWrappedModel( model );
@@ -92,7 +92,7 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
     /**
      * @param wrappedModel The base model.
      */
-    public void setWrappedModel(IModel<M> wrappedModel) {
+    public void setWrappedModel(final IModel<M> wrappedModel) {
 
         this.wrappedModel = wrappedModel;
     }
@@ -124,7 +124,7 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
      * {@inheritDoc}
      */
     @Override
-    public void setObject(M object) {
+    public void setObject(final M object) {
 
         if (getWrappedModel() == null) {
             logger.wrn( "Attempt to setObject(%s) while model is unset.", object );
@@ -160,7 +160,7 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
     /**
      * @param object The new object of the base model.
      */
-    public void setModelObject(M object) {
+    public void setModelObject(final M object) {
 
         if (getWrappedModel() == null) {
             logger.wrn( "Attempt to setModelObject(%s) while model is unset.", object );
@@ -170,7 +170,7 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
         getWrappedModel().setObject( object );
     }
 
-    private void setComponent(Component component) {
+    private void setComponent(final Component component) {
 
         this.component = component;
     }
@@ -178,7 +178,8 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
     /**
      * @param component The component we have been or will be attached to.
      */
-    public void attach(@SuppressWarnings("hiding") Component component) {
+    @SuppressWarnings({"hiding", "ParameterHidesMemberVariable"})
+    public void attach(final Component component) {
 
         setComponent( checkNotNull( component, "Can't attach model provider (%s) to null.", this ) );
     }

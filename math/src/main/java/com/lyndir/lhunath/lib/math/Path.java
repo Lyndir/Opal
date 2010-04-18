@@ -28,8 +28,8 @@ import java.awt.geom.RectangularShape;
  */
 public class Path {
 
-    private boolean srcHorizontal;
-    private boolean dstHorizontal;
+    private final boolean srcHorizontal;
+    private final boolean dstHorizontal;
     private final Vec2 src;
     private final Vec2 dst;
     private final Vec2 size;
@@ -55,7 +55,9 @@ public class Path {
      * @param srcHorizontal Whether this path exits its source horizontally.
      * @param dstHorizontal Whether this path enters its destination horizontally.
      */
-    public Path(Vec2 src, Vec2 dst, Vec2 offset, Vec2 size, boolean srcHorizontal, boolean dstHorizontal) {
+    public Path(
+            Vec2 src, final Vec2 dst, final Vec2 offset, final Vec2 size, final boolean srcHorizontal,
+            boolean dstHorizontal) {
 
         this.src = src;
         this.dst = dst;
@@ -74,7 +76,7 @@ public class Path {
      *
      * @return A {@link Path} object that provides the geometry needed to define the requested path.
      */
-    public static Path calculatePath(RectangularShape srcBounds, RectangularShape dstBounds) {
+    public static Path calculatePath(final RectangularShape srcBounds, final RectangularShape dstBounds) {
 
         Vec2 src = new Vec2();
         Vec2 dst = new Vec2();

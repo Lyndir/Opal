@@ -33,7 +33,7 @@ import java.util.ResourceBundle;
 public class Locale {
 
     private static final Locale instance = new Locale();
-    private ResourceBundle resources;
+    private ResourceBundle resources = null;
 
 
     private Locale() {
@@ -58,7 +58,7 @@ public class Locale {
      *
      * @return Reference to this locale instance.
      */
-    public Locale setLang(java.util.Locale lang) {
+    public Locale setLang(final java.util.Locale lang) {
 
         try {
             if (lang == null)
@@ -86,13 +86,13 @@ public class Locale {
      * arguments as input values.
      *
      * @param messageKey The key of the message or the message to format.
-     * @param args       Arguments to use in formatting of the result.
+     * @param arguments  Arguments to use in formatting of the result.
      *
      * @return The formatted externalized string, or key if none was found.
      */
-    public static String explain(String messageKey, Object... args) {
+    public static String explain(final String messageKey, final Object... arguments) {
 
-        return getLocale()._explain( messageKey, args );
+        return getLocale()._explain( messageKey, arguments );
     }
 
     /**
@@ -101,27 +101,27 @@ public class Locale {
      * arguments as input values.
      *
      * @param messageKey The key of the message or the message to format.
-     * @param args       Arguments to use in formatting of the result.
+     * @param arguments  Arguments to use in formatting of the result.
      *
      * @return The formatted externalized string, or key if none was found.
      */
-    private String _explain(String messageKey, Object... args) {
+    private String _explain(final String messageKey, final Object... arguments) {
 
         if (messageKey == null)
             return null;
 
         try {
-            if (args != null && args.length > 0)
-                return String.format( resources.getLocale(), resources.getString( messageKey ), args );
+            if (arguments != null && arguments.length > 0)
+                return String.format( resources.getLocale(), resources.getString( messageKey ), arguments );
             return resources.getString( messageKey );
         }
         catch (MissingResourceException ignored) {
             StringBuilder messageBuilder = new StringBuilder( messageKey );
 
-            if (args == null || args.length == (messageKey + ' ').split( "%[-#+ 0,\\(\\.]*\\w" ).length - 1)
-                return String.format( resources.getLocale(), messageKey, args );
+            if (arguments == null || arguments.length == (messageKey + ' ').split( "%[-#+ 0,\\(\\.]*\\w" ).length - 1)
+                return String.format( resources.getLocale(), messageKey, arguments );
 
-            for (Object arg : args)
+            for (final Object arg : arguments)
                 messageBuilder.append( arg );
 
             return messageBuilder.toString();

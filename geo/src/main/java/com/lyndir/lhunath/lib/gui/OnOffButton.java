@@ -51,7 +51,7 @@ public class OnOffButton extends GButton implements ChangeListener {
      * @param onText  The text that shows on the button when it is selected.
      * @param offText The text that shows on the button when it is not selected.
      */
-    public OnOffButton(String onText, String offText) {
+    public OnOffButton(final String onText, final String offText) {
 
         this( onText, null, offText, null );
     }
@@ -62,7 +62,7 @@ public class OnOffButton extends GButton implements ChangeListener {
      * @param onIcon  The icon that shows on the button when it is selected.
      * @param offIcon The icon that shows on the button when it is not selected.
      */
-    public OnOffButton(Icon onIcon, Icon offIcon) {
+    public OnOffButton(final Icon onIcon, final Icon offIcon) {
 
         this( null, onIcon, null, offIcon );
     }
@@ -75,7 +75,7 @@ public class OnOffButton extends GButton implements ChangeListener {
      * @param offText The text that shows on the button when it is not selected.
      * @param offIcon The icon that shows on the button when it is not selected.
      */
-    public OnOffButton(String onText, Icon onIcon, String offText, Icon offIcon) {
+    public OnOffButton(final String onText, final Icon onIcon, final String offText, final Icon offIcon) {
 
         super( onIcon );
         setModel( new ToggleButtonModel() );
@@ -93,7 +93,7 @@ public class OnOffButton extends GButton implements ChangeListener {
      * {@inheritDoc}
      */
     @Override
-    public void stateChanged(ChangeEvent e) {
+    public void stateChanged(final ChangeEvent e) {
 
         if (isSelected()) {
             setText( onText );

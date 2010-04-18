@@ -62,7 +62,7 @@ public abstract class LocalizerFactory {
      * @return A proxy of the given localizationInterface that will provide localized values for the methods in the
      *         interface.
      */
-    public static <L> L getLocalizer(Class<L> localizationInterface) {
+    public static <L> L getLocalizer(final Class<L> localizationInterface) {
 
         return getLocalizer( localizationInterface, null );
     }
@@ -78,19 +78,20 @@ public abstract class LocalizerFactory {
      * @return A proxy of the given localizationInterface that will provide localized values for the methods in the
      *         interface.
      */
-    public static <L> L getLocalizer(Class<L> localizationInterface, Object context) {
+    public static <L> L getLocalizer(final Class<L> localizationInterface, final Object context) {
 
         // Do some validation on the localization interface.
         if (!localizationInterface.isInterface())
             throw new IllegalArgumentException(
                     MessageFormat.format( "Localization interface must be an interface: {0}", localizationInterface ) );
 
-        if (!(localizationInterface.isAnnotationPresent( UseBundle.class ) || localizationInterface.isAnnotationPresent( UseLocalizationProvider.class )))
+        if (!(localizationInterface.isAnnotationPresent( UseBundle.class ) || localizationInterface
+                .isAnnotationPresent( UseLocalizationProvider.class )))
             throw new IllegalArgumentException(
                     MessageFormat.format( "Localization interface must be annotated with {0} or {1}: {2}", //
                                           UseBundle.class, UseLocalizationProvider.class, localizationInterface ) );
 
-        for (Method method : localizationInterface.getDeclaredMethods())
+        for (final Method method : localizationInterface.getDeclaredMethods())
             if (!method.isAnnotationPresent( UseKey.class ))
                 throw new IllegalArgumentException(
                         MessageFormat.format( "Method must be annotated with {0}: {1} of {2}", UseKey.class, method,
@@ -98,8 +99,10 @@ public abstract class LocalizerFactory {
 
         // Create a localization interface proxy.
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        return localizationInterface.cast( Proxy.newProxyInstance( classLoader, new Class[] {localizationInterface,
-                Serializable.class}, new LocalizationInvocationHandler( context ) ) );
+        return localizationInterface.cast( Proxy.newProxyInstance( classLoader, new Class[] {
+                localizationInterface,
+                Serializable.class},
+                                                                   new LocalizationInvocationHandler( context ) ) );
     }
 
 
@@ -108,7 +111,7 @@ public abstract class LocalizerFactory {
         private final Object context;
 
 
-        LocalizationInvocationHandler(Object context) {
+        LocalizationInvocationHandler(final Object context) {
 
             this.context = context;
         }
@@ -117,7 +120,7 @@ public abstract class LocalizerFactory {
          * {@inheritDoc}
          */
         @Override
-        public Object invoke(Object proxy, Method method, Object[] args)
+        public Object invoke(final Object proxy, final Method method, final Object[] arguments)
                 throws NoSuchMethodException, InvocationTargetException {
 
             UseKey useKeyAnnotation = method.getAnnotation( UseKey.class );
@@ -147,7 +150,7 @@ public abstract class LocalizerFactory {
 
                 if (String.class.isAssignableFrom( method.getReturnType() )) {
                     String localizedValueFormat = bundle.getString( localizationKey );
-                    return MessageFormat.format( localizedValueFormat, args );
+                    return MessageFormat.format( localizedValueFormat, arguments );
                 }
 
                 if (method.getParameterTypes().length > 0)
@@ -157,16 +160,17 @@ public abstract class LocalizerFactory {
                 return bundle.getObject( localizationKey );
             }
 
-            UseLocalizationProvider useLocalizationProviderAnnotation = methodType.getAnnotation( UseLocalizationProvider.class );
-            if (useLocalizationProviderAnnotation != null) {
-                Class<? extends LocalizationProvider> localizationProvider = useLocalizationProviderAnnotation.value();
+            UseLocalizationProvider useLocalizationProvider = methodType
+                    .getAnnotation( UseLocalizationProvider.class );
+            if (useLocalizationProvider != null) {
+                Class<? extends LocalizationProvider> localizationProvider = useLocalizationProvider.value();
 
                 try {
                     return MessageFormat.format(
                             localizationProvider.getConstructor()
                                     .newInstance()
                                     .getValueForKeyInContext( localizationKey, context ),
-                            args );
+                            arguments );
                 }
 
                 catch (IllegalArgumentException e) {

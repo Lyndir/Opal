@@ -42,7 +42,7 @@ public class DragListener extends MouseAdapter {
      *
      * @param dragComponent The component that shall be dragged using this listener.
      */
-    public DragListener(Container dragComponent) {
+    public DragListener(final Container dragComponent) {
 
         this.dragComponent = dragComponent;
     }
@@ -60,13 +60,13 @@ public class DragListener extends MouseAdapter {
      *
      * @param container The container in which to install this {@link DragListener}.
      */
-    public void install(Container container) {
+    public void install(final Container container) {
 
-        for (Component c : container.getComponents()) {
-            c.addMouseListener( this );
-            c.addMouseMotionListener( this );
-            if (c instanceof Container)
-                install( (Container) c );
+        for (final Component component : container.getComponents()) {
+            component.addMouseListener( this );
+            component.addMouseMotionListener( this );
+            if (component instanceof Container)
+                install( (Container) component );
         }
     }
 
@@ -83,13 +83,13 @@ public class DragListener extends MouseAdapter {
      *
      * @param container The container from which to remove this {@link DragListener}.
      */
-    public void uninstall(Container container) {
+    public void uninstall(final Container container) {
 
-        for (Component c : container.getComponents()) {
-            c.removeMouseListener( this );
-            c.removeMouseMotionListener( this );
-            if (c instanceof Container)
-                uninstall( (Container) c );
+        for (final Component component : container.getComponents()) {
+            component.removeMouseListener( this );
+            component.removeMouseMotionListener( this );
+            if (component instanceof Container)
+                uninstall( (Container) component );
         }
     }
 
@@ -97,7 +97,7 @@ public class DragListener extends MouseAdapter {
      * {@inheritDoc}
      */
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(final MouseEvent e) {
 
         /* Popup Button. */
         if (e.getModifiers() == Event.META_MASK && e.getSource() instanceof Component) {
@@ -116,7 +116,7 @@ public class DragListener extends MouseAdapter {
      * {@inheritDoc}
      */
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(final MouseEvent e) {
 
         startDrag = startLoc = null;
     }
@@ -125,7 +125,7 @@ public class DragListener extends MouseAdapter {
      * {@inheritDoc}
      */
     @Override
-    public void mouseDragged(MouseEvent e) {
+    public void mouseDragged(final MouseEvent e) {
 
         if (startDrag != null) {
 
@@ -149,7 +149,7 @@ public class DragListener extends MouseAdapter {
      * {@inheritDoc}
      */
     @Override
-    public void mouseMoved(MouseEvent e) {
+    public void mouseMoved(final MouseEvent e) {
 
         /* Don't care. */
     }

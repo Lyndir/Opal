@@ -57,7 +57,7 @@ public class Logger implements Serializable {
      *
      * @return A logger.
      */
-    public static Logger get(Class<?> type) {
+    public static Logger get(final Class<?> type) {
 
         return new Logger( type );
     }
@@ -77,7 +77,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger trc(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
+    public Logger trc(final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
 
         if (logger.isTraceEnabled())
             if (cause == null)
@@ -104,7 +104,7 @@ public class Logger implements Serializable {
      *
      * @see #trc(Throwable, String, Object...)
      */
-    public void trc(String descriptionFormat, Object... descriptionArguments) {
+    public void trc(final String descriptionFormat, final Object... descriptionArguments) {
 
         trc( null, descriptionFormat, descriptionArguments );
     }
@@ -122,7 +122,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger dbg(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
+    public Logger dbg(final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
 
         if (logger.isDebugEnabled())
             if (cause == null)
@@ -149,7 +149,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger dbg(String descriptionFormat, Object... descriptionArguments) {
+    public Logger dbg(final String descriptionFormat, final Object... descriptionArguments) {
 
         return dbg( null, descriptionFormat, descriptionArguments );
     }
@@ -167,7 +167,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger inf(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
+    public Logger inf(final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
 
         if (logger.isInfoEnabled())
             logger.info( String.format( descriptionFormat, descriptionArguments ), cause );
@@ -193,7 +193,7 @@ public class Logger implements Serializable {
      *
      * @see #inf(Throwable, String, Object...)
      */
-    public Logger inf(String descriptionFormat, Object... descriptionArguments) {
+    public Logger inf(final String descriptionFormat, final Object... descriptionArguments) {
 
         return inf( null, descriptionFormat, descriptionArguments );
     }
@@ -211,7 +211,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger wrn(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
+    public Logger wrn(final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
 
         if (logger.isWarnEnabled())
             if (cause == null)
@@ -238,7 +238,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger wrn(String descriptionFormat, Object... descriptionArguments) {
+    public Logger wrn(final String descriptionFormat, final Object... descriptionArguments) {
 
         return wrn( null, descriptionFormat, descriptionArguments );
     }
@@ -256,7 +256,7 @@ public class Logger implements Serializable {
      *
      * @see #bug(Throwable, String, Object...)
      */
-    public Logger bug(Throwable cause) {
+    public Logger bug(final Throwable cause) {
 
         return bug( cause, "Unexpected Error" );
     }
@@ -274,7 +274,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger bug(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
+    public Logger bug(final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
 
         if (logger.isErrorEnabled())
             if (cause == null)
@@ -301,7 +301,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger bug(String descriptionFormat, Object... descriptionArguments) {
+    public Logger bug(final String descriptionFormat, final Object... descriptionArguments) {
 
         return bug( null, descriptionFormat, descriptionArguments );
     }
@@ -319,7 +319,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger err(Throwable cause, String descriptionFormat, Object... descriptionArguments) {
+    public Logger err(final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
 
         if (logger.isErrorEnabled())
             if (cause == null)
@@ -346,7 +346,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger err(String descriptionFormat, Object... descriptionArguments) {
+    public Logger err(final String descriptionFormat, final Object... descriptionArguments) {
 
         return err( null, descriptionFormat, descriptionArguments );
     }
@@ -360,6 +360,7 @@ public class Logger implements Serializable {
      *
      * @return An unchecked {@link Error}.
      */
+    @SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})
     public RuntimeException toError() {
 
         if (eventCause.get() instanceof RuntimeException)
@@ -383,7 +384,7 @@ public class Logger implements Serializable {
      *
      * @return The requested {@link Throwable}.
      */
-    public <E extends Throwable> E toError(Class<E> errorClass, Object... args) {
+    public <E extends Throwable> E toError(final Class<E> errorClass, final Object... args) {
 
         if (eventFormat.get() == null)
             throw new IllegalStateException( "No previous event set: can't rethrow one." );
@@ -406,7 +407,7 @@ public class Logger implements Serializable {
             @SuppressWarnings("unchecked")
             Constructor<E>[] errorConstructors = (Constructor<E>[]) errorClass.getConstructors();
             List<Constructor<E>> constructors = new LinkedList<Constructor<E>>();
-            for (Constructor<E> constructor : errorConstructors) {
+            for (final Constructor<E> constructor : errorConstructors) {
                 if (constructor.getParameterTypes().length != types.length)
                     continue;
 
@@ -454,7 +455,7 @@ public class Logger implements Serializable {
 
     // Internal operation --
 
-    private Logger(Class<?> type) {
+    private Logger(final Class<?> type) {
 
         logger = LoggerFactory.getLogger( type );
     }

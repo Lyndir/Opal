@@ -60,7 +60,7 @@ public class PConnector extends PNode {
      * @param src The connector's source.
      * @param dst The connector's destination.
      */
-    public PConnector(PNode src, PNode dst) {
+    public PConnector(final PNode src, final PNode dst) {
 
         this();
 
@@ -73,7 +73,7 @@ public class PConnector extends PNode {
      *
      * @param strokeWidth Guess.
      */
-    public void setStrokeWidth(int strokeWidth) {
+    public void setStrokeWidth(final int strokeWidth) {
 
         stroke = strokeWidth;
     }
@@ -105,7 +105,7 @@ public class PConnector extends PNode {
      *
      * @return true If a source or destination was unset and has now been assigned.
      */
-    public boolean addNode(PNode node) {
+    public boolean addNode(final PNode node) {
 
         if (src == null) {
             src = node;
@@ -132,7 +132,7 @@ public class PConnector extends PNode {
      *
      * @return true If the given node was a source or destination node and has now been removed.
      */
-    public boolean removeNode(PNode node) {
+    public boolean removeNode(final PNode node) {
 
         if (src == node) {
             src = dst;
@@ -164,7 +164,8 @@ public class PConnector extends PNode {
 
     private boolean calculateNewBounds() {
 
-        PBounds srcBounds = src.getGlobalBounds(), dstBounds = dst.getGlobalBounds();
+        PBounds srcBounds = src.getGlobalBounds();
+        PBounds dstBounds = dst.getGlobalBounds();
         Path path = Path.calculatePath( srcBounds, dstBounds );
 
         Point2D newOffset = path.getOffset().toPoint();
@@ -179,7 +180,7 @@ public class PConnector extends PNode {
      * {@inheritDoc}
      */
     @Override
-    protected void paint(PPaintContext paintContext) {
+    protected void paint(final PPaintContext paintContext) {
 
         if (src == null || dst == null)
             return;
@@ -202,7 +203,8 @@ public class PConnector extends PNode {
             g2.setPaint( getPaint() );
 
         CubicCurve2D curve = new CubicCurve2D.Double( srcX, srcY, srcHorizontal? (srcX + dstX) / 2: srcX,
-                                                      srcHorizontal? srcY: (srcY + dstY) / 2, dstHorizontal? (srcX + dstX) / 2: dstX,
+                                                      srcHorizontal? srcY: (srcY + dstY) / 2,
+                                                      dstHorizontal? (srcX + dstX) / 2: dstX,
                                                       dstHorizontal? dstY: (srcY + dstY) / 2, dstX, dstY );
 
         g2.clip( getBounds() );

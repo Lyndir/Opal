@@ -37,7 +37,7 @@ public class RedirectToPageException extends AbstractRestartResponseException {
      *
      * @param pageClass The class of the page to redirect to.
      */
-    public RedirectToPageException(Class<? extends Page> pageClass) {
+    public RedirectToPageException(final Class<? extends Page> pageClass) {
 
         this( pageClass, null );
     }
@@ -48,7 +48,7 @@ public class RedirectToPageException extends AbstractRestartResponseException {
      * @param pageClass  The class of the page to redirect to.
      * @param parameters The parameters to pass to the page.
      */
-    public RedirectToPageException(Class<? extends Page> pageClass, PageParameters parameters) {
+    public RedirectToPageException(final Class<? extends Page> pageClass, final PageParameters parameters) {
 
         RequestCycle rc = RequestCycle.get();
         if (rc == null)

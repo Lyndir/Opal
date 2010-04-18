@@ -40,7 +40,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
      *
      * @param layout The layout to use for this panel.
      */
-    public HoverPanel(LayoutManager layout) {
+    public HoverPanel(final LayoutManager layout) {
 
         super( layout );
 
@@ -68,36 +68,36 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
     }
 
     /**
-     * @param c The component (and all children of it) this panel should listen to for mouse events.
+     * @param component The component (and all children of it) this panel should listen to for mouse events.
      */
-    protected void listen(Component c) {
+    protected void listen(final Component component) {
 
-        if (c instanceof Container)
-            for (Component child : ((Container) c).getComponents())
+        if (component instanceof Container)
+            for (final Component child : ((Container) component).getComponents())
                 listen( child );
 
-        c.addMouseMotionListener( this );
-        c.addMouseListener( this );
+        component.addMouseMotionListener( this );
+        component.addMouseListener( this );
     }
 
     /**
-     * @param c The component (and all children of it) this panel should remove mouse its event mouse listeners for.
+     * @param component The component (and all children of it) this panel should remove mouse its event mouse listeners for.
      */
-    protected void unlisten(Component c) {
+    protected void unlisten(final Component component) {
 
-        if (c instanceof Container)
-            for (Component child : ((Container) c).getComponents())
+        if (component instanceof Container)
+            for (final Component child : ((Container) component).getComponents())
                 unlisten( child );
 
-        c.removeMouseMotionListener( this );
-        c.removeMouseListener( this );
+        component.removeMouseMotionListener( this );
+        component.removeMouseListener( this );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(final ActionEvent e) {
 
         if (getParent() != null)
             getParent().repaint();
@@ -107,7 +107,7 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
      * {@inheritDoc}
      */
     @Override
-    public void repaint(long tm, int x, int y, int width, int height) {
+    public void repaint(final long tm, final int x, final int y, final int width, final int height) {
 
         if (getParent() != null)
             getParent().repaint( tm, getX(), getY(), getWidth(), getHeight() );
@@ -117,10 +117,10 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
      * {@inheritDoc}
      */
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(final MouseEvent e) {
 
         if (!e.getComponent().equals( this ))
-            for (MouseListener listener : getMouseListeners())
+            for (final MouseListener listener : getMouseListeners())
                 if (!listener.equals( this ))
                     listener.mouseClicked( e );
     }
@@ -129,10 +129,10 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
      * {@inheritDoc}
      */
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed(final MouseEvent e) {
 
         if (!e.getComponent().equals( this ))
-            for (MouseListener listener : getMouseListeners())
+            for (final MouseListener listener : getMouseListeners())
                 if (!listener.equals( this ))
                     listener.mousePressed( e );
     }
@@ -141,10 +141,10 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
      * {@inheritDoc}
      */
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(final MouseEvent e) {
 
         if (!e.getComponent().equals( this ))
-            for (MouseListener listener : getMouseListeners())
+            for (final MouseListener listener : getMouseListeners())
                 if (!listener.equals( this ))
                     listener.mouseReleased( e );
     }
@@ -153,12 +153,12 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
      * {@inheritDoc}
      */
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(final MouseEvent e) {
 
         setBackground( backgroundHover );
 
         if (e != null && !equals( e.getComponent() ))
-            for (MouseListener listener : getMouseListeners())
+            for (final MouseListener listener : getMouseListeners())
                 if (!listener.equals( this ))
                     listener.mouseEntered( e );
     }
@@ -167,12 +167,12 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
      * {@inheritDoc}
      */
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(final MouseEvent e) {
 
         restoreBackground();
 
         if (!e.getComponent().equals( this ))
-            for (MouseListener listener : getMouseListeners())
+            for (final MouseListener listener : getMouseListeners())
                 if (!listener.equals( this ))
                     listener.mouseExited( e );
     }
@@ -181,10 +181,10 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
      * {@inheritDoc}
      */
     @Override
-    public void mouseDragged(MouseEvent e) {
+    public void mouseDragged(final MouseEvent e) {
 
         if (!e.getComponent().equals( this ))
-            for (MouseMotionListener listener : getMouseMotionListeners())
+            for (final MouseMotionListener listener : getMouseMotionListeners())
                 if (!listener.equals( this ))
                     listener.mouseDragged( e );
     }
@@ -193,10 +193,10 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
      * {@inheritDoc}
      */
     @Override
-    public void mouseMoved(MouseEvent e) {
+    public void mouseMoved(final MouseEvent e) {
 
         if (!e.getComponent().equals( this ))
-            for (MouseMotionListener listener : getMouseMotionListeners())
+            for (final MouseMotionListener listener : getMouseMotionListeners())
                 if (!listener.equals( this ))
                     listener.mouseMoved( e );
     }

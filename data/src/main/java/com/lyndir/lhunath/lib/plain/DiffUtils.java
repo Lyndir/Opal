@@ -44,7 +44,7 @@ public class DiffUtils {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static String getDiff(InputStream from, InputStream to)
+    public static String getDiff(final InputStream from, final InputStream to)
             throws IOException {
 
         return getDiff( new BufferedReader( new InputStreamReader( from ) ), new BufferedReader( new InputStreamReader(
@@ -62,7 +62,7 @@ public class DiffUtils {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static String getDiff(BufferedReader from, BufferedReader to)
+    public static String getDiff(final BufferedReader from, final BufferedReader to)
             throws IOException {
 
         Diff diff = new Diff();
@@ -82,7 +82,7 @@ public class DiffUtils {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static String getDiff(String from, String to)
+    public static String getDiff(final String from, final String to)
             throws IOException {
 
         Diff diff = new Diff();
@@ -98,24 +98,24 @@ public class DiffUtils {
      *
      * @return A HTML-formatted representation of the given diff.
      */
-    private static String renderDiff(Diff diff) {
+    private static String renderDiff(final Diff diff) {
 
         @SuppressWarnings({"cast", "unchecked"})
         List<Hunk> hunks = (List<Hunk>) diff.getHunks();
         StringBuilder out = new StringBuilder( "<pre>" );
 
-        for (Hunk hunk : hunks) {
+        for (final Hunk hunk : hunks) {
             String chunk = hunk.convert().trim().replaceFirst( ".*\n", "" );
             String chunkAdd = chunk.replaceAll( "(?m)^[^>].*", "" ).trim().replaceAll( "(?m)^>", "+" );
             String chunkDel = chunk.replaceAll( "(?m)^[^<].*", "" ).trim().replaceAll( "(?m)^<", "-" );
 
             String diffFormat = "<span style='color: %x'>%s</span>";
             if (chunkDel.length() > 0)
-                out.append( String.format( diffFormat, UIUtils.DARK_RED.getRGB() - 0xff000000, chunkDel ) ).append(
-                        '\n' );
+                out.append( String.format( diffFormat, UIUtils.DARK_RED.getRGB() - 0xff000000, chunkDel ) )
+                        .append( '\n' );
             if (chunkAdd.length() > 0)
-                out.append( String.format( diffFormat, UIUtils.DARK_GREEN.getRGB() - 0xff000000, chunkAdd ) ).append(
-                        '\n' );
+                out.append( String.format( diffFormat, UIUtils.DARK_GREEN.getRGB() - 0xff000000, chunkAdd ) )
+                        .append( '\n' );
         }
 
         return out.append( "</pre>" ).toString();

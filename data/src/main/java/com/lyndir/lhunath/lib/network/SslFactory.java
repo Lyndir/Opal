@@ -51,7 +51,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
 
     private static final Logger logger = Logger.get( SslFactory.class );
 
-    private SSLContext context;
+    private final SSLContext context;
 
 
     /**
@@ -62,7 +62,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
      *
      * @return The factory.
      */
-    public static SslFactory initialize(File keyStore, String password) {
+    public static SslFactory initialize(final File keyStore, final String password) {
 
         return new SslFactory( keyStore, password );
     }
@@ -77,7 +77,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
         return new Protocol( "https", (ProtocolSocketFactory) this, 443 );
     }
 
-    private SslFactory(File keyStore, String password) {
+    private SslFactory(final File keyStore, final String password) {
 
         try {
             KeyStore store = KeyStore.getInstance( "JKS" );
@@ -90,22 +90,22 @@ public class SslFactory implements SecureProtocolSocketFactory {
             context.init( null, tFactory.getTrustManagers(), null );
         }
         catch (KeyStoreException e) {
-            logger.err( e, "Keystore type not supported or keystore could not be initialized." );
+            throw logger.err( e, "Keystore type not supported or keystore could not be initialized." ).toError();
         }
         catch (NoSuchAlgorithmException e) {
-            logger.err( e, "Key algorithm not supported." );
+            throw logger.err( e, "Key algorithm not supported." ).toError();
         }
         catch (CertificateException e) {
-            logger.err( e, "An unexpected error has occurred!" );
+            throw logger.err( e, "An unexpected error has occurred!" ).toError();
         }
         catch (FileNotFoundException e) {
-            logger.err( e, "Keystore not found!" );
+            throw logger.err( e, "Keystore not found!" ).toError();
         }
         catch (IOException e) {
-            logger.err( e, "Could not read the keys from the keystore!" );
+            throw logger.err( e, "Could not read the keys from the keystore!" ).toError();
         }
         catch (KeyManagementException e) {
-            logger.err( e, "Could not add the keys as trusted!" );
+            throw logger.err( e, "Could not add the keys as trusted!" ).toError();
         }
     }
 
@@ -113,7 +113,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
      * {@inheritDoc}
      */
     @Override
-    public Socket createSocket(Socket socket, String host, int port, boolean autoClose)
+    public Socket createSocket(final Socket socket, final String host, final int port, final boolean autoClose)
             throws IOException {
 
         return context.getSocketFactory().createSocket( socket, host, port, autoClose );
@@ -123,7 +123,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
      * {@inheritDoc}
      */
     @Override
-    public Socket createSocket(String host, int port)
+    public Socket createSocket(final String host, final int port)
             throws IOException {
 
         return context.getSocketFactory().createSocket( host, port );
@@ -133,7 +133,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
      * {@inheritDoc}
      */
     @Override
-    public Socket createSocket(String host, int port, InetAddress localAddress, int localPort)
+    public Socket createSocket(final String host, final int port, final InetAddress localAddress, final int localPort)
             throws IOException {
 
         return context.getSocketFactory().createSocket( host, port, localAddress, localPort );
@@ -146,8 +146,9 @@ public class SslFactory implements SecureProtocolSocketFactory {
      */
     @Override
     @Deprecated
-    public Socket createSocket(String host, int port, InetAddress localAddress, int localPort,
-                               HttpConnectionParams params)
+    public Socket createSocket(
+            String host, final int port, final InetAddress localAddress, final int localPort,
+            HttpConnectionParams params)
             throws IOException {
 
         if (params == null)
@@ -164,7 +165,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
      * All instances of {@link SslFactory} are the same.
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
 
         return obj != null && obj.getClass().equals( SSLProtocolSocketFactory.class );
     }

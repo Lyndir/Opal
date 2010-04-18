@@ -23,15 +23,13 @@ import java.util.ResourceBundle;
 public @interface UseKey {
 
     /**
-     * The key in the resource bundle that references the localization value for the annotated method.
+     * This is the key in {@link ResourceBundle} that yields the localization data as value.
      *
      * <p>
      * An empty string indicates that the annotated method's name should be used as the key.
      * </p>
      *
-     * <p>
-     * This is the key in {@link ResourceBundle} that yields the localization data as value.
-     * </p>
+     * @return The key in the resource bundle that references the localization value for the annotated method.
      */
     String value() default "";
 }

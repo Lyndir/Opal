@@ -48,7 +48,7 @@ public class TeeThread extends Thread {
      * @param source       The data source.
      * @param destinations The destination streams to write the source data to.
      */
-    public TeeThread(InputStream source, OutputStream... destinations) {
+    public TeeThread(final InputStream source, final OutputStream... destinations) {
 
         super( "Tee Thread" );
         setDaemon( true );
@@ -68,7 +68,7 @@ public class TeeThread extends Thread {
             byte[] buf = new byte[BaseConfig.BUFFER_SIZE];
 
             while ((bytesRead = source.read( buf )) > 0)
-                for (OutputStream destination : destinations)
+                for (final OutputStream destination : destinations)
                     destination.write( buf, 0, bytesRead );
 
         }

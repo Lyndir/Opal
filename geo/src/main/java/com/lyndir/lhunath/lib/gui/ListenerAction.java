@@ -38,7 +38,7 @@ public class ListenerAction extends AbstractAction {
      *
      * @param listener The listener that will be notified of this action.
      */
-    public ListenerAction(ActionListener listener) {
+    public ListenerAction(final ActionListener listener) {
 
         this.listener = listener;
     }
@@ -49,7 +49,7 @@ public class ListenerAction extends AbstractAction {
      * @param name     The name of the action.
      * @param listener The listener that will be notified of this action.
      */
-    public ListenerAction(String name, ActionListener listener) {
+    public ListenerAction(final String name, final ActionListener listener) {
 
         super( name );
         this.listener = listener;
@@ -63,7 +63,7 @@ public class ListenerAction extends AbstractAction {
      * @param icon     The icon of the action.
      * @param listener The listener that will be notified of this action.
      */
-    public ListenerAction(String name, String command, Icon icon, ActionListener listener) {
+    public ListenerAction(final String name, final String command, final Icon icon, final ActionListener listener) {
 
         super( name, icon );
         this.listener = listener;
@@ -75,7 +75,7 @@ public class ListenerAction extends AbstractAction {
      *
      * @param command The string that will identify the action that must be taken.
      */
-    public void setActionCommand(String command) {
+    public void setActionCommand(final String command) {
 
         putValue( ACTION_COMMAND_KEY, command );
     }
@@ -94,7 +94,7 @@ public class ListenerAction extends AbstractAction {
      * {@inheritDoc}
      */
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(final ActionEvent e) {
 
         if (listener != null)
             listener.actionPerformed( e );

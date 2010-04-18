@@ -37,7 +37,8 @@ public enum MyTheme {
     /**
      * Guess.
      */
-    FOG( Color.decode( "#9999BB" ) ), //$NON-NLS-1$
+    FOG( Color.decode( "#9999BB" ) ),
+    //$NON-NLS-1$
 
     /**
      * Guess.
@@ -171,8 +172,8 @@ public enum MyTheme {
      */
     public Component getButton() {
 
-        final MyTheme theme = this;
-        final ToolTip toolTip = new ToolTip( "  ~ " + toString() + " ~  " );
+        MyTheme theme = this;
+        ToolTip toolTip = new ToolTip( "  ~ " + toString() + " ~  " );
 
         AbstractButton button = new JButton() {
 

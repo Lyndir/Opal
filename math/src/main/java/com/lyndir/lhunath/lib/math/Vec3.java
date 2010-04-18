@@ -36,7 +36,7 @@ public class Vec3 extends Vec2 {
      *
      * @param vector The 2D vector to be converted.
      */
-    public Vec3(Vec2 vector) {
+    public Vec3(final Vec2 vector) {
 
         this( vector, 0 );
     }
@@ -47,7 +47,7 @@ public class Vec3 extends Vec2 {
      * @param vector The 2D vector to be converted.
      * @param z      The depth at which to place the vector in space.
      */
-    public Vec3(Vec2 vector, double z) {
+    public Vec3(final Vec2 vector, final double z) {
 
         this( vector.getX(), vector.getY(), z );
     }
@@ -67,7 +67,7 @@ public class Vec3 extends Vec2 {
      * @param y The y-coordinate of the new vector.
      * @param z The z-coordinate of the new vector.
      */
-    public Vec3(double x, double y, double z) {
+    public Vec3(final double x, final double y, final double z) {
 
         super( x, y );
         setZ( z );
@@ -77,7 +77,8 @@ public class Vec3 extends Vec2 {
      * {@inheritDoc}
      */
     @Override
-    public Vec3 clone() throws CloneNotSupportedException {
+    public Vec3 clone()
+            throws CloneNotSupportedException {
 
         Vec3 newVec3 = (Vec3) super.clone();
         newVec3.setX( getX() );
@@ -102,10 +103,10 @@ public class Vec3 extends Vec2 {
     @Override
     public double normalize() {
 
-        double l = super.normalize();
-        setZ( getZ() / l );
+        double length = super.normalize();
+        setZ( getZ() / length );
 
-        return l;
+        return length;
     }
 
     /**
@@ -116,7 +117,7 @@ public class Vec3 extends Vec2 {
      *
      * @return A reference to this vector, after it has been updated.
      */
-    public Vec3 rotate(Angle a, Axis ax) {
+    public Vec3 rotate(final Angle a, final Axis ax) {
 
         if (a != null && ax != null)
             switch (ax) {
@@ -153,7 +154,7 @@ public class Vec3 extends Vec2 {
      *
      * @return A reference to the this vector, after it has been updated.
      */
-    public Vec3 add(Vec3 vector) {
+    public Vec3 add(final Vec3 vector) {
 
         if (vector == null)
             return this;
@@ -172,7 +173,7 @@ public class Vec3 extends Vec2 {
      *
      * @return A reference to the this vector, after it has been updated.
      */
-    public Vec3 substract(Vec3 vector) {
+    public Vec3 subtract(final Vec3 vector) {
 
         if (vector == null)
             return this;
@@ -191,7 +192,7 @@ public class Vec3 extends Vec2 {
      *
      * @return A reference to the this vector, after it has been updated.
      */
-    public Vec3 multiply(Vec3 vector) {
+    public Vec3 multiply(final Vec3 vector) {
 
         if (vector == null)
             return this;
@@ -207,10 +208,10 @@ public class Vec3 extends Vec2 {
      * {@inheritDoc}
      */
     @Override
-    public Vec3 multiply(double c) {
+    public Vec3 multiply(final double multiplier) {
 
-        super.multiply( c );
-        setZ( getZ() * c );
+        super.multiply( multiplier );
+        setZ( getZ() * multiplier );
 
         return this;
     }
@@ -243,12 +244,15 @@ public class Vec3 extends Vec2 {
      *
      * @return A new vector, perpendicular to both given vectors, as described above.
      */
-    public Vec3 crossMultiply(Vec3 vector) {
+    public Vec3 crossMultiply(final Vec3 vector) {
 
         if (vector == null)
             return new Vec3();
 
-        return new Vec3( getY() * vector.getZ() - getZ() * vector.getY(), getZ() * vector.getX() - getX() * vector.getZ(), getX() * vector.getY() - getY() * vector.getX() );
+        return new Vec3( getY() * vector.getZ() - getZ() * vector.getY(), getZ() * vector.getX() - getX()
+                                                                                                   * vector.getZ(),
+                         getX() * vector.getY()
+                         - getY() * vector.getX() );
     }
 
     /**
@@ -263,7 +267,7 @@ public class Vec3 extends Vec2 {
      *
      * @return The result of the dot product of this vector with the given one.
      */
-    public double dotMultiply(Vec3 vector) {
+    public double dotMultiply(final Vec3 vector) {
 
         if (vector == null)
             return 0;
@@ -284,11 +288,12 @@ public class Vec3 extends Vec2 {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object obj) {
 
-        if (o == this)
+        if (obj == this)
             return true;
-        return o instanceof Vec3 && getX() == ((Vec3) o).getX() && getY() == ((Vec3) o).getY() && getZ() == ((Vec3) o).getZ();
+        return obj instanceof Vec3 && getX() == ((Vec3) obj).getX() && getY() == ((Vec3) obj).getY()
+               && getZ() == ((Vec3) obj).getZ();
 
     }
 
@@ -305,13 +310,15 @@ public class Vec3 extends Vec2 {
      * @return The depth destination of this vector.
      */
     public double getZ() {
+
         return z;
     }
 
     /**
      * @param z The depth destination of this vector.
      */
-    public void setZ(double z) {
+    public void setZ(final double z) {
+
         this.z = z;
     }
 }

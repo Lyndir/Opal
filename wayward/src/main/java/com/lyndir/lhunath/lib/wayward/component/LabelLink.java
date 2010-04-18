@@ -41,7 +41,7 @@ public abstract class LabelLink extends Link<String> {
      * @param id    The wicket ID of this component.
      * @param model The model that provides the label text.
      */
-    public LabelLink(String id, IModel<String> model) {
+    protected LabelLink(final String id, final IModel<String> model) {
 
         super( id, model );
     }
@@ -59,7 +59,7 @@ public abstract class LabelLink extends Link<String> {
      * {@inheritDoc}
      */
     @Override
-    protected void onComponentTag(ComponentTag tag) {
+    protected void onComponentTag(final ComponentTag tag) {
 
         super.onComponentTag( tag );
         // always transform the tag to <span></span> so even labels defined as <span/> render

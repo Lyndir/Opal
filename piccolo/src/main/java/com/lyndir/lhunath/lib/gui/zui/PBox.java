@@ -24,7 +24,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 import com.lyndir.lhunath.lib.math.Vec2;
-import com.lyndir.lhunath.lib.system.Utils;
+import com.lyndir.lhunath.lib.system.util.Utils;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.util.PPaintContext;
 
@@ -62,7 +62,7 @@ public class PBox extends PShape {
      * @param title    The title text of this box.
      * @param location The offset relative to the top left corner of the canvas for this box.
      */
-    public PBox(PCanvas canvas, String title, Point location) {
+    public PBox(final PCanvas canvas, final String title, final Point location) {
 
         this( canvas, title );
 
@@ -75,7 +75,7 @@ public class PBox extends PShape {
      * @param canvas The canvas in which this node is contained.
      * @param title  The title text of this box.
      */
-    public PBox(PCanvas canvas, String title) {
+    public PBox(final PCanvas canvas, final String title) {
 
         this( canvas );
 
@@ -87,7 +87,7 @@ public class PBox extends PShape {
      *
      * @param canvas The canvas in which this node is contained.
      */
-    public PBox(PCanvas canvas) {
+    public PBox(final PCanvas canvas) {
 
         this.canvas = canvas;
 
@@ -107,7 +107,7 @@ public class PBox extends PShape {
      *
      * @param locked Set whether this box is locked into its parent.
      */
-    public void setLocked(boolean locked) {
+    public void setLocked(final boolean locked) {
 
         this.locked = locked;
         if (locked)
@@ -137,7 +137,7 @@ public class PBox extends PShape {
      *
      * @param paint Set this to null to disable outline painting.
      */
-    public void setOutlinePaint(Paint paint) {
+    public void setOutlinePaint(final Paint paint) {
 
         outlinePaint = paint;
     }
@@ -154,7 +154,7 @@ public class PBox extends PShape {
      *
      * @param paint Guess.
      */
-    public void setTextPaint(Paint paint) {
+    public void setTextPaint(final Paint paint) {
 
         textPaint = paint;
     }
@@ -172,7 +172,7 @@ public class PBox extends PShape {
      * {@inheritDoc}
      */
     @Override
-    protected boolean scaleShape(double x, double y, double w, double h) {
+    protected boolean scaleShape(final double x, final double y, final double w, final double h) {
 
         ((RoundRectangle2D) getShape()).setRoundRect( x, y, w, h, PADDING, PADDING );
         return true;
@@ -183,7 +183,7 @@ public class PBox extends PShape {
      *
      * @param icon The icon to use.
      */
-    public void setIcon(Icon icon) {
+    public void setIcon(final Icon icon) {
 
         this.icon = icon;
     }
@@ -203,7 +203,7 @@ public class PBox extends PShape {
      *
      * @param tooltip Guess.
      */
-    public void setToolTip(String tooltip) {
+    public void setToolTip(final String tooltip) {
 
         if (tooltip == null) {
             showTooltip( null );
@@ -264,7 +264,7 @@ public class PBox extends PShape {
      *
      * @param title Guess.
      */
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
 
         if (title == null)
             this.title = title;
@@ -288,7 +288,7 @@ public class PBox extends PShape {
      *
      * @param autoSize Guess.
      */
-    public void setAutoSize(boolean autoSize) {
+    public void setAutoSize(final boolean autoSize) {
 
         if (this.autoSize == autoSize)
             return;
@@ -304,7 +304,7 @@ public class PBox extends PShape {
      *
      * @param size Guess.
      */
-    public void setSize(Dimension2D size) {
+    public void setSize(final Dimension2D size) {
 
         setAutoSize( false );
 
@@ -320,7 +320,7 @@ public class PBox extends PShape {
      * @param offset Guess.
      */
     @Override
-    public void setOffset(Point2D offset) {
+    public void setOffset(final Point2D offset) {
 
         if (getOffset().equals( offset ))
             return;
@@ -358,7 +358,7 @@ public class PBox extends PShape {
      *
      * @param font Guess.
      */
-    public void setFont(Font font) {
+    public void setFont(final Font font) {
 
         this.font = font;
     }
@@ -378,7 +378,7 @@ public class PBox extends PShape {
      *
      * @param ratio Guess.
      */
-    public void setRatio(int ratio) {
+    public void setRatio(final int ratio) {
 
         this.ratio = ratio;
     }
@@ -388,21 +388,22 @@ public class PBox extends PShape {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public void paint(PPaintContext paintContext) {
+    public void paint(final PPaintContext paintContext) {
 
-        final Graphics2D g2 = (Graphics2D) paintContext.getGraphics().create();
+        Graphics2D g2 = (Graphics2D) paintContext.getGraphics().create();
 
         /* Layout children. */
         Rectangle2D titleBounds = new Rectangle2D.Double( 0, 0, 0, 0 );
         if (title != null)
             titleBounds = g2.getFontMetrics( getFont() ).getStringBounds( title, g2 );
 
-        double padLocked = isLocked()? ratio: 0, padUnlocked = isLocked()? 0: ratio;
+        double padLocked = isLocked()? ratio: 0;
+        double padUnlocked = isLocked()? 0: ratio;
         double maxWidth = Math.max( titleBounds.getWidth() + PADDING * 3 + padLocked * 2, getWidth() );
         double y = titleBounds.getHeight() + PADDING;
         ArrayList<Object> children = new ArrayList<Object>( getChildrenReference() );
 
-        for (Object child : children) {
+        for (final Object child : children) {
             if (!(child instanceof PBox))
                 continue;
             PBox box = (PBox) child;
@@ -411,7 +412,7 @@ public class PBox extends PShape {
                 maxWidth = Math.max( maxWidth, box.getWidth() + PADDING * 2 - padUnlocked * 2 );
         }
 
-        for (Object child : children) {
+        for (final Object child : children) {
             if (!(child instanceof PBox))
                 continue;
             PBox box = (PBox) child;
@@ -433,7 +434,8 @@ public class PBox extends PShape {
 
         /* Draw this box. */
         RoundRectangle2D box = (RoundRectangle2D) getShape();
-        box = new RoundRectangle2D.Double( -padLocked + 2, 2, box.getWidth() - 4, box.getHeight() - 4, PADDING, PADDING );
+        box = new RoundRectangle2D.Double( -padLocked + 2, 2, box.getWidth() - 4, box.getHeight() - 4, PADDING,
+                                           PADDING );
 
         g2.draw( getBounds() );
         g2.setPaint( getPaint() );

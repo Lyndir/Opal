@@ -77,7 +77,7 @@ public class ToolTip extends JPanel {
         toolTipPanel = new ScrollPanel() {
 
             @Override
-            public void paint(Graphics g) {
+            public void paint(final Graphics g) {
 
                 Dimension size = new Dimension( toolTipPane.getWidth() + 5, toolTipPane.getHeight()
                                                                             + (activeTip.stickable
@@ -104,7 +104,7 @@ public class ToolTip extends JPanel {
         toolTipContentWindowListener = new WindowAdapter() {
 
             @Override
-            public void windowLostFocus(WindowEvent e) {
+            public void windowLostFocus(final WindowEvent e) {
 
                 if (toolTipFrame == null)
                     closeTip();
@@ -126,10 +126,10 @@ public class ToolTip extends JPanel {
     /**
      * Create a new {@link ToolTip} instance.
      *
-     * @param toolTip The text to show when hovering this button.
-     * @param c       The component to use as content.
+     * @param toolTip   The text to show when hovering this button.
+     * @param component The component to use as content.
      */
-    public ToolTip(String toolTip, final JComponent c) {
+    public ToolTip(final String toolTip, final JComponent component) {
 
         super( new BorderLayout() );
         setOpaque( false );
@@ -137,19 +137,18 @@ public class ToolTip extends JPanel {
         stickyListeners = new ArrayList<ToolTipStickyListener>();
         buttonListener = new TipButtonListener();
 
-        toolTipPane.getInputMap( WHEN_IN_FOCUSED_WINDOW ).put( KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ),
-                                                               "stick" );
+        toolTipPane.getInputMap( WHEN_IN_FOCUSED_WINDOW ).put( KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ), "stick" );
         toolTipPane.getActionMap().put( "stick", new AbstractAction( "stick" ) {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
 
                 toggleSticky();
             }
         } );
 
         listen( this );
-        setContent( c );
+        setContent( component );
         setTip( toolTip );
     }
 
@@ -168,7 +167,7 @@ public class ToolTip extends JPanel {
      *
      * @param stickable Guess.
      */
-    public void setStickable(boolean stickable) {
+    public void setStickable(final boolean stickable) {
 
         this.stickable = stickable;
     }
@@ -184,7 +183,7 @@ public class ToolTip extends JPanel {
     /**
      * @param stickOnly <code>true</code> if this tip should only be sticked not shown on hover.
      */
-    public void setStickOnly(boolean stickOnly) {
+    public void setStickOnly(final boolean stickOnly) {
 
         this.stickOnly = stickOnly;
     }
@@ -212,7 +211,7 @@ public class ToolTip extends JPanel {
      *
      * @param listener The object that will listen to the state changes.
      */
-    public void addStickyListener(ToolTipStickyListener listener) {
+    public void addStickyListener(final ToolTipStickyListener listener) {
 
         stickyListeners.add( listener );
     }
@@ -245,31 +244,31 @@ public class ToolTip extends JPanel {
     /**
      * Recursively add the main mouse listener to the given component and its children.
      *
-     * @param c The component to which the main mouse listener needs to be added.
+     * @param component The component to which the main mouse listener needs to be added.
      */
-    private void listen(Component c) {
+    private void listen(final Component component) {
 
-        if (c instanceof Container)
-            for (Component child : ((Container) c).getComponents())
+        if (component instanceof Container)
+            for (final Component child : ((Container) component).getComponents())
                 listen( child );
 
-        c.addMouseListener( buttonListener );
-        c.addMouseMotionListener( buttonListener );
+        component.addMouseListener( buttonListener );
+        component.addMouseMotionListener( buttonListener );
     }
 
     /**
      * Recursively remove the main mouse listener from the given component and its children.
      *
-     * @param c The component from which the main mouse listeners need to be removed.
+     * @param component The component from which the main mouse listeners need to be removed.
      */
-    private void unlisten(Component c) {
+    private void unlisten(final Component component) {
 
-        if (c instanceof Container)
-            for (Component child : ((Container) c).getComponents())
+        if (component instanceof Container)
+            for (final Component child : ((Container) component).getComponents())
                 unlisten( child );
 
-        c.removeMouseListener( buttonListener );
-        c.removeMouseMotionListener( buttonListener );
+        component.removeMouseListener( buttonListener );
+        component.removeMouseMotionListener( buttonListener );
     }
 
     /**
@@ -282,7 +281,7 @@ public class ToolTip extends JPanel {
 
         activeTip = this;
 
-        for (ToolTipStickyListener listener : stickyListeners)
+        for (final ToolTipStickyListener listener : stickyListeners)
             listener.stickyState( this, true );
 
         toolTipFrame = new JFrame();
@@ -290,9 +289,9 @@ public class ToolTip extends JPanel {
         toolTipFrame.addWindowListener( new WindowAdapter() {
 
             @Override
-            public void windowClosing(WindowEvent windowEvent) {
+            public void windowClosing(final WindowEvent windowEvent) {
 
-                for (ToolTipStickyListener listener : stickyListeners)
+                for (final ToolTipStickyListener listener : stickyListeners)
                     listener.stickyState( ToolTip.this, false );
 
                 toolTipFrame.dispose();
@@ -341,7 +340,8 @@ public class ToolTip extends JPanel {
         super.updateUI();
 
         toolTipContainer.updateUI();
-        toolTipContainer.setBorder( BorderFactory.createLineBorder( toolTipContainer.getBackground().darker().darker() ) );
+        toolTipContainer
+                .setBorder( BorderFactory.createLineBorder( toolTipContainer.getBackground().darker().darker() ) );
     }
 
     /**
@@ -449,7 +449,7 @@ public class ToolTip extends JPanel {
                                 toolTipWindow.addWindowListener( new WindowAdapter() {
 
                                     @Override
-                                    public void windowClosed(WindowEvent windowEvent) {
+                                    public void windowClosed(final WindowEvent windowEvent) {
 
                                         if (activeTip == ToolTip.this)
                                             closeTip();
@@ -485,8 +485,8 @@ public class ToolTip extends JPanel {
 
                                 /* Listener that cleans up tip when content's window loses focus. */
                                 Window window = SwingUtilities.windowForComponent( getContent() );
-                                if (!Arrays.asList( window.getWindowListeners() ).contains(
-                                        toolTipContentWindowListener ))
+                                if (!Arrays.asList( window.getWindowListeners() )
+                                        .contains( toolTipContentWindowListener ))
                                     window.addWindowFocusListener( toolTipContentWindowListener );
                             }
                             catch (NullPointerException ignored) {
@@ -503,7 +503,7 @@ public class ToolTip extends JPanel {
          * {@inheritDoc}
          */
         @Override
-        public void mouseExited(MouseEvent e) {
+        public void mouseExited(final MouseEvent e) {
 
             if (activeTip != ToolTip.this)
                 return;
@@ -521,7 +521,7 @@ public class ToolTip extends JPanel {
          * {@inheritDoc}
          */
         @Override
-        public void mouseMoved(MouseEvent e) {
+        public void mouseMoved(final MouseEvent e) {
 
             if (e.getSource() instanceof Component) {
                 Point pointOnContent = SwingUtilities.convertPoint( (Component) e.getSource(), e.getPoint(),
@@ -535,7 +535,7 @@ public class ToolTip extends JPanel {
          * {@inheritDoc}
          */
         @Override
-        public void mouseDragged(MouseEvent e) {
+        public void mouseDragged(final MouseEvent e) {
 
             /* Nothing. */
         }

@@ -56,19 +56,22 @@ public class Network implements Runnable {
     private static final int WRITE_BUFFER = 1024;
     private static final int WRITE_QUEUE_BUFFER = 1024 * 10;
 
-    private Thread networkThread;
+    private Thread networkThread = null;
 
     private final List<NetworkDataListener> dataListeners;
     private final List<NetworkServerStateListener> serverStateListeners;
     private final List<NetworkConnectionStateListener> connectionStateListeners;
 
     // Collections that are modified by calling threads and the networking thread.
-    private final Map<SelectableChannel, SSLEngine> sslEngines = Collections.synchronizedMap( new HashMap<SelectableChannel, SSLEngine>() );
-    private final Map<SocketChannel, ByteBuffer> writeQueueBuffers = Collections.synchronizedMap( new HashMap<SocketChannel, ByteBuffer>() );
-    private final Map<SocketChannel, Object> writeQueueLocks = Collections.synchronizedMap( new HashMap<SocketChannel, Object>() );
+    private final Map<SelectableChannel, SSLEngine> sslEngines = Collections
+            .synchronizedMap( new HashMap<SelectableChannel, SSLEngine>() );
+    private final Map<SocketChannel, ByteBuffer> writeQueueBuffers = Collections
+            .synchronizedMap( new HashMap<SocketChannel, ByteBuffer>() );
+    private final Map<SocketChannel, Object> writeQueueLocks = Collections
+            .synchronizedMap( new HashMap<SocketChannel, Object>() );
 
     protected final Object selectorGuard = new Object();
-    protected Selector selector;
+    protected Selector selector = null;
 
     // Collections that are only modified by the networking thread.
     private final Map<SocketChannel, ByteBuffer> readBuffers = new HashMap<SocketChannel, ByteBuffer>();
@@ -185,7 +188,7 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    public ServerSocketChannel bind(int port, SSLEngine sslEngine)
+    public ServerSocketChannel bind(final int port, final SSLEngine sslEngine)
             throws IOException {
 
         return bind( new InetSocketAddress( port ), sslEngine );
@@ -204,7 +207,7 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    public ServerSocketChannel bind(InetAddress address, int port, SSLEngine sslEngine)
+    public ServerSocketChannel bind(final InetAddress address, final int port, final SSLEngine sslEngine)
             throws IOException {
 
         return bind( new InetSocketAddress( address, port ), sslEngine );
@@ -223,7 +226,7 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    public ServerSocketChannel bind(String hostname, int port, SSLEngine sslEngine)
+    public ServerSocketChannel bind(final String hostname, final int port, final SSLEngine sslEngine)
             throws IOException {
 
         return bind( new InetSocketAddress( hostname, port ), sslEngine );
@@ -241,7 +244,7 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    public ServerSocketChannel bind(InetSocketAddress socketAddress, SSLEngine sslEngine)
+    public ServerSocketChannel bind(final InetSocketAddress socketAddress, final SSLEngine sslEngine)
             throws IOException {
 
         if (selector == null || !selector.isOpen())
@@ -275,7 +278,7 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    private void accept(ServerSocketChannel serverChannel)
+    private void accept(final ServerSocketChannel serverChannel)
             throws IOException {
 
         SocketChannel connectionChannel = serverChannel.accept();
@@ -313,7 +316,7 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    public SocketChannel connect(String hostname, int port, SSLEngine sslEngine)
+    public SocketChannel connect(final String hostname, final int port, final SSLEngine sslEngine)
             throws IOException {
 
         return connect( new InetSocketAddress( hostname, port ), sslEngine );
@@ -332,7 +335,7 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    public SocketChannel connect(InetAddress hostAddress, int port, SSLEngine sslEngine)
+    public SocketChannel connect(final InetAddress hostAddress, final int port, final SSLEngine sslEngine)
             throws IOException {
 
         return connect( new InetSocketAddress( hostAddress, port ), sslEngine );
@@ -350,7 +353,7 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    public SocketChannel connect(InetSocketAddress socketAddress, SSLEngine sslEngine)
+    public SocketChannel connect(final InetSocketAddress socketAddress, final SSLEngine sslEngine)
             throws IOException {
 
         if (selector == null || !selector.isOpen())
@@ -386,7 +389,7 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    private void finishConnect(SocketChannel socketChannel)
+    private void finishConnect(final SocketChannel socketChannel)
             throws IOException {
 
         if (!socketChannel.finishConnect())
@@ -408,7 +411,7 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    private void read(SocketChannel socketChannel)
+    private void read(final SocketChannel socketChannel)
             throws IOException {
 
         // Get the connection's network data read buffer.
@@ -470,7 +473,9 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    private ByteBuffer toApplicationData(ByteBuffer readBuffer, SocketChannel socketChannel, ByteBuffer dataBuffer)
+    private ByteBuffer toApplicationData(
+            ByteBuffer readBuffer, final SocketChannel socketChannel,
+            ByteBuffer dataBuffer)
             throws IOException {
 
         ByteBuffer newDataBuffer = dataBuffer;
@@ -491,7 +496,8 @@ public class Network implements Runnable {
                                 "[<<<<: %s] SSL %s: dataBuffer%s + %d]", //
                                 nameChannel( socketChannel ), sslEngineResult.getStatus(),
                                 renderBuffer( newDataBuffer ), READ_BUFFER );
-                        ByteBuffer resizedDataBuffer = ByteBuffer.allocate( newDataBuffer.capacity() + READ_BUFFER );
+                        ByteBuffer resizedDataBuffer = ByteBuffer.allocate( newDataBuffer.capacity()
+                                                                            + READ_BUFFER );
                         newDataBuffer.flip();
                         newDataBuffer = resizedDataBuffer.put( newDataBuffer );
 
@@ -535,7 +541,8 @@ public class Network implements Runnable {
         // Plain Text: Copy network data to application data and prepare both buffers for their next operations.
         if (newDataBuffer.remaining() < readBuffer.remaining()) {
             // Not enough space in the dataBuffer for the readBuffer's data; make it bigger.
-            ByteBuffer resizedDataBuffer = ByteBuffer.allocate( newDataBuffer.position() + readBuffer.remaining() );
+            ByteBuffer resizedDataBuffer = ByteBuffer
+                    .allocate( newDataBuffer.position() + readBuffer.remaining() );
 
             newDataBuffer.flip();
             newDataBuffer = resizedDataBuffer.put( newDataBuffer );
@@ -554,7 +561,7 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    private void write(SocketChannel socketChannel)
+    private void write(final SocketChannel socketChannel)
             throws IOException {
 
         // Lock this connection's write queue.
@@ -612,7 +619,9 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    private ByteBuffer fromApplicationData(ByteBuffer dataBuffer, SocketChannel socketChannel, ByteBuffer writeBuffer)
+    private ByteBuffer fromApplicationData(
+            ByteBuffer dataBuffer, final SocketChannel socketChannel,
+            ByteBuffer writeBuffer)
             throws IOException {
 
         ByteBuffer newWriteBuffer = writeBuffer;
@@ -633,7 +642,8 @@ public class Network implements Runnable {
                                 "[>>>>: %s] SSL %s: writeBuffer%s + %d", //
                                 nameChannel( socketChannel ), sslEngineResult.getStatus(),
                                 renderBuffer( newWriteBuffer ), WRITE_BUFFER );
-                        ByteBuffer resizedWriteBuffer = ByteBuffer.allocate( newWriteBuffer.capacity() + WRITE_BUFFER );
+                        ByteBuffer resizedWriteBuffer = ByteBuffer.allocate( newWriteBuffer.capacity()
+                                                                             + WRITE_BUFFER );
                         newWriteBuffer.flip();
                         newWriteBuffer = resizedWriteBuffer.put( newWriteBuffer );
 
@@ -677,7 +687,8 @@ public class Network implements Runnable {
         // Plain Text: Copy application data to network data and prepare both buffers for their next operations.
         if (newWriteBuffer.remaining() < dataBuffer.remaining()) {
             // Not enough space in the writeBuffer for the dataBuffer's data; make it bigger.
-            ByteBuffer resizedWriteBuffer = ByteBuffer.allocate( newWriteBuffer.position() + dataBuffer.remaining() );
+            ByteBuffer resizedWriteBuffer = ByteBuffer.allocate( newWriteBuffer.position()
+                                                                 + dataBuffer.remaining() );
 
             newWriteBuffer.flip();
             newWriteBuffer = resizedWriteBuffer.put( newWriteBuffer );
@@ -693,11 +704,12 @@ public class Network implements Runnable {
      * Remove the channel from I/O operation scheduling. It will be closed.
      *
      * @param socketChannel The channel that needs to be closed.
-     * @param resetByPeer   <code>true</code> if the channel was closed by the remote party (inbound will be closed).  <code>false</code> if the channel is closed by us (outbound will be closed).
+     * @param resetByPeer   <code>true</code> if the channel was closed by the remote party (inbound will be closed).
+     *                      <code>false</code> if the channel is closed by us (outbound will be closed).
      *
      * @throws IOException
      */
-    private void closeChannel(SocketChannel socketChannel, boolean resetByPeer)
+    private void closeChannel(final SocketChannel socketChannel, final boolean resetByPeer)
             throws IOException {
 
         synchronized (writeQueueLocks.get( socketChannel )) {
@@ -747,7 +759,7 @@ public class Network implements Runnable {
      *
      * @throws ClosedChannelException The given channel is closed.
      */
-    public void queue(ByteBuffer dataBuffer, SocketChannel socketChannel)
+    public void queue(final ByteBuffer dataBuffer, final SocketChannel socketChannel)
             throws ClosedChannelException {
 
         if (socketChannel.keyFor( selector ) == null) {
@@ -775,7 +787,8 @@ public class Network implements Runnable {
                                                                                     writeQueueBuffer.capacity()
                                                                                     + WRITE_QUEUE_BUFFER ) );
                     writeQueueBuffer.flip();
-                    writeQueueBuffers.put( socketChannel, writeQueueBuffer = newWriteQueueBuffer.put( writeQueueBuffer ) );
+                    writeQueueBuffers
+                            .put( socketChannel, writeQueueBuffer = newWriteQueueBuffer.put( writeQueueBuffer ) );
                 }
         }
 
@@ -803,7 +816,7 @@ public class Network implements Runnable {
      *
      * @throws IOException The channel could not be closed gracefully.
      */
-    public void close(SocketChannel socketChannel)
+    public void close(final SocketChannel socketChannel)
             throws IOException {
 
         synchronized (writeQueueLocks.get( socketChannel )) {
@@ -823,7 +836,7 @@ public class Network implements Runnable {
      *
      * @return The channel's interested operations.
      */
-    private int getOps(SelectableChannel channel) {
+    private int getOps(final SelectableChannel channel) {
 
         SelectionKey key = channel.keyFor( selector );
         if (key == null || !key.isValid())
@@ -840,7 +853,7 @@ public class Network implements Runnable {
      *
      * @throws ClosedChannelException If applying ops on a closed channel (that is not yet registered with the network selector).
      */
-    private void addOps(SelectableChannel channel, int... addOps)
+    private void addOps(final SelectableChannel channel, final int... addOps)
             throws ClosedChannelException {
 
         if (addOps.length == 0)
@@ -849,7 +862,7 @@ public class Network implements Runnable {
 
         // OR all addOps together.
         int allAddOps = 0;
-        for (int addOp : addOps)
+        for (final int addOp : addOps)
             allAddOps |= addOp;
 
         // Apply the addOps.
@@ -864,7 +877,7 @@ public class Network implements Runnable {
      *
      * @throws ClosedChannelException If applying ops on a closed channel (that is not yet registered with the network selector).
      */
-    private void delOps(SelectableChannel channel, int... delOps)
+    private void delOps(final SelectableChannel channel, final int... delOps)
             throws ClosedChannelException {
 
         if (delOps.length == 0)
@@ -873,7 +886,7 @@ public class Network implements Runnable {
 
         // OR all addOps together.
         int allDelOps = 0;
-        for (int delOp : delOps)
+        for (final int delOp : delOps)
             allDelOps |= delOp;
 
         // Apply the addOps.
@@ -890,12 +903,12 @@ public class Network implements Runnable {
      *
      * @throws ClosedChannelException If applying ops on a closed channel (that is not yet registered with the network selector).
      */
-    private synchronized void setOps(SelectableChannel channel, int... newOps)
+    private synchronized void setOps(final SelectableChannel channel, final int... newOps)
             throws ClosedChannelException {
 
         // OR all newOps together.
         int interestOps = 0;
-        for (int newOp : newOps)
+        for (final int newOp : newOps)
             interestOps |= newOp;
         interestOps &= channel.validOps();
 
@@ -921,7 +934,7 @@ public class Network implements Runnable {
     private void processHandshakes()
             throws ClosedChannelException {
 
-        for (Map.Entry<SelectableChannel, SSLEngine> ssl : sslEngines.entrySet()) {
+        for (final Map.Entry<SelectableChannel, SSLEngine> ssl : sslEngines.entrySet()) {
             SelectableChannel channel = ssl.getKey();
             SSLEngine engine = ssl.getValue();
 
@@ -934,7 +947,7 @@ public class Network implements Runnable {
                 switch (handshakeStatus) {
                     case NEED_TASK:
                         // A lengthy task must be performed.
-                        final Runnable delegatedTask = engine.getDelegatedTask();
+                        Runnable delegatedTask = engine.getDelegatedTask();
                         if (delegatedTask != null) {
                             logger.dbg( "[====: %s] SSL %s: Starting a task thread.", //
                                         nameChannel( channel ), handshakeStatus, delegatedTask );
@@ -984,7 +997,7 @@ public class Network implements Runnable {
             throws IOException {
 
         // Read buffers
-        for (Map.Entry<SocketChannel, ByteBuffer> entry : readBuffers.entrySet()) {
+        for (final Map.Entry<SocketChannel, ByteBuffer> entry : readBuffers.entrySet()) {
             SocketChannel socketChannel = entry.getKey();
             ByteBuffer readBuffer = entry.getValue();
 
@@ -996,7 +1009,7 @@ public class Network implements Runnable {
         }
 
         // Write buffers
-        for (Map.Entry<SocketChannel, ByteBuffer> entry : writeBuffers.entrySet()) {
+        for (final Map.Entry<SocketChannel, ByteBuffer> entry : writeBuffers.entrySet()) {
             SocketChannel socketChannel = entry.getKey();
             ByteBuffer writeBuffer = entry.getValue();
 
@@ -1008,7 +1021,7 @@ public class Network implements Runnable {
         }
 
         // Write queued application data
-        for (Map.Entry<SocketChannel, ByteBuffer> entry : writeQueueBuffers.entrySet()) {
+        for (final Map.Entry<SocketChannel, ByteBuffer> entry : writeQueueBuffers.entrySet()) {
             SocketChannel socketChannel = entry.getKey();
             ByteBuffer writeQueueBuffer = entry.getValue();
 
@@ -1017,7 +1030,7 @@ public class Network implements Runnable {
         }
 
         // Let each channel that has stuff to write send it out.
-        for (SocketChannel socketChannel : writeQueueBuffers.keySet())
+        for (final SocketChannel socketChannel : writeQueueBuffers.keySet())
             write( socketChannel );
     }
 
@@ -1029,7 +1042,7 @@ public class Network implements Runnable {
     private void processClosure()
             throws IOException {
 
-        for (Map.Entry<SocketChannel, Boolean> entry : closedChannels.entrySet()) {
+        for (final Map.Entry<SocketChannel, Boolean> entry : closedChannels.entrySet()) {
             SocketChannel socketChannel = entry.getKey();
             boolean resetByPeer = entry.getValue();
 
@@ -1042,9 +1055,9 @@ public class Network implements Runnable {
      *
      * @param serverChannel The channel that accepted the new connection.
      */
-    private void notifyBound(ServerSocketChannel serverChannel) {
+    private void notifyBound(final ServerSocketChannel serverChannel) {
 
-        for (NetworkServerStateListener listener : serverStateListeners)
+        for (final NetworkServerStateListener listener : serverStateListeners)
             listener.bound( serverChannel );
     }
 
@@ -1054,9 +1067,9 @@ public class Network implements Runnable {
      * @param serverChannel     The channel that accepted the new connection.
      * @param connectionChannel The channel over which the new connection will take place.
      */
-    private void notifyAccept(ServerSocketChannel serverChannel, SocketChannel connectionChannel) {
+    private void notifyAccept(final ServerSocketChannel serverChannel, final SocketChannel connectionChannel) {
 
-        for (NetworkServerStateListener listener : serverStateListeners)
+        for (final NetworkServerStateListener listener : serverStateListeners)
             listener.accepted( serverChannel, connectionChannel );
     }
 
@@ -1065,9 +1078,9 @@ public class Network implements Runnable {
      *
      * @param socketChannel The channel which will now manage the new connection.
      */
-    private void notifyConnect(SocketChannel socketChannel) {
+    private void notifyConnect(final SocketChannel socketChannel) {
 
-        for (NetworkConnectionStateListener listener : connectionStateListeners)
+        for (final NetworkConnectionStateListener listener : connectionStateListeners)
             listener.connected( socketChannel );
     }
 
@@ -1078,9 +1091,9 @@ public class Network implements Runnable {
      *                      read from. You can flip it again after you read from it if you want to read the same data again.
      * @param socketChannel The channel on which the message was received.
      */
-    private void notifyRead(ByteBuffer dataBuffer, SocketChannel socketChannel) {
+    private void notifyRead(final ByteBuffer dataBuffer, final SocketChannel socketChannel) {
 
-        for (NetworkDataListener listener : dataListeners)
+        for (final NetworkDataListener listener : dataListeners)
             listener.received( dataBuffer, socketChannel );
     }
 
@@ -1091,9 +1104,9 @@ public class Network implements Runnable {
      * @param resetByPeer <code>true</code> if the remote side closed the connection, <code>false</code> if the local side hung
      *                    up.
      */
-    private void notifyClose(SocketChannel channel, boolean resetByPeer) {
+    private void notifyClose(final SocketChannel channel, final boolean resetByPeer) {
 
-        for (NetworkConnectionStateListener listener : connectionStateListeners)
+        for (final NetworkConnectionStateListener listener : connectionStateListeners)
             listener.closed( channel, resetByPeer );
     }
 
@@ -1102,7 +1115,7 @@ public class Network implements Runnable {
      *
      * @param listener The object that wishes to be notified.
      */
-    public void registerDataListener(NetworkDataListener listener) {
+    public void registerDataListener(final NetworkDataListener listener) {
 
         dataListeners.add( listener );
         logger.inf( "%s is now listening for network data.", listener.getClass().getSimpleName() );
@@ -1113,7 +1126,7 @@ public class Network implements Runnable {
      *
      * @param listener The object that no longer wishes to be notified.
      */
-    public void unregisterDataListener(NetworkDataListener listener) {
+    public void unregisterDataListener(final NetworkDataListener listener) {
 
         dataListeners.remove( listener );
         logger.inf( "%s is no longer listening for network data.", listener.getClass().getSimpleName() );
@@ -1125,7 +1138,7 @@ public class Network implements Runnable {
      *
      * @param listener The object that wishes to be notified.
      */
-    public void registerServerStateListener(NetworkServerStateListener listener) {
+    public void registerServerStateListener(final NetworkServerStateListener listener) {
 
         serverStateListeners.add( listener );
         logger.inf( "%s is now listening to network server state changes.", listener.getClass().getSimpleName() );
@@ -1137,7 +1150,7 @@ public class Network implements Runnable {
      *
      * @param listener The object that no longer wishes to be notified.
      */
-    public void unregisterServerStateListener(NetworkServerStateListener listener) {
+    public void unregisterServerStateListener(final NetworkServerStateListener listener) {
 
         serverStateListeners.remove( listener );
         logger.inf( "%s is no longer listening to network server state changes.", listener.getClass().getSimpleName() );
@@ -1149,7 +1162,7 @@ public class Network implements Runnable {
      *
      * @param listener The object that wishes to be notified.
      */
-    public void registerConnectionStateListener(NetworkConnectionStateListener listener) {
+    public void registerConnectionStateListener(final NetworkConnectionStateListener listener) {
 
         connectionStateListeners.add( listener );
         logger.inf( "%s is now listening to network connection state changes.", listener.getClass().getSimpleName() );
@@ -1161,11 +1174,11 @@ public class Network implements Runnable {
      *
      * @param listener The object that no longer wishes to be notified.
      */
-    public void unregisterConnectionStateListener(NetworkConnectionStateListener listener) {
+    public void unregisterConnectionStateListener(final NetworkConnectionStateListener listener) {
 
         connectionStateListeners.remove( listener );
-        logger.inf( "%s is no longer listening to network connection state changes.",
-                    listener.getClass().getSimpleName() );
+        logger.inf( "%s is no longer listening to network connection state changes.", listener.getClass()
+                .getSimpleName() );
     }
 
     /**
@@ -1199,7 +1212,7 @@ public class Network implements Runnable {
                     }
 
                     // Visualize key state evolution.
-                    for (SelectionKey key : selector.keys())
+                    for (final SelectionKey key : selector.keys())
                         showKeyState( key );
 
                     // Wait for selector operations.
@@ -1207,7 +1220,7 @@ public class Network implements Runnable {
                         continue;
 
                     // Visualize key state evolution.
-                    for (SelectionKey key : selector.keys())
+                    for (final SelectionKey key : selector.keys())
                         showKeyState( key );
 
                     // Perform I/O on the selected keys.
@@ -1277,7 +1290,7 @@ public class Network implements Runnable {
      *
      * @param key The key whose state must be shown.
      */
-    private synchronized void showKeyState(SelectionKey key) {
+    private synchronized void showKeyState(final SelectionKey key) {
 
         if (!lastReadyOps.containsKey( key ))
             lastReadyOps.put( key, 0 );
@@ -1311,7 +1324,8 @@ public class Network implements Runnable {
         } else if (keyUpdated |= lastInterestOps.get( key ) != null)
             lastInterestOps.put( key, null );
 
-        HandshakeStatus handshakeStatus = null, lastHandshakeStatus = lastHSStatus.get( key );
+        HandshakeStatus handshakeStatus = null;
+        HandshakeStatus lastHandshakeStatus = lastHSStatus.get( key );
         if (sslEngine != null) {
             handshakeStatus = sslEngine.getHandshakeStatus();
             if (sslUpdated |= lastHandshakeStatus != handshakeStatus)
@@ -1365,7 +1379,7 @@ public class Network implements Runnable {
      *
      * @return A (short) string representation of the connection/socket on the given channel.
      */
-    private static String nameChannel(SelectableChannel channel) {
+    private static String nameChannel(final SelectableChannel channel) {
 
         if (channel instanceof SocketChannel) {
             SocketChannel socketChannel = (SocketChannel) channel;
@@ -1387,9 +1401,10 @@ public class Network implements Runnable {
      *
      * @return A string representation of the given buffer's counters.
      */
-    private static String renderBuffer(ByteBuffer buf) {
+    private static String renderBuffer(final ByteBuffer buf) {
 
-        float curStep = 0, length = 20;
+        float curStep = 0;
+        float length = 20;
         StringBuilder bufString = new StringBuilder( (int) length + 2 ).append( '[' );
 
         for (int i = 0; i < buf.capacity(); ++i) {

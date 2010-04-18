@@ -34,7 +34,7 @@ import org.apache.wicket.model.StringResourceModel;
  */
 public class DefaultTextField<T> extends TextField<T> {
 
-    private IModel<String> defaultValue;
+    private IModel<String> defaultValue = null;
 
 
     /**
@@ -43,7 +43,7 @@ public class DefaultTextField<T> extends TextField<T> {
      * @param id    The component's wicket ID.
      * @param model The component's model.
      */
-    public DefaultTextField(String id, IModel<T> model) {
+    public DefaultTextField(final String id, final IModel<T> model) {
 
         super( id, model );
 
@@ -57,7 +57,7 @@ public class DefaultTextField<T> extends TextField<T> {
      * @param model        The component's model.
      * @param defaultValue The model that provides the default value which will be used when the model doesn't provide an object.
      */
-    public DefaultTextField(String id, IModel<T> model, IModel<String> defaultValue) {
+    public DefaultTextField(final String id, final IModel<T> model, final IModel<String> defaultValue) {
 
         super( id, model );
 
@@ -75,7 +75,7 @@ public class DefaultTextField<T> extends TextField<T> {
     /**
      * @param defaultValue The defaultValue of this {@link DefaultTextField}.
      */
-    public void setDefaultValue(IModel<String> defaultValue) {
+    public void setDefaultValue(final IModel<String> defaultValue) {
 
         this.defaultValue = defaultValue;
     }

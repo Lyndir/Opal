@@ -48,7 +48,7 @@ public class Shell {
      *
      * @throws FileNotFoundException
      */
-    public static Process exec(boolean block, File currDir, String... cmd)
+    public static Process exec(final boolean block, final File currDir, final String... cmd)
             throws FileNotFoundException {
 
         Process process = exec( System.out, System.err, currDir, cmd );
@@ -66,7 +66,7 @@ public class Shell {
      *
      * @return The exit status of the given process.
      */
-    public static int waitFor(Process process) {
+    public static int waitFor(final Process process) {
 
         if (process == null)
             return -256;
@@ -97,7 +97,7 @@ public class Shell {
      *
      * @throws FileNotFoundException
      */
-    public static Process exec(final OutputStream out, final OutputStream err, File currDir, String... cmd)
+    public static Process exec(final OutputStream out, final OutputStream err, final File currDir, final String... cmd)
             throws FileNotFoundException {
 
         char[] buffer = new char[100];
@@ -128,7 +128,8 @@ public class Shell {
         }
 
         try {
-            final Process process = Runtime.getRuntime().exec( execCmd, null, currDir );
+            @SuppressWarnings({"CallToRuntimeExec"})
+            Process process = Runtime.getRuntime().exec( execCmd, null, currDir );
 
             new Thread( cmd[0] + " stdout" ) {
 
@@ -190,7 +191,7 @@ public class Shell {
      *
      * @return The standard output and standard error of the process.
      */
-    public static String execRead(File currDir, String... cmd) {
+    public static String execRead(final File currDir, final String... cmd) {
 
         try {
             PipedOutputStream output = new PipedOutputStream();

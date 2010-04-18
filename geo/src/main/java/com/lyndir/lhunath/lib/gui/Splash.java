@@ -48,7 +48,7 @@ public class Splash extends JWindow {
     private long endTime;
 
 
-    private Splash(Icon initial, Icon icon) {
+    private Splash(Icon initial, final Icon icon) {
 
         int width = icon.getIconWidth();
         int height = icon.getIconHeight();
@@ -70,10 +70,11 @@ public class Splash extends JWindow {
     }
 
     /**
-     * @param initial The icon to show in the splash screen in the beginning of the transition or <code>null</code> to not use a transition.
+     * @param initial The icon to show in the splash screen in the beginning of the transition or <code>null</code> to not
+     *                use a transition.
      * @param icon    The icon to show in the splash screen at the end of the transition.
      */
-    private void setIcons(Icon initial, Icon icon) {
+    private void setIcons(final Icon initial, final Icon icon) {
 
         this.initial = initial;
         this.icon = icon;
@@ -107,7 +108,7 @@ public class Splash extends JWindow {
      * {@inheritDoc}
      */
     @Override
-    public void paint(Graphics g) {
+    public void paint(final Graphics g) {
 
         if (background == null)
             return;
@@ -117,7 +118,8 @@ public class Splash extends JWindow {
         g2.drawImage( background, 0, 0, null );
 
         if (startTime > 0 && initial != null) {
-            float alpha = (float) Math.max( 0, (endTime - System.currentTimeMillis()) / (double) (endTime - startTime) );
+            float alpha = (float) Math.max( 0, (endTime - System.currentTimeMillis())
+                                               / (double) (endTime - startTime) );
             g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, alpha ) );
             initial.paintIcon( this, g2, 0, 0 );
 
@@ -133,7 +135,7 @@ public class Splash extends JWindow {
      *
      * @param duration The duration over which to fade.
      */
-    public void fade(int duration) {
+    public void fade(final int duration) {
 
         startTime = System.currentTimeMillis();
         endTime = startTime + duration;
@@ -165,7 +167,7 @@ public class Splash extends JWindow {
      *
      * @return The splash screen.
      */
-    public static Splash spawn(String image) {
+    public static Splash spawn(final String image) {
 
         return spawn( image, 5000 );
     }

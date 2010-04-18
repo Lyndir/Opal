@@ -33,16 +33,16 @@ import java.util.ResourceBundle;
  */
 public class PropertiesResourceBundle extends ResourceBundle {
 
-    private Properties properties;
+    private final Properties properties;
 
 
-    PropertiesResourceBundle(Properties props) {
+    PropertiesResourceBundle(final Properties props) {
 
         properties = props;
     }
 
     @Override
-    protected Object handleGetObject(String key) {
+    protected Object handleGetObject(final String key) {
 
         return properties.getProperty( key );
     }

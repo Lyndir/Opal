@@ -44,7 +44,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      *
      * @param subject The name of what will be searched for (appears in the gray text).
      */
-    protected SearchBox(String subject) {
+    protected SearchBox(final String subject) {
 
         this.subject = subject;
 
@@ -63,7 +63,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      * @param subject  The name of what will be searched for (appears in the gray text).
      * @param minChars Minimum amount of characters required to activate the search.
      */
-    protected SearchBox(String subject, int minChars) {
+    protected SearchBox(final String subject, final int minChars) {
 
         this( subject );
         setMinChars( minChars );
@@ -105,7 +105,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      *
      * @param minChars Guess.
      */
-    public void setMinChars(int minChars) {
+    public void setMinChars(final int minChars) {
 
         this.minChars = minChars;
     }
@@ -132,7 +132,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      * {@inheritDoc}
      */
     @Override
-    public void focusGained(FocusEvent e) {
+    public void focusGained(final FocusEvent e) {
 
         if (cleared)
             return;
@@ -145,7 +145,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      * {@inheritDoc}
      */
     @Override
-    public void focusLost(FocusEvent e) {
+    public void focusLost(final FocusEvent e) {
 
         if (getText().length() != 0)
             return;
@@ -159,7 +159,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      * {@inheritDoc}
      */
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(final KeyEvent e) {
 
         if (e.getKeyCode() == KeyEvent.VK_ENTER)
             hit++;
@@ -179,7 +179,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      * {@inheritDoc}
      */
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(final KeyEvent e) {
 
         /* Not needed. */
     }
@@ -188,7 +188,7 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
      * {@inheritDoc}
      */
     @Override
-    public void keyTyped(KeyEvent e) {
+    public void keyTyped(final KeyEvent e) {
 
         /* Not needed. */
     }

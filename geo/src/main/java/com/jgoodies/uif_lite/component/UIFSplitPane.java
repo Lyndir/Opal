@@ -42,8 +42,8 @@ public final class UIFSplitPane extends JSplitPane {
      */
     public UIFSplitPane() {
 
-        this( HORIZONTAL_SPLIT, false, new JButton( UIManager.getString( "SplitPane.leftButtonText" ) ),
-              new JButton( UIManager.getString( "SplitPane.rightButtonText" ) ) );
+        this( HORIZONTAL_SPLIT, false, new JButton( UIManager.getString( "SplitPane.leftButtonText" ) ), new JButton(
+                UIManager.getString( "SplitPane.rightButtonText" ) ) );
     }
 
     /**
@@ -53,7 +53,7 @@ public final class UIFSplitPane extends JSplitPane {
      *
      * @throws IllegalArgumentException if <code>orientation</code> is not one of HORIZONTAL_SPLIT or VERTICAL_SPLIT.
      */
-    public UIFSplitPane(int newOrientation) {
+    public UIFSplitPane(final int newOrientation) {
 
         this( newOrientation, false );
     }
@@ -67,7 +67,7 @@ public final class UIFSplitPane extends JSplitPane {
      *
      * @throws IllegalArgumentException if <code>orientation</code> is not one of HORIZONTAL_SPLIT or VERTICAL_SPLIT
      */
-    public UIFSplitPane(int newOrientation, boolean newContinuousLayout) {
+    public UIFSplitPane(final int newOrientation, final boolean newContinuousLayout) {
 
         this( newOrientation, newContinuousLayout, null, null );
     }
@@ -83,7 +83,7 @@ public final class UIFSplitPane extends JSplitPane {
      *
      * @throws IllegalArgumentException if <code>orientation</code> is not one of: HORIZONTAL_SPLIT or VERTICAL_SPLIT
      */
-    public UIFSplitPane(int orientation, Component leftComponent, Component rightComponent) {
+    public UIFSplitPane(final int orientation, final Component leftComponent, final Component rightComponent) {
 
         this( orientation, false, leftComponent, rightComponent );
     }
@@ -101,7 +101,9 @@ public final class UIFSplitPane extends JSplitPane {
      *
      * @throws IllegalArgumentException if <code>orientation</code> is not one of HORIZONTAL_SPLIT or VERTICAL_SPLIT
      */
-    public UIFSplitPane(int orientation, boolean continuousLayout, Component leftComponent, Component rightComponent) {
+    public UIFSplitPane(
+            int orientation, final boolean continuousLayout, final Component leftComponent,
+            Component rightComponent) {
 
         super( orientation, continuousLayout, leftComponent, rightComponent );
         dividerBorderVisible = false;
@@ -121,8 +123,9 @@ public final class UIFSplitPane extends JSplitPane {
      *
      * @throws IllegalArgumentException if <code>orientation</code> is not one of: HORIZONTAL_SPLIT or VERTICAL_SPLIT
      */
-    public static UIFSplitPane createStrippedSplitPane(int orientation, Component leftComponent,
-                                                       Component rightComponent) {
+    public static UIFSplitPane createStrippedSplitPane(
+            int orientation, final Component leftComponent,
+            Component rightComponent) {
 
         UIFSplitPane split = new UIFSplitPane( orientation, leftComponent, rightComponent );
         split.setBorder( BorderFactory.createEmptyBorder() );
@@ -151,7 +154,7 @@ public final class UIFSplitPane extends JSplitPane {
      *
      * @param newVisibility true for visible, false for invisible
      */
-    public void setDividerBorderVisible(boolean newVisibility) {
+    public void setDividerBorderVisible(final boolean newVisibility) {
 
         boolean oldVisibility = isDividerBorderVisible();
         if (oldVisibility == newVisibility)

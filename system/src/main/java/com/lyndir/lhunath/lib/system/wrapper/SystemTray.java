@@ -53,7 +53,7 @@ public class SystemTray extends Wrapper {
         }
     }
 
-    private SystemTray(Object wrappedInstance) {
+    private SystemTray(final Object wrappedInstance) {
 
         super( wrappedInstance );
     }
@@ -65,8 +65,8 @@ public class SystemTray extends Wrapper {
      *
      * @throws AWTException
      */
-    @SuppressWarnings("unused")
-    public void add(TrayIcon trayIcon)
+    @SuppressWarnings({"unused", "RedundantThrows"})
+    public void add(final TrayIcon trayIcon)
             throws AWTException {
 
         invoke( "add", new Class[] {getWrappedClass( TrayIcon.class )}, trayIcon.getWrappedInstance() );
@@ -78,7 +78,8 @@ public class SystemTray extends Wrapper {
      * @param propertyName The property to listen for.
      * @param listener     The listener to invoke.
      */
-    public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+    public synchronized void addPropertyChangeListener(
+            String propertyName, final PropertyChangeListener listener) {
 
         invoke( "addPropertyChangeListener", new Class[] {String.class, PropertyChangeListener.class}, propertyName,
                 listener );
@@ -91,7 +92,7 @@ public class SystemTray extends Wrapper {
      *
      * @return The {@link PropertyChangeListener}s registered for the given property.
      */
-    public synchronized PropertyChangeListener[] getPropertyChangeListeners(String propertyName) {
+    public synchronized PropertyChangeListener[] getPropertyChangeListeners(final String propertyName) {
 
         return (PropertyChangeListener[]) invoke( "getPropertyChangeListeners", new Class[] {String.class},
                                                   propertyName );
@@ -124,7 +125,7 @@ public class SystemTray extends Wrapper {
      *
      * @param trayIcon The tray icon to remove.
      */
-    public void remove(TrayIcon trayIcon) {
+    public void remove(final TrayIcon trayIcon) {
 
         invoke( "remove", new Class[] {getWrappedClass( TrayIcon.class )}, trayIcon.getWrappedInstance() );
     }
@@ -135,7 +136,9 @@ public class SystemTray extends Wrapper {
      * @param propertyName The property to stop listening for with the given listener.
      * @param listener     The listener that should stop listening to the given property.
      */
-    public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+    public synchronized void removePropertyChangeListener(
+            String propertyName,
+            PropertyChangeListener listener) {
 
         invoke( "removePropertyChangeListener", new Class[] {String.class, PropertyChangeListener.class},
                 propertyName, listener );

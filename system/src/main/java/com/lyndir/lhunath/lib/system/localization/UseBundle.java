@@ -32,23 +32,19 @@ import java.util.ResourceBundle;
 public @interface UseBundle {
 
     /**
-     * A property file resource.
-     *
-     * <p>
      * Use this to load the resource bundle from {@link Properties}. {@link Thread#getContextClassLoader()} is used to
      * load the given resource.
-     * </p>
+     *
+     * @return A property file resource.
      *
      * @see ClassLoader#getResourceAsStream(String)
      */
     String resource() default "";
 
     /**
-     * A {@link ResourceBundle} class.
-     *
-     * <p>
      * Use this to load the resource bundle by instantiating the given class.
-     * </p>
+     *
+     * @return A {@link ResourceBundle} class.
      */
     Class<? extends ResourceBundle> type() default UnspecifiedBundle.class;
 

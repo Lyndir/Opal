@@ -53,7 +53,7 @@ public class XPath {
      * @throws IOException
      * @throws XPathExpressionException
      */
-    public static void main(String[] args)
+    public static void main(final String[] args)
             throws SAXException, IOException, XPathExpressionException {
 
         InputStream in = System.in;
@@ -62,7 +62,7 @@ public class XPath {
 
         /* Arguments. */
         boolean fileArg = false, expression = false, xhtml = false, tidy = false, value = false, trim = true;
-        for (String arg : argList)
+        for (final String arg : argList)
             if ("-f".equals( arg ) || "--file".equals( arg ))
                 fileArg = true;
             else if (fileArg) {

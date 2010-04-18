@@ -65,7 +65,9 @@ public abstract class Wrapper {
      *
      * @throws UnsupportedOperationException The wrapper could not be instantiated.
      */
-    protected static Object construct(Class<? extends Wrapper> proxyClass, Class<?>[] classes, Object... args)
+    protected static Object construct(
+            Class<? extends Wrapper> proxyClass, final Class<?>[] classes,
+            Object... args)
             throws UnsupportedOperationException {
 
         try {
@@ -100,7 +102,7 @@ public abstract class Wrapper {
      *
      * @throws UnsupportedOperationException If the wrapper's class is not available.
      */
-    protected static Class<?> getWrappedClass(Class<? extends Wrapper> proxyClass)
+    protected static Class<?> getWrappedClass(final Class<? extends Wrapper> proxyClass)
             throws UnsupportedOperationException {
 
         try {
@@ -127,7 +129,7 @@ public abstract class Wrapper {
      *
      * @throws UnsupportedOperationException The class could not be found.
      */
-    protected static Class<?> getClass(String className)
+    protected static Class<?> getClass(final String className)
             throws UnsupportedOperationException {
 
         try {
@@ -146,7 +148,7 @@ public abstract class Wrapper {
      *
      * @return <code>true</code> if the wrapped class is supported.
      */
-    protected static boolean initWrapper(Class<? extends Wrapper> proxyClass, String wrappedClassName) {
+    protected static boolean initWrapper(final Class<? extends Wrapper> proxyClass, final String wrappedClassName) {
 
         try {
             wrappedClasses.put( proxyClass, getClass( wrappedClassName ) );
@@ -171,7 +173,9 @@ public abstract class Wrapper {
      *
      * @throws UnsupportedOperationException
      */
-    protected static Object invoke(Class<? extends Wrapper> proxyClass, Object wrappedInstance, String methodName)
+    protected static Object invoke(
+            Class<? extends Wrapper> proxyClass, final Object wrappedInstance,
+            String methodName)
             throws UnsupportedOperationException {
 
         return invoke( proxyClass, wrappedInstance, methodName, new Class[0] );
@@ -190,8 +194,9 @@ public abstract class Wrapper {
      *
      * @throws UnsupportedOperationException
      */
-    protected static Object invoke(Class<? extends Wrapper> proxyClass, Object wrappedInstance, String methodName,
-                                   Class<?>[] classes, Object... args)
+    protected static Object invoke(
+            Class<? extends Wrapper> proxyClass, final Object wrappedInstance,
+            String methodName, final Class<?>[] classes, final Object... args)
             throws UnsupportedOperationException {
 
         try {
@@ -223,9 +228,9 @@ public abstract class Wrapper {
      * @return The instance of the wrapped enum class that has the same value as that of the given enum wrapper
      *         instance.
      */
-    protected static Object mapEnumValue(Object proxyEnum, Class<?> wrappedEnumClass) {
+    protected static Object mapEnumValue(final Object proxyEnum, final Class<?> wrappedEnumClass) {
 
-        for (Object wrappedEnum : wrappedEnumClass.getEnumConstants())
+        for (final Object wrappedEnum : wrappedEnumClass.getEnumConstants())
             if (wrappedEnum.toString().equals( proxyEnum.toString() ))
                 return wrappedEnum;
 
@@ -239,7 +244,7 @@ public abstract class Wrapper {
     /**
      * @param wrappedInstance The instance of the class that should be proxied by this wrapper.
      */
-    protected Wrapper(Object wrappedInstance) {
+    protected Wrapper(final Object wrappedInstance) {
 
         this.wrappedInstance = wrappedInstance;
     }
@@ -248,7 +253,7 @@ public abstract class Wrapper {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
 
         if (obj == null)
             return false;
@@ -300,7 +305,7 @@ public abstract class Wrapper {
      */
     // Assuming only classes that extend this
     // class can call this method and play nice.
-    protected Object invoke(String methodName)
+    protected Object invoke(final String methodName)
             throws UnsupportedOperationException {
 
         return invoke( methodName, new Class[0] );
@@ -319,7 +324,7 @@ public abstract class Wrapper {
      */
     // Assuming only classes that extend this
     // class can call this method and play nice.
-    protected Object invoke(String methodName, Class<?>[] classes, Object... args)
+    protected Object invoke(final String methodName, final Class<?>[] classes, final Object... args)
             throws UnsupportedOperationException {
 
         return invoke( getClass(), wrappedInstance, methodName, classes, args );

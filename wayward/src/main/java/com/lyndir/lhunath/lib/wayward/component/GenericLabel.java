@@ -15,6 +15,7 @@
  */
 package com.lyndir.lhunath.lib.wayward.component;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.parser.XmlTag;
@@ -41,14 +42,13 @@ public class GenericLabel<T> extends GenericWebMarkupContainer<T> {
      * @param id    The component's wicket ID.
      * @param model The component's model.
      */
-    public GenericLabel(String id, IModel<T> model) {
+    public GenericLabel(final String id, final IModel<T> model) {
 
         super( id, model );
     }
 
     /**
-     * @see org.apache.wicket.Component#onComponentTagBody(org.apache.wicket.markup.MarkupStream,
-     *      org.apache.wicket.markup.ComponentTag)
+     * @see Component#onComponentTagBody(MarkupStream, ComponentTag)
      */
     @Override
     protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
@@ -57,10 +57,10 @@ public class GenericLabel<T> extends GenericWebMarkupContainer<T> {
     }
 
     /**
-     * @see org.apache.wicket.Component#onComponentTag(org.apache.wicket.markup.ComponentTag)
+     * @see Component#onComponentTag(ComponentTag)
      */
     @Override
-    protected void onComponentTag(ComponentTag tag) {
+    protected void onComponentTag(final ComponentTag tag) {
 
         super.onComponentTag( tag );
         // always transform the tag to <span></span> so even labels defined as <span/> render

@@ -52,7 +52,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
      * @param horizontal <code>true</code>: scroll horizontally.
      * @param vertical   <code>true</code>: scroll vertically.
      */
-    public ScrollPanel(boolean horizontal, boolean vertical) {
+    public ScrollPanel(final boolean horizontal, final boolean vertical) {
 
         this( 0, horizontal, vertical );
     }
@@ -62,7 +62,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
      *
      * @param scrollUnit The amount in pixels to scroll this panel on every tick of the scroll wheel.
      */
-    public ScrollPanel(int scrollUnit) {
+    public ScrollPanel(final int scrollUnit) {
 
         this( scrollUnit, false, true );
     }
@@ -74,7 +74,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
      * @param horizontal <code>true</code>: track the horizontal size of the panel.
      * @param vertical   <code>true</code>: track the vertical size of the panel.
      */
-    public ScrollPanel(int scrollUnit, boolean horizontal, boolean vertical) {
+    public ScrollPanel(final int scrollUnit, final boolean horizontal, final boolean vertical) {
 
         this.scrollUnit = scrollUnit;
         this.horizontal = horizontal;
@@ -94,7 +94,7 @@ public class ScrollPanel extends JPanel implements Scrollable {
      * {@inheritDoc}
      */
     @Override
-    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+    public int getScrollableBlockIncrement(final Rectangle visibleRect, final int orientation, final int direction) {
 
         return getScrollableUnitIncrement( visibleRect, orientation, direction ) * 3;
     }
@@ -121,17 +121,17 @@ public class ScrollPanel extends JPanel implements Scrollable {
      * {@inheritDoc}
      */
     @Override
-    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+    public int getScrollableUnitIncrement(final Rectangle visibleRect, final int orientation, final int direction) {
 
         if (scrollUnit > 0)
             return scrollUnit;
 
-        for (Component c : getComponents())
-            if (c.isValid() && c.isVisible())
+        for (final Component component : getComponents())
+            if (component.isValid() && component.isVisible())
                 if (orientation == SwingConstants.HORIZONTAL)
-                    return Math.min( c.getWidth(), getParent().getWidth() / 8 );
+                    return Math.min( component.getWidth(), getParent().getWidth() / 8 );
                 else if (orientation == SwingConstants.VERTICAL)
-                    return Math.min( c.getHeight(), getParent().getHeight() / 8 );
+                    return Math.min( component.getHeight(), getParent().getHeight() / 8 );
                 else
                     break;
 

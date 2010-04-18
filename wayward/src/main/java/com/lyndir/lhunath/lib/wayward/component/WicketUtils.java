@@ -59,7 +59,7 @@ public abstract class WicketUtils {
      * @return A string that is the formatted representation of the given date according to the given locale in short
      *         form.
      */
-    public static String format(Date date) {
+    public static String format(final Date date) {
 
         return getDateFormat().format( date );
     }
@@ -78,7 +78,7 @@ public abstract class WicketUtils {
      * @return A string that is the formatted representation of the given amount of currency according to the given
      *         locale.
      */
-    public static String format(Number number) {
+    public static String format(final Number number) {
 
         return getCurrencyFormat().format( number );
     }
@@ -121,7 +121,7 @@ public abstract class WicketUtils {
      *
      * @return The localized value according to the application's default localizer.
      */
-    public static String localize(Component component, String key, Object... args) {
+    public static String localize(final Component component, final String key, final Object... args) {
 
         // Single argument invocation: format is localization key.
         return new StringResourceModel( key, component, null, args, key ).getString();

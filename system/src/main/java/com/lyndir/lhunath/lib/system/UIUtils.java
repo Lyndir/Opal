@@ -121,7 +121,7 @@ public class UIUtils {
      *
      * @return Guess.
      */
-    public static double fontWidth(Graphics2D graphics, Font font, String str) {
+    public static double fontWidth(final Graphics2D graphics, final Font font, final String str) {
 
         return graphics.getFontMetrics( font ).getStringBounds( str, graphics ).getWidth();
     }
@@ -136,7 +136,7 @@ public class UIUtils {
      *
      * @return Guess.
      */
-    public static double fontHeight(Graphics2D graphics, Font font, String str) {
+    public static double fontHeight(final Graphics2D graphics, final Font font, final String str) {
 
         return graphics.getFontMetrics( font ).getStringBounds( str, graphics ).getHeight();
     }
@@ -150,7 +150,7 @@ public class UIUtils {
      *
      * @return A new point as close to the given as possible, nicely aligned on the given grid.
      */
-    public static Point2D gridAlign(Point2D point, double gridX, double gridY) {
+    public static Point2D gridAlign(final Point2D point, final double gridX, final double gridY) {
 
         return new Point2D.Double( Math.round( point.getX() / gridX ) * gridX, Math.round( point.getY() / gridY )
                                                                                * gridY );
@@ -164,10 +164,10 @@ public class UIUtils {
      *
      * @return The given child component exists in parent's hierarchy.
      */
-    public static boolean isChild(Component child, Container parent) {
+    public static boolean isChild(final Component child, final Container parent) {
 
         if (child instanceof Container)
-            for (Component grandChild : ((Container) child).getComponents())
+            for (final Component grandChild : ((Container) child).getComponents())
 
                 if (child.equals( parent ))
                     return true;
@@ -185,7 +185,7 @@ public class UIUtils {
      *
      * @return The hex string.
      */
-    public static String colorToHex(Color color) {
+    public static String colorToHex(final Color color) {
 
         return String.format( "#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue() );
     }
@@ -198,7 +198,7 @@ public class UIUtils {
      *
      * @return The resulting color.
      */
-    public static Color setAlpha(Color color, int alpha) {
+    public static Color setAlpha(final Color color, final int alpha) {
 
         if (color == null)
             return null;
@@ -213,6 +213,7 @@ public class UIUtils {
      */
     public static boolean isDesktopSupported() {
 
+        // noinspection ErrorNotRethrown
         try {
             return Desktop.isDesktopSupported();
         }
@@ -228,6 +229,7 @@ public class UIUtils {
      */
     public static boolean isBrowseSupported() {
 
+        // noinspection ErrorNotRethrown
         try {
             return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.BROWSE );
         }
@@ -243,6 +245,7 @@ public class UIUtils {
      */
     public static boolean isMailSupported() {
 
+        // noinspection ErrorNotRethrown
         try {
             return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.MAIL );
         }
@@ -258,6 +261,7 @@ public class UIUtils {
      */
     public static boolean isOpenSupported() {
 
+        // noinspection ErrorNotRethrown
         try {
             return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.OPEN );
         }
@@ -271,7 +275,7 @@ public class UIUtils {
      *
      * @param font The new default font.
      */
-    public static void setUIFont(Font font) {
+    public static void setUIFont(final Font font) {
 
         FontUIResource uiFont = new FontUIResource( font );
 
@@ -298,7 +302,7 @@ public class UIUtils {
      *
      * @return The icon.
      */
-    public static ImageIcon getIcon(String resource) {
+    public static ImageIcon getIcon(final String resource) {
 
         URL url = Thread.currentThread().getContextClassLoader().getResource( resource );
         if (url == null)
@@ -314,7 +318,7 @@ public class UIUtils {
      *
      * @return The label component.
      */
-    public static Component createDebugLabel(String text) {
+    public static Component createDebugLabel(final String text) {
 
         JLabel label = new JLabel( text, SwingConstants.CENTER );
         label.setBorder( BorderFactory.createLineBorder( RED ) );
