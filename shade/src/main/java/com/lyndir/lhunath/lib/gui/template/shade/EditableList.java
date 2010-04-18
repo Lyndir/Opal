@@ -58,7 +58,7 @@ public class EditableList extends JList {
 
         a = contentTitle.matches( "^(?i)[aeiou].*" )? Locale.explain( "ui.an" )
                 : Locale.explain( "ui.a" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        EditableList list = this;
+        final EditableList list = this;
         setModel( model = new DefaultListModel() );
 
         addMouseListener( new MouseAdapter() {
@@ -95,10 +95,8 @@ public class EditableList extends JList {
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
 
-                        String element = JOptionPane.showInputDialog(
-                                list,
-                                Locale.explain( "ui.new" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
-                                + newText );
+                        String element = JOptionPane
+                                .showInputDialog( list, Locale.explain( "ui.new" ) + contentTitle + ": " + newText );
 
                         if (element != null)
                             model.addElement( element );

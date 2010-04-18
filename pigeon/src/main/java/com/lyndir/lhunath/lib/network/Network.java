@@ -947,7 +947,7 @@ public class Network implements Runnable {
                 switch (handshakeStatus) {
                     case NEED_TASK:
                         // A lengthy task must be performed.
-                        Runnable delegatedTask = engine.getDelegatedTask();
+                        final Runnable delegatedTask = engine.getDelegatedTask();
                         if (delegatedTask != null) {
                             logger.dbg( "[====: %s] SSL %s: Starting a task thread.", //
                                         nameChannel( channel ), handshakeStatus, delegatedTask );

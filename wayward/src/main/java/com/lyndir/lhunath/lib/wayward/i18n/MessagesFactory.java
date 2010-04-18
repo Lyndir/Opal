@@ -107,7 +107,7 @@ public abstract class MessagesFactory {
             StringBuilder keyBuilder = new StringBuilder( method.getName() );
             logger.dbg( "Base key: %s", keyBuilder.toString() );
 
-            List<Object> methodArgs = new LinkedList<Object>();
+            final List<Object> methodArgs = new LinkedList<Object>();
             if (args != null)
                 for (int a = 0; a < args.length; ++a) {
                     Object arg = args[a];
@@ -164,7 +164,7 @@ public abstract class MessagesFactory {
                     }
                 }
 
-            String key = keyBuilder.toString();
+            final String key = keyBuilder.toString();
             logger.dbg( "Resolving localization value of key: %s, in baseName: %s, with arguments: %s", //
                         key, baseClass.getSimpleName(), methodArgs );
 

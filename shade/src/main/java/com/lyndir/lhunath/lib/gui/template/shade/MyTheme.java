@@ -172,8 +172,8 @@ public enum MyTheme {
      */
     public Component getButton() {
 
-        MyTheme theme = this;
-        ToolTip toolTip = new ToolTip( "  ~ " + toString() + " ~  " );
+        final MyTheme theme = this;
+        final ToolTip toolTip = new ToolTip( "  ~ " + toString() + " ~  " );
 
         AbstractButton button = new JButton() {
 

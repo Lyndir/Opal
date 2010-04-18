@@ -96,7 +96,7 @@ public class CSSClassAttributeAppender extends AttributeAppender {
     }
 
     private CSSClassAttributeAppender(
-            IModel<? extends Collection<String>> appendModel,
+            final IModel<? extends Collection<String>> appendModel,
             @SuppressWarnings("unused") final Collection<?> x) {
 
         // noinspection RedundantCast

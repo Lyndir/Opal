@@ -683,7 +683,7 @@ public abstract class AbstractUi
     private AbstractAction addPanelButton(Tab tab) {
 
         AbstractAction action;
-        AbstractUi ui = this;
+        final AbstractUi ui = this;
         JToggleButton button = new JToggleButton( action = new AbstractAction( tab.getTitle(), tab.getIcon() ) {
 
             private static final long serialVersionUID = 1L;
@@ -893,7 +893,7 @@ public abstract class AbstractUi
      */
     protected JPanel getOverlay() {
 
-        JPanel pane = new JPanel( new BorderLayout() );
+        final JPanel pane = new JPanel( new BorderLayout() );
         pane.setBackground( UIUtils.setAlpha( Color.black, 150 ) );
         pane.addFocusListener( new FocusAdapter() {
 

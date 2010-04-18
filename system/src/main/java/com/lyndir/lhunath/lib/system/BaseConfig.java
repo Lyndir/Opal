@@ -377,7 +377,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
     private T value;
     private int hashCode;
-    private final String type = null;
+    private String type;
 
     private final transient Set<ConfigChangedListener<T>> listeners;
 
