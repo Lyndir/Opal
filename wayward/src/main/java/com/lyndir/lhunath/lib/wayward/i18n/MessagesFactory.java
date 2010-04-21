@@ -178,7 +178,7 @@ public abstract class MessagesFactory {
                                 key, baseClass, methodArgs );
 
                     // Find the resource bundle for the current locale and the given baseName.
-                    ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle( baseClass.getSimpleName(),
+                    ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle( baseClass.getCanonicalName(),
                                                                                     Session.get().getLocale(),
                                                                                     baseClass.getClassLoader() );
 

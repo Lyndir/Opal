@@ -42,6 +42,8 @@ import com.google.common.collect.ImmutableList;
  */
 public class XMLResourceBundle extends PropertiesResourceBundle {
 
+    private static final XMLControl CONTROL = new XMLControl();
+
     /**
      * Create a new {@link XMLResourceBundle} instance.
      *
@@ -61,7 +63,7 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
      */
     public static ResourceBundle getXMLBundle(final String baseName) {
 
-        return getBundle( baseName, new XMLControl() );
+        return getBundle( baseName, CONTROL );
     }
 
     /**
@@ -74,7 +76,7 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
      */
     public static ResourceBundle getXMLBundle(final String baseName, final Locale locale) {
 
-        return getBundle( baseName, locale, new XMLControl() );
+        return getBundle( baseName, locale, CONTROL );
     }
 
     /**
@@ -88,7 +90,7 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
      */
     public static ResourceBundle getXMLBundle(final String baseName, final Locale locale, final ClassLoader loader) {
 
-        return getBundle( baseName, locale, loader, new XMLControl() );
+        return getBundle( baseName, locale, loader, CONTROL );
     }
 
 
