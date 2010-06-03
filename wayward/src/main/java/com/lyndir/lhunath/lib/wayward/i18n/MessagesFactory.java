@@ -15,41 +15,39 @@
  */
 package com.lyndir.lhunath.lib.wayward.i18n;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.lyndir.lhunath.lib.system.logging.Logger;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
 
 /**
- * <h2>{@link MessagesFactory}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link MessagesFactory}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * <i>Mar 26, 2010</i>
- * </p>
+ * <p> <i>Mar 26, 2010</i> </p>
  *
  * @author lhunath
  */
 public abstract class MessagesFactory {
 
     static final Logger logger = Logger.get( MessagesFactory.class );
-
 
     /**
      * @param localizationInterface The interface that declares the localization keys.
@@ -65,9 +63,9 @@ public abstract class MessagesFactory {
     /**
      * @param localizationInterface The interface that declares the localization keys.
      * @param <M>                   The type of the localization interface.
-     * @param baseClass             The class on which to base the name resource name to load the resource bundle from. The baseName of
-     *                              the resource bundle will be the {@link Class#getSimpleName()} and the class' classloader will be used
-     *                              to resolve it.
+     * @param baseClass             The class on which to base the name resource name to load the resource bundle from. The baseName of the
+     *                              resource bundle will be the {@link Class#getSimpleName()} and the class' classloader will be used to
+     *                              resolve it.  If <code>null</code>, the class declaring the localization interface will be used.
      *
      * @return The localization proxy that provides localized values.
      */
@@ -75,16 +73,46 @@ public abstract class MessagesFactory {
 
         // Create a localization interface proxy.
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        Class<?>[] proxyInterfaces = {localizationInterface, Serializable.class};
-        return localizationInterface.cast( Proxy.newProxyInstance( classLoader, proxyInterfaces,
-                                                                   new MessagesInvocationHandler( baseClass ) ) );
+        Class<?>[] proxyInterfaces = { localizationInterface, Serializable.class };
+        return localizationInterface.cast( Proxy.newProxyInstance( classLoader, proxyInterfaces, new MessagesInvocationHandler( baseClass ) ) );
     }
 
+    /**
+     * @param object                The object on which the msgs field should be initialized.
+     * @param localizationInterface The interface to use for looking up localization keys.
+     */
+    public static void initialize(final Object object, final Class<?> localizationInterface) {
+
+        initialize( object, "msgs", localizationInterface );
+    }
+
+    /**
+     * @param object                The object that should be initialized.
+     * @param msgsFieldName         The name of the field in which the messages proxy should be injected.
+     * @param localizationInterface The interface to use for looking up localization keys.
+     */
+    public static void initialize(final Object object, final String msgsFieldName, final Class<?> localizationInterface) {
+
+        // Manually reinitialize the msgs field.
+        try {
+            Field field = object.getClass().getField( msgsFieldName );
+            field.setAccessible( true );
+            field.set( object, create( localizationInterface ) );
+            field.setAccessible( false );
+        }
+
+        catch (IllegalAccessException e) {
+            logger.bug( e, "Field %s of class %s was inaccessible even though we tried setAccessible.", msgsFieldName, object.getClass() );
+        }
+        catch (NoSuchFieldException e) {
+            throw logger.err( e, "Field %s of class %s not found.", msgsFieldName, object.getClass() )
+                    .toError( IllegalArgumentException.class );
+        }
+    }
 
     static class MessagesInvocationHandler implements InvocationHandler, Serializable {
 
         Class<?> baseClass;
-
 
         MessagesInvocationHandler(final Class<?> baseClass) {
 
@@ -111,7 +139,7 @@ public abstract class MessagesFactory {
             if (args != null)
                 for (int a = 0; a < args.length; ++a) {
                     Object arg = args[a];
-                    List<Annotation> argAnnotations = ImmutableList.of( method.getParameterAnnotations()[a] );
+                    List<Annotation> argAnnotations = ImmutableList.copyOf( method.getParameterAnnotations()[a] );
                     boolean useValue = true;
                     logger.dbg( "Considering arg: %s, with annotations: %s.", arg, argAnnotations );
 
@@ -141,8 +169,7 @@ public abstract class MessagesFactory {
                                 for (final KeyMatch match : annotation.value()) {
                                     logger.dbg( "With match: %s, ", match );
 
-                                    if (match.ifNum() == Double.parseDouble( arg.toString() )
-                                        || match.ifString().equals( arg ) || match.ifClass().equals( arg ))
+                                    if (match.ifNum() == Double.parseDouble( arg.toString() ) || match.ifString().equals( arg ) || match.ifClass().equals( arg ))
                                         appendKey( keyBuilder, match.key() );
                                     else if (!match.elseKey().equals( KeyMatch.STRING_UNSET ))
                                         appendKey( keyBuilder, match.elseKey() );
@@ -156,6 +183,12 @@ public abstract class MessagesFactory {
                                 appendKey( keyBuilder, annotation.y() );
                             else if (Boolean.FALSE.equals( arg ))
                                 appendKey( keyBuilder, annotation.n() );
+                        } else if (LocalizedType.class.isAssignableFrom( argAnnotation.getClass() )) {
+                            checkArgument( Localized.class.isAssignableFrom( arg.getClass() ),
+                                           "Can't evaluate @LocalizedType on an object that does not implement Localized." );
+
+                            Localized localizedArg = (Localized) arg;
+                            arg = localizedArg.typeDescription();
                         }
 
                     if (useValue) {
@@ -178,11 +211,10 @@ public abstract class MessagesFactory {
                                 key, baseClass, methodArgs );
 
                     // Find the resource bundle for the current locale and the given baseName.
-                    ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle( baseClass.getCanonicalName(),
-                                                                                    Session.get().getLocale(),
+                    ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle( baseClass.getCanonicalName(), Session.get().getLocale(),
                                                                                     baseClass.getClassLoader() );
 
-                    // Evaluate IModel arguments.
+                    // Evaluate IModel and Localized arguments.
                     List<Object> valueArgs = Lists.transform( methodArgs, new Function<Object, Object>() {
 
                         @Override
@@ -191,15 +223,24 @@ public abstract class MessagesFactory {
                             if (from == null)
                                 return null;
 
-                            if (IModel.class.isAssignableFrom( from.getClass() ))
-                                return ((IModel<?>) from).getObject();
+                            Object arg = from;
+                            if (IModel.class.isAssignableFrom( arg.getClass() ))
+                                arg = ((IModel<?>) arg).getObject();
+                            if (Localized.class.isAssignableFrom( arg.getClass() ))
+                                arg = ((Localized) arg).objectDescription();
 
-                            return from;
+                            return arg;
                         }
                     } );
 
                     // Format the localization key with the arguments.
-                    return MessageFormat.format( resourceBundle.getString( key ), valueArgs.toArray() );
+                    try {
+                        return MessageFormat.format( resourceBundle.getString( key ), valueArgs.toArray() );
+                    }
+                    catch (MissingResourceException e) {
+                        throw new MissingResourceException( String.format( "Missing resource for: %s, at key: %s.", baseClass, e.getKey() ),
+                                                            baseClass.getCanonicalName(), e.getKey() );
+                    }
                 }
             };
 

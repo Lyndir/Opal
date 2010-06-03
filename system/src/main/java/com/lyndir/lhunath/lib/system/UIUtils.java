@@ -152,8 +152,8 @@ public class UIUtils {
      */
     public static Point2D gridAlign(final Point2D point, final double gridX, final double gridY) {
 
-        return new Point2D.Double( Math.round( point.getX() / gridX ) * gridX, Math.round( point.getY() / gridY )
-                                                                               * gridY );
+        return new Point2D.Double( Math.round( point.getX() / gridX ) * gridX,
+                                   Math.round( point.getY() / gridY ) * gridY );
     }
 
     /**

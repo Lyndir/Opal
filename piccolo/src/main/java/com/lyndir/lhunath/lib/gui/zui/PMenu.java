@@ -143,11 +143,11 @@ public class PMenu extends PBox implements PInputEventListener {
 
         InputEvent sEvent = event.getSourceSwingEvent();
         Action childAction = ((PMenu) event.getPickedNode()).action;
-        String command = childAction.getValue( Action.ACTION_COMMAND_KEY ) == null? null: childAction.getValue(
-                Action.ACTION_COMMAND_KEY ).toString();
+        String command = childAction.getValue( Action.ACTION_COMMAND_KEY ) == null? null
+                : childAction.getValue( Action.ACTION_COMMAND_KEY ).toString();
 
         if (type == MouseEvent.MOUSE_CLICKED && event.isLeftMouseButton())
-            childAction.actionPerformed( new ActionEvent( sEvent.getSource(), sEvent.getID(), command,
-                                                          sEvent.getWhen(), sEvent.getModifiers() ) );
+            childAction.actionPerformed( new ActionEvent( sEvent.getSource(), sEvent.getID(), command, sEvent.getWhen(),
+                                                          sEvent.getModifiers() ) );
     }
 }

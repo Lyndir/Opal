@@ -13,8 +13,9 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.lib.system;
+package com.lyndir.lhunath.lib.system.collection;
 
+import java.io.Serializable;
 import java.util.Map;
 
 
@@ -36,7 +37,7 @@ import java.util.Map;
  * <i>Apr 17, 2008</i>
  * </p>
  */
-public class Pair<K, V> implements Map.Entry<K, V> {
+public class Pair<K, V> implements Map.Entry<K, V>, Serializable {
 
     private final K key;
     private V value;

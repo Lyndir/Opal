@@ -67,7 +67,7 @@ public abstract class FileDialog extends JFileChooser {
     public abstract void approved();
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public void approveSelection() {
@@ -79,7 +79,7 @@ public abstract class FileDialog extends JFileChooser {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public void cancelSelection() {
@@ -98,7 +98,7 @@ public abstract class FileDialog extends JFileChooser {
         return new FileFilter() {
 
             /**
-             * @inheritDoc
+             * {@inheritDoc}
              */
             @Override
             public boolean accept(final File file) {
@@ -118,7 +118,7 @@ public abstract class FileDialog extends JFileChooser {
      * Creates a {@link FileFilter} that filters out any files that don't have the given extension.
      *
      * @param extension   The extension to allow.
-     * @param description The description for the filetype that has this extension.
+     * @param description The description for the file type that has this extension.
      *
      * @return Guess.
      */
@@ -127,7 +127,7 @@ public abstract class FileDialog extends JFileChooser {
         return new FileFilter() {
 
             /**
-             * @inheritDoc
+             * {@inheritDoc}
              */
             @Override
             public boolean accept(final File file) {

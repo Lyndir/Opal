@@ -50,10 +50,8 @@ public class Utils {
     /**
      * Calendar fields in order.
      */
-    public static final int[] calendarFields = {
-            Calendar.MILLISECOND, Calendar.SECOND, Calendar.MINUTE,
-            Calendar.HOUR_OF_DAY, Calendar.DAY_OF_MONTH, Calendar.MONTH,
-            Calendar.YEAR};
+    public static final int[] calendarFields = {Calendar.MILLISECOND, Calendar.SECOND, Calendar.MINUTE,
+            Calendar.HOUR_OF_DAY, Calendar.DAY_OF_MONTH, Calendar.MONTH, Calendar.YEAR};
 
     /**
      * Description of the calendar fields.
@@ -70,8 +68,7 @@ public class Utils {
             put( Calendar.DAY_OF_MONTH, "Day" );
             put( Calendar.MONTH, "Month" );
             put( Calendar.YEAR, "Year" );
-        }
-    };
+        }};
 
     /**
      * {@link SimpleDateFormat} of the calendar fields.
@@ -88,8 +85,7 @@ public class Utils {
             put( Calendar.DAY_OF_MONTH, "dd " );
             put( Calendar.MONTH, "MM/" );
             put( Calendar.YEAR, "yyyy/" );
-        }
-    };
+        }};
 
     /**
      * Default buffer size.
@@ -415,8 +411,8 @@ public class Utils {
                     return SHA512;
             }
 
-            throw new IllegalArgumentException( "The digest in the argument is cannot be recougnized: '" + digest
-                                                + '\'' );
+            throw new IllegalArgumentException(
+                    "The digest in the argument is cannot be recougnized: '" + digest + '\'' );
         }
     }
 
@@ -558,9 +554,8 @@ public class Utils {
      *
      * @throws IOException
      */
-    public static String readReader(
-            Reader reader, final int bufferSize, final StreamCallback callback,
-            boolean autoclose)
+    public static String readReader(Reader reader, final int bufferSize, final StreamCallback callback,
+                                    boolean autoclose)
             throws IOException {
 
         StringWriter output = new StringWriter();
@@ -631,9 +626,8 @@ public class Utils {
      *
      * @throws IOException
      */
-    public static byte[] readStream(
-            InputStream stream, final int bufferSize, final StreamCallback callback,
-            boolean autoclose)
+    public static byte[] readStream(InputStream stream, final int bufferSize, final StreamCallback callback,
+                                    boolean autoclose)
             throws IOException {
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -685,9 +679,7 @@ public class Utils {
      *
      * @throws IOException
      */
-    public static void pipeStream(
-            InputStream in, final int bufferSize, final OutputStream out,
-            StreamCallback callback)
+    public static void pipeStream(InputStream in, final int bufferSize, final OutputStream out, StreamCallback callback)
             throws IOException {
 
         pipeStream( in, bufferSize, out, callback, true );
@@ -705,9 +697,8 @@ public class Utils {
      *
      * @throws IOException
      */
-    public static void pipeStream(
-            InputStream in, final int bufferSize, final OutputStream out,
-            StreamCallback callback, final boolean autoclose)
+    public static void pipeStream(InputStream in, final int bufferSize, final OutputStream out, StreamCallback callback,
+                                  final boolean autoclose)
             throws IOException {
 
         try {
@@ -773,8 +764,8 @@ public class Utils {
         if (libFile == null)
             logger.wrn( "Native library %s not supported for your OS (%s).", libName, System.getProperty( "os.name" ) );
         else
-            System.setProperty( "java.library.path", System.getProperty( "java.library.path" ) + ':'
-                                                     + libFile.getParent() );
+            System.setProperty( "java.library.path",
+                                System.getProperty( "java.library.path" ) + ':' + libFile.getParent() );
     }
 
     /**

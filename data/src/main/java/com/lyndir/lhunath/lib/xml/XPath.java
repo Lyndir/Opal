@@ -102,9 +102,9 @@ public class XPath {
 
                 System.out.println();
                 System.out.println( "\t-x | --xhtml" );
-                System.out.println( "\t\tSets the XHTML namespace as the default so you"
-                                    + "\n\t\tneedn't specify it explicitly."
-                                    + "\n\t\tThis implicitly enables `-t`; see below." );
+                System.out.println(
+                        "\t\tSets the XHTML namespace as the default so you" + "\n\t\tneedn't specify it explicitly."
+                        + "\n\t\tThis implicitly enables `-t`; see below." );
 
                 System.out.println();
                 System.out.println( "\t-t | --tidy" );

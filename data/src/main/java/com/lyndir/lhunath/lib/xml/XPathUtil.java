@@ -142,9 +142,7 @@ public class XPathUtil {
      *
      * @throws XPathExpressionException If the given expression is invalid or does not match the context.
      */
-    private Object getObject(
-            Object context, final String expressionFormat, final QName result,
-            Object... arguments)
+    private Object getObject(Object context, final String expressionFormat, final QName result, Object... arguments)
             throws XPathExpressionException {
 
         String expression = String.format( expressionFormat, arguments );

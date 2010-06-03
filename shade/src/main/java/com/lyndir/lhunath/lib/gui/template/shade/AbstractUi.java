@@ -62,9 +62,8 @@ import org.jdesktop.animation.transitions.TransitionTarget;
  *
  * @author lhunath
  */
-public abstract class AbstractUi
-        implements ActionListener, LogListener, CaretListener, ListSelectionListener, ItemListener, Reflective,
-        ListDataListener, FocusListener, TransitionTarget {
+public abstract class AbstractUi implements ActionListener, LogListener, CaretListener, ListSelectionListener,
+        ItemListener, Reflective, ListDataListener, FocusListener, TransitionTarget {
 
     static final Logger logger = Logger.get( AbstractUi.class );
 
@@ -290,9 +289,9 @@ public abstract class AbstractUi
     /**
      * Show or hide the console.
      */
-    @SuppressWarnings({
-            "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull",
-            "AssignmentToNull", "AssignmentToNull"})
+    @SuppressWarnings(
+            {"AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull",
+                    "AssignmentToNull"})
     protected void toggleConsole() {
 
         if (!SwingUtilities.isEventDispatchThread()) {
@@ -579,8 +578,9 @@ public abstract class AbstractUi
                     /* Send log messages to our log field. */
                     if (message != null || record.getThrown() != null)
                         try {
-                            log.getEditorKit().read( new StringReader( logFormatter.format( record ) ),
-                                                     log.getDocument(), log.getDocument().getLength() );
+                            log.getEditorKit()
+                                    .read( new StringReader( logFormatter.format( record ) ), log.getDocument(),
+                                           log.getDocument().getLength() );
                         }
                         catch (IOException e) {
                             logger.err( e, "Couldn't read the log message from the record!" );
@@ -980,10 +980,9 @@ public abstract class AbstractUi
 
         builder.appendSeparator( Locale.explain( "ui.appearance" ) ); //$NON-NLS-1$
 
-        builder.append(
-                Locale.explain( "ui.theme" ), new ToolTip( Locale.explain( "ui.themeTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                                                           + Locale.explain( "ui.themeTip" ),
-                                                           themesPanel = new JPanel() ), 5 ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.theme" ),
+                        new ToolTip( Locale.explain( "ui.themeTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                     + Locale.explain( "ui.themeTip" ), themesPanel = new JPanel() ), 5 ); //$NON-NLS-1$
         for (MyTheme theme : MyTheme.values())
             themesPanel.add( theme.getButton() );
         themesPanel.setOpaque( false );
@@ -1248,9 +1247,9 @@ public abstract class AbstractUi
 
             /* Set some look and feel properties. */
             UIUtils.setUIFont( new Font( FONT_FACE, Font.PLAIN, FONT_SIZE ) );
-            contentPane.setBorder( BorderFactory.createBevelBorder( BevelBorder.RAISED, ShadeConfig.theme.get()
-                    .getBright(),
-                                                                    ShadeConfig.theme.get().getDark() ) );
+            contentPane.setBorder(
+                    BorderFactory.createBevelBorder( BevelBorder.RAISED, ShadeConfig.theme.get().getBright(),
+                                                     ShadeConfig.theme.get().getDark() ) );
 
             /* Force update on hidden panels. */
             if (frame != null && frame.isVisible())

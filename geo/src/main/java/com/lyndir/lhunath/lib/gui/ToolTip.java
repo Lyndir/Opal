@@ -79,9 +79,9 @@ public class ToolTip extends JPanel {
             @Override
             public void paint(final Graphics g) {
 
-                Dimension size = new Dimension( toolTipPane.getWidth() + 5, toolTipPane.getHeight()
-                                                                            + (activeTip.stickable
-                        ? stickyHint.getHeight(): 0) );
+                Dimension size = new Dimension( toolTipPane.getWidth() + 5,
+                                                toolTipPane.getHeight() + (activeTip.stickable? stickyHint.getHeight()
+                                                        : 0) );
                 Window window = toolTipWindow;
                 if (window == null || !window.isDisplayable())
                     window = toolTipFrame;
@@ -317,8 +317,8 @@ public class ToolTip extends JPanel {
 
         toolTipFrame.setContentPane( gradient );
         toolTipFrame.pack();
-        toolTipFrame.setSize( Math.min( toolTipFrame.getWidth(), maxWidth ), Math.min( toolTipFrame.getHeight(),
-                                                                                       maxHeight ) );
+        toolTipFrame.setSize( Math.min( toolTipFrame.getWidth(), maxWidth ),
+                              Math.min( toolTipFrame.getHeight(), maxHeight ) );
         toolTipFrame.setLocationRelativeTo( null );
 
         pane.getViewport().scrollRectToVisible( new Rectangle( 0, 0, 0, 0 ) );
@@ -467,9 +467,9 @@ public class ToolTip extends JPanel {
 
                                 toolTipWindow.setContentPane( toolTipContainer );
                                 toolTipWindow.pack();
-                                toolTipWindow.setSize( toolTipPane.getWidth() + 5, toolTipPane.getHeight()
-                                                                                   + (stickable? stickyHint.getHeight()
-                                        : 0) );
+                                toolTipWindow.setSize( toolTipPane.getWidth() + 5,
+                                                       toolTipPane.getHeight() + (stickable? stickyHint.getHeight()
+                                                               : 0) );
 
                                 /* Determine the window's location. */
                                 Point location = getContent().getLocationOnScreen();
@@ -509,8 +509,8 @@ public class ToolTip extends JPanel {
                 return;
 
             // Don't do anything when new component is descendant of this tip's content.
-            if (getContent() != null && e.getComponent() != null
-                && getContent().contains( SwingUtilities.convertPoint( e.getComponent(), e.getPoint(), getContent() ) ))
+            if (getContent() != null && e.getComponent() != null && getContent()
+                    .contains( SwingUtilities.convertPoint( e.getComponent(), e.getPoint(), getContent() ) ))
                 return;
 
             if (activeTip == ToolTip.this)
@@ -524,8 +524,8 @@ public class ToolTip extends JPanel {
         public void mouseMoved(final MouseEvent e) {
 
             if (e.getSource() instanceof Component) {
-                Point pointOnContent = SwingUtilities.convertPoint( (Component) e.getSource(), e.getPoint(),
-                                                                    getContent() );
+                Point pointOnContent = SwingUtilities
+                        .convertPoint( (Component) e.getSource(), e.getPoint(), getContent() );
                 x = pointOnContent.x;
                 y = pointOnContent.y;
             }

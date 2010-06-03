@@ -130,10 +130,10 @@ public class EditableList extends JList {
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
 
-                        String newVar = JOptionPane.showInputDialog(
-                                list,
-                                Locale.explain( "ui.modify" ) + contentTitle + ": " //$NON-NLS-1$ //$NON-NLS-2$
-                                + newText, getSelectedValue() );
+                        String newVar = JOptionPane.showInputDialog( list,
+                                                                     Locale.explain( "ui.modify" ) + contentTitle + ": "
+                                                                     //$NON-NLS-1$ //$NON-NLS-2$
+                                                                     + newText, getSelectedValue() );
                         model.remove( getSelectedIndex() );
                         model.addElement( newVar );
                     }

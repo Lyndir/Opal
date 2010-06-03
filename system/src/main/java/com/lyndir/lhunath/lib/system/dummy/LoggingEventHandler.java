@@ -41,10 +41,9 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
  *
  * @author mbillemo
  */
-public class LoggingEventHandler
-        implements ComponentListener, ContainerListener, FocusListener, AncestorListener, HierarchyBoundsListener,
-        HierarchyListener, WindowFocusListener, WindowListener, WindowStateListener, PropertyChangeListener,
-        MouseInputListener, MouseWheelListener, KeyListener, InputMethodListener {
+public class LoggingEventHandler implements ComponentListener, ContainerListener, FocusListener, AncestorListener,
+        HierarchyBoundsListener, HierarchyListener, WindowFocusListener, WindowListener, WindowStateListener,
+        PropertyChangeListener, MouseInputListener, MouseWheelListener, KeyListener, InputMethodListener {
 
     private static final Logger logger = Logger.get( LoggingEventHandler.class );
 
@@ -347,8 +346,8 @@ public class LoggingEventHandler
     @Override
     public void propertyChange(final PropertyChangeEvent event) {
 
-        logger.dbg( "%s: property [Name: %s, Value: From %s to %s]", name, event.getPropertyName(),
-                    event.getOldValue(), event.getNewValue() );
+        logger.dbg( "%s: property [Name: %s, Value: From %s to %s]", name, event.getPropertyName(), event.getOldValue(),
+                    event.getNewValue() );
     }
 
     /**
@@ -423,8 +422,8 @@ public class LoggingEventHandler
     @Override
     public void mouseMoved(final MouseEvent event) {
 
-        logger.dbg( "%s: moved [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                    name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
+        logger.dbg( "%s: moved [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name,
+                    event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
                     event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
     }
 
@@ -448,8 +447,8 @@ public class LoggingEventHandler
     public void keyPressed(final KeyEvent event) {
 
         logger.dbg( "%s: key pressed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(),
-                    event.getKeyChar(), event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis()
-                                                                                    - event.getWhen() );
+                    event.getKeyChar(), event.getKeyCode(), event.getKeyLocation(),
+                    System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -459,8 +458,8 @@ public class LoggingEventHandler
     public void keyReleased(final KeyEvent event) {
 
         logger.dbg( "%s: key released [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(),
-                    event.getKeyChar(), event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis()
-                                                                                    - event.getWhen() );
+                    event.getKeyChar(), event.getKeyCode(), event.getKeyLocation(),
+                    System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -470,8 +469,8 @@ public class LoggingEventHandler
     public void keyTyped(final KeyEvent event) {
 
         logger.dbg( "%s: key typed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(),
-                    event.getKeyChar(), event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis()
-                                                                                    - event.getWhen() );
+                    event.getKeyChar(), event.getKeyCode(), event.getKeyLocation(),
+                    System.currentTimeMillis() - event.getWhen() );
     }
 
     /**

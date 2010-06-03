@@ -473,9 +473,8 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    private ByteBuffer toApplicationData(
-            ByteBuffer readBuffer, final SocketChannel socketChannel,
-            ByteBuffer dataBuffer)
+    private ByteBuffer toApplicationData(ByteBuffer readBuffer, final SocketChannel socketChannel,
+                                         ByteBuffer dataBuffer)
             throws IOException {
 
         ByteBuffer newDataBuffer = dataBuffer;
@@ -492,12 +491,10 @@ public class Network implements Runnable {
                 switch (sslEngineResult.getStatus()) {
                     case BUFFER_OVERFLOW:
                         // Data buffer overflow, make it bigger and try again.
-                        logger.dbg(
-                                "[<<<<: %s] SSL %s: dataBuffer%s + %d]", //
-                                nameChannel( socketChannel ), sslEngineResult.getStatus(),
-                                renderBuffer( newDataBuffer ), READ_BUFFER );
-                        ByteBuffer resizedDataBuffer = ByteBuffer.allocate( newDataBuffer.capacity()
-                                                                            + READ_BUFFER );
+                        logger.dbg( "[<<<<: %s] SSL %s: dataBuffer%s + %d]", //
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(),
+                                    renderBuffer( newDataBuffer ), READ_BUFFER );
+                        ByteBuffer resizedDataBuffer = ByteBuffer.allocate( newDataBuffer.capacity() + READ_BUFFER );
                         newDataBuffer.flip();
                         newDataBuffer = resizedDataBuffer.put( newDataBuffer );
 
@@ -506,10 +503,9 @@ public class Network implements Runnable {
 
                     case BUFFER_UNDERFLOW:
                         // Not enough network data collected for a whole SSL/TLS packet.
-                        logger.dbg(
-                                "[<<<<: %s] SSL %s: need_src: readBuffer%s", //
-                                nameChannel( socketChannel ), sslEngineResult.getStatus(),
-                                renderBuffer( readBuffer ) );
+                        logger.dbg( "[<<<<: %s] SSL %s: need_src: readBuffer%s", //
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(),
+                                    renderBuffer( readBuffer ) );
                         break;
 
                     case CLOSED:
@@ -520,10 +516,9 @@ public class Network implements Runnable {
                         break;
 
                     case OK:
-                        logger.dbg(
-                                "[>>>>: %s] SSL %s - %s: Produced %d bytes application data", //
-                                nameChannel( socketChannel ), sslEngineResult.getStatus(),
-                                sslEngineResult.getHandshakeStatus(), sslEngineResult.bytesProduced() );
+                        logger.dbg( "[>>>>: %s] SSL %s - %s: Produced %d bytes application data", //
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(),
+                                    sslEngineResult.getHandshakeStatus(), sslEngineResult.bytesProduced() );
                         break;
                 }
 
@@ -541,8 +536,7 @@ public class Network implements Runnable {
         // Plain Text: Copy network data to application data and prepare both buffers for their next operations.
         if (newDataBuffer.remaining() < readBuffer.remaining()) {
             // Not enough space in the dataBuffer for the readBuffer's data; make it bigger.
-            ByteBuffer resizedDataBuffer = ByteBuffer
-                    .allocate( newDataBuffer.position() + readBuffer.remaining() );
+            ByteBuffer resizedDataBuffer = ByteBuffer.allocate( newDataBuffer.position() + readBuffer.remaining() );
 
             newDataBuffer.flip();
             newDataBuffer = resizedDataBuffer.put( newDataBuffer );
@@ -619,9 +613,8 @@ public class Network implements Runnable {
      *
      * @throws IOException
      */
-    private ByteBuffer fromApplicationData(
-            ByteBuffer dataBuffer, final SocketChannel socketChannel,
-            ByteBuffer writeBuffer)
+    private ByteBuffer fromApplicationData(ByteBuffer dataBuffer, final SocketChannel socketChannel,
+                                           ByteBuffer writeBuffer)
             throws IOException {
 
         ByteBuffer newWriteBuffer = writeBuffer;
@@ -638,12 +631,10 @@ public class Network implements Runnable {
                 switch (sslEngineResult.getStatus()) {
                     case BUFFER_OVERFLOW:
                         // Data buffer overflow, make it bigger and try again.
-                        logger.dbg(
-                                "[>>>>: %s] SSL %s: writeBuffer%s + %d", //
-                                nameChannel( socketChannel ), sslEngineResult.getStatus(),
-                                renderBuffer( newWriteBuffer ), WRITE_BUFFER );
-                        ByteBuffer resizedWriteBuffer = ByteBuffer.allocate( newWriteBuffer.capacity()
-                                                                             + WRITE_BUFFER );
+                        logger.dbg( "[>>>>: %s] SSL %s: writeBuffer%s + %d", //
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(),
+                                    renderBuffer( newWriteBuffer ), WRITE_BUFFER );
+                        ByteBuffer resizedWriteBuffer = ByteBuffer.allocate( newWriteBuffer.capacity() + WRITE_BUFFER );
                         newWriteBuffer.flip();
                         newWriteBuffer = resizedWriteBuffer.put( newWriteBuffer );
 
@@ -652,10 +643,9 @@ public class Network implements Runnable {
 
                     case BUFFER_UNDERFLOW:
                         // Not enough application data collected for a whole SSL/TLS packet.
-                        logger.dbg(
-                                "[>>>>: %s] SSL %s: need_src: dataBuffer%s", //
-                                nameChannel( socketChannel ), sslEngineResult.getStatus(),
-                                renderBuffer( dataBuffer ) );
+                        logger.dbg( "[>>>>: %s] SSL %s: need_src: dataBuffer%s", //
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(),
+                                    renderBuffer( dataBuffer ) );
                         break;
 
                     case CLOSED:
@@ -666,10 +656,9 @@ public class Network implements Runnable {
                         break;
 
                     case OK:
-                        logger.dbg(
-                                "[>>>>: %s] SSL %s - %s: Consumed %d bytes application data", //
-                                nameChannel( socketChannel ), sslEngineResult.getStatus(),
-                                sslEngineResult.getHandshakeStatus(), sslEngineResult.bytesConsumed() );
+                        logger.dbg( "[>>>>: %s] SSL %s - %s: Consumed %d bytes application data", //
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(),
+                                    sslEngineResult.getHandshakeStatus(), sslEngineResult.bytesConsumed() );
                         break;
                 }
 
@@ -687,8 +676,7 @@ public class Network implements Runnable {
         // Plain Text: Copy application data to network data and prepare both buffers for their next operations.
         if (newWriteBuffer.remaining() < dataBuffer.remaining()) {
             // Not enough space in the writeBuffer for the dataBuffer's data; make it bigger.
-            ByteBuffer resizedWriteBuffer = ByteBuffer.allocate( newWriteBuffer.position()
-                                                                 + dataBuffer.remaining() );
+            ByteBuffer resizedWriteBuffer = ByteBuffer.allocate( newWriteBuffer.position() + dataBuffer.remaining() );
 
             newWriteBuffer.flip();
             newWriteBuffer = resizedWriteBuffer.put( newWriteBuffer );
@@ -776,16 +764,14 @@ public class Network implements Runnable {
             // Obtain or create the data buffer for the connection.
             if (writeQueueBuffer == null)
                 // No writeQueueBuffer yet for this connection, allocate one.
-                writeQueueBuffers.put( socketChannel,
-                                       writeQueueBuffer = ByteBuffer.allocate( Math.max( dataBuffer.remaining(),
-                                                                                         WRITE_QUEUE_BUFFER ) ) );
+                writeQueueBuffers.put( socketChannel, writeQueueBuffer = ByteBuffer
+                        .allocate( Math.max( dataBuffer.remaining(), WRITE_QUEUE_BUFFER ) ) );
             else if (writeQueueBuffer.remaining() < dataBuffer.remaining())
                 // Not enough space left in the writeQueueBuffer for the application data, make it bigger.
                 synchronized (writeQueueLocks.get( socketChannel )) {
-                    ByteBuffer newWriteQueueBuffer = ByteBuffer.allocate( Math.max( writeQueueBuffer.position()
-                                                                                    + dataBuffer.remaining(),
-                                                                                    writeQueueBuffer.capacity()
-                                                                                    + WRITE_QUEUE_BUFFER ) );
+                    ByteBuffer newWriteQueueBuffer = ByteBuffer.allocate(
+                            Math.max( writeQueueBuffer.position() + dataBuffer.remaining(),
+                                      writeQueueBuffer.capacity() + WRITE_QUEUE_BUFFER ) );
                     writeQueueBuffer.flip();
                     writeQueueBuffers
                             .put( socketChannel, writeQueueBuffer = newWriteQueueBuffer.put( writeQueueBuffer ) );
@@ -1177,8 +1163,8 @@ public class Network implements Runnable {
     public void unregisterConnectionStateListener(final NetworkConnectionStateListener listener) {
 
         connectionStateListeners.remove( listener );
-        logger.inf( "%s is no longer listening to network connection state changes.", listener.getClass()
-                .getSimpleName() );
+        logger.inf( "%s is no longer listening to network connection state changes.",
+                    listener.getClass().getSimpleName() );
     }
 
     /**

@@ -99,10 +99,9 @@ public abstract class LocalizerFactory {
 
         // Create a localization interface proxy.
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        return localizationInterface.cast( Proxy.newProxyInstance( classLoader, new Class[] {
-                localizationInterface,
-                Serializable.class},
-                                                                   new LocalizationInvocationHandler( context ) ) );
+        return localizationInterface
+                .cast( Proxy.newProxyInstance( classLoader, new Class[] {localizationInterface, Serializable.class},
+                                               new LocalizationInvocationHandler( context ) ) );
     }
 
 
@@ -125,8 +124,8 @@ public abstract class LocalizerFactory {
 
             UseKey useKeyAnnotation = method.getAnnotation( UseKey.class );
             if (useKeyAnnotation == null)
-                throw new IllegalStateException( MessageFormat.format( "Need a {0} annotation on {1}", UseKey.class,
-                                                                       method ) );
+                throw new IllegalStateException(
+                        MessageFormat.format( "Need a {0} annotation on {1}", UseKey.class, method ) );
 
             String localizationKey = useKeyAnnotation.value();
             if (localizationKey == null || localizationKey.isEmpty())
@@ -154,23 +153,20 @@ public abstract class LocalizerFactory {
                 }
 
                 if (method.getParameterTypes().length > 0)
-                    throw new IllegalArgumentException( "Expected no arguments on " + method
-                                                        + ": Can't format non-String return type." );
+                    throw new IllegalArgumentException(
+                            "Expected no arguments on " + method + ": Can't format non-String return type." );
 
                 return bundle.getObject( localizationKey );
             }
 
-            UseLocalizationProvider useLocalizationProvider = methodType
-                    .getAnnotation( UseLocalizationProvider.class );
+            UseLocalizationProvider useLocalizationProvider = methodType.getAnnotation( UseLocalizationProvider.class );
             if (useLocalizationProvider != null) {
                 Class<? extends LocalizationProvider> localizationProvider = useLocalizationProvider.value();
 
                 try {
                     return MessageFormat.format(
-                            localizationProvider.getConstructor()
-                                    .newInstance()
-                                    .getValueForKeyInContext( localizationKey, context ),
-                            arguments );
+                            localizationProvider.getConstructor().newInstance().getValueForKeyInContext(
+                                    localizationKey, context ), arguments );
                 }
 
                 catch (IllegalArgumentException e) {
@@ -187,8 +183,8 @@ public abstract class LocalizerFactory {
                 }
             }
 
-            throw new UnsupportedOperationException( MessageFormat.format( "No supported annotation found on: {0}",
-                                                                           methodType ) );
+            throw new UnsupportedOperationException(
+                    MessageFormat.format( "No supported annotation found on: {0}", methodType ) );
         }
     }
 }

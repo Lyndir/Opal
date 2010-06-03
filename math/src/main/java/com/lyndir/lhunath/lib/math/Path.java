@@ -55,9 +55,8 @@ public class Path {
      * @param srcHorizontal Whether this path exits its source horizontally.
      * @param dstHorizontal Whether this path enters its destination horizontally.
      */
-    public Path(
-            Vec2 src, final Vec2 dst, final Vec2 offset, final Vec2 size, final boolean srcHorizontal,
-            boolean dstHorizontal) {
+    public Path(Vec2 src, final Vec2 dst, final Vec2 offset, final Vec2 size, final boolean srcHorizontal,
+                boolean dstHorizontal) {
 
         this.src = src;
         this.dst = dst;

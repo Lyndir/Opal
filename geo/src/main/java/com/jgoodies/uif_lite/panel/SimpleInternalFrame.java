@@ -66,9 +66,7 @@ public class SimpleInternalFrame extends JPanel {
      * @param content   the initial content pane
      * @param headerTop Add the header to the top of the frame (or to the bottom).
      */
-    public SimpleInternalFrame(
-            String title, final JToolBar toolbar, final JComponent content,
-            boolean headerTop) {
+    public SimpleInternalFrame(String title, final JToolBar toolbar, final JComponent content, boolean headerTop) {
 
         this( null, title, toolbar, content, headerTop );
     }
@@ -82,9 +80,8 @@ public class SimpleInternalFrame extends JPanel {
      * @param content   the initial content pane
      * @param headerTop Add the header to the top of the frame (or to the bottom).
      */
-    public SimpleInternalFrame(
-            Icon icon, final String title, final JToolBar toolbar, final JComponent content,
-            boolean headerTop) {
+    public SimpleInternalFrame(Icon icon, final String title, final JToolBar toolbar, final JComponent content,
+                               boolean headerTop) {
 
         super( new BorderLayout() );
         selected = false;
@@ -339,7 +336,7 @@ public class SimpleInternalFrame extends JPanel {
         }
 
         /**
-         * @inheritDoc
+         * {@inheritDoc}
          */
         @Override
         public Insets getBorderInsets(final Component component) {
@@ -348,12 +345,11 @@ public class SimpleInternalFrame extends JPanel {
         }
 
         /**
-         * @inheritDoc
+         * {@inheritDoc}
          */
         @Override
-        public void paintBorder(
-                Component component, final Graphics graphics, final int x, final int y,
-                int w, final int h) {
+        public void paintBorder(Component component, final Graphics graphics, final int x, final int y, int w,
+                                final int h) {
 
             graphics.translate( x, y );
             graphics.setColor( UIManager.getColor( "controlLtHighlight" ) );
@@ -378,7 +374,7 @@ public class SimpleInternalFrame extends JPanel {
         }
 
         /**
-         * @inheritDoc
+         * {@inheritDoc}
          */
         @Override
         public Insets getBorderInsets(final Component component) {
@@ -387,12 +383,11 @@ public class SimpleInternalFrame extends JPanel {
         }
 
         /**
-         * @inheritDoc
+         * {@inheritDoc}
          */
         @Override
-        public void paintBorder(
-                Component component, final Graphics graphics, final int x, final int y,
-                int w, final int h) {
+        public void paintBorder(Component component, final Graphics graphics, final int x, final int y, int w,
+                                final int h) {
 
             Color shadow = UIManager.getColor( "controlShadow" );
             if (shadow == null)

@@ -129,9 +129,7 @@ public class PaintPanel extends ScrollPanel {
      *
      * @return The resulting {@link PaintPanel}.
      */
-    public static PaintPanel gradientPanel(
-            Point2D startPos, final Color startCol, final Point2D endPos,
-            Color endCol) {
+    public static PaintPanel gradientPanel(Point2D startPos, final Color startCol, final Point2D endPos, Color endCol) {
 
         return new PaintPanel( new GradientPaint( startPos, startCol, endPos, endCol ) );
     }

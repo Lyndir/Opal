@@ -15,22 +15,20 @@
  */
 package com.lyndir.lhunath.lib.wayward.behavior;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
 
 /**
- * <h2>{@link CSSClassAttributeAppender}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link CSSClassAttributeAppender}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * <i>Mar 12, 2010</i>
- * </p>
+ * <p> <i>Mar 12, 2010</i> </p>
  *
  * @author lhunath
  */
@@ -39,17 +37,48 @@ public class CSSClassAttributeAppender extends AttributeAppender {
     private static final String CLASS_ATTRIBUTE = "class";
     private static final String CLASS_SEPARATOR = " ";
 
-
     /**
      * @param cssClassesModel A model that provides CSS classes to append to the element's <code>class</class> attribute.
      *
-     * @return An appender which appends all the CSS classes in the collection from the given model to a component's
-     *         HTML element.
+     * @return An appender which appends all the CSS classes in the collection from the given model to a component's HTML element.
      */
     public static CSSClassAttributeAppender ofList(final IModel<? extends Collection<String>> cssClassesModel) {
 
         // noinspection RedundantCast
         return new CSSClassAttributeAppender( cssClassesModel, (Collection<?>) null );
+    }
+
+    /**
+     * @param cssClassModels Models that provides CSS classes to append to the element's <code>class</class> attribute.
+     *
+     * @return An appender which appends all the CSS classes in the collection from the given model to a component's HTML element.
+     */
+    public static CSSClassAttributeAppender of(final IModel<String>... cssClassModels) {
+
+        return ofList( new AbstractReadOnlyModel<Collection<String>>() {
+
+            @Override
+            public Collection<String> getObject() {
+
+                return Collections2.transform( Arrays.asList( cssClassModels ), new Function<IModel<String>, String>() {
+                    @Override
+                    public String apply(final IModel<String> from) {
+
+                        return from.getObject();
+                    }
+                } );
+            }
+        } );
+    }
+
+    /**
+     * @param cssClassModels Models that provides CSS classes to append to the element's <code>class</class> attribute.
+     *
+     * @return An appender which appends all the CSS classes in the collection from the given model to a component's HTML element.
+     */
+    public static CSSClassAttributeAppender of(final String... cssClassModels) {
+
+        return new CSSClassAttributeAppender( cssClassModels );
     }
 
     /**
@@ -95,9 +124,8 @@ public class CSSClassAttributeAppender extends AttributeAppender {
         }, (Collection<?>) null );
     }
 
-    private CSSClassAttributeAppender(
-            final IModel<? extends Collection<String>> appendModel,
-            @SuppressWarnings("unused") final Collection<?> x) {
+    private CSSClassAttributeAppender(final IModel<? extends Collection<String>> appendModel,
+                                      @SuppressWarnings("unused") final Collection<?> x) {
 
         // noinspection RedundantCast
         this( new AbstractReadOnlyModel<String>() {

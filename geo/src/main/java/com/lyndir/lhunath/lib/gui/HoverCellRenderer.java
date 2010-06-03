@@ -57,9 +57,8 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      * {@inheritDoc}
      */
     @Override
-    public Component getListCellRendererComponent(
-            JList list, final Object value, final int index,
-            boolean isSelected, final boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList list, final Object value, final int index, boolean isSelected,
+                                                  final boolean cellHasFocus) {
 
         Component label = getObjectComponent( list, value, index, isSelected, cellHasFocus );
         if (label instanceof JComponent)
@@ -102,12 +101,10 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
      *
      * @return The {@link Component} that will be painted to represent the given data.
      */
-    private Component getObjectComponent(
-            JList list, final Object value, final int index,
-            boolean isSelected, final boolean cellHasFocus) {
+    private Component getObjectComponent(JList list, final Object value, final int index, boolean isSelected,
+                                         final boolean cellHasFocus) {
 
-        JLabel label = (JLabel) super
-                .getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+        JLabel label = (JLabel) super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
 
         int padding = list.getFont().getSize() / 2;
         label.setBorder( BorderFactory.createEmptyBorder( padding, padding, padding, padding ) );
@@ -118,8 +115,8 @@ public class HoverCellRenderer extends DefaultListCellRenderer implements MouseL
     private void hovered(final MouseEvent e, final boolean entered) {
 
         hoveredIndex = myList.locationToIndex( e.getPoint() );
-        if (!entered || hoveredIndex != -1
-                        && !myList.getCellBounds( hoveredIndex, hoveredIndex ).contains( e.getPoint() ))
+        if (!entered || hoveredIndex != -1 && !myList.getCellBounds( hoveredIndex, hoveredIndex )
+                .contains( e.getPoint() ))
             hoveredIndex = -1;
 
         myList.repaint();

@@ -71,8 +71,7 @@ public class WinReg {
         if (!(type.equals( String.class ) || type.equals( Integer.class )))
             throw new IllegalArgumentException( "Can only query the registry for String or Integer types." );
 
-        String output = Shell
-                .execRead( new File( "C:\\Windows\\System32" ), "reg.exe", "query", key, "/v", value );
+        String output = Shell.execRead( new File( "C:\\Windows\\System32" ), "reg.exe", "query", key, "/v", value );
 
         int pos;
         T result = null;

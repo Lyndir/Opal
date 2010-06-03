@@ -28,8 +28,7 @@
     </scm>
 
     <!-- DEFAULT PROPERTIES -->
-    <properties>
-    </properties>
+    <properties></properties>
 
     <!-- ALL MODULES THAT ARE ENABLED BY DEFAULT -->
     <modules>

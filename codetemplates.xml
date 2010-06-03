@@ -1,101 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <template autoinsert="false" context="gettercomment_context" deleted="false" description="Comment for getter method"
-              enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.gettercomment" name="gettercomment">/**
-        * @return The ${field} of this {@link ${enclosing_type}}.
-        */
+              enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.gettercomment" name="gettercomment">/** * @return
+        The ${field} of this {@link ${enclosing_type}}. */
     </template>
     <template autoinsert="false" context="settercomment_context" deleted="false" description="Comment for setter method"
-              enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.settercomment" name="settercomment">/**
-        * @param ${param}
-        * The ${field} of this {@link ${enclosing_type}}.
-        */
+              enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.settercomment" name="settercomment">/** * @param
+        ${param} * The ${field} of this {@link ${enclosing_type}}. */
     </template>
     <template autoinsert="false" context="constructorcomment_context" deleted="false"
               description="Comment for created constructors" enabled="true"
-              id="org.eclipse.jdt.ui.text.codetemplates.constructorcomment" name="constructorcomment">/**
-        * Create a new {@link ${enclosing_type}} instance.
-        */
+              id="org.eclipse.jdt.ui.text.codetemplates.constructorcomment" name="constructorcomment">/** * Create a new
+        {@link ${enclosing_type}} instance. */
     </template>
     <template autoinsert="false" context="filecomment_context" deleted="false"
               description="Comment for created Java files" enabled="true"
-              id="org.eclipse.jdt.ui.text.codetemplates.filecomment" name="filecomment">/*
-        * Copyright ${year}, Maarten Billemont
-        *
-        * Licensed under the Apache License, Version 2.0 (the "License");
-        * you may not use this file except in compliance with the License.
-        * You may obtain a copy of the License at
-        *
-        * http://www.apache.org/licenses/LICENSE-2.0
-        *
-        * Unless required by applicable law or agreed to in writing, software
-        * distributed under the License is distributed on an "AS IS" BASIS,
-        * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-        * See the License for the specific language governing permissions and
-        * limitations under the License.
-        */
+              id="org.eclipse.jdt.ui.text.codetemplates.filecomment" name="filecomment">/* * Copyright ${year}, Maarten
+        Billemont * * Licensed under the Apache License, Version 2.0 (the "License"); * you may not use this file except
+        in compliance with the License. * You may obtain a copy of the License at * *
+        http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable law or agreed to in writing,
+        software * distributed under the License is distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS
+        OF ANY KIND, either express or implied. * See the License for the specific language governing permissions and *
+        limitations under the License. */
     </template>
     <template autoinsert="false" context="typecomment_context" deleted="false" description="Comment for created types"
-              enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.typecomment" name="typecomment">/**
-        * &lt;h2&gt;{@link ${type_name}}&lt;br&gt;
-        * &lt;sub&gt;[in short] (${todo}).&lt;/sub&gt;&lt;/h2&gt;
-        *
-        * &lt;p&gt;
-        * [description / usage].
-        * &lt;/p&gt;
-        *
-        * &lt;p&gt;
-        * &lt;i&gt;${date}&lt;/i&gt;
-        * &lt;/p&gt;
-        *
-        * @author ${user}
-        */
+              enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.typecomment" name="typecomment">/** * &lt;h2&gt;{@link
+        ${type_name}}&lt;br&gt; * &lt;sub&gt;[in short] (${todo}).&lt;/sub&gt;&lt;/h2&gt; * * &lt;p&gt; * [description /
+        usage]. * &lt;/p&gt; * * &lt;p&gt; * &lt;i&gt;${date}&lt;/i&gt; * &lt;/p&gt; * * @author ${user} */
     </template>
     <template autoinsert="true" context="fieldcomment_context" deleted="false" description="Comment for fields"
               enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.fieldcomment" name="fieldcomment"></template>
     <template autoinsert="false" context="methodcomment_context" deleted="false"
               description="Comment for non-overriding methods" enabled="true"
-              id="org.eclipse.jdt.ui.text.codetemplates.methodcomment" name="methodcomment">/**
-        * ${todo}: Describe method.
-        */
+              id="org.eclipse.jdt.ui.text.codetemplates.methodcomment" name="methodcomment">/** * ${todo}: Describe
+        method. */
     </template>
     <template autoinsert="false" context="overridecomment_context" deleted="false"
               description="Comment for overriding methods" enabled="true"
-              id="org.eclipse.jdt.ui.text.codetemplates.overridecomment" name="overridecomment">/**
-        * {@inheritDoc}
-        */
+              id="org.eclipse.jdt.ui.text.codetemplates.overridecomment" name="overridecomment">/** * {@inheritDoc} */
     </template>
     <template autoinsert="true" context="delegatecomment_context" deleted="false"
               description="Comment for delegate methods" enabled="true"
-              id="org.eclipse.jdt.ui.text.codetemplates.delegatecomment" name="delegatecomment">/**
-        * ${tags}
-        * ${see_to_target}
-        */
+              id="org.eclipse.jdt.ui.text.codetemplates.delegatecomment" name="delegatecomment">/** * ${tags} *
+        ${see_to_target} */
     </template>
     <template autoinsert="false" context="newtype_context" deleted="false" description="Newly created files"
               enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.newtype" name="newtype">${filecomment}&#13;
-        ${package_declaration}&#13;
-        &#13;
-        ${typecomment}&#13;
-        ${type_declaration}
+        ${package_declaration}&#13; &#13; ${typecomment}&#13; ${type_declaration}
     </template>
     <template autoinsert="false" context="classbody_context" deleted="false" description="Code in new class type bodies"
               enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.classbody" name="classbody"></template>
     <template autoinsert="true" context="interfacebody_context" deleted="false"
               description="Code in new interface type bodies" enabled="true"
-              id="org.eclipse.jdt.ui.text.codetemplates.interfacebody" name="interfacebody">
-    </template>
+              id="org.eclipse.jdt.ui.text.codetemplates.interfacebody" name="interfacebody"></template>
     <template autoinsert="true" context="enumbody_context" deleted="false" description="Code in new enum type bodies"
-              enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.enumbody" name="enumbody">
-    </template>
+              enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.enumbody" name="enumbody"></template>
     <template autoinsert="true" context="annotationbody_context" deleted="false"
               description="Code in new annotation type bodies" enabled="true"
-              id="org.eclipse.jdt.ui.text.codetemplates.annotationbody" name="annotationbody">
-    </template>
+              id="org.eclipse.jdt.ui.text.codetemplates.annotationbody" name="annotationbody"></template>
     <template autoinsert="false" context="catchblock_context" deleted="false" description="Code in new catch blocks"
               enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.catchblock" name="catchblock">/* ${todo}:
-        Generate specific error handling code. */&#13;
-        Logger.error(${exception_var}, "An unexpected error has occurred!");
+        Generate specific error handling code. */&#13; Logger.error(${exception_var}, "An unexpected error has
+        occurred!");
     </template>
     <template autoinsert="false" context="methodbody_context" deleted="false" description="Code in created method stubs"
               enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.methodbody" name="methodbody">
@@ -116,90 +82,68 @@
     </template>
     <template autoinsert="true" context="gettercomment_context" deleted="false"
               description="Comment for getter function" enabled="true"
-              id="org.eclipse.wst.jsdt.ui.text.codetemplates.gettercomment" name="gettercomment">/**
-        * @return the ${bare_field_name}
-        */
+              id="org.eclipse.wst.jsdt.ui.text.codetemplates.gettercomment" name="gettercomment">/** * @return the
+        ${bare_field_name} */
     </template>
     <template autoinsert="true" context="settercomment_context" deleted="false"
               description="Comment for setter function" enabled="true"
-              id="org.eclipse.wst.jsdt.ui.text.codetemplates.settercomment" name="settercomment">/**
-        * @param ${param} the ${bare_field_name} to set
-        */
+              id="org.eclipse.wst.jsdt.ui.text.codetemplates.settercomment" name="settercomment">/** * @param ${param}
+        the ${bare_field_name} to set */
     </template>
     <template autoinsert="true" context="constructorcomment_context" deleted="false"
               description="Comment for created constructors" enabled="true"
-              id="org.eclipse.wst.jsdt.ui.text.codetemplates.constructorcomment" name="constructorcomment">/**
-        * ${tags}
+              id="org.eclipse.wst.jsdt.ui.text.codetemplates.constructorcomment" name="constructorcomment">/** * ${tags}
         */
     </template>
     <template autoinsert="true" context="filecomment_context" deleted="false"
               description="Comment for created JavaScript files" enabled="true"
-              id="org.eclipse.wst.jsdt.ui.text.codetemplates.filecomment" name="filecomment">/**
-        *
-        */
+              id="org.eclipse.wst.jsdt.ui.text.codetemplates.filecomment" name="filecomment">/** * */
     </template>
     <template autoinsert="true" context="typecomment_context" deleted="false" description="Comment for created types"
-              enabled="true" id="org.eclipse.wst.jsdt.ui.text.codetemplates.typecomment" name="typecomment">/**
-        * @author ${user}
-        *
-        * ${tags}
-        */
+              enabled="true" id="org.eclipse.wst.jsdt.ui.text.codetemplates.typecomment" name="typecomment">/** *
+        @author ${user} * * ${tags} */
     </template>
     <template autoinsert="true" context="fieldcomment_context" deleted="false" description="Comment for vars"
-              enabled="true" id="org.eclipse.wst.jsdt.ui.text.codetemplates.fieldcomment" name="fieldcomment">/**
-        *
-        */
+              enabled="true" id="org.eclipse.wst.jsdt.ui.text.codetemplates.fieldcomment" name="fieldcomment">/** * */
     </template>
     <template autoinsert="true" context="methodcomment_context" deleted="false"
               description="Comment for non-overriding function" enabled="true"
-              id="org.eclipse.wst.jsdt.ui.text.codetemplates.methodcomment" name="methodcomment">/**
-        * ${tags}
-        */
+              id="org.eclipse.wst.jsdt.ui.text.codetemplates.methodcomment" name="methodcomment">/** * ${tags} */
     </template>
     <template autoinsert="true" context="overridecomment_context" deleted="false"
               description="Comment for overriding functions" enabled="true"
-              id="org.eclipse.wst.jsdt.ui.text.codetemplates.overridecomment" name="overridecomment">/* (non-Jsdoc)
-        * ${see_to_overridden}
-        */
+              id="org.eclipse.wst.jsdt.ui.text.codetemplates.overridecomment" name="overridecomment">/* (non-Jsdoc) *
+        ${see_to_overridden} */
     </template>
     <template autoinsert="true" context="delegatecomment_context" deleted="false"
               description="Comment for delegate functions" enabled="true"
-              id="org.eclipse.wst.jsdt.ui.text.codetemplates.delegatecomment" name="delegatecomment">/**
-        * ${tags}
-        * ${see_to_target}
-        */
+              id="org.eclipse.wst.jsdt.ui.text.codetemplates.delegatecomment" name="delegatecomment">/** * ${tags} *
+        ${see_to_target} */
     </template>
     <template autoinsert="true" context="newtype_context" deleted="false" description="Newly created files"
               enabled="true" id="org.eclipse.wst.jsdt.ui.text.codetemplates.newtype" name="newtype">${filecomment}
         ${package_declaration}
 
-        ${typecomment}
-        ${type_declaration}
+        ${typecomment} ${type_declaration}
     </template>
     <template autoinsert="true" context="classbody_context" deleted="false" description="Code in new class type bodies"
-              enabled="true" id="org.eclipse.wst.jsdt.ui.text.codetemplates.classbody" name="classbody">
-    </template>
+              enabled="true" id="org.eclipse.wst.jsdt.ui.text.codetemplates.classbody" name="classbody"></template>
     <template autoinsert="true" context="interfacebody_context" deleted="false"
               description="Code in new interface type bodies" enabled="true"
-              id="org.eclipse.wst.jsdt.ui.text.codetemplates.interfacebody" name="interfacebody">
-    </template>
+              id="org.eclipse.wst.jsdt.ui.text.codetemplates.interfacebody" name="interfacebody"></template>
     <template autoinsert="true" context="enumbody_context" deleted="false" description="Code in new enum type bodies"
-              enabled="true" id="org.eclipse.wst.jsdt.ui.text.codetemplates.enumbody" name="enumbody">
-    </template>
+              enabled="true" id="org.eclipse.wst.jsdt.ui.text.codetemplates.enumbody" name="enumbody"></template>
     <template autoinsert="true" context="annotationbody_context" deleted="false"
               description="Code in new annotation type bodies" enabled="true"
-              id="org.eclipse.wst.jsdt.ui.text.codetemplates.annotationbody" name="annotationbody">
-    </template>
+              id="org.eclipse.wst.jsdt.ui.text.codetemplates.annotationbody" name="annotationbody"></template>
     <template autoinsert="true" context="catchblock_context" deleted="false" description="Code in new catch blocks"
               enabled="true" id="org.eclipse.wst.jsdt.ui.text.codetemplates.catchblock" name="catchblock">// ${todo}
-        Auto-generated catch block
-        ${exception_var}.printStackTrace();
+        Auto-generated catch block ${exception_var}.printStackTrace();
     </template>
     <template autoinsert="true" context="methodbody_context" deleted="false"
               description="Code in created function stubs" enabled="true"
               id="org.eclipse.wst.jsdt.ui.text.codetemplates.methodbody" name="methodbody">// ${todo} Auto-generated
-        function stub
-        ${body_statement}
+        function stub ${body_statement}
     </template>
     <template autoinsert="true" context="constructorbody_context" deleted="false"
               description="Code in created constructor stubs" enabled="true"

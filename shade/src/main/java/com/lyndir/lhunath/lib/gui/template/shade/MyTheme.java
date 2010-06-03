@@ -257,8 +257,8 @@ public enum MyTheme {
                 }
                 catch (NumberFormatException e) {
                     if (System.getProperty( "theme" ).trim().length() > 0)
-                        Logger.get( MyTheme.class ).err( e, "err.invalidDefaultTheme",
-                                                         System.getProperty( "theme" ).trim() );
+                        Logger.get( MyTheme.class )
+                                .err( e, "err.invalidDefaultTheme", System.getProperty( "theme" ).trim() );
                 }
 
                 if (customColor != null) {

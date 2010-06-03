@@ -78,8 +78,7 @@ public class SystemTray extends Wrapper {
      * @param propertyName The property to listen for.
      * @param listener     The listener to invoke.
      */
-    public synchronized void addPropertyChangeListener(
-            String propertyName, final PropertyChangeListener listener) {
+    public synchronized void addPropertyChangeListener(String propertyName, final PropertyChangeListener listener) {
 
         invoke( "addPropertyChangeListener", new Class[] {String.class, PropertyChangeListener.class}, propertyName,
                 listener );
@@ -136,11 +135,9 @@ public class SystemTray extends Wrapper {
      * @param propertyName The property to stop listening for with the given listener.
      * @param listener     The listener that should stop listening to the given property.
      */
-    public synchronized void removePropertyChangeListener(
-            String propertyName,
-            PropertyChangeListener listener) {
+    public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 
-        invoke( "removePropertyChangeListener", new Class[] {String.class, PropertyChangeListener.class},
-                propertyName, listener );
+        invoke( "removePropertyChangeListener", new Class[] {String.class, PropertyChangeListener.class}, propertyName,
+                listener );
     }
 }

@@ -47,8 +47,8 @@ public class DiffUtils {
     public static String getDiff(final InputStream from, final InputStream to)
             throws IOException {
 
-        return getDiff( new BufferedReader( new InputStreamReader( from ) ), new BufferedReader( new InputStreamReader(
-                to ) ) );
+        return getDiff( new BufferedReader( new InputStreamReader( from ) ),
+                        new BufferedReader( new InputStreamReader( to ) ) );
     }
 
     /**

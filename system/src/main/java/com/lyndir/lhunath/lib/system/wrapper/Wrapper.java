@@ -65,9 +65,7 @@ public abstract class Wrapper {
      *
      * @throws UnsupportedOperationException The wrapper could not be instantiated.
      */
-    protected static Object construct(
-            Class<? extends Wrapper> proxyClass, final Class<?>[] classes,
-            Object... args)
+    protected static Object construct(final Class<? extends Wrapper> proxyClass, final Class<?>[] classes, final Object... args)
             throws UnsupportedOperationException {
 
         try {
@@ -110,8 +108,8 @@ public abstract class Wrapper {
                 throw new ClassNotFoundException( "Wrapper Class unavailable." );
 
             if (!wrappedClasses.containsKey( proxyClass ))
-                throw new IllegalStateException( "You did not initialize the wrapper for " + proxyClass.getName()
-                                                 + " yet!" );
+                throw new IllegalStateException(
+                        "You did not initialize the wrapper for " + proxyClass.getName() + " yet!" );
 
             return wrappedClasses.get( proxyClass );
         }
@@ -173,9 +171,7 @@ public abstract class Wrapper {
      *
      * @throws UnsupportedOperationException
      */
-    protected static Object invoke(
-            Class<? extends Wrapper> proxyClass, final Object wrappedInstance,
-            String methodName)
+    protected static Object invoke(final Class<? extends Wrapper> proxyClass, final Object wrappedInstance, final String methodName)
             throws UnsupportedOperationException {
 
         return invoke( proxyClass, wrappedInstance, methodName, new Class[0] );
@@ -194,9 +190,8 @@ public abstract class Wrapper {
      *
      * @throws UnsupportedOperationException
      */
-    protected static Object invoke(
-            Class<? extends Wrapper> proxyClass, final Object wrappedInstance,
-            String methodName, final Class<?>[] classes, final Object... args)
+    protected static Object invoke(final Class<? extends Wrapper> proxyClass, final Object wrappedInstance, final String methodName,
+                                   final Class<?>[] classes, final Object... args)
             throws UnsupportedOperationException {
 
         try {

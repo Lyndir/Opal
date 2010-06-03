@@ -118,8 +118,8 @@ public class Splash extends JWindow {
         g2.drawImage( background, 0, 0, null );
 
         if (startTime > 0 && initial != null) {
-            float alpha = (float) Math.max( 0, (endTime - System.currentTimeMillis())
-                                               / (double) (endTime - startTime) );
+            float alpha = (float) Math
+                    .max( 0, (endTime - System.currentTimeMillis()) / (double) (endTime - startTime) );
             g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, alpha ) );
             initial.paintIcon( this, g2, 0, 0 );
 

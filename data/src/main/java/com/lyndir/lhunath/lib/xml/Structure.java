@@ -178,8 +178,7 @@ public class Structure {
         String resourceName = type.getAnnotation( FromXML.class ).value();
 
         // Parse in our XML data.
-        Element root = builder.parse( ClassLoader.getSystemResourceAsStream( resourceName ) )
-                .getDocumentElement();
+        Element root = builder.parse( ClassLoader.getSystemResourceAsStream( resourceName ) ).getDocumentElement();
 
         inject( root, structure );
 
@@ -210,8 +209,7 @@ public class Structure {
         String resourceName = type.getAnnotation( FromXML.class ).value();
 
         // Parse in our XML data.
-        Element root = builder.parse( ClassLoader.getSystemResourceAsStream( resourceName ) )
-                .getDocumentElement();
+        Element root = builder.parse( ClassLoader.getSystemResourceAsStream( resourceName ) ).getDocumentElement();
 
         // Create an empty object of the specified type.
         List<Node> children = xmlpath.getNodes( root, "/*/*" );
@@ -371,11 +369,9 @@ public class Structure {
      *
      * @return a builder that parses XML data according to the rules specified by the arguments.
      */
-    public static DocumentBuilder getXMLBuilder(
-            boolean coalescing, final boolean expandEntityRef,
-            boolean ignoreComments, final boolean whitespace,
-            boolean awareness, final boolean xIncludes,
-            boolean validating, final Schema schema) {
+    public static DocumentBuilder getXMLBuilder(boolean coalescing, final boolean expandEntityRef,
+                                                boolean ignoreComments, final boolean whitespace, boolean awareness,
+                                                final boolean xIncludes, boolean validating, final Schema schema) {
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

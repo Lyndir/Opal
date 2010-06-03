@@ -146,9 +146,8 @@ public class SslFactory implements SecureProtocolSocketFactory {
      */
     @Override
     @Deprecated
-    public Socket createSocket(
-            String host, final int port, final InetAddress localAddress, final int localPort,
-            HttpConnectionParams params)
+    public Socket createSocket(String host, final int port, final InetAddress localAddress, final int localPort,
+                               HttpConnectionParams params)
             throws IOException {
 
         if (params == null)

@@ -41,7 +41,7 @@ public abstract class AbstractListProvider<T> implements IDataProvider<T> {
     private List<T> getObject() {
 
         if (transientList == null)
-            transientList = loadObject();
+            transientList = load();
 
         return transientList;
     }
@@ -49,7 +49,7 @@ public abstract class AbstractListProvider<T> implements IDataProvider<T> {
     /**
      * @return The list that provides the data.
      */
-    protected abstract List<T> loadObject();
+    protected abstract List<T> load();
 
     /**
      * {@inheritDoc}
