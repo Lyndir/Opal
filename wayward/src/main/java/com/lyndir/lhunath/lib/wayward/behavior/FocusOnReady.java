@@ -4,7 +4,7 @@
  * Copyright 2006-2009 Lin.k N.V. All rights reserved.
  * Lin.k N.V. proprietary/confidential. Use is subject to license terms.
  */
-package net.link.safeonline.wicket.behaviour;
+package com.lyndir.lhunath.lib.wayward.behavior;
 
 import java.util.regex.Pattern;
 import org.apache.wicket.Component;

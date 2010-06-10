@@ -1,6 +1,6 @@
 package com.lyndir.lhunath.lib.wayward.component;
 
-import net.link.safeonline.wicket.behaviour.FocusOnReady;
+import com.lyndir.lhunath.lib.wayward.behavior.FocusOnReady;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
