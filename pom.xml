@@ -28,7 +28,9 @@
     </scm>
 
     <!-- DEFAULT PROPERTIES -->
-    <properties></properties>
+    <properties>
+        <release.version>1.2</release.version>
+    </properties>
 
     <!-- ALL MODULES THAT ARE ENABLED BY DEFAULT -->
     <modules>
