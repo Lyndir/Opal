@@ -15,28 +15,25 @@
  */
 package com.lyndir.lhunath.lib.wayward.provider;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
-
 import org.apache.wicket.markup.repeater.data.IDataProvider;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 
 /**
- * <h2>{@link AbstractListProvider}<br>
- * <sub>Provides data from a lazy loaded detachable list.</sub></h2>
+ * <h2>{@link AbstractListProvider}<br> <sub>Provides data from a lazy loaded detachable list.</sub></h2>
  *
- * <p>
- * <i>Mar 7, 2010</i>
- * </p>
+ * <p> <i>Mar 7, 2010</i> </p>
  *
  * @author lhunath
- * @param <T>
- * The type of data that will be provided.
+ * @param <T> The type of data that will be provided.
  */
 public abstract class AbstractListProvider<T> implements IDataProvider<T> {
 
     private transient List<T> transientList = null;
-
 
     private List<T> getObject() {
 
@@ -50,6 +47,19 @@ public abstract class AbstractListProvider<T> implements IDataProvider<T> {
      * @return The list that provides the data.
      */
     protected abstract List<T> load();
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p><b>WARNING:</b> This implementation ASSUMES the object is serializable for convenience sake.  If this is not the case, you MUST
+     * override this method or run-time madness will ensue.</p>
+     */
+    @Override
+    @SuppressWarnings({ "unchecked" })
+    public IModel<T> model(final T object) {
+
+        return (IModel<T>) new Model<Serializable>( (Serializable) object );
+    }
 
     /**
      * {@inheritDoc}

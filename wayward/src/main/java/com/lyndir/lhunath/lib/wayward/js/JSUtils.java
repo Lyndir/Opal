@@ -38,4 +38,13 @@ public abstract class JSUtils {
 
         return jsBuilder.toString();
     }
+
+    /**
+     * @param string The string that should be prepared for use in JavaScript code.
+     * @return A JavaScript-quoted literal string.
+     */
+    public static String quote(final String string) {
+
+        return GSON.toJson( string );
+    }
 }

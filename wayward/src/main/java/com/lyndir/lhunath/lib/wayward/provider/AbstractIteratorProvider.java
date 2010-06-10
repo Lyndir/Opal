@@ -1,10 +1,13 @@
 package com.lyndir.lhunath.lib.wayward.provider;
 
 import com.google.common.collect.AbstractIterator;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 
 /**
@@ -22,7 +25,7 @@ public abstract class AbstractIteratorProvider<T> implements IDataProvider<T> {
     private transient Iterator<T> transientIt = null;
     private transient LinkedList<T> transientList = null;
 
-    private Iterator<T> getIterator() {
+    protected Iterator<T> getIterator() {
 
         if (transientIt == null) {
             transientIt = load();
@@ -44,6 +47,19 @@ public abstract class AbstractIteratorProvider<T> implements IDataProvider<T> {
      * @return The iterator that provides the data.
      */
     protected abstract Iterator<T> load();
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p><b>WARNING:</b> This implementation ASSUMES the object is serializable for convenience sake.  If this is not the case, you MUST
+     * override this method or run-time madness will ensue.</p>
+     */
+    @Override
+    @SuppressWarnings({ "unchecked" })
+    public IModel<T> model(final T object) {
+
+        return (IModel<T>) new Model<Serializable>( (Serializable) object );
+    }
 
     /**
      * {@inheritDoc}
