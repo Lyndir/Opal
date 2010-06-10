@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.lyndir.lhunath.jlibs</groupId>
         <artifactId>jlibs</artifactId>
-        <version>1.2-p1</version>
+        <version>SNAPSHOT</version>
     </parent>
 
     <groupId>com.lyndir.lhunath.jlibs</groupId>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.lyndir.lhunath.jlibs</groupId>
             <artifactId>system</artifactId>
-            <version>1.2-p1</version>
+            <version>SNAPSHOT</version>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
