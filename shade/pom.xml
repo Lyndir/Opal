@@ -28,17 +28,17 @@
         <dependency>
             <groupId>com.lyndir.lhunath.jlibs</groupId>
             <artifactId>system</artifactId>
-            <version>SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.lyndir.lhunath.jlibs</groupId>
             <artifactId>math</artifactId>
-            <version>SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.lyndir.lhunath.jlibs</groupId>
             <artifactId>geo</artifactId>
-            <version>SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
