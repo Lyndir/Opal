@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.lyndir.lhunath.jlibs</groupId>
         <artifactId>jlibs</artifactId>
-        <version>1.2</version>
+        <version>SNAPSHOT</version>
     </parent>
 
     <groupId>com.lyndir.lhunath.jlibs</groupId>
@@ -28,17 +28,17 @@
         <dependency>
             <groupId>com.lyndir.lhunath.jlibs</groupId>
             <artifactId>system</artifactId>
-            <version>1.2</version>
+            <version>SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.lyndir.lhunath.jlibs</groupId>
             <artifactId>math</artifactId>
-            <version>1.2</version>
+            <version>SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.lyndir.lhunath.jlibs</groupId>
             <artifactId>geo</artifactId>
-            <version>1.2</version>
+            <version>SNAPSHOT</version>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
