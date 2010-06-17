@@ -15,28 +15,23 @@
  */
 package com.lyndir.lhunath.lib.system;
 
+import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
-
-import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * <i>WinReg - A simple interface to the windows registry.</i><br>
- * <br>
- * This accesses the windows registry through the use of C:\Windows\System32\reg.exe.<br>
- * This limits platform compatibility to Windows XP+.<br>
- * <br>
+ * <i>WinReg - A simple interface to the windows registry.</i><br> <br> This accesses the windows registry through the use of
+ * C:\Windows\System32\reg.exe.<br> This limits platform compatibility to Windows XP+.<br> <br>
  *
  * @author lhunath
  */
 public class WinReg {
 
     private static final Logger logger = LoggerFactory.getLogger( WinReg.class );
-
 
     /**
      * Check whether registry queries are supported on the running operating system.
@@ -47,9 +42,7 @@ public class WinReg {
 
         try {
             OutputStream out = new NullOutputStream();
-            return Shell
-                    .waitFor( Shell.exec( out, out, new File( "C:\\Windows\\System32" ), "reg.exe", "query", "/?" ) )
-                   == 0;
+            return Shell.waitFor( Shell.exec( out, out, new File( "C:\\Windows\\System32" ), "reg.exe", "query", "/?" ) ) == 0;
         }
         catch (FileNotFoundException ignored) {
             return false;

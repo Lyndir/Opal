@@ -15,18 +15,17 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.*;
-import javax.swing.plaf.ColorUIResource;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
+import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
+import com.jgoodies.looks.plastic.theme.AbstractSkyTheme;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.awt.*;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
-import com.jgoodies.looks.plastic.PlasticXPLookAndFeel;
-import com.jgoodies.looks.plastic.theme.AbstractSkyTheme;
-import com.lyndir.lhunath.lib.system.logging.Logger;
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 
 
 /**
@@ -52,10 +51,8 @@ public class MyLookAndFeel implements Serializable {
 
     static {
         // Make a default MyLookAndFeel for environments that don't load a specific one.
-        active = new MyLookAndFeel( UIManager.getLookAndFeelDefaults().getColor( "Button.background" ),
-                                    MyThemeType.PLASTIC );
+        active = new MyLookAndFeel( UIManager.getLookAndFeelDefaults().getColor( "Button.background" ), MyThemeType.PLASTIC );
     }
-
 
     /**
      * Create a new {@link MyLookAndFeel} instance.
@@ -227,7 +224,6 @@ public class MyLookAndFeel implements Serializable {
             return true;
 
         return o instanceof MyLookAndFeel && ((MyLookAndFeel) o).getBase().equals( getBase() );
-
     }
 
     /**
@@ -248,14 +244,10 @@ public class MyLookAndFeel implements Serializable {
         return String.format( "L&F [#%08x]", base.getRGB() ); //$NON-NLS-1$
     }
 
-
     /**
-     * <h2>{@link MyThemeType}<br>
-     * <sub>Swing Look and Feel type.</sub></h2>
+     * <h2>{@link MyThemeType}<br> <sub>Swing Look and Feel type.</sub></h2>
      *
-     * <p>
-     * <i>Apr 9, 2008</i>
-     * </p>
+     * <p> <i>Apr 9, 2008</i> </p>
      *
      * @author mbillemo
      */
@@ -267,7 +259,6 @@ public class MyLookAndFeel implements Serializable {
         PLASTIC( MyPlasticTheme.class ); // , SUBSTANCE (MySubstanceTheme.class);
 
         private final Class<? extends MyTheme> type;
-
 
         MyThemeType(final Class<? extends MyTheme> type) {
 
@@ -304,12 +295,9 @@ public class MyLookAndFeel implements Serializable {
 
 
     /**
-     * <h2>{@link MyTheme}<br>
-     * <sub>A wrapper for Java Look and Feels.</sub></h2>
+     * <h2>{@link MyTheme}<br> <sub>A wrapper for Java Look and Feels.</sub></h2>
      *
-     * <p>
-     * <i>Apr 9, 2008</i>
-     * </p>
+     * <p> <i>Apr 9, 2008</i> </p>
      *
      * @author mbillemo
      */
@@ -320,7 +308,6 @@ public class MyLookAndFeel implements Serializable {
          */
         void setup();
     }
-
 
     // public class MySubstanceTheme extends SubstanceCremeTheme implements MyTheme {
     //
@@ -338,20 +325,17 @@ public class MyLookAndFeel implements Serializable {
     // }
     // }
 
+
     /**
-     * <h2>{@link MyPlasticTheme}<br>
-     * <sub>A {@link MyTheme} implementation for the JGoodies theme.</sub></h2>
+     * <h2>{@link MyPlasticTheme}<br> <sub>A {@link MyTheme} implementation for the JGoodies theme.</sub></h2>
      *
-     * <p>
-     * <i>Apr 9, 2008</i>
-     * </p>
+     * <p> <i>Apr 9, 2008</i> </p>
      *
      * @author mbillemo
      */
     private class MyPlasticTheme extends AbstractSkyTheme implements MyTheme {
 
         private static final long serialVersionUID = 1L;
-
 
         MyPlasticTheme() {
 

@@ -19,10 +19,7 @@ import java.awt.geom.RectangularShape;
 
 
 /**
- * <i>{@link Path} - [in short] (TODO).</i><br>
- * <br>
- * [description / usage].<br>
- * <br>
+ * <i>{@link Path} - [in short] (TODO).</i><br> <br> [description / usage].<br> <br>
  *
  * @author lhunath
  */
@@ -34,7 +31,6 @@ public class Path {
     private final Vec2 dst;
     private final Vec2 size;
     private final Vec2 offset;
-
 
     /**
      * {@inheritDoc}
@@ -55,8 +51,7 @@ public class Path {
      * @param srcHorizontal Whether this path exits its source horizontally.
      * @param dstHorizontal Whether this path enters its destination horizontally.
      */
-    public Path(Vec2 src, final Vec2 dst, final Vec2 offset, final Vec2 size, final boolean srcHorizontal,
-                boolean dstHorizontal) {
+    public Path(Vec2 src, final Vec2 dst, final Vec2 offset, final Vec2 size, final boolean srcHorizontal, boolean dstHorizontal) {
 
         this.src = src;
         this.dst = dst;
@@ -67,8 +62,8 @@ public class Path {
     }
 
     /**
-     * Calculate geometry needed for defining a path between two rectangular shapes that does not intersect with either
-     * shape by attaching the path to the center of either top, left, bottom or right side of each shape.
+     * Calculate geometry needed for defining a path between two rectangular shapes that does not intersect with either shape by attaching
+     * the path to the center of either top, left, bottom or right side of each shape.
      *
      * @param srcBounds The rectangle that the path originates from.
      * @param dstBounds The rectangle that the path arrives at.

@@ -21,21 +21,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.slf4j.LoggerFactory;
 
 
 /**
- * <h2>{@link Logger}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link Logger}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * [description / usage].
- * </p>
+ * <p> [description / usage]. </p>
  *
- * <p>
- * <i>Mar 28, 2009</i>
- * </p>
+ * <p> <i>Mar 28, 2009</i> </p>
  *
  * @author lhunath
  */
@@ -48,7 +42,6 @@ public class Logger implements Serializable {
     private static final ThreadLocal<Throwable> eventCause = new ThreadLocal<Throwable>();
     private static final ThreadLocal<String> eventFormat = new ThreadLocal<String>();
     private static final ThreadLocal<Object[]> eventArguments = new ThreadLocal<Object[]>();
-
 
     // Create a logger --
 
@@ -67,9 +60,7 @@ public class Logger implements Serializable {
     /**
      * Log a progress trace event.
      *
-     * <p>
-     * This level is for all events that describe the flow of execution.
-     * </p>
+     * <p> This level is for all events that describe the flow of execution. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -95,9 +86,7 @@ public class Logger implements Serializable {
     /**
      * Log a progress trace event.
      *
-     * <p>
-     * This level is for all events that describe the flow of execution.
-     * </p>
+     * <p> This level is for all events that describe the flow of execution. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments The arguments to inject into the event message format.
@@ -112,9 +101,7 @@ public class Logger implements Serializable {
     /**
      * Log a debugging event.
      *
-     * <p>
-     * This level is for all events that visualize the application's state.
-     * </p>
+     * <p> This level is for all events that visualize the application's state. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -140,9 +127,7 @@ public class Logger implements Serializable {
     /**
      * Log a debugging event.
      *
-     * <p>
-     * This level is for all events that visualize the application's state.
-     * </p>
+     * <p> This level is for all events that visualize the application's state. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments The arguments to inject into the event message format.
@@ -157,9 +142,7 @@ public class Logger implements Serializable {
     /**
      * Log an informative statement.
      *
-     * <p>
-     * This level is for all events that detail an important evolution in the application's state.
-     * </p>
+     * <p> This level is for all events that detail an important evolution in the application's state. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -182,9 +165,7 @@ public class Logger implements Serializable {
     /**
      * Log an informative statement.
      *
-     * <p>
-     * This level is for all events that detail an important evolution in the application's state.
-     * </p>
+     * <p> This level is for all events that detail an important evolution in the application's state. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments The arguments to inject into the event message format.
@@ -201,9 +182,7 @@ public class Logger implements Serializable {
     /**
      * Log an application warning.
      *
-     * <p>
-     * This level is for all events that indicate a suboptimal / non-ideal flow.
-     * </p>
+     * <p> This level is for all events that indicate a suboptimal / non-ideal flow. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -229,9 +208,7 @@ public class Logger implements Serializable {
     /**
      * Log an application warning.
      *
-     * <p>
-     * This level is for all events that indicate a suboptimal / non-ideal flow.
-     * </p>
+     * <p> This level is for all events that indicate a suboptimal / non-ideal flow. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments The arguments to inject into the event message format.
@@ -246,9 +223,7 @@ public class Logger implements Serializable {
     /**
      * Log an internal inconsistency.
      *
-     * <p>
-     * This level is for all events that occur unexpectedly. They indicate a bug in the application's flow.
-     * </p>
+     * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
      *
      * @param cause A throwable that details the stack at the time of this event.
      *
@@ -264,9 +239,7 @@ public class Logger implements Serializable {
     /**
      * Log an internal inconsistency.
      *
-     * <p>
-     * This level is for all events that occur unexpectedly. They indicate a bug in the application's flow.
-     * </p>
+     * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -292,9 +265,7 @@ public class Logger implements Serializable {
     /**
      * Log an internal inconsistency.
      *
-     * <p>
-     * This level is for all events that occur unexpectedly. They indicate a bug in the application's flow.
-     * </p>
+     * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments The arguments to inject into the event message format.
@@ -309,9 +280,7 @@ public class Logger implements Serializable {
     /**
      * Log an application error.
      *
-     * <p>
-     * This level is for all events that indicate failure to comply with the request.
-     * </p>
+     * <p> This level is for all events that indicate failure to comply with the request. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -337,9 +306,7 @@ public class Logger implements Serializable {
     /**
      * Log an application error.
      *
-     * <p>
-     * This level is for all events that indicate failure to comply with the request.
-     * </p>
+     * <p> This level is for all events that indicate failure to comply with the request. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments The arguments to inject into the event message format.
@@ -360,7 +327,7 @@ public class Logger implements Serializable {
      *
      * @return An unchecked {@link Error}.
      */
-    @SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})
+    @SuppressWarnings({ "ThrowableResultOfMethodCallIgnored" })
     public RuntimeException toError() {
 
         if (eventCause.get() instanceof RuntimeException)
@@ -374,12 +341,12 @@ public class Logger implements Serializable {
      *
      * The previous event details are kept in a thread-safe manner and local to this logger instance.
      *
-     * @param errorClass The type of {@link Throwable} to generate for the previously logged event. This method relies on the
-     *                   fact that the given class has a constructor that takes a {@link String} argument (the message) and a
-     *                   {@link Throwable} argument (the cause) in that order.
-     * @param args       Optional additional arguments. These will be passed to the <code>errorClass</code> constructor, so
-     *                   make sure the class has a constructor that supports the given number and type of arguments. They
-     *                   should <b>follow</b> the message and cause arguments.
+     * @param errorClass The type of {@link Throwable} to generate for the previously logged event. This method relies on the fact that the
+     *                   given class has a constructor that takes a {@link String} argument (the message) and a {@link Throwable} argument
+     *                   (the cause) in that order.
+     * @param args       Optional additional arguments. These will be passed to the <code>errorClass</code> constructor, so make sure the
+     *                   class has a constructor that supports the given number and type of arguments. They should <b>follow</b> the message
+     *                   and cause arguments.
      * @param <E>        The type of the requested exception must be a subclass of {@link Throwable}.
      *
      * @return The requested {@link Throwable}.

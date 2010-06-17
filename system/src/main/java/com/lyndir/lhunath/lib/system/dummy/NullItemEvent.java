@@ -20,20 +20,15 @@ import java.awt.event.ItemEvent;
 
 
 /**
- * <i>NullItemEvent - A dummy {@link ItemEvent} object.</i><br>
- * <br>
- * This is a convenience way of triggering item events with only specifying an object source.<br>
- * <br>
- * NOTE: This might cause odd behaviour if the method triggered with this object relies on properties other than the
- * source object.<br>
- * <br>
+ * <i>NullItemEvent - A dummy {@link ItemEvent} object.</i><br> <br> This is a convenience way of triggering item events with only
+ * specifying an object source.<br> <br> NOTE: This might cause odd behaviour if the method triggered with this object relies on properties
+ * other than the source object.<br> <br>
  *
  * @author lhunath
  */
 public class NullItemEvent extends ItemEvent {
 
     private static final long serialVersionUID = 1L;
-
 
     /**
      * Create a new NullItemEvent instance.

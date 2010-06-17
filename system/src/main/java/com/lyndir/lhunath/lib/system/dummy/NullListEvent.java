@@ -19,20 +19,15 @@ import javax.swing.event.ListSelectionEvent;
 
 
 /**
- * <i>NullListEvent - A dummy {@link ListSelectionEvent} object.</i><br>
- * <br>
- * This is a convenience way of triggering list selection events with only specifying an object source.<br>
- * <br>
- * NOTE: This might cause odd behaviour if the method triggered with this object relies on properties other than the
- * source object.<br>
- * <br>
+ * <i>NullListEvent - A dummy {@link ListSelectionEvent} object.</i><br> <br> This is a convenience way of triggering list selection events
+ * with only specifying an object source.<br> <br> NOTE: This might cause odd behaviour if the method triggered with this object relies on
+ * properties other than the source object.<br> <br>
  *
  * @author lhunath
  */
 public class NullListEvent extends ListSelectionEvent {
 
     private static final long serialVersionUID = 1L;
-
 
     /**
      * Create a new NullListEvent instance.
@@ -56,5 +51,4 @@ public class NullListEvent extends ListSelectionEvent {
 
         super( source, firstIndex, lastIndex, isAdjusting );
     }
-
 }

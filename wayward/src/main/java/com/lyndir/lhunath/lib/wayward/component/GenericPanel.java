@@ -20,16 +20,12 @@ import org.apache.wicket.model.IModel;
 
 
 /**
- * <h2>{@link GenericPanel}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link GenericPanel}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * <i>Jan 18, 2010</i>
- * </p>
+ * <p> <i>Jan 18, 2010</i> </p>
  *
  * @author lhunath
- * @param <T>
- * The model type.
+ * @param <T> The model type.
  */
 public class GenericPanel<T> extends Panel {
 

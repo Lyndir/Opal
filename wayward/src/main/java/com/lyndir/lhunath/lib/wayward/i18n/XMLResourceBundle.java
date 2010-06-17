@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.wayward.i18n;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.collect.ImmutableList;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,16 +28,12 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import com.google.common.collect.ImmutableList;
-
 
 /**
- * <h2>{@link XMLResourceBundle}<br>
- * <sub>A {@link PropertiesResourceBundle} that loads its values from a Java XML {@link Properties} file.</sub></h2>
+ * <h2>{@link XMLResourceBundle}<br> <sub>A {@link PropertiesResourceBundle} that loads its values from a Java XML {@link Properties}
+ * file.</sub></h2>
  *
- * <p>
- * <i>Mar 26, 2010</i>
- * </p>
+ * <p> <i>Mar 26, 2010</i> </p>
  *
  * @author lhunath
  */
@@ -93,7 +90,6 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
         return getBundle( baseName, locale, loader, CONTROL );
     }
 
-
     static class XMLControl extends Control {
 
         @Override
@@ -103,8 +99,7 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
         }
 
         @Override
-        public ResourceBundle newBundle(String baseName, final Locale locale, final String format, ClassLoader loader,
-                                        final boolean reload)
+        public ResourceBundle newBundle(String baseName, final Locale locale, final String format, ClassLoader loader, final boolean reload)
                 throws IllegalAccessException, InstantiationException, IOException {
 
             checkNotNull( baseName );

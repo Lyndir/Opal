@@ -15,22 +15,19 @@
  */
 package com.lyndir.lhunath.lib.gui.zui;
 
-import javax.swing.*;
+import edu.umd.cs.piccolo.PCanvas;
+import edu.umd.cs.piccolo.event.PInputEvent;
+import edu.umd.cs.piccolo.event.PInputEventListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import javax.swing.*;
 
-import edu.umd.cs.piccolo.PCanvas;
-import edu.umd.cs.piccolo.event.PInputEvent;
-import edu.umd.cs.piccolo.event.PInputEventListener;
 
 /**
- * <i>{@link PMenu} - [in short] (TODO).</i><br>
- * <br>
- * [description / usage].<br>
- * <br>
+ * <i>{@link PMenu} - [in short] (TODO).</i><br> <br> [description / usage].<br> <br>
  *
  * @author lhunath
  */
@@ -115,9 +112,7 @@ public class PMenu extends PBox implements PInputEventListener {
     }
 
     /**
-     * Hide this menu by removing it from the canvas.<br>
-     * <br>
-     * If invoked on a menu item, the item's menu will be hidden.
+     * Hide this menu by removing it from the canvas.<br> <br> If invoked on a menu item, the item's menu will be hidden.
      */
     protected void hide() {
 
@@ -147,7 +142,7 @@ public class PMenu extends PBox implements PInputEventListener {
                 : childAction.getValue( Action.ACTION_COMMAND_KEY ).toString();
 
         if (type == MouseEvent.MOUSE_CLICKED && event.isLeftMouseButton())
-            childAction.actionPerformed( new ActionEvent( sEvent.getSource(), sEvent.getID(), command, sEvent.getWhen(),
-                                                          sEvent.getModifiers() ) );
+            childAction.actionPerformed(
+                    new ActionEvent( sEvent.getSource(), sEvent.getID(), command, sEvent.getWhen(), sEvent.getModifiers() ) );
     }
 }

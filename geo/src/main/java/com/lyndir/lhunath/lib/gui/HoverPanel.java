@@ -15,11 +15,10 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.*;
+import com.lyndir.lhunath.lib.system.UIUtils;
 import java.awt.*;
 import java.awt.event.*;
-
-import com.lyndir.lhunath.lib.system.UIUtils;
+import javax.swing.*;
 
 
 /**
@@ -33,7 +32,6 @@ public class HoverPanel extends JPanel implements ActionListener, MouseListener,
     private static final Color backgroundHover = UIUtils.setAlpha( backgroundBase, 100 );
     private static boolean alternateRow;
     private final Color background;
-
 
     /**
      * Create a new AddonPanel instance.

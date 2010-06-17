@@ -15,21 +15,17 @@
  */
 package com.lyndir.lhunath.lib.gui.zui;
 
-import javax.swing.*;
-
 import com.lyndir.lhunath.lib.math.Vec2;
 import com.lyndir.lhunath.lib.system.Utils;
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolox.pswing.PSwing;
 import edu.umd.cs.piccolox.pswing.PSwingCanvas;
+import javax.swing.*;
+
 
 /**
- * <i>PDialog - [in short] (TODO).</i><br>
- * <br>
- * [description / usage].<br>
- * <br>
- * FIXME
+ * <i>PDialog - [in short] (TODO).</i><br> <br> [description / usage].<br> <br> FIXME
  *
  * @author lhunath
  */

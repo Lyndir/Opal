@@ -23,19 +23,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 /**
- * A poller maintains a queue for responsible objects. Each responsible object has a queue of elements that it needs to
- * process.
+ * A poller maintains a queue for responsible objects. Each responsible object has a queue of elements that it needs to process.
  *
  * @author lhunath
- * @param <K>
- * The responsible objects type.
- * @param <E>
- * The responsible objects' element type.
+ * @param <K> The responsible objects type.
+ * @param <E> The responsible objects' element type.
  */
 public class Poller<K, E> {
 
     private final Map<K, Queue<E>> queues;
-
 
     /**
      * Create a new {@link Poller} instance.
@@ -65,8 +61,7 @@ public class Poller<K, E> {
      *
      * @param owner The responsible object whose queue to poll.
      *
-     * @return The element that has been on the responsible object's queue the longest, or <code>null</code> if its
-     *         queue is empty.
+     * @return The element that has been on the responsible object's queue the longest, or <code>null</code> if its queue is empty.
      */
     public E poll(final K owner) {
 
@@ -79,9 +74,9 @@ public class Poller<K, E> {
     /**
      * Check whether there is a responsible object that has available elements.
      *
-     * @return A responsible object that has elements on its queue or <code>null</code> if no queues need polling. When
-     *         there are multiple candidates, it is undefined which will be returned. You should continue to check this
-     *         method and poll elements until it returns <code>null</code>.
+     * @return A responsible object that has elements on its queue or <code>null</code> if no queues need polling. When there are multiple
+     *         candidates, it is undefined which will be returned. You should continue to check this method and poll elements until it
+     *         returns <code>null</code>.
      */
     public K pollKey() {
 

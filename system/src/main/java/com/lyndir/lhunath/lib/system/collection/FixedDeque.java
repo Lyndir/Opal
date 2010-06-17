@@ -22,27 +22,20 @@ import java.util.LinkedList;
 
 
 /**
- * <h2>{@link FixedDeque}<br>
- * <sub>A {@link Deque} implementation with a maximum size.</sub></h2>
+ * <h2>{@link FixedDeque}<br> <sub>A {@link Deque} implementation with a maximum size.</sub></h2>
  *
- * <p>
- * This implementation will begin to pop off old elements when it's reached its maximum size and adding new elements to
- * the head of the queue (or pop off head elements when adding new elements to the tail of the queue).
- * </p>
+ * <p> This implementation will begin to pop off old elements when it's reached its maximum size and adding new elements to the head of the
+ * queue (or pop off head elements when adding new elements to the tail of the queue). </p>
  *
- * <p>
- * <i>Mar 2, 2010</i>
- * </p>
+ * <p> <i>Mar 2, 2010</i> </p>
  *
  * @author lhunath
- * @param <E>
- * The type of elements held in this collection.
+ * @param <E> The type of elements held in this collection.
  */
 public class FixedDeque<E> implements Deque<E> {
 
     private final int maxSize;
     private final Deque<E> deque;
-
 
     /**
      * Create a new {@link FixedDeque} instance.
@@ -89,7 +82,7 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings({"SuspiciousToArrayCall"})
+    @SuppressWarnings({ "SuspiciousToArrayCall" })
     public <T> T[] toArray(final T[] a) {
 
         return deque.toArray( a );

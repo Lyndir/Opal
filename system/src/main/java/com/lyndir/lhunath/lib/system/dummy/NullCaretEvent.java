@@ -19,20 +19,15 @@ import javax.swing.event.CaretEvent;
 
 
 /**
- * <i>NullCaretEvent - A dummy {@link CaretEvent} object.</i><br>
- * <br>
- * This is a convenience way of triggering caret events with only specifying an object source.<br>
- * <br>
- * NOTE: This might cause odd behaviour if the method triggered with this object relies on properties other than the
- * source object.<br>
- * <br>
+ * <i>NullCaretEvent - A dummy {@link CaretEvent} object.</i><br> <br> This is a convenience way of triggering caret events with only
+ * specifying an object source.<br> <br> NOTE: This might cause odd behaviour if the method triggered with this object relies on properties
+ * other than the source object.<br> <br>
  *
  * @author lhunath
  */
 public class NullCaretEvent extends CaretEvent {
 
     private static final long serialVersionUID = 1L;
-
 
     /**
      * Create a new NullCaretEvent instance.
@@ -61,5 +56,4 @@ public class NullCaretEvent extends CaretEvent {
 
         return 0;
     }
-
 }

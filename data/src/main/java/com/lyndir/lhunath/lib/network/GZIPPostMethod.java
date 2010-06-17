@@ -17,7 +17,6 @@ package com.lyndir.lhunath.lib.network;
 
 import java.io.IOException;
 import java.util.zip.GZIPInputStream;
-
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.httpclient.HttpState;
@@ -25,18 +24,15 @@ import org.apache.commons.httpclient.methods.PostMethod;
 
 
 /**
- * <i>GZIPPostMethod - A extended post method for Apache Commons HttpClient that supports GZip compression.</i><br>
- * <br>
- * Using this post method allows GZip compression of the upload stream if supported by the remote server; if and only if
- * enabled using {@link #useGZip(boolean)}.<br>
- * <br>
+ * <i>GZIPPostMethod - A extended post method for Apache Commons HttpClient that supports GZip compression.</i><br> <br> Using this post
+ * method allows GZip compression of the upload stream if supported by the remote server; if and only if enabled using {@link
+ * #useGZip(boolean)}.<br> <br>
  *
  * @author lhunath
  */
 public class GZIPPostMethod extends PostMethod {
 
     private boolean useGZip;
-
 
     /**
      * Creates a new instance of GZIPAwarePostMethod
@@ -91,8 +87,8 @@ public class GZIPPostMethod extends PostMethod {
     }
 
     /**
-     * If the response body was GZIP-compressed, responseStream will be set to a GZIPInputStream wrapping the original
-     * InputStream used by the super class.
+     * If the response body was GZIP-compressed, responseStream will be set to a GZIPInputStream wrapping the original InputStream used by
+     * the super class.
      *
      * {@inheritDoc}
      */
@@ -106,5 +102,4 @@ public class GZIPPostMethod extends PostMethod {
         if (contentEncodingHeader != null && "gzip".equalsIgnoreCase( contentEncodingHeader.getValue() ))
             setResponseStream( new GZIPInputStream( getResponseStream() ) );
     }
-
 }

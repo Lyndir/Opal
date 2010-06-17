@@ -15,17 +15,14 @@
  */
 package com.lyndir.lhunath.lib.system.logging;
 
+import com.lyndir.lhunath.lib.system.UIUtils;
 import java.awt.*;
 import java.util.logging.Level;
 
-import com.lyndir.lhunath.lib.system.UIUtils;
-
 
 /**
- * <i>HTMLFormatter - A log formatter which wraps the output of {@link LogFormatter} in styling HTML.</i><br>
- * <br>
- * Uses HTML to style the output of {@link LogFormatter} and color it depending on the log level.<br>
- * <br>
+ * <i>HTMLFormatter - A log formatter which wraps the output of {@link LogFormatter} in styling HTML.</i><br> <br> Uses HTML to style the
+ * output of {@link LogFormatter} and color it depending on the log level.<br> <br>
  *
  * @author lhunath
  */

@@ -15,7 +15,8 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.*;
+import com.lyndir.lhunath.lib.system.logging.Logger;
+import com.lyndir.lhunath.lib.system.util.Utils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,16 +24,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import com.lyndir.lhunath.lib.system.logging.Logger;
-import com.lyndir.lhunath.lib.system.util.Utils;
+import javax.swing.*;
 
 
 /**
- * <i>{@link TimeSpinner} - [in short] (TODO).</i><br>
- * <br>
- * [description / usage].<br>
- * <br>
+ * <i>{@link TimeSpinner} - [in short] (TODO).</i><br> <br> [description / usage].<br> <br>
  *
  * @author lhunath
  */
@@ -42,7 +38,6 @@ public class TimeSpinner extends JSpinner {
 
     private final TimeSpinnerModel model;
     private int jumpField;
-
 
     /**
      * Create a new {@link TimeSpinner} instance.
@@ -56,8 +51,8 @@ public class TimeSpinner extends JSpinner {
      * Create a new {@link TimeSpinner} instance.
      *
      * @param stepField The calendar field that designates the size of the spinner's arrows' steps.
-     * @param jumpField The calendar field that defines the format to use (all fields up to but not including the jumpField
-     *                  will be included in the spinner's format).
+     * @param jumpField The calendar field that defines the format to use (all fields up to but not including the jumpField will be included
+     *                  in the spinner's format).
      */
     public TimeSpinner(final int stepField, final int jumpField) {
 
@@ -75,12 +70,12 @@ public class TimeSpinner extends JSpinner {
     /**
      * Create a new {@link TimeSpinner} instance.
      *
-     * @param format  The format that will be used to display the time. See {@link DateFormat}. You may use
-     *                <code>null</code> for a default format (HH:mm).
-     * @param initial The initial value of the spinner in the specified format. You may use <code>null</code> to designate
-     *                the epoch timestamp 0.
-     * @param step    The jump in milliseconds that the spinner's next and previous actions will perform on the current
-     *                value. You may use 0 for a default jump value of one minute.
+     * @param format  The format that will be used to display the time. See {@link DateFormat}. You may use <code>null</code> for a default
+     *                format (HH:mm).
+     * @param initial The initial value of the spinner in the specified format. You may use <code>null</code> to designate the epoch
+     *                timestamp 0.
+     * @param step    The jump in milliseconds that the spinner's next and previous actions will perform on the current value. You may use 0
+     *                for a default jump value of one minute.
      */
     public TimeSpinner(final String format, final String initial, final long step) {
 
@@ -89,8 +84,8 @@ public class TimeSpinner extends JSpinner {
     }
 
     /**
-     * Specify the calendar field that defines the format to use (all fields up to but not including the jump field will
-     * be included in the spinner's format).
+     * Specify the calendar field that defines the format to use (all fields up to but not including the jump field will be included in the
+     * spinner's format).
      *
      * @param jumpField A {@link Calendar} field.
      */
@@ -174,13 +169,11 @@ public class TimeSpinner extends JSpinner {
         return getHours() / 24;
     }
 
-
     private class TimeSpinnerModel extends AbstractSpinnerModel {
 
         private Date value;
         private SimpleDateFormat format;
         private final long step;
-
 
         /**
          * Create a new {@link TimeSpinnerModel} instance.
@@ -193,12 +186,12 @@ public class TimeSpinner extends JSpinner {
         /**
          * Create a new {@link TimeSpinnerModel} instance.
          *
-         * @param timeFormat   The format that will be used to display the time. See {@link DateFormat}. You may use
-         *                     <code>null</code> for a default format (HH:mm).
-         * @param initialValue The initial value of the spinner in the specified format. You may use <code>null</code> to
-         *                     designate the epoch timestamp 0.
-         * @param step         The jump in milliseconds that the spinner's next and previous actions will perform on the current
-         *                     value. You may use 0 for a default jump value of one minute.
+         * @param timeFormat   The format that will be used to display the time. See {@link DateFormat}. You may use <code>null</code> for a
+         *                     default format (HH:mm).
+         * @param initialValue The initial value of the spinner in the specified format. You may use <code>null</code> to designate the
+         *                     epoch timestamp 0.
+         * @param step         The jump in milliseconds that the spinner's next and previous actions will perform on the current value. You
+         *                     may use 0 for a default jump value of one minute.
          */
         TimeSpinnerModel(final String timeFormat, final String initialValue, long step) {
 

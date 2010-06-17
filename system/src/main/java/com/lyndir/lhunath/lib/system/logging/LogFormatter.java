@@ -15,21 +15,17 @@
  */
 package com.lyndir.lhunath.lib.system.logging;
 
+import com.lyndir.lhunath.lib.system.util.Utils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import com.lyndir.lhunath.lib.system.util.Utils;
-
 
 /**
- * <i>LogFormatter - Formats log messages.</i><br>
- * <br>
- * This formatter attempts to format log messages to put most of the information in a structured log message without
- * looking too big or confusing.<br>
- * <br>
+ * <i>LogFormatter - Formats log messages.</i><br> <br> This formatter attempts to format log messages to put most of the information in a
+ * structured log message without looking too big or confusing.<br> <br>
  *
  * <pre>
  *   [ LEVEL | LINE:PACKAGE.CLASS.METHOD() ]-
@@ -42,10 +38,9 @@ import com.lyndir.lhunath.lib.system.util.Utils;
  */
 public abstract class LogFormatter extends Formatter {
 
-    private static final String[] skipPackages = {"com.lyndir.lhunath.lib", "java", "sun", "com.sun"};
+    private static final String[] skipPackages = { "com.lyndir.lhunath.lib", "java", "sun", "com.sun" };
     protected final Map<Level, String> levelColor = new HashMap<Level, String>();
     protected boolean verbose;
-
 
     /**
      * Create a new LogFormatter instance.
@@ -80,7 +75,7 @@ public abstract class LogFormatter extends Formatter {
 
         /* Initialize some convenience variables for this record. */
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        @SuppressWarnings({"ThrowableResultOfMethodCallIgnored"})
+        @SuppressWarnings({ "ThrowableResultOfMethodCallIgnored" })
         Throwable error = record.getThrown();
 
         /* If this log message has a throwable, use it(s cause) to make the log output more accurate. */
@@ -103,12 +98,10 @@ public abstract class LogFormatter extends Formatter {
         String realSource = "", relSource = "";
         if (stackTrace.length > 0 && !stackTrace[0].equals( sourceElement ))
             realSource = String.format( "(%s:%d) %s.%s()", stackTrace[0].getFileName(), stackTrace[0].getLineNumber(),
-                                        Utils.compressSignature( stackTrace[0].getClassName() ),
-                                        stackTrace[0].getMethodName() );
+                                        Utils.compressSignature( stackTrace[0].getClassName() ), stackTrace[0].getMethodName() );
         if (sourceElement != null)
             relSource = String.format( "(%s:%d) %s.%s()", sourceElement.getFileName(), sourceElement.getLineNumber(),
-                                       Utils.compressSignature( sourceElement.getClassName() ),
-                                       sourceElement.getMethodName() );
+                                       Utils.compressSignature( sourceElement.getClassName() ), sourceElement.getMethodName() );
         String source = realSource + (realSource.length() > 0? ", ": "") + relSource;
         if (source.length() == 0)
             source = "[Unknown Source]";
@@ -118,11 +111,9 @@ public abstract class LogFormatter extends Formatter {
         if (error != null)
             for (Throwable e = error; e != null; e = e.getCause())
                 messageBuilder.insert( 0, String.format( "(%s:%d) %s: %s\n",
-                                                         e.getStackTrace().length > 0? e.getStackTrace()[0]
-                                                                 .getFileName(): "n/a",
-                                                         e.getStackTrace().length > 0? e.getStackTrace()[0]
-                                                                 .getLineNumber(): -1, e.getClass().getName(),
-                                                         e.getLocalizedMessage() ) );
+                                                         e.getStackTrace().length > 0? e.getStackTrace()[0].getFileName(): "n/a",
+                                                         e.getStackTrace().length > 0? e.getStackTrace()[0].getLineNumber(): -1,
+                                                         e.getClass().getName(), e.getLocalizedMessage() ) );
 
         if (record.getMessage() != null && record.getMessage().length() > 0)
             messageBuilder.insert( 0, record.getMessage() + '\n' );
@@ -169,8 +160,7 @@ public abstract class LogFormatter extends Formatter {
     }
 
     /**
-     * Set the verbosity of this LogFormatter.<br>
-     * Verbose mode shows stack traces for errors.
+     * Set the verbosity of this LogFormatter.<br> Verbose mode shows stack traces for errors.
      *
      * @param verbose Guess.
      */

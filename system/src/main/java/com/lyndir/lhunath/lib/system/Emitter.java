@@ -20,19 +20,14 @@ import java.util.List;
 
 
 /**
- * <i>{@link Emitter} - [in short] (TODO).</i><br>
- * <br>
- * [description / usage].<br>
- * <br>
+ * <i>{@link Emitter} - [in short] (TODO).</i><br> <br> [description / usage].<br> <br>
  *
  * @author lhunath
- * @param <E>
- * The type of event that can be triggered.
+ * @param <E> The type of event that can be triggered.
  */
 public abstract class Emitter<E> {
 
     private final List<Receiver<E>> receivers;
-
 
     /**
      * Create a new {@link Emitter} instance.

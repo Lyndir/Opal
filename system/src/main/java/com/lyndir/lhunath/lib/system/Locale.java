@@ -21,12 +21,10 @@ import java.util.ResourceBundle;
 
 
 /**
- * <i>Locale - This class allows access to locale specific externalized strings for use in the application.</i><br>
- * <br>
- * When a locale is defined by the {@link #setLang(java.util.Locale)} method, the {@link #explain(String, Object...)}
- * method will return the strings requested by unique keys in the set language. If the string is not available in that
- * language, it will fall back to the default locale.<br>
- * <br>
+ * <i>Locale - This class allows access to locale specific externalized strings for use in the application.</i><br> <br> When a locale is
+ * defined by the {@link #setLang(java.util.Locale)} method, the {@link #explain(String, Object...)} method will return the strings
+ * requested by unique keys in the set language. If the string is not available in that language, it will fall back to the default
+ * locale.<br> <br>
  *
  * @author lhunath
  */
@@ -34,7 +32,6 @@ public class Locale {
 
     private static final Locale instance = new Locale();
     private ResourceBundle resources = null;
-
 
     private Locale() {
 
@@ -81,9 +78,8 @@ public class Locale {
     }
 
     /**
-     * Retrieves an externalized string for the given key, or the key if none was found.<br>
-     * The result is parsed by {@link String#format(java.util.Locale, String, Object...)} using the optional additional
-     * arguments as input values.
+     * Retrieves an externalized string for the given key, or the key if none was found.<br> The result is parsed by {@link
+     * String#format(java.util.Locale, String, Object...)} using the optional additional arguments as input values.
      *
      * @param messageKey The key of the message or the message to format.
      * @param arguments  Arguments to use in formatting of the result.
@@ -96,9 +92,8 @@ public class Locale {
     }
 
     /**
-     * Retrieves an externalized string for the given key, or the key if none was found.<br>
-     * The result is parsed by {@link String#format(java.util.Locale, String, Object...)} using the optional additional
-     * arguments as input values.
+     * Retrieves an externalized string for the given key, or the key if none was found.<br> The result is parsed by {@link
+     * String#format(java.util.Locale, String, Object...)} using the optional additional arguments as input values.
      *
      * @param messageKey The key of the message or the message to format.
      * @param arguments  Arguments to use in formatting of the result.

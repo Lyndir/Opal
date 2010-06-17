@@ -16,16 +16,11 @@
 package com.lyndir.lhunath.lib.system.localization;
 
 /**
- * <h2>{@link LocalizationProvider}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link LocalizationProvider}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * [description / usage].
- * </p>
+ * <p> [description / usage]. </p>
  *
- * <p>
- * <i>Jan 21, 2010</i>
- * </p>
+ * <p> <i>Jan 21, 2010</i> </p>
  *
  * @author lhunath
  */

@@ -16,12 +16,9 @@
 package com.lyndir.lhunath.lib.wayward.state;
 
 /**
- * <h2>{@link ComponentState}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link ComponentState}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * <i>Mar 21, 2010</i>
- * </p>
+ * <p> <i>Mar 21, 2010</i> </p>
  *
  * @author lhunath
  */

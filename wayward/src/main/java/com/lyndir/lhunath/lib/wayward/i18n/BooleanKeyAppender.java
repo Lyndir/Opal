@@ -22,12 +22,9 @@ import java.lang.annotation.Target;
 
 
 /**
- * <h2>{@link BooleanKeyAppender}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link BooleanKeyAppender}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * <i>Mar 31, 2010</i>
- * </p>
+ * <p> <i>Mar 31, 2010</i> </p>
  *
  * @author lhunath
  */
@@ -36,14 +33,12 @@ import java.lang.annotation.Target;
 public @interface BooleanKeyAppender {
 
     /**
-     * @return The key chunk to append to the localization key when the value of the annotated parameter is
-     *         <code>true</code>.
+     * @return The key chunk to append to the localization key when the value of the annotated parameter is <code>true</code>.
      */
     String y() default "y";
 
     /**
-     * @return The key chunk to append to the localization key when the value of the annotated parameter is
-     *         <code>false</code>.
+     * @return The key chunk to append to the localization key when the value of the annotated parameter is <code>false</code>.
      */
     String n() default "n";
 }

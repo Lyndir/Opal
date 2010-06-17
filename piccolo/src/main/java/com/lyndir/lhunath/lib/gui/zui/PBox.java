@@ -15,24 +15,21 @@
  */
 package com.lyndir.lhunath.lib.gui.zui;
 
-import javax.swing.*;
+import com.lyndir.lhunath.lib.math.Vec2;
+import com.lyndir.lhunath.lib.system.util.Utils;
+import edu.umd.cs.piccolo.PCanvas;
+import edu.umd.cs.piccolo.util.PPaintContext;
 import java.awt.*;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
+import javax.swing.*;
 
-import com.lyndir.lhunath.lib.math.Vec2;
-import com.lyndir.lhunath.lib.system.util.Utils;
-import edu.umd.cs.piccolo.PCanvas;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
- * <i>PBox - [in short] (TODO).</i><br>
- * <br>
- * [description / usage].<br>
- * <br>
+ * <i>PBox - [in short] (TODO).</i><br> <br> [description / usage].<br> <br>
  *
  * @author lhunath
  */
@@ -230,8 +227,7 @@ public class PBox extends PShape {
     /**
      * Display the tooltip at the given position relative to this node.
      *
-     * @param offset The position relative to this node of the top left corner of the tooltip.<br>
-     *               Set this to null to hide the tooltip.
+     * @param offset The position relative to this node of the top left corner of the tooltip.<br> Set this to null to hide the tooltip.
      */
     public void showTooltip(Point2D offset) {
 
@@ -434,8 +430,7 @@ public class PBox extends PShape {
 
         /* Draw this box. */
         RoundRectangle2D box = (RoundRectangle2D) getShape();
-        box = new RoundRectangle2D.Double( -padLocked + 2, 2, box.getWidth() - 4, box.getHeight() - 4, PADDING,
-                                           PADDING );
+        box = new RoundRectangle2D.Double( -padLocked + 2, 2, box.getWidth() - 4, box.getHeight() - 4, PADDING, PADDING );
 
         g2.draw( getBounds() );
         g2.setPaint( getPaint() );

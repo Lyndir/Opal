@@ -15,9 +15,7 @@
  */
 package com.lyndir.lhunath.lib.network;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManagerFactory;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,8 +27,9 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-
-import com.lyndir.lhunath.lib.system.logging.Logger;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
@@ -39,11 +38,9 @@ import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
 
 
 /**
- * <i>{@link SslFactory} - Factory for creating {@link Protocol} objects that can be used by Jakarta's HttpClient for
- * establishing https communications.</i><br>
- * <br>
- * The Protocol trusts all keys provided by the keystore that is used to initialize this {@link SslFactory}.<br>
- * <br>
+ * <i>{@link SslFactory} - Factory for creating {@link Protocol} objects that can be used by Jakarta's HttpClient for establishing https
+ * communications.</i><br> <br> The Protocol trusts all keys provided by the keystore that is used to initialize this {@link
+ * SslFactory}.<br> <br>
  *
  * @author lhunath
  */
@@ -52,7 +49,6 @@ public class SslFactory implements SecureProtocolSocketFactory {
     private static final Logger logger = Logger.get( SslFactory.class );
 
     private final SSLContext context;
-
 
     /**
      * Initialize this factory with the given keystore.

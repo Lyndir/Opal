@@ -15,18 +15,14 @@
  */
 package com.lyndir.lhunath.lib.system;
 
+import com.lyndir.lhunath.lib.system.util.Utils;
 import java.io.Serializable;
 import java.util.*;
 import java.util.Locale;
 
-import com.lyndir.lhunath.lib.system.util.Utils;
-
 
 /**
- * <i>{@link Schedule} - [in short] (TODO).</i><br>
- * <br>
- * [description / usage].<br>
- * <br>
+ * <i>{@link Schedule} - [in short] (TODO).</i><br> <br> [description / usage].<br> <br>
  *
  * @author lhunath
  */
@@ -41,7 +37,6 @@ public abstract class Schedule implements Runnable, Serializable {
     private int stepField;
     private transient boolean isScheduled;
     private transient TimerTask scheduleTask = null;
-
 
     /**
      * Update this schedule's timings.

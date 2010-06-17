@@ -22,12 +22,9 @@ import org.apache.wicket.RequestCycle;
 
 
 /**
- * <h2>{@link PageState}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link PageState}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * <i>Mar 21, 2010</i>
- * </p>
+ * <p> <i>Mar 21, 2010</i> </p>
  *
  * @author lhunath
  */
@@ -36,7 +33,6 @@ public abstract class PageState implements ComponentState {
     static final Logger logger = Logger.get( PageState.class );
 
     private final Class<? extends Page> pageClass;
-
 
     /**
      * @param pageClass The page that we're activating when the state is right.

@@ -30,7 +30,6 @@ public class Desktop extends Wrapper {
         initWrapper( Desktop.class, "java.awt.Desktop" );
     }
 
-
     /**
      * @return See {@link "http://java.sun.com/javase/6/docs/api/java/awt/Desktop.html#getDesktop()"}
      *
@@ -59,15 +58,13 @@ public class Desktop extends Wrapper {
     /**
      * @param action The wrapped action to check support for.
      *
-     * @return <code>true</code> If the Java6 Desktop class is available and the given action is supported by the
-     *         current environment.
+     * @return <code>true</code> If the Java6 Desktop class is available and the given action is supported by the current environment.
      */
     public boolean isSupported(final Action action) {
 
         try {
             Object desktopAction = mapEnumValue( action, getClass( "java.awt.Desktop.Action" ) );
-            return (Boolean) invoke( "isSupported", new Class[] {getClass( "java.awt.Desktop.Action" )},
-                                     desktopAction );
+            return (Boolean) invoke( "isSupported", new Class[] { getClass( "java.awt.Desktop.Action" ) }, desktopAction );
         }
 
         catch (Exception ignored) {
@@ -88,11 +85,11 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings({"unused", "RedundantThrows"})
+    @SuppressWarnings({ "unused", "RedundantThrows" })
     public void browse(final URI uri)
             throws IOException {
 
-        invoke( "browse", new Class[] {URI.class}, uri );
+        invoke( "browse", new Class[] { URI.class }, uri );
     }
 
     /**
@@ -102,11 +99,11 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings({"unused", "RedundantThrows"})
+    @SuppressWarnings({ "unused", "RedundantThrows" })
     public void edit(final File file)
             throws IOException {
 
-        invoke( "edit", new Class[] {File.class}, file );
+        invoke( "edit", new Class[] { File.class }, file );
     }
 
     /**
@@ -114,7 +111,7 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings({"unused", "RedundantThrows"})
+    @SuppressWarnings({ "unused", "RedundantThrows" })
     public void mail()
             throws IOException {
 
@@ -128,11 +125,11 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings({"unused", "RedundantThrows"})
+    @SuppressWarnings({ "unused", "RedundantThrows" })
     public void mail(final URI mailtoURI)
             throws IOException {
 
-        invoke( "mail", new Class[] {URI.class}, mailtoURI );
+        invoke( "mail", new Class[] { URI.class }, mailtoURI );
     }
 
     /**
@@ -142,11 +139,11 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings({"unused", "RedundantThrows"})
+    @SuppressWarnings({ "unused", "RedundantThrows" })
     public void open(final File file)
             throws IOException {
 
-        invoke( "open", new Class[] {File.class}, file );
+        invoke( "open", new Class[] { File.class }, file );
     }
 
     /**
@@ -156,21 +153,17 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings({"unused", "RedundantThrows"})
+    @SuppressWarnings({ "unused", "RedundantThrows" })
     public void print(final File file)
             throws IOException {
 
-        invoke( "print", new Class[] {File.class}, file );
+        invoke( "print", new Class[] { File.class }, file );
     }
 
-
     /**
-     * <h2>{@link Action}<br>
-     * <sub>Wrapper class for the Java6 Desktop.Action enum.</sub></h2>
+     * <h2>{@link Action}<br> <sub>Wrapper class for the Java6 Desktop.Action enum.</sub></h2>
      *
-     * <p>
-     * <i>Apr 9, 2008</i>
-     * </p>
+     * <p> <i>Apr 9, 2008</i> </p>
      *
      * @author mbillemo
      */

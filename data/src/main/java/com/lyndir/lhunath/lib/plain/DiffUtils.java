@@ -18,10 +18,9 @@
  */
 package com.lyndir.lhunath.lib.plain;
 
+import com.lyndir.lhunath.lib.system.UIUtils;
 import java.io.*;
 import java.util.List;
-
-import com.lyndir.lhunath.lib.system.UIUtils;
 import jlibdiff.Diff;
 import jlibdiff.Hunk;
 
@@ -47,8 +46,7 @@ public class DiffUtils {
     public static String getDiff(final InputStream from, final InputStream to)
             throws IOException {
 
-        return getDiff( new BufferedReader( new InputStreamReader( from ) ),
-                        new BufferedReader( new InputStreamReader( to ) ) );
+        return getDiff( new BufferedReader( new InputStreamReader( from ) ), new BufferedReader( new InputStreamReader( to ) ) );
     }
 
     /**
@@ -100,7 +98,7 @@ public class DiffUtils {
      */
     private static String renderDiff(final Diff diff) {
 
-        @SuppressWarnings({"cast", "unchecked"})
+        @SuppressWarnings({ "cast", "unchecked" })
         List<Hunk> hunks = (List<Hunk>) diff.getHunks();
         StringBuilder out = new StringBuilder( "<pre>" );
 
@@ -111,11 +109,9 @@ public class DiffUtils {
 
             String diffFormat = "<span style='color: %x'>%s</span>";
             if (chunkDel.length() > 0)
-                out.append( String.format( diffFormat, UIUtils.DARK_RED.getRGB() - 0xff000000, chunkDel ) )
-                        .append( '\n' );
+                out.append( String.format( diffFormat, UIUtils.DARK_RED.getRGB() - 0xff000000, chunkDel ) ).append( '\n' );
             if (chunkAdd.length() > 0)
-                out.append( String.format( diffFormat, UIUtils.DARK_GREEN.getRGB() - 0xff000000, chunkAdd ) )
-                        .append( '\n' );
+                out.append( String.format( diffFormat, UIUtils.DARK_GREEN.getRGB() - 0xff000000, chunkAdd ) ).append( '\n' );
         }
 
         return out.append( "</pre>" ).toString();

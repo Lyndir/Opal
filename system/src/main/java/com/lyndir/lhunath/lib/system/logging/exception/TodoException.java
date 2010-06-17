@@ -16,12 +16,9 @@
 package com.lyndir.lhunath.lib.system.logging.exception;
 
 /**
- * <h2>{@link TodoException}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link TodoException}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * <i>Feb 28, 2010</i>
- * </p>
+ * <p> <i>Feb 28, 2010</i> </p>
  *
  * @author lhunath
  */

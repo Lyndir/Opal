@@ -15,24 +15,20 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.*;
 
 
 /**
- * <i>{@link TrayMenu} - [in short] (TODO).</i><br>
- * <br>
- * [description / usage].<br>
- * <br>
+ * <i>{@link TrayMenu} - [in short] (TODO).</i><br> <br> [description / usage].<br> <br>
  *
  * @author lhunath
  */
 public class TrayMenu extends JPopupMenu implements MouseListener {
 
     protected final Component invoker;
-
 
     /**
      * Create a new {@link TrayMenu} instance.
@@ -62,7 +58,6 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
 
                 private static final int PADDING = 10;
                 private final Dimension screenBounds = Toolkit.getDefaultToolkit().getScreenSize();
-
 
                 @Override
                 public void run() {

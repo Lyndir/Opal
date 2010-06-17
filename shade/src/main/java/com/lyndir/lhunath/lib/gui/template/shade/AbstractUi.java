@@ -15,25 +15,6 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
-import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.event.*;
-import javax.swing.text.BadLocationException;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.*;
-import java.util.List;
-import java.util.Timer;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.factories.Borders;
@@ -52,6 +33,24 @@ import com.lyndir.lhunath.lib.system.wrapper.Desktop;
 import com.lyndir.lhunath.lib.system.wrapper.SystemTray;
 import com.lyndir.lhunath.lib.system.wrapper.TrayIcon;
 import com.lyndir.lhunath.lib.system.wrapper.TrayIcon.MessageType;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.List;
+import java.util.Timer;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.event.*;
+import javax.swing.text.BadLocationException;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.transitions.ScreenTransition;
 import org.jdesktop.animation.transitions.TransitionTarget;
@@ -62,8 +61,8 @@ import org.jdesktop.animation.transitions.TransitionTarget;
  *
  * @author lhunath
  */
-public abstract class AbstractUi implements ActionListener, LogListener, CaretListener, ListSelectionListener,
-        ItemListener, Reflective, ListDataListener, FocusListener, TransitionTarget {
+public abstract class AbstractUi implements ActionListener, LogListener, CaretListener, ListSelectionListener, ItemListener, Reflective,
+        ListDataListener, FocusListener, TransitionTarget {
 
     static final Logger logger = Logger.get( AbstractUi.class );
 
@@ -131,7 +130,6 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
         initTemplate();
     }
 
-
     private void initTemplate() {
 
         /* Set up the backend. */
@@ -171,10 +169,8 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
     }
 
     /**
-     * Process an event that was registered and triggered in the user interface.<br>
-     * <br>
-     * When overriding this method; call the original method (super.event(..)) if the event is not processed by your
-     * code. This code processes default interface events.
+     * Process an event that was registered and triggered in the user interface.<br> <br> When overriding this method; call the original
+     * method (super.event(..)) if the event is not processed by your code. This code processes default interface events.
      *
      * @param e             The event that triggered this method call.
      * @param source        The component upon which this event was executed.
@@ -283,15 +279,15 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
 
             eventNotImplemented( e );
         }
-
     }
 
     /**
      * Show or hide the console.
      */
     @SuppressWarnings(
-            {"AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull",
-                    "AssignmentToNull"})
+            {
+                    "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull",
+                    "AssignmentToNull" })
     protected void toggleConsole() {
 
         if (!SwingUtilities.isEventDispatchThread()) {
@@ -476,8 +472,7 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
             logger.wrn( "warn.actionNotImplemented", e.getClass(), ((ActionEvent) e).getActionCommand(), //$NON-NLS-1$
                         Utils.getFieldName( this, e.getSource() ) );
         else
-            logger.wrn( "warn.eventNotImplemented", e.getClass(),
-                        Utils.getFieldName( this, e.getSource() ) ); //$NON-NLS-1$
+            logger.wrn( "warn.eventNotImplemented", e.getClass(), Utils.getFieldName( this, e.getSource() ) ); //$NON-NLS-1$
     }
 
     /**
@@ -537,8 +532,8 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
     }
 
     /**
-     * Send out a log message about a task being launched. After {@link AbstractUi#LAUNCH_DELAY} milliseconds, the
-     * message will be removed from the progress bar.
+     * Send out a log message about a task being launched. After {@link AbstractUi#LAUNCH_DELAY} milliseconds, the message will be removed
+     * from the progress bar.
      *
      * @param desc Description of the launch event.
      * @param args Arguments used to format the description string.
@@ -562,8 +557,7 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
     @Override
     public void logMessage(final LogRecord record) {
 
-        if ((log == null || log.getParent() == null) && record.getLevel().intValue() > Level.CONFIG.intValue()
-            && console == null)
+        if ((log == null || log.getParent() == null) && record.getLevel().intValue() > Level.CONFIG.intValue() && console == null)
             toggleConsole();
 
         if (log != null)
@@ -624,8 +618,7 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
     /**
      * Set the value of the progress bar.
      *
-     * @param percent Set the percent to show completed. Use a decimal value in the range 0-1. Use null to switch to
-     *                indeterminate mode.
+     * @param percent Set the percent to show completed. Use a decimal value in the range 0-1. Use null to switch to indeterminate mode.
      * @param level   The level of progress bar to use. See {@link Level} (fine, finer, finest).
      */
     public void setProgress(final Double percent, final Level level) {
@@ -667,7 +660,6 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
                         return;
                     }
                 }
-
             }
         } );
     }
@@ -687,7 +679,6 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
         JToggleButton button = new JToggleButton( action = new AbstractAction( tab.getTitle(), tab.getIcon() ) {
 
             private static final long serialVersionUID = 1L;
-
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -731,9 +722,8 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
     }
 
     /**
-     * Override this method if you have stuff that needs to be initialized before or after the UI building.<br>
-     * <br>
-     * Don't forget to call super.buildUi() as well.
+     * Override this method if you have stuff that needs to be initialized before or after the UI building.<br> <br> Don't forget to call
+     * super.buildUi() as well.
      */
     protected void buildUi() {
 
@@ -742,7 +732,7 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
         contentPane.add( contentPanel = PaintPanel.gradientPanel() );
         FormLayout layout = new FormLayout( "0dlu, 0dlu, 0dlu:g, 0dlu, r:p", "t:m, f:0dlu:g, 4dlu, m" );
         DefaultFormBuilder builder = new DefaultFormBuilder( layout, contentPanel );
-        layout.setColumnGroups( new int[][] {{1, 5}} );
+        layout.setColumnGroups( new int[][] { { 1, 5 } } );
         builder.setDefaultDialogBorder();
 
         /* Prepare the look and feel. */
@@ -885,9 +875,8 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
     }
 
     /**
-     * Build the overlay that will be shown when the user toggles it on.<br>
-     * <br>
-     * To make your own overlay, you are recommended to use the panel returned by super.getOverlay().
+     * Build the overlay that will be shown when the user toggles it on.<br> <br> To make your own overlay, you are recommended to use the
+     * panel returned by super.getOverlay().
      *
      * @return The overlay panel.
      */
@@ -928,8 +917,8 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
     }
 
     /**
-     * Feel free to override this method to perform actions before and after the panel changes, but DO NOT FORGET to
-     * call the parent implementation.
+     * Feel free to override this method to perform actions before and after the panel changes, but DO NOT FORGET to call the parent
+     * implementation.
      *
      * @{inheritDoc
      */
@@ -980,32 +969,32 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
 
         builder.appendSeparator( Locale.explain( "ui.appearance" ) ); //$NON-NLS-1$
 
-        builder.append( Locale.explain( "ui.theme" ),
-                        new ToolTip( Locale.explain( "ui.themeTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                                     + Locale.explain( "ui.themeTip" ), themesPanel = new JPanel() ), 5 ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.theme" ), new ToolTip( Locale.explain( "ui.themeTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                                                   + Locale.explain( "ui.themeTip" ), themesPanel = new JPanel() ),
+                        5 ); //$NON-NLS-1$
         for (MyTheme theme : MyTheme.values())
             themesPanel.add( theme.getButton() );
         themesPanel.setOpaque( false );
         builder.nextLine();
 
-        builder.append( Locale.explain( "ui.systray" ),
-                        new ToolTip( Locale.explain( "ui.systrayTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                                     + Locale.explain( "ui.systrayTip" ), //$NON-NLS-1$
-                                     systrayButton = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
-        builder.append( Locale.explain( "ui.ontop" ),
-                        new ToolTip( Locale.explain( "ui.ontopTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                                     + Locale.explain( "ui.ontopTip" ), //$NON-NLS-1$
-                                     alwaysOnTop = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.systray" ), new ToolTip( Locale.explain( "ui.systrayTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                                                     + Locale.explain( "ui.systrayTip" ), //$NON-NLS-1$
+                                                                     systrayButton = new JCheckBox(
+                                                                             Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.ontop" ), new ToolTip( Locale.explain( "ui.ontopTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                                                   + Locale.explain( "ui.ontopTip" ), //$NON-NLS-1$
+                                                                   alwaysOnTop = new JCheckBox(
+                                                                           Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
         builder.nextLine();
 
-        builder.append( Locale.explain( "ui.startmini" ),
-                        new ToolTip( Locale.explain( "ui.startminiTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                                     + Locale.explain( "ui.startminiTip" ), //$NON-NLS-1$
-                                     startMini = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
-        builder.append( Locale.explain( "ui.verbose" ),
-                        new ToolTip( Locale.explain( "ui.verboseTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                                     + Locale.explain( "ui.verboseTip" ), //$NON-NLS-1$
-                                     verboseLogs = new JCheckBox( Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.startmini" ), new ToolTip( Locale.explain( "ui.startminiTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                                                       + Locale.explain( "ui.startminiTip" ), //$NON-NLS-1$
+                                                                       startMini = new JCheckBox(
+                                                                               Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.verbose" ), new ToolTip( Locale.explain( "ui.verboseTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                                                     + Locale.explain( "ui.verboseTip" ), //$NON-NLS-1$
+                                                                     verboseLogs = new JCheckBox(
+                                                                             Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
         builder.nextLine();
 
         appendCustomSettings( builder );
@@ -1035,12 +1024,9 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
     }
 
     /**
-     * Override this method to add custom settings to the settings panel.<br>
-     * <br>
-     * <i>Note: The builder that is used for the settings panel is created using the following layout:<br>
-     * "20dlu:g(3), r:p, 5dlu, f:100dlu:g(2), 10dlu, r:p, 5dlu, f:100dlu:g(2), 5dlu, l:20dlu:g(4)"</i><br>
-     * <br>
-     * You probably want to do something like:
+     * Override this method to add custom settings to the settings panel.<br> <br> <i>Note: The builder that is used for the settings panel
+     * is created using the following layout:<br> "20dlu:g(3), r:p, 5dlu, f:100dlu:g(2), 10dlu, r:p, 5dlu, f:100dlu:g(2), 5dlu,
+     * l:20dlu:g(4)"</i><br> <br> You probably want to do something like:
      *
      * <pre>
      * builder.appendSeparator( &quot;Custom Settings&quot; );
@@ -1057,7 +1043,7 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
 
         FormLayout layout = new FormLayout( "10dlu, 15dlu, p:g, 10dlu, p:g, 15dlu, 10dlu", //$NON-NLS-1$
                                             "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
-        layout.setColumnGroups( new int[][] {{3, 5}} );
+        layout.setColumnGroups( new int[][] { { 3, 5 } } );
 
         JButton button;
         PanelBuilder builder = new PanelBuilder( layout, new ScrollPanel() );
@@ -1073,16 +1059,14 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
         pane.getViewport().setOpaque( false );
         builder.add( pane, constraints.xyw( 2, 2, 5 ) );
 
-        button = new JButton( Locale.explain( "ui.clearLog" ),
-                              UIUtils.getIcon( "clear-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.clearLog" ), UIUtils.getIcon( "clear-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "logClear" ); //$NON-NLS-1$
         button.addActionListener( this );
         builder.add( button, constraints.xy( 3, 4 ) );
 
-        button = new JButton( Locale.explain( "ui.saveLog" ),
-                              UIUtils.getIcon( "save-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.saveLog" ), UIUtils.getIcon( "save-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "logSave" ); //$NON-NLS-1$
@@ -1097,7 +1081,7 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
 
         FormLayout layout = new FormLayout( "10dlu, 15dlu, p:g, 10dlu, p:g, 15dlu, 10dlu", //$NON-NLS-1$
                                             "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
-        layout.setColumnGroups( new int[][] {{3, 5}} );
+        layout.setColumnGroups( new int[][] { { 3, 5 } } );
 
         String doc = "";
         JButton button;
@@ -1122,8 +1106,7 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
         pane.getViewport().setOpaque( false );
         builder.add( pane, constraints.xyw( 2, 2, 5 ) );
 
-        button = new JButton( Locale.explain( "ui.reportOffense" ),
-                              UIUtils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.reportOffense" ), UIUtils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "reportOffense" ); //$NON-NLS-1$
@@ -1150,7 +1133,7 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
 
         FormLayout layout = new FormLayout( "10dlu, 15dlu, p:g, 10dlu, p:g, 15dlu, 10dlu", //$NON-NLS-1$
                                             "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
-        layout.setColumnGroups( new int[][] {{3, 5}} );
+        layout.setColumnGroups( new int[][] { { 3, 5 } } );
 
         JButton button;
         PanelBuilder builder = new PanelBuilder( layout, new ScrollPanel() );
@@ -1158,16 +1141,14 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
 
         builder.add( getDevelopmentComponent(), constraints.xyw( 2, 2, 5 ) );
 
-        button = new JButton( Locale.explain( "ui.reportProblem" ),
-                              UIUtils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.reportProblem" ), UIUtils.getIcon( "problem-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "reportIssue" ); //$NON-NLS-1$
         button.addActionListener( this );
         builder.add( new ToolTip( Locale.explain( "ui.reportProblemTip" ), button ), constraints.xy( 3, 4 ) );
 
-        button = new JButton( Locale.explain( "ui.toggleConsole" ),
-                              UIUtils.getIcon( "terminal-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        button = new JButton( Locale.explain( "ui.toggleConsole" ), UIUtils.getIcon( "terminal-s.png" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         button.setHorizontalTextPosition( SwingConstants.CENTER );
         button.setVerticalTextPosition( SwingConstants.BOTTOM );
         button.setActionCommand( "toggleConsole" ); //$NON-NLS-1$
@@ -1247,9 +1228,8 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
 
             /* Set some look and feel properties. */
             UIUtils.setUIFont( new Font( FONT_FACE, Font.PLAIN, FONT_SIZE ) );
-            contentPane.setBorder(
-                    BorderFactory.createBevelBorder( BevelBorder.RAISED, ShadeConfig.theme.get().getBright(),
-                                                     ShadeConfig.theme.get().getDark() ) );
+            contentPane.setBorder( BorderFactory.createBevelBorder( BevelBorder.RAISED, ShadeConfig.theme.get().getBright(),
+                                                                    ShadeConfig.theme.get().getDark() ) );
 
             /* Force update on hidden panels. */
             if (frame != null && frame.isVisible())
@@ -1289,11 +1269,9 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
 
     private void showLogBrowser() {
 
-        FileDialog chooser = new FileDialog( ShadeConfig.res, Locale.explain( "ui.saveLogDialog" ),
-                                             frame ) { //$NON-NLS-1$
+        FileDialog chooser = new FileDialog( ShadeConfig.res, Locale.explain( "ui.saveLogDialog" ), frame ) { //$NON-NLS-1$
 
             private static final long serialVersionUID = 1L;
-
 
             @Override
             public void approved() {
@@ -1311,15 +1289,12 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
 
         /* Filters. */
         chooser.setAcceptAllFileFilterUsed( false );
-        chooser.setFileFilter( FileDialog.createExtensionFilter( "log", Locale.explain(
-                "ui.logExtension" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        chooser.setFileFilter( FileDialog.createExtensionFilter( "log", Locale.explain( "ui.logExtension" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
         chooser.activate();
     }
 
     /**
-     * Override this method to process custom requests.<br>
-     * <br>
-     * <b>Make sure you call super.process if you override this method!</b>
+     * Override this method to process custom requests.<br> <br> <b>Make sure you call super.process if you override this method!</b>
      *
      * @param element The request that should be processed.
      */
@@ -1530,8 +1505,7 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
     }
 
     /**
-     * Override this method if you want to perform an action when the frame changes visibility state or has just been
-     * made valid.
+     * Override this method if you want to perform an action when the frame changes visibility state or has just been made valid.
      *
      * @param newVisibilityState <code>true</code>: frame is visible.
      */

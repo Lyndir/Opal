@@ -17,30 +17,24 @@ package com.lyndir.lhunath.lib.network;
 
 import static com.lyndir.lhunath.lib.system.util.Utils.getCharset;
 
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.SSLEngineResult;
-import javax.net.ssl.SSLEngineResult.HandshakeStatus;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
 import java.util.*;
-
-import com.lyndir.lhunath.lib.system.logging.Logger;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.SSLEngineResult;
+import javax.net.ssl.SSLEngineResult.HandshakeStatus;
 
 
 /**
- * <h2>{@link Network}<br>
- * <sub>A non-blocking single-threaded TCP network layer with SSL/TLS support.</sub></h2>
+ * <h2>{@link Network}<br> <sub>A non-blocking single-threaded TCP network layer with SSL/TLS support.</sub></h2>
  *
- * <p>
- * TODO
- * </p>
+ * <p> TODO </p>
  *
- * <p>
- * <i>Jun 23, 2009</i>
- * </p>
+ * <p> <i>Jun 23, 2009</i> </p>
  *
  * @author lhunath
  */
@@ -63,12 +57,10 @@ public class Network implements Runnable {
     private final List<NetworkConnectionStateListener> connectionStateListeners;
 
     // Collections that are modified by calling threads and the networking thread.
-    private final Map<SelectableChannel, SSLEngine> sslEngines = Collections
-            .synchronizedMap( new HashMap<SelectableChannel, SSLEngine>() );
-    private final Map<SocketChannel, ByteBuffer> writeQueueBuffers = Collections
-            .synchronizedMap( new HashMap<SocketChannel, ByteBuffer>() );
-    private final Map<SocketChannel, Object> writeQueueLocks = Collections
-            .synchronizedMap( new HashMap<SocketChannel, Object>() );
+    private final Map<SelectableChannel, SSLEngine> sslEngines = Collections.synchronizedMap( new HashMap<SelectableChannel, SSLEngine>() );
+    private final Map<SocketChannel, ByteBuffer> writeQueueBuffers = Collections.synchronizedMap(
+            new HashMap<SocketChannel, ByteBuffer>() );
+    private final Map<SocketChannel, Object> writeQueueLocks = Collections.synchronizedMap( new HashMap<SocketChannel, Object>() );
 
     protected final Object selectorGuard = new Object();
     protected Selector selector = null;
@@ -78,7 +70,6 @@ public class Network implements Runnable {
     private final Map<SocketChannel, ByteBuffer> writeBuffers = new HashMap<SocketChannel, ByteBuffer>();
     private final Map<SocketChannel, Boolean> closedChannels = new HashMap<SocketChannel, Boolean>();
     private boolean running;
-
 
     /**
      * Create a new {@link Network} instance.
@@ -92,8 +83,7 @@ public class Network implements Runnable {
     }
 
     /**
-     * Start this network by executing a networking thread. When a networking thread begins, it invokes
-     * {@link #bringUp()}.
+     * Start this network by executing a networking thread. When a networking thread begins, it invokes {@link #bringUp()}.
      */
     public void startThread() {
 
@@ -122,9 +112,9 @@ public class Network implements Runnable {
     /**
      * Bring up the networking framework.
      *
-     * This initializes the networking {@link Selector} making it possible to start network operations. It does not
-     * start the networking thread. See {@link #startThread()} to start the network and execute a networking thread for
-     * it. This method is mostly helpful for manually bringing the network in an existing thread down and up again.
+     * This initializes the networking {@link Selector} making it possible to start network operations. It does not start the networking
+     * thread. See {@link #startThread()} to start the network and execute a networking thread for it. This method is mostly helpful for
+     * manually bringing the network in an existing thread down and up again.
      */
     public synchronized void bringUp() {
 
@@ -168,8 +158,7 @@ public class Network implements Runnable {
     }
 
     /**
-     * @return <code>true</code>: The network is ready for network event processing (binding, accepting, connecting,
-     *         reading and writing).
+     * @return <code>true</code>: The network is ready for network event processing (binding, accepting, connecting, reading and writing).
      */
     public synchronized boolean isUp() {
 
@@ -180,9 +169,9 @@ public class Network implements Runnable {
      * Bind a socket on the wildcard address at a specified port and listen for connections.
      *
      * @param port      The local port to bind on.
-     * @param sslEngine If you want to use SSL/TLS to encrypt the data sent over connections established from this socket,
-     *                  specify an SSL engine that has been initialized to for communication with remote clients. If you just
-     *                  want plain-text communication, pass <code>null</code> here.
+     * @param sslEngine If you want to use SSL/TLS to encrypt the data sent over connections established from this socket, specify an SSL
+     *                  engine that has been initialized to for communication with remote clients. If you just want plain-text
+     *                  communication, pass <code>null</code> here.
      *
      * @return The channel that will be listening for connections.
      *
@@ -199,9 +188,9 @@ public class Network implements Runnable {
      *
      * @param address   The address of the interface to bind on.
      * @param port      The local port to bind on.
-     * @param sslEngine If you want to use SSL/TLS to encrypt the data sent over connections established from this socket,
-     *                  specify an SSL engine that has been initialized to for communication with remote clients. If you just
-     *                  want plain-text communication, pass <code>null</code> here.
+     * @param sslEngine If you want to use SSL/TLS to encrypt the data sent over connections established from this socket, specify an SSL
+     *                  engine that has been initialized to for communication with remote clients. If you just want plain-text
+     *                  communication, pass <code>null</code> here.
      *
      * @return The channel that will be listening for connections.
      *
@@ -218,9 +207,9 @@ public class Network implements Runnable {
      *
      * @param hostname  The hostname that resolves to the interface address of the interface to bind on.
      * @param port      The local port to bind on.
-     * @param sslEngine If you want to use SSL/TLS to encrypt the data sent over connections established from this socket,
-     *                  specify an SSL engine that has been initialized to for communication with remote clients. If you just
-     *                  want plain-text communication, pass <code>null</code> here.
+     * @param sslEngine If you want to use SSL/TLS to encrypt the data sent over connections established from this socket, specify an SSL
+     *                  engine that has been initialized to for communication with remote clients. If you just want plain-text
+     *                  communication, pass <code>null</code> here.
      *
      * @return The channel that will be listening for connections.
      *
@@ -236,9 +225,9 @@ public class Network implements Runnable {
      * Bind a socket on the wildcard address at a specified port and listen for connections.
      *
      * @param socketAddress The socket address that defines the interface and port to bind the socket on.
-     * @param sslEngine     If you want to use SSL/TLS to encrypt the data sent over connections established from this socket,
-     *                      specify an SSL engine that has been initialized to for communication with remote clients. If you just
-     *                      want plain-text communication, pass <code>null</code> here.
+     * @param sslEngine     If you want to use SSL/TLS to encrypt the data sent over connections established from this socket, specify an
+     *                      SSL engine that has been initialized to for communication with remote clients. If you just want plain-text
+     *                      communication, pass <code>null</code> here.
      *
      * @return The channel that will be listening for connections.
      *
@@ -308,9 +297,9 @@ public class Network implements Runnable {
      *
      * @param hostname  The name that resolves to the address that defines the destination host to connect to.
      * @param port      The port of the remote listening socket on the given host to connect to.
-     * @param sslEngine If you want to use SSL/TLS to encrypt the data sent over this connection, specify an SSL engine that
-     *                  has been initialized to for communication with the remote server. If you just want plain-text
-     *                  communication, pass <code>null</code> here.
+     * @param sslEngine If you want to use SSL/TLS to encrypt the data sent over this connection, specify an SSL engine that has been
+     *                  initialized to for communication with the remote server. If you just want plain-text communication, pass
+     *                  <code>null</code> here.
      *
      * @return The channel on which the connection runs.
      *
@@ -327,9 +316,9 @@ public class Network implements Runnable {
      *
      * @param hostAddress The address that defines the destination host to connect to.
      * @param port        The port of the remote listening socket on the given host to connect to.
-     * @param sslEngine   If you want to use SSL/TLS to encrypt the data sent over this connection, specify an SSL engine that
-     *                    has been initialized to for communication with the remote server. If you just want plain-text
-     *                    communication, pass <code>null</code> here.
+     * @param sslEngine   If you want to use SSL/TLS to encrypt the data sent over this connection, specify an SSL engine that has been
+     *                    initialized to for communication with the remote server. If you just want plain-text communication, pass
+     *                    <code>null</code> here.
      *
      * @return The channel on which the connection runs.
      *
@@ -345,9 +334,9 @@ public class Network implements Runnable {
      * Make a connection to the given destination.
      *
      * @param socketAddress The address that defines the destination host and port to connect to.
-     * @param sslEngine     If you want to use SSL/TLS to encrypt the data sent over this connection, specify an SSL engine that
-     *                      has been initialized to for communication with the remote server. If you just want plain-text
-     *                      communication, pass <code>null</code> here.
+     * @param sslEngine     If you want to use SSL/TLS to encrypt the data sent over this connection, specify an SSL engine that has been
+     *                      initialized to for communication with the remote server. If you just want plain-text communication, pass
+     *                      <code>null</code> here.
      *
      * @return The channel on which the connection runs.
      *
@@ -458,23 +447,20 @@ public class Network implements Runnable {
     /**
      * Convert a buffer of network data into application data.
      *
-     * <p>
-     * <b>Use the return value for processing, not the original data buffer!</b><br>
-     * The buffer might have been reallocated in which case the original buffer is obsolete.
-     * </p>
+     * <p> <b>Use the return value for processing, not the original data buffer!</b><br> The buffer might have been reallocated in which
+     * case the original buffer is obsolete. </p>
      *
-     * @param readBuffer    The buffer that contains the network data, ready to be read (position set to zero, limit set to the
-     *                      end of the received network data).
+     * @param readBuffer    The buffer that contains the network data, ready to be read (position set to zero, limit set to the end of the
+     *                      received network data).
      * @param socketChannel The channel over which the network data was received.
-     * @param dataBuffer    The buffer of application data, ready to be written/appended to. After this operation it will be ready
-     *                      to be read (position set to zero, limit set to the end of the application data).
+     * @param dataBuffer    The buffer of application data, ready to be written/appended to. After this operation it will be ready to be
+     *                      read (position set to zero, limit set to the end of the application data).
      *
      * @return The (possibly new) dataBuffer.
      *
      * @throws IOException
      */
-    private ByteBuffer toApplicationData(ByteBuffer readBuffer, final SocketChannel socketChannel,
-                                         ByteBuffer dataBuffer)
+    private ByteBuffer toApplicationData(ByteBuffer readBuffer, final SocketChannel socketChannel, ByteBuffer dataBuffer)
             throws IOException {
 
         ByteBuffer newDataBuffer = dataBuffer;
@@ -492,8 +478,7 @@ public class Network implements Runnable {
                     case BUFFER_OVERFLOW:
                         // Data buffer overflow, make it bigger and try again.
                         logger.dbg( "[<<<<: %s] SSL %s: dataBuffer%s + %d]", //
-                                    nameChannel( socketChannel ), sslEngineResult.getStatus(),
-                                    renderBuffer( newDataBuffer ), READ_BUFFER );
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( newDataBuffer ), READ_BUFFER );
                         ByteBuffer resizedDataBuffer = ByteBuffer.allocate( newDataBuffer.capacity() + READ_BUFFER );
                         newDataBuffer.flip();
                         newDataBuffer = resizedDataBuffer.put( newDataBuffer );
@@ -504,8 +489,7 @@ public class Network implements Runnable {
                     case BUFFER_UNDERFLOW:
                         // Not enough network data collected for a whole SSL/TLS packet.
                         logger.dbg( "[<<<<: %s] SSL %s: need_src: readBuffer%s", //
-                                    nameChannel( socketChannel ), sslEngineResult.getStatus(),
-                                    renderBuffer( readBuffer ) );
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( readBuffer ) );
                         break;
 
                     case CLOSED:
@@ -517,8 +501,8 @@ public class Network implements Runnable {
 
                     case OK:
                         logger.dbg( "[>>>>: %s] SSL %s - %s: Produced %d bytes application data", //
-                                    nameChannel( socketChannel ), sslEngineResult.getStatus(),
-                                    sslEngineResult.getHandshakeStatus(), sslEngineResult.bytesProduced() );
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), sslEngineResult.getHandshakeStatus(),
+                                    sslEngineResult.bytesProduced() );
                         break;
                 }
 
@@ -560,8 +544,8 @@ public class Network implements Runnable {
 
         // Lock this connection's write queue.
         synchronized (writeQueueLocks.get( socketChannel )) {
-            if (!socketChannel.isOpen() || !socketChannel.isConnected() || socketChannel.isConnectionPending()
-                || socketChannel.socket().isOutputShutdown())
+            if (!socketChannel.isOpen() || !socketChannel.isConnected() || socketChannel.isConnectionPending() || socketChannel.socket()
+                    .isOutputShutdown())
                 return;
 
             // Obtain the application data write queue buffer. If none is allocated yet, make a dummy empty one.
@@ -597,24 +581,21 @@ public class Network implements Runnable {
     /**
      * Convert a buffer of application data into network data.
      *
-     * <p>
-     * <b>Use the return value for writing, not the original write buffer!</b><br>
-     * The buffer might have been reallocated in which case the original buffer is obsolete.
-     * </p>
+     * <p> <b>Use the return value for writing, not the original write buffer!</b><br> The buffer might have been reallocated in which case
+     * the original buffer is obsolete. </p>
      *
-     * @param dataBuffer    The buffer that contains the application data, ready to be written (position set to zero, limit set to
-     *                      the end of the application data).
+     * @param dataBuffer    The buffer that contains the application data, ready to be written (position set to zero, limit set to the end
+     *                      of the application data).
      * @param socketChannel The channel over which the network data will be sent.
-     * @param writeBuffer   The buffer that contains the connection's network data to be written, ready to be written/appended to
-     *                      (position set to the end of the network data). At the end of this operation, this buffer will be ready
-     *                      to be read/sent/written out (position set to zero, limit set to the end of the network data).
+     * @param writeBuffer   The buffer that contains the connection's network data to be written, ready to be written/appended to (position
+     *                      set to the end of the network data). At the end of this operation, this buffer will be ready to be
+     *                      read/sent/written out (position set to zero, limit set to the end of the network data).
      *
      * @return The (possibly new) writeBuffer.
      *
      * @throws IOException
      */
-    private ByteBuffer fromApplicationData(ByteBuffer dataBuffer, final SocketChannel socketChannel,
-                                           ByteBuffer writeBuffer)
+    private ByteBuffer fromApplicationData(ByteBuffer dataBuffer, final SocketChannel socketChannel, ByteBuffer writeBuffer)
             throws IOException {
 
         ByteBuffer newWriteBuffer = writeBuffer;
@@ -632,8 +613,8 @@ public class Network implements Runnable {
                     case BUFFER_OVERFLOW:
                         // Data buffer overflow, make it bigger and try again.
                         logger.dbg( "[>>>>: %s] SSL %s: writeBuffer%s + %d", //
-                                    nameChannel( socketChannel ), sslEngineResult.getStatus(),
-                                    renderBuffer( newWriteBuffer ), WRITE_BUFFER );
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( newWriteBuffer ),
+                                    WRITE_BUFFER );
                         ByteBuffer resizedWriteBuffer = ByteBuffer.allocate( newWriteBuffer.capacity() + WRITE_BUFFER );
                         newWriteBuffer.flip();
                         newWriteBuffer = resizedWriteBuffer.put( newWriteBuffer );
@@ -644,8 +625,7 @@ public class Network implements Runnable {
                     case BUFFER_UNDERFLOW:
                         // Not enough application data collected for a whole SSL/TLS packet.
                         logger.dbg( "[>>>>: %s] SSL %s: need_src: dataBuffer%s", //
-                                    nameChannel( socketChannel ), sslEngineResult.getStatus(),
-                                    renderBuffer( dataBuffer ) );
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( dataBuffer ) );
                         break;
 
                     case CLOSED:
@@ -657,8 +637,8 @@ public class Network implements Runnable {
 
                     case OK:
                         logger.dbg( "[>>>>: %s] SSL %s - %s: Consumed %d bytes application data", //
-                                    nameChannel( socketChannel ), sslEngineResult.getStatus(),
-                                    sslEngineResult.getHandshakeStatus(), sslEngineResult.bytesConsumed() );
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), sslEngineResult.getHandshakeStatus(),
+                                    sslEngineResult.bytesConsumed() );
                         break;
                 }
 
@@ -692,8 +672,8 @@ public class Network implements Runnable {
      * Remove the channel from I/O operation scheduling. It will be closed.
      *
      * @param socketChannel The channel that needs to be closed.
-     * @param resetByPeer   <code>true</code> if the channel was closed by the remote party (inbound will be closed).
-     *                      <code>false</code> if the channel is closed by us (outbound will be closed).
+     * @param resetByPeer   <code>true</code> if the channel was closed by the remote party (inbound will be closed). <code>false</code> if
+     *                      the channel is closed by us (outbound will be closed).
      *
      * @throws IOException
      */
@@ -732,17 +712,14 @@ public class Network implements Runnable {
     /**
      * Queue a message to be sent to the given destination. The message will be added to the destination's write queue.
      *
-     * <p>
-     * After this process, the application's data buffer's position will be set right after the bytes that have been
-     * queued on the network. This is guaranteed to be the buffer's limit (eg. all data will be queued).
-     * </p>
+     * <p> After this process, the application's data buffer's position will be set right after the bytes that have been queued on the
+     * network. This is guaranteed to be the buffer's limit (eg. all data will be queued). </p>
      *
      * The connection's queue buffer's position will be right after the newly added bytes.
      *
-     * @param dataBuffer    A byte buffer that holds the bytes to dispatch. Make sure that the buffer is set up read for reading
-     *                      (put the position at the start of the data to read and the limit at the end). The buffer will be
-     *                      flipped so its position should be right after the bytes to write. Use <code>null</code> to request a
-     *                      connection shutdown.
+     * @param dataBuffer    A byte buffer that holds the bytes to dispatch. Make sure that the buffer is set up read for reading (put the
+     *                      position at the start of the data to read and the limit at the end). The buffer will be flipped so its position
+     *                      should be right after the bytes to write. Use <code>null</code> to request a connection shutdown.
      * @param socketChannel The channel over which to send the message.
      *
      * @throws ClosedChannelException The given channel is closed.
@@ -764,17 +741,15 @@ public class Network implements Runnable {
             // Obtain or create the data buffer for the connection.
             if (writeQueueBuffer == null)
                 // No writeQueueBuffer yet for this connection, allocate one.
-                writeQueueBuffers.put( socketChannel, writeQueueBuffer = ByteBuffer
-                        .allocate( Math.max( dataBuffer.remaining(), WRITE_QUEUE_BUFFER ) ) );
+                writeQueueBuffers.put( socketChannel,
+                                       writeQueueBuffer = ByteBuffer.allocate( Math.max( dataBuffer.remaining(), WRITE_QUEUE_BUFFER ) ) );
             else if (writeQueueBuffer.remaining() < dataBuffer.remaining())
                 // Not enough space left in the writeQueueBuffer for the application data, make it bigger.
                 synchronized (writeQueueLocks.get( socketChannel )) {
-                    ByteBuffer newWriteQueueBuffer = ByteBuffer.allocate(
-                            Math.max( writeQueueBuffer.position() + dataBuffer.remaining(),
-                                      writeQueueBuffer.capacity() + WRITE_QUEUE_BUFFER ) );
+                    ByteBuffer newWriteQueueBuffer = ByteBuffer.allocate( Math.max( writeQueueBuffer.position() + dataBuffer.remaining(),
+                                                                                    writeQueueBuffer.capacity() + WRITE_QUEUE_BUFFER ) );
                     writeQueueBuffer.flip();
-                    writeQueueBuffers
-                            .put( socketChannel, writeQueueBuffer = newWriteQueueBuffer.put( writeQueueBuffer ) );
+                    writeQueueBuffers.put( socketChannel, writeQueueBuffer = newWriteQueueBuffer.put( writeQueueBuffer ) );
                 }
         }
 
@@ -788,15 +763,10 @@ public class Network implements Runnable {
     /**
      * Request the given channel be closed for communication.
      *
-     * <p>
-     * <b>NOTE: You should always use this method and never close the socket or channel directly!</b><br>
-     * This method makes sure that closure is handled gracefully according to the wishes of the transport and optional
-     * encryption protocols.
-     * </p>
+     * <p> <b>NOTE: You should always use this method and never close the socket or channel directly!</b><br> This method makes sure that
+     * closure is handled gracefully according to the wishes of the transport and optional encryption protocols. </p>
      *
-     * <p>
-     * Non-{@link SocketChannel}s (such as the {@link ServerSocketChannel}) may be closed directly.
-     * </p>
+     * <p> Non-{@link SocketChannel}s (such as the {@link ServerSocketChannel}) may be closed directly. </p>
      *
      * @param socketChannel The channel that is no longer interested in sending data.
      *
@@ -880,9 +850,8 @@ public class Network implements Runnable {
     }
 
     /**
-     * Register the given operations with a channel. It is guaranteed that only operations that are valid for the type
-     * of channel will be applied to it. The operations will be queued and applied to the channel as soon as it is
-     * available.
+     * Register the given operations with a channel. It is guaranteed that only operations that are valid for the type of channel will be
+     * applied to it. The operations will be queued and applied to the channel as soon as it is available.
      *
      * @param channel The channel whose interest ops should be modified.
      * @param newOps  The ops that should be set on the channel.
@@ -912,8 +881,8 @@ public class Network implements Runnable {
     }
 
     /**
-     * Determine the interested operations for SSL enabled channels. The SSL protocol can request read or write
-     * operations depending on what it needs to complete/initiate a handshake.
+     * Determine the interested operations for SSL enabled channels. The SSL protocol can request read or write operations depending on what
+     * it needs to complete/initiate a handshake.
      *
      * @throws ClosedChannelException If applying ops on a closed channel (that is not yet registered with the network selector).
      */
@@ -1073,8 +1042,8 @@ public class Network implements Runnable {
     /**
      * Notify listeners that something has been received over the network.
      *
-     * @param dataBuffer    The buffer that contains the data which was received. The buffer has been flipped and is ready to be
-     *                      read from. You can flip it again after you read from it if you want to read the same data again.
+     * @param dataBuffer    The buffer that contains the data which was received. The buffer has been flipped and is ready to be read from.
+     *                      You can flip it again after you read from it if you want to read the same data again.
      * @param socketChannel The channel on which the message was received.
      */
     private void notifyRead(final ByteBuffer dataBuffer, final SocketChannel socketChannel) {
@@ -1087,8 +1056,7 @@ public class Network implements Runnable {
      * Notify listeners that a network connection has been terminated.
      *
      * @param channel     The channel whose connection has been terminated.
-     * @param resetByPeer <code>true</code> if the remote side closed the connection, <code>false</code> if the local side hung
-     *                    up.
+     * @param resetByPeer <code>true</code> if the remote side closed the connection, <code>false</code> if the local side hung up.
      */
     private void notifyClose(final SocketChannel channel, final boolean resetByPeer) {
 
@@ -1119,8 +1087,7 @@ public class Network implements Runnable {
     }
 
     /**
-     * Register a {@link NetworkServerStateListener} to be notified when server channel state changes occur on the
-     * network.
+     * Register a {@link NetworkServerStateListener} to be notified when server channel state changes occur on the network.
      *
      * @param listener The object that wishes to be notified.
      */
@@ -1131,8 +1098,7 @@ public class Network implements Runnable {
     }
 
     /**
-     * Unregister a {@link NetworkServerStateListener} so it is no longer notified when server channel state changes
-     * occur on the network.
+     * Unregister a {@link NetworkServerStateListener} so it is no longer notified when server channel state changes occur on the network.
      *
      * @param listener The object that no longer wishes to be notified.
      */
@@ -1143,8 +1109,7 @@ public class Network implements Runnable {
     }
 
     /**
-     * Register a {@link NetworkConnectionStateListener} to be notified when connection state changes occur on the
-     * network.
+     * Register a {@link NetworkConnectionStateListener} to be notified when connection state changes occur on the network.
      *
      * @param listener The object that wishes to be notified.
      */
@@ -1155,16 +1120,14 @@ public class Network implements Runnable {
     }
 
     /**
-     * Unregister a {@link NetworkConnectionStateListener} so it is no longer notified when connection state changes
-     * occur on the network.
+     * Unregister a {@link NetworkConnectionStateListener} so it is no longer notified when connection state changes occur on the network.
      *
      * @param listener The object that no longer wishes to be notified.
      */
     public void unregisterConnectionStateListener(final NetworkConnectionStateListener listener) {
 
         connectionStateListeners.remove( listener );
-        logger.inf( "%s is no longer listening to network connection state changes.",
-                    listener.getClass().getSimpleName() );
+        logger.inf( "%s is no longer listening to network connection state changes.", listener.getClass().getSimpleName() );
     }
 
     /**

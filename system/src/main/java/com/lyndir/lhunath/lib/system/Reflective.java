@@ -26,8 +26,7 @@ import java.lang.reflect.Field;
 public interface Reflective {
 
     /**
-     * Retrieve the object in the given field for this instance.<br>
-     * Put this in here:
+     * Retrieve the object in the given field for this instance.<br> Put this in here:
      *
      * <pre>
      * return field.get( this );

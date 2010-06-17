@@ -15,24 +15,20 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.io.File;
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 
 
 /**
- * <i>FileDialog - A file selection dialog.</i><br>
- * <br>
- * This is a convenience class for showing a file chooser in a dialog.<br>
- * <br>
+ * <i>FileDialog - A file selection dialog.</i><br> <br> This is a convenience class for showing a file chooser in a dialog.<br> <br>
  *
  * @author lhunath
  */
 public abstract class FileDialog extends JFileChooser {
 
     private final JDialog dialog;
-
 
     /**
      * Create a new JFileDialog instance.
@@ -52,8 +48,8 @@ public abstract class FileDialog extends JFileChooser {
     }
 
     /**
-     * Bring the dialog up. You can make all initialization of the dialog inbetween the call to this method and the call
-     * to the constructor. This method will block until the dialog has disappeared.
+     * Bring the dialog up. You can make all initialization of the dialog inbetween the call to this method and the call to the constructor.
+     * This method will block until the dialog has disappeared.
      */
     public void activate() {
 
@@ -61,8 +57,7 @@ public abstract class FileDialog extends JFileChooser {
     }
 
     /**
-     * Override this method to provide actions that need be performed when the dialog gets closed by approving the
-     * selection in it.
+     * Override this method to provide actions that need be performed when the dialog gets closed by approving the selection in it.
      */
     public abstract void approved();
 

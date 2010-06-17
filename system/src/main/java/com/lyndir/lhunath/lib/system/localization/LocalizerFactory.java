@@ -15,6 +15,8 @@
  */
 package com.lyndir.lhunath.lib.system.localization;
 
+import com.lyndir.lhunath.lib.system.localization.UseBundle.UnspecifiedBundle;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -23,27 +25,16 @@ import java.lang.reflect.Proxy;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
-import com.lyndir.lhunath.lib.system.localization.UseBundle.UnspecifiedBundle;
-import com.lyndir.lhunath.lib.system.logging.Logger;
-
 
 /**
- * <h2>{@link LocalizerFactory}<br>
- * <sub>Create localizers from localization interfaces.</sub></h2>
+ * <h2>{@link LocalizerFactory}<br> <sub>Create localizers from localization interfaces.</sub></h2>
  *
- * <p>
- * This class builds localizers from interfaces annotated with the {@link UseBundle} and {@link UseKey} annotations.
- * </p>
+ * <p> This class builds localizers from interfaces annotated with the {@link UseBundle} and {@link UseKey} annotations. </p>
  *
- * <p>
- * This localizer can then be queried by invoking the methods provided by the interface used to create it. This way, you
- * can to obtain localized data from them as provided by the resource bundle that interface references in its
- * {@link UseBundle} annotation.
- * </p>
+ * <p> This localizer can then be queried by invoking the methods provided by the interface used to create it. This way, you can to obtain
+ * localized data from them as provided by the resource bundle that interface references in its {@link UseBundle} annotation. </p>
  *
- * <p>
- * <i>Mar 28, 2009</i>
- * </p>
+ * <p> <i>Mar 28, 2009</i> </p>
  *
  * @author lhunath
  */
@@ -51,16 +42,13 @@ public abstract class LocalizerFactory {
 
     static final Logger logger = Logger.get( LocalizerFactory.class );
 
-
     /**
-     * Create a localizer that can be used to obtain localized data for keys specified by the given
-     * localizationInterface.
+     * Create a localizer that can be used to obtain localized data for keys specified by the given localizationInterface.
      *
      * @param localizationInterface The interface that declares the localization keys that should be resolved by this localizer.
      * @param <L>                   The type of the localizationInterface.
      *
-     * @return A proxy of the given localizationInterface that will provide localized values for the methods in the
-     *         interface.
+     * @return A proxy of the given localizationInterface that will provide localized values for the methods in the interface.
      */
     public static <L> L getLocalizer(final Class<L> localizationInterface) {
 
@@ -68,28 +56,26 @@ public abstract class LocalizerFactory {
     }
 
     /**
-     * Create a localizer that can be used to obtain localized data for keys specified by the given
-     * localizationInterface.
+     * Create a localizer that can be used to obtain localized data for keys specified by the given localizationInterface.
      *
      * @param localizationInterface The interface that declares the localization keys that should be resolved by this localizer.
      * @param context               The provider-specific context that should help the localization provider resolve values for keys.
      * @param <L>                   The type of the localizationInterface.
      *
-     * @return A proxy of the given localizationInterface that will provide localized values for the methods in the
-     *         interface.
+     * @return A proxy of the given localizationInterface that will provide localized values for the methods in the interface.
      */
-    public static <L> L getLocalizer(final Class<L> localizationInterface, final Object context) {
+    public static <L> L getLocalizer(final Class<L> localizationInterface, final Serializable context) {
 
         // Do some validation on the localization interface.
         if (!localizationInterface.isInterface())
             throw new IllegalArgumentException(
                     MessageFormat.format( "Localization interface must be an interface: {0}", localizationInterface ) );
 
-        if (!(localizationInterface.isAnnotationPresent( UseBundle.class ) || localizationInterface
-                .isAnnotationPresent( UseLocalizationProvider.class )))
-            throw new IllegalArgumentException(
-                    MessageFormat.format( "Localization interface must be annotated with {0} or {1}: {2}", //
-                                          UseBundle.class, UseLocalizationProvider.class, localizationInterface ) );
+        if (!(localizationInterface.isAnnotationPresent( UseBundle.class ) || localizationInterface.isAnnotationPresent(
+                UseLocalizationProvider.class )))
+            throw new IllegalArgumentException( MessageFormat.format( "Localization interface must be annotated with {0} or {1}: {2}", //
+                                                                      UseBundle.class, UseLocalizationProvider.class,
+                                                                      localizationInterface ) );
 
         for (final Method method : localizationInterface.getDeclaredMethods())
             if (!method.isAnnotationPresent( UseKey.class ))
@@ -99,18 +85,15 @@ public abstract class LocalizerFactory {
 
         // Create a localization interface proxy.
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        return localizationInterface
-                .cast( Proxy.newProxyInstance( classLoader, new Class[] {localizationInterface, Serializable.class},
-                                               new LocalizationInvocationHandler( context ) ) );
+        return localizationInterface.cast( Proxy.newProxyInstance( classLoader, new Class[] { localizationInterface, Serializable.class },
+                                                                   new LocalizationInvocationHandler( context ) ) );
     }
-
 
     private static class LocalizationInvocationHandler implements InvocationHandler, Serializable {
 
-        private final Object context;
+        private final Serializable context;
 
-
-        LocalizationInvocationHandler(final Object context) {
+        LocalizationInvocationHandler(final Serializable context) {
 
             this.context = context;
         }
@@ -124,8 +107,7 @@ public abstract class LocalizerFactory {
 
             UseKey useKeyAnnotation = method.getAnnotation( UseKey.class );
             if (useKeyAnnotation == null)
-                throw new IllegalStateException(
-                        MessageFormat.format( "Need a {0} annotation on {1}", UseKey.class, method ) );
+                throw new IllegalStateException( MessageFormat.format( "Need a {0} annotation on {1}", UseKey.class, method ) );
 
             String localizationKey = useKeyAnnotation.value();
             if (localizationKey == null || localizationKey.isEmpty())
@@ -142,8 +124,8 @@ public abstract class LocalizerFactory {
                     bundleResource = useBundleAnnotation.resource();
                 if (bundleResource == null || bundleResource.isEmpty())
                     throw new IllegalStateException(
-                            MessageFormat.format( "No #type or #resource was specified on the {0} annotation for {1}",
-                                                  UseBundle.class, method ) );
+                            MessageFormat.format( "No #type or #resource was specified on the {0} annotation for {1}", UseBundle.class,
+                                                  method ) );
 
                 ResourceBundle bundle = ResourceBundle.getBundle( bundleResource );
 
@@ -153,8 +135,7 @@ public abstract class LocalizerFactory {
                 }
 
                 if (method.getParameterTypes().length > 0)
-                    throw new IllegalArgumentException(
-                            "Expected no arguments on " + method + ": Can't format non-String return type." );
+                    throw new IllegalArgumentException( "Expected no arguments on " + method + ": Can't format non-String return type." );
 
                 return bundle.getObject( localizationKey );
             }
@@ -165,8 +146,8 @@ public abstract class LocalizerFactory {
 
                 try {
                     return MessageFormat.format(
-                            localizationProvider.getConstructor().newInstance().getValueForKeyInContext(
-                                    localizationKey, context ), arguments );
+                            localizationProvider.getConstructor().newInstance().getValueForKeyInContext( localizationKey, context ),
+                            arguments );
                 }
 
                 catch (IllegalArgumentException e) {
@@ -183,8 +164,7 @@ public abstract class LocalizerFactory {
                 }
             }
 
-            throw new UnsupportedOperationException(
-                    MessageFormat.format( "No supported annotation found on: {0}", methodType ) );
+            throw new UnsupportedOperationException( MessageFormat.format( "No supported annotation found on: {0}", methodType ) );
         }
     }
 }

@@ -20,13 +20,7 @@ import java.io.PrintStream;
 
 
 /**
- * <h2>{@link NullPrintStream} - [in short] (TODO).</h2>
- * <p>
- * [description / usage].
- * </p>
- * <p>
- * <i>Dec 1, 2007</i>
- * </p>
+ * <h2>{@link NullPrintStream} - [in short] (TODO).</h2> <p> [description / usage]. </p> <p> <i>Dec 1, 2007</i> </p>
  *
  * @author mbillemo
  */

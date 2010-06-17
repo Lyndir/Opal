@@ -1,5 +1,6 @@
 package com.lyndir.lhunath.lib.xml;
 
+import java.util.*;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
@@ -7,8 +8,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.util.*;
-
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -23,12 +22,10 @@ public class XPathUtil {
 
     private final XPath xpath;
 
-
     /**
      * Create a new XPathUtil instance.
      *
-     * @param isXHTML <code>true</code>: Indicate that the document uses the XHTML namespace context and set it as the
-     *                default context.
+     * @param isXHTML <code>true</code>: Indicate that the document uses the XHTML namespace context and set it as the default context.
      */
     public XPathUtil(final boolean isXHTML) {
 
@@ -87,8 +84,7 @@ public class XPathUtil {
             throws XPathExpressionException {
 
         List<Node> nodeList = new ArrayList<Node>();
-        NodeList annoyingNodeList = (NodeList) getObject( context, expressionFormat, XPathConstants.NODESET,
-                                                          arguments );
+        NodeList annoyingNodeList = (NodeList) getObject( context, expressionFormat, XPathConstants.NODESET, arguments );
 
         for (int node = 0; node < annoyingNodeList.getLength(); ++node)
             nodeList.add( annoyingNodeList.item( node ) );
@@ -153,21 +149,16 @@ public class XPathUtil {
         return xpath.evaluate( expression, context, result );
     }
 
-
     /**
-     * <h2>{@link XHTMLContext}<br>
-     * <sub>Namespace context for XHTML tags and attributes.</sub></h2>
+     * <h2>{@link XHTMLContext}<br> <sub>Namespace context for XHTML tags and attributes.</sub></h2>
      *
-     * <p>
-     * <i>Apr 9, 2008</i>
-     * </p>
+     * <p> <i>Apr 9, 2008</i> </p>
      *
      * @author mbillemo
      */
     private class XHTMLContext implements NamespaceContext {
 
         private final Map<String, String> namespaces = new HashMap<String, String>();
-
 
         /**
          * Create a new AuthDriver.XHTMLContext instance.
@@ -227,6 +218,5 @@ public class XPathUtil {
 
             return uris.iterator();
         }
-
     }
 }

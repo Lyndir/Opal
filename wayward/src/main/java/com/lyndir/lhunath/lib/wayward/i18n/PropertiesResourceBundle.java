@@ -22,19 +22,15 @@ import java.util.ResourceBundle;
 
 
 /**
- * <h2>{@link PropertiesResourceBundle}<br>
- * <sub>A {@link ResourceBundle} that loads its values from {@link Properties}.</sub></h2>
+ * <h2>{@link PropertiesResourceBundle}<br> <sub>A {@link ResourceBundle} that loads its values from {@link Properties}.</sub></h2>
  *
- * <p>
- * <i>Mar 26, 2010</i>
- * </p>
+ * <p> <i>Mar 26, 2010</i> </p>
  *
  * @author lhunath
  */
 public class PropertiesResourceBundle extends ResourceBundle {
 
     private final Properties properties;
-
 
     PropertiesResourceBundle(final Properties props) {
 

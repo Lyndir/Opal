@@ -40,11 +40,12 @@ public abstract class JSUtils {
     }
 
     /**
-     * @param string The string that should be prepared for use in JavaScript code.
+     * @param o The object whose string representation should be converted for injection into JavaScript code.
+     *
      * @return A JavaScript-quoted literal string.
      */
-    public static String quote(final String string) {
+    public static String toString(final Object o) {
 
-        return GSON.toJson( string );
+        return GSON.toJson( o );
     }
 }

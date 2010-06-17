@@ -25,31 +25,21 @@ import org.apache.wicket.model.IWrapModel;
 
 
 /**
- * <h2>{@link ModelProvider}<br>
- * <sub>A base class for {@link IModel} providers.</sub></h2>
+ * <h2>{@link ModelProvider}<br> <sub>A base class for {@link IModel} providers.</sub></h2>
  *
- * <p>
- * Model providers are classes that serve to extract the maintenance of a component's models from the component's logic.
- * </p>
+ * <p> Model providers are classes that serve to extract the maintenance of a component's models from the component's logic. </p>
  *
- * <p>
- * Generally, you would create a {@link ModelProvider} for each component that you have a top-level class for. The
- * {@link ModelProvider} for your component should be the component's model.<br />
- * Then, create accessor methods in the {@link ModelProvider} for all the models you'll need in your component. It is
- * often helpful to replicate your component's component hierarchy in your {@link ModelProvider} by using inner
- * {@link ModelProvider} classes, providing accessor methods for them in their parent and setting them as the model for
- * your component's child components.
- * </p>
+ * <p> Generally, you would create a {@link ModelProvider} for each component that you have a top-level class for. The {@link ModelProvider}
+ * for your component should be the component's model.<br /> Then, create accessor methods in the {@link ModelProvider} for all the models
+ * you'll need in your component. It is often helpful to replicate your component's component hierarchy in your {@link ModelProvider} by
+ * using inner {@link ModelProvider} classes, providing accessor methods for them in their parent and setting them as the model for your
+ * component's child components. </p>
  *
- * <p>
- * <i>Mar 11, 2010</i>
- * </p>
+ * <p> <i>Mar 11, 2010</i> </p>
  *
  * @author lhunath
- * @param <P>
- * This type.
- * @param <M>
- * The type of the base model for this provider.
+ * @param <P> This type.
+ * @param <M> The type of the base model for this provider.
  */
 public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements IWrapModel<M> {
 
@@ -59,7 +49,6 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
     private IModel<M> wrappedModel = null;
 
     private Component component = null;
-
 
     /**
      * @param model The base model.
@@ -178,7 +167,7 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
     /**
      * @param component The component we have been or will be attached to.
      */
-    @SuppressWarnings({"hiding", "ParameterHidesMemberVariable"})
+    @SuppressWarnings({ "hiding", "ParameterHidesMemberVariable" })
     public void attach(final Component component) {
 
         setComponent( checkNotNull( component, "Can't attach model provider (%s) to null.", this ) );

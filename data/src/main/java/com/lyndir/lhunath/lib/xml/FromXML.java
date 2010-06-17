@@ -22,17 +22,12 @@ import java.lang.annotation.Target;
 
 
 /**
- * <h2>{@link FromXML}<br>
- * <sub>Mark a type whose instances can have XML data injected into them.</sub></h2>
+ * <h2>{@link FromXML}<br> <sub>Mark a type whose instances can have XML data injected into them.</sub></h2>
  *
- * <p>
- * Types with this annotation can be passed to {@link Structure#load(Class)}. This will cause the resource specified in
- * this annotation to be deserialized into the annotated object's fields.
- * </p>
+ * <p> Types with this annotation can be passed to {@link Structure#load(Class)}. This will cause the resource specified in this annotation
+ * to be deserialized into the annotated object's fields. </p>
  *
- * <p>
- * <i>Dec 15, 2008</i>
- * </p>
+ * <p> <i>Dec 15, 2008</i> </p>
  *
  * @author lhunath
  */
@@ -43,9 +38,7 @@ public @interface FromXML {
     /**
      * @return The name of the resource which contains the XML source data to inject.
      *
-     *         <p>
-     *         The resource will be loaded using the {@link ClassLoader#getSystemResource(String)} method.
-     *         </p>
+     *         <p> The resource will be loaded using the {@link ClassLoader#getSystemResource(String)} method. </p>
      */
     String value();
 }

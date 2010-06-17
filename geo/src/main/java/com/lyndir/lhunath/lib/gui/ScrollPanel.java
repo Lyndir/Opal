@@ -15,17 +15,14 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 
 /**
- * <i>ScrollPanel - A panel that will properly set its scroll unit size depending on its content.</i><br>
- * <br>
- * Since {@link JPanel}s don't like being wrapped in {@link JScrollPane}s (they scroll by 1 to 3 pixels, really
- * tedious), this attempt has been made to address the issue.<br> {@link ScrollPanel} uses its first visible child component
- * to determine the scroll unit.<br>
- * <br>
+ * <i>ScrollPanel - A panel that will properly set its scroll unit size depending on its content.</i><br> <br> Since {@link JPanel}s don't
+ * like being wrapped in {@link JScrollPane}s (they scroll by 1 to 3 pixels, really tedious), this attempt has been made to address the
+ * issue.<br> {@link ScrollPanel} uses its first visible child component to determine the scroll unit.<br> <br>
  *
  * @author lhunath
  */
@@ -35,10 +32,9 @@ public class ScrollPanel extends JPanel implements Scrollable {
     private final boolean horizontal;
     private final boolean vertical;
 
-
     /**
-     * Create a new {@link ScrollPanel} instance.<br>
-     * The amount to scroll this panel will be calculated from the size of the first visible component of the panel.
+     * Create a new {@link ScrollPanel} instance.<br> The amount to scroll this panel will be calculated from the size of the first visible
+     * component of the panel.
      */
     public ScrollPanel() {
 
@@ -46,8 +42,8 @@ public class ScrollPanel extends JPanel implements Scrollable {
     }
 
     /**
-     * Create a new {@link ScrollPanel} instance.<br>
-     * The amount to scroll this panel will be calculated from the size of the first visible component of the panel.
+     * Create a new {@link ScrollPanel} instance.<br> The amount to scroll this panel will be calculated from the size of the first visible
+     * component of the panel.
      *
      * @param horizontal <code>true</code>: scroll horizontally.
      * @param vertical   <code>true</code>: scroll vertically.

@@ -22,12 +22,9 @@ import java.lang.annotation.Target;
 
 
 /**
- * <h2>{@link LocalizedType}<br>
- * <sub>The annotated parameter's Localized#typeDescription() will be expanded.</sub></h2>
+ * <h2>{@link LocalizedType}<br> <sub>The annotated parameter's Localized#typeDescription() will be expanded.</sub></h2>
  *
- * <p>
- * <i>Mar 31, 2010</i>
- * </p>
+ * <p> <i>Mar 31, 2010</i> </p>
  *
  * @author lhunath
  */

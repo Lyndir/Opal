@@ -15,19 +15,18 @@
  */
 package com.lyndir.lhunath.lib.xml;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.validation.Schema;
-import javax.xml.xpath.XPathExpressionException;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.lyndir.lhunath.lib.system.logging.Logger;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.validation.Schema;
+import javax.xml.xpath.XPathExpressionException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -37,19 +36,10 @@ import org.xml.sax.SAXException;
 
 
 /**
- * <h2>{@link Structure}<br>
- * <sub>A utility class to create XML document builders.</sub></h2>
- * <p>
- * Use {@link #getTidyBuilder()} to build an XHTML document builder from an HTML stream.<br>
- * <br>
- * Either use {@link #getXMLBuilder()}, {@link #getXMLBuilder(Schema)} or
- * {@link #getXMLBuilder(boolean, boolean, boolean, boolean, boolean, boolean, boolean, Schema)} to parse XML streams.<br>
- * <br>
- * Use {@link #toString(Node)} to render an XML node or document as a string.
- * </p>
- * <p>
- * <i>Apr 8, 2008</i>
- * </p>
+ * <h2>{@link Structure}<br> <sub>A utility class to create XML document builders.</sub></h2> <p> Use {@link #getTidyBuilder()} to build an
+ * XHTML document builder from an HTML stream.<br> <br> Either use {@link #getXMLBuilder()}, {@link #getXMLBuilder(Schema)} or {@link
+ * #getXMLBuilder(boolean, boolean, boolean, boolean, boolean, boolean, boolean, Schema)} to parse XML streams.<br> <br> Use {@link
+ * #toString(Node)} to render an XML node or document as a string. </p> <p> <i>Apr 8, 2008</i> </p>
  *
  * @author mbillemo
  */
@@ -61,7 +51,6 @@ public class Structure {
     // private static final XPathUtil xhtmlpath = new XPathUtil( true );
 
     private static final int TAB_SIZE = 4;
-
 
     private static <T> void inject(final Node root, final T structure)
             throws XPathExpressionException {
@@ -236,8 +225,8 @@ public class Structure {
             for (final Field field : structure.getClass().getDeclaredFields())
                 if (field.isAnnotationPresent( XInjectTag.class ))
                     try {
-                        logger.dbg( "Setting (%s) '%s' to tagname '%s'", field.getType().getSimpleName(),
-                                    field.getName(), child.getNodeName() );
+                        logger.dbg( "Setting (%s) '%s' to tagname '%s'", field.getType().getSimpleName(), field.getName(),
+                                    child.getNodeName() );
 
                         field.setAccessible( true );
                         field.set( structure, child.getNodeName() );
@@ -318,16 +307,9 @@ public class Structure {
     }
 
     /**
-     * The builder created by this method operates as follows:
-     * <ul>
-     * <li>Do not convert CDATA to text nodes.</li>
-     * <li>Expand entity references.</li>
-     * <li>Do not ignore comment nodes.</li>
-     * <li>Do not ignore white space.</li>
-     * <li>Is not namespace-aware.</li>
-     * <li>Is not XInclude-aware.</li>
-     * <li>Is not validating.</li>
-     * </ul>
+     * The builder created by this method operates as follows: <ul> <li>Do not convert CDATA to text nodes.</li> <li>Expand entity
+     * references.</li> <li>Do not ignore comment nodes.</li> <li>Do not ignore white space.</li> <li>Is not namespace-aware.</li> <li>Is
+     * not XInclude-aware.</li> <li>Is not validating.</li> </ul>
      *
      * @return a builder that parses XML data according to the defaults highlighted above.
      */
@@ -337,16 +319,9 @@ public class Structure {
     }
 
     /**
-     * The builder created by this method operates as follows:
-     * <ul>
-     * <li>Do not convert CDATA to text nodes.</li>
-     * <li>Expand entity references.</li>
-     * <li>Do not ignore comment nodes.</li>
-     * <li>Do not ignore white space.</li>
-     * <li>Is not namespace-aware.</li>
-     * <li>Is not XInclude-aware.</li>
-     * <li>Is validating using the given schema.</li>
-     * </ul>
+     * The builder created by this method operates as follows: <ul> <li>Do not convert CDATA to text nodes.</li> <li>Expand entity
+     * references.</li> <li>Do not ignore comment nodes.</li> <li>Do not ignore white space.</li> <li>Is not namespace-aware.</li> <li>Is
+     * not XInclude-aware.</li> <li>Is validating using the given schema.</li> </ul>
      *
      * @param schema The schema to validate against.
      *
@@ -369,9 +344,9 @@ public class Structure {
      *
      * @return a builder that parses XML data according to the rules specified by the arguments.
      */
-    public static DocumentBuilder getXMLBuilder(boolean coalescing, final boolean expandEntityRef,
-                                                boolean ignoreComments, final boolean whitespace, boolean awareness,
-                                                final boolean xIncludes, boolean validating, final Schema schema) {
+    public static DocumentBuilder getXMLBuilder(boolean coalescing, final boolean expandEntityRef, boolean ignoreComments,
+                                                final boolean whitespace, boolean awareness, final boolean xIncludes, boolean validating,
+                                                final Schema schema) {
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -424,8 +399,7 @@ public class Structure {
             return null;
 
         if (node.getNodeType() == Node.TEXT_NODE)
-            return new StringBuffer( indent( indent ) ).append( trim? node.getNodeValue().trim(): node.getNodeValue() )
-                    .append( '\n' );
+            return new StringBuffer( indent( indent ) ).append( trim? node.getNodeValue().trim(): node.getNodeValue() ).append( '\n' );
 
         StringBuffer out = new StringBuffer();
         out.append( indent( indent ) );

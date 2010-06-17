@@ -15,21 +15,18 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import javax.swing.*;
 
 
 /**
- * <i>{@link PaintPanel} - A panel that uses a paint for its background, rather than a color.</i><br>
- * <br>
- * In an attempt to spice up the com.lyndir.lhunath.lib.guis to generate panels that use {@link Paint} as background,
- * rather than {@link Color}.<br>
- * Several convenience methods exist to quickly generate a nice gradient for the panel's paint.<br>
- * <br>
+ * <i>{@link PaintPanel} - A panel that uses a paint for its background, rather than a color.</i><br> <br> In an attempt to spice up the
+ * com.lyndir.lhunath.lib.guis to generate panels that use {@link Paint} as background, rather than {@link Color}.<br> Several convenience
+ * methods exist to quickly generate a nice gradient for the panel's paint.<br> <br>
  *
  * @author lhunath
  */
@@ -39,7 +36,6 @@ public class PaintPanel extends ScrollPanel {
     private int autoColorControl;
     GradientPaint autoPaint;
     Paint paint;
-
 
     /**
      * Create a new {@link PaintPanel} instance.
@@ -55,8 +51,8 @@ public class PaintPanel extends ScrollPanel {
     }
 
     /**
-     * Create a {@link PaintPanel} that has a gradient background paint spanning from the top-left corner to the
-     * bottom-left corner using the current look and feel for getting the appropriate colors.
+     * Create a {@link PaintPanel} that has a gradient background paint spanning from the top-left corner to the bottom-left corner using
+     * the current look and feel for getting the appropriate colors.
      *
      * @return The resulting {@link PaintPanel}.
      */
@@ -70,9 +66,8 @@ public class PaintPanel extends ScrollPanel {
     }
 
     /**
-     * Create a {@link PaintPanel} that has a gradient background paint spanning from the top-left corner to the
-     * bottom-left corner using the current look and feel for getting the appropriate colors auto-corrected by the
-     * specified identifier.
+     * Create a {@link PaintPanel} that has a gradient background paint spanning from the top-left corner to the bottom-left corner using
+     * the current look and feel for getting the appropriate colors auto-corrected by the specified identifier.
      *
      * @param autoColorControl &gt; 0: Choose color automatically from L&F. Higher is brighter.
      *
@@ -88,8 +83,7 @@ public class PaintPanel extends ScrollPanel {
     }
 
     /**
-     * Create a {@link PaintPanel} that has a gradient background paint using the current look and feel for getting the
-     * appropriate colors.
+     * Create a {@link PaintPanel} that has a gradient background paint using the current look and feel for getting the appropriate colors.
      *
      * @param startPos The start of the gradient.
      * @param endPos   The end of the gradient.
@@ -106,8 +100,7 @@ public class PaintPanel extends ScrollPanel {
     }
 
     /**
-     * Create a {@link PaintPanel} that has a gradient background paint spanning from the top-left corner to the
-     * bottom-left corner.
+     * Create a {@link PaintPanel} that has a gradient background paint spanning from the top-left corner to the bottom-left corner.
      *
      * @param startCol The color to start the gradient with.
      * @param endCol   The color to end the gradient with.
@@ -156,11 +149,9 @@ public class PaintPanel extends ScrollPanel {
      */
     public static PaintPanel tiledPanel(final Image image) {
 
-        BufferedImage buffer = new BufferedImage( image.getWidth( null ), image.getHeight( null ),
-                                                  BufferedImage.TYPE_INT_ARGB );
+        BufferedImage buffer = new BufferedImage( image.getWidth( null ), image.getHeight( null ), BufferedImage.TYPE_INT_ARGB );
         buffer.getGraphics().drawImage( image, 0, 0, null );
-        return new PaintPanel(
-                new TexturePaint( buffer, new Rectangle( 0, 0, buffer.getWidth(), buffer.getHeight() ) ) );
+        return new PaintPanel( new TexturePaint( buffer, new Rectangle( 0, 0, buffer.getWidth(), buffer.getHeight() ) ) );
     }
 
     /**
@@ -172,8 +163,8 @@ public class PaintPanel extends ScrollPanel {
     }
 
     /**
-     * Automatically color this panel based on the active look and feel. Set this to a value higher than zero to enable
-     * the effect. Higher values result in brighter backgrounds.
+     * Automatically color this panel based on the active look and feel. Set this to a value higher than zero to enable the effect. Higher
+     * values result in brighter backgrounds.
      *
      * @param autoColorControl Guess.
      *
@@ -270,8 +261,7 @@ public class PaintPanel extends ScrollPanel {
         }
 
         /* Resize Background Image (only if needed). */
-        if (backgroundImage != null
-            && getWidth() + getHeight() - backgroundImage.getWidth( null ) - backgroundImage.getHeight( null ) != 0)
+        if (backgroundImage != null && getWidth() + getHeight() - backgroundImage.getWidth( null ) - backgroundImage.getHeight( null ) != 0)
             backgroundImage = backgroundImage.getScaledInstance( getWidth(), getHeight(), Image.SCALE_FAST );
     }
 
@@ -295,7 +285,6 @@ public class PaintPanel extends ScrollPanel {
             g2.setComposite( originalComposite );
         }
     }
-
 
     private class PaintPanelComponentAdapter extends ComponentAdapter {
 

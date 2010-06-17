@@ -15,22 +15,17 @@
  */
 package com.lyndir.lhunath.lib.wayward.collection;
 
-import java.io.Serializable;
-
 import com.google.common.base.Predicate;
+import java.io.Serializable;
 
 
 /**
- * <h2>{@link IPredicate}<br>
- * <sub>A {@link Serializable} {@link Predicate}.</sub></h2>
+ * <h2>{@link IPredicate}<br> <sub>A {@link Serializable} {@link Predicate}.</sub></h2>
  *
- * <p>
- * <i>Mar 23, 2010</i>
- * </p>
+ * <p> <i>Mar 23, 2010</i> </p>
  *
  * @author lhunath
- * @param <T>
- * The type that the predicate can be applied to.
+ * @param <T> The type that the predicate can be applied to.
  */
 public interface IPredicate<T> extends Predicate<T>, Serializable {
 

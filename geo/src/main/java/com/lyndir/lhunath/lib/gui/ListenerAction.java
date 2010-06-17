@@ -15,23 +15,19 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
 
 
 /**
- * <i>{@link ListenerAction} - [in short] (TODO).</i><br>
- * <br>
- * [description / usage].<br>
- * <br>
+ * <i>{@link ListenerAction} - [in short] (TODO).</i><br> <br> [description / usage].<br> <br>
  *
  * @author lhunath
  */
 public class ListenerAction extends AbstractAction {
 
     private final ActionListener listener;
-
 
     /**
      * Create a new {@link ListenerAction} instance.

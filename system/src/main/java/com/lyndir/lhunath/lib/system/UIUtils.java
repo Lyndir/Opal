@@ -15,26 +15,20 @@
  */
 package com.lyndir.lhunath.lib.system;
 
-import javax.swing.*;
-import javax.swing.plaf.FontUIResource;
+import com.lyndir.lhunath.lib.system.wrapper.Desktop;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.net.URL;
-
-import com.lyndir.lhunath.lib.system.wrapper.Desktop;
+import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 
 
 /**
- * <h2>{@link UIUtils}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link UIUtils}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * [description / usage].
- * </p>
+ * <p> [description / usage]. </p>
  *
- * <p>
- * <i>Oct 25, 2009</i>
- * </p>
+ * <p> <i>Oct 25, 2009</i> </p>
  *
  * @author lhunath
  */
@@ -110,10 +104,8 @@ public class UIUtils {
      */
     public static final Dimension MAX_SIZE = new Dimension( Short.MAX_VALUE, Short.MAX_VALUE );
 
-
     /**
-     * Calculate the width in pixels that are necessary to draw the given string in the given font on the given
-     * graphics.
+     * Calculate the width in pixels that are necessary to draw the given string in the given font on the given graphics.
      *
      * @param graphics The graphics configuration the string would be drawn on.
      * @param font     The font to use for rendering the string.
@@ -127,8 +119,7 @@ public class UIUtils {
     }
 
     /**
-     * Calculate the height in pixels that are necessary to draw the given string in the given font on the given
-     * graphics.
+     * Calculate the height in pixels that are necessary to draw the given string in the given font on the given graphics.
      *
      * @param graphics The graphics configuration the string would be drawn on.
      * @param font     The font to use for rendering the string.
@@ -152,8 +143,7 @@ public class UIUtils {
      */
     public static Point2D gridAlign(final Point2D point, final double gridX, final double gridY) {
 
-        return new Point2D.Double( Math.round( point.getX() / gridX ) * gridX,
-                                   Math.round( point.getY() / gridY ) * gridY );
+        return new Point2D.Double( Math.round( point.getX() / gridX ) * gridX, Math.round( point.getY() / gridY ) * gridY );
     }
 
     /**
@@ -325,5 +315,4 @@ public class UIUtils {
 
         return label;
     }
-
 }

@@ -1,25 +1,18 @@
 package com.jgoodies.uif_lite.panel;
 
+import com.lyndir.lhunath.lib.gui.PaintPanel;
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
-import java.awt.*;
-
-import com.lyndir.lhunath.lib.gui.PaintPanel;
 
 
 /**
- * A <code>JPanel</code> subclass that has a drop shadow border and that provides a header with icon, title and tool
- * bar.
- * <p>
- * This class can be used to replace the <code>JInternalFrame</code>, for use outside of a <code>JDesktopPane</code>.
- * The <code>SimpleInternalFrame</code> is less flexible but often more usable; it avoids overlapping windows and scales
- * well up to IDE size. Several customers have reported that they and their clients feel much better with both the
- * appearance and the UI feel.
- * <p>
- * The SimpleInternalFrame provides the following bound properties: <i>frameIcon, title, toolBar, content, selected.</i>
- * <p>
- * By default the SimpleInternalFrame is in <i>selected</i> state. If you don't do anything, multiple simple internal
- * frames will be displayed as selected.
+ * A <code>JPanel</code> subclass that has a drop shadow border and that provides a header with icon, title and tool bar. <p> This class can
+ * be used to replace the <code>JInternalFrame</code>, for use outside of a <code>JDesktopPane</code>. The <code>SimpleInternalFrame</code>
+ * is less flexible but often more usable; it avoids overlapping windows and scales well up to IDE size. Several customers have reported
+ * that they and their clients feel much better with both the appearance and the UI feel. <p> The SimpleInternalFrame provides the following
+ * bound properties: <i>frameIcon, title, toolBar, content, selected.</i> <p> By default the SimpleInternalFrame is in <i>selected</i>
+ * state. If you don't do anything, multiple simple internal frames will be displayed as selected.
  *
  * @author Karsten Lentzsch
  * @version $Revision: 1.3 $
@@ -33,12 +26,11 @@ public class SimpleInternalFrame extends JPanel {
     private JPanel headerPanel;
     private boolean selected;
 
-
     // Instance Creation ****************************************************
 
     /**
-     * Constructs a SimpleInternalFrame with the specified title. The title is intended to be non-blank, or in other
-     * words should contain non-space characters.
+     * Constructs a SimpleInternalFrame with the specified title. The title is intended to be non-blank, or in other words should contain
+     * non-space characters.
      *
      * @param title the initial title
      */
@@ -80,8 +72,7 @@ public class SimpleInternalFrame extends JPanel {
      * @param content   the initial content pane
      * @param headerTop Add the header to the top of the frame (or to the bottom).
      */
-    public SimpleInternalFrame(Icon icon, final String title, final JToolBar toolbar, final JComponent content,
-                               boolean headerTop) {
+    public SimpleInternalFrame(Icon icon, final String title, final JToolBar toolbar, final JComponent content, boolean headerTop) {
 
         super( new BorderLayout() );
         selected = false;
@@ -200,8 +191,8 @@ public class SimpleInternalFrame extends JPanel {
     }
 
     /**
-     * Answers if the panel is currently selected (or in other words active) or not. In the selected state, the header
-     * background will be rendered differently.
+     * Answers if the panel is currently selected (or in other words active) or not. In the selected state, the header background will be
+     * rendered differently.
      *
      * @return boolean a boolean, where true means the frame is selected (currently active) and false means it is not
      */
@@ -211,8 +202,8 @@ public class SimpleInternalFrame extends JPanel {
     }
 
     /**
-     * This panel draws its title bar differently if it is selected, which may be used to indicate to the user that this
-     * panel has the focus, or should get more attention than other simple internal frames.
+     * This panel draws its title bar differently if it is selected, which may be used to indicate to the user that this panel has the
+     * focus, or should get more attention than other simple internal frames.
      *
      * @param newValue a boolean, where true means the frame is selected (currently active) and false means it is not
      */
@@ -227,8 +218,7 @@ public class SimpleInternalFrame extends JPanel {
     // Building *************************************************************
 
     /**
-     * Creates and answers the header panel, that consists of: an icon, a title label, a tool bar, and a gradient
-     * background.
+     * Creates and answers the header panel, that consists of: an icon, a title label, a tool bar, and a gradient background.
      *
      * @param label   the label to paint the icon and text
      * @param toolbar the panel's tool bar
@@ -292,8 +282,8 @@ public class SimpleInternalFrame extends JPanel {
     }
 
     /**
-     * Determines and answers the header's text foreground color. Tries to lookup a special color from the L&amp;F. In
-     * case it is absent, it uses the standard internal frame forground.
+     * Determines and answers the header's text foreground color. Tries to lookup a special color from the L&amp;F. In case it is absent, it
+     * uses the standard internal frame forground.
      *
      * @param isSelected true to lookup the active color, false for the inactive
      *
@@ -301,17 +291,16 @@ public class SimpleInternalFrame extends JPanel {
      */
     protected Color getTextForeground(final boolean isSelected) {
 
-        Color color = UIManager.getColor( isSelected? "SimpleInternalFrame.activeTitleForeground"
-                : "SimpleInternalFrame.inactiveTitleForeground" );
+        Color color = UIManager.getColor(
+                isSelected? "SimpleInternalFrame.activeTitleForeground": "SimpleInternalFrame.inactiveTitleForeground" );
         if (color != null)
             return color;
         return UIManager.getColor( isSelected? "InternalFrame.activeTitleForeground": "Label.foreground" );
-
     }
 
     /**
-     * Determines and answers the header's background color. Tries to lookup a special color from the L&amp;F. In case
-     * it is absent, it uses the standard internal frame background.
+     * Determines and answers the header's background color. Tries to lookup a special color from the L&amp;F. In case it is absent, it uses
+     * the standard internal frame background.
      *
      * @return the color of the header's background
      */
@@ -321,15 +310,14 @@ public class SimpleInternalFrame extends JPanel {
         return color != null? color: UIManager.getColor( "InternalFrame.activeTitleBackground" );
     }
 
-
     // Helper Classes *******************************************************
 
     // A custom border for the raised header pseudo 3D effect.
 
+
     private static class RaisedHeaderBorder extends AbstractBorder {
 
         private static final Insets INSETS = new Insets( 1, 1, 1, 0 );
-
 
         RaisedHeaderBorder() {
 
@@ -348,8 +336,7 @@ public class SimpleInternalFrame extends JPanel {
          * {@inheritDoc}
          */
         @Override
-        public void paintBorder(Component component, final Graphics graphics, final int x, final int y, int w,
-                                final int h) {
+        public void paintBorder(Component component, final Graphics graphics, final int x, final int y, int w, final int h) {
 
             graphics.translate( x, y );
             graphics.setColor( UIManager.getColor( "controlLtHighlight" ) );
@@ -361,13 +348,12 @@ public class SimpleInternalFrame extends JPanel {
         }
     }
 
-
     // A custom border that has a shadow on the right and lower sides.
+
 
     private static class ShadowBorder extends AbstractBorder {
 
         private static final Insets INSETS = new Insets( 1, 1, 3, 3 );
-
 
         ShadowBorder() {
 
@@ -386,8 +372,7 @@ public class SimpleInternalFrame extends JPanel {
          * {@inheritDoc}
          */
         @Override
-        public void paintBorder(Component component, final Graphics graphics, final int x, final int y, int w,
-                                final int h) {
+        public void paintBorder(Component component, final Graphics graphics, final int x, final int y, int w, final int h) {
 
             Color shadow = UIManager.getColor( "controlShadow" );
             if (shadow == null)

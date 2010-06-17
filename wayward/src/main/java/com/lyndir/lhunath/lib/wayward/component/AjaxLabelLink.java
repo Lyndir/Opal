@@ -24,12 +24,9 @@ import org.apache.wicket.model.IModel;
 
 
 /**
- * <h2>{@link AjaxLabelLink}<br>
- * <sub>An {@link AjaxLink} with the body of a {@link Label}.</sub></h2>
+ * <h2>{@link AjaxLabelLink}<br> <sub>An {@link AjaxLink} with the body of a {@link Label}.</sub></h2>
  *
- * <p>
- * <i>Mar 12, 2010</i>
- * </p>
+ * <p> <i>Mar 12, 2010</i> </p>
  *
  * @author lhunath
  */

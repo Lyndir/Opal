@@ -22,12 +22,9 @@ import java.lang.annotation.Target;
 
 
 /**
- * <h2>{@link KeyAppender}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link KeyAppender}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * <i>Mar 31, 2010</i>
- * </p>
+ * <p> <i>Mar 31, 2010</i> </p>
  *
  * @author lhunath
  */
@@ -40,16 +37,12 @@ public @interface KeyAppender {
      */
     String STRING_UNSET = "KeyAppender.unset";
 
-
     /**
      * @return An array optionally filled with matchers to test the value against.
      *
-     *         <p>
-     *         Matchers are used to append a specific key part when the parameter's value passes (or fails) a certain
-     *         test.
-     *         </p>
+     *         <p> Matchers are used to append a specific key part when the parameter's value passes (or fails) a certain test. </p>
      */
-    KeyMatch[] value() default {};
+    KeyMatch[] value() default { };
 
     /**
      * @return Key to append when the value for this parameter is <code>null</code>.

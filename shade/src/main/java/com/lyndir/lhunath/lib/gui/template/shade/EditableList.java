@@ -15,14 +15,13 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
-import javax.swing.*;
+import com.lyndir.lhunath.lib.system.Locale;
+import com.lyndir.lhunath.lib.system.UIUtils;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import com.lyndir.lhunath.lib.system.Locale;
-import com.lyndir.lhunath.lib.system.UIUtils;
+import javax.swing.*;
 
 
 /**
@@ -35,7 +34,6 @@ public class EditableList extends JList {
     private static final long serialVersionUID = 1L;
     protected final DefaultListModel model;
     protected final String a;
-
 
     /**
      * Create a new EditableList instance.
@@ -51,8 +49,8 @@ public class EditableList extends JList {
      * Create a new EditableList instance.
      *
      * @param contentTitle The title describing this list's content.
-     * @param newText      Additional information text to show up when adding a new item to this list in the popup dialog for it
-     *                     (ie. syntax/purpose).
+     * @param newText      Additional information text to show up when adding a new item to this list in the popup dialog for it (ie.
+     *                     syntax/purpose).
      */
     public EditableList(final String contentTitle, final String newText) {
 
@@ -84,24 +82,23 @@ public class EditableList extends JList {
                 }
 
                 /* Add. */
-                item = new JMenuItem( new AbstractAction(
-                        Locale.explain( "ui.add" ) + a + contentTitle + ' ' + Locale.explain( "ui.addsuffix" ),
-                        //$NON-NLS-1$ //$NON-NLS-2$
-                        UIUtils.getIcon( "add-ss.png" ) ) { //$NON-NLS-1$
+                item = new JMenuItem(
+                        new AbstractAction( Locale.explain( "ui.add" ) + a + contentTitle + ' ' + Locale.explain( "ui.addsuffix" ),
+                                            //$NON-NLS-1$ //$NON-NLS-2$
+                                            UIUtils.getIcon( "add-ss.png" ) ) { //$NON-NLS-1$
 
-                    private static final long serialVersionUID = 1L;
+                            private static final long serialVersionUID = 1L;
 
+                            @Override
+                            public void actionPerformed(ActionEvent actionEvent) {
 
-                    @Override
-                    public void actionPerformed(ActionEvent actionEvent) {
+                                String element = JOptionPane.showInputDialog( list,
+                                                                              Locale.explain( "ui.new" ) + contentTitle + ": " + newText );
 
-                        String element = JOptionPane
-                                .showInputDialog( list, Locale.explain( "ui.new" ) + contentTitle + ": " + newText );
-
-                        if (element != null)
-                            model.addElement( element );
-                    }
-                } );
+                                if (element != null)
+                                    model.addElement( element );
+                            }
+                        } );
                 popup.add( item );
 
                 /* Delete. */
@@ -109,7 +106,6 @@ public class EditableList extends JList {
                                                           UIUtils.getIcon( "del-ss.png" ) ) { //$NON-NLS-1$
 
                     private static final long serialVersionUID = 1L;
-
 
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
@@ -126,14 +122,12 @@ public class EditableList extends JList {
 
                     private static final long serialVersionUID = 1L;
 
-
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
 
-                        String newVar = JOptionPane.showInputDialog( list,
-                                                                     Locale.explain( "ui.modify" ) + contentTitle + ": "
-                                                                     //$NON-NLS-1$ //$NON-NLS-2$
-                                                                     + newText, getSelectedValue() );
+                        String newVar = JOptionPane.showInputDialog( list, Locale.explain( "ui.modify" ) + contentTitle + ": "
+                                                                           //$NON-NLS-1$ //$NON-NLS-2$
+                                                                           + newText, getSelectedValue() );
                         model.remove( getSelectedIndex() );
                         model.addElement( newVar );
                     }

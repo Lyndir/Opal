@@ -15,19 +15,16 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import javax.swing.*;
 
 
 /**
- * <i>{@link SearchBox} - [in short] (TODO).</i><br>
- * <br>
- * [description / usage].<br>
- * <br>
+ * <i>{@link SearchBox} - [in short] (TODO).</i><br> <br> [description / usage].<br> <br>
  *
  * @author lhunath
  */
@@ -37,7 +34,6 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
     private int minChars;
     private final String subject;
     private int hit = 1;
-
 
     /**
      * Create a new {@link SearchBox} instance.
@@ -70,8 +66,8 @@ public abstract class SearchBox extends JTextField implements FocusListener, Key
     }
 
     /**
-     * This method will be called when the search string changes. Implement this to make the search string take effect
-     * and return <code>true</code> if it did.
+     * This method will be called when the search string changes. Implement this to make the search string take effect and return
+     * <code>true</code> if it did.
      *
      * @param text The text in the box.
      *

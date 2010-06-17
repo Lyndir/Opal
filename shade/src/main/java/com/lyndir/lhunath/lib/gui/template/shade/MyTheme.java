@@ -15,16 +15,15 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import com.lyndir.lhunath.lib.gui.MyLookAndFeel;
 import com.lyndir.lhunath.lib.gui.MyLookAndFeel.MyThemeType;
 import com.lyndir.lhunath.lib.gui.ToolTip;
 import com.lyndir.lhunath.lib.system.Locale;
 import com.lyndir.lhunath.lib.system.logging.Logger;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 
 
 /**
@@ -112,7 +111,6 @@ public enum MyTheme {
 
     private static final MyTheme FALLBACK = OAK;
     MyLookAndFeel lookAndFeel;
-
 
     MyTheme(Color base) {
 
@@ -257,8 +255,7 @@ public enum MyTheme {
                 }
                 catch (NumberFormatException e) {
                     if (System.getProperty( "theme" ).trim().length() > 0)
-                        Logger.get( MyTheme.class )
-                                .err( e, "err.invalidDefaultTheme", System.getProperty( "theme" ).trim() );
+                        Logger.get( MyTheme.class ).err( e, "err.invalidDefaultTheme", System.getProperty( "theme" ).trim() );
                 }
 
                 if (customColor != null) {
