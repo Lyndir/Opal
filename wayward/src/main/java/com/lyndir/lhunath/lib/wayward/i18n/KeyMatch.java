@@ -22,12 +22,9 @@ import java.lang.annotation.Target;
 
 
 /**
- * <h2>{@link KeyMatch}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link KeyMatch}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * <i>Mar 31, 2010</i>
- * </p>
+ * <p> <i>Mar 31, 2010</i> </p>
  *
  * @author lhunath
  */
@@ -51,7 +48,6 @@ public @interface KeyMatch {
      */
     Class<?> CLASS_UNSET = KeyMatch.class;
 
-
     /**
      * @return The number the parameter's value should equal to trigger the {@link KeyAppender}.
      */
@@ -73,8 +69,7 @@ public @interface KeyMatch {
     String key();
 
     /**
-     * @return The key part to append when all of the if* conditions holds <code>false</code>. Set to append nothing by
-     *         default.
+     * @return The key part to append when all of the if* conditions holds <code>false</code>. Set to append nothing by default.
      */
     String elseKey() default STRING_UNSET;
 }

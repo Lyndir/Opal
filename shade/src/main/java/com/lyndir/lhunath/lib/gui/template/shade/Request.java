@@ -19,10 +19,7 @@ import java.io.Serializable;
 
 
 /**
- * <i>{@link Request} - [in short] (TODO).</i><br>
- * <br>
- * [description / usage].<br>
- * <br>
+ * <i>{@link Request} - [in short] (TODO).</i><br> <br> [description / usage].<br> <br>
  *
  * @author lhunath
  */

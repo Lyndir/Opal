@@ -15,23 +15,19 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.*;
+import com.lyndir.lhunath.lib.system.UIUtils;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
-
-import com.lyndir.lhunath.lib.system.UIUtils;
+import javax.swing.*;
 
 
 /**
- * <i>{@link ToolTip} - This panel wraps a component which shows a tooltip on hover.</i><br>
- * <br>
- * By default you would specify the tooltip text (HTML) which would show as the user hovers the panel.<br>
- * You can use the {@link #setContent(JComponent)} method to change the content of the panel. The content will have
- * listeners attached to show the tooltip on hover.<br>
- * <br>
+ * <i>{@link ToolTip} - This panel wraps a component which shows a tooltip on hover.</i><br> <br> By default you would specify the tooltip
+ * text (HTML) which would show as the user hovers the panel.<br> You can use the {@link #setContent(JComponent)} method to change the
+ * content of the panel. The content will have listeners attached to show the tooltip on hover.<br> <br>
  *
  * @author lhunath
  */
@@ -80,8 +76,7 @@ public class ToolTip extends JPanel {
             public void paint(final Graphics g) {
 
                 Dimension size = new Dimension( toolTipPane.getWidth() + 5,
-                                                toolTipPane.getHeight() + (activeTip.stickable? stickyHint.getHeight()
-                                                        : 0) );
+                                                toolTipPane.getHeight() + (activeTip.stickable? stickyHint.getHeight(): 0) );
                 Window window = toolTipWindow;
                 if (window == null || !window.isDisplayable())
                     window = toolTipFrame;
@@ -111,7 +106,6 @@ public class ToolTip extends JPanel {
             }
         };
     }
-
 
     /**
      * Create a new {@link ToolTip} instance.
@@ -317,8 +311,7 @@ public class ToolTip extends JPanel {
 
         toolTipFrame.setContentPane( gradient );
         toolTipFrame.pack();
-        toolTipFrame.setSize( Math.min( toolTipFrame.getWidth(), maxWidth ),
-                              Math.min( toolTipFrame.getHeight(), maxHeight ) );
+        toolTipFrame.setSize( Math.min( toolTipFrame.getWidth(), maxWidth ), Math.min( toolTipFrame.getHeight(), maxHeight ) );
         toolTipFrame.setLocationRelativeTo( null );
 
         pane.getViewport().scrollRectToVisible( new Rectangle( 0, 0, 0, 0 ) );
@@ -340,8 +333,7 @@ public class ToolTip extends JPanel {
         super.updateUI();
 
         toolTipContainer.updateUI();
-        toolTipContainer
-                .setBorder( BorderFactory.createLineBorder( toolTipContainer.getBackground().darker().darker() ) );
+        toolTipContainer.setBorder( BorderFactory.createLineBorder( toolTipContainer.getBackground().darker().darker() ) );
     }
 
     /**
@@ -372,14 +364,10 @@ public class ToolTip extends JPanel {
         activeTip = null;
     }
 
-
     /**
-     * <h2>{@link ToolTipButton}<br>
-     * <sub>[in short] (TODO).</sub></h2>
+     * <h2>{@link ToolTipButton}<br> <sub>[in short] (TODO).</sub></h2>
      *
-     * <p>
-     * <i>Jan 28, 2010</i>
-     * </p>
+     * <p> <i>Jan 28, 2010</i> </p>
      *
      * @author lhunath
      */
@@ -390,7 +378,6 @@ public class ToolTip extends JPanel {
 
         protected int x;
         protected int y;
-
 
         /**
          * {@inheritDoc}
@@ -468,8 +455,7 @@ public class ToolTip extends JPanel {
                                 toolTipWindow.setContentPane( toolTipContainer );
                                 toolTipWindow.pack();
                                 toolTipWindow.setSize( toolTipPane.getWidth() + 5,
-                                                       toolTipPane.getHeight() + (stickable? stickyHint.getHeight()
-                                                               : 0) );
+                                                       toolTipPane.getHeight() + (stickable? stickyHint.getHeight(): 0) );
 
                                 /* Determine the window's location. */
                                 Point location = getContent().getLocationOnScreen();
@@ -485,8 +471,7 @@ public class ToolTip extends JPanel {
 
                                 /* Listener that cleans up tip when content's window loses focus. */
                                 Window window = SwingUtilities.windowForComponent( getContent() );
-                                if (!Arrays.asList( window.getWindowListeners() )
-                                        .contains( toolTipContentWindowListener ))
+                                if (!Arrays.asList( window.getWindowListeners() ).contains( toolTipContentWindowListener ))
                                     window.addWindowFocusListener( toolTipContentWindowListener );
                             }
                             catch (NullPointerException ignored) {
@@ -494,7 +479,6 @@ public class ToolTip extends JPanel {
                             }
                         }
                     } );
-
                 }
             }, TIP_SHOW_DELAY );
         }
@@ -509,8 +493,8 @@ public class ToolTip extends JPanel {
                 return;
 
             // Don't do anything when new component is descendant of this tip's content.
-            if (getContent() != null && e.getComponent() != null && getContent()
-                    .contains( SwingUtilities.convertPoint( e.getComponent(), e.getPoint(), getContent() ) ))
+            if (getContent() != null && e.getComponent() != null && getContent().contains(
+                    SwingUtilities.convertPoint( e.getComponent(), e.getPoint(), getContent() ) ))
                 return;
 
             if (activeTip == ToolTip.this)
@@ -524,8 +508,7 @@ public class ToolTip extends JPanel {
         public void mouseMoved(final MouseEvent e) {
 
             if (e.getSource() instanceof Component) {
-                Point pointOnContent = SwingUtilities
-                        .convertPoint( (Component) e.getSource(), e.getPoint(), getContent() );
+                Point pointOnContent = SwingUtilities.convertPoint( (Component) e.getSource(), e.getPoint(), getContent() );
                 x = pointOnContent.x;
                 y = pointOnContent.y;
             }

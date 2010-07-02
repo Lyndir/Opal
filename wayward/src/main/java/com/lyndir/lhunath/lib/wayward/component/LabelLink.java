@@ -24,12 +24,9 @@ import org.apache.wicket.model.IModel;
 
 
 /**
- * <h2>{@link LabelLink}<br>
- * <sub>A {@link Link} with the body of a {@link Label}.</sub></h2>
+ * <h2>{@link LabelLink}<br> <sub>A {@link Link} with the body of a {@link Label}.</sub></h2>
  *
- * <p>
- * <i>Mar 11, 2010</i>
- * </p>
+ * <p> <i>Mar 11, 2010</i> </p>
  *
  * @author lhunath
  */

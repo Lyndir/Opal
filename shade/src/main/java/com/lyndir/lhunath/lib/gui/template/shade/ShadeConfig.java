@@ -15,14 +15,13 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
-import java.io.File;
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import com.lyndir.lhunath.lib.gui.MyLookAndFeel;
 import com.lyndir.lhunath.lib.math.Version;
 import com.lyndir.lhunath.lib.system.BaseConfig;
 import com.lyndir.lhunath.lib.system.Locale;
+import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 
 /**
@@ -34,8 +33,8 @@ import com.lyndir.lhunath.lib.system.Locale;
 public class ShadeConfig<T extends Serializable> extends BaseConfig<T> {
 
     /**
-     * Version of the class. Augment this whenever the class type of a config entry field changes, or the context of a
-     * field becomes incompatible.
+     * Version of the class. Augment this whenever the class type of a config entry field changes, or the context of a field becomes
+     * incompatible.
      */
     public static final long serialVersionUID = 200L;
 
@@ -128,7 +127,6 @@ public class ShadeConfig<T extends Serializable> extends BaseConfig<T> {
         // handler.setFormatter( ShadeConfig.formatter );
         // Logger.getGlobal().silence().addHandler( handler );
     }
-
 
     /**
      * Create a new Config instance.

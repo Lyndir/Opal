@@ -24,19 +24,15 @@ import org.apache.wicket.model.StringResourceModel;
 
 
 /**
- * <h2>{@link DefaultLabel}<br>
- * <sub>Text field that uses a default value if its model object is <code>null</code>.</sub></h2>
+ * <h2>{@link DefaultLabel}<br> <sub>Text field that uses a default value if its model object is <code>null</code>.</sub></h2>
  *
- * <p>
- * <i>Jan 21, 2010</i>
- * </p>
+ * <p> <i>Jan 21, 2010</i> </p>
  *
  * @author lhunath
  */
 public class DefaultLabel extends Label {
 
     private IModel<String> defaultValue = null;
-
 
     /**
      * Create a new {@link DefaultLabel} instance.

@@ -23,16 +23,11 @@ import org.apache.wicket.protocol.http.WebResponse;
 
 
 /**
- * <h2>{@link RedirectResponseException}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link RedirectResponseException}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * [description / usage].
- * </p>
+ * <p> [description / usage]. </p>
  *
- * <p>
- * <i>Nov 18, 2008</i>
- * </p>
+ * <p> <i>Nov 18, 2008</i> </p>
  *
  * @author lhunath
  */
@@ -51,8 +46,7 @@ public class RedirectResponseException extends AbstractRestartResponseException 
 
         Response r = rc.getResponse();
         if (!(r instanceof WebResponse))
-            throw new IllegalStateException(
-                    "This exception can only be thrown when wicket is processing an http request" );
+            throw new IllegalStateException( "This exception can only be thrown when wicket is processing an http request" );
 
         // abort any further response processing
         rc.setRequestTarget( target );

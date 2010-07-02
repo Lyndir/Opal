@@ -16,10 +16,7 @@
 package com.lyndir.lhunath.lib.math;
 
 /**
- * <i>Vec3 - A three dimensional vector.</i><br>
- * <br>
- * The Vec3 object represents a three dimensional vector in a space.<br>
- * <br>
+ * <i>Vec3 - A three dimensional vector.</i><br> <br> The Vec3 object represents a three dimensional vector in a space.<br> <br>
  *
  * @author lhunath
  */
@@ -29,7 +26,6 @@ public class Vec3 extends Vec2 {
      * Z-Axis coordinate.
      */
     private double z;
-
 
     /**
      * Convert a planar vector (2D) into a spatial vector (3D).
@@ -217,10 +213,8 @@ public class Vec3 extends Vec2 {
     }
 
     /**
-     * Multiply this vector with another vector using the cross product.<br>
-     * <br>
-     * <i>The length of the cross product of this vector with a given one is the area of the parallelogram having this
-     * and the given vector as sides.<br>
+     * Multiply this vector with another vector using the cross product.<br> <br> <i>The length of the cross product of this vector with a
+     * given one is the area of the parallelogram having this and the given vector as sides.<br>
      *
      * <pre>
      *          _______
@@ -228,17 +222,12 @@ public class Vec3 extends Vec2 {
      *           \______\     and the vertical side as another. Their cross product returns the area.
      * </pre>
      *
-     * <br>
-     * The resulting vector is perpendicular to both vectors. The direction it will be pointing in is theoretically
-     * undefined, but defined by convention as: <q>An easy way to compute the direction of the resultant vector is the
-     * "right-hand rule." If the coordinate system is right-handed, one simply points the forefinger in the direction of
-     * the first operand and the middle finger in the direction of the second operand. Then, the resultant vector is
-     * coming out of the thumb.</q> <br>
-     * <br>
-     * It will thus always be perpendicular to the plane formed by the given vectors (this is the same plane as formed
-     * by the above parallelogram).<br>
-     * This means that the product of the resultant of a cross product with a third gives the volume of the
-     * parallelepiped thus formed.</i>
+     * <br> The resulting vector is perpendicular to both vectors. The direction it will be pointing in is theoretically undefined, but
+     * defined by convention as: <q>An easy way to compute the direction of the resultant vector is the "right-hand rule." If the coordinate
+     * system is right-handed, one simply points the forefinger in the direction of the first operand and the middle finger in the direction
+     * of the second operand. Then, the resultant vector is coming out of the thumb.</q> <br> <br> It will thus always be perpendicular to
+     * the plane formed by the given vectors (this is the same plane as formed by the above parallelogram).<br> This means that the product
+     * of the resultant of a cross product with a third gives the volume of the parallelepiped thus formed.</i>
      *
      * @param vector The vector with which this vector must be multiplied.
      *
@@ -249,18 +238,14 @@ public class Vec3 extends Vec2 {
         if (vector == null)
             return new Vec3();
 
-        return new Vec3( getY() * vector.getZ() - getZ() * vector.getY(),
-                         getZ() * vector.getX() - getX() * vector.getZ(),
+        return new Vec3( getY() * vector.getZ() - getZ() * vector.getY(), getZ() * vector.getX() - getX() * vector.getZ(),
                          getX() * vector.getY() - getY() * vector.getX() );
     }
 
     /**
-     * Multiply this vector with another vector using the dot product.<br>
-     * <br>
-     * <i>The dot product returns the length of the projection of this vector on the given one.<br>
-     * As a result of this; the dot product of two perpendicular vectors is 0.<br>
-     * <br>
-     * Any vector in a plane, multiplied in this way with the plane's normal; will therefore result in 0.</i>
+     * Multiply this vector with another vector using the dot product.<br> <br> <i>The dot product returns the length of the projection of
+     * this vector on the given one.<br> As a result of this; the dot product of two perpendicular vectors is 0.<br> <br> Any vector in a
+     * plane, multiplied in this way with the plane's normal; will therefore result in 0.</i>
      *
      * @param vector The vector with which this vector must be multiplied.
      *
@@ -291,9 +276,7 @@ public class Vec3 extends Vec2 {
 
         if (obj == this)
             return true;
-        return obj instanceof Vec3 && getX() == ((Vec3) obj).getX() && getY() == ((Vec3) obj).getY()
-               && getZ() == ((Vec3) obj).getZ();
-
+        return obj instanceof Vec3 && getX() == ((Vec3) obj).getX() && getY() == ((Vec3) obj).getY() && getZ() == ((Vec3) obj).getZ();
     }
 
     /**

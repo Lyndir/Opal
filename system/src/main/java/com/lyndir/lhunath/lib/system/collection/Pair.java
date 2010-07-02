@@ -20,28 +20,20 @@ import java.util.Map;
 
 
 /**
- * <h2>{@link Pair}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link Pair}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * [description / usage].
- * </p>
+ * <p> [description / usage]. </p>
  *
  * @author mbillemo
- * @param <K>
- * The class of the keys.
- * @param <V>
- * The class of the values.
+ * @param <K> The class of the keys.
+ * @param <V> The class of the values.
  *
- * <p>
- * <i>Apr 17, 2008</i>
- * </p>
+ * <p> <i>Apr 17, 2008</i> </p>
  */
 public class Pair<K, V> implements Map.Entry<K, V>, Serializable {
 
     private final K key;
     private V value;
-
 
     /**
      * Create a new {@link Pair} instance.
@@ -77,7 +69,7 @@ public class Pair<K, V> implements Map.Entry<K, V>, Serializable {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings({"ParameterHidesMemberVariable"})
+    @SuppressWarnings({ "ParameterHidesMemberVariable" })
     public V setValue(final V value) {
 
         V old = this.value;
@@ -85,5 +77,4 @@ public class Pair<K, V> implements Map.Entry<K, V>, Serializable {
 
         return old;
     }
-
 }

@@ -16,22 +16,18 @@
 
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.*;
+import com.lyndir.lhunath.lib.math.Vec2;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-
-import com.lyndir.lhunath.lib.math.Vec2;
+import javax.swing.*;
 
 
 /**
- * <h2>{@link GLabel}<br>
- * <sub>A rounded replacement for the default {@link JLabel}.</sub></h2>
+ * <h2>{@link GLabel}<br> <sub>A rounded replacement for the default {@link JLabel}.</sub></h2>
  *
- * <p>
- * <i>Apr 9, 2008</i>
- * </p>
+ * <p> <i>Apr 9, 2008</i> </p>
  *
  * @author mbillemo
  */
@@ -44,7 +40,6 @@ public class GLabel extends JLabel {
     protected int padding;
     private GradientPaint gradientBase;
     private int arc = 5;
-
 
     /**
      * Create a new {@link GLabel} instance.
@@ -201,12 +196,10 @@ public class GLabel extends JLabel {
         super.paintComponent( g );
     }
 
-
     private class GLabelMouseAdapter extends MouseAdapter {
 
         private static final int CLICK_PADDING = 2;
         private int originalPadding;
-
 
         GLabelMouseAdapter() {
 

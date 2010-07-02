@@ -21,12 +21,9 @@ import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 
 
 /**
- * <h2>{@link RedirectToPageException}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link RedirectToPageException}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * <i>Feb 5, 2010</i>
- * </p>
+ * <p> <i>Feb 5, 2010</i> </p>
  *
  * @author lhunath
  */
@@ -55,8 +52,7 @@ public class RedirectToPageException extends AbstractRestartResponseException {
             throw new IllegalStateException( "This exception can only be thrown from within request processing cycle" );
         Response r = rc.getResponse();
         if (!(r instanceof WebResponse))
-            throw new IllegalStateException(
-                    "This exception can only be thrown when wicket is processing an http request" );
+            throw new IllegalStateException( "This exception can only be thrown when wicket is processing an http request" );
 
         // abort any further response processing
         rc.setRequestTarget( new RedirectRequestTarget( rc.urlFor( pageClass, parameters ).toString() ) );

@@ -15,24 +15,18 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
 import java.awt.*;
 import java.util.EventObject;
 import java.util.List;
 
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-
 
 /**
- * <h2>{@link Plugin}<br>
- * <sub>A pluggable module that provides a feature to the shade application.</sub></h2>
+ * <h2>{@link Plugin}<br> <sub>A pluggable module that provides a feature to the shade application.</sub></h2>
  *
- * <p>
- * [description / usage].
- * </p>
+ * <p> [description / usage]. </p>
  *
- * <p>
- * <i>Jun 14, 2008</i>
- * </p>
+ * <p> <i>Jun 14, 2008</i> </p>
  *
  * @author mbillemo
  */
@@ -43,19 +37,18 @@ public interface Plugin {
      *
      * @param e The UI event that was triggered in the shade interface and was not handled by the application.
      *
-     * @return <code>true</code> if the given event is handled by this plugin; <code>false</code> if not (so that other
-     *         plugins can try to handle the event).
+     * @return <code>true</code> if the given event is handled by this plugin; <code>false</code> if not (so that other plugins can try to
+     *         handle the event).
      */
     boolean handleEvent(EventObject e);
 
     /**
      * Handle the given application request; if supported by this plugin.
      *
-     * @param element The application request that was triggered in the shade interface and was not handled by the
-     *                application.
+     * @param element The application request that was triggered in the shade interface and was not handled by the application.
      *
-     * @return <code>true</code> if the given request is handled by this plugin; <code>false</code> if not (so that
-     *         other plugins can try to handle the event).
+     * @return <code>true</code> if the given request is handled by this plugin; <code>false</code> if not (so that other plugins can try to
+     *         handle the event).
      */
     boolean handleRequest(Request element);
 
@@ -84,5 +77,4 @@ public interface Plugin {
      * @return The name of this plugin.
      */
     String getName();
-
 }

@@ -21,14 +21,8 @@ import java.awt.geom.Point2D;
 
 
 /**
- * <i>Vec2 - A two dimensional vector.</i><br>
- * <br>
- * <p>
- * TODO: Optimize by caching calculations (much like Angle)?
- * </p>
- * <br>
- * The Vec2 object represents a two dimensional vector in a plane.<br>
- * <br>
+ * <i>Vec2 - A two dimensional vector.</i><br> <br> <p> TODO: Optimize by caching calculations (much like Angle)? </p> <br> The Vec2 object
+ * represents a two dimensional vector in a plane.<br> <br>
  *
  * @author lhunath
  */
@@ -43,7 +37,6 @@ public class Vec2 implements Cloneable {
      * Y-Axis coordinate.
      */
     private double y;
-
 
     /**
      * Create a new two dimensional vector in the origin.
@@ -135,9 +128,8 @@ public class Vec2 implements Cloneable {
     }
 
     /**
-     * Calculate the squared length of the vector.<br>
-     * <br>
-     * It is advised to use this function in favor of {@link #length()} due to performance.
+     * Calculate the squared length of the vector.<br> <br> It is advised to use this function in favor of {@link #length()} due to
+     * performance.
      *
      * @return The squared length of this vector.
      */
@@ -248,8 +240,7 @@ public class Vec2 implements Cloneable {
     }
 
     /**
-     * Inverse the direction of this vector.<br>
-     * This is basically the same as {@link #multiply(double)} with -1.
+     * Inverse the direction of this vector.<br> This is basically the same as {@link #multiply(double)} with -1.
      *
      * @return A reference to the this vector, after it has been updated.
      */
@@ -259,10 +250,8 @@ public class Vec2 implements Cloneable {
     }
 
     /**
-     * Multiply this vector with another vector using the cross product.<br>
-     * <br>
-     * <i>The length of the cross product of this vector with a given one is the area of the parallelogram having this
-     * and the given vector as sides.</i>
+     * Multiply this vector with another vector using the cross product.<br> <br> <i>The length of the cross product of this vector with a
+     * given one is the area of the parallelogram having this and the given vector as sides.</i>
      *
      * <pre>
      *    _______
@@ -283,9 +272,8 @@ public class Vec2 implements Cloneable {
     }
 
     /**
-     * Multiply this vector with another vector using the dot product. <i>The dot product returns the length of the
-     * projection of this vector on the given one.<br>
-     * As a result of this; the dot product of two perpendicular vectors is 0.</i>
+     * Multiply this vector with another vector using the dot product. <i>The dot product returns the length of the projection of this
+     * vector on the given one.<br> As a result of this; the dot product of two perpendicular vectors is 0.</i>
      *
      * @param vector The vector with which this vector will be multiplied.
      *
@@ -326,7 +314,6 @@ public class Vec2 implements Cloneable {
         if (obj == this)
             return true;
         return obj instanceof Vec2 && getX() == ((Vec2) obj).getX() && getY() == ((Vec2) obj).getY();
-
     }
 
     /**

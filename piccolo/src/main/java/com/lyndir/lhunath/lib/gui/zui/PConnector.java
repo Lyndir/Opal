@@ -15,17 +15,17 @@
  */
 package com.lyndir.lhunath.lib.gui.zui;
 
+import com.lyndir.lhunath.lib.math.Path;
+import edu.umd.cs.piccolo.PLayer;
+import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.util.PBounds;
+import edu.umd.cs.piccolo.util.PPaintContext;
 import java.awt.*;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import com.lyndir.lhunath.lib.math.Path;
-import edu.umd.cs.piccolo.PLayer;
-import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * TODO: PConnector<br>
@@ -172,8 +172,7 @@ public class PConnector extends PNode {
         if (!getOffset().equals( newOffset ))
             setOffset( newOffset );
 
-        return setBounds( new Rectangle( -stroke / 2 - 2, -stroke / 2 - 2, path.getSize().x + stroke + 4,
-                                         path.getSize().y + stroke + 4 ) );
+        return setBounds( new Rectangle( -stroke / 2 - 2, -stroke / 2 - 2, path.getSize().x + stroke + 4, path.getSize().y + stroke + 4 ) );
     }
 
     /**
@@ -197,14 +196,13 @@ public class PConnector extends PNode {
         dstY -= getYOffset();
 
         if (src.getPaint() instanceof Color && dst.getPaint() instanceof Color)
-            g2.setPaint( new GradientPaint( new Point2D.Double( srcX, srcY ), (Color) src.getPaint(),
-                                            new Point2D.Double( dstX, dstY ), (Color) dst.getPaint() ) );
+            g2.setPaint( new GradientPaint( new Point2D.Double( srcX, srcY ), (Color) src.getPaint(), new Point2D.Double( dstX, dstY ),
+                                            (Color) dst.getPaint() ) );
         else
             g2.setPaint( getPaint() );
 
         CubicCurve2D curve = new CubicCurve2D.Double( srcX, srcY, srcHorizontal? (srcX + dstX) / 2: srcX,
-                                                      srcHorizontal? srcY: (srcY + dstY) / 2,
-                                                      dstHorizontal? (srcX + dstX) / 2: dstX,
+                                                      srcHorizontal? srcY: (srcY + dstY) / 2, dstHorizontal? (srcX + dstX) / 2: dstX,
                                                       dstHorizontal? dstY: (srcY + dstY) / 2, dstX, dstY );
 
         g2.clip( getBounds() );
@@ -213,7 +211,7 @@ public class PConnector extends PNode {
         g2.dispose();
     }
 
-    @SuppressWarnings({"unchecked", "RawUseOfParameterizedType"})
+    @SuppressWarnings({ "unchecked", "RawUseOfParameterizedType" })
     private void moveConnectorsToFront() {
 
         boolean sane = true;

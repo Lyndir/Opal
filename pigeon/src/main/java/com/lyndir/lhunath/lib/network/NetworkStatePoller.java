@@ -15,10 +15,9 @@
  */
 package com.lyndir.lhunath.lib.network;
 
+import com.lyndir.lhunath.lib.system.Poller;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-
-import com.lyndir.lhunath.lib.system.Poller;
 
 
 /**
@@ -26,8 +25,8 @@ import com.lyndir.lhunath.lib.system.Poller;
  *
  * @author lhunath
  */
-public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketChannel> implements
-        NetworkServerStateListener, NetworkConnectionStateListener {
+public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketChannel> implements NetworkServerStateListener,
+        NetworkConnectionStateListener {
 
     /**
      * Create a new {@link NetworkStatePoller} instance. Register it on the network you're interested in.
@@ -82,7 +81,6 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
 
         offer( State.CLOSED, channel );
     }
-
 
     /**
      * States that a network socket can progress into.

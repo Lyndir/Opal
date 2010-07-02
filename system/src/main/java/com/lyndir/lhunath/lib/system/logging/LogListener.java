@@ -19,10 +19,8 @@ import java.util.logging.LogRecord;
 
 
 /**
- * <i>LogListener - A listener for log messages.</i><br>
- * <br>
- * Implement this if you wish to be notified of log messages that are being dispatched.<br>
- * <br>
+ * <i>LogListener - A listener for log messages.</i><br> <br> Implement this if you wish to be notified of log messages that are being
+ * dispatched.<br> <br>
  *
  * @author lhunath
  */

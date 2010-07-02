@@ -15,19 +15,15 @@
  */
 package com.lyndir.lhunath.lib.math;
 
+import com.lyndir.lhunath.lib.system.util.Utils;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import com.lyndir.lhunath.lib.system.util.Utils;
-
 
 /**
- * <i>{@link Version} - A class that represents version numbers in a comparable structure.</i><br>
- * <br>
- * Versions delimited by dots can be represented by this class. It assumes that the earlier the number in the version
- * string, the higher its importance is.<br>
- * You can use this version class to compare versions painlessly.<br>
- * <br>
+ * <i>{@link Version} - A class that represents version numbers in a comparable structure.</i><br> <br> Versions delimited by dots can be
+ * represented by this class. It assumes that the earlier the number in the version string, the higher its importance is.<br> You can use
+ * this version class to compare versions painlessly.<br> <br>
  *
  * @author lhunath
  */
@@ -37,7 +33,6 @@ public class Version implements Comparable<Version>, Serializable {
 
     private String version = null;
     private String[] tags = null;
-
 
     /**
      * Create a new {@link Version} instance.
@@ -75,8 +70,8 @@ public class Version implements Comparable<Version>, Serializable {
     }
 
     /**
-     * @return The major version number (the first number in the version). <code>null</code> if the first tag is not a
-     *         number or there are no tags.
+     * @return The major version number (the first number in the version). <code>null</code> if the first tag is not a number or there are
+     *         no tags.
      */
     public Integer getMajor() {
 

@@ -22,12 +22,9 @@ import org.apache.wicket.RequestCycle;
 
 
 /**
- * <h2>{@link PageState}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link PageState}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * <i>Mar 21, 2010</i>
- * </p>
+ * <p> <i>Mar 21, 2010</i> </p>
  *
  * @author lhunath
  */
@@ -37,7 +34,6 @@ public abstract class PageState implements ComponentState {
 
     private final Class<? extends Page> pageClass;
 
-
     /**
      * @param pageClass The page that we're activating when the state is right.
      */
@@ -46,13 +42,21 @@ public abstract class PageState implements ComponentState {
         this.pageClass = pageClass;
     }
 
+    @Override
+    public boolean isActivatable() {
+
+        Class<? extends Page> responsePageClass = RequestCycle.get().getResponsePageClass();
+        return responsePageClass != null;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean isActive() {
 
-        return pageClass.isAssignableFrom( RequestCycle.get().getResponsePageClass() );
+        Class<? extends Page> responsePageClass = RequestCycle.get().getResponsePageClass();
+        return pageClass.isAssignableFrom( responsePageClass );
     }
 
     /**

@@ -15,25 +15,20 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.*;
-
 import com.lyndir.lhunath.lib.system.UIUtils;
 import com.lyndir.lhunath.lib.system.logging.Logger;
+import javax.swing.*;
 
 
 /**
- * <i>{@link ToolTipButton} - An extension to the default tooltip panel that assumes a button for content.</i><br>
- * <br>
- * If you plan on showing the tooltip for a button, you may prefer this more specialized class. It currently does not
- * implement special behavior.<br>
- * <br>
+ * <i>{@link ToolTipButton} - An extension to the default tooltip panel that assumes a button for content.</i><br> <br> If you plan on
+ * showing the tooltip for a button, you may prefer this more specialized class. It currently does not implement special behavior.<br> <br>
  *
  * @author lhunath
  */
 public class ToolTipButton extends ToolTip {
 
     private static final Logger logger = Logger.get( ToolTipButton.class );
-
 
     /**
      * Create a new {@link ToolTipButton} instance.

@@ -1,12 +1,11 @@
 package com.lyndir.lhunath.lib.gui.template.shade;
 
-import javax.swing.*;
+import com.lyndir.lhunath.lib.system.BaseConfig;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import com.lyndir.lhunath.lib.system.BaseConfig;
-import com.lyndir.lhunath.lib.system.logging.Logger;
+import javax.swing.*;
 
 
 /**
@@ -20,7 +19,6 @@ public class ConsoleThread extends Thread {
 
     private final InputStreamReader in;
     private final JTextArea console;
-
 
     /**
      * Create a new {@link ConsoleThread} instance.

@@ -15,13 +15,12 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 
 /**
- * <i>LabelCellRenderer - A cell renderer for lists and combo boxes that sets up a {@link JLabel} for its cells.</i><br>
- * <br>
+ * <i>LabelCellRenderer - A cell renderer for lists and combo boxes that sets up a {@link JLabel} for its cells.</i><br> <br>
  *
  * @author lhunath
  */

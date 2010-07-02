@@ -16,16 +16,12 @@
 package com.lyndir.lhunath.lib.system.localization;
 
 /**
- * <h2>{@link ValueEnum}<br>
- * <sub>An interface for {@link Enum}s whose keys provide a simple value.</sub></h2>
+ * <h2>{@link ValueEnum}<br> <sub>An interface for {@link Enum}s whose keys provide a simple value.</sub></h2>
  *
- * <p>
- * <i>Mar 29, 2009</i>
- * </p>
+ * <p> <i>Mar 29, 2009</i> </p>
  *
  * @author lhunath
- * @param <T>
- * The type of values provided by this {@link Enum} class.
+ * @param <T> The type of values provided by this {@link Enum} class.
  */
 public interface ValueEnum<T> {
 

@@ -19,10 +19,9 @@ import java.util.*;
 
 
 /**
- * TODO: {@link BasicRequest}<br>
- * <br>
- * Any class that wishes to extend the amount of requests available should call {@link #register(Request[])} in a static
- * block to make its requests available to {@link BasicRequest}'s utility methods such as {@link #getAutoruns()}.
+ * TODO: {@link BasicRequest}<br> <br> Any class that wishes to extend the amount of requests available should call {@link
+ * #register(Request[])} in a static block to make its requests available to {@link BasicRequest}'s utility methods such as {@link
+ * #getAutoruns()}.
  *
  * @author lhunath
  */
@@ -54,8 +53,8 @@ public enum BasicRequest implements Request {
     THEME( -1 ),
 
     /**
-     * Convert the application to use fullscreen or windowed mode depending on the config.<br>
-     * This setting is not set to auto because it is called manually at application invocation.
+     * Convert the application to use fullscreen or windowed mode depending on the config.<br> This setting is not set to auto because it is
+     * called manually at application invocation.
      */
     FULLSCREEN( -1 ),
 
@@ -66,12 +65,11 @@ public enum BasicRequest implements Request {
 
     private final int autorunPriority;
 
-
     /**
      * Create a new {@link BasicRequest} instance.
      *
-     * @param autorunPriority Lower or equal to zero: No auto-running.<br>
-     *                        Larger than zero: Ascending order in which the request will be processed.
+     * @param autorunPriority Lower or equal to zero: No auto-running.<br> Larger than zero: Ascending order in which the request will be
+     *                        processed.
      */
     BasicRequest(int autorunPriority) {
 
@@ -96,9 +94,7 @@ public enum BasicRequest implements Request {
         return name();
     }
 
-
     private static final List<Request> requests = new ArrayList<Request>();
-
 
     /**
      * Retrieve a list of addons to run on autorun actions. The list will be sorted by addon priority.
@@ -124,7 +120,6 @@ public enum BasicRequest implements Request {
 
         requests.addAll( Arrays.asList( newRequests ) );
     }
-
 
     static {
         register( values() );

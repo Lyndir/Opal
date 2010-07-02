@@ -15,22 +15,15 @@
  */
 package com.lyndir.lhunath.lib.system;
 
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 
-import com.lyndir.lhunath.lib.system.logging.Logger;
-
 
 /**
- * <h2>{@link TeeThread} - [in short] (TODO).</h2>
- * <p>
- * [description / usage].
- * </p>
- * <p>
- * <i>Dec 16, 2007</i>
- * </p>
+ * <h2>{@link TeeThread} - [in short] (TODO).</h2> <p> [description / usage]. </p> <p> <i>Dec 16, 2007</i> </p>
  *
  * @author mbillemo
  */
@@ -40,7 +33,6 @@ public class TeeThread extends Thread {
 
     private final InputStream source;
     private final OutputStream[] destinations;
-
 
     /**
      * Create a new {@link TeeThread} instance.
@@ -70,7 +62,6 @@ public class TeeThread extends Thread {
             while ((bytesRead = source.read( buf )) > 0)
                 for (final OutputStream destination : destinations)
                     destination.write( buf, 0, bytesRead );
-
         }
         catch (IOException e) {
             if (!(source instanceof PipedInputStream))

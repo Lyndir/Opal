@@ -65,9 +65,9 @@ public abstract class ObjectUtils {
             return array;
 
         // TODO: Optimize using array copying.
-        List<T> elementList = new ArrayList<T>(array.length + elements.length);
-        elementList.addAll( Arrays.asList(array) );
-        elementList.addAll( Arrays.asList(elements ));
+        List<T> elementList = new ArrayList<T>( array.length + elements.length );
+        elementList.addAll( Arrays.asList( array ) );
+        elementList.addAll( Arrays.asList( elements ) );
         return elementList.toArray( array );
     }
 }

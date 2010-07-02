@@ -19,10 +19,8 @@ import java.util.logging.Level;
 
 
 /**
- * <i>ConsoleFormatter - A log output formatter which keeps the format of {@link LogFormatter} as it is.</i><br>
- * <br>
- * It just adds a carriage-return new-line at the end of log lines, fit for most console output.<br>
- * <br>
+ * <i>ConsoleFormatter - A log output formatter which keeps the format of {@link LogFormatter} as it is.</i><br> <br> It just adds a
+ * carriage-return new-line at the end of log lines, fit for most console output.<br> <br>
  *
  * @author lhunath
  */
@@ -53,5 +51,4 @@ public class ConsoleFormatter extends LogFormatter {
         levelColor.put( Level.FINER, "" );
         levelColor.put( Level.FINEST, "" );
     }
-
 }

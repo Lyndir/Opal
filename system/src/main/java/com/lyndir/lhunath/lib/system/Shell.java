@@ -15,18 +15,16 @@
  */
 package com.lyndir.lhunath.lib.system;
 
+import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
+import com.lyndir.lhunath.lib.system.logging.Logger;
+import com.lyndir.lhunath.lib.system.util.Utils;
 import java.io.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
-import com.lyndir.lhunath.lib.system.logging.Logger;
-import com.lyndir.lhunath.lib.system.util.Utils;
-
 
 /**
- * <i>Shell - A convenience class to execute processes for different purposes.</i><br>
- * <br>
+ * <i>Shell - A convenience class to execute processes for different purposes.</i><br> <br>
  *
  * @author lhunath
  */
@@ -35,7 +33,6 @@ public class Shell {
     static final Logger logger = Logger.get( Shell.class );
 
     protected static final int BUFFER_SIZE = 4096;
-
 
     /**
      * Run an application or shell script and redirect its stdout and stderr to our stdout and stderr.
@@ -83,9 +80,7 @@ public class Shell {
     }
 
     /**
-     * Run an application or shell script and redirect its stdout and stderr to the given output streams. The call will
-     * not block.<br>
-     * <br>
+     * Run an application or shell script and redirect its stdout and stderr to the given output streams. The call will not block.<br> <br>
      * Output and error streams will be closed, except if they are the application's standard output or standard error.
      *
      * @param out     The stream to write the process' standard output into.
@@ -128,7 +123,7 @@ public class Shell {
         }
 
         try {
-            @SuppressWarnings({"CallToRuntimeExec"})
+            @SuppressWarnings({ "CallToRuntimeExec" })
             final Process process = Runtime.getRuntime().exec( execCmd, null, currDir );
 
             new Thread( cmd[0] + " stdout" ) {

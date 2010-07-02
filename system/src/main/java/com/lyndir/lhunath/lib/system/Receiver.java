@@ -16,14 +16,10 @@
 package com.lyndir.lhunath.lib.system;
 
 /**
- * <i>{@link Receiver} - [in short] (TODO).</i><br>
- * <br>
- * [description / usage].<br>
- * <br>
+ * <i>{@link Receiver} - [in short] (TODO).</i><br> <br> [description / usage].<br> <br>
  *
  * @author lhunath
- * @param <E>
- * The type of event that can be processed.
+ * @param <E> The type of event that can be processed.
  */
 public interface Receiver<E> {
 

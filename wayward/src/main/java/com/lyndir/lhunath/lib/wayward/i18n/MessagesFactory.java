@@ -74,7 +74,8 @@ public abstract class MessagesFactory {
         // Create a localization interface proxy.
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Class<?>[] proxyInterfaces = { localizationInterface, Serializable.class };
-        return localizationInterface.cast( Proxy.newProxyInstance( classLoader, proxyInterfaces, new MessagesInvocationHandler( baseClass ) ) );
+        return localizationInterface.cast(
+                Proxy.newProxyInstance( classLoader, proxyInterfaces, new MessagesInvocationHandler( baseClass ) ) );
     }
 
     /**
@@ -169,7 +170,8 @@ public abstract class MessagesFactory {
                                 for (final KeyMatch match : annotation.value()) {
                                     logger.dbg( "With match: %s, ", match );
 
-                                    if (match.ifNum() == Double.parseDouble( arg.toString() ) || match.ifString().equals( arg ) || match.ifClass().equals( arg ))
+                                    if (match.ifNum() == Double.parseDouble( arg.toString() ) || match.ifString().equals( arg )
+                                        || match.ifClass().equals( arg ))
                                         appendKey( keyBuilder, match.key() );
                                     else if (!match.elseKey().equals( KeyMatch.STRING_UNSET ))
                                         appendKey( keyBuilder, match.elseKey() );
@@ -238,6 +240,7 @@ public abstract class MessagesFactory {
                         return MessageFormat.format( resourceBundle.getString( key ), valueArgs.toArray() );
                     }
                     catch (MissingResourceException e) {
+                        //noinspection ThrowInsideCatchBlockWhichIgnoresCaughtException
                         throw new MissingResourceException( String.format( "Missing resource for: %s, at key: %s.", baseClass, e.getKey() ),
                                                             baseClass.getCanonicalName(), e.getKey() );
                     }

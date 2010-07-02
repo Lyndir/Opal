@@ -15,23 +15,20 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.*;
+import com.lyndir.lhunath.lib.system.UIUtils;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import com.lyndir.lhunath.lib.system.UIUtils;
-import com.lyndir.lhunath.lib.system.logging.Logger;
+import javax.swing.*;
 
 
 /**
- * <i>Splash - Create and show a splash screen for your application.</i><br>
- * <br>
- * This splash screen captures the screen and paints an image on top of the capture. This allows for splash screens with
- * transparent or translucent images.<br>
- * The splash screen normally disappears after a given delay, but you can also call the {@link #dispose()} method to get
- * rid of it as soon as your application's com.lyndir.lhunath.lib.gui *
+ * <i>Splash - Create and show a splash screen for your application.</i><br> <br> This splash screen captures the screen and paints an image
+ * on top of the capture. This allows for splash screens with transparent or translucent images.<br> The splash screen normally disappears
+ * after a given delay, but you can also call the {@link #dispose()} method to get rid of it as soon as your application's
+ * com.lyndir.lhunath.lib.gui *
  *
  * @author lhunath
  */
@@ -46,7 +43,6 @@ public class Splash extends JWindow {
     private BufferedImage background;
     private long startTime;
     private long endTime;
-
 
     private Splash(Icon initial, final Icon icon) {
 
@@ -70,8 +66,8 @@ public class Splash extends JWindow {
     }
 
     /**
-     * @param initial The icon to show in the splash screen in the beginning of the transition or <code>null</code> to not
-     *                use a transition.
+     * @param initial The icon to show in the splash screen in the beginning of the transition or <code>null</code> to not use a
+     *                transition.
      * @param icon    The icon to show in the splash screen at the end of the transition.
      */
     private void setIcons(final Icon initial, final Icon icon) {
@@ -83,8 +79,7 @@ public class Splash extends JWindow {
     }
 
     /**
-     * Update the content of this splash screen by taking a new snapshot of the background.<br>
-     * Hides and unhides the window.
+     * Update the content of this splash screen by taking a new snapshot of the background.<br> Hides and unhides the window.
      */
     public void update() {
 
@@ -118,8 +113,7 @@ public class Splash extends JWindow {
         g2.drawImage( background, 0, 0, null );
 
         if (startTime > 0 && initial != null) {
-            float alpha = (float) Math
-                    .max( 0, (endTime - System.currentTimeMillis()) / (double) (endTime - startTime) );
+            float alpha = (float) Math.max( 0, (endTime - System.currentTimeMillis()) / (double) (endTime - startTime) );
             g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, alpha ) );
             initial.paintIcon( this, g2, 0, 0 );
 

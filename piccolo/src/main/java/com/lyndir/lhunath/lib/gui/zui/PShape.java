@@ -15,11 +15,11 @@
  */
 package com.lyndir.lhunath.lib.gui.zui;
 
+import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.util.PPaintContext;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * TODO: {@link PShape}<br>
@@ -92,7 +92,6 @@ public abstract class PShape extends PNode {
     public boolean setBounds(final double x, final double y, final double w, final double h) {
 
         return super.setBounds( x, y, w, h ) && scaleShape( x, y, w, h );
-
     }
 
     /**

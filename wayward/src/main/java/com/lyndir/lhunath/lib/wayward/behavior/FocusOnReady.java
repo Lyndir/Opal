@@ -4,9 +4,9 @@
  * Copyright 2006-2009 Lin.k N.V. All rights reserved.
  * Lin.k N.V. proprietary/confidential. Use is subject to license terms.
  */
-package net.link.safeonline.wicket.behaviour;
+package com.lyndir.lhunath.lib.wayward.behavior;
 
-import java.util.regex.Pattern;
+import com.lyndir.lhunath.lib.wayward.js.JSUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AbstractHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderContributor;
@@ -24,8 +24,6 @@ import org.apache.wicket.markup.html.IHeaderResponse;
  */
 public class FocusOnReady extends AbstractHeaderContributor {
 
-    static final Pattern QUOTE_PATTERN = Pattern.compile( "'" );
-
     private IHeaderContributor headerContributor;
 
     @Override
@@ -39,7 +37,7 @@ public class FocusOnReady extends AbstractHeaderContributor {
 
                 if (component.isVisibleInHierarchy()) {
                     String id = component.getMarkupId( true );
-                    response.renderOnDomReadyJavascript( String.format( "document.getElementById('%s').focus()", QUOTE_PATTERN.matcher( id ).replaceAll( "\\'" ) ) );
+                    response.renderOnDomReadyJavascript( String.format( "document.getElementById('%s').focus()", JSUtils.toString( id ) ) );
                 }
             }
         };

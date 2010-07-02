@@ -16,7 +16,6 @@
 package com.lyndir.lhunath.lib.wayward.component;
 
 import java.util.Locale;
-
 import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.link.Link;
@@ -26,17 +25,12 @@ import org.apache.wicket.model.Model;
 
 
 /**
- * <h2>{@link LanguageLink}<br>
- * <sub>A link that will change the language of the session.</sub></h2>
+ * <h2>{@link LanguageLink}<br> <sub>A link that will change the language of the session.</sub></h2>
  *
- * <p>
- * The tag this component is bound to will get an "active" CSS class set if this component represents the language
- * currently in use by the session.
- * </p>
+ * <p> The tag this component is bound to will get an "active" CSS class set if this component represents the language currently in use by
+ * the session. </p>
  *
- * <p>
- * <i>Jan 20, 2010</i>
- * </p>
+ * <p> <i>Jan 20, 2010</i> </p>
  *
  * @author lhunath
  */

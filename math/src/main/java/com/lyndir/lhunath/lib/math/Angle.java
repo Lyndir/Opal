@@ -16,14 +16,10 @@
 package com.lyndir.lhunath.lib.math;
 
 /**
- * <i>Angle - Any angle; available in degrees or radians.</i><br>
- * <br>
- * The Angle object handles angles in their dual form (degree / radian). After an Angle object has been created (either
- * through degrees or radians); both degree and radial form are available at all times.<br>
- * <br>
- * Both the retrieval of and mathematical functions applied upon these angles are optimized for repeated retrieval by
- * caching of all calculated results.<br>
- * <br>
+ * <i>Angle - Any angle; available in degrees or radians.</i><br> <br> The Angle object handles angles in their dual form (degree / radian).
+ * After an Angle object has been created (either through degrees or radians); both degree and radial form are available at all times.<br>
+ * <br> Both the retrieval of and mathematical functions applied upon these angles are optimized for repeated retrieval by caching of all
+ * calculated results.<br> <br>
  *
  * @author lhunath
  */
@@ -33,7 +29,6 @@ public class Angle {
 
     private float degrees, radians, sin, cos;
     private boolean hasDegrees, hasRadians, hasSin, hasCos;
-
 
     /**
      * Create a new Angle, specifying degrees.
@@ -156,5 +151,4 @@ public class Angle {
 
         hasDegrees = hasRadians = hasSin = hasCos = false;
     }
-
 }

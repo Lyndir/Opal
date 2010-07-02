@@ -1,12 +1,12 @@
 package com.jgoodies.uif_lite.component;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 
 /**
- * A very light version of the JGoodies <code>UIFactory</code> class. It consists only of static methods to create
- * frequently used components.
+ * A very light version of the JGoodies <code>UIFactory</code> class. It consists only of static methods to create frequently used
+ * components.
  *
  * @author Karsten Lentzsch
  * @version $Revision: 1.2 $
@@ -18,12 +18,10 @@ public final class Factory {
         // Overrides default constructor; prevents instantiation.
     }
 
-
     /**
      * Defines the margin used in toolbar buttons.
      */
     private static final Insets TOOLBAR_BUTTON_MARGIN = new Insets( 1, 1, 1, 1 );
-
 
     /**
      * Creates and answers a <code>JScrollPane</code> that has an empty border.
@@ -40,8 +38,8 @@ public final class Factory {
     }
 
     /**
-     * Creates and returns a <code>JSplitPane</code> that has empty borders. Useful to avoid duplicate decorations, for
-     * example if the split pane is contained by other components that already provide a border.
+     * Creates and returns a <code>JSplitPane</code> that has empty borders. Useful to avoid duplicate decorations, for example if the split
+     * pane is contained by other components that already provide a border.
      *
      * @param orientation  the split pane's orientation: horizontal or vertical
      * @param comp1        the top/left component
@@ -50,8 +48,7 @@ public final class Factory {
      *
      * @return a split panes that has an empty border
      */
-    public static JSplitPane createStrippedSplitPane(int orientation, final Component comp1, Component comp2,
-                                                     final double resizeWeight) {
+    public static JSplitPane createStrippedSplitPane(int orientation, final Component comp1, Component comp2, final double resizeWeight) {
 
         JSplitPane split = UIFSplitPane.createStrippedSplitPane( orientation, comp1, comp2 );
         split.setResizeWeight( resizeWeight );
@@ -59,9 +56,8 @@ public final class Factory {
     }
 
     /**
-     * Creates and answers an <code>AbstractButton</code> configured for use in a JToolBar.
-     * <p>
-     * Superceded by ToolBarButton from the JGoodies UI framework.
+     * Creates and answers an <code>AbstractButton</code> configured for use in a JToolBar. <p> Superceded by ToolBarButton from the
+     * JGoodies UI framework.
      *
      * @param action The action to perform when the button gets clicked.
      *
@@ -77,5 +73,4 @@ public final class Factory {
         button.setText( "" );
         return button;
     }
-
 }

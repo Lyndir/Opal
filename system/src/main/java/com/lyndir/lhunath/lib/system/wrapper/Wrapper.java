@@ -24,19 +24,14 @@ import java.util.Map;
 
 
 /**
- * <i>{@link Wrapper} - An abstract class that assists in writing wrapper classes for other classes that may or may not
- * be available.</i><br>
- * <br>
- * This class provides utility methods that facilitate access to classes that may or may not be available at compile
- * time or runtime.<br>
- * <br>
- * The idea is that any code that wishes to use the class that may or may not be available uses proxy methods on a proxy
- * class instead. This proxy class implements this {@link Wrapper} and all methods that the wrapped class provides. Upon
- * each call to these proxied methods, the proxy class should call {@link #invoke(String, Class[], Object...)} with the
- * name of the method and parameter data. This call will return the intended result if the wrapper class is available or
- * fail with an {@link UnsupportedOperationException} if the wrapper class is not available or accessible.<br>
- * <br>
- * It is REQUIRED for any implementing classes to provide this bit of code that initializes the wrapper:
+ * <i>{@link Wrapper} - An abstract class that assists in writing wrapper classes for other classes that may or may not be
+ * available.</i><br> <br> This class provides utility methods that facilitate access to classes that may or may not be available at compile
+ * time or runtime.<br> <br> The idea is that any code that wishes to use the class that may or may not be available uses proxy methods on a
+ * proxy class instead. This proxy class implements this {@link Wrapper} and all methods that the wrapped class provides. Upon each call to
+ * these proxied methods, the proxy class should call {@link #invoke(String, Class[], Object...)} with the name of the method and parameter
+ * data. This call will return the intended result if the wrapper class is available or fail with an {@link UnsupportedOperationException}
+ * if the wrapper class is not available or accessible.<br> <br> It is REQUIRED for any implementing classes to provide this bit of code
+ * that initializes the wrapper:
  *
  * <pre>
  * static {
@@ -52,7 +47,6 @@ public abstract class Wrapper {
 
     protected static boolean classNotFound;
     protected static final Map<Class<? extends Wrapper>, Class<?>> wrappedClasses = new HashMap<Class<? extends Wrapper>, Class<?>>();
-
 
     /**
      * Construct an instance of this wrapper's wrapped class.
@@ -108,8 +102,7 @@ public abstract class Wrapper {
                 throw new ClassNotFoundException( "Wrapper Class unavailable." );
 
             if (!wrappedClasses.containsKey( proxyClass ))
-                throw new IllegalStateException(
-                        "You did not initialize the wrapper for " + proxyClass.getName() + " yet!" );
+                throw new IllegalStateException( "You did not initialize the wrapper for " + proxyClass.getName() + " yet!" );
 
             return wrappedClasses.get( proxyClass );
         }
@@ -220,8 +213,7 @@ public abstract class Wrapper {
      * @param proxyEnum        The enum wrapper instance.
      * @param wrappedEnumClass The wrapped enum class.
      *
-     * @return The instance of the wrapped enum class that has the same value as that of the given enum wrapper
-     *         instance.
+     * @return The instance of the wrapped enum class that has the same value as that of the given enum wrapper instance.
      */
     protected static Object mapEnumValue(final Object proxyEnum, final Class<?> wrappedEnumClass) {
 
@@ -232,9 +224,7 @@ public abstract class Wrapper {
         return null;
     }
 
-
     protected final Object wrappedInstance;
-
 
     /**
      * @param wrappedInstance The instance of the class that should be proxied by this wrapper.

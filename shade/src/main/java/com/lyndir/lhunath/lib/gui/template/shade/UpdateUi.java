@@ -15,19 +15,15 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
+import com.lyndir.lhunath.lib.system.Locale;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import com.lyndir.lhunath.lib.system.Locale;
-import com.lyndir.lhunath.lib.system.logging.Logger;
-
 
 /**
- * <i>{@link UpdateUi} - [in short] (TODO).</i><br>
- * <br>
- * [description / usage].<br>
- * <br>
+ * <i>{@link UpdateUi} - [in short] (TODO).</i><br> <br> [description / usage].<br> <br>
  *
  * @author lhunath
  */
@@ -38,7 +34,6 @@ public class UpdateUi extends Thread {
     private final BlockingQueue<UpdateRequest> requests = new ArrayBlockingQueue<UpdateRequest>( 20 );
     private final AbstractUi ui;
     private UpdateRequest currentRequest;
-
 
     /**
      * Create a new {@link UpdateUi} instance.
@@ -113,12 +108,10 @@ public class UpdateUi extends Thread {
         }
     }
 
-
     private class UpdateRequest {
 
         private final Request request;
         private final Throwable cause;
-
 
         /**
          * Create a new {@link UpdateRequest} instance.
@@ -161,7 +154,6 @@ public class UpdateUi extends Thread {
             if (obj == this)
                 return true;
             return obj instanceof UpdateRequest && request.equals( ((UpdateRequest) obj).request );
-
         }
 
         /**

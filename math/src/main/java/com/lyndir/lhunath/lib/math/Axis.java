@@ -16,10 +16,7 @@
 package com.lyndir.lhunath.lib.math;
 
 /**
- * <i>Axis - An axis enumeration.</i><br>
- * <br>
- * Available axises are: X, Y, Z.<br>
- * <br>
+ * <i>Axis - An axis enumeration.</i><br> <br> Available axises are: X, Y, Z.<br> <br>
  *
  * @author lhunath
  */
@@ -46,7 +43,6 @@ public enum Axis {
     Z( new Vec3( 0, 0, 1 ) );
 
     private final Vec3 vector;
-
 
     Axis(final Vec3 vector) {
 

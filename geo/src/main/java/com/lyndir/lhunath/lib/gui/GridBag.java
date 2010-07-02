@@ -15,19 +15,15 @@
  */
 package com.lyndir.lhunath.lib.gui;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-
 import com.lyndir.lhunath.lib.math.Vec2;
 import com.lyndir.lhunath.lib.system.UIUtils;
+import java.awt.*;
+import java.util.ArrayList;
+import javax.swing.*;
 
 
 /**
- * <i>{@link GridBag} - [in short] (TODO).</i><br>
- * <br>
- * [description / usage].<br>
- * <br>
+ * <i>{@link GridBag} - [in short] (TODO).</i><br> <br> [description / usage].<br> <br>
  *
  * @author lhunath
  */
@@ -38,7 +34,6 @@ public class GridBag extends GridBagConstraints {
     private Font font;
     private Color back;
     private Color front;
-
 
     /**
      * Create a new {@link GridBag} instance.
@@ -51,8 +46,7 @@ public class GridBag extends GridBagConstraints {
     /**
      * Create a new {@link GridBag} instance.
      *
-     * @param component The container that will have the grid applied to it and the components {@link #add(Component...)}ed to
-     *                  it.
+     * @param component The container that will have the grid applied to it and the components {@link #add(Component...)}ed to it.
      */
     public GridBag(final JComponent component) {
 
@@ -255,9 +249,7 @@ public class GridBag extends GridBagConstraints {
     }
 
     /**
-     * Move to the specified grid location.<br>
-     * <br>
-     * This method will set the active grid width and height to one.
+     * Move to the specified grid location.<br> <br> This method will set the active grid width and height to one.
      *
      * @param x The horizontal grid location (0-based).
      * @param y The vertical grid location (0-based).
@@ -270,9 +262,7 @@ public class GridBag extends GridBagConstraints {
     }
 
     /**
-     * Move to the specified grid location.<br>
-     * <br>
-     * This method will set the active grid height to one.
+     * Move to the specified grid location.<br> <br> This method will set the active grid height to one.
      *
      * @param x The horizontal grid location (0-based).
      * @param y The vertical grid location (0-based).
@@ -307,10 +297,8 @@ public class GridBag extends GridBagConstraints {
     }
 
     /**
-     * Move to the next grid in this line.<br>
-     * The amount of horizontal grids this operation will skip depends on the initial width of the active grid.<br>
-     * <br>
-     * This method will set the active grid width and height to one.
+     * Move to the next grid in this line.<br> The amount of horizontal grids this operation will skip depends on the initial width of the
+     * active grid.<br> <br> This method will set the active grid width and height to one.
      *
      * @return The {@link GridBag}.
      */
@@ -320,8 +308,8 @@ public class GridBag extends GridBagConstraints {
     }
 
     /**
-     * Move to the next grid in this line.<br>
-     * The amount of horizontal grids this operation will skip depends on the initial width of the active grid.
+     * Move to the next grid in this line.<br> The amount of horizontal grids this operation will skip depends on the initial width of the
+     * active grid.
      *
      * @param w The width to assign to the new grid.
      * @param h The height to assign to the new grid.
@@ -339,10 +327,8 @@ public class GridBag extends GridBagConstraints {
     }
 
     /**
-     * Move to the the first available grid in the next line.<br>
-     * The amount of vertical grids this operation will descend depends on the initial height of the active grid.<br>
-     * <br>
-     * This method will set the active grid width and height to one.
+     * Move to the the first available grid in the next line.<br> The amount of vertical grids this operation will descend depends on the
+     * initial height of the active grid.<br> <br> This method will set the active grid width and height to one.
      *
      * @return The {@link GridBag}.
      */
@@ -352,8 +338,8 @@ public class GridBag extends GridBagConstraints {
     }
 
     /**
-     * Move to the the first available grid in the next line.<br>
-     * The amount of vertical grids this operation will descend depends on the initial height of the active grid.
+     * Move to the the first available grid in the next line.<br> The amount of vertical grids this operation will descend depends on the
+     * initial height of the active grid.
      *
      * @param w The width to assign to the new grid.
      * @param h The height to assign to the new grid.

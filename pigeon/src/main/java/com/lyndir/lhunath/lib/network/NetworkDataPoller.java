@@ -15,10 +15,9 @@
  */
 package com.lyndir.lhunath.lib.network;
 
+import com.lyndir.lhunath.lib.system.Poller;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-
-import com.lyndir.lhunath.lib.system.Poller;
 
 
 /**

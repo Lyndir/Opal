@@ -23,14 +23,7 @@ import java.awt.event.MouseMotionListener;
 
 
 /**
- * <i>TrayIcon - </i><br>
- * <br>
- * <p>
- * TODO: Document this class further.
- * </p>
- * <br>
- * The TrayIcon object ...<br>
- * <br>
+ * <i>TrayIcon - </i><br> <br> <p> TODO: Document this class further. </p> <br> The TrayIcon object ...<br> <br>
  *
  * @author mbillemo
  */
@@ -40,7 +33,6 @@ public class TrayIcon extends Wrapper {
         initWrapper( TrayIcon.class, "java.awt.TrayIcon" );
     }
 
-
     /**
      * Create a new {@link TrayIcon} instance.
      *
@@ -48,7 +40,7 @@ public class TrayIcon extends Wrapper {
      */
     public TrayIcon(final Image image) {
 
-        this( construct( TrayIcon.class, new Class[] {Image.class}, image ) );
+        this( construct( TrayIcon.class, new Class[] { Image.class }, image ) );
     }
 
     /**
@@ -59,7 +51,7 @@ public class TrayIcon extends Wrapper {
      */
     public TrayIcon(final Image image, final String tooltip) {
 
-        this( construct( TrayIcon.class, new Class[] {Image.class, String.class}, image, tooltip ) );
+        this( construct( TrayIcon.class, new Class[] { Image.class, String.class }, image, tooltip ) );
     }
 
     /**
@@ -71,8 +63,7 @@ public class TrayIcon extends Wrapper {
      */
     public TrayIcon(final Image image, final String tooltip, final PopupMenu popup) {
 
-        this( construct( TrayIcon.class, new Class[] {Image.class, String.class, PopupMenu.class}, image, tooltip,
-                         popup ) );
+        this( construct( TrayIcon.class, new Class[] { Image.class, String.class, PopupMenu.class }, image, tooltip, popup ) );
     }
 
     /**
@@ -88,7 +79,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized void addActionListener(final ActionListener listener) {
 
-        invoke( "addActionListener", new Class[] {ActionListener.class}, listener );
+        invoke( "addActionListener", new Class[] { ActionListener.class }, listener );
     }
 
     /**
@@ -96,7 +87,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized void addMouseListener(final MouseListener listener) {
 
-        invoke( "addMouseListener", new Class[] {MouseListener.class}, listener );
+        invoke( "addMouseListener", new Class[] { MouseListener.class }, listener );
     }
 
     /**
@@ -104,7 +95,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized void addMouseMotionListener(final MouseMotionListener listener) {
 
-        invoke( "addMouseMotionListener", new Class[] {MouseMotionListener.class}, listener );
+        invoke( "addMouseMotionListener", new Class[] { MouseMotionListener.class }, listener );
     }
 
     /**
@@ -117,7 +108,7 @@ public class TrayIcon extends Wrapper {
     public void displayMessage(final String caption, final String text, final MessageType messageType) {
 
         Class<?> wrappedEnumClass = getClass( "java.awt.TrayIcon$MessageType" );
-        invoke( "displayMessage", new Class[] {String.class, String.class, wrappedEnumClass}, caption, text,
+        invoke( "displayMessage", new Class[] { String.class, String.class, wrappedEnumClass }, caption, text,
                 mapEnumValue( messageType, wrappedEnumClass ) );
     }
 
@@ -198,7 +189,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized void removeActionListener(final ActionListener listener) {
 
-        invoke( "removeActionListener", new Class[] {ActionListener.class}, listener );
+        invoke( "removeActionListener", new Class[] { ActionListener.class }, listener );
     }
 
     /**
@@ -206,7 +197,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized void removeMouseListener(final MouseListener listener) {
 
-        invoke( "removeMouseListener", new Class[] {MouseListener.class}, listener );
+        invoke( "removeMouseListener", new Class[] { MouseListener.class }, listener );
     }
 
     /**
@@ -214,7 +205,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized void removeMouseMotionListener(final MouseMotionListener listener) {
 
-        invoke( "removeMouseMotionListener", new Class[] {MouseMotionListener.class}, listener );
+        invoke( "removeMouseMotionListener", new Class[] { MouseMotionListener.class }, listener );
     }
 
     /**
@@ -222,7 +213,7 @@ public class TrayIcon extends Wrapper {
      */
     public void setActionCommand(final String command) {
 
-        invoke( "setActionCommand", new Class[] {String.class}, command );
+        invoke( "setActionCommand", new Class[] { String.class }, command );
     }
 
     /**
@@ -230,7 +221,7 @@ public class TrayIcon extends Wrapper {
      */
     public void setImage(final Image image) {
 
-        invoke( "setImage", new Class[] {Image.class}, image );
+        invoke( "setImage", new Class[] { Image.class }, image );
     }
 
     /**
@@ -238,7 +229,7 @@ public class TrayIcon extends Wrapper {
      */
     public void setImageAutoSize(final boolean autosize) {
 
-        invoke( "setImageAutoSize", new Class[] {boolean.class}, autosize );
+        invoke( "setImageAutoSize", new Class[] { boolean.class }, autosize );
     }
 
     /**
@@ -246,7 +237,7 @@ public class TrayIcon extends Wrapper {
      */
     public void setPopupMenu(final PopupMenu popup) {
 
-        invoke( "setPopupMenu", new Class[] {PopupMenu.class}, popup );
+        invoke( "setPopupMenu", new Class[] { PopupMenu.class }, popup );
     }
 
     /**
@@ -254,17 +245,13 @@ public class TrayIcon extends Wrapper {
      */
     public void setToolTip(final String tooltip) {
 
-        invoke( "setToolTip", new Class[] {String.class}, tooltip );
+        invoke( "setToolTip", new Class[] { String.class }, tooltip );
     }
 
-
     /**
-     * <h2>{@link MessageType}<br>
-     * <sub>Types of message notifications to show by the tray icon.</sub></h2>
+     * <h2>{@link MessageType}<br> <sub>Types of message notifications to show by the tray icon.</sub></h2>
      *
-     * <p>
-     * <i>Apr 9, 2008</i>
-     * </p>
+     * <p> <i>Apr 9, 2008</i> </p>
      *
      * @author mbillemo
      */

@@ -15,40 +15,33 @@
  */
 package com.lyndir.lhunath.lib.system.dummy;
 
-import javax.swing.*;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.MouseInputListener;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
-import com.lyndir.lhunath.lib.system.logging.Logger;
+import javax.swing.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.MouseInputListener;
 
 
 /**
- * <h2>{@link LoggingEventHandler}<br>
- * <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link LoggingEventHandler}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p>
- * [description / usage].
- * </p>
+ * <p> [description / usage]. </p>
  *
- * <p>
- * <i>Apr 19, 2008</i>
- * </p>
+ * <p> <i>Apr 19, 2008</i> </p>
  *
  * @author mbillemo
  */
-public class LoggingEventHandler implements ComponentListener, ContainerListener, FocusListener, AncestorListener,
-        HierarchyBoundsListener, HierarchyListener, WindowFocusListener, WindowListener, WindowStateListener,
-        PropertyChangeListener, MouseInputListener, MouseWheelListener, KeyListener, InputMethodListener {
+public class LoggingEventHandler implements ComponentListener, ContainerListener, FocusListener, AncestorListener, HierarchyBoundsListener,
+        HierarchyListener, WindowFocusListener, WindowListener, WindowStateListener, PropertyChangeListener, MouseInputListener,
+        MouseWheelListener, KeyListener, InputMethodListener {
 
     private static final Logger logger = Logger.get( LoggingEventHandler.class );
 
     private final String name;
-
 
     /**
      * Watch all non-input events that can occur on the given component.
@@ -246,8 +239,7 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void windowGainedFocus(final WindowEvent event) {
 
-        logger.dbg( "%s: window focused [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
-                    event.getNewState() );
+        logger.dbg( "%s: window focused [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
     /**
@@ -256,8 +248,7 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void windowLostFocus(final WindowEvent event) {
 
-        logger.dbg( "%s: window unfocused [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
-                    event.getNewState() );
+        logger.dbg( "%s: window unfocused [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
     /**
@@ -266,8 +257,7 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void windowActivated(final WindowEvent event) {
 
-        logger.dbg( "%s: window activated [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
-                    event.getNewState() );
+        logger.dbg( "%s: window activated [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
     /**
@@ -276,8 +266,7 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void windowClosed(final WindowEvent event) {
 
-        logger.dbg( "%s: window closed [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
-                    event.getNewState() );
+        logger.dbg( "%s: window closed [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
     /**
@@ -286,8 +275,7 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void windowClosing(final WindowEvent event) {
 
-        logger.dbg( "%s: window closing [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
-                    event.getNewState() );
+        logger.dbg( "%s: window closing [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
     /**
@@ -316,8 +304,7 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void windowIconified(final WindowEvent event) {
 
-        logger.dbg( "%s: window iconified [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
-                    event.getNewState() );
+        logger.dbg( "%s: window iconified [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
     /**
@@ -326,8 +313,7 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void windowOpened(final WindowEvent event) {
 
-        logger.dbg( "%s: window opened [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
-                    event.getNewState() );
+        logger.dbg( "%s: window opened [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
     /**
@@ -336,8 +322,7 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void windowStateChanged(final WindowEvent event) {
 
-        logger.dbg( "%s: window state [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
-                    event.getNewState() );
+        logger.dbg( "%s: window state [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
     /**
@@ -356,9 +341,9 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void mouseClicked(final MouseEvent event) {
 
-        logger.dbg( "%s: clicked [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                    name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
-                    event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
+        logger.dbg( "%s: clicked [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
+                    event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
+                    System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -367,9 +352,9 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void mouseEntered(final MouseEvent event) {
 
-        logger.dbg( "%s: entered [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                    name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
-                    event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
+        logger.dbg( "%s: entered [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
+                    event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
+                    System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -378,9 +363,9 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void mouseExited(final MouseEvent event) {
 
-        logger.dbg( "%s: exited [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                    name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
-                    event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
+        logger.dbg( "%s: exited [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
+                    event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
+                    System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -389,9 +374,9 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void mousePressed(final MouseEvent event) {
 
-        logger.dbg( "%s: pressed [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                    name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
-                    event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
+        logger.dbg( "%s: pressed [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
+                    event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
+                    System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -400,9 +385,9 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void mouseReleased(final MouseEvent event) {
 
-        logger.dbg( "%s: released [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                    name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
-                    event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
+        logger.dbg( "%s: released [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
+                    event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
+                    System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -411,9 +396,9 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void mouseDragged(final MouseEvent event) {
 
-        logger.dbg( "%s: dragged [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]",
-                    name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
-                    event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
+        logger.dbg( "%s: dragged [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
+                    event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
+                    System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -422,9 +407,9 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void mouseMoved(final MouseEvent event) {
 
-        logger.dbg( "%s: moved [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name,
-                    event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
-                    event.getClickCount(), event.getX(), event.getY(), System.currentTimeMillis() - event.getWhen() );
+        logger.dbg( "%s: moved [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
+                    event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
+                    System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -435,9 +420,9 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
 
         logger.dbg(
                 "%s: wheeled [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), ScrollType: %d, ScrollAmount: %d, ScrollRotation: %d, Time: %dms ago]",
-                name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(),
-                event.getClickCount(), event.getX(), event.getY(), event.getScrollType(), event.getScrollAmount(),
-                event.getWheelRotation(), System.currentTimeMillis() - event.getWhen() );
+                name, event.getID(), event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(),
+                event.getY(), event.getScrollType(), event.getScrollAmount(), event.getWheelRotation(),
+                System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -446,9 +431,8 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void keyPressed(final KeyEvent event) {
 
-        logger.dbg( "%s: key pressed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(),
-                    event.getKeyChar(), event.getKeyCode(), event.getKeyLocation(),
-                    System.currentTimeMillis() - event.getWhen() );
+        logger.dbg( "%s: key pressed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(), event.getKeyChar(),
+                    event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -457,9 +441,8 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void keyReleased(final KeyEvent event) {
 
-        logger.dbg( "%s: key released [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(),
-                    event.getKeyChar(), event.getKeyCode(), event.getKeyLocation(),
-                    System.currentTimeMillis() - event.getWhen() );
+        logger.dbg( "%s: key released [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(), event.getKeyChar(),
+                    event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -468,9 +451,8 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void keyTyped(final KeyEvent event) {
 
-        logger.dbg( "%s: key typed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(),
-                    event.getKeyChar(), event.getKeyCode(), event.getKeyLocation(),
-                    System.currentTimeMillis() - event.getWhen() );
+        logger.dbg( "%s: key typed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(), event.getKeyChar(),
+                    event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -479,8 +461,8 @@ public class LoggingEventHandler implements ComponentListener, ContainerListener
     @Override
     public void caretPositionChanged(final InputMethodEvent event) {
 
-        logger.dbg( "%s: caret [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", name, event.getID(),
-                    event.getCommittedCharacterCount(), event.getText(), System.currentTimeMillis() - event.getWhen() );
+        logger.dbg( "%s: caret [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", name, event.getID(), event.getCommittedCharacterCount(),
+                    event.getText(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**

@@ -22,17 +22,11 @@ import java.lang.annotation.Target;
 
 
 /**
- * <h2>{@link XInjectTag}<br>
- * <sub>Inject the name of the tag that's being loaded.</sub></h2>
+ * <h2>{@link XInjectTag}<br> <sub>Inject the name of the tag that's being loaded.</sub></h2>
  *
- * <p>
- * This annotation marks the field in which the name of the current child tag whose data is being injected will be
- * inserted.
- * </p>
+ * <p> This annotation marks the field in which the name of the current child tag whose data is being injected will be inserted. </p>
  *
- * <p>
- * <i>Dec 16, 2008</i>
- * </p>
+ * <p> <i>Dec 16, 2008</i> </p>
  *
  * @author lhunath
  */
