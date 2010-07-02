@@ -47,7 +47,7 @@ public class ComponentStateListener implements IComponentOnBeforeRenderListener 
     public void onBeforeRender(final Component component) {
 
         for (final ComponentState componentState : componentStates)
-            if (componentState.isNecessary() && !componentState.isActive()) {
+            if (componentState.isActivatable() && componentState.isNecessary() && !componentState.isActive()) {
                 componentState.activate();
                 break;
             }

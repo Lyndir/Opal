@@ -30,6 +30,11 @@ public interface ComponentState {
     boolean isNecessary();
 
     /**
+     * @return <code>true</code>: If the component can be activated in the current request cycle.
+     */
+    boolean isActivatable();
+
+    /**
      * @return <code>true</code>: The component that handles this {@link ComponentState} is being presented to the user.
      */
     boolean isActive();

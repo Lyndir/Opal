@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.sourceforge.net/"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="en" lang="en">
+
+    <head>
+        <wicket:head>
+            <style type="text/css">
+                .AjaxDigger {
+                    border-collapse:    collapse;
+                }
+                .AjaxDigger td {
+                    width:              33%;
+                    vertical-align:     top;
+                }
+                .AjaxDigger ul {
+                    margin:             0;
+                    padding:            0;
+
+                    list-style:         none;
+                }
+                .AjaxDigger li {
+                    display:            block;
+                    margin:             0;
+                    padding:            0;
+                }
+                .AjaxDigger li a {
+                    display:            block;
+                    margin:             0;
+                    padding:            1em;
+                }
+            </style>
+        </wicket:head>
+    </head>
+
+    <body>
+        <wicket:panel>
+
+            <table class="AjaxDigger">
+                <tr>
+                    <td wicket:id="levels">
+                        <ul>
+                            <li class="head" wicket:id="heading"></li>
+                            <li class="item" wicket:id="items">
+                                <a wicket:id="link" class="select">
+                                <wicket:container wicket:id="selectItem" />
+                                </a>
+
+                                <div class="expanded">
+                                    <wicket:container wicket:id="expandedItem" />
+                                </div>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+
+        </wicket:panel>
+    </body>
+
+</html>

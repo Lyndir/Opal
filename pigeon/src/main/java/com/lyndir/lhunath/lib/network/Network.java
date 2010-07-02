@@ -50,7 +50,7 @@ public class Network implements Runnable {
     private static final int WRITE_BUFFER = 1024;
     private static final int WRITE_QUEUE_BUFFER = 1024 * 10;
 
-    private Thread networkThread = null;
+    private Thread networkThread;
 
     private final List<NetworkDataListener> dataListeners;
     private final List<NetworkServerStateListener> serverStateListeners;
@@ -63,7 +63,7 @@ public class Network implements Runnable {
     private final Map<SocketChannel, Object> writeQueueLocks = Collections.synchronizedMap( new HashMap<SocketChannel, Object>() );
 
     protected final Object selectorGuard = new Object();
-    protected Selector selector = null;
+    protected Selector selector; // TODO: Synchronize all access to/of the selector.
 
     // Collections that are only modified by the networking thread.
     private final Map<SocketChannel, ByteBuffer> readBuffers = new HashMap<SocketChannel, ByteBuffer>();
@@ -175,7 +175,8 @@ public class Network implements Runnable {
      *
      * @return The channel that will be listening for connections.
      *
-     * @throws IOException
+     * @throws IOException If the socket is already bound, the bind address is unavailable or the operation failed or was denied for some
+     *                     other reason.
      */
     public ServerSocketChannel bind(final int port, final SSLEngine sslEngine)
             throws IOException {
@@ -194,7 +195,8 @@ public class Network implements Runnable {
      *
      * @return The channel that will be listening for connections.
      *
-     * @throws IOException
+     * @throws IOException If the socket is already bound, the bind address is unavailable or the operation failed or was denied for some
+     *                     other reason.
      */
     public ServerSocketChannel bind(final InetAddress address, final int port, final SSLEngine sslEngine)
             throws IOException {
@@ -213,7 +215,8 @@ public class Network implements Runnable {
      *
      * @return The channel that will be listening for connections.
      *
-     * @throws IOException
+     * @throws IOException If the socket is already bound, the bind address is unavailable or the operation failed or was denied for some
+     *                     other reason.
      */
     public ServerSocketChannel bind(final String hostname, final int port, final SSLEngine sslEngine)
             throws IOException {
@@ -231,7 +234,8 @@ public class Network implements Runnable {
      *
      * @return The channel that will be listening for connections.
      *
-     * @throws IOException
+     * @throws IOException If the socket is already bound, the bind address is unavailable or the operation failed or was denied for some
+     *                     other reason.
      */
     public ServerSocketChannel bind(final InetSocketAddress socketAddress, final SSLEngine sslEngine)
             throws IOException {
@@ -265,7 +269,7 @@ public class Network implements Runnable {
      *
      * @param serverChannel The channel where a connection can be accepted.
      *
-     * @throws IOException
+     * @throws IOException If the channel is in an unexpected state or the connection couldn't be accepted for some other reason.
      */
     private void accept(final ServerSocketChannel serverChannel)
             throws IOException {
@@ -303,7 +307,8 @@ public class Network implements Runnable {
      *
      * @return The channel on which the connection runs.
      *
-     * @throws IOException
+     * @throws IOException If a channel couldn't be assigned and configured or a connection couldn't be initiated (or completed in blocking
+     *                     mode).
      */
     public SocketChannel connect(final String hostname, final int port, final SSLEngine sslEngine)
             throws IOException {
@@ -322,7 +327,8 @@ public class Network implements Runnable {
      *
      * @return The channel on which the connection runs.
      *
-     * @throws IOException
+     * @throws IOException If a channel couldn't be assigned and configured or a connection couldn't be initiated (or completed in blocking
+     *                     mode).
      */
     public SocketChannel connect(final InetAddress hostAddress, final int port, final SSLEngine sslEngine)
             throws IOException {
@@ -340,7 +346,8 @@ public class Network implements Runnable {
      *
      * @return The channel on which the connection runs.
      *
-     * @throws IOException
+     * @throws IOException If a channel couldn't be assigned and configured or a connection couldn't be initiated (or completed in blocking
+     *                     mode).
      */
     public SocketChannel connect(final InetSocketAddress socketAddress, final SSLEngine sslEngine)
             throws IOException {
@@ -376,7 +383,7 @@ public class Network implements Runnable {
      *
      * @param socketChannel The channel on which the connection happening.
      *
-     * @throws IOException
+     * @throws IOException If the connection couldn't be established. (Channel in an unexpected state or connection timeout, ..)
      */
     private void finishConnect(final SocketChannel socketChannel)
             throws IOException {
@@ -398,7 +405,7 @@ public class Network implements Runnable {
      *
      * @param socketChannel The socket to read input from.
      *
-     * @throws IOException
+     * @throws IOException If the channel socket couldn't be read from.
      */
     private void read(final SocketChannel socketChannel)
             throws IOException {
@@ -458,9 +465,9 @@ public class Network implements Runnable {
      *
      * @return The (possibly new) dataBuffer.
      *
-     * @throws IOException
+     * @throws IOException If the read buffer couldn't be unwrapped by the SSL Engine.
      */
-    private ByteBuffer toApplicationData(ByteBuffer readBuffer, final SocketChannel socketChannel, ByteBuffer dataBuffer)
+    private ByteBuffer toApplicationData(final ByteBuffer readBuffer, final SocketChannel socketChannel, final ByteBuffer dataBuffer)
             throws IOException {
 
         ByteBuffer newDataBuffer = dataBuffer;
@@ -537,7 +544,7 @@ public class Network implements Runnable {
      *
      * @param socketChannel The channel to write data to.
      *
-     * @throws IOException
+     * @throws IOException If the channel socket couldn't be written to.
      */
     private void write(final SocketChannel socketChannel)
             throws IOException {
@@ -593,9 +600,9 @@ public class Network implements Runnable {
      *
      * @return The (possibly new) writeBuffer.
      *
-     * @throws IOException
+     * @throws IOException If the data buffer couldn't be wrapped by the SSL engine.
      */
-    private ByteBuffer fromApplicationData(ByteBuffer dataBuffer, final SocketChannel socketChannel, ByteBuffer writeBuffer)
+    private ByteBuffer fromApplicationData(final ByteBuffer dataBuffer, final SocketChannel socketChannel, final ByteBuffer writeBuffer)
             throws IOException {
 
         ByteBuffer newWriteBuffer = writeBuffer;
@@ -675,7 +682,7 @@ public class Network implements Runnable {
      * @param resetByPeer   <code>true</code> if the channel was closed by the remote party (inbound will be closed). <code>false</code> if
      *                      the channel is closed by us (outbound will be closed).
      *
-     * @throws IOException
+     * @throws IOException When the channel couldn't be closed cleanly.
      */
     private void closeChannel(final SocketChannel socketChannel, final boolean resetByPeer)
             throws IOException {
@@ -896,7 +903,7 @@ public class Network implements Runnable {
             while (true) {
                 if (!channel.isOpen())
                     // There's no point, the connection is already gone.
-                    continue;
+                    break;
 
                 HandshakeStatus handshakeStatus = engine.getHandshakeStatus();
                 switch (handshakeStatus) {
@@ -946,7 +953,7 @@ public class Network implements Runnable {
     /**
      * Process data left in network read/write buffers.
      *
-     * @throws IOException
+     * @throws IOException If any I/O errors occur during reading from and writing to channel sockets or performing SSL wrapping.
      */
     private void processBuffers()
             throws IOException {
@@ -992,7 +999,8 @@ public class Network implements Runnable {
     /**
      * Close all channels that requested closure.
      *
-     * @throws IOException
+     * @throws IOException When a channel couldn't be closed cleanly.  The operation was aborted and subsequent channels haven't been
+     *                     closed.
      */
     private void processClosure()
             throws IOException {
@@ -1220,13 +1228,13 @@ public class Network implements Runnable {
                 catch (IOException e) {
                     // TODO: Easily DoS-able.
                     if (--errorThrottle <= 0)
-                    // We're receiving a mass of errors.
-                    // Throttle down retries by one second longer for each new error we receive.
-                    {
-                        wait( -1000L * errorThrottle );
-                    }
+                        // We're receiving a mass of errors.
+                        // Throttle down retries by one second longer for each new error we receive.
+                        synchronized (this) {
+                            wait( -1000L * errorThrottle );
+                        }
 
-                    throw logger.err( e, "Network error occurred" ).toError();
+                    logger.err( e, "Network error occurred" );
                 }
             }
             catch (InterruptedException e) {

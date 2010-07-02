@@ -42,13 +42,21 @@ public abstract class PageState implements ComponentState {
         this.pageClass = pageClass;
     }
 
+    @Override
+    public boolean isActivatable() {
+
+        Class<? extends Page> responsePageClass = RequestCycle.get().getResponsePageClass();
+        return responsePageClass != null;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean isActive() {
 
-        return pageClass.isAssignableFrom( RequestCycle.get().getResponsePageClass() );
+        Class<? extends Page> responsePageClass = RequestCycle.get().getResponsePageClass();
+        return pageClass.isAssignableFrom( responsePageClass );
     }
 
     /**
