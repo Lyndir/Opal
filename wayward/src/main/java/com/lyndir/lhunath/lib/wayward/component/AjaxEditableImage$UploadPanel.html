@@ -5,6 +5,9 @@
     <head>
         <wicket:head>
             <style type="text/css">
+                .AjaxEditableImageUploadPanel {
+                    text-align:         center;
+                }
             </style>
         </wicket:head>
     </head>
@@ -12,7 +15,7 @@
     <body>
         <wicket:panel>
 
-            <form wicket:id="form">
+            <form wicket:id="form" class="AjaxEditableImageUploadPanel">
                 <input wicket:id="file" type="file" />
             </form>
 

@@ -5,7 +5,7 @@
     <head>
         <wicket:head>
             <style type="text/css">
-                .EditableImage .link {
+                .AjaxEditableImage .link {
                     cursor:             pointer;
                 }
             </style>
@@ -15,10 +15,11 @@
     <body>
         <wicket:panel>
 
-            <div class="EditableImage">
+            <span class="AjaxEditableImage">
                 <img wicket:id="image" />
+                <img wicket:id="noimage" />
                 <div wicket:id="upload"></div>
-            </div>
+            </span>
 
         </wicket:panel>
     </body>

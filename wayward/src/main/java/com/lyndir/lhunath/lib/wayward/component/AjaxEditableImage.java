@@ -1,10 +1,12 @@
 package com.lyndir.lhunath.lib.wayward.component;
 
+import com.lyndir.lhunath.lib.wayward.resources.Resources;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.PackageResource;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
@@ -17,13 +19,13 @@ import org.apache.wicket.util.string.AppendingStringBuffer;
 
 
 /**
- * <h2>{@link EditableImage}<br> <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link AjaxEditableImage}<br> <sub>[in short] (TODO).</sub></h2>
  *
  * <p> <i>05 25, 2010</i> </p>
  *
  * @author lhunath
  */
-public abstract class EditableImage extends Panel implements ModalWindow.WindowClosedCallback {
+public abstract class AjaxEditableImage extends Panel implements ModalWindow.WindowClosedCallback {
 
     private final IModel<FileUpload> file = new LoadableDetachableModel<FileUpload>() {
         @Override
@@ -38,7 +40,7 @@ public abstract class EditableImage extends Panel implements ModalWindow.WindowC
     /**
      * @param id The wicket ID of the component.
      */
-    protected EditableImage(final String id) {
+    protected AjaxEditableImage(final String id) {
 
         super( id );
         setOutputMarkupId( true );
@@ -47,9 +49,15 @@ public abstract class EditableImage extends Panel implements ModalWindow.WindowC
             @Override
             protected byte[] getImageData() {
 
-                return EditableImage.this.getImageData();
+                return AjaxEditableImage.this.getImageData();
             }
-        } ).add( new AttributeAppender( "class", new LoadableDetachableModel<String>() {
+        }.setCacheable( false ) ) {
+            @Override
+            public boolean isVisible() {
+
+                return hasImageData();
+            }
+        }.add( new AttributeAppender( "class", new LoadableDetachableModel<String>() {
             @Override
             protected String load() {
 
@@ -63,13 +71,27 @@ public abstract class EditableImage extends Panel implements ModalWindow.WindowC
                     window.show( target );
             }
         } ) );
+        add( new Image( "noimage", PackageResource.get( Resources.class, "boxed-x2.png" ) ) {
+            @Override
+            public boolean isVisible() {
+
+                return !hasImageData() && isEditable();
+            }
+        }.add( new AjaxEventBehavior( "onClick" ) {
+
+            @Override
+            protected void onEvent(final AjaxRequestTarget target) {
+
+                window.show( target );
+            }
+        } ) );
         add( window = new ModalWindow( "upload" ) {
 
             {
                 setInitialWidth( 300 );
                 setInitialHeight( 100 );
                 setContent( new UploadPanel( this, getContentId() ) );
-                setWindowClosedCallback( EditableImage.this );
+                setWindowClosedCallback( AjaxEditableImage.this );
             }} );
     }
 
@@ -77,11 +99,13 @@ public abstract class EditableImage extends Panel implements ModalWindow.WindowC
      * @param id                The wicket ID of the component.
      * @param initiallyEditable <code>true</code> if the image can be edited by clicking on it and uploading a new one.
      */
-    protected EditableImage(final String id, final boolean initiallyEditable) {
+    protected AjaxEditableImage(final String id, final boolean initiallyEditable) {
 
         this( id );
         editable = initiallyEditable;
     }
+
+    protected abstract boolean hasImageData();
 
     protected abstract byte[] getImageData();
 
