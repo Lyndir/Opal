@@ -3,7 +3,7 @@ package com.lyndir.lhunath.lib.wayward.component;
 import com.lyndir.lhunath.lib.wayward.resources.Resources;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.PackageResource;
@@ -15,7 +15,6 @@ import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.util.string.AppendingStringBuffer;
 
 
 /**
@@ -138,36 +137,22 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
 
     private class UploadPanel extends Panel {
 
-        private final Form<FileUpload> form;
-
         UploadPanel(final ModalWindow modalWindow, final String id) {
 
             super( id );
 
-            add( (form = new Form<FileUpload>( "form", file ) {
+            add( new Form<Void>( "form" ) {
                 {
                     add( new FileUploadField( "file", file ) );
-                }}).add( new AjaxFormSubmitBehavior( form, "onSubmit" ) {
-                @Override
-                protected void onSubmit(final AjaxRequestTarget target) {
+                    add( new AjaxButton( "submit" ) {
+                        @Override
+                        protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 
-                    modalWindow.close( target );
-                }
-
-                @Override
-                protected void onError(final AjaxRequestTarget target) {
-
-                }
-
-                @Override
-                protected CharSequence getEventHandler() {
-
-                    // Prevents the form from generating an http request.
-                    // If we do not provide this, the AJAX event is processed AND the form still gets submitted.
-                    // FIXME: Ugly. Should probably be moved into AjaxFormSubmitBehaviour.
-                    return new AppendingStringBuffer( super.getEventHandler() ).append( "; return false;" );
-                }
-            } ) );
+                            setImageData( file.getObject().getBytes() );
+                            modalWindow.close( target );
+                        }
+                    } );
+                }} );
         }
     }
 }
