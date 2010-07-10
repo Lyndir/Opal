@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <!-- PROJECT METADATA -->
@@ -21,9 +22,9 @@
 
     <!-- CODE ACCESS -->
     <scm>
-        <url>http://codaset.com/lhunath/jlibs</url>
-        <connection>${scm.git.pubbase}/jlibs.git</connection>
-        <developerConnection>${scm.git.devbase}/jlibs.git</developerConnection>
+        <url>${scm.github.webbase}/JLibs</url>
+        <connection>${scm.github.pubbase}/JLibs.git</connection>
+        <developerConnection>${scm.github.devbase}/JLibs.git</developerConnection>
     </scm>
 
     <!-- DEFAULT PROPERTIES -->

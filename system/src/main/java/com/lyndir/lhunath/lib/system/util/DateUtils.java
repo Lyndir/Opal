@@ -3,8 +3,10 @@ package com.lyndir.lhunath.lib.system.util;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 import org.joda.time.*;
 
 
@@ -17,6 +19,13 @@ import org.joda.time.*;
  */
 public abstract class DateUtils {
 
+    private static final ThreadLocal<Stack<Timer>> currentTimer = new ThreadLocal<Stack<Timer>>() {
+        @Override
+        protected Stack<Timer> initialValue() {
+
+            return new Stack<Timer>();
+        }
+    };
     private static final ImmutableMap<DurationFieldType, DateTimeFieldType> types;
     private static final ImmutableList<DateTimeFieldType> stdDateTimeFields;
 
@@ -42,6 +51,82 @@ public abstract class DateUtils {
                                       DateTimeFieldType.hourOfDay(), DateTimeFieldType.dayOfMonth(), DateTimeFieldType.monthOfYear(),
                                       DateTimeFieldType.year() );
         stdDateTimeFields = stdDateTimeFieldsBuilder.build();
+    }
+
+    /**
+     * Start a new timer and add it to the thread's timer stack.
+     *
+     * @param format A format specifier for the timer's name/description (used in its log output).
+     * @param args   Arguments for the format specifier.
+     *
+     * @return A new timer.
+     */
+    public static Timer startTiming(final String format, final Object... args) {
+
+        Timer timer = new Timer( String.format( format, args ) );
+        currentTimer.get().push( timer );
+
+        return timer;
+    }
+
+    /**
+     * @return The most recently started timer that is still running.
+     */
+    public static Timer popTimer() {
+
+        return currentTimer.get().pop();
+    }
+
+    /**
+     * @param timer The timer that should no longer be tracked on the thread's timer stack.
+     *
+     * @return <code>true</code> if the timer was on the stack.
+     */
+    public static boolean removeTimer(final Timer timer) {
+
+        return currentTimer.get().remove( timer );
+    }
+
+    public static class Timer {
+
+        static final Logger logger = Logger.get( Timer.class );
+
+        private String name;
+        private Instant start = new Instant();
+        private Instant end;
+
+        public Timer(final String name) {
+
+            this.name = name;
+        }
+
+        public ReadableDuration finish() {
+
+            return new Duration( start(), end() );
+        }
+
+        public ReadableDuration logFinish() {
+
+            ReadableDuration duration = finish();
+
+            logger.dbg( "%s finished after %s.", name, duration );
+            return duration;
+        }
+
+        public ReadableInstant start() {
+
+            return start;
+        }
+
+        public ReadableInstant end() {
+
+            if (end == null) {
+                DateUtils.removeTimer( this );
+                end = new Instant();
+            }
+
+            return end;
+        }
     }
 
     /**

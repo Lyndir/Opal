@@ -11,30 +11,30 @@ import org.apache.wicket.markup.html.panel.Panel;
  *
  * @author lhunath
  */
-public interface FragmentNavigationTab<P extends Panel> extends ITab {
+public interface FragmentNavigationTab<P extends Panel, S extends FragmentState<P, S>> extends ITab {
 
     /**
      * @return The string that identifies this tab when it's the zero'th argument in the fragment part of the URL.
      */
-    String getFragment();
+    String getTabFragment();
 
     /**
      * Obtain the tab fragment and state arguments that would restore the state of the given panel of this tab.
      *
      * @param panel The panel for this tab; guaranteed of the type that was returned from #getPanel(String).
      *
-     * @return All fragment state arguments.  That is each part of the fragment <b>except for the tab identifier (#getFragment)</b>.  In the
-     *         order that #applyFragmentState(Panel, String...) would take them to restore the given panel's state in another session.
+     * @return All fragment state arguments.  That is each part of the fragment <b>except for the tab identifier (#getTabFragment)</b>.  In
+     *         the order that #applyFragmentState(Panel, String...) would take them to restore the given panel's state in another session.
      */
     Iterable<String> getFragmentState(P panel);
 
     /**
      * Apply fragment state specific to this tab.
      *
-     * @param panel     The panel for this tab.
-     * @param arguments An array of arguments passed in the fragment part of the URL.  Excludes the tab fragment.
+     * @param panel The panel for this tab.
+     * @param state The state to apply to the given panel.
      */
-    void applyFragmentState(P panel, String... arguments);
+    void applyFragmentState(P panel, S state);
 
     /**
      * @param panelId The wicket ID to bind the panel to.
@@ -50,4 +50,11 @@ public interface FragmentNavigationTab<P extends Panel> extends ITab {
      * @see #getPanel(String)
      */
     Class<P> getPanelClass();
+
+    /**
+     * @param fragment The string that contains the fragment which needs to be parsed into state for this tab.
+     *
+     * @return A state object for this tab that contains state as specified by the given arguments.
+     */
+    S getState(String fragment);
 }
