@@ -1,7 +1,7 @@
 package com.lyndir.lhunath.lib.wayward.navigation;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import com.lyndir.lhunath.lib.wayward.js.AjaxHooks;
 import com.lyndir.lhunath.lib.wayward.js.JSUtils;
 import java.net.URI;
@@ -150,6 +150,8 @@ public interface FragmentNavigationListener {
 
     abstract class AjaxRequestListener implements AjaxRequestTarget.IListener {
 
+        static final Logger logger = Logger.get( AjaxRequestListener.class );
+
         @Override
         public void onBeforeRespond(final Map<String, Component> map, final AjaxRequestTarget target) {
 
@@ -167,10 +169,11 @@ public interface FragmentNavigationListener {
             Component contentPanel = getActiveContent();
 
             if (panelClass.isInstance( contentPanel )) {
-                StringBuilder fragmentBuilder = new StringBuilder( activeTab.getTabFragment() ).append( '/' );
-                fragmentBuilder.append( Joiner.on( '/' ).join( activeTab.getFragmentState( panelClass.cast( contentPanel ) ) ) );
+                S fragmentState = activeTab.getFragmentState( panelClass.cast( contentPanel ) );
 
-                response.addJavascript( "window.location.hash = " + JSUtils.toString( fragmentBuilder.toString() ) );
+                logger.dbg( "Looking up fragments of tab: %s, panel: %s (%s), state: %s", activeTab, contentPanel, panelClass,
+                            fragmentState );
+                response.addJavascript( "window.location.hash = " + JSUtils.toString( fragmentState.toFragment() ) );
             }
         }
 

@@ -13,4 +13,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 public interface FragmentState<P extends Panel, F extends FragmentState<P, F>> {
 
     FragmentNavigationTab<P, F> getFragmentTab();
+
+    /**
+     * @return The representation of this state as it should be used in the URL's fragment for navigation.
+     */
+    String toFragment();
 }

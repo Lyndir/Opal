@@ -19,14 +19,13 @@ public interface FragmentNavigationTab<P extends Panel, S extends FragmentState<
     String getTabFragment();
 
     /**
-     * Obtain the tab fragment and state arguments that would restore the state of the given panel of this tab.
+     * Obtain the fragment state object that can restore the state of the given panel of this tab.
      *
-     * @param panel The panel for this tab; guaranteed of the type that was returned from #getPanel(String).
+     * @param panel The panel for this tab whose state must be serialized.
      *
-     * @return All fragment state arguments.  That is each part of the fragment <b>except for the tab identifier (#getTabFragment)</b>.  In
-     *         the order that #applyFragmentState(Panel, String...) would take them to restore the given panel's state in another session.
+     * @return The given panel's state serialized into a fragment state object.
      */
-    Iterable<String> getFragmentState(P panel);
+    S getFragmentState(P panel);
 
     /**
      * Apply fragment state specific to this tab.
