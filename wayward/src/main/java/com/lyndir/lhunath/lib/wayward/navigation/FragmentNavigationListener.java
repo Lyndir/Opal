@@ -35,7 +35,7 @@ public interface FragmentNavigationListener {
          * @param tab      The tab that should be activated.
          * @param fragment The string that contains the fragment which needs to be parsed into tab-specific state.
          */
-        private <P extends Panel, S extends FragmentState<P, S>> void activateTabWithState(final FragmentNavigationTab<P, S> tab, final String fragment) {
+        <P extends Panel, S extends FragmentState<P, S>> void activateTabWithState(final FragmentNavigationTab<P, S> tab, final String fragment) {
 
             activateTabWithState( tab, tab.getState( fragment ) );
         }
@@ -60,7 +60,7 @@ public interface FragmentNavigationListener {
          *
          * @param tab The tab that should be activated.
          */
-        public void activateTab(final FragmentNavigationTab<?, ?> tab) {
+        public void activateNewTab(final FragmentNavigationTab<?, ?> tab) {
 
             activateTab( tab, null );
         }
@@ -128,7 +128,7 @@ public interface FragmentNavigationListener {
                 // No fragment, find and set a default tab.
                 for (final FragmentNavigationTab<?, ? extends FragmentState<?, ?>> tab : controller.getTabs()) {
                     if (tab.isVisible()) {
-                        controller.activateTab( tab );
+                        controller.activateNewTab( tab );
                         break;
                     }
                 }
