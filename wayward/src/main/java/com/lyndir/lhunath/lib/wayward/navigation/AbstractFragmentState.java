@@ -66,13 +66,7 @@ public abstract class AbstractFragmentState<P extends Panel, S extends FragmentS
     @Override
     public String toFragment() {
 
-        StringBuilder fragmentBuilder = new StringBuilder( findFragment( 0 ) );
-
-        String stateFragments = Joiner.on( '/' ).useForNull( "" ).join( getStateFragments() );
-        if (stateFragments != null && stateFragments.length() > 0)
-            fragmentBuilder.append( '/' ).append( stateFragments );
-
-        return fragmentBuilder.toString();
+        return Joiner.on( '/' ).useForNull( "" ).join( getStateFragments() );
     }
 
     protected final Iterable<String> getStateFragments() {

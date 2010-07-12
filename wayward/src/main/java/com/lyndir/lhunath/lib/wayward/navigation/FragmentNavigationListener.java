@@ -29,6 +29,8 @@ public interface FragmentNavigationListener {
 
     abstract class Controller implements IClusterable {
 
+        static final Logger logger = Logger.get( Controller.class );
+
         /**
          * Mark the given tab as active and restore state in its contents from the given tab-specific state arguments.
          *
@@ -110,6 +112,8 @@ public interface FragmentNavigationListener {
 
     class PageListener implements AjaxHooks.IPageListener {
 
+        static final Logger logger = Logger.get( PageListener.class );
+
         private final Controller controller;
 
         /**
@@ -123,27 +127,28 @@ public interface FragmentNavigationListener {
         @Override
         public void onReady(final AjaxRequestTarget target, final String pageUrl) {
 
-            URI uri = URI.create( pageUrl );
-            if (uri.getFragment() == null) {
-                // No fragment, find and set a default tab.
-                for (final FragmentNavigationTab<?, ? extends FragmentState<?, ?>> tab : controller.getTabs()) {
-                    if (tab.isVisible()) {
-                        controller.activateNewTab( tab );
-                        break;
-                    }
-                }
-            } else {
+            String fragment = URI.create( pageUrl ).getFragment();
+            if (fragment != null) {
                 // There is a fragment, load state from it.
-                String fragment = uri.getFragment();
                 String tabFragment = Splitter.on( '/' ).split( fragment ).iterator().next();
 
                 for (final FragmentNavigationTab<?, ? extends FragmentState<?, ?>> tab : controller.getTabs()) {
-                    if (tab.getTabFragment().equalsIgnoreCase( tabFragment ) && tab.isVisible()) {
+                    if (tab.getTabFragment().equalsIgnoreCase( tabFragment )) {
                         controller.activateTabWithState( tab, fragment );
-                        break;
+                        return;
                     }
                 }
             }
+
+            // No fragment or fragment not recognised, find and set a default tab.
+            for (final FragmentNavigationTab<?, ? extends FragmentState<?, ?>> tab : controller.getTabs()) {
+                if (tab.isVisible()) {
+                    controller.activateNewTab( tab );
+                    return;
+                }
+            }
+
+            throw logger.err( "Could not activate a tab for page; no tabs are visible." ).toError( IllegalStateException.class );
         }
     }
 

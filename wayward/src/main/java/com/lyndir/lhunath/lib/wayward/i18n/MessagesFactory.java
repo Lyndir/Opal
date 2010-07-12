@@ -145,7 +145,7 @@ public abstract class MessagesFactory {
                     logger.dbg( "Considering arg: %s, with annotations: %s.", arg, argAnnotations );
 
                     for (final Annotation argAnnotation : argAnnotations)
-                        if (KeyAppender.class.isAssignableFrom( argAnnotation.getClass() )) {
+                        if (KeyAppender.class.isInstance( argAnnotation )) {
                             KeyAppender annotation = (KeyAppender) argAnnotation;
                             useValue = annotation.useValue();
 
@@ -176,7 +176,7 @@ public abstract class MessagesFactory {
                                     else if (!match.elseKey().equals( KeyMatch.STRING_UNSET ))
                                         appendKey( keyBuilder, match.elseKey() );
                                 }
-                        } else if (BooleanKeyAppender.class.isAssignableFrom( argAnnotation.getClass() )) {
+                        } else if (BooleanKeyAppender.class.isInstance( argAnnotation )) {
                             BooleanKeyAppender annotation = (BooleanKeyAppender) argAnnotation;
                             useValue = false;
                             logger.dbg( "Has appender: %s, ", annotation );
@@ -185,8 +185,8 @@ public abstract class MessagesFactory {
                                 appendKey( keyBuilder, annotation.y() );
                             else if (Boolean.FALSE.equals( arg ))
                                 appendKey( keyBuilder, annotation.n() );
-                        } else if (LocalizedType.class.isAssignableFrom( argAnnotation.getClass() )) {
-                            checkArgument( Localized.class.isAssignableFrom( arg.getClass() ),
+                        } else if (LocalizedType.class.isInstance( argAnnotation )) {
+                            checkArgument( Localized.class.isInstance( arg ),
                                            "Can't evaluate @LocalizedType on an object that does not implement Localized." );
 
                             Localized localizedArg = (Localized) arg;
@@ -226,9 +226,9 @@ public abstract class MessagesFactory {
                                 return null;
 
                             Object arg = from;
-                            if (IModel.class.isAssignableFrom( arg.getClass() ))
+                            if (IModel.class.isInstance( arg ))
                                 arg = ((IModel<?>) arg).getObject();
-                            if (Localized.class.isAssignableFrom( arg.getClass() ))
+                            if (Localized.class.isInstance( arg ))
                                 arg = ((Localized) arg).objectDescription();
 
                             return arg;
