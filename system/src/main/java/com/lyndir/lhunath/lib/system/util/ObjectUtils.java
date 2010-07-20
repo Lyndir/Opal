@@ -44,7 +44,7 @@ public abstract class ObjectUtils {
      *
      * @return <code>true</code> if both objects are <code>null</code> or if neither are and {@link #equals(Object)} considers them equal.
      */
-    public static <A, B extends A> boolean equal(final A first, final B second) {
+    public static <B, A extends B> boolean equal(final A first, final B second) {
 
         return first == second || first != null && first.equals( second );
     }

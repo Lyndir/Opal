@@ -2,6 +2,7 @@ package com.lyndir.lhunath.lib.wayward.navigation;
 
 import com.google.common.base.Splitter;
 import com.lyndir.lhunath.lib.system.logging.Logger;
+import com.lyndir.lhunath.lib.system.util.ObjectUtils;
 import com.lyndir.lhunath.lib.wayward.js.AjaxHooks;
 import com.lyndir.lhunath.lib.wayward.js.JSUtils;
 import java.net.URI;
@@ -30,6 +31,8 @@ public interface FragmentNavigationListener {
     abstract class Controller implements IClusterable {
 
         static final Logger logger = Logger.get( Controller.class );
+
+        private String pageFragment;
 
         /**
          * Mark the given tab as active and restore state in its contents from the given tab-specific state arguments.
@@ -80,12 +83,22 @@ public interface FragmentNavigationListener {
                 tabPanel = tab.getPanel( getTabContentId() );
             tabPanel.setOutputMarkupPlaceholderTag( true );
 
+            setActiveTab( tab, tabPanel );
+            updateNavigationComponents();
+        }
+
+        private void updateNavigationComponents() {
+
             AjaxRequestTarget target = AjaxRequestTarget.get();
             if (target != null)
-                target.addComponent( tabPanel );
-
-            setActiveTab( tab, tabPanel );
+                for (final Component component : getNavigationComponents())
+                    target.addComponent( component );
         }
+
+        /**
+         * @return All components that should be updated whenever page navigation changes.
+         */
+        protected abstract Iterable<? extends Component> getNavigationComponents();
 
         /**
          * Invoked when a page is loaded to indicate the page's active tab as determined by fragment state.
@@ -107,6 +120,22 @@ public interface FragmentNavigationListener {
          * @return The application's tabs.
          */
         protected abstract Iterable<FragmentNavigationTab<?, ?>> getTabs();
+
+        /**
+         * @return The current fragment of the page.
+         */
+        public String getPageFragment() {
+
+            return pageFragment;
+        }
+
+        /**
+         * @param pageFragment The new fragment of the page.
+         */
+        public void setPageFragment(final String pageFragment) {
+
+            this.pageFragment = pageFragment;
+        }
     }
 
 
@@ -128,6 +157,8 @@ public interface FragmentNavigationListener {
         public void onReady(final AjaxRequestTarget target, final String pageUrl) {
 
             String fragment = URI.create( pageUrl ).getFragment();
+            controller.setPageFragment( fragment );
+
             if (fragment != null) {
                 // There is a fragment, load state from it.
                 String tabFragment = Splitter.on( '/' ).split( fragment ).iterator().next();
@@ -157,6 +188,16 @@ public interface FragmentNavigationListener {
 
         static final Logger logger = Logger.get( AjaxRequestListener.class );
 
+        private final Controller controller;
+
+        /**
+         * @param controller The object that controls fragment state for this page.
+         */
+        protected AjaxRequestListener(final Controller controller) {
+
+            this.controller = controller;
+        }
+
         @Override
         public void onBeforeRespond(final Map<String, Component> map, final AjaxRequestTarget target) {
 
@@ -174,11 +215,12 @@ public interface FragmentNavigationListener {
             Component contentPanel = getActiveContent();
 
             if (panelClass.isInstance( contentPanel )) {
-                S fragmentState = activeTab.getFragmentState( panelClass.cast( contentPanel ) );
+                String newFragment = activeTab.getFragmentState( panelClass.cast( contentPanel ) ).toFragment();
 
-                logger.dbg( "Looking up fragments of tab: %s, panel: %s (%s), state: %s", activeTab, contentPanel, panelClass,
-                            fragmentState );
-                response.addJavascript( "window.location.hash = " + JSUtils.toString( fragmentState.toFragment() ) );
+                if (!ObjectUtils.equal( newFragment, controller.getPageFragment() )) {
+                    response.addJavascript( "window.location.hash = " + JSUtils.toString( newFragment ) );
+                    controller.updateNavigationComponents();
+                }
             }
         }
 

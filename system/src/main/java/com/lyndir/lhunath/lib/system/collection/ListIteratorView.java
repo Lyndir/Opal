@@ -31,7 +31,7 @@ public abstract class ListIteratorView<T> extends ForwardingListIterator<T> impl
     /**
      * @return The element at the cursor.  That is, the element that was returned from the previous call to #next or #previous.
      *
-     * @throws NoSuchElementException When the iterator is empty.
+     * @throws NoSuchElementException When the iterator hasn't been navigated yet..
      */
     public T current() {
 

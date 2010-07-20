@@ -96,7 +96,7 @@ public abstract class MessagesFactory {
 
         // Manually reinitialize the msgs field.
         try {
-            Field field = object.getClass().getField( msgsFieldName );
+            Field field = object.getClass().getDeclaredField( msgsFieldName );
             field.setAccessible( true );
             field.set( object, create( localizationInterface ) );
             field.setAccessible( false );

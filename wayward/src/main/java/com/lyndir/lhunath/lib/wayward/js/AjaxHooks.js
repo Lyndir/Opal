@@ -21,10 +21,7 @@ AjaxHooks = {
 
 		if (AjaxHooks.updatedDomIds.length) {
 			// Select the updated elements by ID.
-			var selector = '';
-			$.each(AjaxHooks.updatedDomIds, function() {
-				selector += '#' + this + ',';
-			});
+			var selector = AjaxHooks.updatedDomIds.join(',');
 
 			// Invoke the callbacks passing the elements.
 			var updatedDomElements = $(selector);
