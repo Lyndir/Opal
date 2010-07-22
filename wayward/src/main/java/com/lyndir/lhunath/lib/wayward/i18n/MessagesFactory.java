@@ -30,7 +30,10 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -206,10 +209,8 @@ public abstract class MessagesFactory {
                                     for (final KeyMatch match : annotation.value()) {
                                         logger.dbg( "With match: %s, ", match );
 
-                                        if (match.ifNum() == Double.parseDouble( argValue.toString() ) || match.ifString().equals(
-                                                argValue ) || match
-                                                .ifClass()
-                                                .equals( argValue ))
+                                        if (match.ifNum() == Double.parseDouble( argValue.toString() )
+                                            || match.ifString().equals( argValue ) || match.ifClass().equals( argValue ))
                                             appendKey( keyBuilder, match.key() );
                                         else if (!match.elseKey().equals( KeyMatch.STRING_UNSET ))
                                             appendKey( keyBuilder, match.elseKey() );

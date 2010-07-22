@@ -40,7 +40,8 @@ public interface FragmentNavigationListener {
          * @param tab      The tab that should be activated.
          * @param fragment The string that contains the fragment which needs to be parsed into tab-specific state.
          */
-        <P extends Panel, S extends FragmentState<P, S>> void activateTabWithState(final FragmentNavigationTab<P, S> tab, final String fragment) {
+        <P extends Panel, S extends FragmentState<P, S>> void activateTabWithState(final FragmentNavigationTab<P, S> tab,
+                                                                                   final String fragment) {
 
             activateTabWithState( tab, tab.getState( fragment ) );
         }
@@ -52,7 +53,8 @@ public interface FragmentNavigationListener {
          * @param state The tab-specific state that should be applied to the tab's content.
          * @param <P>   The type of the tab's content.
          */
-        public <P extends Panel, S extends FragmentState<P, S>> void activateTabWithState(final FragmentNavigationTab<P, S> tab, final S state) {
+        public <P extends Panel, S extends FragmentState<P, S>> void activateTabWithState(final FragmentNavigationTab<P, S> tab,
+                                                                                          final S state) {
 
             P tabPanel = tab.getPanel( getTabContentId() );
             tab.applyFragmentState( tabPanel, state );
@@ -209,7 +211,8 @@ public interface FragmentNavigationListener {
             updatePageFragment( getActiveTab(), response );
         }
 
-        private <P extends Panel, S extends FragmentState<P, S>> void updatePageFragment(final FragmentNavigationTab<P, S> activeTab, final AjaxRequestTarget.IJavascriptResponse response) {
+        private <P extends Panel, S extends FragmentState<P, S>> void updatePageFragment(final FragmentNavigationTab<P, S> activeTab,
+                                                                                         final AjaxRequestTarget.IJavascriptResponse response) {
 
             Class<P> panelClass = activeTab.getPanelClass();
             Component contentPanel = getActiveContent();
