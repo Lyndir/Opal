@@ -89,8 +89,6 @@ public abstract class DateUtils {
 
     public static class Timer {
 
-        static final Logger logger = Logger.get( Timer.class );
-
         private String name;
         private Instant start = new Instant();
         private Instant end;
@@ -105,11 +103,11 @@ public abstract class DateUtils {
             return new Duration( start(), end() );
         }
 
-        public ReadableDuration logFinish() {
+        public ReadableDuration logFinish(final Logger logger) {
 
             ReadableDuration duration = finish();
 
-            logger.dbg( "%s finished after %s.", name, duration );
+            logger.trc( "%s finished after %s.", name, duration );
             return duration;
         }
 
@@ -121,7 +119,7 @@ public abstract class DateUtils {
         public ReadableInstant end() {
 
             if (end == null) {
-                DateUtils.removeTimer( this );
+                removeTimer( this );
                 end = new Instant();
             }
 

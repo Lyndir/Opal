@@ -41,10 +41,21 @@ public class Pair<K, V> implements Map.Entry<K, V>, Serializable {
      * @param key   The key of this pair.
      * @param value The value of this pair.
      */
-    public Pair(final K key, final V value) {
+    Pair(final K key, final V value) {
 
         this.key = key;
         this.value = value;
+    }
+
+    /**
+     * @param key   The key of this pair.
+     * @param value The value of this pair.
+     *
+     * @return A new {@link Pair} instance
+     */
+    public static <K, V> Pair<K, V> of(final K key, final V value) {
+
+        return new Pair<K, V>( key, value );
     }
 
     /**
