@@ -29,7 +29,7 @@
 
     <!-- DEFAULT PROPERTIES -->
     <properties>
-        <release.version>1.4</release.version>
+        <release.version>1.3</release.version>
     </properties>
 
     <!-- ALL MODULES THAT ARE ENABLED BY DEFAULT -->
