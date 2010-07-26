@@ -11,7 +11,7 @@ import org.apache.wicket.markup.html.panel.Panel;
  *
  * @author lhunath
  */
-public interface FragmentNavigationTab<P extends Panel, S extends FragmentState<P, S>> extends ITab {
+public interface FragmentNavigationTab<P extends Panel, S extends FragmentState> extends ITab {
 
     /**
      * @return The string that identifies this tab when it's the zero'th argument in the fragment part of the URL.
@@ -25,15 +25,18 @@ public interface FragmentNavigationTab<P extends Panel, S extends FragmentState<
      *
      * @return The given panel's state serialized into a fragment state object.
      */
-    S getFragmentState(P panel);
+    S buildFragmentState(P panel);
 
     /**
      * Apply fragment state specific to this tab.
      *
      * @param panel The panel for this tab.
      * @param state The state to apply to the given panel.
+     *
+     * @throws IncompatibleStateException If the state is incompatible with the current state and can not be applied.
      */
-    void applyFragmentState(P panel, S state);
+    void applyFragmentState(P panel, S state)
+            throws IncompatibleStateException;
 
     /**
      * @param panelId The wicket ID to bind the panel to.

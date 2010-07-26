@@ -16,13 +16,13 @@
 package com.lyndir.lhunath.lib.wayward.state;
 
 /**
- * <h2>{@link ComponentState}<br> <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link ComponentActivator}<br> <sub>[in short] (TODO).</sub></h2>
  *
  * <p> <i>Mar 21, 2010</i> </p>
  *
  * @author lhunath
  */
-public interface ComponentState {
+public interface ComponentActivator {
 
     /**
      * @return <code>true</code>: if the session state requires the attention of this page.
@@ -35,7 +35,7 @@ public interface ComponentState {
     boolean isActivatable();
 
     /**
-     * @return <code>true</code>: The component that handles this {@link ComponentState} is being presented to the user.
+     * @return <code>true</code>: The component that handles this {@link ComponentActivator} is being presented to the user.
      */
     boolean isActive();
 

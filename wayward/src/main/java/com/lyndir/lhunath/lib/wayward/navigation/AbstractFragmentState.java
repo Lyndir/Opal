@@ -6,7 +6,6 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.lyndir.lhunath.lib.system.util.ObjectUtils;
 import java.util.List;
-import org.apache.wicket.markup.html.panel.Panel;
 
 
 /**
@@ -16,14 +15,14 @@ import org.apache.wicket.markup.html.panel.Panel;
  *
  * @author lhunath
  */
-public abstract class AbstractFragmentState<P extends Panel, S extends FragmentState<P, S>> implements FragmentState<P, S> {
+public abstract class AbstractFragmentState implements FragmentState {
 
     private final List<String> fragments;
 
-    protected AbstractFragmentState(final List<String> fragments) {
+    protected AbstractFragmentState() {
 
-        this.fragments = fragments;
-        assertFragments();
+        fragments = Lists.newLinkedList();
+        appendFragment( getTabFragment() );
     }
 
     protected AbstractFragmentState(final String fragment) {
@@ -32,10 +31,10 @@ public abstract class AbstractFragmentState<P extends Panel, S extends FragmentS
         assertFragments();
     }
 
-    protected AbstractFragmentState() {
+    protected AbstractFragmentState(final List<String> fragments) {
 
-        fragments = Lists.newLinkedList();
-        appendFragment( getFragmentTab().getTabFragment() );
+        this.fragments = fragments;
+        assertFragments();
     }
 
     protected String findFragment(final int index) {
@@ -58,7 +57,7 @@ public abstract class AbstractFragmentState<P extends Panel, S extends FragmentS
      */
     protected void assertFragments() {
 
-        Preconditions.checkArgument( ObjectUtils.equal( findFragment( 0 ), getFragmentTab().getTabFragment() ),
+        Preconditions.checkArgument( ObjectUtils.equal( findFragment( 0 ), getTabFragment() ),
                                      "Can't load %s state from %s: No fragments found or initial fragment does not match this tab's.",
                                      getClass().getSimpleName(), fragments );
     }
@@ -73,4 +72,6 @@ public abstract class AbstractFragmentState<P extends Panel, S extends FragmentS
 
         return fragments;
     }
+
+    protected abstract String getTabFragment();
 }

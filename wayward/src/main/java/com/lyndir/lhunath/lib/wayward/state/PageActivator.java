@@ -22,22 +22,22 @@ import org.apache.wicket.RequestCycle;
 
 
 /**
- * <h2>{@link PageState}<br> <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link PageActivator}<br> <sub>[in short] (TODO).</sub></h2>
  *
  * <p> <i>Mar 21, 2010</i> </p>
  *
  * @author lhunath
  */
-public abstract class PageState implements ComponentState {
+public abstract class PageActivator implements ComponentActivator {
 
-    static final Logger logger = Logger.get( PageState.class );
+    static final Logger logger = Logger.get( PageActivator.class );
 
     private final Class<? extends Page> pageClass;
 
     /**
      * @param pageClass The page that we're activating when the state is right.
      */
-    protected PageState(final Class<? extends Page> pageClass) {
+    protected PageActivator(final Class<? extends Page> pageClass) {
 
         this.pageClass = pageClass;
     }

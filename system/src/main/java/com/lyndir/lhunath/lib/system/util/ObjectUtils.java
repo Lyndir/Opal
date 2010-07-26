@@ -36,9 +36,10 @@ public abstract class ObjectUtils {
      *
      * <p> <b>NOTE:</b> This method attempts to aid in type safety of the objects that are being compared. </p>
      *
-     * @param <A>    The type of the first object. The higher type in the hierarchy.
-     * @param <B>    The type of the second object must be of the same type or an assignment-compatible type (see {@link
-     *               Class#isAssignableFrom(Class)}) of A.
+     * @param <A>    The type of the first parameter.  It should be of the same type or a subtype (more concrete type) of the second
+     *               parameter.
+     * @param <B>    The type of the second parameter. The type of this parameter must be the same type or more generic
+     *               assignment-compatible to that of the first parameter.
      * @param first  The first object, or <code>null</code>.
      * @param second The second object, or <code>null</code>.
      *
@@ -59,7 +60,7 @@ public abstract class ObjectUtils {
      * @return A new array that contains all elements from the first parameter with the other elements appended to it.  If no additional
      *         elements are given, returns the first array as it is (<b>not a copy!</b>).
      */
-    public static <T> T[] concat(T[] array, T... elements) {
+    public static <T> T[] concat(final T[] array, final T... elements) {
 
         if (elements.length == 0)
             return array;

@@ -83,11 +83,6 @@ public abstract class ListIteratorView<T> extends ForwardingListIterator<T> impl
         return this;
     }
 
-    /**
-     * @return The amount of elements available from the backed iterator.
-     */
-    public abstract int size();
-
     protected abstract ListIterator<T> load();
 
     @Override

@@ -1,8 +1,5 @@
 package com.lyndir.lhunath.lib.wayward.navigation;
 
-import org.apache.wicket.markup.html.panel.Panel;
-
-
 /**
  * <h2>{@link FragmentState}<br> <sub>[in short] (TODO).</sub></h2>
  *
@@ -10,9 +7,7 @@ import org.apache.wicket.markup.html.panel.Panel;
  *
  * @author lhunath
  */
-public interface FragmentState<P extends Panel, F extends FragmentState<P, F>> {
-
-    FragmentNavigationTab<P, F> getFragmentTab();
+public interface FragmentState {
 
     /**
      * @return The representation of this state as it should be used in the URL's fragment for navigation.

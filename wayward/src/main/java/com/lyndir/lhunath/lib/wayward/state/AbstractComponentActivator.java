@@ -13,23 +13,31 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.lib.wayward.i18n;
+package com.lyndir.lhunath.lib.wayward.state;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.apache.wicket.Component;
+import org.apache.wicket.Page;
+import org.apache.wicket.RequestCycle;
 
 
 /**
- * <h2>{@link LocalizedType}<br> <sub>The annotated parameter's Localized#typeDescription() will be expanded.</sub></h2>
+ * <h2>{@link AbstractComponentActivator}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p> <i>Mar 31, 2010</i> </p>
+ * <p> <i>Mar 21, 2010</i> </p>
  *
  * @author lhunath
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
-public @interface LocalizedType {
+public abstract class AbstractComponentActivator implements ComponentActivator {
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isActive() {
+
+        Page responsePage = RequestCycle.get().getResponsePage();
+        return responsePage.contains( getComponent(), true ) && getComponent().isVisibleInHierarchy();
+    }
+
+    protected abstract Component getComponent();
 }

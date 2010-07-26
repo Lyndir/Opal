@@ -30,14 +30,14 @@ import org.apache.wicket.application.IComponentOnBeforeRenderListener;
  */
 public class ComponentStateListener implements IComponentOnBeforeRenderListener {
 
-    protected final List<ComponentState> componentStates;
+    protected final List<ComponentActivator> componentActivators;
 
     /**
-     * @param componentStates Component states that should be checked during session attachment.
+     * @param componentActivators Component activators that should be checked during session attachment.
      */
-    public ComponentStateListener(final ComponentState... componentStates) {
+    public ComponentStateListener(final ComponentActivator... componentActivators) {
 
-        this.componentStates = ImmutableList.of( componentStates );
+        this.componentActivators = ImmutableList.copyOf( componentActivators );
     }
 
     /**
@@ -46,9 +46,9 @@ public class ComponentStateListener implements IComponentOnBeforeRenderListener 
     @Override
     public void onBeforeRender(final Component component) {
 
-        for (final ComponentState componentState : componentStates)
-            if (componentState.isActivatable() && componentState.isNecessary() && !componentState.isActive()) {
-                componentState.activate();
+        for (final ComponentActivator componentActivator : componentActivators)
+            if (componentActivator.isActivatable() && componentActivator.isNecessary() && !componentActivator.isActive()) {
+                componentActivator.activate();
                 break;
             }
     }
