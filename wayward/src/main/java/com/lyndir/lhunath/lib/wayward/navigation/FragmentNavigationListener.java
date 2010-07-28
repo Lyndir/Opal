@@ -263,6 +263,7 @@ public interface FragmentNavigationListener {
         static final Logger logger = Logger.get( AjaxRequestListener.class );
 
         private final Controller<P, S, T> controller;
+        private String newFragment;
 
         /**
          * @param controller The object that controls fragment state for this page.
@@ -281,31 +282,32 @@ public interface FragmentNavigationListener {
         @Override
         public void onBeforeRespond(final Map<String, Component> map, final AjaxRequestTarget target) {
 
+            FragmentNavigationTab<? extends P, ? extends S> tab = controller.getActiveTab();
+            updateTabComponents( tab );
         }
 
         @Override
         public void onAfterRespond(final Map<String, Component> map, final AjaxRequestTarget.IJavascriptResponse response) {
 
-            FragmentNavigationTab<? extends P, ? extends S> tab = controller.getActiveTab();
-            updatePageFragment( tab, response );
+            updatePageFragment( response );
         }
 
-        private <PP extends P> void updatePageFragment(final FragmentNavigationTab<PP, ? extends S> activeTab,
-                                                       final AjaxRequestTarget.IJavascriptResponse response) {
+        private <PP extends P> void updateTabComponents(final FragmentNavigationTab<PP, ? extends S> activeTab) {
 
             Class<PP> panelClass = activeTab.getPanelClass();
             Component contentPanel = controller.getActiveContent();
 
             if (panelClass.isInstance( contentPanel )) {
-                String newFragment = activeTab.buildFragmentState( panelClass.cast( contentPanel ) ).toFragment();
-                logger.dbg( "AJAX Request initiated with fragment %s, new state has fragment: %s", controller.getPageFragment(),
-                            newFragment );
+                newFragment = activeTab.buildFragmentState( panelClass.cast( contentPanel ) ).toFragment();
 
-                if (!ObjectUtils.equal( newFragment, controller.getPageFragment() )) {
-                    response.addJavascript( "window.location.hash = " + JSUtils.toString( newFragment ) );
+                if (!ObjectUtils.equal( newFragment, controller.getPageFragment() ))
                     controller.updateNavigationComponents();
-                }
             }
+        }
+
+        private void updatePageFragment(final AjaxRequestTarget.IJavascriptResponse response) {
+
+            response.addJavascript( "window.location.hash = " + JSUtils.toString( newFragment ) );
         }
     }
 }
