@@ -28,7 +28,7 @@ import javax.swing.*;
  */
 public class ScrollPanel extends JPanel implements Scrollable {
 
-    private final int scrollUnit;
+    private final int     scrollUnit;
     private final boolean horizontal;
     private final boolean vertical;
 

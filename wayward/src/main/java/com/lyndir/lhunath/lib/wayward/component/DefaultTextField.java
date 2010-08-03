@@ -25,8 +25,9 @@ import org.apache.wicket.model.StringResourceModel;
  *
  * <p> <i>Jan 21, 2010</i> </p>
  *
- * @author lhunath
  * @param <T> The model type.
+ *
+ * @author lhunath
  */
 public class DefaultTextField<T> extends TextField<T> {
 

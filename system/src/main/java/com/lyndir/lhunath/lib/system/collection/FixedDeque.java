@@ -29,12 +29,13 @@ import java.util.LinkedList;
  *
  * <p> <i>Mar 2, 2010</i> </p>
  *
- * @author lhunath
  * @param <E> The type of elements held in this collection.
+ *
+ * @author lhunath
  */
 public class FixedDeque<E> implements Deque<E> {
 
-    private final int maxSize;
+    private final int      maxSize;
     private final Deque<E> deque;
 
     /**
@@ -82,7 +83,7 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings({ "SuspiciousToArrayCall" })
+    @SuppressWarnings( { "SuspiciousToArrayCall" })
     public <T> T[] toArray(final T[] a) {
 
         return deque.toArray( a );

@@ -31,8 +31,8 @@ public class OnOffButton extends GButton implements ChangeListener {
 
     private final String onText;
     private final String offText;
-    private final Icon onIcon;
-    private final Icon offIcon;
+    private final Icon   onIcon;
+    private final Icon   offIcon;
 
     /**
      * Create a new OnOffButton instance.

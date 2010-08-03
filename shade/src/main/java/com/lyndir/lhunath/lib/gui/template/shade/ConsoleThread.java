@@ -18,7 +18,7 @@ public class ConsoleThread extends Thread {
     private static final Logger logger = Logger.get( ConsoleThread.class );
 
     private final InputStreamReader in;
-    private final JTextArea console;
+    private final JTextArea         console;
 
     /**
      * Create a new {@link ConsoleThread} instance.

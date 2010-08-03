@@ -261,7 +261,7 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static void encryptFile(File plainFile, final File encryptedFile, final PGPPublicKey publicKey, boolean armoured)
+    public static void encryptFile(final File plainFile, final File encryptedFile, final PGPPublicKey publicKey, final boolean armoured)
             throws NoSuchProviderException, IOException, PGPException {
 
         InputStream encryptedInputStream = encrypt( new FileInputStream( plainFile ), publicKey, armoured );
@@ -302,7 +302,7 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static InputStream encrypt(InputStream plainTextStream, final PGPPublicKey publicKey, boolean armoured)
+    public static InputStream encrypt(final InputStream plainTextStream, final PGPPublicKey publicKey, final boolean armoured)
             throws IOException, NoSuchProviderException, PGPException {
 
         /* Compress and extract literal data packets that can be encrypted. */
@@ -346,13 +346,25 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static void decryptFile(File encryptedFile, final File plainTextFile, final PGPSecretKey privateKey, String passPhrase)
+    public static void decryptFile(final File encryptedFile, final File plainTextFile, final PGPSecretKey privateKey, final String passPhrase)
             throws NoSuchProviderException, IOException, PGPException {
 
-        InputStream decryptedInputStream = decrypt( new FileInputStream( encryptedFile ), privateKey, passPhrase );
-        FileOutputStream decryptedOutputStream = new FileOutputStream( plainTextFile );
+        FileInputStream encryptedInputStream = new FileInputStream( encryptedFile );
+        try {
+            InputStream decryptedInputStream = decrypt( encryptedInputStream, privateKey, passPhrase );
+            OutputStream decryptedOutputStream = new FileOutputStream( plainTextFile );
 
-        Utils.pipeStream( decryptedInputStream, decryptedOutputStream );
+            try {
+                Utils.pipeStream( decryptedInputStream, decryptedOutputStream );
+            }
+            finally {
+                decryptedInputStream.close();
+                decryptedOutputStream.close();
+            }
+        }
+        finally {
+            encryptedInputStream.close();
+        }
     }
 
     /**
@@ -387,7 +399,7 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static InputStream decrypt(InputStream encryptedStream, final PGPSecretKey privateKey, String passPhrase)
+    public static InputStream decrypt(final InputStream encryptedStream, final PGPSecretKey privateKey, final String passPhrase)
             throws IOException, PGPException, NoSuchProviderException {
 
         /* Open the encrypted file. */
@@ -467,7 +479,7 @@ public class GPG {
      * @throws PGPException
      * @throws IOException
      */
-    public static void signFile(File dataFile, final File signedFile, final PGPSecretKey privateKey, String passPhrase,
+    public static void signFile(final File dataFile, final File signedFile, final PGPSecretKey privateKey, final String passPhrase,
                                 final boolean armoured)
             throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException, PGPException, IOException {
 
@@ -494,7 +506,7 @@ public class GPG {
      * @throws PGPException
      * @throws IOException
      */
-    public static byte[] sign(byte[] data, final PGPSecretKey privateKey, final String passPhrase, boolean armoured)
+    public static byte[] sign(final byte[] data, final PGPSecretKey privateKey, final String passPhrase, final boolean armoured)
             throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException, IOException, PGPException {
 
         return Utils.readStream( sign( new ByteArrayInputStream( data ), privateKey, passPhrase, armoured ) );
@@ -517,7 +529,7 @@ public class GPG {
      * @throws PGPException
      * @throws IOException
      */
-    public static InputStream sign(InputStream data, final PGPSecretKey privateKey, final String passPhrase, boolean armoured)
+    public static InputStream sign(final InputStream data, final PGPSecretKey privateKey, final String passPhrase, final boolean armoured)
             throws NoSuchAlgorithmException, NoSuchProviderException, PGPException, SignatureException, IOException {
 
         /* Build the signature generator. */
@@ -547,10 +559,11 @@ public class GPG {
     /**
      * <h2>{@link PrintableKeyWrapper}<br> <sub>A wrapper for wrapping a key id with a printable representation of it.</sub></h2>
      *
-     * @author mbillemo
      * @param <K> The type of object to use for representing the key id.
      *
-     * <p> <i>Apr 9, 2008</i> </p>
+     *            <p> <i>Apr 9, 2008</i> </p>
+     *
+     * @author mbillemo
      */
     private static class PrintableKeyWrapper<K> {
 

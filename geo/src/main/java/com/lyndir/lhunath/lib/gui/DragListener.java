@@ -29,9 +29,9 @@ import java.awt.event.MouseEvent;
  */
 public class DragListener extends MouseAdapter {
 
-    private Point startDrag;
+    private       Point     startDrag;
     private final Container dragComponent;
-    private Point startLoc;
+    private       Point     startLoc;
 
     /**
      * Create a new {@link DragListener} instance.

@@ -32,8 +32,8 @@ public class UpdateUi extends Thread {
     private static final Logger logger = Logger.get( UpdateUi.class );
 
     private final BlockingQueue<UpdateRequest> requests = new ArrayBlockingQueue<UpdateRequest>( 20 );
-    private final AbstractUi ui;
-    private UpdateRequest currentRequest;
+    private final AbstractUi    ui;
+    private       UpdateRequest currentRequest;
 
     /**
      * Create a new {@link UpdateUi} instance.
@@ -110,7 +110,7 @@ public class UpdateUi extends Thread {
 
     private class UpdateRequest {
 
-        private final Request request;
+        private final Request   request;
         private final Throwable cause;
 
         /**

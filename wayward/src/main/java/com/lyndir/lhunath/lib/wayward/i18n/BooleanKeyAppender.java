@@ -33,12 +33,12 @@ import java.lang.annotation.Target;
 public @interface BooleanKeyAppender {
 
     /**
-     * @return The key chunk to append to the localization key when the value of the annotated parameter is <code>true</code>.
+     * @return The key chunk to append to the localization key when the value of the annotated parameter is <code>true</code> or don't append anything if unspecified or the empty string.
      */
-    String y() default "y";
+    String y() default "";
 
     /**
-     * @return The key chunk to append to the localization key when the value of the annotated parameter is <code>false</code>.
+     * @return The key chunk to append to the localization key when the value of the annotated parameter is <code>false</code> or don't append anything if unspecified or the empty string.
      */
-    String n() default "n";
+    String n() default "";
 }

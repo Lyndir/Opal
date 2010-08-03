@@ -16,6 +16,7 @@ public class ModelTemplates {
     public static <T> IModel<T> unsupportedOperation() {
 
         return new AbstractReadOnlyModel<T>() {
+
             @Override
             public T getObject() {
 

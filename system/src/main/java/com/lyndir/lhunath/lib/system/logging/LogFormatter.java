@@ -38,8 +38,8 @@ import java.util.logging.LogRecord;
  */
 public abstract class LogFormatter extends Formatter {
 
-    private static final String[] skipPackages = { "com.lyndir.lhunath.lib", "java", "sun", "com.sun" };
-    protected final Map<Level, String> levelColor = new HashMap<Level, String>();
+    private static final String[]           skipPackages = { "com.lyndir.lhunath.lib", "java", "sun", "com.sun" };
+    protected final      Map<Level, String> levelColor   = new HashMap<Level, String>();
     protected boolean verbose;
 
     /**
@@ -75,7 +75,7 @@ public abstract class LogFormatter extends Formatter {
 
         /* Initialize some convenience variables for this record. */
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        @SuppressWarnings({ "ThrowableResultOfMethodCallIgnored" })
+        @SuppressWarnings( { "ThrowableResultOfMethodCallIgnored" })
         Throwable error = record.getThrown();
 
         /* If this log message has a throwable, use it(s cause) to make the log output more accurate. */

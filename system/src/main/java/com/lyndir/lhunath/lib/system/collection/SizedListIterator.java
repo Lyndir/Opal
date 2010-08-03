@@ -52,6 +52,7 @@ public abstract class SizedListIterator<T> extends SizedIterator<T> implements L
     public static <T> SizedListIterator<T> of(final ListIterator<T> source, final int size) {
 
         return new SizedListIterator<T>() {
+
             @Override
             public int size() {
 

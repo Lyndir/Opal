@@ -33,7 +33,7 @@ public class EditableList extends JList {
 
     private static final long serialVersionUID = 1L;
     protected final DefaultListModel model;
-    protected final String a;
+    protected final String           a;
 
     /**
      * Create a new EditableList instance.

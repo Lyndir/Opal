@@ -37,7 +37,7 @@ public class TimeSpinner extends JSpinner {
     static final Logger logger = Logger.get( TimeSpinner.class );
 
     private final TimeSpinnerModel model;
-    private int jumpField;
+    private       int              jumpField;
 
     /**
      * Create a new {@link TimeSpinner} instance.
@@ -171,9 +171,9 @@ public class TimeSpinner extends JSpinner {
 
     private class TimeSpinnerModel extends AbstractSpinnerModel {
 
-        private Date value;
-        private SimpleDateFormat format;
-        private final long step;
+        private       Date             value;
+        private       SimpleDateFormat format;
+        private final long             step;
 
         /**
          * Create a new {@link TimeSpinnerModel} instance.

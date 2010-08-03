@@ -31,6 +31,7 @@ public abstract class SizedIterator<T> extends ForwardingIterator<T> {
     public static <T> SizedIterator<T> of(final Iterator<T> iterator, final int size) {
 
         return new SizedIterator<T>() {
+
             @Override
             public int size() {
 

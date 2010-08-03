@@ -25,8 +25,8 @@ import java.nio.channels.SocketChannel;
  *
  * @author lhunath
  */
-public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketChannel> implements NetworkServerStateListener,
-        NetworkConnectionStateListener {
+public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketChannel>
+        implements NetworkServerStateListener, NetworkConnectionStateListener {
 
     /**
      * Create a new {@link NetworkStatePoller} instance. Register it on the network you're interested in.

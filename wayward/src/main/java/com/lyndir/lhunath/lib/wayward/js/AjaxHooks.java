@@ -51,6 +51,7 @@ public abstract class AjaxHooks {
     public static void installAjaxEvents(final AjaxRequestTarget target) {
 
         target.addListener( new AjaxRequestTarget.IListener() {
+
             @Override
             public void onBeforeRespond(final Map<String, Component> map, final AjaxRequestTarget target) {
 
@@ -67,6 +68,7 @@ public abstract class AjaxHooks {
     public static void installPageEvents(final Component component, final IPageListener listener) {
 
         component.add( new AbstractDefaultAjaxBehavior() {
+
             @Override
             protected CharSequence getCallbackScript(final boolean onlyTargetActivePage) {
 

@@ -65,7 +65,8 @@ public class Utils {
             put( Calendar.DAY_OF_MONTH, "Day" );
             put( Calendar.MONTH, "Month" );
             put( Calendar.YEAR, "Year" );
-        }};
+        }
+    };
 
     /**
      * {@link SimpleDateFormat} of the calendar fields.
@@ -82,7 +83,8 @@ public class Utils {
             put( Calendar.DAY_OF_MONTH, "dd " );
             put( Calendar.MONTH, "MM/" );
             put( Calendar.YEAR, "yyyy/" );
-        }};
+        }
+    };
 
     /**
      * Default buffer size.
@@ -470,7 +472,7 @@ public class Utils {
     public static boolean isUrl(final String url) {
 
         try {
-            @SuppressWarnings({ "unused", "UnusedAssignment" })
+            @SuppressWarnings( { "unused", "UnusedAssignment" })
             URL unused = new URL( url );
             return true;
         }

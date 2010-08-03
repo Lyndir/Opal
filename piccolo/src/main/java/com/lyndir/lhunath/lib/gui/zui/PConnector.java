@@ -35,11 +35,11 @@ import java.util.ListIterator;
 public class PConnector extends PNode {
 
     private PNode src, dst;
-    private int stroke;
-    private double srcX;
-    private double srcY;
-    private double dstX;
-    private double dstY;
+    private int     stroke;
+    private double  srcX;
+    private double  srcY;
+    private double  dstX;
+    private double  dstY;
     private boolean srcHorizontal;
     private boolean dstHorizontal;
 
@@ -211,7 +211,7 @@ public class PConnector extends PNode {
         g2.dispose();
     }
 
-    @SuppressWarnings({ "unchecked", "RawUseOfParameterizedType" })
+    @SuppressWarnings( { "unchecked", "RawUseOfParameterizedType" })
     private void moveConnectorsToFront() {
 
         boolean sane = true;

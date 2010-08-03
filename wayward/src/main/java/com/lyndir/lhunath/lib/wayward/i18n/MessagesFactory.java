@@ -91,7 +91,7 @@ public abstract class MessagesFactory {
         }
         catch (NoSuchFieldException e) {
             throw logger.err( e, "Field %s of class %s not found.", msgsFieldName, object.getClass() )
-                    .toError( IllegalArgumentException.class );
+                        .toError( IllegalArgumentException.class );
         }
     }
 }

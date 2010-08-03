@@ -123,7 +123,7 @@ public class Shell {
         }
 
         try {
-            @SuppressWarnings({ "CallToRuntimeExec" })
+            @SuppressWarnings( { "CallToRuntimeExec" })
             final Process process = Runtime.getRuntime().exec( execCmd, null, currDir );
 
             new Thread( cmd[0] + " stdout" ) {

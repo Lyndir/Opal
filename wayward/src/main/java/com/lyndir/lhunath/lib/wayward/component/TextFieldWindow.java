@@ -46,9 +46,11 @@ public class TextFieldWindow<T> extends ModalWindow {
             super( id, model );
 
             add( (form = new Form<Object>( "form" ) {
+
                 {
                     add( new TextField<T>( "field", model, type ).add( new FocusOnReady() ) );
-                }}).add( new AjaxFormSubmitBehavior( form, "onsubmit" ) {
+                }
+            }).add( new AjaxFormSubmitBehavior( form, "onsubmit" ) {
 
                 @Override
                 protected void onSubmit(final AjaxRequestTarget target) {

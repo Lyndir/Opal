@@ -21,10 +21,11 @@ import java.io.Serializable;
 /**
  * <h2>{@link ConfigChangedListener}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * @author mbillemo
  * @param <T> The type of config entries.
  *
- * <p> <i>Mar 26, 2008</i> </p>
+ *            <p> <i>Mar 26, 2008</i> </p>
+ *
+ * @author mbillemo
  */
 public interface ConfigChangedListener<T extends Serializable> {
 

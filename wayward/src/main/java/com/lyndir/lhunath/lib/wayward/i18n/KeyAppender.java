@@ -33,11 +33,6 @@ import java.lang.annotation.Target;
 public @interface KeyAppender {
 
     /**
-     * Value for {@link #nullKey()} and {@link #notNullKey()} that prevent them from appending.
-     */
-    String STRING_UNSET = "KeyAppender.unset";
-
-    /**
      * @return An array optionally filled with matchers to test the value against.
      *
      *         <p> Matchers are used to append a specific key part when the parameter's value passes (or fails) a certain test. </p>
@@ -45,14 +40,14 @@ public @interface KeyAppender {
     KeyMatch[] value() default { };
 
     /**
-     * @return Key to append when the value for this parameter is <code>null</code>.
+     * @return Key to append when the value for this parameter is <code>null</code>. Append nothing if unspecified or an empty string.
      */
-    String nullKey() default STRING_UNSET;
+    String nullKey() default "";
 
     /**
-     * @return Key to append when the value for this parameter is not <code>null</code>.
+     * @return Key to append when the value for this parameter is not <code>null</code>. Append nothing if unspecified or an empty string.
      */
-    String notNullKey() default STRING_UNSET;
+    String notNullKey() default "";
 
     /**
      * @return Whether to pass the value for this parameter to the evaluation of the localization value's format string.

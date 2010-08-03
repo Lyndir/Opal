@@ -20,8 +20,9 @@ package com.lyndir.lhunath.lib.system.localization;
  *
  * <p> <i>Mar 29, 2009</i> </p>
  *
- * @author lhunath
  * @param <T> The type of values provided by this {@link Enum} class.
+ *
+ * @author lhunath
  */
 public interface ValueEnum<T> {
 

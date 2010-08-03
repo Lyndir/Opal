@@ -18,8 +18,9 @@ package com.lyndir.lhunath.lib.system;
 /**
  * <i>{@link Receiver} - [in short] (TODO).</i><br> <br> [description / usage].<br> <br>
  *
- * @author lhunath
  * @param <E> The type of event that can be processed.
+ *
+ * @author lhunath
  */
 public interface Receiver<E> {
 

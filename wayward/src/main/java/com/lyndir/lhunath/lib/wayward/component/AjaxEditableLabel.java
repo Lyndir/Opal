@@ -42,6 +42,7 @@ public abstract class AjaxEditableLabel<T> extends EditableLabel<T> {
         setOutputMarkupId( true );
 
         getField().add( new AjaxFormComponentUpdatingBehavior( "onBlur" ) {
+
             @Override
             protected void onUpdate(final AjaxRequestTarget target) {
 

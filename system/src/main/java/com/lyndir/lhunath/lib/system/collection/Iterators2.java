@@ -21,11 +21,11 @@ public class Iterators2 {
     static class FilteringListIterator<E> implements ListIterator<E> {
 
         private final Predicate<? super E> filter;
-        private final ListIterator<E> listIterator;
+        private final ListIterator<E>      listIterator;
 
         private int index;
         private int offset;
-        private E elementToReturn;
+        private E   elementToReturn;
         private Accessed accessed = Accessed.NONE;
 
 
@@ -36,7 +36,6 @@ public class Iterators2 {
                 void calibrate(final ListIterator<?> listIterator) {
                     throw new IllegalStateException();
                 }
-
             },
             NEXT( true ) {
                 @Override

@@ -37,8 +37,8 @@ public class GLabel extends JLabel {
 
     protected boolean hasMouse, isPressed;
 
-    protected int padding;
-    private GradientPaint gradientBase;
+    protected int           padding;
+    private   GradientPaint gradientBase;
     private int arc = 5;
 
     /**

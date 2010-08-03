@@ -85,7 +85,7 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings({ "unused", "RedundantThrows" })
+    @SuppressWarnings( { "unused", "RedundantThrows" })
     public void browse(final URI uri)
             throws IOException {
 
@@ -99,7 +99,7 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings({ "unused", "RedundantThrows" })
+    @SuppressWarnings( { "unused", "RedundantThrows" })
     public void edit(final File file)
             throws IOException {
 
@@ -111,7 +111,7 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings({ "unused", "RedundantThrows" })
+    @SuppressWarnings( { "unused", "RedundantThrows" })
     public void mail()
             throws IOException {
 
@@ -125,7 +125,7 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings({ "unused", "RedundantThrows" })
+    @SuppressWarnings( { "unused", "RedundantThrows" })
     public void mail(final URI mailtoURI)
             throws IOException {
 
@@ -139,7 +139,7 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings({ "unused", "RedundantThrows" })
+    @SuppressWarnings( { "unused", "RedundantThrows" })
     public void open(final File file)
             throws IOException {
 
@@ -153,7 +153,7 @@ public class Desktop extends Wrapper {
      *
      * @throws IOException
      */
-    @SuppressWarnings({ "unused", "RedundantThrows" })
+    @SuppressWarnings( { "unused", "RedundantThrows" })
     public void print(final File file)
             throws IOException {
 

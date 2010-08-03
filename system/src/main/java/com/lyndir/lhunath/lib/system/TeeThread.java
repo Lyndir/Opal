@@ -31,7 +31,7 @@ public class TeeThread extends Thread {
 
     private static final Logger logger = Logger.get( TeeThread.class );
 
-    private final InputStream source;
+    private final InputStream    source;
     private final OutputStream[] destinations;
 
     /**

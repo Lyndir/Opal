@@ -25,8 +25,9 @@ import org.apache.wicket.model.IModel;
  *
  * <p> <i>Jan 18, 2010</i> </p>
  *
- * @author lhunath
  * @param <T> The model type.
+ *
+ * @author lhunath
  */
 public class GenericFormComponent<T> extends GenericWebMarkupContainer<T> {
 

@@ -14,9 +14,9 @@ import org.apache.wicket.model.IModel;
  */
 public class EditableLabel<T> extends GenericPanel<T> {
 
-    private final Label label;
+    private final Label        label;
     private final TextField<T> field;
-    private boolean editable;
+    private       boolean      editable;
 
     /**
      * @param id        The wicket ID of the component.
@@ -28,6 +28,7 @@ public class EditableLabel<T> extends GenericPanel<T> {
         super( id, model );
 
         add( label = new Label( "label", model ) {
+
             @Override
             public boolean isVisible() {
 
@@ -35,6 +36,7 @@ public class EditableLabel<T> extends GenericPanel<T> {
             }
         } );
         add( field = new TextField<T>( "field", model, modelType ) {
+
             @Override
             public boolean isVisible() {
 

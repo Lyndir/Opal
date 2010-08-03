@@ -29,8 +29,8 @@ import org.apache.wicket.markup.html.panel.Panel;
  *
  * @author lhunath
  */
-public abstract class TabActivator<P extends Panel, S extends FragmentState, T extends FragmentNavigationTab<P, S>> implements
-        ComponentActivator {
+public abstract class TabActivator<P extends Panel, S extends FragmentState, T extends FragmentNavigationTab<P, S>>
+        implements ComponentActivator {
 
     static final Logger logger = Logger.get( TabActivator.class );
     private final T tab;

@@ -21,7 +21,7 @@ import org.apache.wicket.model.IModel;
  */
 public class MethodArgument implements Serializable {
 
-    private final Object value;
+    private final Object           value;
     private final List<Annotation> annotations;
 
     public MethodArgument(final Object value, final List<Annotation> annotations) {

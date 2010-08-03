@@ -61,6 +61,7 @@ public class CSSClassAttributeAppender extends AttributeAppender {
             public Collection<String> getObject() {
 
                 return Collections2.transform( Arrays.asList( cssClassModels ), new Function<IModel<String>, String>() {
+
                     @Override
                     public String apply(final IModel<String> from) {
 

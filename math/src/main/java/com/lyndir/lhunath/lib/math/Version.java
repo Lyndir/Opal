@@ -31,8 +31,8 @@ public class Version implements Comparable<Version>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String version = null;
-    private String[] tags = null;
+    private String   version = null;
+    private String[] tags    = null;
 
     /**
      * Create a new {@link Version} instance.

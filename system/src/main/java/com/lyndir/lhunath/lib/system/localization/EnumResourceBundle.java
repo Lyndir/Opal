@@ -26,12 +26,13 @@ import java.util.*;
  *
  * <p> <i>Mar 29, 2009</i> </p>
  *
- * @author lhunath
  * @param <T> The type of values provided as resources.
+ *
+ * @author lhunath
  */
 public class EnumResourceBundle<T> extends ResourceBundle {
 
-    private final LinkedList<String> keyList;
+    private final LinkedList<String>            keyList;
     private final Class<? extends ValueEnum<T>> enumType;
 
     /**

@@ -22,7 +22,7 @@ import org.apache.wicket.model.Model;
  */
 public abstract class AbstractIteratorProvider<T> implements IDataProvider<T> {
 
-    private transient Iterator<T> transientIt = null;
+    private transient Iterator<T>   transientIt   = null;
     private transient LinkedList<T> transientList = null;
 
     protected Iterator<T> getIterator() {
@@ -55,7 +55,7 @@ public abstract class AbstractIteratorProvider<T> implements IDataProvider<T> {
      * override this method or run-time madness will ensue.</p>
      */
     @Override
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings( { "unchecked" })
     public IModel<T> model(final T object) {
 
         return (IModel<T>) new Model<Serializable>( (Serializable) object );

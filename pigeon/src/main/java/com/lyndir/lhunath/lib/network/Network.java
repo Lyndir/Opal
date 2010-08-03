@@ -40,35 +40,36 @@ import javax.net.ssl.SSLEngineResult.HandshakeStatus;
  */
 public class Network implements Runnable {
 
-    private static final Logger logger = Logger.get( Network.class );
-    private static final Map<SelectionKey, Integer> lastReadyOps = new HashMap<SelectionKey, Integer>();
-    private static final Map<SelectionKey, Integer> lastInterestOps = new HashMap<SelectionKey, Integer>();
-    private static final Map<SelectionKey, HandshakeStatus> lastHSStatus = new HashMap<SelectionKey, HandshakeStatus>();
+    private static final Logger                             logger             = Logger.get( Network.class );
+    private static final Map<SelectionKey, Integer>         lastReadyOps       = new HashMap<SelectionKey, Integer>();
+    private static final Map<SelectionKey, Integer>         lastInterestOps    = new HashMap<SelectionKey, Integer>();
+    private static final Map<SelectionKey, HandshakeStatus> lastHSStatus       = new HashMap<SelectionKey, HandshakeStatus>();
     // TODO: Use SSLSession#getApplicationBufferSize
-    private static final int READ_BUFFER = 1024;
+    private static final int                                READ_BUFFER        = 1024;
     // TODO: Use SSLSession#getPacketBufferSize
-    private static final int WRITE_BUFFER = 1024;
-    private static final int WRITE_QUEUE_BUFFER = 1024 * 10;
+    private static final int                                WRITE_BUFFER       = 1024;
+    private static final int                                WRITE_QUEUE_BUFFER = 1024 * 10;
 
     private Thread networkThread;
 
-    private final List<NetworkDataListener> dataListeners;
-    private final List<NetworkServerStateListener> serverStateListeners;
+    private final List<NetworkDataListener>            dataListeners;
+    private final List<NetworkServerStateListener>     serverStateListeners;
     private final List<NetworkConnectionStateListener> connectionStateListeners;
 
     // Collections that are modified by calling threads and the networking thread.
-    private final Map<SelectableChannel, SSLEngine> sslEngines = Collections.synchronizedMap( new HashMap<SelectableChannel, SSLEngine>() );
-    private final Map<SocketChannel, ByteBuffer> writeQueueBuffers = Collections.synchronizedMap(
+    private final Map<SelectableChannel, SSLEngine> sslEngines        = Collections.synchronizedMap(
+            new HashMap<SelectableChannel, SSLEngine>() );
+    private final Map<SocketChannel, ByteBuffer>    writeQueueBuffers = Collections.synchronizedMap(
             new HashMap<SocketChannel, ByteBuffer>() );
-    private final Map<SocketChannel, Object> writeQueueLocks = Collections.synchronizedMap( new HashMap<SocketChannel, Object>() );
+    private final Map<SocketChannel, Object>        writeQueueLocks   = Collections.synchronizedMap( new HashMap<SocketChannel, Object>() );
 
     protected final Object selectorGuard = new Object();
     protected Selector selector; // TODO: Synchronize all access to/of the selector.
 
     // Collections that are only modified by the networking thread.
-    private final Map<SocketChannel, ByteBuffer> readBuffers = new HashMap<SocketChannel, ByteBuffer>();
-    private final Map<SocketChannel, ByteBuffer> writeBuffers = new HashMap<SocketChannel, ByteBuffer>();
-    private final Map<SocketChannel, Boolean> closedChannels = new HashMap<SocketChannel, Boolean>();
+    private final Map<SocketChannel, ByteBuffer> readBuffers    = new HashMap<SocketChannel, ByteBuffer>();
+    private final Map<SocketChannel, ByteBuffer> writeBuffers   = new HashMap<SocketChannel, ByteBuffer>();
+    private final Map<SocketChannel, Boolean>    closedChannels = new HashMap<SocketChannel, Boolean>();
     private boolean running;
 
     /**
@@ -552,7 +553,7 @@ public class Network implements Runnable {
         // Lock this connection's write queue.
         synchronized (writeQueueLocks.get( socketChannel )) {
             if (!socketChannel.isOpen() || !socketChannel.isConnected() || socketChannel.isConnectionPending() || socketChannel.socket()
-                    .isOutputShutdown())
+                                                                                                                               .isOutputShutdown())
                 return;
 
             // Obtain the application data write queue buffer. If none is allocated yet, make a dummy empty one.

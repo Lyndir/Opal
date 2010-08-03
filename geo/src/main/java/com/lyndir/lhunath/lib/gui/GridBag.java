@@ -30,10 +30,10 @@ import javax.swing.*;
 public class GridBag extends GridBagConstraints {
 
     private final ArrayList<ArrayList<Vec2>> grid;
-    private final JComponent container;
-    private Font font;
-    private Color back;
-    private Color front;
+    private final JComponent                 container;
+    private       Font                       font;
+    private       Color                      back;
+    private       Color                      front;
 
     /**
      * Create a new {@link GridBag} instance.

@@ -32,6 +32,7 @@ public class AjaxDigger<D extends Serializable> extends Panel {
 
         levels.push( initialLevel );
         add( new ListView<DiggerLevel>( "levels", levels ) {
+
             @Override
             protected void populateItem(final ListItem<DiggerLevel> levelListItem) {
 
@@ -39,11 +40,13 @@ public class AjaxDigger<D extends Serializable> extends Panel {
 
                 levelListItem.add( new Label( "heading", level.getHeading() ) );
                 levelListItem.add( new ListView<DiggerItem>( "items", level.getItems() ) {
+
                     @Override
                     protected void populateItem(final ListItem<DiggerItem> itemListItem) {
 
                         final DiggerItem diggerItem = itemListItem.getModelObject();
                         itemListItem.add( new AjaxLink<Void>( "link" ) {
+
                             {
                                 add( diggerItem.getSelectItem( "selectItem", level ) );
                             }
@@ -72,7 +75,7 @@ public class AjaxDigger<D extends Serializable> extends Panel {
                         } );
                         itemListItem.add( diggerItem.getExpandedItem( "expandedItem", level )
                                 // TODO: This should probably happen lazily:
-                                .setVisible( ObjectUtils.equal( level.getActiveItem(), diggerItem ) ) );
+                                                  .setVisible( ObjectUtils.equal( level.getActiveItem(), diggerItem ) ) );
                     }
                 } );
             }
@@ -81,10 +84,10 @@ public class AjaxDigger<D extends Serializable> extends Panel {
 
     public static class DiggerLevel implements Serializable {
 
-        private final DiggerItem parent;
+        private final DiggerItem       parent;
         private final List<DiggerItem> items;
-        private DiggerItem activeItem;
-        private IModel<String> heading;
+        private       DiggerItem       activeItem;
+        private       IModel<String>   heading;
 
         public DiggerLevel(final IModel<String> heading, final DiggerItem parent, final List<DiggerItem> items) {
 

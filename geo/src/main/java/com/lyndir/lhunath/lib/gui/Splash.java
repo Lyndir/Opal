@@ -37,12 +37,12 @@ public class Splash extends JWindow {
     private static final Logger logger = Logger.get( Splash.class );
 
     private static final long serialVersionUID = 1L;
-    protected static Splash instance;
-    private Icon icon;
-    private Icon initial;
-    private BufferedImage background;
-    private long startTime;
-    private long endTime;
+    protected static Splash        instance;
+    private          Icon          icon;
+    private          Icon          initial;
+    private          BufferedImage background;
+    private          long          startTime;
+    private          long          endTime;
 
     private Splash(Icon initial, final Icon icon) {
 

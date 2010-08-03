@@ -24,8 +24,9 @@ import java.io.Serializable;
  *
  * <p> <i>Mar 23, 2010</i> </p>
  *
- * @author lhunath
  * @param <T> The type that the predicate can be applied to.
+ *
+ * @author lhunath
  */
 public interface IPredicate<T> extends Predicate<T>, Serializable {
 

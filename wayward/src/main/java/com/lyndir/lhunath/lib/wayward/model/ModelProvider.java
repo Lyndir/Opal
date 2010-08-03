@@ -37,16 +37,17 @@ import org.apache.wicket.model.IWrapModel;
  *
  * <p> <i>Mar 11, 2010</i> </p>
  *
- * @author lhunath
  * @param <P> This type.
  * @param <M> The type of the base model for this provider.
+ *
+ * @author lhunath
  */
 public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements IWrapModel<M> {
 
     static final Logger logger = Logger.get( ModelProvider.class );
 
-    private transient IModel<P> model = null;
-    private IModel<M> wrappedModel = null;
+    private transient IModel<P> model        = null;
+    private           IModel<M> wrappedModel = null;
 
     private Component component = null;
 
@@ -167,7 +168,7 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
     /**
      * @param component The component we have been or will be attached to.
      */
-    @SuppressWarnings({ "hiding", "ParameterHidesMemberVariable" })
+    @SuppressWarnings( { "hiding", "ParameterHidesMemberVariable" })
     public void attach(final Component component) {
 
         setComponent( checkNotNull( component, "Can't attach model provider (%s) to null.", this ) );

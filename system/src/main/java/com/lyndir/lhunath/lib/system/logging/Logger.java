@@ -39,9 +39,9 @@ public class Logger implements Serializable {
 
     private final org.slf4j.Logger logger;
 
-    private static final ThreadLocal<Throwable> eventCause = new ThreadLocal<Throwable>();
-    private static final ThreadLocal<String> eventFormat = new ThreadLocal<String>();
-    private static final ThreadLocal<Object[]> eventArguments = new ThreadLocal<Object[]>();
+    private static final ThreadLocal<Throwable> eventCause     = new ThreadLocal<Throwable>();
+    private static final ThreadLocal<String>    eventFormat    = new ThreadLocal<String>();
+    private static final ThreadLocal<Object[]>  eventArguments = new ThreadLocal<Object[]>();
 
     // Create a logger --
 
@@ -327,7 +327,7 @@ public class Logger implements Serializable {
      *
      * @return An unchecked {@link Error}.
      */
-    @SuppressWarnings({ "ThrowableResultOfMethodCallIgnored" })
+    @SuppressWarnings( { "ThrowableResultOfMethodCallIgnored" })
     public RuntimeException toError() {
 
         if (eventCause.get() instanceof RuntimeException)

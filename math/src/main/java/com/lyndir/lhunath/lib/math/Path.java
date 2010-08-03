@@ -27,10 +27,10 @@ public class Path {
 
     private final boolean srcHorizontal;
     private final boolean dstHorizontal;
-    private final Vec2 src;
-    private final Vec2 dst;
-    private final Vec2 size;
-    private final Vec2 offset;
+    private final Vec2    src;
+    private final Vec2    dst;
+    private final Vec2    size;
+    private final Vec2    offset;
 
     /**
      * {@inheritDoc}

@@ -20,6 +20,7 @@ import org.joda.time.*;
 public abstract class DateUtils {
 
     private static final ThreadLocal<Stack<Timer>> currentTimer = new ThreadLocal<Stack<Timer>>() {
+
         @Override
         protected Stack<Timer> initialValue() {
 
@@ -27,7 +28,7 @@ public abstract class DateUtils {
         }
     };
     private static final ImmutableMap<DurationFieldType, DateTimeFieldType> types;
-    private static final ImmutableList<DateTimeFieldType> stdDateTimeFields;
+    private static final ImmutableList<DateTimeFieldType>                   stdDateTimeFields;
 
     static {
         // Mapping DurationFieldTypes to DateTimeFieldTypes.

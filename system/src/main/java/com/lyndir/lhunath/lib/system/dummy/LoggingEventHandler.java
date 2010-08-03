@@ -35,9 +35,10 @@ import javax.swing.event.MouseInputListener;
  *
  * @author mbillemo
  */
-public class LoggingEventHandler implements ComponentListener, ContainerListener, FocusListener, AncestorListener, HierarchyBoundsListener,
-        HierarchyListener, WindowFocusListener, WindowListener, WindowStateListener, PropertyChangeListener, MouseInputListener,
-        MouseWheelListener, KeyListener, InputMethodListener {
+public class LoggingEventHandler
+        implements ComponentListener, ContainerListener, FocusListener, AncestorListener, HierarchyBoundsListener, HierarchyListener,
+        WindowFocusListener, WindowListener, WindowStateListener, PropertyChangeListener, MouseInputListener, MouseWheelListener,
+        KeyListener, InputMethodListener {
 
     private static final Logger logger = Logger.get( LoggingEventHandler.class );
 

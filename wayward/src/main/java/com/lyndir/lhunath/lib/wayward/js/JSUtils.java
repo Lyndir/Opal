@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  */
 public abstract class JSUtils {
 
-    static final Gson GSON = new GsonBuilder().serializeNulls().create();
+    static final         Gson    GSON       = new GsonBuilder().serializeNulls().create();
     private static final Pattern IDENTIFIER = Pattern.compile( "^([\\w$&&[^\\d]][\\w$]*\\.)*[\\w$&&[^\\d]][\\w$]*$" );
 
     public static String callFunction(final String function, final Object... args) {

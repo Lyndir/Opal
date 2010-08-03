@@ -33,8 +33,8 @@ public abstract class Schedule implements Runnable, Serializable {
     private static final Timer scheduler = new Timer( "Scheduler", true );
 
     private Calendar nextSchedule = null;
-    private int stepAmount;
-    private int stepField;
+    private           int     stepAmount;
+    private           int     stepField;
     private transient boolean isScheduled;
     private transient TimerTask scheduleTask = null;
 

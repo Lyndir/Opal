@@ -39,6 +39,7 @@ public class JSLink extends AttributeModifier {
     public JSLink(final String function, final Object... args) {
 
         this( new LoadableDetachableModel<String>() {
+
             @Override
             protected String load() {
 

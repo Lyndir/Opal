@@ -61,58 +61,59 @@ import org.jdesktop.animation.transitions.TransitionTarget;
  *
  * @author lhunath
  */
-public abstract class AbstractUi implements ActionListener, LogListener, CaretListener, ListSelectionListener, ItemListener, Reflective,
-        ListDataListener, FocusListener, TransitionTarget {
+public abstract class AbstractUi
+        implements ActionListener, LogListener, CaretListener, ListSelectionListener, ItemListener, Reflective, ListDataListener,
+        FocusListener, TransitionTarget {
 
     static final Logger logger = Logger.get( AbstractUi.class );
 
-    protected static final long LAUNCH_DELAY = 5000;
-    protected static final int FONT_SIZE = 12;
-    protected static final String FONT_FACE = Locale.explain( "conf.font" );
+    protected static final long      LAUNCH_DELAY = 5000;
+    protected static final int       FONT_SIZE    = 12;
+    protected static final String    FONT_FACE    = Locale.explain( "conf.font" );
     protected static final Dimension MINIMUM_SIZE = new Dimension( 1000, 700 );
 
-    private static final String reportEmail = Locale.explain( "conf.author" );
-    private static final String reportIssueSubject = Locale.explain( "ui.reportSubject" ) + ShadeConfig.VERSION;
-    private static final String reportLicenseSubject = Locale.explain( "ui.licenseSubject" );
-    private static boolean startup = true;
+    private static final String  reportEmail          = Locale.explain( "conf.author" );
+    private static final String  reportIssueSubject   = Locale.explain( "ui.reportSubject" ) + ShadeConfig.VERSION;
+    private static final String  reportLicenseSubject = Locale.explain( "ui.licenseSubject" );
+    private static       boolean startup              = true;
 
-    protected Tab showingTab;
-    protected Map<Action, Tab> panelTabs;
+    protected Tab                 showingTab;
+    protected Map<Action, Tab>    panelTabs;
     protected List<Stack<String>> messageStack;
-    protected List<Double> progressStack;
-    protected HTMLFormatter logFormatter;
-    protected TrayIcon systray;
+    protected List<Double>        progressStack;
+    protected HTMLFormatter       logFormatter;
+    protected TrayIcon            systray;
     protected SimpleInternalFrame window;
-    protected JProgressBar progress;
-    protected JEditorPane log;
-    protected JFrame frame;
-    protected JLabel logo;
-    protected JPanel contentPane;
-    protected JCheckBox systrayButton;
-    protected JCheckBox alwaysOnTop;
-    protected JCheckBox startMini;
-    private File defaultLogo;
-    private boolean showFrame;
-    private DragListener dragListener;
-    private JComponent themesPanel;
-    private JCheckBox verboseLogs;
-    private JButton windowedTitleButton;
-    private JButton fullscreenTitleButton;
-    private JButton closeTitleButton;
-    private JDialog console;
-    private JPanel titleBar;
-    private PipedInputStream pipeStdOut;
-    private PipedInputStream pipeStdErr;
-    private PrintStream realStdOut;
-    private PrintStream realStdErr;
-    private UpdateUi updateUi;
-    protected Animator panelAnimation;
-    private ScreenTransition panelTransition;
-    private PaintPanel contentPanel;
-    private PipedOutputStream consoleStdOut;
-    private Tab settingsTab;
-    private boolean overlayed;
-    private HashSet<Plugin> plugins;
+    protected JProgressBar        progress;
+    protected JEditorPane         log;
+    protected JFrame              frame;
+    protected JLabel              logo;
+    protected JPanel              contentPane;
+    protected JCheckBox           systrayButton;
+    protected JCheckBox           alwaysOnTop;
+    protected JCheckBox           startMini;
+    private   File                defaultLogo;
+    private   boolean             showFrame;
+    private   DragListener        dragListener;
+    private   JComponent          themesPanel;
+    private   JCheckBox           verboseLogs;
+    private   JButton             windowedTitleButton;
+    private   JButton             fullscreenTitleButton;
+    private   JButton             closeTitleButton;
+    private   JDialog             console;
+    private   JPanel              titleBar;
+    private   PipedInputStream    pipeStdOut;
+    private   PipedInputStream    pipeStdErr;
+    private   PrintStream         realStdOut;
+    private   PrintStream         realStdErr;
+    private   UpdateUi            updateUi;
+    protected Animator            panelAnimation;
+    private   ScreenTransition    panelTransition;
+    private   PaintPanel          contentPanel;
+    private   PipedOutputStream   consoleStdOut;
+    private   Tab                 settingsTab;
+    private   boolean             overlayed;
+    private   HashSet<Plugin>     plugins;
 
     static {
         System.setProperty( "swing.aatext", "true" );
@@ -284,10 +285,9 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
     /**
      * Show or hide the console.
      */
-    @SuppressWarnings(
-            {
-                    "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull",
-                    "AssignmentToNull" })
+    @SuppressWarnings( {
+                               "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull", "AssignmentToNull",
+                               "AssignmentToNull" })
     protected void toggleConsole() {
 
         if (!SwingUtilities.isEventDispatchThread()) {
@@ -573,8 +573,7 @@ public abstract class AbstractUi implements ActionListener, LogListener, CaretLi
                     if (message != null || record.getThrown() != null)
                         try {
                             log.getEditorKit()
-                                    .read( new StringReader( logFormatter.format( record ) ), log.getDocument(),
-                                           log.getDocument().getLength() );
+                               .read( new StringReader( logFormatter.format( record ) ), log.getDocument(), log.getDocument().getLength() );
                         }
                         catch (IOException e) {
                             logger.err( e, "Couldn't read the log message from the record!" );

@@ -34,28 +34,28 @@ import javax.swing.*;
 public class ToolTip extends JPanel {
 
     protected static final Timer tipTimer = new Timer( "Tip Timer", true );
-    private static final int PADDING = 15;
+    private static final   int   PADDING  = 15;
 
-    protected static ToolTip activeTip;
-    protected static final JLabel stickyHint;
-    protected static JFrame toolTipFrame;
-    protected static JWindow toolTipWindow;
-    protected static final PaintPanel toolTipContainer;
-    static final WindowAdapter toolTipContentWindowListener;
-    protected static TimerTask toolTipSchedule;
-    protected static final ScrollPanel toolTipPanel;
-    protected static final JEditorPane toolTipPane;
+    protected static       ToolTip       activeTip;
+    protected static final JLabel        stickyHint;
+    protected static       JFrame        toolTipFrame;
+    protected static       JWindow       toolTipWindow;
+    protected static final PaintPanel    toolTipContainer;
+    static final           WindowAdapter toolTipContentWindowListener;
+    protected static       TimerTask     toolTipSchedule;
+    protected static final ScrollPanel   toolTipPanel;
+    protected static final JEditorPane   toolTipPane;
 
     protected static final int maxWidth;
     protected static final int maxHeight;
 
-    protected final TipButtonListener buttonListener;
+    protected final TipButtonListener           buttonListener;
     protected final List<ToolTipStickyListener> stickyListeners;
-    protected boolean stickable;
-    protected boolean stickOnly;
+    protected       boolean                     stickable;
+    protected       boolean                     stickOnly;
 
-    private JComponent toolTipContent;
-    protected String toolTipText;
+    private   JComponent toolTipContent;
+    protected String     toolTipText;
 
     static {
         Rectangle maxBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();

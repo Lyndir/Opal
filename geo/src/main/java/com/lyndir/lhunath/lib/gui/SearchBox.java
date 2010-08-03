@@ -30,9 +30,9 @@ import javax.swing.*;
  */
 public abstract class SearchBox extends JTextField implements FocusListener, KeyListener {
 
-    private boolean cleared;
-    private int minChars;
-    private final String subject;
+    private       boolean cleared;
+    private       int     minChars;
+    private final String  subject;
     private int hit = 1;
 
     /**

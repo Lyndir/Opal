@@ -27,10 +27,10 @@ import javax.swing.*;
  */
 public class Tab {
 
-    private final String title;
-    private final Icon icon;
-    private final JComponent content;
-    private AbstractAction action;
+    private final String         title;
+    private final Icon           icon;
+    private final JComponent     content;
+    private       AbstractAction action;
 
     /**
      * Create a new {@link Tab} instance.

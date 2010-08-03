@@ -28,7 +28,6 @@ import java.util.ArrayList;
  * TODO: {@link ShadeConfig}<br>
  *
  * @author lhunath
- * @param <T>
  */
 public class ShadeConfig<T extends Serializable> extends BaseConfig<T> {
 

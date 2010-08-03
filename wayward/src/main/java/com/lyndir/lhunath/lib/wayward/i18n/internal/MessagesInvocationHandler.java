@@ -89,43 +89,41 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                             KeyAppender annotation = (KeyAppender) argAnnotation;
                             useValue = annotation.useValue();
 
-                            if (argValue == null) {
+                            if (argValue == null)
                                 // Null argument => append nullKey if set.
+                                appendKey( keyBuilder, annotation.nullKey() );
 
-                                if (!annotation.nullKey().equals( KeyAppender.STRING_UNSET ))
-                                    appendKey( keyBuilder, annotation.nullKey() );
-                            }
-
-                            // Not Null argument
-                            else if (!annotation.notNullKey().equals( KeyAppender.STRING_UNSET ))
+                                // Not Null argument
+                            else {
                                 // => append notNullKey if set.
                                 appendKey( keyBuilder, annotation.notNullKey() );
 
-                            else if (annotation.value().length == 0)
-                                // else if no KeyMatches => append arg value.
-                                appendKey( keyBuilder, argValue.toString() );
+                                if (annotation.value().length == 0)
+                                    // if no KeyMatches => append arg value.
+                                    appendKey( keyBuilder, argValue.toString() );
 
-                            else
-                                // else (if KeyMatches) => evaluate KeyMatches and append accordingly.
-                                for (final KeyMatch match : annotation.value()) {
-                                    logger.dbg( "With match: %s, ", match );
+                                else
+                                    // else (if KeyMatches) => evaluate KeyMatches and append accordingly.
+                                    for (final KeyMatch match : annotation.value()) {
+                                        logger.dbg( "With match: %s, ", match );
 
-                                    boolean matches = false;
-                                    if (!matches && match.ifNum() != KeyMatch.NUM_UNSET)
-                                        if (Number.class.isInstance( argValue ) && match.ifNum() == ((Number) argValue).doubleValue())
-                                            matches = true;
-                                    if (!matches && match.ifString() != KeyMatch.STRING_UNSET)
-                                        if (match.ifString().equals( argValue.toString() ))
-                                            matches = true;
-                                    if (!matches && match.ifClass() != KeyMatch.CLASS_UNSET)
-                                        if (match.ifClass().equals( argValue ))
-                                            matches = true;
+                                        boolean matches = false;
+                                        if (!matches && match.ifNum() != KeyMatch.NUM_UNSET)
+                                            if (Number.class.isInstance( argValue ) && match.ifNum() == ((Number) argValue).doubleValue())
+                                                matches = true;
+                                        if (!matches && match.ifString() != KeyMatch.STRING_UNSET)
+                                            if (match.ifString().equals( argValue.toString() ))
+                                                matches = true;
+                                        if (!matches && match.ifClass() != KeyMatch.CLASS_UNSET)
+                                            if (match.ifClass().equals( argValue ))
+                                                matches = true;
 
-                                    if (matches)
-                                        appendKey( keyBuilder, match.key() );
-                                    else if (match.elseKey() != KeyMatch.STRING_UNSET)
-                                        appendKey( keyBuilder, match.elseKey() );
-                                }
+                                        if (matches)
+                                            appendKey( keyBuilder, match.key() );
+                                        else if (match.elseKey() != KeyMatch.STRING_UNSET)
+                                            appendKey( keyBuilder, match.elseKey() );
+                                    }
+                            }
                         } else if (BooleanKeyAppender.class.isInstance( argAnnotation )) {
                             BooleanKeyAppender annotation = (BooleanKeyAppender) argAnnotation;
                             useValue = false;
@@ -166,6 +164,16 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                                                         baseClass.getCanonicalName(), e.getKey() );
                 }
             }
+
+            private StringBuilder appendKey(final StringBuilder keyBuilder, final String keyPart) {
+
+                if (keyPart != null && !keyPart.isEmpty()) {
+                    logger.dbg( "Appending key part: %s", keyPart );
+                    keyBuilder.append( '.' ).append( keyPart );
+                }
+
+                return keyBuilder;
+            }
         };
 
         // If the method expects a model, return that.
@@ -174,11 +182,5 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
 
         // Otherwise just resolve the key's value straight away.
         return valueModel.getObject();
-    }
-
-    private static StringBuilder appendKey(final StringBuilder keyBuilder, final String keyPart) {
-
-        logger.dbg( "Appending key part: %s", keyPart );
-        return keyBuilder.append( '.' ).append( keyPart );
     }
 }

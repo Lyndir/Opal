@@ -33,9 +33,9 @@ import javax.swing.*;
 public class PaintPanel extends ScrollPanel {
 
     protected Image backgroundImage;
-    private int autoColorControl;
+    private   int   autoColorControl;
     GradientPaint autoPaint;
-    Paint paint;
+    Paint         paint;
 
     /**
      * Create a new {@link PaintPanel} instance.

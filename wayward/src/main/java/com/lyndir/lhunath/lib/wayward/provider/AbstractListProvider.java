@@ -28,8 +28,9 @@ import org.apache.wicket.model.Model;
  *
  * <p> <i>Mar 7, 2010</i> </p>
  *
- * @author lhunath
  * @param <T> The type of data that will be provided.
+ *
+ * @author lhunath
  */
 public abstract class AbstractListProvider<T> implements IDataProvider<T> {
 
@@ -55,7 +56,7 @@ public abstract class AbstractListProvider<T> implements IDataProvider<T> {
      * override this method or run-time madness will ensue.</p>
      */
     @Override
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings( { "unchecked" })
     public IModel<T> model(final T object) {
 
         return (IModel<T>) new Model<Serializable>( (Serializable) object );

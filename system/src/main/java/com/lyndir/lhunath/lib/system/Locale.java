@@ -30,8 +30,8 @@ import java.util.ResourceBundle;
  */
 public class Locale {
 
-    private static final Locale instance = new Locale();
-    private ResourceBundle resources = null;
+    private static final Locale         instance  = new Locale();
+    private              ResourceBundle resources = null;
 
     private Locale() {
 

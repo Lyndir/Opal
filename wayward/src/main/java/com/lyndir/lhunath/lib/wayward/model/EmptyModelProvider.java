@@ -23,8 +23,9 @@ import org.apache.wicket.model.IModel;
  *
  * <p> <i>Mar 11, 2010</i> </p>
  *
- * @author lhunath
  * @param <P> This type.
+ *
+ * @author lhunath
  */
 public abstract class EmptyModelProvider<P extends EmptyModelProvider<P>> extends ModelProvider<P, Object> {
 

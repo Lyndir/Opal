@@ -27,13 +27,13 @@ import org.apache.wicket.markup.html.panel.Panel;
  */
 public interface FragmentNavigationListener {
 
-    abstract class Controller<P extends Panel, S extends FragmentState, T extends FragmentNavigationTab<? extends P, ? extends S>> implements
-            IClusterable {
+    abstract class Controller<P extends Panel, S extends FragmentState, T extends FragmentNavigationTab<? extends P, ? extends S>>
+            implements IClusterable {
 
         static final Logger logger = Logger.get( Controller.class );
 
         private String pageFragment;
-        private T activeTab;
+        private T      activeTab;
 
         /**
          * Mark the given tab as active and restore state in its contents from the given tab-specific state arguments.
@@ -98,7 +98,7 @@ public interface FragmentNavigationListener {
                 logger.dbg( "Updating tab in response page: %s (tab exclusive page: %s)", responsePage, getTabExclusivePage() );
 
                 // Cast TT to T because Java can't constrain TT to both T and FNT<PP,SS>
-                @SuppressWarnings({ "unchecked" })
+                @SuppressWarnings( { "unchecked" })
                 T _tab = (T) tab;
                 activeTab = _tab;
                 setActiveTab( tab, tabPanel );
@@ -196,8 +196,8 @@ public interface FragmentNavigationListener {
     }
 
 
-    class PageListener<P extends Panel, S extends FragmentState, T extends FragmentNavigationTab<? extends P, ? extends S>> implements
-            AjaxHooks.IPageListener {
+    class PageListener<P extends Panel, S extends FragmentState, T extends FragmentNavigationTab<? extends P, ? extends S>>
+            implements AjaxHooks.IPageListener {
 
         static final Logger logger = Logger.get( PageListener.class );
 
@@ -257,13 +257,13 @@ public interface FragmentNavigationListener {
     }
 
 
-    class AjaxRequestListener<P extends Panel, S extends FragmentState, T extends FragmentNavigationTab<? extends P, ? extends S>> implements
-            AjaxRequestTarget.IListener {
+    class AjaxRequestListener<P extends Panel, S extends FragmentState, T extends FragmentNavigationTab<? extends P, ? extends S>>
+            implements AjaxRequestTarget.IListener {
 
         static final Logger logger = Logger.get( AjaxRequestListener.class );
 
         private final Controller<P, S, T> controller;
-        private String newFragment;
+        private       String              newFragment;
 
         /**
          * @param controller The object that controls fragment state for this page.

@@ -27,6 +27,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 public abstract class AjaxEditableImage extends Panel implements ModalWindow.WindowClosedCallback {
 
     private final IModel<FileUpload> file = new LoadableDetachableModel<FileUpload>() {
+
         @Override
         protected FileUpload load() {
 
@@ -34,7 +35,7 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
         }
     };
     private final ModalWindow window;
-    private boolean editable;
+    private       boolean     editable;
 
     /**
      * @param id The wicket ID of the component.
@@ -45,24 +46,28 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
         setOutputMarkupId( true );
 
         add( new Image( "image", new DynamicImageResource() {
+
             @Override
             protected byte[] getImageData() {
 
                 return AjaxEditableImage.this.getImageData();
             }
         }.setCacheable( false ) ) {
+
             @Override
             public boolean isVisible() {
 
                 return hasImageData();
             }
         }.add( new AttributeAppender( "class", new LoadableDetachableModel<String>() {
+
             @Override
             protected String load() {
 
                 return isEditable()? "link": "";
             }
         }, " " ) ).add( new AjaxEventBehavior( "onClick" ) {
+
             @Override
             protected void onEvent(final AjaxRequestTarget target) {
 
@@ -71,6 +76,7 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
             }
         } ) );
         add( new Image( "noimage", PackageResource.get( Resources.class, "boxed-x2.png" ) ) {
+
             @Override
             public boolean isVisible() {
 
@@ -91,7 +97,8 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
                 setInitialHeight( 100 );
                 setContent( new UploadPanel( this, getContentId() ) );
                 setWindowClosedCallback( AjaxEditableImage.this );
-            }} );
+            }
+        } );
     }
 
     /**
@@ -142,9 +149,11 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
             super( id );
 
             add( new Form<Void>( "form" ) {
+
                 {
                     add( new FileUploadField( "file", file ) );
                     add( new AjaxButton( "submit" ) {
+
                         @Override
                         protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 
@@ -152,7 +161,8 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
                             modalWindow.close( target );
                         }
                     } );
-                }} );
+                }
+            } );
         }
     }
 }

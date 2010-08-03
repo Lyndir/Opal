@@ -30,8 +30,9 @@ import java.util.*;
  * configurable entries as demonstrated by the implementation of {@link #configFile}.<br> <br> NOTE: Any subclass needs to follow the
  * directions outlined in {@link #initClass(Class)}!<br> <br>
  *
- * @author lhunath
  * @param <T> The type of this entry's value.
+ *
+ * @author lhunath
  */
 public class BaseConfig<T extends Serializable> implements Serializable {
 
@@ -58,8 +59,8 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      */
     public static final BaseConfig<Boolean> writeAsXML = create( true );
 
-    protected static final Set<Runnable> shutdownHooks = new HashSet<Runnable>();
-    protected static final Map<BaseConfig<?>, String> names = new HashMap<BaseConfig<?>, String>();
+    protected static final Set<Runnable>              shutdownHooks = new HashSet<Runnable>();
+    protected static final Map<BaseConfig<?>, String> names         = new HashMap<BaseConfig<?>, String>();
 
     static {
         /* CALL THIS METHOD IN EVERY SUBCLASS! */
@@ -190,7 +191,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      *
      * @param configClass The class that is being initialized. This is the Class object of the {@link BaseConfig} subclass.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes", "RawUseOfParameterizedType" })
+    @SuppressWarnings( { "unchecked", "rawtypes", "RawUseOfParameterizedType" })
     public static void initClass(final Class<? extends BaseConfig> configClass) {
 
         flushConfig( configClass );
@@ -214,7 +215,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      *
      * @param configClass The name of the class whose static {@link BaseConfig} fields should be flushed into the settings list.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes", "RawUseOfParameterizedType" })
+    @SuppressWarnings( { "unchecked", "rawtypes", "RawUseOfParameterizedType" })
     private static void flushConfig(final Class<? extends BaseConfig> configClass) {
 
         for (final Field field : configClass.getFields())
@@ -240,7 +241,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * Load config settings from the config file and change every existing setting with the same field name to reflect its value from the
      * config file.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes", "RawUseOfParameterizedType" })
+    @SuppressWarnings( { "unchecked", "rawtypes", "RawUseOfParameterizedType" })
     private static void loadConfig() {
 
         try {
@@ -364,8 +365,8 @@ public class BaseConfig<T extends Serializable> implements Serializable {
         shutdownHooks.add( hook );
     }
 
-    private T value;
-    private int hashCode;
+    private T      value;
+    private int    hashCode;
     private String type;
 
     private final transient Set<ConfigChangedListener<T>> listeners;
@@ -513,7 +514,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
         value = null;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes", "RawUseOfParameterizedType" })
+    @SuppressWarnings( { "unchecked", "rawtypes", "RawUseOfParameterizedType" })
     private String getName(final Class<? extends BaseConfig> configClass) {
 
         for (final Field field : configClass.getFields())

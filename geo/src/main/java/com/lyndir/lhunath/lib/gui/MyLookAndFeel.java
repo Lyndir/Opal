@@ -37,9 +37,9 @@ public class MyLookAndFeel implements Serializable {
 
     static final Logger logger = Logger.get( MyLookAndFeel.class );
 
-    private static MyLookAndFeel active;
-    private Map<String, Color> defaults;
-    private MyThemeType themeType;
+    private static MyLookAndFeel      active;
+    private        Map<String, Color> defaults;
+    private        MyThemeType        themeType;
     Color base;
 
     private transient MyTheme cachedTheme;

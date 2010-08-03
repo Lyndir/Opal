@@ -98,7 +98,7 @@ public class DiffUtils {
      */
     private static String renderDiff(final Diff diff) {
 
-        @SuppressWarnings({ "cast", "unchecked" })
+        @SuppressWarnings( { "cast", "unchecked" })
         List<Hunk> hunks = (List<Hunk>) diff.getHunks();
         StringBuilder out = new StringBuilder( "<pre>" );
 

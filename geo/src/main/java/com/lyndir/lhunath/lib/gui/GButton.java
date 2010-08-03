@@ -34,16 +34,16 @@ import javax.swing.*;
  */
 public class GButton extends JButton {
 
-    protected static final float ZOOM = 0.9f;
+    protected static final float ZOOM         = 0.9f;
     protected static final float ARC_FRACTION = 0.1f;
     protected static final float TRANSLUCENCY = 0.8f;
 
     protected Image smallEnabledIcon, largeEnabledIcon;
-    protected boolean hover;
+    protected boolean       hover;
     protected GradientPaint backgroundPaint;
     protected GradientPaint borderPaint;
-    private BufferedImage smallDisabledIcon;
-    private BufferedImage largeDisabledIcon;
+    private   BufferedImage smallDisabledIcon;
+    private   BufferedImage largeDisabledIcon;
 
     /**
      * Create a new {@link GButton} instance.

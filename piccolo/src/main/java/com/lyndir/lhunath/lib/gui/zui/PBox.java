@@ -40,13 +40,13 @@ public class PBox extends PShape {
     private static final Vec2 tipOffset = new Vec2( -10, 30 );
 
     protected final PCanvas canvas;
-    private PBox tooltipNode;
-    private String title;
-    private Paint outlinePaint;
-    private Paint textPaint;
-    private boolean autoSize;
-    private boolean locked;
-    private int ratio;
+    private         PBox    tooltipNode;
+    private         String  title;
+    private         Paint   outlinePaint;
+    private         Paint   textPaint;
+    private         boolean autoSize;
+    private         boolean locked;
+    private         int     ratio;
 
     private Font font;
 

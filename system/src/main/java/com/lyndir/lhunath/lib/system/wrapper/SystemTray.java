@@ -63,7 +63,7 @@ public class SystemTray extends Wrapper {
      *
      * @throws AWTException
      */
-    @SuppressWarnings({ "unused", "RedundantThrows" })
+    @SuppressWarnings( { "unused", "RedundantThrows" })
     public void add(final TrayIcon trayIcon)
             throws AWTException {
 

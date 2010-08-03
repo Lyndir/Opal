@@ -24,8 +24,9 @@ import java.util.Iterator;
  *
  * <p> <i>Mar 7, 2010</i> </p>
  *
- * @author lhunath
  * @param <T> The type of data that will be provided.
+ *
+ * @author lhunath
  */
 public abstract class AbstractCollectionProvider<T> extends AbstractIteratorProvider<T> {
 

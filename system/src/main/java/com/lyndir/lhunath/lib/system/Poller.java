@@ -25,9 +25,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * A poller maintains a queue for responsible objects. Each responsible object has a queue of elements that it needs to process.
  *
- * @author lhunath
  * @param <K> The responsible objects type.
  * @param <E> The responsible objects' element type.
+ *
+ * @author lhunath
  */
 public class Poller<K, E> {
 

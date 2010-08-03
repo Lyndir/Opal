@@ -21,10 +21,10 @@ import javax.swing.border.AbstractBorder;
  */
 public class SimpleInternalFrame extends JPanel {
 
-    protected final JLabel titleLabel;
-    private PaintPanel gradientPanel;
-    private JPanel headerPanel;
-    private boolean selected;
+    protected final JLabel     titleLabel;
+    private         PaintPanel gradientPanel;
+    private         JPanel     headerPanel;
+    private         boolean    selected;
 
     // Instance Creation ****************************************************
 

@@ -32,9 +32,9 @@ import javax.swing.*;
 public class PDialog extends PBox {
 
     private final PDialogClosedListener listener;
-    private final PSwing pSwing;
-    private final JPanel panel;
-    private final PSwingCanvas swingCanvas;
+    private final PSwing                pSwing;
+    private final JPanel                panel;
+    private final PSwingCanvas          swingCanvas;
 
     /**
      * Create a new PDialog instance.
