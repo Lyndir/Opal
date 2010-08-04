@@ -44,7 +44,7 @@ public class XPathUtil {
      *
      * @return The text from the selected nodes
      *
-     * @throws XPathExpressionException
+     * @throws XPathExpressionException The given expression was not valid in the given context.
      */
     public Boolean getBoolean(final Object context, final String expressionFormat, final Object... arguments)
             throws XPathExpressionException {
@@ -61,7 +61,7 @@ public class XPathUtil {
      *
      * @return The first of the selected nodes.
      *
-     * @throws XPathExpressionException
+     * @throws XPathExpressionException The given expression was not valid in the given context.
      */
     public Node getNode(final Object context, final String expressionFormat, final Object... arguments)
             throws XPathExpressionException {
@@ -78,7 +78,7 @@ public class XPathUtil {
      *
      * @return A list of the selected nodes.
      *
-     * @throws XPathExpressionException
+     * @throws XPathExpressionException The given expression was not valid in the given context.
      */
     public List<Node> getNodes(final Object context, final String expressionFormat, final Object... arguments)
             throws XPathExpressionException {
@@ -101,12 +101,12 @@ public class XPathUtil {
      *
      * @return The text from the selected nodes.
      *
-     * @throws XPathExpressionException
+     * @throws XPathExpressionException The given expression was not valid in the given context.
      */
-    public Double getNumber(final Object context, final String expressionFormat, final Object... arguments)
+    public Number getNumber(final Object context, final String expressionFormat, final Object... arguments)
             throws XPathExpressionException {
 
-        return (Double) getObject( context, expressionFormat, XPathConstants.NUMBER, arguments );
+        return (Number) getObject( context, expressionFormat, XPathConstants.NUMBER, arguments );
     }
 
     /**
@@ -118,7 +118,7 @@ public class XPathUtil {
      *
      * @return The text from the selected nodes.
      *
-     * @throws XPathExpressionException
+     * @throws XPathExpressionException The given expression was not valid in the given context.
      */
     public String getString(final Object context, final String expressionFormat, final Object... arguments)
             throws XPathExpressionException {
@@ -136,9 +136,9 @@ public class XPathUtil {
      *
      * @return The selected nodes as the given result type.
      *
-     * @throws XPathExpressionException If the given expression is invalid or does not match the context.
+     * @throws XPathExpressionException The given expression was not valid in the given context.
      */
-    private Object getObject(Object context, final String expressionFormat, final QName result, Object... arguments)
+    private Object getObject(final Object context, final String expressionFormat, final QName result, final Object... arguments)
             throws XPathExpressionException {
 
         String expression = String.format( expressionFormat, arguments );

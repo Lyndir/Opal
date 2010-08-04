@@ -15,7 +15,9 @@
  */
 package com.lyndir.lhunath.lib.network;
 
+import com.google.common.io.Closeables;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpConnection;
@@ -99,7 +101,14 @@ public class GZIPPostMethod extends PostMethod {
         super.readResponse( state, conn );
 
         Header contentEncodingHeader = getResponseHeader( "Content-Encoding" );
-        if (contentEncodingHeader != null && "gzip".equalsIgnoreCase( contentEncodingHeader.getValue() ))
-            setResponseStream( new GZIPInputStream( getResponseStream() ) );
+        if (contentEncodingHeader != null && "gzip".equalsIgnoreCase( contentEncodingHeader.getValue() )) {
+            InputStream zippedStream = new GZIPInputStream( getResponseStream() );
+            try {
+                setResponseStream( zippedStream );
+            }
+            finally {
+                Closeables.closeQuietly( zippedStream );
+            }
+        }
     }
 }

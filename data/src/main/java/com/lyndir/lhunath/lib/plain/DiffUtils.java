@@ -18,9 +18,10 @@
  */
 package com.lyndir.lhunath.lib.plain;
 
+import com.google.common.io.Closeables;
 import com.lyndir.lhunath.lib.system.UIUtils;
 import java.io.*;
-import java.util.List;
+import java.util.regex.Pattern;
 import jlibdiff.Diff;
 import jlibdiff.Hunk;
 
@@ -32,6 +33,12 @@ import jlibdiff.Hunk;
  */
 public class DiffUtils {
 
+    private static final Pattern NOT_ADD_CHUNK = Pattern.compile( "(?m)^[^>].*" );
+    private static final Pattern NOT_REM_CHUNK = Pattern.compile( "(?m)^[^<].*" );
+    private static final Pattern ADD_CHUNK = Pattern.compile( "(?m)^>" );
+    private static final Pattern REM_CHUNK = Pattern.compile( "(?m)^<" );
+    private static final Pattern LINE = Pattern.compile( ".*\n" );
+
     /**
      * Get the contextual difference between the data from two streams.
      *
@@ -40,13 +47,22 @@ public class DiffUtils {
      *
      * @return The diff string.
      *
-     * @throws FileNotFoundException
-     * @throws IOException
+     * @throws IOException jlibdiff fails.
      */
     public static String getDiff(final InputStream from, final InputStream to)
             throws IOException {
 
-        return getDiff( new BufferedReader( new InputStreamReader( from ) ), new BufferedReader( new InputStreamReader( to ) ) );
+        BufferedReader fromReader = null, toReader = null;
+        try {
+            fromReader= new BufferedReader( new InputStreamReader( from ) );
+            toReader = new BufferedReader( new InputStreamReader( to ) );
+
+            return getDiff( fromReader, toReader );
+        }
+        finally {
+            Closeables.closeQuietly(fromReader);
+            Closeables.closeQuietly(toReader);
+        }
     }
 
     /**
@@ -57,8 +73,7 @@ public class DiffUtils {
      *
      * @return The diff string.
      *
-     * @throws FileNotFoundException
-     * @throws IOException
+     * @throws IOException jlibdiff fails.
      */
     public static String getDiff(final BufferedReader from, final BufferedReader to)
             throws IOException {
@@ -77,8 +92,7 @@ public class DiffUtils {
      *
      * @return The diff string.
      *
-     * @throws FileNotFoundException
-     * @throws IOException
+     * @throws IOException jlibdiff fails.
      */
     public static String getDiff(final String from, final String to)
             throws IOException {
@@ -99,13 +113,13 @@ public class DiffUtils {
     private static String renderDiff(final Diff diff) {
 
         @SuppressWarnings( { "cast", "unchecked" })
-        List<Hunk> hunks = (List<Hunk>) diff.getHunks();
+        Iterable<Hunk> hunks = diff.getHunks();
         StringBuilder out = new StringBuilder( "<pre>" );
 
         for (final Hunk hunk : hunks) {
-            String chunk = hunk.convert().trim().replaceFirst( ".*\n", "" );
-            String chunkAdd = chunk.replaceAll( "(?m)^[^>].*", "" ).trim().replaceAll( "(?m)^>", "+" );
-            String chunkDel = chunk.replaceAll( "(?m)^[^<].*", "" ).trim().replaceAll( "(?m)^<", "-" );
+            String chunk = LINE.matcher( hunk.convert().trim() ).replaceFirst( "" );
+            String chunkAdd = ADD_CHUNK.matcher( NOT_ADD_CHUNK.matcher( chunk ).replaceAll( "" ).trim() ).replaceAll( "+" );
+            String chunkDel = REM_CHUNK.matcher( NOT_REM_CHUNK.matcher( chunk ).replaceAll( "" ).trim() ).replaceAll( "-" );
 
             String diffFormat = "<span style='color: %x'>%s</span>";
             if (chunkDel.length() > 0)

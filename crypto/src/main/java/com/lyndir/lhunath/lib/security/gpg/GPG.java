@@ -15,6 +15,7 @@
  */
 package com.lyndir.lhunath.lib.security.gpg;
 
+import com.google.common.io.Closeables;
 import com.lyndir.lhunath.lib.system.BaseConfig;
 import com.lyndir.lhunath.lib.system.util.Utils;
 import java.io.*;
@@ -79,8 +80,14 @@ public class GPG {
     public static PGPPublicKey getPublicKey(final File publicKeyFile, final long publicKeyId)
             throws IOException, PGPException {
 
-        PGPPublicKeyRing publicKeyRing = new PGPPublicKeyRing( new FileInputStream( publicKeyFile ) );
-        return publicKeyRing.getPublicKey( publicKeyId );
+        FileInputStream publicKeyInputStream = new FileInputStream( publicKeyFile );
+        try {
+            return new PGPPublicKeyRing( publicKeyInputStream ).getPublicKey( publicKeyId );
+        }
+
+        finally {
+            Closeables.closeQuietly( publicKeyInputStream );
+        }
     }
 
     /**
@@ -96,10 +103,15 @@ public class GPG {
     public static PGPSecretKey getPrivateKey(final File privateKeyFile, final long privateKeyId)
             throws IOException, PGPException {
 
-        PGPSecretKeyRingCollection privateKeyRing = new PGPSecretKeyRingCollection(
-                PGPUtil.getDecoderStream( new FileInputStream( privateKeyFile ) ) );
+        FileInputStream privateKeyInputStream = new FileInputStream( privateKeyFile );
+        try {
+            PGPSecretKeyRingCollection privateKeyRing = new PGPSecretKeyRingCollection( PGPUtil.getDecoderStream( privateKeyInputStream ) );
+            return privateKeyRing.getSecretKey( privateKeyId );
+        }
 
-        return privateKeyRing.getSecretKey( privateKeyId );
+        finally {
+            Closeables.closeQuietly( privateKeyInputStream );
+        }
     }
 
     /**
@@ -114,7 +126,13 @@ public class GPG {
     public static PGPSecretKey getPrivateKeyFor(final File encryptedFile, final File privateKeyFile)
             throws IOException, PGPException {
 
-        return getPrivateKeyFor( new FileInputStream( encryptedFile ), privateKeyFile );
+        FileInputStream encryptedFileStream = new FileInputStream( encryptedFile );
+        try {
+            return getPrivateKeyFor( encryptedFileStream, privateKeyFile );
+        }
+        finally {
+            Closeables.closeQuietly( encryptedFileStream );
+        }
     }
 
     /**
@@ -178,33 +196,38 @@ public class GPG {
             throws IOException, PGPException {
 
         /* Open the key ring. */
-        List<PrintableKeyWrapper<PGPSecretKey>> keys = new ArrayList<PrintableKeyWrapper<PGPSecretKey>>();
-        PGPSecretKeyRingCollection privateKeyRing = new PGPSecretKeyRingCollection(
-                PGPUtil.getDecoderStream( new FileInputStream( privateKeyFile ) ) );
+        FileInputStream privateKeyInputStream = new FileInputStream( privateKeyFile );
+        try {
+            List<PrintableKeyWrapper<PGPSecretKey>> keys = new ArrayList<PrintableKeyWrapper<PGPSecretKey>>();
+            PGPSecretKeyRingCollection privateKeyRing = new PGPSecretKeyRingCollection( PGPUtil.getDecoderStream( privateKeyInputStream ) );
 
-        /* Enumerate the IDs. */
-        @SuppressWarnings("unchecked")
-        Iterator<PGPSecretKeyRing> rings = privateKeyRing.getKeyRings();
-        while (rings.hasNext()) {
+            /* Enumerate the IDs. */
             @SuppressWarnings("unchecked")
-            Iterator<PGPSecretKey> ring = rings.next().getSecretKeys();
-            while (ring.hasNext()) {
-                PGPSecretKey key = ring.next();
-                if (!key.getUserIDs().hasNext())
-                    continue;
+            Iterator<PGPSecretKeyRing> rings = privateKeyRing.getKeyRings();
+            while (rings.hasNext()) {
+                @SuppressWarnings("unchecked")
+                Iterator<PGPSecretKey> ring = rings.next().getSecretKeys();
+                while (ring.hasNext()) {
+                    PGPSecretKey key = ring.next();
+                    if (!key.getUserIDs().hasNext())
+                        continue;
 
-                keys.add( new PrintableKeyWrapper<PGPSecretKey>( key, key.getKeyID() ) {
+                    keys.add( new PrintableKeyWrapper<PGPSecretKey>( key, key.getKeyID() ) {
 
-                    @Override
-                    public String toString() {
+                        @Override
+                        public String toString() {
 
-                        return getKey().getUserIDs().next().toString();
-                    }
-                } );
+                            return getKey().getUserIDs().next().toString();
+                        }
+                    } );
+                }
             }
-        }
 
-        return keys;
+            return keys;
+        }
+        finally {
+            Closeables.closeQuietly( privateKeyInputStream );
+        }
     }
 
     /**
@@ -220,33 +243,39 @@ public class GPG {
             throws IOException, PGPException {
 
         /* Open the key ring. */
-        List<PrintableKeyWrapper<PGPPublicKey>> keys = new ArrayList<PrintableKeyWrapper<PGPPublicKey>>();
-        PGPPublicKeyRingCollection privateKeyRing = new PGPPublicKeyRingCollection(
-                PGPUtil.getDecoderStream( new FileInputStream( publicKeyFile ) ) );
+        FileInputStream publicKeyInputStream = new FileInputStream( publicKeyFile );
+        try {
+            List<PrintableKeyWrapper<PGPPublicKey>> keys = new ArrayList<PrintableKeyWrapper<PGPPublicKey>>();
+            PGPPublicKeyRingCollection privateKeyRing = new PGPPublicKeyRingCollection( PGPUtil.getDecoderStream( publicKeyInputStream ) );
 
-        /* Enumerate the IDs. */
-        @SuppressWarnings("unchecked")
-        Iterator<PGPPublicKeyRing> rings = privateKeyRing.getKeyRings();
-        while (rings.hasNext()) {
+            /* Enumerate the IDs. */
             @SuppressWarnings("unchecked")
-            Iterator<PGPPublicKey> ring = rings.next().getPublicKeys();
-            while (ring.hasNext()) {
-                PGPPublicKey key = ring.next();
-                if (!key.getUserIDs().hasNext())
-                    continue;
+            Iterator<PGPPublicKeyRing> rings = privateKeyRing.getKeyRings();
+            while (rings.hasNext()) {
+                @SuppressWarnings("unchecked")
+                Iterator<PGPPublicKey> ring = rings.next().getPublicKeys();
+                while (ring.hasNext()) {
+                    PGPPublicKey key = ring.next();
+                    if (!key.getUserIDs().hasNext())
+                        continue;
 
-                keys.add( new PrintableKeyWrapper<PGPPublicKey>( key, key.getKeyID() ) {
+                    keys.add( new PrintableKeyWrapper<PGPPublicKey>( key, key.getKeyID() ) {
 
-                    @Override
-                    public String toString() {
+                        @Override
+                        public String toString() {
 
-                        return getKey().getUserIDs().next().toString();
-                    }
-                } );
+                            return getKey().getUserIDs().next().toString();
+                        }
+                    } );
+                }
             }
+
+            return keys;
         }
 
-        return keys;
+        finally {
+            Closeables.closeQuietly( publicKeyInputStream );
+        }
     }
 
     /**
@@ -264,10 +293,21 @@ public class GPG {
     public static void encryptFile(final File plainFile, final File encryptedFile, final PGPPublicKey publicKey, final boolean armoured)
             throws NoSuchProviderException, IOException, PGPException {
 
-        InputStream encryptedInputStream = encrypt( new FileInputStream( plainFile ), publicKey, armoured );
-        OutputStream encryptedOutputStream = new FileOutputStream( encryptedFile );
+        InputStream plainInputStream = null, encryptedInputStream = null;
+        OutputStream encryptedOutputStream = null;
+        try {
+            plainInputStream = new FileInputStream( plainFile );
+            encryptedInputStream = encrypt( plainInputStream, publicKey, armoured );
+            encryptedOutputStream = new FileOutputStream( encryptedFile );
 
-        Utils.pipeStream( encryptedInputStream, encryptedOutputStream );
+            Utils.pipeStream( encryptedInputStream, encryptedOutputStream );
+        }
+
+        finally {
+            Closeables.closeQuietly( plainInputStream );
+            Closeables.closeQuietly( encryptedInputStream );
+            Closeables.closeQuietly( encryptedOutputStream );
+        }
     }
 
     /**
@@ -346,24 +386,23 @@ public class GPG {
      * @throws IOException
      * @throws PGPException
      */
-    public static void decryptFile(final File encryptedFile, final File plainTextFile, final PGPSecretKey privateKey, final String passPhrase)
+    public static void decryptFile(final File encryptedFile, final File plainTextFile, final PGPSecretKey privateKey,
+                                   final String passPhrase)
             throws NoSuchProviderException, IOException, PGPException {
 
-        FileInputStream encryptedInputStream = new FileInputStream( encryptedFile );
+        InputStream encryptedInputStream = null, decryptedInputStream = null;
+        OutputStream decryptedOutputStream = null;
         try {
-            InputStream decryptedInputStream = decrypt( encryptedInputStream, privateKey, passPhrase );
-            OutputStream decryptedOutputStream = new FileOutputStream( plainTextFile );
+            encryptedInputStream = new FileInputStream( encryptedFile );
+            decryptedInputStream = decrypt( encryptedInputStream, privateKey, passPhrase );
+            decryptedOutputStream = new FileOutputStream( plainTextFile );
 
-            try {
-                Utils.pipeStream( decryptedInputStream, decryptedOutputStream );
-            }
-            finally {
-                decryptedInputStream.close();
-                decryptedOutputStream.close();
-            }
+            Utils.pipeStream( decryptedInputStream, decryptedOutputStream );
         }
         finally {
-            encryptedInputStream.close();
+            Closeables.closeQuietly( encryptedInputStream );
+            Closeables.closeQuietly( decryptedInputStream );
+            Closeables.closeQuietly( decryptedOutputStream );
         }
     }
 
@@ -483,10 +522,20 @@ public class GPG {
                                 final boolean armoured)
             throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException, PGPException, IOException {
 
-        InputStream decryptedInputStream = sign( new FileInputStream( dataFile ), privateKey, passPhrase, armoured );
-        FileOutputStream decryptedOutputStream = new FileOutputStream( signedFile );
+        InputStream signedInputStream = null, dataInputStream = null;
+        OutputStream signedOutputStream = null;
+        try {
+            dataInputStream = new FileInputStream( dataFile );
+            signedInputStream = sign( dataInputStream, privateKey, passPhrase, armoured );
+            signedOutputStream = new FileOutputStream( signedFile );
 
-        Utils.pipeStream( decryptedInputStream, decryptedOutputStream );
+            Utils.pipeStream( signedInputStream, signedOutputStream );
+        }
+        finally {
+            Closeables.closeQuietly( dataInputStream );
+            Closeables.closeQuietly( signedInputStream );
+            Closeables.closeQuietly( signedOutputStream );
+        }
     }
 
     /**

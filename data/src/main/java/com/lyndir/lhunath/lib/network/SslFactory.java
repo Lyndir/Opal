@@ -15,11 +15,9 @@
  */
 package com.lyndir.lhunath.lib.network;
 
+import com.google.common.io.Closeables;
 import com.lyndir.lhunath.lib.system.logging.Logger;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.security.KeyManagementException;
@@ -75,9 +73,10 @@ public class SslFactory implements SecureProtocolSocketFactory {
 
     private SslFactory(final File keyStore, final String password) {
 
+        InputStream keyStoreStream = null;
         try {
             KeyStore store = KeyStore.getInstance( "JKS" );
-            store.load( new FileInputStream( keyStore ), password.toCharArray() );
+            store.load( keyStoreStream = new FileInputStream( keyStore ), password.toCharArray() );
 
             TrustManagerFactory tFactory = TrustManagerFactory.getInstance( "SunX509" );
             tFactory.init( store );
@@ -102,6 +101,9 @@ public class SslFactory implements SecureProtocolSocketFactory {
         }
         catch (KeyManagementException e) {
             throw logger.err( e, "Could not add the keys as trusted!" ).toError();
+        }
+        finally {
+            Closeables.closeQuietly( keyStoreStream );
         }
     }
 
@@ -142,8 +144,8 @@ public class SslFactory implements SecureProtocolSocketFactory {
      */
     @Override
     @Deprecated
-    public Socket createSocket(String host, final int port, final InetAddress localAddress, final int localPort,
-                               HttpConnectionParams params)
+    public Socket createSocket(final String host, final int port, final InetAddress localAddress, final int localPort,
+                               final HttpConnectionParams params)
             throws IOException {
 
         if (params == null)

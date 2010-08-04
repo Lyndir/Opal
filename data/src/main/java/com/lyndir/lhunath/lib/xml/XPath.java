@@ -19,8 +19,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import javax.xml.xpath.XPathExpressionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,23 +42,23 @@ public class XPath {
      *
      * @param args Command-line arguments to the utility.
      *
-     * @throws SAXException
-     * @throws IOException
-     * @throws XPathExpressionException
+     * @throws IOException              If any IO errors occur.
+     * @throws SAXException             If any parse errors occur.
+     * @throws XPathExpressionException The specified XPath expression failed to evaluate on the source data.
      */
     public static void main(final String[] args)
             throws SAXException, IOException, XPathExpressionException {
 
         InputStream in = System.in;
         String xpathExpression = null;
-        List<String> argList = new LinkedList<String>( Arrays.asList( args ) );
 
         /* Arguments. */
         boolean fileArg = false, expression = false, xhtml = false, tidy = false, value = false, trim = true;
-        for (final String arg : argList)
+        for (final String arg : Arrays.asList( args ))
             if ("-f".equals( arg ) || "--file".equals( arg ))
                 fileArg = true;
             else if (fileArg) {
+                //noinspection IOResourceOpenedButNotSafelyClosed
                 in = new FileInputStream( arg );
                 fileArg = false;
             } else if ("-e".equals( arg ) || "--expression".equals( arg ))

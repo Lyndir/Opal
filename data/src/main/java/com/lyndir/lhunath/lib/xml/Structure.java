@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -51,6 +52,7 @@ public class Structure {
     // private static final XPathUtil xhtmlpath = new XPathUtil( true );
 
     private static final int TAB_SIZE = 4;
+    private static final Pattern LINE = Pattern.compile( "\n$" );
 
     private static <T> void inject(final Node root, final T structure)
             throws XPathExpressionException {
@@ -62,33 +64,33 @@ public class Structure {
                 continue;
 
             try {
-                Object value;
                 Class<?> valueType = field.getType();
                 field.setAccessible( true );
 
                 logger.dbg( "Setting (%s) '%s' to '%s' (xpath: %s)", valueType.getSimpleName(), field.getName(),
                             xmlpath.getString( root, annotation.value() ), annotation.value() );
 
-                if (valueType == Byte.class || Byte.TYPE == valueType)
+                Object value;
+                if (Byte.class.isAssignableFrom( valueType ) || Byte.TYPE.isAssignableFrom( valueType ))
                     value = xmlpath.getNumber( root, annotation.value() ).byteValue();
 
-                else if (valueType == Double.class || Double.TYPE == valueType)
+                else if (Double.class.isAssignableFrom( valueType ) || Double.TYPE.isAssignableFrom( valueType ))
                     // noinspection UnnecessaryUnboxing
                     value = xmlpath.getNumber( root, annotation.value() ).doubleValue();
 
-                else if (valueType == Float.class || Float.TYPE == valueType)
+                else if (Float.class.isAssignableFrom( valueType ) || Float.TYPE.isAssignableFrom( valueType ))
                     value = xmlpath.getNumber( root, annotation.value() ).floatValue();
 
-                else if (valueType == Integer.class || Integer.TYPE == valueType)
+                else if (Integer.class.isAssignableFrom( valueType ) || Integer.TYPE.isAssignableFrom( valueType ))
                     value = xmlpath.getNumber( root, annotation.value() ).intValue();
 
-                else if (valueType == Long.class || Long.TYPE == valueType)
+                else if (Long.class.isAssignableFrom( valueType ) || Long.TYPE.isAssignableFrom( valueType ))
                     value = xmlpath.getNumber( root, annotation.value() ).longValue();
 
-                else if (valueType == Short.class || Short.TYPE == valueType)
+                else if (Short.class.isAssignableFrom( valueType ) || Short.TYPE.isAssignableFrom( valueType ))
                     value = xmlpath.getNumber( root, annotation.value() ).shortValue();
 
-                else if (valueType == Boolean.class || Boolean.TYPE == valueType)
+                else if (Boolean.class.isAssignableFrom( valueType ) || Boolean.TYPE.isAssignableFrom( valueType ))
                     value = xmlpath.getBoolean( root, annotation.value() );
 
                 else
@@ -133,9 +135,9 @@ public class Structure {
      *
      * @return An object of the given type with XML data injected.
      *
-     * @throws IOException
-     * @throws SAXException
-     * @throws XPathExpressionException
+     * @throws IOException              If any IO errors occur.
+     * @throws SAXException             If any parse errors occur.
+     * @throws XPathExpressionException Field injection annotations specified XPath expressions that failed to evaluate on the source data.
      */
     public static <T> T load(final Class<T> type)
             throws IOException, SAXException, XPathExpressionException {
@@ -182,9 +184,9 @@ public class Structure {
      *
      * @return A list of object of the given type with XML data injected.
      *
-     * @throws IOException
-     * @throws SAXException
-     * @throws XPathExpressionException
+     * @throws IOException              If any IO errors occur.
+     * @throws SAXException             If any parse errors occur.
+     * @throws XPathExpressionException Field injection annotations specified XPath expressions that failed to evaluate on the source data.
      */
     public static <T> List<T> loadAll(final Class<T> type)
             throws IOException, SAXException, XPathExpressionException {
@@ -344,9 +346,9 @@ public class Structure {
      *
      * @return a builder that parses XML data according to the rules specified by the arguments.
      */
-    public static DocumentBuilder getXMLBuilder(boolean coalescing, final boolean expandEntityRef, boolean ignoreComments,
-                                                final boolean whitespace, boolean awareness, final boolean xIncludes, boolean validating,
-                                                final Schema schema) {
+    public static DocumentBuilder getXMLBuilder(final boolean coalescing, final boolean expandEntityRef, final boolean ignoreComments,
+                                                final boolean whitespace, final boolean awareness, final boolean xIncludes,
+                                                final boolean validating, final Schema schema) {
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -390,7 +392,7 @@ public class Structure {
     public static String toString(final Node node, final boolean trim) {
 
         StringBuffer result = toString( node, 1, trim );
-        return result == null? null: result.toString().replaceFirst( "\n$", "" );
+        return result == null? null: LINE.matcher( result.toString() ).replaceFirst( "" );
     }
 
     private static StringBuffer toString(final Node node, final int indent, final boolean trim) {
@@ -398,8 +400,13 @@ public class Structure {
         if (node == null)
             return null;
 
-        if (node.getNodeType() == Node.TEXT_NODE)
-            return new StringBuffer( indent( indent ) ).append( trim? node.getNodeValue().trim(): node.getNodeValue() ).append( '\n' );
+        if (node.getNodeType() == Node.TEXT_NODE) {
+            String nodeValue = node.getNodeValue();
+            if (trim)
+                nodeValue = nodeValue.trim();
+
+            return new StringBuffer( indent( indent ) ).append( nodeValue.trim() ).append( '\n' );
+        }
 
         StringBuffer out = new StringBuffer();
         out.append( indent( indent ) );
