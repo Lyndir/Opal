@@ -32,7 +32,7 @@ import java.util.*;
  */
 public class EnumResourceBundle<T> extends ResourceBundle {
 
-    private final LinkedList<String>            keyList;
+    private final Collection<String> keyList;
     private final Class<? extends ValueEnum<T>> enumType;
 
     /**

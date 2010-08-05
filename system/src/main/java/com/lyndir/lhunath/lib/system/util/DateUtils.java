@@ -90,8 +90,8 @@ public abstract class DateUtils {
 
     public static class Timer {
 
-        private String name;
-        private Instant start = new Instant();
+        private final String name;
+        private final ReadableInstant start = new Instant();
         private Instant end;
 
         public Timer(final String name) {
@@ -224,7 +224,7 @@ public abstract class DateUtils {
         PeriodType periodType = PeriodType.forFields( convertAll( field ) );
 
         // Create a period from zero to the instant.
-        Period fieldPeriod = new Period( zero, instant, periodType );
+        ReadablePeriod fieldPeriod = new Period( zero, instant, periodType );
         // Find the amount of field occurrences in the period.
         int fieldQuantity = fieldPeriod.get( field.getDurationType() );
 
@@ -237,7 +237,7 @@ public abstract class DateUtils {
      *
      * @return All standard date/time fields starting from the given field; ordered from small to large.
      */
-    public static ImmutableList<DateTimeFieldType> fieldsFrom(final DateTimeFieldType startField) {
+    public static List<DateTimeFieldType> fieldsFrom(final DateTimeFieldType startField) {
 
         return fieldsFrom( startField, true );
     }

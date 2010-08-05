@@ -15,9 +15,9 @@
  */
 package com.lyndir.lhunath.lib.security.gpg;
 
+import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
 import com.lyndir.lhunath.lib.system.BaseConfig;
-import com.lyndir.lhunath.lib.system.util.Utils;
 import java.io.*;
 import java.security.*;
 import java.util.ArrayList;
@@ -300,7 +300,7 @@ public class GPG {
             encryptedInputStream = encrypt( plainInputStream, publicKey, armoured );
             encryptedOutputStream = new FileOutputStream( encryptedFile );
 
-            Utils.pipeStream( encryptedInputStream, encryptedOutputStream );
+            ByteStreams.copy( encryptedInputStream, encryptedOutputStream );
         }
 
         finally {
@@ -326,7 +326,7 @@ public class GPG {
     public static byte[] encrypt(final byte[] plainTextData, final PGPPublicKey publicKey, final boolean armoured)
             throws NoSuchProviderException, IOException, PGPException {
 
-        return Utils.readStream( encrypt( new ByteArrayInputStream( plainTextData ), publicKey, armoured ) );
+        return ByteStreams.toByteArray(encrypt( new ByteArrayInputStream( plainTextData ), publicKey, armoured ) );
     }
 
     /**
@@ -351,7 +351,7 @@ public class GPG {
         PGPCompressedDataGenerator compressor = new PGPCompressedDataGenerator( CompressionAlgorithmTags.ZLIB );
         OutputStream literalStream = literalDataGenerator.open( compressor.open( decryptedStream ), PGPLiteralData.BINARY, "", new Date(),
                                                                 new byte[BaseConfig.BUFFER_SIZE] );
-        Utils.pipeStream( plainTextStream, literalStream );
+        ByteStreams.copy( plainTextStream, literalStream );
         compressor.close();
 
         /* Encrypt compressed data. */
@@ -368,7 +368,7 @@ public class GPG {
 
         /* Create and write out the encrypted file. */
         OutputStream encryptionStream = encryptedDataGenerator.open( encryptedStream, new byte[BaseConfig.BUFFER_SIZE] );
-        Utils.pipeStream( new ByteArrayInputStream( decryptedStream.toByteArray() ), encryptionStream );
+        ByteStreams.copy( new ByteArrayInputStream( decryptedStream.toByteArray() ), encryptionStream );
         encryptedDataGenerator.close();
 
         return new ByteArrayInputStream( encryptedByteStream.toByteArray() );
@@ -397,7 +397,7 @@ public class GPG {
             decryptedInputStream = decrypt( encryptedInputStream, privateKey, passPhrase );
             decryptedOutputStream = new FileOutputStream( plainTextFile );
 
-            Utils.pipeStream( decryptedInputStream, decryptedOutputStream );
+            ByteStreams.copy( decryptedInputStream, decryptedOutputStream );
         }
         finally {
             Closeables.closeQuietly( encryptedInputStream );
@@ -422,7 +422,7 @@ public class GPG {
     public static byte[] decrypt(final byte[] encryptedData, final PGPSecretKey privateKey, final String passPhrase)
             throws NoSuchProviderException, IOException, PGPException {
 
-        return Utils.readStream( decrypt( new ByteArrayInputStream( encryptedData ), privateKey, passPhrase ) );
+        return ByteStreams.toByteArray( decrypt( new ByteArrayInputStream( encryptedData ), privateKey, passPhrase ) );
     }
 
     /**
@@ -529,7 +529,7 @@ public class GPG {
             signedInputStream = sign( dataInputStream, privateKey, passPhrase, armoured );
             signedOutputStream = new FileOutputStream( signedFile );
 
-            Utils.pipeStream( signedInputStream, signedOutputStream );
+            ByteStreams.copy( signedInputStream, signedOutputStream );
         }
         finally {
             Closeables.closeQuietly( dataInputStream );
@@ -558,7 +558,7 @@ public class GPG {
     public static byte[] sign(final byte[] data, final PGPSecretKey privateKey, final String passPhrase, final boolean armoured)
             throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException, IOException, PGPException {
 
-        return Utils.readStream( sign( new ByteArrayInputStream( data ), privateKey, passPhrase, armoured ) );
+        return ByteStreams.toByteArray( sign( new ByteArrayInputStream( data ), privateKey, passPhrase, armoured ) );
     }
 
     /**

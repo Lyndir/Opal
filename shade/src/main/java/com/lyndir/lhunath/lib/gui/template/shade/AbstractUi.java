@@ -23,8 +23,10 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.uif_lite.panel.SimpleInternalFrame;
 import com.lyndir.lhunath.lib.gui.*;
 import com.lyndir.lhunath.lib.gui.FileDialog;
-import com.lyndir.lhunath.lib.system.*;
+import com.lyndir.lhunath.lib.system.BaseConfig;
 import com.lyndir.lhunath.lib.system.Locale;
+import com.lyndir.lhunath.lib.system.TeeThread;
+import com.lyndir.lhunath.lib.system.UIUtils;
 import com.lyndir.lhunath.lib.system.logging.HTMLFormatter;
 import com.lyndir.lhunath.lib.system.logging.LogListener;
 import com.lyndir.lhunath.lib.system.logging.Logger;
@@ -62,58 +64,58 @@ import org.jdesktop.animation.transitions.TransitionTarget;
  * @author lhunath
  */
 public abstract class AbstractUi
-        implements ActionListener, LogListener, CaretListener, ListSelectionListener, ItemListener, Reflective, ListDataListener,
-        FocusListener, TransitionTarget {
+        implements ActionListener, LogListener, CaretListener, ListSelectionListener, ItemListener, ListDataListener, FocusListener,
+        TransitionTarget {
 
     static final Logger logger = Logger.get( AbstractUi.class );
 
-    protected static final long      LAUNCH_DELAY = 5000;
-    protected static final int       FONT_SIZE    = 12;
-    protected static final String    FONT_FACE    = Locale.explain( "conf.font" );
+    protected static final long LAUNCH_DELAY = 5000;
+    protected static final int FONT_SIZE = 12;
+    protected static final String FONT_FACE = Locale.explain( "conf.font" );
     protected static final Dimension MINIMUM_SIZE = new Dimension( 1000, 700 );
 
-    private static final String  reportEmail          = Locale.explain( "conf.author" );
-    private static final String  reportIssueSubject   = Locale.explain( "ui.reportSubject" ) + ShadeConfig.VERSION;
-    private static final String  reportLicenseSubject = Locale.explain( "ui.licenseSubject" );
-    private static       boolean startup              = true;
+    private static final String reportEmail = Locale.explain( "conf.author" );
+    private static final String reportIssueSubject = Locale.explain( "ui.reportSubject" ) + ShadeConfig.VERSION;
+    private static final String reportLicenseSubject = Locale.explain( "ui.licenseSubject" );
+    private static boolean startup = true;
 
-    protected Tab                 showingTab;
-    protected Map<Action, Tab>    panelTabs;
+    protected Tab showingTab;
+    protected Map<Action, Tab> panelTabs;
     protected List<Stack<String>> messageStack;
-    protected List<Double>        progressStack;
-    protected HTMLFormatter       logFormatter;
-    protected TrayIcon            systray;
+    protected List<Double> progressStack;
+    protected HTMLFormatter logFormatter;
+    protected TrayIcon systray;
     protected SimpleInternalFrame window;
-    protected JProgressBar        progress;
-    protected JEditorPane         log;
-    protected JFrame              frame;
-    protected JLabel              logo;
-    protected JPanel              contentPane;
-    protected JCheckBox           systrayButton;
-    protected JCheckBox           alwaysOnTop;
-    protected JCheckBox           startMini;
-    private   File                defaultLogo;
-    private   boolean             showFrame;
-    private   DragListener        dragListener;
-    private   JComponent          themesPanel;
-    private   JCheckBox           verboseLogs;
-    private   JButton             windowedTitleButton;
-    private   JButton             fullscreenTitleButton;
-    private   JButton             closeTitleButton;
-    private   JDialog             console;
-    private   JPanel              titleBar;
-    private   PipedInputStream    pipeStdOut;
-    private   PipedInputStream    pipeStdErr;
-    private   PrintStream         realStdOut;
-    private   PrintStream         realStdErr;
-    private   UpdateUi            updateUi;
-    protected Animator            panelAnimation;
-    private   ScreenTransition    panelTransition;
-    private   PaintPanel          contentPanel;
-    private   PipedOutputStream   consoleStdOut;
-    private   Tab                 settingsTab;
-    private   boolean             overlayed;
-    private   HashSet<Plugin>     plugins;
+    protected JProgressBar progress;
+    protected JEditorPane log;
+    protected JFrame frame;
+    protected JLabel logo;
+    protected JPanel contentPane;
+    protected JCheckBox systrayButton;
+    protected JCheckBox alwaysOnTop;
+    protected JCheckBox startMini;
+    private File defaultLogo;
+    private boolean showFrame;
+    private DragListener dragListener;
+    private JComponent themesPanel;
+    private JCheckBox verboseLogs;
+    private JButton windowedTitleButton;
+    private JButton fullscreenTitleButton;
+    private JButton closeTitleButton;
+    private JDialog console;
+    private JPanel titleBar;
+    private PipedInputStream pipeStdOut;
+    private PipedInputStream pipeStdErr;
+    private PrintStream realStdOut;
+    private PrintStream realStdErr;
+    private UpdateUi updateUi;
+    protected Animator panelAnimation;
+    private ScreenTransition panelTransition;
+    private PaintPanel contentPanel;
+    private PipedOutputStream consoleStdOut;
+    private Tab settingsTab;
+    private boolean overlayed;
+    private HashSet<Plugin> plugins;
 
     static {
         System.setProperty( "swing.aatext", "true" );
@@ -512,16 +514,6 @@ public abstract class AbstractUi
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Object getFieldValue(Field field)
-            throws IllegalArgumentException, IllegalAccessException {
-
-        return field.get( this );
-    }
-
-    /**
      * Retrieve the frame of this user interface.
      *
      * @return Guess.
@@ -573,7 +565,8 @@ public abstract class AbstractUi
                     if (message != null || record.getThrown() != null)
                         try {
                             log.getEditorKit()
-                               .read( new StringReader( logFormatter.format( record ) ), log.getDocument(), log.getDocument().getLength() );
+                                    .read( new StringReader( logFormatter.format( record ) ), log.getDocument(),
+                                           log.getDocument().getLength() );
                         }
                         catch (IOException e) {
                             logger.err( e, "Couldn't read the log message from the record!" );

@@ -15,8 +15,7 @@
  */
 package com.lyndir.lhunath.lib.network;
 
-import static com.lyndir.lhunath.lib.system.util.Utils.getCharset;
-
+import com.google.common.base.Charsets;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -444,7 +443,7 @@ public class Network implements Runnable {
 
             // Visualize incoming (plain-text) data.
             logger.inf( "[<<<<: %s] Received (plain): %s", //
-                        nameChannel( socketChannel ), getCharset().decode( dataBuffer ) );
+                        nameChannel( socketChannel ), Charsets.UTF_8.decode( dataBuffer ) );
             dataBuffer.flip();
 
             // Pass incoming (plain-text) data to the application.

@@ -82,12 +82,10 @@ public class Vec3 extends Vec2 {
      * {@inheritDoc}
      */
     @Override
-    public double normalize() {
+    public Vec3 normalize() {
 
-        double length = super.normalize();
-        setZ( getZ() / length );
-
-        return length;
+        double length = length();
+        return multiply( 1 / length );
     }
 
     /**
@@ -100,32 +98,26 @@ public class Vec3 extends Vec2 {
      */
     public Vec3 rotate(final Angle a, final Axis ax) {
 
-        if (a != null && ax != null)
-            switch (ax) {
+        switch (ax) {
 
-                case X: {
-                    Vec2 rotated = new Vec2( getY(), getZ() ).rotate( a );
-                    setY( rotated.getX() );
-                    setZ( rotated.getY() );
-                    break;
-                }
-                case Y: {
-                    Vec2 rotated = new Vec2( getX(), getZ() ).rotate( a );
-                    setX( rotated.getX() );
-                    setZ( rotated.getY() );
-                    break;
-                }
-                case Z:
-                    rotate( a );
-                    break;
-                case O:
-                    break;
-
-                default:
-                    throw new RuntimeException( "Cannot rotate over the given axis." );
+            case X: {
+                Vec2 rotated = new Vec2( getY(), getZ() ).rotate( a );
+                return new Vec3( getX(), rotated.getX(), rotated.getY() );
             }
+            case Y: {
+                Vec2 rotated = new Vec2( getX(), getZ() ).rotate( a );
+                return new Vec3( rotated.getX(), getY(), rotated.getY() );
+            }
+            case Z: {
+                Vec2 rotated = rotate( a );
+                return new Vec3( rotated.getX(), rotated.getY(), getZ() );
+            }
+            case O:
+                return this;
 
-        return this;
+            default:
+                throw new RuntimeException( "Cannot rotate over the given axis." );
+        }
     }
 
     /**
@@ -140,11 +132,7 @@ public class Vec3 extends Vec2 {
         if (vector == null)
             return this;
 
-        setX( getX() + vector.getX() );
-        setY( getY() + vector.getY() );
-        setZ( getZ() + vector.z );
-
-        return this;
+        return new Vec3( getX() + vector.getX(), getY() + vector.getY(), getZ() + vector.getZ() );
     }
 
     /**
@@ -159,11 +147,7 @@ public class Vec3 extends Vec2 {
         if (vector == null)
             return this;
 
-        setX( getX() - vector.getX() );
-        setY( getY() - vector.getY() );
-        setZ( getZ() - vector.getZ() );
-
-        return this;
+        return new Vec3( getX() - vector.getX(), getY() - vector.getY(), getZ() - vector.getZ() );
     }
 
     /**
@@ -178,11 +162,7 @@ public class Vec3 extends Vec2 {
         if (vector == null)
             return this;
 
-        setX( getX() * vector.getX() );
-        setY( getY() * vector.getY() );
-        setZ( getZ() * vector.z );
-
-        return this;
+        return new Vec3( getX() * vector.getX(), getY() * vector.getY(), getZ() * vector.getZ() );
     }
 
     /**
@@ -191,10 +171,7 @@ public class Vec3 extends Vec2 {
     @Override
     public Vec3 multiply(final double multiplier) {
 
-        super.multiply( multiplier );
-        setZ( getZ() * multiplier );
-
-        return this;
+        return new Vec3( getX() * multiplier, getY() * multiplier, getZ() * multiplier );
     }
 
     /**
@@ -278,5 +255,10 @@ public class Vec3 extends Vec2 {
     public double getZ() {
 
         return z;
+    }
+
+    public Vec3 withZ(final double z) {
+
+        return new Vec3( getX(), getY(), z );
     }
 }

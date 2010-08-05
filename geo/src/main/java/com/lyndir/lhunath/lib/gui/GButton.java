@@ -209,27 +209,27 @@ public class GButton extends JButton {
         switch (getHorizontalTextPosition()) {
             case LEFT:
             case RIGHT:
-                buttonSize.setX( textSize.getX() + getIconTextGap() + iconSize.getX() );
+                buttonSize = buttonSize.withX( textSize.getX() + getIconTextGap() + iconSize.getX() );
                 break;
 
             case CENTER:
             default:
-                buttonSize.setX( Math.max( textSize.getX(), iconSize.getX() ) );
+                buttonSize = buttonSize.withX( Math.max( textSize.getX(), iconSize.getX() ) );
                 break;
         }
         switch (getVerticalTextPosition()) {
             case TOP:
             case BOTTOM:
-                buttonSize.setY( textSize.getY() + getIconTextGap() + iconSize.getY() );
+                buttonSize = buttonSize.withY( textSize.getY() + getIconTextGap() + iconSize.getY() );
                 break;
 
             case CENTER:
             default:
-                buttonSize.setY( Math.max( textSize.getY(), iconSize.getY() ) );
+                buttonSize = buttonSize.withY( Math.max( textSize.getY(), iconSize.getY() ) );
                 break;
         }
 
-        buttonSize.multiply( 1 / (ZOOM * ZOOM) );
+        buttonSize = buttonSize.multiply( 1 / (ZOOM * ZOOM) );
         setPreferredSize( buttonSize.toDimension() );
     }
 

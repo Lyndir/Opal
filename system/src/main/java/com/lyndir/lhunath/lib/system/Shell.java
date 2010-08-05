@@ -15,9 +15,11 @@
  */
 package com.lyndir.lhunath.lib.system;
 
+import com.google.common.io.ByteStreams;
+import com.google.common.io.CharStreams;
+import com.google.common.io.Closeables;
 import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
 import com.lyndir.lhunath.lib.system.logging.Logger;
-import com.lyndir.lhunath.lib.system.util.Utils;
 import java.io.*;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -43,7 +45,7 @@ public class Shell {
      *
      * @return The process object for the process that was started.
      *
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException There is no file by the name of the first element of cmd in the given currDir.
      */
     public static Process exec(final boolean block, final File currDir, final String... cmd)
             throws FileNotFoundException {
@@ -80,8 +82,7 @@ public class Shell {
     }
 
     /**
-     * Run an application or shell script and redirect its stdout and stderr to the given output streams. The call will not block.<br> <br>
-     * Output and error streams will be closed, except if they are the application's standard output or standard error.
+     * Run an application or shell script and redirect its stdout and stderr to the given output streams. The call will not block.
      *
      * @param out     The stream to write the process' standard output into.
      * @param err     The stream to write the process' standard error into.
@@ -90,22 +91,24 @@ public class Shell {
      *
      * @return The process object for the process that was started.
      *
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException There is no file by the name of the first element of cmd in the given currDir.
      */
     public static Process exec(final OutputStream out, final OutputStream err, final File currDir, final String... cmd)
             throws FileNotFoundException {
 
         char[] buffer = new char[100];
-        FileReader reader = new FileReader( new File( currDir, cmd[0] ) );
         String[] execCmd = cmd;
 
+        Reader reader = new FileReader( new File( currDir, cmd[0] ) );
         try {
             reader.read( buffer );
-            reader.close();
         }
         catch (IOException e) {
             logger.err( e, "Failed to open the file to execute!" );
             return null;
+        }
+        finally {
+            Closeables.closeQuietly( reader );
         }
 
         /* Check whether this is a shell script and if so, what interpreter to use. */
@@ -126,49 +129,35 @@ public class Shell {
             @SuppressWarnings( { "CallToRuntimeExec" })
             final Process process = Runtime.getRuntime().exec( execCmd, null, currDir );
 
-            new Thread( cmd[0] + " stdout" ) {
+            new Thread( new Runnable() {
 
                 @Override
                 public void run() {
 
                     try {
-                        Utils.pipeStream( process.getInputStream(), BUFFER_SIZE, out, null, false );
+                        ByteStreams.copy( process.getInputStream(), out );
                     }
                     catch (IOException e) {
                         logger.err( e, "Couldn't read from process or write to stdout!" );
                     }
-                    try {
-                        process.getInputStream().close();
-                        if (!System.out.equals( out ) && !System.err.equals( err ))
-                            out.close();
-                    }
-                    catch (IOException ignored) {
-                        /* Already closed. */
-                    }
+                    Closeables.closeQuietly( process.getInputStream() );
                 }
-            }.start();
+            }, cmd[0] + " stdout" ).start();
 
-            new Thread( cmd[0] + " stderr" ) {
+            new Thread( new Runnable() {
 
                 @Override
                 public void run() {
 
                     try {
-                        Utils.pipeStream( process.getErrorStream(), BUFFER_SIZE, err, null, false );
+                        ByteStreams.copy( process.getErrorStream(), err );
                     }
                     catch (IOException e) {
                         logger.err( e, "Couldn't read from process or write to stderr!" );
                     }
-                    try {
-                        process.getErrorStream().close();
-                        if (!err.equals( System.out ) && !err.equals( System.err ))
-                            err.close();
-                    }
-                    catch (IOException ignored) {
-                        /* Already closed. */
-                    }
+                    Closeables.closeQuietly( process.getErrorStream() );
                 }
-            }.start();
+            }, cmd[0] + " stderr" ).start();
 
             return process;
         }
@@ -192,7 +181,7 @@ public class Shell {
             PipedOutputStream output = new PipedOutputStream();
             exec( output, new NullOutputStream(), currDir, cmd );
 
-            return Utils.readReader( new InputStreamReader( new PipedInputStream( output ) ) );
+            return CharStreams.toString( new InputStreamReader( new PipedInputStream( output ) ) );
         }
         catch (FileNotFoundException e) {
             logger.err( e, "Command to execute was not found!" );

@@ -61,11 +61,13 @@ public class SystemTray extends Wrapper {
      *
      * @param trayIcon The wrapped TrayIcon.
      *
-     * @throws AWTException
+     * @throws NullPointerException     - if trayIcon is null
+     * @throws IllegalArgumentException - if the same instance of a TrayIcon is added more than once
+     * @throws AWTException             - if the desktop system tray is missing
      */
-    @SuppressWarnings( { "unused", "RedundantThrows" })
+    @SuppressWarnings( { "unused", "RedundantThrows", "TypeMayBeWeakened" })
     public void add(final TrayIcon trayIcon)
-            throws AWTException {
+            throws NullPointerException, IllegalArgumentException, AWTException {
 
         invoke( "add", new Class[] { getWrappedClass( TrayIcon.class ) }, trayIcon.getWrappedInstance() );
     }
@@ -76,7 +78,7 @@ public class SystemTray extends Wrapper {
      * @param propertyName The property to listen for.
      * @param listener     The listener to invoke.
      */
-    public synchronized void addPropertyChangeListener(String propertyName, final PropertyChangeListener listener) {
+    public synchronized void addPropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
 
         invoke( "addPropertyChangeListener", new Class[] { String.class, PropertyChangeListener.class }, propertyName, listener );
     }
@@ -120,6 +122,7 @@ public class SystemTray extends Wrapper {
      *
      * @param trayIcon The tray icon to remove.
      */
+    @SuppressWarnings( { "TypeMayBeWeakened" })
     public void remove(final TrayIcon trayIcon) {
 
         invoke( "remove", new Class[] { getWrappedClass( TrayIcon.class ) }, trayIcon.getWrappedInstance() );
@@ -131,7 +134,7 @@ public class SystemTray extends Wrapper {
      * @param propertyName The property to stop listening for with the given listener.
      * @param listener     The listener that should stop listening to the given property.
      */
-    public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+    public synchronized void removePropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
 
         invoke( "removePropertyChangeListener", new Class[] { String.class, PropertyChangeListener.class }, propertyName, listener );
     }

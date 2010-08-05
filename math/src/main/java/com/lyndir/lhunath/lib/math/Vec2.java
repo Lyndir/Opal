@@ -126,16 +126,14 @@ public class Vec2 implements Serializable {
     }
 
     /**
-     * Normalize this vector; returning it's original length.
+     * Normalize this vector.
      *
-     * @return The length of the vector; before it had been normalized.
+     * @return The normalized version of this vector; pointing in the same direction with length 1.
      */
-    public double normalize() {
+    public Vec2 normalize() {
 
         double length = length();
-        multiply( length );
-
-        return length;
+        return multiply( 1 / length );
     }
 
     /**
@@ -301,5 +299,14 @@ public class Vec2 implements Serializable {
     public double getY() {
 
         return y;
+    }
+
+    public Vec2 withX(final double x) {
+
+        return new Vec2( x, getY() );
+    }
+    public Vec2 withY(final double y) {
+
+        return new Vec2( getX(), y );
     }
 }

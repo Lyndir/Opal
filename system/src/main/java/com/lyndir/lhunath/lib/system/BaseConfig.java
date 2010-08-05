@@ -59,7 +59,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      */
     public static final BaseConfig<Boolean> writeAsXML = create( true );
 
-    protected static final Set<Runnable>              shutdownHooks = new HashSet<Runnable>();
+    protected static final Collection<Runnable> shutdownHooks = new HashSet<Runnable>();
     protected static final Map<BaseConfig<?>, String> names         = new HashMap<BaseConfig<?>, String>();
 
     static {
@@ -87,10 +87,10 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                     configFile.get().createNewFile();
 
                     if (writeAsXML.get()) {
-                        XStream xstream = new XStream();
-                        FileWriter configWriter = new FileWriter( configFile.get() );
+                        OutputStreamWriter configWriter = new FileWriter( configFile.get() );
 
                         try {
+                            XStream xstream = new XStream();
                             xstream.toXML( names, configWriter );
                             // xstream.toXML( types, configWriter );
                         }
@@ -109,9 +109,6 @@ public class BaseConfig<T extends Serializable> implements Serializable {
                             objects.close();
                         }
                     }
-                }
-                catch (UnsupportedEncodingException e) {
-                    logger.err( e, "Charset %s is unsupported!", Utils.getCharset().name() );
                 }
                 catch (FileNotFoundException e) {
                     logger.err( e, "Could not find the config file '%s'!", configFile.get() );
@@ -251,17 +248,17 @@ public class BaseConfig<T extends Serializable> implements Serializable {
 
             /* Read in the config file to a new settings object. */
             boolean loaded = false, useXML = writeAsXML.isSet()? writeAsXML.get(): true;
-            List<Exception> loadProblems = new ArrayList<Exception>();
+            Collection<Exception> loadProblems = new ArrayList<Exception>();
             Map<BaseConfig<? extends Serializable>, String> configNames = new HashMap<BaseConfig<? extends Serializable>, String>();
             // Map<String, String> configTypes = new HashMap<String, String>();
 
             /* XML XStream Method. */
             if (useXML)
                 try {
-                    XStream xstream = new XStream();
-                    FileReader configReader = new FileReader( configFile.get() );
+                    InputStreamReader configReader = new FileReader( configFile.get() );
 
                     try {
+                        XStream xstream = new XStream();
                         configNames = names.getClass().cast( xstream.fromXML( configReader ) );
                         // configTypes = types.getClass().cast( xstream.fromXML( configReader ) );
                     }

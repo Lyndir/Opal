@@ -113,7 +113,7 @@ public class UIUtils {
      *
      * @return Guess.
      */
-    public static double fontWidth(final Graphics2D graphics, final Font font, final String str) {
+    public static double fontWidth(final Graphics graphics, final Font font, final String str) {
 
         return graphics.getFontMetrics( font ).getStringBounds( str, graphics ).getWidth();
     }
@@ -127,7 +127,7 @@ public class UIUtils {
      *
      * @return Guess.
      */
-    public static double fontHeight(final Graphics2D graphics, final Font font, final String str) {
+    public static double fontHeight(final Graphics graphics, final Font font, final String str) {
 
         return graphics.getFontMetrics( font ).getStringBounds( str, graphics ).getHeight();
     }
@@ -310,7 +310,7 @@ public class UIUtils {
      */
     public static Component createDebugLabel(final String text) {
 
-        JLabel label = new JLabel( text, SwingConstants.CENTER );
+        JComponent label = new JLabel( text, SwingConstants.CENTER );
         label.setBorder( BorderFactory.createLineBorder( RED ) );
 
         return label;

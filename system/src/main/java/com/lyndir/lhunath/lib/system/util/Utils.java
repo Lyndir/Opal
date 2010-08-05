@@ -15,13 +15,13 @@
  */
 package com.lyndir.lhunath.lib.system.util;
 
-import com.lyndir.lhunath.lib.system.BaseConfig;
-import com.lyndir.lhunath.lib.system.Reflective;
+import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
+import com.google.common.io.Closeables;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.net.*;
-import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -87,11 +87,6 @@ public class Utils {
     };
 
     /**
-     * Default buffer size.
-     */
-    public static final int BUFFER_SIZE = 4096;
-
-    /**
      * Ratio of the long part of the golden section.
      */
     public static final double GOLDEN = 0.618;
@@ -100,16 +95,18 @@ public class Utils {
      * Inverted ratio of the long part of the golden section.
      */
     public static final double GOLDEN_INV = 1 / GOLDEN;
-
-    /**
-     * Get the charset that should be used for all encoding and decoding of externalized messages and communication.
-     *
-     * @return Guess.
-     */
-    public static Charset getCharset() {
-
-        return Charset.forName( "UTF-8" );
-    }
+    private static final Pattern FIRST_LETTER = Pattern.compile( "(\\w)\\w{2,}\\." );
+    private static final Pattern THROWS = Pattern.compile( " throws [^\\(\\)]*" );
+    private static final Pattern TLD = Pattern.compile( "^.*?([^\\.]+\\.[^\\.]+)$" );
+    private static final Pattern TRAILING_SLASHES = Pattern.compile( "/+$" );
+    private static final Pattern NON_FINAL_PATH = Pattern.compile( "^.*/" );
+    private static final Pattern LETTERS = Pattern.compile( "[a-zA-Z]" );
+    private static final Pattern PATH_SEPARATORS = Pattern.compile( "[\\\\/]+" );
+    private static final Pattern PROTOCOL = Pattern.compile( "^[^:]+:" );
+    private static final Pattern WINDOWS = Pattern.compile( "Windows.*" );
+    private static final Pattern LINUX = Pattern.compile( "Linux.*" );
+    private static final Pattern MACOS = Pattern.compile( "Mac.*" );
+    private static final Pattern SUNOS = Pattern.compile( "SunOS.*" );
 
     /**
      * Convert an object into a double in a semi-safe way. We parse {@link Object#toString()} and choose to return <code>null</code> rather
@@ -248,12 +245,19 @@ public class Utils {
      */
     public static String getDigest(final File file, final Digest digestType) {
 
+        InputStream fileStream = null, bufferedFileStream = null;
         try {
-            return getDigest( new BufferedInputStream( new FileInputStream( file ) ), digestType );
+            fileStream = new FileInputStream( file );
+            bufferedFileStream = new BufferedInputStream( fileStream );
+            return getDigest( bufferedFileStream, digestType );
         }
         catch (FileNotFoundException e) {
             logger.err( e, "File %s does not exist.  Can't calculate %s", file, digestType.getName() );
             return null;
+        }
+        finally {
+            Closeables.closeQuietly( fileStream );
+            Closeables.closeQuietly( bufferedFileStream );
         }
     }
 
@@ -293,14 +297,14 @@ public class Utils {
      */
     public static String getDigest(final InputStream in, final Digest digestType) {
 
-        Checksum checksum = new CRC32();
         try {
             MessageDigest digest = null;
             if (digestType != Digest.CRC32)
                 digest = MessageDigest.getInstance( digestType.getName() );
 
-            byte[] buffer = new byte[BUFFER_SIZE];
+            byte[] buffer = new byte[256];
 
+            Checksum checksum = new CRC32();
             for (int len; (len = in.read( buffer )) >= 0;)
                 if (digest == null)
                     checksum.update( buffer, 0, len );
@@ -404,9 +408,10 @@ public class Utils {
                     return SHA384;
                 case 512:
                     return SHA512;
+                default:
+                    throw logger.err( "The digest in the argument is cannot be recognized: %s", digest )
+                            .toError( IllegalArgumentException.class );
             }
-
-            throw new IllegalArgumentException( "The digest in the argument is cannot be recougnized: '" + digest + '\'' );
         }
     }
 
@@ -439,7 +444,7 @@ public class Utils {
         URI uri;
         String path = null;
         try {
-            path = URLDecoder.decode( url.toExternalForm(), getCharset().name() ).replaceFirst( "^[^:]+:", "" );
+            path = PROTOCOL.matcher( URLDecoder.decode( url.toExternalForm(), Charsets.UTF_8.name() ) ).replaceFirst( "" );
         }
         catch (UnsupportedEncodingException ignored) {
             /* Ignore. */
@@ -450,7 +455,7 @@ public class Utils {
             uri = url.toURI();
         }
         catch (URISyntaxException ignored) {
-            return new File( path ); // Known occurances: None.
+            return new File( path ); // Known occurrences: None.
         }
 
         /* Use the URI to create a file object. */
@@ -458,7 +463,7 @@ public class Utils {
             return new File( uri );
         }
         catch (IllegalArgumentException ignored) {
-            return new File( path ); // Known occurances: Windows SMB.
+            return new File( path ); // Known occurrences: Windows SMB.
         }
     }
 
@@ -500,253 +505,28 @@ public class Utils {
     }
 
     /**
-     * Read a stream in and return it as a string. This method will block until the stream is closed or reaches EOF. This method will close
-     * both streams before it returns. It uses the default buffer size.
-     *
-     * @param reader The reader to get the data from.
-     *
-     * @return The stream's data as a string decoded with the default character set.
-     *
-     * @throws IOException
-     * @see BaseConfig#BUFFER_SIZE
-     */
-    public static String readReader(final Reader reader)
-            throws IOException {
-
-        return readReader( reader, BaseConfig.BUFFER_SIZE, null );
-    }
-
-    /**
-     * Read a stream in and return it as a string. This method will block until the stream is closed or reaches EOF. This method will close
-     * both streams before it returns.
-     *
-     * @param reader     The reader to get the data from.
-     * @param bufferSize The size of the buffer to use for reading.
-     * @param callback   The callback object to notify each time a chunk of data was written.
-     *
-     * @return The stream's data as a string decoded with the default character set.
-     *
-     * @throws IOException
-     */
-    public static String readReader(final Reader reader, final int bufferSize, final StreamCallback callback)
-            throws IOException {
-
-        return readReader( reader, bufferSize, callback, true );
-    }
-
-    /**
-     * Read a stream in and return it as a string. This method will block until the stream is closed or reaches EOF. This method will close
-     * the reader before it returns.
-     *
-     * @param reader     The reader to get the data from.
-     * @param bufferSize The size of the buffer to use for reading.
-     * @param callback   The callback object to notify each time a chunk of data was written.
-     * @param autoclose  Whether or not to close all streams involved automatically after completion.
-     *
-     * @return The stream's data as a string decoded with the default character set.
-     *
-     * @throws IOException
-     */
-    public static String readReader(Reader reader, final int bufferSize, final StreamCallback callback, boolean autoclose)
-            throws IOException {
-
-        StringWriter output = new StringWriter();
-        char[] buffer = new char[bufferSize];
-
-        try {
-            int bytesWritten = 0;
-            for (int bytesRead; (bytesRead = reader.read( buffer )) > 0;) {
-                output.write( buffer, 0, bytesRead );
-                bytesWritten += bytesRead;
-
-                if (callback != null)
-                    callback.wroteChunk( bytesWritten );
-            }
-        }
-        finally {
-            if (autoclose)
-                reader.close();
-        }
-
-        return output.toString();
-    }
-
-    /**
-     * Read a stream in and return it as a string. This method will block until the stream is closed. This method will close both streams
-     * before it returns. It uses the default buffer size.
-     *
-     * @param stream The stream to get the data from.
-     *
-     * @return The stream's data as a string decoded with the default character set.
-     *
-     * @throws IOException
-     * @see BaseConfig#BUFFER_SIZE
-     */
-    public static byte[] readStream(final InputStream stream)
-            throws IOException {
-
-        return readStream( stream, BaseConfig.BUFFER_SIZE, null );
-    }
-
-    /**
-     * Read a stream in and return it as a string. This method will block until the stream is closed. This method will close both streams
-     * before it returns.
-     *
-     * @param stream     The stream to get the data from.
-     * @param bufferSize The size of the buffer to use for reading.
-     * @param callback   The callback object to notify each time a chunk of data was written.
-     *
-     * @return The stream's data as a string decoded with the default character set.
-     *
-     * @throws IOException
-     */
-    public static byte[] readStream(final InputStream stream, final int bufferSize, final StreamCallback callback)
-            throws IOException {
-
-        return readStream( stream, bufferSize, callback, true );
-    }
-
-    /**
-     * Read a stream in and return it as a string. This method will block until the stream is closed.
-     *
-     * @param stream     The reader to get the data from.
-     * @param bufferSize The size of the buffer to use for reading.
-     * @param callback   The callback object to notify each time a chunk of data was written.
-     * @param autoclose  Whether or not to close all streams involved automatically after completion.
-     *
-     * @return The stream's data as a string decoded with the default character set.
-     *
-     * @throws IOException
-     */
-    public static byte[] readStream(InputStream stream, final int bufferSize, final StreamCallback callback, boolean autoclose)
-            throws IOException {
-
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        byte[] buffer = new byte[bufferSize];
-
-        try {
-            int bytesWritten = 0;
-            for (int bytesRead; (bytesRead = stream.read( buffer )) > 0;) {
-                output.write( buffer, 0, bytesRead );
-                bytesWritten += bytesRead;
-
-                if (callback != null)
-                    callback.wroteChunk( bytesWritten );
-            }
-        }
-        finally {
-            if (autoclose)
-                stream.close();
-        }
-
-        return output.toByteArray();
-    }
-
-    /**
-     * Read a stream in and write it to the given stream in a BUFFERED byte-safe manner. This method will block until the input stream is
-     * closed. This method will close all streams before it returns. It uses the default buffer size.
-     *
-     * @param in  The stream to get the data from.
-     * @param out The destination of the output stream.
-     *
-     * @throws IOException
-     * @see BaseConfig#BUFFER_SIZE
-     */
-    public static void pipeStream(final InputStream in, final OutputStream out)
-            throws IOException {
-
-        pipeStream( in, BaseConfig.BUFFER_SIZE, out, null );
-    }
-
-    /**
-     * Read a stream in and write it to the given stream in a BUFFERED byte-safe manner. This method will block until the input stream is
-     * closed. This method will close all streams before it returns.
-     *
-     * @param in         The stream to get the data from.
-     * @param bufferSize The size of the buffer to use for reading.
-     * @param out        The destination of the output stream.
-     * @param callback   The callback object to notify each time a chunk of data was written.
-     *
-     * @throws IOException
-     */
-    public static void pipeStream(InputStream in, final int bufferSize, final OutputStream out, StreamCallback callback)
-            throws IOException {
-
-        pipeStream( in, bufferSize, out, callback, true );
-    }
-
-    /**
-     * Read a stream in and write it to the given stream in a BUFFERED byte-safe manner. This method will block until the input stream is
-     * closed.
-     *
-     * @param in         The stream to get the data from.
-     * @param bufferSize The size of the buffer to use for reading.
-     * @param out        The destination of the output stream.
-     * @param callback   The callback object to notify each time a chunk of data was written.
-     * @param autoclose  Whether or not to close all streams involved automatically after completion.
-     *
-     * @throws IOException
-     */
-    public static void pipeStream(InputStream in, final int bufferSize, final OutputStream out, StreamCallback callback,
-                                  final boolean autoclose)
-            throws IOException {
-
-        try {
-            int bytesWritten = 0;
-            byte[] buffer = new byte[bufferSize];
-            for (int bytesRead; (bytesRead = in.read( buffer )) > 0;) {
-                out.write( buffer, 0, bytesRead );
-
-                if (callback != null) {
-                    bytesWritten += bytesRead;
-                    callback.wroteChunk( bytesWritten );
-                }
-            }
-        }
-        finally {
-            if (autoclose) {
-                in.close();
-                out.close();
-            }
-        }
-    }
-
-    /**
-     * A callback interface that will be called while data is being written to allow evaluating the writing progress.
-     */
-    public interface StreamCallback {
-
-        /**
-         * A chunk of data has just been written. The size of the chunk is no greater than the write buffer used.
-         *
-         * @param totalBytesWritten The total amount of bytes that have been written so far.
-         */
-        void wroteChunk(double totalBytesWritten);
-    }
-
-    /**
      * Extend the java library search path by adding the path of a library that will need to be loaded at some point in the application's
-     * lifecycle.
+     * life cycle.
      *
      * @param libName The name of the library that will be loaded.
      */
     public static void initNativeLibPath(final String libName) {
 
         String libFileName = libName;
-        if (System.getProperty( "os.name" ).matches( "Windows.*" ))
+        if (WINDOWS.matcher( System.getProperty( "os.name" ) ).matches())
             libFileName = libName + ".dll";
-        else if (System.getProperty( "os.name" ).matches( "Linux.*" ))
+        else if (LINUX.matcher( System.getProperty( "os.name" ) ).matches())
             libFileName = "lib" + libName + ".so";
-        else if (System.getProperty( "os.name" ).matches( "Mac.*" ))
+        else if (MACOS.matcher( System.getProperty( "os.name" ) ).matches())
             libFileName = "lib" + libName + ".jnilib";
-        else if (System.getProperty( "os.name" ).matches( "SunOS.*" ))
+        else if (SUNOS.matcher( System.getProperty( "os.name" ) ).matches())
 
             if ("x86".equals( System.getProperty( "os.arch" ) ))
                 libFileName = "lib" + libName + "_sun_x86.so";
             else
                 libFileName = "lib" + libName + "_sun_sparc.so";
         else
-            logger.wrn( "Unrecougnised OS: %s", System.getProperty( "os.name" ) );
+            logger.wrn( "Unrecognised OS: %s", System.getProperty( "os.name" ) );
 
         File libFile = res( "/lib/native/" + libFileName );
         if (libFile == null)
@@ -756,19 +536,21 @@ public class Utils {
     }
 
     /**
-     * A sane way of retrieving an entry from a {@link ZipFile} based on its /-delimited pathname.
+     * A sane way of retrieving an entry from a {@link ZipFile} based on its /-delimited path name.
      *
      * @param zipFile    The {@link ZipFile} to retrieve the entry for.
      * @param zippedName The /-delimited pathname of the entry.
      *
      * @return The {@link ZipEntry} for the pathname or <code>null</code> if none was present.
      */
-    public static ZipEntry getZipEntry(final ZipFile zipFile, final String zippedName) {
+    public static ZipEntry getZipEntry(final ZipFile zipFile, final CharSequence zippedName) {
 
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         while (entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
-            if (entry.getName().replaceAll( "[\\\\/]+", "/" ).equals( zippedName.replaceAll( "[\\\\/]+", "/" ) ))
+            if (PATH_SEPARATORS.matcher( entry.getName() )
+                    .replaceAll( "/" )
+                    .equals( PATH_SEPARATORS.matcher( zippedName ).replaceAll( "/" ) ))
                 return entry;
         }
 
@@ -783,12 +565,13 @@ public class Utils {
      *
      * @return The name of the field.
      */
-    public static String getFieldName(final Reflective owner, final Object fieldValue) {
+    public static String getFieldName(final Object owner, final Object fieldValue) {
 
         for (final Field field : owner.getClass().getDeclaredFields())
             try {
-                Object value = owner.getFieldValue( field );
-                if (fieldValue == value)
+                field.setAccessible( true );
+                Object value = field.get( owner );
+                if (ObjectUtils.equal( fieldValue, value ))
                     return field.getName();
             }
 
@@ -838,16 +621,20 @@ public class Utils {
                 resultBuilder.append( resultBuilder.length() > 0? "\n": "" ).append( grep( pattern, child, group ) );
         else if (file.isFile())
             try {
-                String content = readReader( new FileReader( file ), 4096, null, true );
-
-                for (final String line : content.split( "\n" )) {
-                    Matcher matcher = pattern.matcher( line );
-                    if (matcher.find())
-                        return matcher.group( group );
+                FileReader fileReader = new FileReader( file );
+                try {
+                    for (final String line : CharStreams.readLines( fileReader )) {
+                        Matcher matcher = pattern.matcher( line );
+                        if (matcher.find())
+                            return matcher.group( group );
+                    }
+                }
+                finally {
+                    Closeables.closeQuietly( fileReader );
                 }
             }
             catch (FileNotFoundException e) {
-                logger.bug( e, "File '%s' not found even though we checked for its existance.", file );
+                logger.bug( e, "File '%s' not found even though we checked for its existence.", file );
             }
             catch (IOException e) {
                 logger.err( e, "Couldn't read file '%s'!", file );
@@ -867,12 +654,12 @@ public class Utils {
      *
      * @return <code>true</code> if the object was found anywhere within the collection or any of its sub-collections.
      */
-    public static boolean recurseContains(final Collection<?> collection, final Object o) {
+    public static boolean recurseContains(final Iterable<?> collection, final Object o) {
 
         for (final Object co : collection)
             if (co.equals( o ))
                 return true;
-            else if (co instanceof Collection<?> && recurseContains( (Collection<?>) co, o ))
+            else if (co instanceof Collection<?> && recurseContains( (Iterable<?>) co, o ))
                 return true;
 
         return false;
@@ -887,7 +674,7 @@ public class Utils {
      */
     public static String calendarSuffix(final int field) {
 
-        return calendarFormat.get( field ).replaceAll( "[a-zA-Z]", "" );
+        return LETTERS.matcher( calendarFormat.get( field ) ).replaceAll( "" );
     }
 
     /**
@@ -898,10 +685,10 @@ public class Utils {
      *
      * @return <code>true</code> if the search object was found in the array.
      */
-    public static boolean inArray(final Object[] array, final Object search) {
+    public static <T, U extends T> boolean inArray(final T[] array, final U search) {
 
         for (final Object element : array)
-            if (element == search || element != null && element.equals( search ))
+            if (ObjectUtils.equal( search, element ))
                 return true;
 
         return false;
@@ -914,10 +701,10 @@ public class Utils {
      *
      * @return The compressed signature.
      */
-    public static String compressSignature(final String signature) {
+    public static String compressSignature(final CharSequence signature) {
 
-        String compressed = signature.replaceAll( "(\\w)\\w{2,}\\.", "$1~" );
-        return compressed.replaceFirst( " throws [^\\(\\)]*", "" );
+        String compressed = FIRST_LETTER.matcher( signature ).replaceAll( "$1~" );
+        return THROWS.matcher( compressed ).replaceFirst( "" );
     }
 
     /**
@@ -980,12 +767,12 @@ public class Utils {
     /**
      * @param home The {@link URL} that needs to be converted to a short string version.
      *
-     * @return A concise representation of the URL showing only the root domain and final path of the path.
+     * @return A concise representation of the URL showing only the root domain and final part of the path.
      */
     public static String shortUrl(final URL home) {
 
-        String shortHome = home.getHost().replaceFirst( "^.*?([^\\.]+\\.[^\\.]+)$", "$1" );
-        String path = home.getPath().replaceFirst( "/+$", "" ).replaceFirst( "^.*/", "" );
+        String shortHome = TLD.matcher( home.getHost() ).replaceFirst( "$1" );
+        String path = NON_FINAL_PATH.matcher( TRAILING_SLASHES.matcher( home.getPath() ).replaceFirst( "" ) ).replaceFirst( "" );
 
         return shortHome + ':' + path;
     }

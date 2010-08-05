@@ -22,6 +22,7 @@ package com.lyndir.lhunath.lib.system.logging.exception;
  *
  * @author lhunath
  */
+@SuppressWarnings( { "UncheckedExceptionClass" })
 public class TodoException extends UnsupportedOperationException {
 
     /**

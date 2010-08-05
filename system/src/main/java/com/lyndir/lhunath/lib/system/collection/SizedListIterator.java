@@ -16,27 +16,33 @@ public abstract class SizedListIterator<T> extends SizedIterator<T> implements L
     @Override
     protected abstract ListIterator<T> delegate();
 
-    public void add(T element) {
+    @Override
+    public void add(final T element) {
         delegate().add( element );
     }
 
+    @Override
     public boolean hasPrevious() {
         return delegate().hasPrevious();
     }
 
+    @Override
     public int nextIndex() {
         return delegate().nextIndex();
     }
 
+    @Override
     public T previous() {
         return delegate().previous();
     }
 
+    @Override
     public int previousIndex() {
         return delegate().previousIndex();
     }
 
-    public void set(T element) {
+    @Override
+    public void set(final T element) {
         delegate().set( element );
     }
 
