@@ -21,6 +21,8 @@ import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
 import java.util.*;
@@ -238,7 +240,7 @@ public class Network implements Runnable {
      * @throws IOException If the socket is already bound, the bind address is unavailable or the operation failed or was denied for some
      *                     other reason.
      */
-    public ServerSocketChannel bind(final InetSocketAddress socketAddress, final SSLEngine sslEngine)
+    public ServerSocketChannel bind(final SocketAddress socketAddress, final SSLEngine sslEngine)
             throws IOException {
 
         if (selector == null || !selector.isOpen())
@@ -1359,7 +1361,7 @@ public class Network implements Runnable {
      *
      * @return A string representation of the given buffer's counters.
      */
-    private static String renderBuffer(final ByteBuffer buf) {
+    private static String renderBuffer(final Buffer buf) {
 
         float curStep = 0;
         float length = 20;

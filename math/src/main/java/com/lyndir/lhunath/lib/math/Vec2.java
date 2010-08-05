@@ -18,6 +18,7 @@ package com.lyndir.lhunath.lib.math;
 import java.awt.*;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 
 
 /**
@@ -26,20 +27,20 @@ import java.awt.geom.Point2D;
  *
  * @author lhunath
  */
-public class Vec2 implements Cloneable {
+public class Vec2 implements Serializable {
 
     /**
      * X-Axis coordinate.
      */
-    private double x;
+    private final double x;
 
     /**
      * Y-Axis coordinate.
      */
-    private double y;
+    private final double y;
 
     /**
-     * Create a new two dimensional vector in the origin.
+     * Create a new two dimensional vector at the origin.
      */
     public Vec2() {
 
@@ -54,8 +55,8 @@ public class Vec2 implements Cloneable {
      */
     public Vec2(final double x, final double y) {
 
-        setX( x );
-        setY( y );
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -65,8 +66,8 @@ public class Vec2 implements Cloneable {
      */
     public Vec2(final Point2D p) {
 
-        setX( p.getX() );
-        setY( p.getY() );
+        x = p.getX();
+        y = p.getY();
     }
 
     /**
@@ -76,8 +77,8 @@ public class Vec2 implements Cloneable {
      */
     public Vec2(final Dimension2D dimension) {
 
-        setX( dimension.getWidth() );
-        setY( dimension.getHeight() );
+        x = dimension.getWidth();
+        y = dimension.getHeight();
     }
 
     /**
@@ -101,20 +102,6 @@ public class Vec2 implements Cloneable {
         dim.setSize( getX(), getY() );
 
         return dim;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Vec2 clone()
-            throws CloneNotSupportedException {
-
-        Vec2 newVec2 = (Vec2) super.clone();
-        newVec2.setX( getX() );
-        newVec2.setY( y );
-
-        return newVec2;
     }
 
     /**
@@ -163,11 +150,7 @@ public class Vec2 implements Cloneable {
         if (a == null)
             return this;
 
-        double newX = getX() * a.cos() - getY() * a.sin();
-        setY( x * a.sin() + y * a.cos() );
-        setX( newX );
-
-        return this;
+        return new Vec2( x * a.sin() + y * a.cos(), getX() * a.cos() - getY() * a.sin() );
     }
 
     /**
@@ -182,10 +165,7 @@ public class Vec2 implements Cloneable {
         if (vector == null)
             return this;
 
-        setX( getX() + vector.getX() );
-        setY( getY() + vector.y );
-
-        return this;
+        return new Vec2( getX() + vector.getX(), getY() + vector.y );
     }
 
     /**
@@ -200,10 +180,7 @@ public class Vec2 implements Cloneable {
         if (vector == null)
             return this;
 
-        setX( getX() - vector.getX() );
-        setY( getY() - vector.getY() );
-
-        return this;
+        return new Vec2( getX() - vector.getX(), getY() - vector.getY() );
     }
 
     /**
@@ -218,10 +195,7 @@ public class Vec2 implements Cloneable {
         if (vector == null)
             return this;
 
-        setX( getX() * vector.getX() );
-        setY( getY() * vector.y );
-
-        return this;
+        return new Vec2( getX() * vector.getX(), getY() * vector.y );
     }
 
     /**
@@ -233,10 +207,7 @@ public class Vec2 implements Cloneable {
      */
     public Vec2 multiply(final double multiplier) {
 
-        setX( getX() * multiplier );
-        setY( getY() * multiplier );
-
-        return this;
+        return new Vec2( getX() * multiplier, getY() * multiplier );
     }
 
     /**
@@ -255,7 +226,7 @@ public class Vec2 implements Cloneable {
      *
      * <pre>
      *    _______
-     *    \      \  - Consider this paralellogram's horizontal side (either of the two) as a vector,
+     *    \      \  - Consider this parallelogram's horizontal side (either of the two) as a vector,
      *     \______\     and the vertical side as another. Their cross product returns the area.
      * </pre>
      *
@@ -325,26 +296,10 @@ public class Vec2 implements Cloneable {
     }
 
     /**
-     * @param x The horizontal destination of this vector.
-     */
-    public void setX(final double x) {
-
-        this.x = x;
-    }
-
-    /**
      * @return The vertical destination of this vector.
      */
     public double getY() {
 
         return y;
-    }
-
-    /**
-     * @param y The vertical destination of this vector.
-     */
-    public void setY(final double y) {
-
-        this.y = y;
     }
 }

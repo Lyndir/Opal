@@ -15,6 +15,9 @@
  */
 package com.lyndir.lhunath.lib.math;
 
+import com.google.common.base.Preconditions;
+
+
 /**
  * <i>Vec3 - A three dimensional vector.</i><br> <br> The Vec3 object represents a three dimensional vector in a space.<br> <br>
  *
@@ -25,7 +28,12 @@ public class Vec3 extends Vec2 {
     /**
      * Z-Axis coordinate.
      */
-    private double z;
+    private final double z;
+
+    public Vec3() {
+
+        this( 0, 0, 0 );
+    }
 
     /**
      * Convert a planar vector (2D) into a spatial vector (3D).
@@ -49,14 +57,6 @@ public class Vec3 extends Vec2 {
     }
 
     /**
-     * Create a new three dimensional vector in the origin.
-     */
-    public Vec3() {
-
-        this( 0, 0, 0 );
-    }
-
-    /**
      * Create a new three dimensional vector.
      *
      * @param x The x-coordinate of the new vector.
@@ -66,22 +66,7 @@ public class Vec3 extends Vec2 {
     public Vec3(final double x, final double y, final double z) {
 
         super( x, y );
-        setZ( z );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Vec3 clone()
-            throws CloneNotSupportedException {
-
-        Vec3 newVec3 = (Vec3) super.clone();
-        newVec3.setX( getX() );
-        newVec3.setY( getY() );
-        newVec3.setZ( z );
-
-        return newVec3;
+        this.z = z;
     }
 
     /**
@@ -218,7 +203,7 @@ public class Vec3 extends Vec2 {
      *
      * <pre>
      *          _______
-     *          \      \  - Consider this paralellogram's horizontal side (either of the two) as a vector,
+     *          \      \  - Consider this parallelogram's horizontal side (either of the two) as a vector,
      *           \______\     and the vertical side as another. Their cross product returns the area.
      * </pre>
      *
@@ -235,8 +220,7 @@ public class Vec3 extends Vec2 {
      */
     public Vec3 crossMultiply(final Vec3 vector) {
 
-        if (vector == null)
-            return new Vec3();
+        Preconditions.checkNotNull( vector, "Given vector cannot be null." );
 
         return new Vec3( getY() * vector.getZ() - getZ() * vector.getY(), getZ() * vector.getX() - getX() * vector.getZ(),
                          getX() * vector.getY() - getY() * vector.getX() );
@@ -276,7 +260,7 @@ public class Vec3 extends Vec2 {
 
         if (obj == this)
             return true;
-        return obj instanceof Vec3 && getX() == ((Vec3) obj).getX() && getY() == ((Vec3) obj).getY() && getZ() == ((Vec3) obj).getZ();
+        return obj instanceof Vec3 && getX() == ((Vec2) obj).getX() && getY() == ((Vec2) obj).getY() && getZ() == ((Vec3) obj).getZ();
     }
 
     /**
@@ -294,13 +278,5 @@ public class Vec3 extends Vec2 {
     public double getZ() {
 
         return z;
-    }
-
-    /**
-     * @param z The depth destination of this vector.
-     */
-    public void setZ(final double z) {
-
-        this.z = z;
     }
 }

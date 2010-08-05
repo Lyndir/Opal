@@ -15,9 +15,11 @@
  */
 package com.lyndir.lhunath.lib.math;
 
+import com.google.common.base.Preconditions;
 import com.lyndir.lhunath.lib.system.util.Utils;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 
 /**
@@ -30,9 +32,10 @@ import java.util.Arrays;
 public class Version implements Comparable<Version>, Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static final Pattern DOT = Pattern.compile( "\\." );
 
-    private String   version = null;
-    private String[] tags    = null;
+    private final String   version ;
+    private final String[] tags    ;
 
     /**
      * Create a new {@link Version} instance.
@@ -41,7 +44,7 @@ public class Version implements Comparable<Version>, Serializable {
      */
     public Version(final Number version) {
 
-        this( version == null? null: version.toString() );
+        this( Preconditions.checkNotNull(version, "Given version cannot be null.").toString() );
     }
 
     /**
@@ -51,22 +54,12 @@ public class Version implements Comparable<Version>, Serializable {
      */
     public Version(final String version) {
 
-        set( version );
-    }
-
-    /**
-     * Change the version represented by this {@link Version} object.
-     *
-     * @param version The string representation of the version to set this object to.
-     */
-    public void set(final String version) {
-
         if (version == null)
             this.version = "0";
         else
             this.version = version.trim();
 
-        tags = this.version.split( "\\." );
+        tags = DOT.split( this.version );
     }
 
     /**
