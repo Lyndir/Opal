@@ -104,11 +104,19 @@ public class Network implements Runnable {
         if (isUp())
             bringDown();
 
-        if (networkThread == null || !networkThread.isAlive())
+        if (!isThreadAlive())
             return;
 
         running = false;
         networkThread.interrupt();
+    }
+
+    /**
+     * @return <code>true</code> if the network thread has been started and is currently running.
+     */
+    public boolean isThreadAlive() {
+
+        return networkThread != null && networkThread.isAlive();
     }
 
     /**
@@ -119,6 +127,9 @@ public class Network implements Runnable {
      * manually bringing the network in an existing thread down and up again.
      */
     public synchronized void bringUp() {
+
+        if (!isThreadAlive())
+            startThread();
 
         if (isUp())
             // Already up.

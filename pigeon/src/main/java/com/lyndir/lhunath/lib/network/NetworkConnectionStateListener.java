@@ -28,9 +28,9 @@ public interface NetworkConnectionStateListener {
     /**
      * A new connection has been established to a remote server.
      *
-     * @param socketChannel The channel over which the new connection will take place.
+     * @param channel The channel over which the new connection will take place.
      */
-    void connected(SocketChannel socketChannel);
+    void connected(SocketChannel channel);
 
     /**
      * A channel has been closed.
