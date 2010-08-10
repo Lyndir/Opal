@@ -6,6 +6,7 @@ import com.lyndir.lhunath.lib.system.util.ObjectUtils;
 import com.lyndir.lhunath.lib.wayward.js.AjaxHooks;
 import com.lyndir.lhunath.lib.wayward.js.JSUtils;
 import java.net.URI;
+import java.util.Collection;
 import java.util.Map;
 import org.apache.wicket.*;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -282,6 +283,7 @@ public interface FragmentNavigationListener {
         @Override
         public void onBeforeRespond(final Map<String, Component> map, final AjaxRequestTarget target) {
 
+            logger.dbg( "onBeforeRespond" );
             FragmentNavigationTab<? extends P, ? extends S> tab = controller.getActiveTab();
             updateTabComponents( tab );
         }
@@ -289,6 +291,11 @@ public interface FragmentNavigationListener {
         @Override
         public void onAfterRespond(final Map<String, Component> map, final AjaxRequestTarget.IJavascriptResponse response) {
 
+            Collection<? extends Component> components = null;
+            if (AjaxRequestTarget.get() != null)
+                components = AjaxRequestTarget.get().getComponents();
+            logger.dbg( "onAfterRespond for components: %s", components );
+            
             updatePageFragment( response );
         }
 
@@ -297,8 +304,10 @@ public interface FragmentNavigationListener {
             Class<PP> panelClass = activeTab.getPanelClass();
             Component contentPanel = controller.getActiveContent();
 
+            logger.dbg( "active content: %s", contentPanel );
             if (panelClass.isInstance( contentPanel )) {
                 newFragment = activeTab.buildFragmentState( panelClass.cast( contentPanel ) ).toFragment();
+                logger.dbg( "current fragment=%s, new fragment=%s", controller.getPageFragment(), newFragment );
 
                 if (!ObjectUtils.equal( newFragment, controller.getPageFragment() ))
                     controller.updateNavigationComponents();
@@ -307,6 +316,7 @@ public interface FragmentNavigationListener {
 
         private void updatePageFragment(final AjaxRequestTarget.IJavascriptResponse response) {
 
+            controller.setPageFragment( newFragment );
             response.addJavascript( "window.location.hash = " + JSUtils.toString( newFragment ) );
         }
     }
