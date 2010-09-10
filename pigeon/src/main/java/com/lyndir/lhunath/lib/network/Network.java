@@ -936,6 +936,10 @@ public class Network implements Runnable {
                                     selector.wakeup();
                                 }
                             } ).start();
+                        } else {
+                            logger.dbg( "[====: %s] SSL %s: Task needed but none offered.", //
+                                        nameChannel( channel ), handshakeStatus, delegatedTask );
+                            break;
                         }
 
                         // Recheck engine.
@@ -1239,6 +1243,8 @@ public class Network implements Runnable {
                 }
 
                 catch (IOException e) {
+                    logger.err( e, "Network error occurred" );
+
                     // TODO: Easily DoS-able.
                     if (--errorThrottle <= 0)
                         // We're receiving a mass of errors.
@@ -1246,8 +1252,6 @@ public class Network implements Runnable {
                         synchronized (this) {
                             wait( -1000L * errorThrottle );
                         }
-
-                    logger.err( e, "Network error occurred" );
                 }
             }
             catch (InterruptedException e) {
