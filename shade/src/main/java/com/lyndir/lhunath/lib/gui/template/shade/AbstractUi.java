@@ -15,6 +15,7 @@
  */
 package com.lyndir.lhunath.lib.gui.template.shade;
 
+import com.google.common.io.Resources;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.factories.Borders;
@@ -38,7 +39,6 @@ import com.lyndir.lhunath.lib.system.wrapper.TrayIcon.MessageType;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -94,7 +94,7 @@ public abstract class AbstractUi
     protected JCheckBox systrayButton;
     protected JCheckBox alwaysOnTop;
     protected JCheckBox startMini;
-    private File defaultLogo;
+    private String defaultLogo;
     private boolean showFrame;
     private DragListener dragListener;
     private JComponent themesPanel;
@@ -1192,7 +1192,7 @@ public abstract class AbstractUi
     /**
      * @return The logo to use when no more specific logo is set.
      */
-    protected File getDefaultLogo() {
+    protected String getDefaultLogo() {
 
         return defaultLogo;
     }
@@ -1200,7 +1200,7 @@ public abstract class AbstractUi
     /**
      * @param defaultLogo The logo to use when no more specific logo is set.
      */
-    protected void setDefaultLogo(File defaultLogo) {
+    protected void setDefaultLogo(String defaultLogo) {
 
         this.defaultLogo = defaultLogo;
     }
@@ -1382,15 +1382,15 @@ public abstract class AbstractUi
 
         /* Update the logos. */
         else if (element.equals( BasicRequest.LOGO )) {
-            File iconFile = null;
+            URL icon = null;
             if (ShadeConfig.logos.isSet() && !ShadeConfig.logos.get().isEmpty())
-                iconFile = ShadeConfig.logos.get().get( 0 );
+                icon = Resources.getResource(ShadeConfig.logos.get().get( 0 ));
 
-            if (iconFile == null || !iconFile.isFile())
-                iconFile = defaultLogo;
+            if (icon == null)
+                icon = Resources.getResource(getDefaultLogo());
 
-            if (iconFile != null && iconFile.isFile())
-                logo.setIcon( new ImageIcon( iconFile.getPath() ) );
+            if (icon != null)
+                logo.setIcon( new ImageIcon( icon ) );
         }
 
         /* Activate / Disable the system tray. */

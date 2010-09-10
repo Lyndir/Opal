@@ -42,9 +42,9 @@ public abstract class FileDialog extends JFileChooser {
         super( start );
 
         dialog = new JDialog( parent, title, true );
+        dialog.setLocationByPlatform( true );
         dialog.add( this );
         dialog.pack();
-        dialog.setLocationRelativeTo( parent );
     }
 
     /**
