@@ -64,7 +64,7 @@ public interface FragmentNavigationListener {
                                                                                                                 final SS state)
                 throws IncompatibleStateException {
 
-            PP tabPanel = tab.getPanel( getTabContentId() );
+            PP tabPanel = tab.newPanel( getTabContentId() );
             tab.applyFragmentState( tabPanel, state );
             activateTab( tab, tabPanel );
         }
@@ -89,7 +89,7 @@ public interface FragmentNavigationListener {
         public <TT extends FragmentNavigationTab<PP, SS>, PP extends P, SS extends S> void activateTab(final TT tab, PP tabPanel) {
 
             if (tabPanel == null)
-                tabPanel = tab.getPanel( getTabContentId() );
+                tabPanel = tab.newPanel( getTabContentId() );
             tabPanel.setOutputMarkupPlaceholderTag( true );
 
             Page responsePage = RequestCycle.get().getResponsePage();
@@ -295,7 +295,7 @@ public interface FragmentNavigationListener {
             if (AjaxRequestTarget.get() != null)
                 components = AjaxRequestTarget.get().getComponents();
             logger.dbg( "onAfterRespond for components: %s", components );
-            
+
             updatePageFragment( response );
         }
 
