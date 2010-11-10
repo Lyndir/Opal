@@ -73,5 +73,11 @@ public abstract class AbstractFragmentState implements FragmentState {
         return fragments;
     }
 
+    @Override
+    public String toString() {
+
+        return String.format( "{%s: %s}", getClass().getSimpleName(), toFragment() );
+    }
+
     protected abstract String getTabFragment();
 }
