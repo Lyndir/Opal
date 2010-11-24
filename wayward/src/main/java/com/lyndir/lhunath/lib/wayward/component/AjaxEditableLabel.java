@@ -12,14 +12,14 @@ import org.apache.wicket.model.IModel;
  *
  * @author lhunath
  */
-public abstract class AjaxEditableLabel<T> extends EditableLabel<T> {
+public class AjaxEditableLabel<T> extends EditableLabel<T> {
 
     /**
      * @param id        The wicket ID of the component.
      * @param model     The model that holds the object that will be rendered in the label or field.
      * @param modelType The type of the model object, for field conversion purposes.
      */
-    protected AjaxEditableLabel(final String id, final IModel<T> model, final Class<T> modelType) {
+    public AjaxEditableLabel(final String id, final IModel<T> model, final Class<T> modelType) {
 
         super( id, model, modelType );
         init();
@@ -31,7 +31,7 @@ public abstract class AjaxEditableLabel<T> extends EditableLabel<T> {
      * @param modelType         The type of the model object, for field conversion purposes.
      * @param initiallyEditable <code>true</code> if the label should be editable from the start.
      */
-    protected AjaxEditableLabel(final String id, final IModel<T> model, final Class<T> modelType, final boolean initiallyEditable) {
+    public AjaxEditableLabel(final String id, final IModel<T> model, final Class<T> modelType, final boolean initiallyEditable) {
 
         super( id, model, modelType, initiallyEditable );
         init();
@@ -51,5 +51,12 @@ public abstract class AjaxEditableLabel<T> extends EditableLabel<T> {
         } );
     }
 
-    protected abstract void onUpdate(final AjaxRequestTarget target);
+    /**
+     * Override me to perform logic after the component has been updated by an AJAX request.
+     *
+     * @param target The AJAX request that updated the component.
+     */
+    protected void onUpdate(final AjaxRequestTarget target) {
+
+    }
 }

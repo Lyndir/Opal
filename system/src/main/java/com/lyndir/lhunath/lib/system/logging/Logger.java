@@ -422,6 +422,11 @@ public class Logger implements Serializable {
 
     // Internal operation --
 
+    public org.slf4j.Logger slf4j() {
+
+        return logger;
+    }
+
     private Logger(final Class<?> type) {
 
         logger = LoggerFactory.getLogger( type );

@@ -79,6 +79,7 @@ public class EditableLabel<T> extends GenericPanel<T> {
      * @return The component that renders the model object as a non-editable label.
      */
     protected Label getLabel() {
+
         return label;
     }
 
@@ -86,6 +87,7 @@ public class EditableLabel<T> extends GenericPanel<T> {
      * @return The component that renders the model object as an editable text field.
      */
     public TextField<T> getField() {
+
         return field;
     }
 }
