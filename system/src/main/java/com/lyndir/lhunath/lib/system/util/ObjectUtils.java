@@ -15,11 +15,6 @@
  */
 package com.lyndir.lhunath.lib.system.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-
 /**
  * <h2>{@link ObjectUtils}<br> <sub>[in short] (TODO).</sub></h2>
  *
@@ -48,27 +43,5 @@ public abstract class ObjectUtils {
     public static <B, A extends B> boolean equal(final A first, final B second) {
 
         return first == second || first != null && first.equals( second );
-    }
-
-    /**
-     * Concatenate two arrays or append elements to an array.
-     *
-     * @param array    The array that provides the first set of elements.
-     * @param elements The second set of elements.
-     * @param <T>      The type of the array elements.
-     *
-     * @return A new array that contains all elements from the first parameter with the other elements appended to it.  If no additional
-     *         elements are given, returns the first array as it is (<b>not a copy!</b>).
-     */
-    public static <T> T[] concat(final T[] array, final T... elements) {
-
-        if (elements.length == 0)
-            return array;
-
-        // TODO: Optimize using array copying.
-        List<T> elementList = new ArrayList<T>( array.length + elements.length );
-        elementList.addAll( Arrays.asList( array ) );
-        elementList.addAll( Arrays.asList( elements ) );
-        return elementList.toArray( array );
     }
 }

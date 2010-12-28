@@ -17,9 +17,7 @@ package com.lyndir.lhunath.lib.wayward.behavior;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -137,9 +135,13 @@ public class CSSClassAttributeAppender extends AttributeAppender {
                 StringBuilder stringBuilder = new StringBuilder();
 
                 for (final String item : appendModel.getObject())
-                    stringBuilder.append( item ).append( CLASS_SEPARATOR );
+                    if (item != null && item.length() > 0)
+                        stringBuilder.append( item ).append( CLASS_SEPARATOR );
 
-                return stringBuilder.deleteCharAt( stringBuilder.length() - 1 ).toString();
+                if(stringBuilder.length() > 0)
+                    stringBuilder.deleteCharAt( stringBuilder.length() - 1 );
+
+                return stringBuilder.toString();
             }
         }, (String) null );
     }

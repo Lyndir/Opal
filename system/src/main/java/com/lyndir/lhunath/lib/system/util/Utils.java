@@ -15,13 +15,13 @@
  */
 package com.lyndir.lhunath.lib.system.util;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.google.common.io.Closeables;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.*;
 import java.lang.reflect.Field;
-import java.net.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -65,8 +65,7 @@ public class Utils {
             put( Calendar.DAY_OF_MONTH, "Day" );
             put( Calendar.MONTH, "Month" );
             put( Calendar.YEAR, "Year" );
-        }
-    };
+        }};
 
     /**
      * {@link SimpleDateFormat} of the calendar fields.
@@ -83,8 +82,7 @@ public class Utils {
             put( Calendar.DAY_OF_MONTH, "dd " );
             put( Calendar.MONTH, "MM/" );
             put( Calendar.YEAR, "yyyy/" );
-        }
-    };
+        }};
 
     /**
      * Ratio of the long part of the golden section.
@@ -416,58 +414,6 @@ public class Utils {
     }
 
     /**
-     * Get a {@link File} object for a resource.
-     *
-     * @param resource The filename of the resource. This is relative to the classpath of the context classloader.
-     *
-     * @return Guess.
-     */
-    public static File res(final String resource) {
-
-        URL url = Thread.currentThread().getContextClassLoader().getResource( resource );
-        if (url == null)
-            return null;
-
-        return res( url );
-    }
-
-    /**
-     * Get a {@link File} object for a resource.
-     *
-     * @param url The url of the resource.
-     *
-     * @return Guess.
-     */
-    public static File res(final URL url) {
-
-        /* In case the URI is invalid. */
-        URI uri;
-        String path = null;
-        try {
-            path = PROTOCOL.matcher( URLDecoder.decode( url.toExternalForm(), Charsets.UTF_8.name() ) ).replaceFirst( "" );
-        }
-        catch (UnsupportedEncodingException ignored) {
-            /* Ignore. */
-        }
-
-        /* Attempt to convert the URL to a URI. */
-        try {
-            uri = url.toURI();
-        }
-        catch (URISyntaxException ignored) {
-            return new File( path ); // Known occurrences: None.
-        }
-
-        /* Use the URI to create a file object. */
-        try {
-            return new File( uri );
-        }
-        catch (IllegalArgumentException ignored) {
-            return new File( path ); // Known occurrences: Windows SMB.
-        }
-    }
-
-    /**
      * Check whether the given string is in a valid URL format.
      *
      * @param url The string that could represent a URL.
@@ -477,7 +423,7 @@ public class Utils {
     public static boolean isUrl(final String url) {
 
         try {
-            @SuppressWarnings( { "unused", "UnusedAssignment" })
+            @SuppressWarnings({ "unused", "UnusedAssignment" })
             URL unused = new URL( url );
             return true;
         }
@@ -493,7 +439,7 @@ public class Utils {
      *
      * @return The URL string in a URL object.
      */
-    public static URL url(final String url) {
+    public static URL toUrl(final String url) {
 
         try {
             return url == null || url.length() == 0? null: new URL( url );
@@ -528,8 +474,8 @@ public class Utils {
         else
             logger.wrn( "Unrecognised OS: %s", System.getProperty( "os.name" ) );
 
-        File libFile = res( "/lib/native/" + libFileName );
-        if (libFile == null)
+        File libFile = new File( "lib/native/" + libFileName );
+        if (!libFile.exists())
             logger.wrn( "Native library %s not supported for your OS (%s).", libName, System.getProperty( "os.name" ) );
         else
             System.setProperty( "java.library.path", System.getProperty( "java.library.path" ) + ':' + libFile.getParent() );

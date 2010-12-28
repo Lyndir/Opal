@@ -158,7 +158,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      */
     public static BaseConfig<URL> createUrl(final String defaultValue) {
 
-        return create( Utils.url( defaultValue ) );
+        return create( Utils.toUrl( defaultValue ) );
     }
 
     /**

@@ -6,6 +6,7 @@ import com.lyndir.lhunath.lib.system.util.ObjectUtils;
 import com.lyndir.lhunath.lib.wayward.js.AjaxHooks;
 import com.lyndir.lhunath.lib.wayward.js.JSUtils;
 import java.net.URI;
+import java.util.Collection;
 import java.util.Map;
 import org.apache.wicket.*;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -33,7 +34,7 @@ public interface FragmentNavigationListener {
         static final Logger logger = Logger.get( Controller.class );
 
         private String pageFragment;
-        private T      activeTab;
+        private T activeTab;
 
         /**
          * Mark the given tab as active and restore state in its contents from the given tab-specific state arguments.
@@ -63,7 +64,7 @@ public interface FragmentNavigationListener {
                                                                                                                 final SS state)
                 throws IncompatibleStateException {
 
-            PP tabPanel = tab.getPanel( getTabContentId() );
+            PP tabPanel = tab.newPanel( getTabContentId() );
             tab.applyFragmentState( tabPanel, state );
             activateTab( tab, tabPanel );
         }
@@ -88,7 +89,7 @@ public interface FragmentNavigationListener {
         public <TT extends FragmentNavigationTab<PP, SS>, PP extends P, SS extends S> void activateTab(final TT tab, PP tabPanel) {
 
             if (tabPanel == null)
-                tabPanel = tab.getPanel( getTabContentId() );
+                tabPanel = tab.newPanel( getTabContentId() );
             tabPanel.setOutputMarkupPlaceholderTag( true );
 
             Page responsePage = RequestCycle.get().getResponsePage();
@@ -98,7 +99,7 @@ public interface FragmentNavigationListener {
                 logger.dbg( "Updating tab in response page: %s (tab exclusive page: %s)", responsePage, getTabExclusivePage() );
 
                 // Cast TT to T because Java can't constrain TT to both T and FNT<PP,SS>
-                @SuppressWarnings( { "unchecked" })
+                @SuppressWarnings({ "unchecked" })
                 T _tab = (T) tab;
                 activeTab = _tab;
                 setActiveTab( tab, tabPanel );
@@ -171,8 +172,7 @@ public interface FragmentNavigationListener {
          * @param tab      The tab that needs to be activated.
          * @param tabPanel The panel that contains the tab's content as determined by fragment state.
          */
-        protected abstract <TT extends FragmentNavigationTab<PP, SS>, PP extends P, SS extends S> void setActiveTab(final TT tab,
-                                                                                                                    final Panel tabPanel);
+        protected abstract <TT extends FragmentNavigationTab<PP, SS>, PP extends P, SS extends S> void setActiveTab(TT tab, Panel tabPanel);
 
         /**
          * @return The wicket ID that the tab's content panel should bind to when generated to apply fragment state on it.
@@ -192,7 +192,7 @@ public interface FragmentNavigationListener {
          *
          * @param e The error that occurred.
          */
-        protected abstract void onError(final IncompatibleStateException e);
+        protected abstract void onError(IncompatibleStateException e);
     }
 
 
@@ -229,28 +229,25 @@ public interface FragmentNavigationListener {
                 String tabFragment = Splitter.on( '/' ).split( fragment ).iterator().next();
 
                 for (final FragmentNavigationTab<? extends P, ? extends S> tab : controller.getTabs()) {
-                    if (tab.getTabFragment().equalsIgnoreCase( tabFragment )) {
-                        logger.dbg( "Is of tab: %s, activating state for it.", tab );
+                    if (tab.getTabFragment().equalsIgnoreCase( tabFragment ))
                         try {
+                            logger.dbg( "Is of tab: %s, activating state for it.", tab );
                             controller.activateTabWithState( tab, fragment );
                             return;
                         }
                         catch (IncompatibleStateException e) {
                             controller.onError( e );
+                            return;
                         }
-
-                        break;
-                    }
                 }
             }
 
             // No fragment, fragment not recognised or fragment could not be applied, find and set a default tab.
-            for (final FragmentNavigationTab<? extends P, ? extends S> tab : controller.getTabs()) {
+            for (final FragmentNavigationTab<? extends P, ? extends S> tab : controller.getTabs())
                 if (tab.isVisible()) {
                     controller.activateNewTab( tab );
                     return;
                 }
-            }
 
             throw logger.err( "Could not activate a tab for page; no tabs are visible." ).toError( IllegalStateException.class );
         }
@@ -263,7 +260,7 @@ public interface FragmentNavigationListener {
         static final Logger logger = Logger.get( AjaxRequestListener.class );
 
         private final Controller<P, S, T> controller;
-        private       String              newFragment;
+        private String newFragment;
 
         /**
          * @param controller The object that controls fragment state for this page.
@@ -289,10 +286,18 @@ public interface FragmentNavigationListener {
         @Override
         public void onAfterRespond(final Map<String, Component> map, final AjaxRequestTarget.IJavascriptResponse response) {
 
+            Collection<? extends Component> components = null;
+            if (AjaxRequestTarget.get() != null)
+                components = AjaxRequestTarget.get().getComponents();
+            logger.dbg( "onAfterRespond for components: %s", components );
+
             updatePageFragment( response );
         }
 
         private <PP extends P> void updateTabComponents(final FragmentNavigationTab<PP, ? extends S> activeTab) {
+
+            if (activeTab == null)
+                return;
 
             Class<PP> panelClass = activeTab.getPanelClass();
             Component contentPanel = controller.getActiveContent();
@@ -307,6 +312,7 @@ public interface FragmentNavigationListener {
 
         private void updatePageFragment(final AjaxRequestTarget.IJavascriptResponse response) {
 
+            controller.setPageFragment( newFragment );
             response.addJavascript( "window.location.hash = " + JSUtils.toString( newFragment ) );
         }
     }

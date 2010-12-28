@@ -111,7 +111,16 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
         editable = initiallyEditable;
     }
 
-    protected abstract boolean hasImageData();
+    /**
+     * Override me to perform a more lazy check of whether image data is available. None will be loaded from {@link #getImageData()} if this
+     * returns <code>false</code>.
+     *
+     * @return <code>true</code>  if image data is available for this component.
+     */
+    protected boolean hasImageData() {
+
+        return getImageData() != null;
+    }
 
     protected abstract byte[] getImageData();
 

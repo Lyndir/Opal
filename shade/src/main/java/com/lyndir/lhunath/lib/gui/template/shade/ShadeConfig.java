@@ -70,7 +70,7 @@ public class ShadeConfig<T extends Serializable> extends BaseConfig<T> {
     /**
      * The local filename of the logos.
      */
-    public static final BaseConfig<ArrayList<File>> logos = create( new ArrayList<File>() );
+    public static final BaseConfig<ArrayList<String>> logos = create( new ArrayList<String>() );
 
     /**
      * Show detailed errors and print stack traces on the console.

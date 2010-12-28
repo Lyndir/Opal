@@ -1,7 +1,8 @@
 package com.lyndir.lhunath.lib.wayward.navigation;
 
-import org.apache.wicket.extensions.markup.html.tabs.ITab;
+import org.apache.wicket.IClusterable;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 
 
 /**
@@ -11,7 +12,7 @@ import org.apache.wicket.markup.html.panel.Panel;
  *
  * @author lhunath
  */
-public interface FragmentNavigationTab<P extends Panel, S extends FragmentState> extends ITab {
+public interface FragmentNavigationTab<P extends Panel, S extends FragmentState> extends IClusterable {
 
     /**
      * @return The string that identifies this tab when it's the zero'th argument in the fragment part of the URL.
@@ -39,17 +40,26 @@ public interface FragmentNavigationTab<P extends Panel, S extends FragmentState>
             throws IncompatibleStateException;
 
     /**
+     * @return The string that identifies this tab in its navigation menu.
+     */
+    IModel<String> getTitle();
+
+    /**
      * @param panelId The wicket ID to bind the panel to.
      *
      * @return The panel that serves this tab's contents.
      */
-    @Override
-    P getPanel(String panelId);
+    P newPanel(String panelId);
+
+    /**
+     * @return <code>true</code> if this tab should be visible in its navigation menu.
+     */
+    boolean isVisible();
 
     /**
      * @return The class of the panel that will serve this tab's content.
      *
-     * @see #getPanel(String)
+     * @see #newPanel(String)
      */
     Class<P> getPanelClass();
 
