@@ -1,10 +1,12 @@
 package com.lyndir.lhunath.lib.wayward.component;
 
 import com.lyndir.lhunath.lib.wayward.behavior.FocusOnReady;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -12,14 +14,15 @@ import org.apache.wicket.util.string.AppendingStringBuffer;
 
 
 /**
- * <h2>{@link TextFieldWindow}<br> <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link TextWindow}<br> <sub>[in short] (TODO).</sub></h2>
  *
  * <p> <i>05 18, 2010</i> </p>
  *
  * @author lhunath
  */
-public class TextFieldWindow<T> extends ModalWindow {
+public class TextWindow<T> extends ModalWindow {
 
+    boolean oneLine = true;
     IModel<T> model;
 
     /**
@@ -28,27 +31,40 @@ public class TextFieldWindow<T> extends ModalWindow {
      * @param type     The type of the text field's data.
      * @param callback The callback to invoke when the window is closed.
      */
-    public TextFieldWindow(final String id, final IModel<T> model, final Class<T> type, final WindowClosedCallback callback) {
+    public TextWindow(final String id, final IModel<T> model, final Class<T> type, final WindowClosedCallback callback) {
 
         super( id, model );
 
-        setContent( new TextFieldPanel<T>( getContentId(), model, type ) );
+        setContent( new TextPanel<T>( getContentId(), model, type ) );
         setInitialHeight( 200 );
         setWindowClosedCallback( callback );
     }
 
-    private static class TextFieldPanel<T> extends Panel {
+    private class TextPanel<T> extends Panel {
 
         private final Form<Object> form;
 
-        TextFieldPanel(final String id, final IModel<T> model, final Class<T> type) {
+        TextPanel(final String id, final IModel<T> model, final Class<T> type) {
 
             super( id, model );
 
             add( (form = new Form<Object>( "form" ) {
 
+                public Component field;
+                public Component area;
+
                 {
-                    add( new TextField<T>( "field", model, type ).add( new FocusOnReady() ) );
+                    add( field = new TextField<T>( "field", model, type ).add( new FocusOnReady() ) );
+                    add( area = new TextArea<T>( "area", model ).add( new FocusOnReady() ) );
+                }
+
+                @Override
+                protected void onConfigure() {
+
+                    super.onConfigure();
+
+                    field.setVisible( oneLine );
+                    area.setVisible( !oneLine );
                 }
             }).add( new AjaxFormSubmitBehavior( form, "onsubmit" ) {
 
@@ -74,5 +90,17 @@ public class TextFieldWindow<T> extends ModalWindow {
                 }
             } ) );
         }
+    }
+
+    public boolean isOneLine() {
+
+        return oneLine;
+    }
+
+    public TextWindow<T> setOneLine(final boolean oneLine) {
+
+        this.oneLine = oneLine;
+
+        return this;
     }
 }
