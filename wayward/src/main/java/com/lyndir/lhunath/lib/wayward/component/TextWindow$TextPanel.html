@@ -6,12 +6,12 @@
     <head>
         <wicket:head>
             <style type="text/css">
-                .TextFieldWindow {
+                .TextWindow {
                     display: block;
                     margin:  10px 20px;
                 }
 
-                .TextFieldWindow input {
+                .TextWindow input, .TextWindow textarea {
                     width:   100%;
                     display: block;
                     padding: 1ex 0;
@@ -24,9 +24,11 @@
     <body>
         <wicket:panel>
 
-            <form wicket:id="form" action="post" class="TextFieldWindow">
+            <form wicket:id="form" action="post" class="TextWindow">
                 <input wicket:id="field" />
-                <textarea wicket:id="area"></textarea>
+                <textarea wicket:id="area" cols="10"></textarea>
+
+                <input wicket:id="submit" type="submit" />
             </form>
 
         </wicket:panel>
