@@ -1,6 +1,10 @@
 package com.lyndir.lhunath.lib.wayward.component;
 
+import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.basic.MultiLineLabel;
+import org.apache.wicket.markup.html.form.AbstractTextComponent;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 
@@ -14,9 +18,24 @@ import org.apache.wicket.model.IModel;
  */
 public class EditableLabel<T> extends GenericPanel<T> {
 
-    private final Label        label;
-    private final TextField<T> field;
-    private       boolean      editable;
+    private final TextField<T> singleLineField;
+    private final TextArea<T>  multiLineField;
+    private       WebComponent label;
+    private boolean nullable = true;
+    private boolean multiline;
+    private boolean editable;
+
+    /**
+     * Only use this convenience constructor if your generic type is String!
+     *
+     * @param id        The wicket ID of the component.
+     * @param model     The model that holds the object that will be rendered in the label or field.
+     */
+    @SuppressWarnings( { "unchecked" })
+    public EditableLabel(final String id, final IModel<T> model) {
+
+        this( id, model, (Class<T>) String.class );
+    }
 
     /**
      * @param id        The wicket ID of the component.
@@ -27,43 +46,68 @@ public class EditableLabel<T> extends GenericPanel<T> {
 
         super( id, model );
 
-        add( label = new Label( "label", model ) {
+        add( label = newLabel( model ));
+        add( singleLineField = new TextField<T>( "singleLineField", model, modelType ) {
+
+            @Override
+            public boolean isVisible() {
+
+                return isEditable() && !isMultiline();
+            }
+
+            @Override
+            public boolean isInputNullable() {
+
+                return nullable;
+            }
+        });
+        add( multiLineField = new TextArea<T>( "multiLineField", model ) {
+
+            @Override
+            public boolean isVisible() {
+
+                return isEditable() && isMultiline();
+            }
+
+            @Override
+            public boolean isInputNullable() {
+
+                return nullable;
+            }
+        } );
+    }
+
+    private WebComponent newLabel(final IModel<?> model) {
+
+        if (isMultiline())
+            return new MultiLineLabel( "label", model ) {
+
+                @Override
+                public boolean isVisible() {
+
+                    return !isEditable();
+                }
+            };
+
+        return new Label( "label", model ) {
 
             @Override
             public boolean isVisible() {
 
                 return !isEditable();
             }
-        } );
-        add( field = new TextField<T>( "field", model, modelType ) {
-
-            @Override
-            public boolean isVisible() {
-
-                return isEditable();
-            }
-        } );
-    }
-
-    /**
-     * @param id                The wicket ID of the component.
-     * @param model             The model that holds the object that will be rendered in the label or field.
-     * @param modelType         The type of the model object, for field conversion purposes.
-     * @param initiallyEditable <code>true</code> if the label should be editable from the start.
-     */
-    public EditableLabel(final String id, final IModel<T> model, final Class<T> modelType, final boolean initiallyEditable) {
-
-        this( id, model, modelType );
-        editable = initiallyEditable;
+        };
     }
 
     /**
      * @param editable <code>true</code> to make the label editable by rendering its object in a field and updating the model when that
-     *                 field is submitted.
+     * field is submitted.
      */
-    public void setEditable(final boolean editable) {
+    public EditableLabel<T> setEditable(final boolean editable) {
 
         this.editable = editable;
+
+        return this;
     }
 
     /**
@@ -76,18 +120,66 @@ public class EditableLabel<T> extends GenericPanel<T> {
     }
 
     /**
+     * @return Whether value of the editable field can be emptied (<code>true</code>). (Default: <code>true</code> )
+     */
+    public boolean isNullable() {
+
+        return nullable;
+    }
+
+    /**
+     * @param nullable Whether value of the editable field can be emptied (<code>true</code>).
+     */
+    public EditableLabel<T> setNullable(final boolean nullable) {
+
+        this.nullable = nullable;
+
+        return this;
+    }
+
+    /**
+     * @return <code>true</code>: Generate markup that handles multiple lines in model values properly.
+     */
+    public boolean isMultiline() {
+
+        return multiline;
+    }
+
+    /**
+     * @param multiline <code>true</code>: Generate markup that handles multiple lines in model values properly.
+     */
+    public EditableLabel<T> setMultiline(final boolean multiline) {
+
+        this.multiline = multiline;
+
+        label.replaceWith( label = newLabel( label.getDefaultModel() ) );
+
+        return this;
+    }
+
+    /**
      * @return The component that renders the model object as a non-editable label.
      */
-    protected Label getLabel() {
+    public WebComponent getLabel() {
 
         return label;
     }
 
     /**
-     * @return The component that renders the model object as an editable text field.
+     * @return The component that renders the model object when the label is editable.  The component returned depends on whether the label is currently multi-line or not.
      */
-    public TextField<T> getField() {
+    public AbstractTextComponent<T> getField() {
 
-        return field;
+        return getField( isMultiline() );
+    }
+
+    /**
+     * @param forMultiline <code>true</code> Return the component used when the label is in multi-line mode.  <code>false</code> Return the component used when the label is in single line mode.
+     *
+     * @return The component that renders the model object when the label is editable.
+     */
+    public AbstractTextComponent<T> getField(final boolean forMultiline) {
+
+        return forMultiline? multiLineField: singleLineField;
     }
 }

@@ -40,4 +40,9 @@ public abstract class StringUtils {
 
         return concatenation.substring( 0, concatenation.length() - delimitor.length() );
     }
+
+    public static boolean isEmpty(String string) {
+
+        return string == null || string.length() == 0;
+    }
 }

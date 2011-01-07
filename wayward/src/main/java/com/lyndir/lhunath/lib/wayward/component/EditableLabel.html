@@ -5,7 +5,7 @@
     <head>
         <wicket:head>
             <style type="text/css">
-                .EditableLabel input {
+                .EditableLabel input, .EditableLabel textarea {
                     background:      transparent;
                     color:           inherit;
                     border:          none;
@@ -31,7 +31,8 @@
 
             <span class="EditableLabel">
                 <span wicket:id="label">[Edit Off]</span>
-                <input wicket:id="field" value="[Edit On]" />
+                <input wicket:id="singleLineField" value="[Edit On]" />
+                <textarea wicket:id="multiLineField"></textarea>
             </span>
 
         </wicket:panel>
