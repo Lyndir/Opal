@@ -107,78 +107,6 @@ public class Utils {
     private static final Pattern SUNOS = Pattern.compile( "SunOS.*" );
 
     /**
-     * Convert an object into a double in a semi-safe way. We parse {@link Object#toString()} and choose to return <code>null</code> rather
-     * than throw an exception if the result is not a valid {@link Double}.
-     *
-     * @param object The object that may represent a double.
-     *
-     * @return The resulting double.
-     */
-    public static Double parseDouble(final Object object) {
-
-        try {
-            if (object == null)
-                return null;
-
-            if (object instanceof Double)
-                return (Double) object;
-
-            return Double.parseDouble( object.toString() );
-        }
-        catch (NumberFormatException ignored) {
-            return null;
-        }
-    }
-
-    /**
-     * Convert an object into an integer in a semi-safe way. We parse {@link Object#toString()} and choose to return <code>null</code>
-     * rather than throw an exception if the result is not a valid {@link Integer}.
-     *
-     * @param object The object that may represent an integer.
-     *
-     * @return The resulting integer.
-     */
-    public static Integer parseInt(final Object object) {
-
-        try {
-            if (object == null)
-                return null;
-
-            if (object instanceof Integer)
-                return (Integer) object;
-
-            return Integer.valueOf( object.toString() );
-        }
-        catch (NumberFormatException ignored) {
-            return null;
-        }
-    }
-
-    /**
-     * Convert an object into a long in a semi-safe way. We parse {@link Object#toString()} and choose to return <code>null</code> rather
-     * than throw an exception if the result is not a valid {@link Long}.
-     *
-     * @param object The object that may represent an long.
-     *
-     * @return The resulting integer.
-     */
-    public static Long parseLong(final Object object) {
-
-        try {
-            if (object == null)
-                return null;
-
-            if (object instanceof Long)
-                return (Long) object;
-
-            return Long.valueOf( object.toString() );
-        }
-        catch (NumberFormatException ignored) {
-            return null;
-        }
-    }
-
-    /**
      * Convert the given object into a {@link String} using {@link Object#toString()}. If the <code>null</code> is passed, don't return a
      * string "null", but return <code>null</code> explicitly.
      *
@@ -517,7 +445,7 @@ public class Utils {
             try {
                 field.setAccessible( true );
                 Object value = field.get( owner );
-                if (ObjectUtils.equal( fieldValue, value ))
+                if (ObjectUtils.isEqual( fieldValue, value ))
                     return field.getName();
             }
 
@@ -634,7 +562,7 @@ public class Utils {
     public static <T, U extends T> boolean inArray(final T[] array, final U search) {
 
         for (final Object element : array)
-            if (ObjectUtils.equal( search, element ))
+            if (ObjectUtils.isEqual( search, element ))
                 return true;
 
         return false;

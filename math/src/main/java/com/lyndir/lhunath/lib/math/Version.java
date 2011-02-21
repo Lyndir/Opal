@@ -16,7 +16,7 @@
 package com.lyndir.lhunath.lib.math;
 
 import com.google.common.base.Preconditions;
-import com.lyndir.lhunath.lib.system.util.Utils;
+import com.lyndir.lhunath.lib.system.util.ConversionUtils;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -71,7 +71,7 @@ public class Version implements Comparable<Version>, Serializable {
         if (tags.length == 0)
             return null;
 
-        return Utils.parseInt( tags[0] );
+        return ConversionUtils.toInteger( tags[0] );
     }
 
     /**

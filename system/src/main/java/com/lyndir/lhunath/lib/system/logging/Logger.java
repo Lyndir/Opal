@@ -92,10 +92,12 @@ public class Logger implements Serializable {
      * @param descriptionArguments The arguments to inject into the event message format.
      *
      * @see #trc(Throwable, String, Object...)
+     *
+     * @return Self, for chaining.
      */
-    public void trc(final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger trc(final String descriptionFormat, final Object... descriptionArguments) {
 
-        trc( null, descriptionFormat, descriptionArguments );
+        return trc( null, descriptionFormat, descriptionArguments );
     }
 
     /**

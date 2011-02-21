@@ -305,7 +305,7 @@ public interface FragmentNavigationListener {
             if (panelClass.isInstance( contentPanel )) {
                 newFragment = activeTab.buildFragmentState( panelClass.cast( contentPanel ) ).toFragment();
 
-                if (!ObjectUtils.equal( newFragment, controller.getPageFragment() ))
+                if (!ObjectUtils.isEqual( newFragment, controller.getPageFragment() ))
                     controller.updateNavigationComponents();
             }
         }

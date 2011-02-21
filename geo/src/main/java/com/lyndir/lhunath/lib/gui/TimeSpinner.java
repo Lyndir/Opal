@@ -16,6 +16,7 @@
 package com.lyndir.lhunath.lib.gui;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
+import com.lyndir.lhunath.lib.system.util.ConversionUtils;
 import com.lyndir.lhunath.lib.system.util.Utils;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -274,7 +275,7 @@ public class TimeSpinner extends JSpinner {
 
             else
                 try {
-                    Integer time = Utils.parseInt( value.toString() );
+                    Integer time = ConversionUtils.toInteger( value.toString() );
                     if (time != null)
                         this.value = new Date( time );
                     else

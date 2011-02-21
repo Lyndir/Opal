@@ -54,14 +54,14 @@ public class AjaxDigger<D extends Serializable> extends Panel {
                             @Override
                             public boolean isVisible() {
 
-                                return !ObjectUtils.equal( level.getActiveItem(), diggerItem );
+                                return !ObjectUtils.isEqual( level.getActiveItem(), diggerItem );
                             }
 
                             @Override
                             public void onClick(final AjaxRequestTarget target) {
 
                                 // Pop all items off the path from the clicked level up.
-                                while (!levels.isEmpty() && !ObjectUtils.equal( levels.peek(), level ))
+                                while (!levels.isEmpty() && !ObjectUtils.isEqual( levels.peek(), level ))
                                     levels.pop();
 
                                 // Add the clicked item to the path.
@@ -75,7 +75,7 @@ public class AjaxDigger<D extends Serializable> extends Panel {
                         } );
                         itemListItem.add( diggerItem.getExpandedItem( "expandedItem", level )
                                 // TODO: This should probably happen lazily:
-                                                  .setVisible( ObjectUtils.equal( level.getActiveItem(), diggerItem ) ) );
+                                                  .setVisible( ObjectUtils.isEqual( level.getActiveItem(), diggerItem ) ) );
                     }
                 } );
             }
