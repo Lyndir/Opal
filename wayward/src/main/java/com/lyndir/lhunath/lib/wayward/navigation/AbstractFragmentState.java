@@ -57,7 +57,7 @@ public abstract class AbstractFragmentState implements FragmentState {
      */
     protected void assertFragments() {
 
-        Preconditions.checkArgument( ObjectUtils.equal( findFragment( 0 ), getTabFragment() ),
+        Preconditions.checkArgument( ObjectUtils.isEqual( findFragment( 0 ), getTabFragment() ),
                                      "Can't load %s state from %s: No fragments found or initial fragment does not match this tab's.",
                                      getClass().getSimpleName(), fragments );
     }
