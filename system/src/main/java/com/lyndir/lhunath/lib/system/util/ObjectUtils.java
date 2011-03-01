@@ -15,15 +15,19 @@
  */
 package com.lyndir.lhunath.lib.system.util;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 
 /**
@@ -34,6 +38,9 @@ import java.util.Map;
  * @author lhunath
  */
 public abstract class ObjectUtils {
+
+    private static final Pattern NON_PRINTABLE     = Pattern.compile( "\\p{Print}" );
+    private static final int     MAX_DECODE_LENGTH = 100;
 
     /**
      * Check whether two objects are equal according to {@link #equals(Object)}.
@@ -99,10 +106,33 @@ public abstract class ObjectUtils {
      */
     public static String describe(final Object o) {
 
+        if (o == null)
+            return "<null>";
+
+        if (o.getClass() == byte[].class) {
+            byte[] byteArray = (byte[]) o;
+            StringBuilder toString = new StringBuilder( String.format( "<b[]: %dB, ", byteArray.length ) );
+
+            // Decode some bytes.
+            CharBuffer decodedBytes = Charsets.UTF_8
+                    .decode( ByteBuffer.wrap( byteArray, 0, Math.min( byteArray.length, MAX_DECODE_LENGTH ) ) );
+            String stripped = NON_PRINTABLE.matcher( decodedBytes ).replaceAll( "." );
+            toString.append( stripped );
+
+            // Append trimmed indicator if not all bytes were decoded.
+            if (byteArray.length > MAX_DECODE_LENGTH)
+                toString.append( "[...]" );
+
+            return toString.append( '>' ).toString();
+        }
+
+        if (o.getClass().isArray())
+            return Arrays.asList( (Object[]) o ).toString();
+
         if (o instanceof Map) {
-            StringBuilder description = new StringBuilder( "[" );
+            StringBuilder description = new StringBuilder().append( '[' );
             for (Map.Entry<?, ?> deviceContextEntry : ((Map<?, ?>) o).entrySet()) {
-                if (description.length() > 0)
+                if (description.length() > 1)
                     description.append( ", " );
 
                 description.append( deviceContextEntry.getKey() ).append( '=' ).append( deviceContextEntry.getValue() );
@@ -126,7 +156,10 @@ public abstract class ObjectUtils {
     public static String toString(final Object o) {
 
         StringBuilder toString = new StringBuilder( "{" );
-        toString.append( o.getClass().getSimpleName() );
+        String name = o.getClass().getSimpleName();
+        if (name == null)
+            name = o.getClass().getName().replace( ".*\\.", "" );
+        toString.append( name );
 
         StringBuilder fieldsString = forEachFieldWithMeta( ObjectMeta.For.toString, o.getClass(),
                 new Function<TypeUtils.LastResult<Field, StringBuilder>, StringBuilder>() {

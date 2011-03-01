@@ -75,7 +75,8 @@ public abstract class TypeUtils {
             try {
                 //logger.debug( "Trying for method {} in {}", method.getName(), superclass );
                 superclassMethod = superclass.getMethod( method.getName(), method.getParameterTypes() );
-            } catch (NoSuchMethodException ignored) {
+            }
+            catch (NoSuchMethodException ignored) {
             }
         if (superclass == null) {
             //logger.debug( "Gave up for annotation {} (reached end of hierarchy)", annotationType );
@@ -156,11 +157,31 @@ public abstract class TypeUtils {
      * @param <T>   The enum type for which to obtain a value.
      *
      * @return The enum value.
+     *
+     * @throws IllegalArgumentException if the given enum type has no member named by the given value.
+     */
+    public static <T extends Enum<T>> T valueOfEnum(Class<T> type, String value) {
+
+        return Enum.valueOf( type, value );
+    }
+
+    /**
+     * Type-forced version of {@link #valueOfEnum(Class, String)}.  Does not require the class to be an Enum class.  Really only useful if
+     * you've got a <code>Class<?></code> and you have no clue what enum is in it and you've already done a {@link Class#isEnum()} to verify
+     * that it really is an enum.
+     *
+     * @param type  The enum type for which to obtain a value.
+     * @param value The name of the enum value to obtain.
+     * @param <T>   The enum type for which to obtain a value.
+     *
+     * @return The enum value.
+     *
+     * @see #valueOfEnum(Class, String)
      */
     @SuppressWarnings( { "unchecked" })
-    public static <T> T unsafeEnumValueOf(Class<T> type, String value) {
+    public static <T> T unsafeValueOfEnum(Class<T> type, String value) {
 
-        return type.cast( Enum.valueOf( (Class<Enum>) type, value ) );
+        return type.cast( valueOfEnum( (Class<Enum>) type, value ) );
     }
 
     public static class LastResult<C, R> {
