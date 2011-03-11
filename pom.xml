@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.lyndir.lhunath</groupId>
         <artifactId>lyndir</artifactId>
-        <version>SNAPSHOT</version>
+        <version>1.6</version>
     </parent>
 
     <groupId>com.lyndir.lhunath.jlibs</groupId>

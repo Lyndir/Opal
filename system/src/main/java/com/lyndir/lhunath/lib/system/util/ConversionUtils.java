@@ -72,11 +72,35 @@ public class ConversionUtils {
         }
     }
 
+    /**
+     * Convert an object into a boolean in a safe way. If the given object is not <code>null</code> or a {@link Boolean}, we parse its
+     * {@link Object#toString()} using {@link Boolean#parseBoolean(String)}.
+     *
+     * @param object The object that represents a boolean.
+     *
+     * @return The resulting boolean.
+     */
     public static Boolean toBoolean(final Object object) {
 
         if (object == null || object instanceof Boolean)
             return (Boolean) object;
 
         return Boolean.parseBoolean( object.toString() );
+    }
+
+    /**
+     * Convert an object into a string in a safe way. If the given object is not <code>null</code> or a {@link String}, we use its {@link
+     * Object#toString()}.
+     *
+     * @param object The object to convert into a string.
+     *
+     * @return The resulting string.
+     */
+    public static String toString(final Object object) {
+
+        if (object == null || object instanceof String)
+            return (String) object;
+
+        return object.toString();
     }
 }
