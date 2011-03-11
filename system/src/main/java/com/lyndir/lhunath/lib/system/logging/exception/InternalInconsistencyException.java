@@ -45,4 +45,14 @@ public class InternalInconsistencyException extends RuntimeException {
 
         super( message, cause );
     }
+
+    /**
+     * Create a new {@link InternalInconsistencyException} instance.
+     *
+     * @param cause The optional exception cause of this.
+     */
+    public InternalInconsistencyException(final Throwable cause) {
+
+        super( cause );
+    }
 }

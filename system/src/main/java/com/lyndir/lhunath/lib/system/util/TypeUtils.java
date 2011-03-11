@@ -1,5 +1,7 @@
 package com.lyndir.lhunath.lib.system.util;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.google.common.base.Function;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -182,6 +184,13 @@ public abstract class TypeUtils {
     public static <T> T unsafeValueOfEnum(Class<T> type, String value) {
 
         return type.cast( valueOfEnum( (Class<Enum>) type, value ) );
+    }
+
+    @SuppressWarnings( { "unchecked" })
+    public static <T extends Enum<T>> Class<T> checkEnum(final Class<?> type) {
+
+        checkArgument( type.isEnum(), "%s is not an enum.", type );
+        return (Class<T>) type;
     }
 
     public static class LastResult<C, R> {
