@@ -15,18 +15,14 @@
  */
 package com.lyndir.lhunath.lib.system.util;
 
-import com.google.common.base.Charsets;
-import com.google.common.base.Function;
-import com.google.common.base.Objects;
-import com.google.common.base.Supplier;
+import com.google.common.base.*;
 import com.google.common.collect.ImmutableList;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.security.cert.X509Certificate;
+import java.util.*;
 import java.util.regex.Pattern;
 
 
@@ -131,14 +127,33 @@ public abstract class ObjectUtils {
 
         if (o instanceof Map) {
             StringBuilder description = new StringBuilder().append( '[' );
-            for (Map.Entry<?, ?> deviceContextEntry : ((Map<?, ?>) o).entrySet()) {
+            for (Map.Entry<?, ?> entry : ((Map<?, ?>) o).entrySet()) {
                 if (description.length() > 1)
                     description.append( ", " );
 
-                description.append( deviceContextEntry.getKey() ).append( '=' ).append( deviceContextEntry.getValue() );
+                description.append( describe( entry.getKey() ) ).append( '=' ).append( describe( entry.getValue() ) );
             }
 
             return description.append( ']' ).toString();
+        }
+
+        if (o instanceof Collection) {
+            Collection<?> collection = (Collection<?>) o;
+            StringBuilder description = new StringBuilder().append( '[' );
+            for (Object entry : collection) {
+                if (description.length() > 1)
+                    description.append( ", " );
+
+                description.append( describe( entry ) );
+            }
+
+            return description.append( ']' ).toString();
+        }
+
+        if (o instanceof X509Certificate) {
+            X509Certificate x509Certificate = (X509Certificate) o;
+            return String.format( "{Cert: DN=%s, Issuer=%s}", x509Certificate.getSubjectX500Principal().getName(),
+                    x509Certificate.getIssuerX500Principal().getName() );
         }
 
         return String.valueOf( o );
