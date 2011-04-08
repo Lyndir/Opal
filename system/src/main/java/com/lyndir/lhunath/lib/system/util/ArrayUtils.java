@@ -1,9 +1,7 @@
 package com.lyndir.lhunath.lib.system.util;
 
 import com.google.common.collect.ObjectArrays;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -40,6 +38,11 @@ public abstract class ArrayUtils {
         elementList.addAll( Arrays.asList( array ) );
         elementList.addAll( Arrays.asList( elements ) );
         return elementList.toArray( array );
+    }
+
+    public static <T> T[] of(final Class<T> type, final Collection<T> elements) {
+
+        return unsafeCopyOf( type, elements.toArray() );
     }
 
     public static <T> T[] of(final T... elements) {

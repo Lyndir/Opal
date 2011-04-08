@@ -274,11 +274,11 @@ public abstract class ObjectUtils {
     private static <R, T> R forEachFieldWithMeta(final ObjectMeta.For meta, final Class<T> type,
                                                  final Function<TypeUtils.LastResult<Field, R>, R> function) {
 
-        return TypeUtils.forEachSubtypeOf( type, new Function<TypeUtils.LastResult<Class<? super T>, R>, R>() {
+        return TypeUtils.forEachSuperTypeOf( type, new Function<TypeUtils.LastResult<Class<?>, R>, R>() {
             @Override
-            public R apply(final TypeUtils.LastResult<Class<? super T>, R> lastTypeResult) {
+            public R apply(final TypeUtils.LastResult<Class<?>, R> lastTypeResult) {
 
-                Class<? super T> subType = lastTypeResult.getCurrent();
+                Class<?> subType = lastTypeResult.getCurrent();
                 final R typeResult = lastTypeResult.getLastResult();
                 final boolean usedByType = usesMeta( meta, subType );
 
@@ -308,7 +308,7 @@ public abstract class ObjectUtils {
                     }
                 }, false );
             }
-        } );
+        }, null );
     }
 
     private static boolean usesMeta(ObjectMeta.For meta, Class<?> type) {

@@ -1,18 +1,20 @@
 package com.lyndir.lhunath.lib.system.util;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.*;
 
 import com.google.common.base.Function;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
  * <h2>{@link TypeUtils}<br> <sub>[in short] (TODO).</sub></h2>
- *
+ * <p/>
  * <p> <i>10 20, 2010</i> </p>
  *
  * @author lhunath
@@ -89,20 +91,30 @@ public abstract class TypeUtils {
     }
 
     /**
-     * Perform an operation for each type in a given type's hierarchy, starting from the type itself.
+     * Perform an operation for each type in a given type's hierarchy and/or their interfaces, starting from the type itself.
      *
-     * @param type     The type whose hierarchy to descend.
-     * @param function The operation to perform on each type in the hierarchy.
-     * @param <T>      The type whose hierarchy to descend.
-     * @param <R>      The type of the result that the operation should generate.
+     * @param type              The type whose hierarchy to descend.
+     * @param typeFunction      The operation to perform on each type in the hierarchy.  Evaluated before the interfaceFunction on the
+     *                          type.
+     * @param interfaceFunction The operation to perform on each interface of each type in the hierarchy. Evaluated after the typeFunction
+     *                          on the type.
+     * @param <T>               The type whose hierarchy to descend.
+     * @param <R>               The type of the result that the operation should generate.
      *
      * @return The final result produced by the last execution of the operation.
      */
-    public static <T, R> R forEachSubtypeOf(Class<T> type, Function<LastResult<Class<? super T>, R>, R> function) {
+    public static <T, R> R forEachSuperTypeOf(@NotNull Class<T> type, @Nullable Function<LastResult<Class<?>, R>, R> typeFunction,
+                                              @Nullable Function<LastResult<Class<?>, R>, R> interfaceFunction) {
 
         R lastResult = null;
-        for (Class<? super T> currentType = type; currentType.getSuperclass() != null; currentType = currentType.getSuperclass())
-            lastResult = function.apply( new LastResult<Class<? super T>, R>( currentType, lastResult ) );
+        for (Class<? super T> currentType = type; currentType != null; currentType = currentType.getSuperclass()) {
+            if (typeFunction != null)
+                lastResult = typeFunction.apply( new LastResult<Class<?>, R>( currentType, lastResult ) );
+
+            if (interfaceFunction != null)
+                for (Class<?> interfaceType : currentType.getInterfaces())
+                    lastResult = interfaceFunction.apply( new LastResult<Class<?>, R>( interfaceType, lastResult ) );
+        }
 
         return lastResult;
     }
@@ -120,9 +132,9 @@ public abstract class TypeUtils {
      */
     public static <T, R> R forEachFieldOf(Class<T> type, final Function<LastResult<Field, R>, R> function, boolean descend) {
 
-        Function<LastResult<Class<? super T>, R>, R> eachFieldFunction = new Function<LastResult<Class<? super T>, R>, R>() {
+        Function<LastResult<Class<?>, R>, R> eachFieldFunction = new Function<LastResult<Class<?>, R>, R>() {
             @Override
-            public R apply(final LastResult<Class<? super T>, R> lastResult) {
+            public R apply(final LastResult<Class<?>, R> lastResult) {
 
                 R result = lastResult.getLastResult();
                 for (Field field : lastResult.getCurrent().getDeclaredFields())
@@ -133,9 +145,9 @@ public abstract class TypeUtils {
         };
 
         if (descend)
-            return forEachSubtypeOf( type, eachFieldFunction );
+            return forEachSuperTypeOf( type, eachFieldFunction, null );
 
-        return eachFieldFunction.apply( new LastResult<Class<? super T>, R>( type, null ) );
+        return eachFieldFunction.apply( new LastResult<Class<?>, R>( type, null ) );
     }
 
     /**
@@ -169,7 +181,8 @@ public abstract class TypeUtils {
 
     /**
      * Type-forced version of {@link #valueOfEnum(Class, String)}.  Does not require the class to be an Enum class.  Really only useful if
-     * you've got a <code>Class<?></code> and you have no clue what enum is in it and you've already done a {@link Class#isEnum()} to verify
+     * you've got a <code>Class<?></code> and you have no clue what enum is in it and you've already done a {@link Class#isEnum()} to
+     * verify
      * that it really is an enum.
      *
      * @param type  The enum type for which to obtain a value.
