@@ -15,6 +15,8 @@
  */
 package com.lyndir.lhunath.lib.system.util;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.*;
 import com.google.common.collect.ImmutableList;
 import java.lang.reflect.Field;
@@ -24,6 +26,7 @@ import java.nio.CharBuffer;
 import java.security.cert.X509Certificate;
 import java.util.*;
 import java.util.regex.Pattern;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -221,7 +224,7 @@ public abstract class ObjectUtils {
      */
     public static int hashCode(final Object o) {
 
-        return forEachFieldWithMeta( ObjectMeta.For.hashCode, o.getClass(), new Function<TypeUtils.LastResult<Field, Integer>, Integer>() {
+        return checkNotNull( forEachFieldWithMeta( ObjectMeta.For.hashCode, o.getClass(), new Function<TypeUtils.LastResult<Field, Integer>, Integer>() {
             @Override
             public Integer apply(final TypeUtils.LastResult<Field, Integer> lastResult) {
 
@@ -232,7 +235,7 @@ public abstract class ObjectUtils {
                     return lastResult.getLastResult();
                 }
             }
-        } );
+        } ), "No fields to generate a hashCode from in object: %s", o );
     }
 
     /**
@@ -254,7 +257,7 @@ public abstract class ObjectUtils {
         if (!superObject.getClass().isAssignableFrom( subObject.getClass() ))
             return false;
 
-        return forEachFieldWithMeta( ObjectMeta.For.equals, superObject.getClass(),
+        return getOrDefault( forEachFieldWithMeta( ObjectMeta.For.equals, superObject.getClass(),
                 new Function<TypeUtils.LastResult<Field, Boolean>, Boolean>() {
                     @Override
                     public Boolean apply(final TypeUtils.LastResult<Field, Boolean> lastResult) {
@@ -268,9 +271,10 @@ public abstract class ObjectUtils {
 
                         return true;
                     }
-                } );
+                } ), false /* There are no (accessible) fields to compare. */ );
     }
 
+    @Nullable
     private static <R, T> R forEachFieldWithMeta(final ObjectMeta.For meta, final Class<T> type,
                                                  final Function<TypeUtils.LastResult<Field, R>, R> function) {
 
