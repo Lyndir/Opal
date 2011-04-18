@@ -18,9 +18,7 @@ package com.lyndir.lhunath.lib.network;
 import com.google.common.base.Charsets;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
+import java.net.*;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
@@ -32,9 +30,9 @@ import javax.net.ssl.SSLEngineResult.HandshakeStatus;
 
 /**
  * <h2>{@link Network}<br> <sub>A non-blocking single-threaded TCP network layer with SSL/TLS support.</sub></h2>
- *
+ * <p/>
  * <p> TODO </p>
- *
+ * <p/>
  * <p> <i>Jun 23, 2009</i> </p>
  *
  * @author lhunath
@@ -121,7 +119,7 @@ public class Network implements Runnable {
 
     /**
      * Bring up the networking framework.
-     *
+     * <p/>
      * This initializes the networking {@link Selector} making it possible to start network operations. It does not start the networking
      * thread. See {@link #startThread()} to start the network and execute a networking thread for it. This method is mostly helpful for
      * manually bringing the network in an existing thread down and up again.
@@ -149,7 +147,7 @@ public class Network implements Runnable {
 
     /**
      * Bring the networking framework down.
-     *
+     * <p/>
      * This closes the networking {@link Selector} causing all connections to be terminated.
      */
     public synchronized void bringDown() {
@@ -466,7 +464,7 @@ public class Network implements Runnable {
 
     /**
      * Convert a buffer of network data into application data.
-     *
+     * <p/>
      * <p> <b>Use the return value for processing, not the original data buffer!</b><br> The buffer might have been reallocated in which
      * case the original buffer is obsolete. </p>
      *
@@ -600,7 +598,7 @@ public class Network implements Runnable {
 
     /**
      * Convert a buffer of application data into network data.
-     *
+     * <p/>
      * <p> <b>Use the return value for writing, not the original write buffer!</b><br> The buffer might have been reallocated in which case
      * the original buffer is obsolete. </p>
      *
@@ -731,10 +729,10 @@ public class Network implements Runnable {
 
     /**
      * Queue a message to be sent to the given destination. The message will be added to the destination's write queue.
-     *
+     * <p/>
      * <p> After this process, the application's data buffer's position will be set right after the bytes that have been queued on the
      * network. This is guaranteed to be the buffer's limit (eg. all data will be queued). </p>
-     *
+     * <p/>
      * The connection's queue buffer's position will be right after the newly added bytes.
      *
      * @param dataBuffer    A byte buffer that holds the bytes to dispatch. Make sure that the buffer is set up read for reading (put the
@@ -782,10 +780,10 @@ public class Network implements Runnable {
 
     /**
      * Request the given channel be closed for communication.
-     *
+     * <p/>
      * <p> <b>NOTE: You should always use this method and never close the socket or channel directly!</b><br> This method makes sure that
      * closure is handled gracefully according to the wishes of the transport and optional encryption protocols. </p>
-     *
+     * <p/>
      * <p> Non-{@link SocketChannel}s (such as the {@link ServerSocketChannel}) may be closed directly. </p>
      *
      * @param socketChannel The channel that is no longer interested in sending data.
@@ -901,7 +899,8 @@ public class Network implements Runnable {
     }
 
     /**
-     * Determine the interested operations for SSL enabled channels. The SSL protocol can request read or write operations depending on what
+     * Determine the interested operations for SSL enabled channels. The SSL protocol can request read or write operations depending on
+     * what
      * it needs to complete/initiate a handshake.
      *
      * @throws ClosedChannelException If applying ops on a closed channel (that is not yet registered with the network selector).
@@ -1256,6 +1255,9 @@ public class Network implements Runnable {
             }
             catch (InterruptedException e) {
                 logger.wrn( e, "Operation was interrupted." );
+            }
+            catch (Throwable t) {
+                logger.err( t, "Caught unexpected throwable to save the network thread." );
             }
     }
 
