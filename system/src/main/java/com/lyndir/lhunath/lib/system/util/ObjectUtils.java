@@ -318,35 +318,33 @@ public abstract class ObjectUtils {
                     public R apply(final TypeUtils.LastResult<Class<?>, R> lastTypeResult) {
 
                         Class<?> subType = lastTypeResult.getCurrent();
-                        final R typeResult = lastTypeResult.getLastResult();
+                        R typeResult = lastTypeResult.getLastResult();
                         final boolean usedByType = usesMeta( meta, subType );
 
-                        return TypeUtils.forEachFieldOf(
-                                subType, new Function<TypeUtils.LastResult<Field, R>, R>() {
-                                    @Override
-                                    public R apply(final TypeUtils.LastResult<Field, R> lastFieldResult) {
+                        return getOrDefault(
+                                TypeUtils.forEachFieldOf(
+                                        subType, new Function<TypeUtils.LastResult<Field, R>, R>() {
+                                            @Override
+                                            public R apply(final TypeUtils.LastResult<Field, R> lastFieldResult) {
 
-                                        Field field = lastFieldResult.getCurrent();
-                                        R result = lastFieldResult.getLastResult();
-                                        if (result == null)
-                                            result = typeResult;
+                                                Field field = lastFieldResult.getCurrent();
+                                                R result = lastFieldResult.getLastResult();
 
-                                        if (Modifier.isStatic( field.getModifiers() ))
-                                            return result;
-                                        if (field.isAnnotationPresent( ObjectMeta.class )) {
-                                            boolean usedByField = usesMeta( meta, field );
+                                                if (Modifier.isStatic( field.getModifiers() ))
+                                                    return result;
+                                                if (field.isAnnotationPresent( ObjectMeta.class )) {
+                                                    boolean usedByField = usesMeta( meta, field );
 
-                                            if (!usedByField)
-                                                return result;
-                                        } else
-                                            // Field has no @ObjectMeta, default to type's decision.
-                                            if (!usedByType)
-                                                return result;
+                                                    if (!usedByField)
+                                                        return result;
+                                                } else
+                                                    // Field has no @ObjectMeta, default to type's decision.
+                                                    if (!usedByType)
+                                                        return result;
 
-                                        field.setAccessible( true );
-                                        return function.apply( new TypeUtils.LastResult<Field, R>( field, result ) );
-                                    }
-                                }, false );
+                                                return function.apply( new TypeUtils.LastResult<Field, R>( field, result ) );
+                                            }
+                                        }, false ), typeResult );
                     }
                 }, null );
     }
