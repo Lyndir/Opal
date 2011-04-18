@@ -16,9 +16,7 @@
 package com.lyndir.lhunath.lib.system;
 
 import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.OutputStream;
+import java.io.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

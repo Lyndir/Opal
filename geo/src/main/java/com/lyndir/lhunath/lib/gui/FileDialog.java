@@ -48,7 +48,8 @@ public abstract class FileDialog extends JFileChooser {
     }
 
     /**
-     * Bring the dialog up. You can make all initialization of the dialog inbetween the call to this method and the call to the constructor.
+     * Bring the dialog up. You can make all initialization of the dialog inbetween the call to this method and the call to the
+     * constructor.
      * This method will block until the dialog has disappeared.
      */
     public void activate() {

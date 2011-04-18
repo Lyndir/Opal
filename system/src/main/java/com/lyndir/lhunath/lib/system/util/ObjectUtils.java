@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.*;
 import com.google.common.collect.ImmutableList;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
@@ -37,6 +38,8 @@ import org.jetbrains.annotations.Nullable;
  * @author lhunath
  */
 public abstract class ObjectUtils {
+
+    static final Logger logger = Logger.get( ObjectUtils.class );
 
     private static final Pattern NON_PRINTABLE     = Pattern.compile( "\\p{Print}" );
     private static final int     MAX_DECODE_LENGTH = 100;
@@ -59,6 +62,7 @@ public abstract class ObjectUtils {
      */
     public static <B, A extends B> boolean isEqual(final A first, final B second) {
 
+        //noinspection ObjectEquality
         return first == second || first != null && first.equals( second );
     }
 
@@ -69,7 +73,7 @@ public abstract class ObjectUtils {
      *
      * @return One of two values.
      */
-    public static <T> T getOrDefault(T value, T defaultValue) {
+    public static <T> T getOrDefault(final T value, final T defaultValue) {
 
         if (value != null)
             return value;
@@ -81,13 +85,14 @@ public abstract class ObjectUtils {
      * Version of {@link #getOrDefault(Object, Object)} that loads the default value lazily.
      *
      * @param value                The value to return, if it isn't <code>null</code> .
-     * @param defaultValueSupplier Provides the value to return if <code>value</code>  is <code>null</code>.  The supplier is only consulted
+     * @param defaultValueSupplier Provides the value to return if <code>value</code>  is <code>null</code>.  The supplier is only
+     *                             consulted
      *                             if necessary.
      * @param <T>                  The type of object to return.
      *
      * @return One of two values.
      */
-    public static <T> T getOrDefault(T value, Supplier<T> defaultValueSupplier) {
+    public static <T> T getOrDefault(final T value, final Supplier<T> defaultValueSupplier) {
 
         if (value != null)
             return value;
@@ -108,7 +113,7 @@ public abstract class ObjectUtils {
         if (o == null)
             return "<null>";
 
-        if (o.getClass() == byte[].class) {
+        if (o.getClass().equals( byte[].class )) {
             byte[] byteArray = (byte[]) o;
             StringBuilder toString = new StringBuilder( String.format( "<b[]: %dB, ", byteArray.length ) );
 
@@ -130,7 +135,7 @@ public abstract class ObjectUtils {
 
         if (o instanceof Map) {
             StringBuilder description = new StringBuilder().append( '[' );
-            for (Map.Entry<?, ?> entry : ((Map<?, ?>) o).entrySet()) {
+            for (final Map.Entry<?, ?> entry : ((Map<?, ?>) o).entrySet()) {
                 if (description.length() > 1)
                     description.append( ", " );
 
@@ -143,7 +148,7 @@ public abstract class ObjectUtils {
         if (o instanceof Collection) {
             Collection<?> collection = (Collection<?>) o;
             StringBuilder description = new StringBuilder().append( '[' );
-            for (Object entry : collection) {
+            for (final Object entry : collection) {
                 if (description.length() > 1)
                     description.append( ", " );
 
@@ -155,7 +160,8 @@ public abstract class ObjectUtils {
 
         if (o instanceof X509Certificate) {
             X509Certificate x509Certificate = (X509Certificate) o;
-            return String.format( "{Cert: DN=%s, Issuer=%s}", x509Certificate.getSubjectX500Principal().getName(),
+            return String.format(
+                    "{Cert: DN=%s, Issuer=%s}", x509Certificate.getSubjectX500Principal().getName(),
                     x509Certificate.getIssuerX500Principal().getName() );
         }
 
@@ -179,30 +185,37 @@ public abstract class ObjectUtils {
             name = o.getClass().getName().replace( ".*\\.", "" );
         toString.append( name );
 
-        StringBuilder fieldsString = forEachFieldWithMeta( ObjectMeta.For.toString, o.getClass(),
-                new Function<TypeUtils.LastResult<Field, StringBuilder>, StringBuilder>() {
+        StringBuilder fieldsString = forEachFieldWithMeta(
+                ObjectMeta.For.toString, o.getClass(), new Function<TypeUtils.LastResult<Field, StringBuilder>, StringBuilder>() {
                     @Override
                     public StringBuilder apply(final TypeUtils.LastResult<Field, StringBuilder> lastResult) {
 
                         Field field = lastResult.getCurrent();
                         StringBuilder fieldsString = lastResult.getLastResult();
 
+                        String name = null;
+                        ObjectMeta fieldMeta = field.getAnnotation( ObjectMeta.class );
+                        if (fieldMeta != null)
+                            name = fieldMeta.name();
+                        if (name == null || name.isEmpty())
+                            name = field.getName();
+
+                        if (fieldsString == null)
+                            fieldsString = new StringBuilder( ": " );
+                        else
+                            fieldsString.append( ", " );
+
                         try {
-                            ObjectMeta fieldMeta = field.getAnnotation( ObjectMeta.class );
-                            String name = null;
-                            if (fieldMeta != null)
-                                name = fieldMeta.name();
-                            if (name == null || name.isEmpty())
-                                name = field.getName();
+                            field.setAccessible( true );
+                        }
+                        catch (SecurityException ignored) {
+                        }
 
-                            if (fieldsString == null)
-                                fieldsString = new StringBuilder( ": " );
-                            else
-                                fieldsString.append( ", " );
-
+                        try {
                             fieldsString.append( name ).append( '=' ).append( describe( field.get( o ) ) );
                         }
-                        catch (IllegalAccessException ignored) {
+                        catch (IllegalAccessException e) {
+                            logger.dbg( e, "Not accessible: %s", field );
                         }
 
                         return fieldsString;
@@ -224,18 +237,29 @@ public abstract class ObjectUtils {
      */
     public static int hashCode(final Object o) {
 
-        return checkNotNull( forEachFieldWithMeta( ObjectMeta.For.hashCode, o.getClass(), new Function<TypeUtils.LastResult<Field, Integer>, Integer>() {
-            @Override
-            public Integer apply(final TypeUtils.LastResult<Field, Integer> lastResult) {
+        return checkNotNull(
+                forEachFieldWithMeta(
+                        ObjectMeta.For.hashCode, o.getClass(), new Function<TypeUtils.LastResult<Field, Integer>, Integer>() {
+                            @Override
+                            public Integer apply(final TypeUtils.LastResult<Field, Integer> lastResult) {
 
-                try {
-                    return Arrays.hashCode( new int[] { lastResult.getLastResult(), lastResult.getCurrent().get( o ).hashCode() } );
-                }
-                catch (IllegalAccessException ignored) {
-                    return lastResult.getLastResult();
-                }
-            }
-        } ), "No fields to generate a hashCode from in object: %s", o );
+                                Field field = lastResult.getCurrent();
+                                try {
+                                    field.setAccessible( true );
+                                }
+                                catch (SecurityException ignored) {
+                                }
+
+                                try {
+                                    return Arrays.hashCode( new int[]{ lastResult.getLastResult(), field.get( o ).hashCode() } );
+                                }
+                                catch (IllegalAccessException e) {
+                                    logger.dbg( e, "Not accessible: %s", field );
+
+                                    return lastResult.getLastResult();
+                                }
+                            }
+                        } ), "No fields to generate a hashCode from in object: %s", o );
     }
 
     /**
@@ -250,6 +274,7 @@ public abstract class ObjectUtils {
      */
     public static boolean equals(final Object superObject, final Object subObject) {
 
+        //noinspection ObjectEquality
         if (superObject == subObject)
             return true;
         if (superObject == null || subObject == null)
@@ -257,75 +282,86 @@ public abstract class ObjectUtils {
         if (!superObject.getClass().isAssignableFrom( subObject.getClass() ))
             return false;
 
-        return getOrDefault( forEachFieldWithMeta( ObjectMeta.For.equals, superObject.getClass(),
-                new Function<TypeUtils.LastResult<Field, Boolean>, Boolean>() {
-                    @Override
-                    public Boolean apply(final TypeUtils.LastResult<Field, Boolean> lastResult) {
+        return getOrDefault(
+                forEachFieldWithMeta(
+                        ObjectMeta.For.equals, superObject.getClass(), new Function<TypeUtils.LastResult<Field, Boolean>, Boolean>() {
+                            @Override
+                            public Boolean apply(final TypeUtils.LastResult<Field, Boolean> lastResult) {
 
-                        try {
-                            if (!Objects.equal( lastResult.getCurrent().get( superObject ), lastResult.getCurrent().get( subObject ) ))
-                                return false;
-                        }
-                        catch (IllegalAccessException ignored) {
-                        }
+                                Field field = lastResult.getCurrent();
+                                try {
+                                    field.setAccessible( true );
+                                }
+                                catch (SecurityException ignored) {
+                                }
 
-                        return true;
-                    }
-                } ), false /* There are no (accessible) fields to compare. */ );
+                                try {
+                                    if (!Objects.equal( field.get( superObject ), field.get( subObject ) ))
+                                        return false;
+                                }
+                                catch (IllegalAccessException e) {
+                                    logger.dbg( e, "Not accessible: %s", field );
+                                }
+
+                                return true;
+                            }
+                        } ), false /* There are no (accessible) fields to compare. */ );
     }
 
     @Nullable
     private static <R, T> R forEachFieldWithMeta(final ObjectMeta.For meta, final Class<T> type,
                                                  final Function<TypeUtils.LastResult<Field, R>, R> function) {
 
-        return TypeUtils.forEachSuperTypeOf( type, new Function<TypeUtils.LastResult<Class<?>, R>, R>() {
-            @Override
-            public R apply(final TypeUtils.LastResult<Class<?>, R> lastTypeResult) {
-
-                Class<?> subType = lastTypeResult.getCurrent();
-                final R typeResult = lastTypeResult.getLastResult();
-                final boolean usedByType = usesMeta( meta, subType );
-
-                return TypeUtils.forEachFieldOf( subType, new Function<TypeUtils.LastResult<Field, R>, R>() {
+        return TypeUtils.forEachSuperTypeOf(
+                type, new Function<TypeUtils.LastResult<Class<?>, R>, R>() {
                     @Override
-                    public R apply(final TypeUtils.LastResult<Field, R> lastFieldResult) {
+                    public R apply(final TypeUtils.LastResult<Class<?>, R> lastTypeResult) {
 
-                        Field field = lastFieldResult.getCurrent();
-                        R result = lastFieldResult.getLastResult();
-                        if (result == null)
-                            result = typeResult;
+                        Class<?> subType = lastTypeResult.getCurrent();
+                        final R typeResult = lastTypeResult.getLastResult();
+                        final boolean usedByType = usesMeta( meta, subType );
 
-                        if (Modifier.isStatic( field.getModifiers() ))
-                            return result;
-                        if (field.isAnnotationPresent( ObjectMeta.class )) {
-                            boolean usedByField = usesMeta( meta, field );
+                        return TypeUtils.forEachFieldOf(
+                                subType, new Function<TypeUtils.LastResult<Field, R>, R>() {
+                                    @Override
+                                    public R apply(final TypeUtils.LastResult<Field, R> lastFieldResult) {
 
-                            if (!usedByField)
-                                return result;
-                        } else
-                            // Field has no @ObjectMeta, default to type's decision.
-                            if (!usedByType)
-                                return result;
+                                        Field field = lastFieldResult.getCurrent();
+                                        R result = lastFieldResult.getLastResult();
+                                        if (result == null)
+                                            result = typeResult;
 
-                        field.setAccessible( true );
-                        return function.apply( new TypeUtils.LastResult<Field, R>( field, result ) );
+                                        if (Modifier.isStatic( field.getModifiers() ))
+                                            return result;
+                                        if (field.isAnnotationPresent( ObjectMeta.class )) {
+                                            boolean usedByField = usesMeta( meta, field );
+
+                                            if (!usedByField)
+                                                return result;
+                                        } else
+                                            // Field has no @ObjectMeta, default to type's decision.
+                                            if (!usedByType)
+                                                return result;
+
+                                        field.setAccessible( true );
+                                        return function.apply( new TypeUtils.LastResult<Field, R>( field, result ) );
+                                    }
+                                }, false );
                     }
-                }, false );
-            }
-        }, null );
+                }, null );
     }
 
-    private static boolean usesMeta(ObjectMeta.For meta, Class<?> type) {
+    private static boolean usesMeta(final ObjectMeta.For meta, final Class<?> type) {
 
         return usesMeta( meta, type.getAnnotation( ObjectMeta.class ) );
     }
 
-    private static boolean usesMeta(ObjectMeta.For meta, Field field) {
+    private static boolean usesMeta(final ObjectMeta.For meta, final Field field) {
 
         return usesMeta( meta, field.getAnnotation( ObjectMeta.class ) );
     }
 
-    private static boolean usesMeta(ObjectMeta.For meta, ObjectMeta metaAnnotation) {
+    private static boolean usesMeta(final ObjectMeta.For meta, final ObjectMeta metaAnnotation) {
 
         if (metaAnnotation == null)
             return false;

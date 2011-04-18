@@ -17,9 +17,7 @@ package com.lyndir.lhunath.lib.gui.template.shade;
 
 import com.lyndir.lhunath.lib.system.Locale;
 import com.lyndir.lhunath.lib.system.logging.Logger;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 
 /**
@@ -55,8 +53,9 @@ public class UpdateUi extends Thread {
      */
     public void request(Request uiRequest) {
 
-        UpdateRequest newRequest = new UpdateRequest( uiRequest, new RuntimeException(
-                Locale.explain( "err.originates" ) + Thread.currentThread().getName() ) ); //$NON-NLS-1$
+        UpdateRequest newRequest = new UpdateRequest(
+                uiRequest, new RuntimeException(
+                        Locale.explain( "err.originates" ) + Thread.currentThread().getName() ) ); //$NON-NLS-1$
 
         /* Don't process a request if the next pending or currently executing request is the same. */
         if (newRequest.equals( currentRequest ) || requests.contains( newRequest ))

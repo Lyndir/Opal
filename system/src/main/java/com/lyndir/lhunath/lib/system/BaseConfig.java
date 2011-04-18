@@ -59,7 +59,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      */
     public static final BaseConfig<Boolean> writeAsXML = create( true );
 
-    protected static final Collection<Runnable> shutdownHooks = new HashSet<Runnable>();
+    protected static final Collection<Runnable>       shutdownHooks = new HashSet<Runnable>();
     protected static final Map<BaseConfig<?>, String> names         = new HashMap<BaseConfig<?>, String>();
 
     static {
@@ -67,60 +67,61 @@ public class BaseConfig<T extends Serializable> implements Serializable {
         initClass( BaseConfig.class );
 
         /* Make a shutdown hook to save the config on exit. */
-        Runtime.getRuntime().addShutdownHook( new Thread( "Config ShutdownHook" ) {
+        Runtime.getRuntime().addShutdownHook(
+                new Thread( "Config ShutdownHook" ) {
 
-            @Override
-            public void run() {
+                    @Override
+                    public void run() {
 
-                logger.dbg( "stat.saveConfig", configFile.get() );
-                try {
-                    for (final Runnable hook : shutdownHooks)
-                        hook.run();
-
-                    if (configFile.isEmpty()) {
-                        logger.wrn( "Config file unset, can't save!" );
-                        return;
-                    }
-
-                    if (configFile.get().exists())
-                        configFile.get().delete();
-                    configFile.get().createNewFile();
-
-                    if (writeAsXML.get()) {
-                        OutputStreamWriter configWriter = new FileWriter( configFile.get() );
-
+                        logger.dbg( "stat.saveConfig", configFile.get() );
                         try {
-                            XStream xstream = new XStream();
-                            xstream.toXML( names, configWriter );
-                            // xstream.toXML( types, configWriter );
+                            for (final Runnable hook : shutdownHooks)
+                                hook.run();
+
+                            if (configFile.isEmpty()) {
+                                logger.wrn( "Config file unset, can't save!" );
+                                return;
+                            }
+
+                            if (configFile.get().exists())
+                                configFile.get().delete();
+                            configFile.get().createNewFile();
+
+                            if (writeAsXML.get()) {
+                                OutputStreamWriter configWriter = new FileWriter( configFile.get() );
+
+                                try {
+                                    XStream xstream = new XStream();
+                                    xstream.toXML( names, configWriter );
+                                    // xstream.toXML( types, configWriter );
+                                }
+                                finally {
+                                    configWriter.close();
+                                }
+                            } else {
+                                FileOutputStream out = new FileOutputStream( configFile.get() );
+                                ObjectOutputStream objects = new ObjectOutputStream( out );
+
+                                try {
+                                    objects.writeObject( names );
+                                    // objects.writeObject( types );
+                                }
+                                finally {
+                                    objects.close();
+                                }
+                            }
+                        }
+                        catch (FileNotFoundException e) {
+                            logger.err( e, "Could not find the config file '%s'!", configFile.get() );
+                        }
+                        catch (IOException e) {
+                            logger.err( e, "Could not create/write to the config file '%s'!", configFile.get() );
                         }
                         finally {
-                            configWriter.close();
-                        }
-                    } else {
-                        FileOutputStream out = new FileOutputStream( configFile.get() );
-                        ObjectOutputStream objects = new ObjectOutputStream( out );
-
-                        try {
-                            objects.writeObject( names );
-                            // objects.writeObject( types );
-                        }
-                        finally {
-                            objects.close();
+                            logger.dbg( null );
                         }
                     }
-                }
-                catch (FileNotFoundException e) {
-                    logger.err( e, "Could not find the config file '%s'!", configFile.get() );
-                }
-                catch (IOException e) {
-                    logger.err( e, "Could not create/write to the config file '%s'!", configFile.get() );
-                }
-                finally {
-                    logger.dbg( null );
-                }
-            }
-        } );
+                } );
     }
 
     /**
@@ -188,7 +189,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      *
      * @param configClass The class that is being initialized. This is the Class object of the {@link BaseConfig} subclass.
      */
-    @SuppressWarnings( { "unchecked", "rawtypes", "RawUseOfParameterizedType" })
+    @SuppressWarnings({ "unchecked", "rawtypes", "RawUseOfParameterizedType" })
     public static void initClass(final Class<? extends BaseConfig> configClass) {
 
         flushConfig( configClass );
@@ -212,7 +213,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      *
      * @param configClass The name of the class whose static {@link BaseConfig} fields should be flushed into the settings list.
      */
-    @SuppressWarnings( { "unchecked", "rawtypes", "RawUseOfParameterizedType" })
+    @SuppressWarnings({ "unchecked", "rawtypes", "RawUseOfParameterizedType" })
     private static void flushConfig(final Class<? extends BaseConfig> configClass) {
 
         for (final Field field : configClass.getFields())
@@ -238,7 +239,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      * Load config settings from the config file and change every existing setting with the same field name to reflect its value from the
      * config file.
      */
-    @SuppressWarnings( { "unchecked", "rawtypes", "RawUseOfParameterizedType" })
+    @SuppressWarnings({ "unchecked", "rawtypes", "RawUseOfParameterizedType" })
     private static void loadConfig() {
 
         try {
@@ -511,7 +512,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
         value = null;
     }
 
-    @SuppressWarnings( { "unchecked", "rawtypes", "RawUseOfParameterizedType" })
+    @SuppressWarnings({ "unchecked", "rawtypes", "RawUseOfParameterizedType" })
     private String getName(final Class<? extends BaseConfig> configClass) {
 
         for (final Field field : configClass.getFields())

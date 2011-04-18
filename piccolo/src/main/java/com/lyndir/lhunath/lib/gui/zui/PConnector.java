@@ -196,14 +196,16 @@ public class PConnector extends PNode {
         dstY -= getYOffset();
 
         if (src.getPaint() instanceof Color && dst.getPaint() instanceof Color)
-            g2.setPaint( new GradientPaint( new Point2D.Double( srcX, srcY ), (Color) src.getPaint(), new Point2D.Double( dstX, dstY ),
-                                            (Color) dst.getPaint() ) );
+            g2.setPaint(
+                    new GradientPaint(
+                            new Point2D.Double( srcX, srcY ), (Color) src.getPaint(), new Point2D.Double( dstX, dstY ),
+                            (Color) dst.getPaint() ) );
         else
             g2.setPaint( getPaint() );
 
-        CubicCurve2D curve = new CubicCurve2D.Double( srcX, srcY, srcHorizontal? (srcX + dstX) / 2: srcX,
-                                                      srcHorizontal? srcY: (srcY + dstY) / 2, dstHorizontal? (srcX + dstX) / 2: dstX,
-                                                      dstHorizontal? dstY: (srcY + dstY) / 2, dstX, dstY );
+        CubicCurve2D curve = new CubicCurve2D.Double(
+                srcX, srcY, srcHorizontal? (srcX + dstX) / 2: srcX, srcHorizontal? srcY: (srcY + dstY) / 2,
+                dstHorizontal? (srcX + dstX) / 2: dstX, dstHorizontal? dstY: (srcY + dstY) / 2, dstX, dstY );
 
         g2.clip( getBounds() );
         g2.setStroke( new BasicStroke( stroke, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND ) );
@@ -211,7 +213,7 @@ public class PConnector extends PNode {
         g2.dispose();
     }
 
-    @SuppressWarnings( { "unchecked", "RawUseOfParameterizedType" })
+    @SuppressWarnings({ "unchecked", "RawUseOfParameterizedType" })
     private void moveConnectorsToFront() {
 
         boolean sane = true;

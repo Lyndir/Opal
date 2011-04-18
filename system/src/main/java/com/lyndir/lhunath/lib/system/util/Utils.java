@@ -28,10 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.CRC32;
-import java.util.zip.Checksum;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+import java.util.zip.*;
 
 
 /**
@@ -65,7 +62,8 @@ public class Utils {
             put( Calendar.DAY_OF_MONTH, "Day" );
             put( Calendar.MONTH, "Month" );
             put( Calendar.YEAR, "Year" );
-        }};
+        }
+    };
 
     /**
      * {@link SimpleDateFormat} of the calendar fields.
@@ -82,7 +80,8 @@ public class Utils {
             put( Calendar.DAY_OF_MONTH, "dd " );
             put( Calendar.MONTH, "MM/" );
             put( Calendar.YEAR, "yyyy/" );
-        }};
+        }
+    };
 
     /**
      * Ratio of the long part of the golden section.
@@ -92,19 +91,19 @@ public class Utils {
     /**
      * Inverted ratio of the long part of the golden section.
      */
-    public static final double GOLDEN_INV = 1 / GOLDEN;
-    private static final Pattern FIRST_LETTER = Pattern.compile( "(\\w)\\w{2,}\\." );
-    private static final Pattern THROWS = Pattern.compile( " throws [^\\(\\)]*" );
-    private static final Pattern TLD = Pattern.compile( "^.*?([^\\.]+\\.[^\\.]+)$" );
+    public static final  double  GOLDEN_INV       = 1 / GOLDEN;
+    private static final Pattern FIRST_LETTER     = Pattern.compile( "(\\w)\\w{2,}\\." );
+    private static final Pattern THROWS           = Pattern.compile( " throws [^\\(\\)]*" );
+    private static final Pattern TLD              = Pattern.compile( "^.*?([^\\.]+\\.[^\\.]+)$" );
     private static final Pattern TRAILING_SLASHES = Pattern.compile( "/+$" );
-    private static final Pattern NON_FINAL_PATH = Pattern.compile( "^.*/" );
-    private static final Pattern LETTERS = Pattern.compile( "[a-zA-Z]" );
-    private static final Pattern PATH_SEPARATORS = Pattern.compile( "[\\\\/]+" );
-    private static final Pattern PROTOCOL = Pattern.compile( "^[^:]+:" );
-    private static final Pattern WINDOWS = Pattern.compile( "Windows.*" );
-    private static final Pattern LINUX = Pattern.compile( "Linux.*" );
-    private static final Pattern MACOS = Pattern.compile( "Mac.*" );
-    private static final Pattern SUNOS = Pattern.compile( "SunOS.*" );
+    private static final Pattern NON_FINAL_PATH   = Pattern.compile( "^.*/" );
+    private static final Pattern LETTERS          = Pattern.compile( "[a-zA-Z]" );
+    private static final Pattern PATH_SEPARATORS  = Pattern.compile( "[\\\\/]+" );
+    private static final Pattern PROTOCOL         = Pattern.compile( "^[^:]+:" );
+    private static final Pattern WINDOWS          = Pattern.compile( "Windows.*" );
+    private static final Pattern LINUX            = Pattern.compile( "Linux.*" );
+    private static final Pattern MACOS            = Pattern.compile( "Mac.*" );
+    private static final Pattern SUNOS            = Pattern.compile( "SunOS.*" );
 
     /**
      * Convert the given object into a {@link String} using {@link Object#toString()}. If the <code>null</code> is passed, don't return a
@@ -336,7 +335,7 @@ public class Utils {
                     return SHA512;
                 default:
                     throw logger.err( "The digest in the argument is cannot be recognized: %s", digest )
-                            .toError( IllegalArgumentException.class );
+                                .toError( IllegalArgumentException.class );
             }
         }
     }
@@ -423,8 +422,8 @@ public class Utils {
         while (entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
             if (PATH_SEPARATORS.matcher( entry.getName() )
-                    .replaceAll( "/" )
-                    .equals( PATH_SEPARATORS.matcher( zippedName ).replaceAll( "/" ) ))
+                               .replaceAll( "/" )
+                               .equals( PATH_SEPARATORS.matcher( zippedName ).replaceAll( "/" ) ))
                 return entry;
         }
 

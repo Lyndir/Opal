@@ -18,9 +18,7 @@ package com.lyndir.lhunath.lib.system.logging;
 import com.lyndir.lhunath.lib.system.util.Utils;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Formatter;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
+import java.util.logging.*;
 
 
 /**
@@ -75,7 +73,7 @@ public abstract class LogFormatter extends Formatter {
 
         /* Initialize some convenience variables for this record. */
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        @SuppressWarnings( { "ThrowableResultOfMethodCallIgnored" })
+        @SuppressWarnings({ "ThrowableResultOfMethodCallIgnored" })
         Throwable error = record.getThrown();
 
         /* If this log message has a throwable, use it(s cause) to make the log output more accurate. */
@@ -97,11 +95,13 @@ public abstract class LogFormatter extends Formatter {
         /* Pretty print the source: Line:Package.Class.Method() */
         String realSource = "", relSource = "";
         if (stackTrace.length > 0 && !stackTrace[0].equals( sourceElement ))
-            realSource = String.format( "(%s:%d) %s.%s()", stackTrace[0].getFileName(), stackTrace[0].getLineNumber(),
-                                        Utils.compressSignature( stackTrace[0].getClassName() ), stackTrace[0].getMethodName() );
+            realSource = String.format(
+                    "(%s:%d) %s.%s()", stackTrace[0].getFileName(), stackTrace[0].getLineNumber(),
+                    Utils.compressSignature( stackTrace[0].getClassName() ), stackTrace[0].getMethodName() );
         if (sourceElement != null)
-            relSource = String.format( "(%s:%d) %s.%s()", sourceElement.getFileName(), sourceElement.getLineNumber(),
-                                       Utils.compressSignature( sourceElement.getClassName() ), sourceElement.getMethodName() );
+            relSource = String.format(
+                    "(%s:%d) %s.%s()", sourceElement.getFileName(), sourceElement.getLineNumber(),
+                    Utils.compressSignature( sourceElement.getClassName() ), sourceElement.getMethodName() );
         String source = realSource + (realSource.length() > 0? ", ": "") + relSource;
         if (source.length() == 0)
             source = "[Unknown Source]";
@@ -110,10 +110,11 @@ public abstract class LogFormatter extends Formatter {
         StringBuilder messageBuilder = new StringBuilder();
         if (error != null)
             for (Throwable e = error; e != null; e = e.getCause())
-                messageBuilder.insert( 0, String.format( "(%s:%d) %s: %s\n",
-                                                         e.getStackTrace().length > 0? e.getStackTrace()[0].getFileName(): "n/a",
-                                                         e.getStackTrace().length > 0? e.getStackTrace()[0].getLineNumber(): -1,
-                                                         e.getClass().getName(), e.getLocalizedMessage() ) );
+                messageBuilder.insert(
+                        0, String.format(
+                        "(%s:%d) %s: %s\n", e.getStackTrace().length > 0? e.getStackTrace()[0].getFileName(): "n/a",
+                        e.getStackTrace().length > 0? e.getStackTrace()[0].getLineNumber(): -1, e.getClass().getName(),
+                        e.getLocalizedMessage() ) );
 
         if (record.getMessage() != null && record.getMessage().length() > 0)
             messageBuilder.insert( 0, record.getMessage() + '\n' );

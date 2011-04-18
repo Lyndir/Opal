@@ -15,10 +15,7 @@
  */
 package com.lyndir.lhunath.lib.system.collection;
 
-import java.util.Collection;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 
 /**
@@ -83,7 +80,7 @@ public class FixedDeque<E> implements Deque<E> {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings( { "SuspiciousToArrayCall" })
+    @SuppressWarnings({ "SuspiciousToArrayCall" })
     public <T> T[] toArray(final T[] a) {
 
         return deque.toArray( a );

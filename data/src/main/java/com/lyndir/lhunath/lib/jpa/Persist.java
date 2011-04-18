@@ -17,10 +17,7 @@ package com.lyndir.lhunath.lib.jpa;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 
 
 /**
@@ -68,7 +65,7 @@ public class Persist {
      * Begin a new transaction if one is not active yet.
      *
      * @param caller The party responsible for completing the transaction later on with a {@link #complete(Object)} call. Generally, just
-     * <code>this</code>.
+     *               <code>this</code>.
      *
      * @return The current transaction.
      */

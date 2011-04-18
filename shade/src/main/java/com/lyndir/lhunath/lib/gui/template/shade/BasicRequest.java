@@ -53,7 +53,8 @@ public enum BasicRequest implements Request {
     THEME( -1 ),
 
     /**
-     * Convert the application to use fullscreen or windowed mode depending on the config.<br> This setting is not set to auto because it is
+     * Convert the application to use fullscreen or windowed mode depending on the config.<br> This setting is not set to auto because it
+     * is
      * called manually at application invocation.
      */
     FULLSCREEN( -1 ),

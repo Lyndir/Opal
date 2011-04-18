@@ -75,8 +75,8 @@ public class ToolTip extends JPanel {
             @Override
             public void paint(final Graphics g) {
 
-                Dimension size = new Dimension( toolTipPane.getWidth() + 5,
-                                                toolTipPane.getHeight() + (activeTip.stickable? stickyHint.getHeight(): 0) );
+                Dimension size = new Dimension(
+                        toolTipPane.getWidth() + 5, toolTipPane.getHeight() + (activeTip.stickable? stickyHint.getHeight(): 0) );
                 Window window = toolTipWindow;
                 if (window == null || !window.isDisplayable())
                     window = toolTipFrame;
@@ -132,14 +132,15 @@ public class ToolTip extends JPanel {
         buttonListener = new TipButtonListener();
 
         toolTipPane.getInputMap( WHEN_IN_FOCUSED_WINDOW ).put( KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ), "stick" );
-        toolTipPane.getActionMap().put( "stick", new AbstractAction( "stick" ) {
+        toolTipPane.getActionMap().put(
+                "stick", new AbstractAction( "stick" ) {
 
-            @Override
-            public void actionPerformed(final ActionEvent e) {
+                    @Override
+                    public void actionPerformed(final ActionEvent e) {
 
-                toggleSticky();
-            }
-        } );
+                        toggleSticky();
+                    }
+                } );
 
         listen( this );
         setContent( component );
@@ -280,18 +281,19 @@ public class ToolTip extends JPanel {
 
         toolTipFrame = new JFrame();
         toolTipFrame.setUndecorated( true );
-        toolTipFrame.addWindowListener( new WindowAdapter() {
+        toolTipFrame.addWindowListener(
+                new WindowAdapter() {
 
-            @Override
-            public void windowClosing(final WindowEvent windowEvent) {
+                    @Override
+                    public void windowClosing(final WindowEvent windowEvent) {
 
-                for (final ToolTipStickyListener listener : stickyListeners)
-                    listener.stickyState( ToolTip.this, false );
+                        for (final ToolTipStickyListener listener : stickyListeners)
+                            listener.stickyState( ToolTip.this, false );
 
-                toolTipFrame.dispose();
-                toolTipFrame = null;
-            }
-        } );
+                        toolTipFrame.dispose();
+                        toolTipFrame = null;
+                    }
+                } );
 
         PaintPanel gradient = PaintPanel.gradientPanel( new Point( 0, 1 ), new Point( 0, -1 ) );
         gradient.setLayout( new BorderLayout() );
@@ -406,81 +408,85 @@ public class ToolTip extends JPanel {
             /* Schedule a timer to show the tip after TIP_SHOW_DELAY milliseconds. */
             if (toolTipSchedule != null)
                 toolTipSchedule.cancel();
-            tipTimer.schedule( toolTipSchedule = new TimerTask() {
-
-                @Override
-                public void run() {
-
-                    toolTipSchedule = null;
-
-                    SwingUtilities.invokeLater( new Runnable() {
+            tipTimer.schedule(
+                    toolTipSchedule = new TimerTask() {
 
                         @Override
                         public void run() {
 
-                            try {
-                                /* Clean up any possibly already existing tooltip window. */
-                                if (toolTipWindow != null)
-                                    toolTipWindow.dispose();
+                            toolTipSchedule = null;
 
-                                /* Abort if the content isn't showing on the screen. */
-                                if (!getContent().isShowing())
-                                    return;
+                            SwingUtilities.invokeLater(
+                                    new Runnable() {
 
-                                /* Put the text of this tooltip in the container. */
-                                toolTipWindow = new JWindow( SwingUtilities.getWindowAncestor( ToolTip.this ) );
-                                toolTipWindow.setBackground( toolTipContainer.getBackground().darker() );
-                                toolTipWindow.setFocusable( false );
-                                toolTipWindow.setFocusableWindowState( false );
-                                toolTipWindow.setAlwaysOnTop( true );
-                                toolTipWindow.addWindowListener( new WindowAdapter() {
+                                        @Override
+                                        public void run() {
 
-                                    @Override
-                                    public void windowClosed(final WindowEvent windowEvent) {
+                                            try {
+                                                /* Clean up any possibly already existing tooltip window. */
+                                                if (toolTipWindow != null)
+                                                    toolTipWindow.dispose();
 
-                                        if (activeTip == ToolTip.this)
-                                            closeTip();
-                                    }
-                                } );
+                                                /* Abort if the content isn't showing on the screen. */
+                                                if (!getContent().isShowing())
+                                                    return;
 
-                                toolTipPane.setSize( 0, 0 );
-                                toolTipPane.setText( toolTipText );
-                                toolTipPane.setMaximumSize( new Dimension( maxWidth, maxHeight ) );
+                                                /* Put the text of this tooltip in the container. */
+                                                toolTipWindow = new JWindow( SwingUtilities.getWindowAncestor( ToolTip.this ) );
+                                                toolTipWindow.setBackground( toolTipContainer.getBackground().darker() );
+                                                toolTipWindow.setFocusable( false );
+                                                toolTipWindow.setFocusableWindowState( false );
+                                                toolTipWindow.setAlwaysOnTop( true );
+                                                toolTipWindow.addWindowListener(
+                                                        new WindowAdapter() {
 
-                                toolTipContainer.removeAll();
-                                toolTipContainer.add( toolTipPanel, BorderLayout.CENTER );
-                                if (stickable)
-                                    toolTipContainer.add( stickyHint, BorderLayout.SOUTH );
+                                                            @Override
+                                                            public void windowClosed(final WindowEvent windowEvent) {
 
-                                toolTipWindow.setContentPane( toolTipContainer );
-                                toolTipWindow.pack();
-                                toolTipWindow.setSize( toolTipPane.getWidth() + 5,
-                                                       toolTipPane.getHeight() + (stickable? stickyHint.getHeight(): 0) );
+                                                                if (activeTip == ToolTip.this)
+                                                                    closeTip();
+                                                            }
+                                                        } );
 
-                                /* Determine the window's location. */
-                                Point location = getContent().getLocationOnScreen();
-                                location.translate( x + PADDING, y + PADDING );
-                                double dx = getContent().getGraphicsConfiguration().getBounds().getMaxX()
-                                            - (location.getX() + toolTipWindow.getWidth()) - PADDING;
-                                if (dx < 0)
-                                    location.translate( (int) dx, 0 );
+                                                toolTipPane.setSize( 0, 0 );
+                                                toolTipPane.setText( toolTipText );
+                                                toolTipPane.setMaximumSize( new Dimension( maxWidth, maxHeight ) );
 
-                                /* Place and reveal the tooltip window. */
-                                toolTipWindow.setLocation( location );
-                                toolTipWindow.setVisible( true );
+                                                toolTipContainer.removeAll();
+                                                toolTipContainer.add( toolTipPanel, BorderLayout.CENTER );
+                                                if (stickable)
+                                                    toolTipContainer.add( stickyHint, BorderLayout.SOUTH );
 
-                                /* Listener that cleans up tip when content's window loses focus. */
-                                Window window = SwingUtilities.windowForComponent( getContent() );
-                                if (!Arrays.asList( window.getWindowListeners() ).contains( toolTipContentWindowListener ))
-                                    window.addWindowFocusListener( toolTipContentWindowListener );
-                            }
-                            catch (NullPointerException ignored) {
-                                /* Tooltip has been removed while timer was running. */
-                            }
+                                                toolTipWindow.setContentPane( toolTipContainer );
+                                                toolTipWindow.pack();
+                                                toolTipWindow.setSize(
+                                                        toolTipPane.getWidth() + 5,
+                                                        toolTipPane.getHeight() + (stickable? stickyHint.getHeight(): 0) );
+
+                                                /* Determine the window's location. */
+                                                Point location = getContent().getLocationOnScreen();
+                                                location.translate( x + PADDING, y + PADDING );
+                                                double dx = getContent().getGraphicsConfiguration().getBounds().getMaxX()
+                                                            - (location.getX() + toolTipWindow.getWidth()) - PADDING;
+                                                if (dx < 0)
+                                                    location.translate( (int) dx, 0 );
+
+                                                /* Place and reveal the tooltip window. */
+                                                toolTipWindow.setLocation( location );
+                                                toolTipWindow.setVisible( true );
+
+                                                /* Listener that cleans up tip when content's window loses focus. */
+                                                Window window = SwingUtilities.windowForComponent( getContent() );
+                                                if (!Arrays.asList( window.getWindowListeners() ).contains( toolTipContentWindowListener ))
+                                                    window.addWindowFocusListener( toolTipContentWindowListener );
+                                            }
+                                            catch (NullPointerException ignored) {
+                                                /* Tooltip has been removed while timer was running. */
+                                            }
+                                        }
+                                    } );
                         }
-                    } );
-                }
-            }, TIP_SHOW_DELAY );
+                    }, TIP_SHOW_DELAY );
         }
 
         /**

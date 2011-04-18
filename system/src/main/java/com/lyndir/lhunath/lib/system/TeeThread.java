@@ -16,10 +16,7 @@
 package com.lyndir.lhunath.lib.system;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PipedInputStream;
+import java.io.*;
 
 
 /**

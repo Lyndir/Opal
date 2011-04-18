@@ -31,11 +31,11 @@ import java.util.regex.Pattern;
  */
 public class Version implements Comparable<Version>, Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private static final Pattern DOT = Pattern.compile( "\\." );
+    private static final long    serialVersionUID = 1L;
+    private static final Pattern DOT              = Pattern.compile( "\\." );
 
-    private final String   version ;
-    private final String[] tags    ;
+    private final String   version;
+    private final String[] tags;
 
     /**
      * Create a new {@link Version} instance.
@@ -44,7 +44,7 @@ public class Version implements Comparable<Version>, Serializable {
      */
     public Version(final Number version) {
 
-        this( Preconditions.checkNotNull(version, "Given version cannot be null.").toString() );
+        this( Preconditions.checkNotNull( version, "Given version cannot be null." ).toString() );
     }
 
     /**

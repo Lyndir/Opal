@@ -15,10 +15,7 @@
  */
 package com.lyndir.lhunath.lib.wayward.component;
 
-import org.apache.wicket.AbstractRestartResponseException;
-import org.apache.wicket.IRequestTarget;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.Response;
+import org.apache.wicket.*;
 import org.apache.wicket.protocol.http.WebResponse;
 
 

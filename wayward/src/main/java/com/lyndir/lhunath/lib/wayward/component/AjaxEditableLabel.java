@@ -23,18 +23,18 @@ public class AjaxEditableLabel<T> extends EditableLabel<T> {
     /**
      * Only use this convenience constructor if your generic type is String!
      *
-     * @param id The wicket ID of the component.
+     * @param id    The wicket ID of the component.
      * @param model The model that holds the object that will be rendered in the label or field.
      */
-    @SuppressWarnings( { "unchecked" })
+    @SuppressWarnings({ "unchecked" })
     public AjaxEditableLabel(final String id, final IModel<T> model) {
 
         super( id, model );
     }
 
     /**
-     * @param id The wicket ID of the component.
-     * @param model The model that holds the object that will be rendered in the label or field.
+     * @param id        The wicket ID of the component.
+     * @param model     The model that holds the object that will be rendered in the label or field.
      * @param modelType The type of the model object, for field conversion purposes.
      */
     public AjaxEditableLabel(final String id, final IModel<T> model, final Class<T> modelType) {
@@ -49,48 +49,52 @@ public class AjaxEditableLabel<T> extends EditableLabel<T> {
 
         setOutputMarkupId( true );
 
-        getField( true ).add( new AjaxFormComponentUpdatingBehavior( "onBlur" ) {
+        getField( true ).add(
+                new AjaxFormComponentUpdatingBehavior( "onBlur" ) {
 
-            @Override
-            protected void onUpdate(final AjaxRequestTarget target) {
+                    @Override
+                    protected void onUpdate(final AjaxRequestTarget target) {
 
-                AjaxEditableLabel.this.onUpdate( target );
-            }
-        } );
-        getField( false ).add( new AjaxFormComponentUpdatingBehavior( "onBlur" ) {
+                        AjaxEditableLabel.this.onUpdate( target );
+                    }
+                } );
+        getField( false ).add(
+                new AjaxFormComponentUpdatingBehavior( "onBlur" ) {
 
-            @Override
-            protected void onUpdate(final AjaxRequestTarget target) {
+                    @Override
+                    protected void onUpdate(final AjaxRequestTarget target) {
 
-                AjaxEditableLabel.this.onUpdate( target );
-            }
-        } );
+                        AjaxEditableLabel.this.onUpdate( target );
+                    }
+                } );
 
-        getLabel().add( new AjaxEventBehavior( "onClick" ) {
-            @Override
-            protected void onEvent(final AjaxRequestTarget target) {
+        getLabel().add(
+                new AjaxEventBehavior( "onClick" ) {
+                    @Override
+                    protected void onEvent(final AjaxRequestTarget target) {
 
-                setEditable( true );
-                target.addComponent( AjaxEditableLabel.this );
-            }
+                        setEditable( true );
+                        target.addComponent( AjaxEditableLabel.this );
+                    }
 
-            @Override
-            public boolean isEnabled(final Component component) {
+                    @Override
+                    public boolean isEnabled(final Component component) {
 
-                return isClickToEdit();
-            }
-        } );
+                        return isClickToEdit();
+                    }
+                } );
     }
 
     /**
      * Override me to perform logic after the component has been updated by an AJAX request.
      *
-     * <p>You must call <code>super.onUpdate(target)</code> at the end of your implementation.  Failing to do so will break certain features
+     * <p>You must call <code>super.onUpdate(target)</code> at the end of your implementation.  Failing to do so will break certain
+     * features
      * such as clickToEdit.</p>
      *
      * @param target The AJAX request that updated the component.
      */
-    @SuppressWarnings( { "UnusedParameters" })
+    @SuppressWarnings({ "UnusedParameters" })
     protected void onUpdate(final AjaxRequestTarget target) {
 
         if (isClickToEdit()) {

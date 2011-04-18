@@ -15,9 +15,7 @@
  */
 package com.lyndir.lhunath.lib.xml;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Arrays;
 import javax.xml.xpath.XPathExpressionException;
 import org.slf4j.Logger;
@@ -85,9 +83,8 @@ public class XPath {
 
                 System.out.println();
                 System.out.println( "\t-f | --file [filename]" );
-                System.out
-                        .println(
-                                "\t\tSpecifies the file to open as XML data source." + "\n\t\tIf not specified, will use standard input." );
+                System.out.println(
+                        "\t\tSpecifies the file to open as XML data source." + "\n\t\tIf not specified, will use standard input." );
 
                 System.out.println();
                 System.out.println( "\t-e | --expression [xpath-expression]" );
@@ -96,15 +93,14 @@ public class XPath {
 
                 System.out.println();
                 System.out.println( "\t-x | --xhtml" );
-                System.out
-                        .println( "\t\tSets the XHTML namespace as the default so you" + "\n\t\tneedn't specify it explicitly."
-                                  + "\n\t\tThis implicitly enables `-t`; see below." );
+                System.out.println(
+                        "\t\tSets the XHTML namespace as the default so you" + "\n\t\tneedn't specify it explicitly."
+                        + "\n\t\tThis implicitly enables `-t`; see below." );
 
                 System.out.println();
                 System.out.println( "\t-t | --tidy" );
-                System.out
-                        .println( "\t\tUse Tidy as the XML document parser.  Tidy can"
-                                  + "\n\t\tovercome certain problems with (X)HTML data." );
+                System.out.println(
+                        "\t\tUse Tidy as the XML document parser.  Tidy can" + "\n\t\tovercome certain problems with (X)HTML data." );
 
                 System.out.println();
                 System.out.println( "\t-v | --value" );

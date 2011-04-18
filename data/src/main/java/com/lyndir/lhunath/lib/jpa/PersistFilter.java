@@ -42,10 +42,12 @@ public class PersistFilter implements Filter {
         try {
             persistence.begin( this );
             chain.doFilter( request, response );
-        } catch (Throwable t) {
+        }
+        catch (Throwable t) {
             logger.error( "Uncaught throwable", t );
             persistence.abort();
-        } finally {
+        }
+        finally {
             persistence.complete( this );
         }
     }

@@ -38,7 +38,8 @@ public final class Factory {
     }
 
     /**
-     * Creates and returns a <code>JSplitPane</code> that has empty borders. Useful to avoid duplicate decorations, for example if the split
+     * Creates and returns a <code>JSplitPane</code> that has empty borders. Useful to avoid duplicate decorations, for example if the
+     * split
      * pane is contained by other components that already provide a border.
      *
      * @param orientation  the split pane's orientation: horizontal or vertical

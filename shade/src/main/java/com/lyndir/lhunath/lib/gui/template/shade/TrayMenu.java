@@ -54,23 +54,24 @@ public class TrayMenu extends JPopupMenu implements MouseListener {
             setInvoker( invoker );
             setVisible( true );
 
-            SwingUtilities.invokeLater( new Runnable() {
+            SwingUtilities.invokeLater(
+                    new Runnable() {
 
-                private static final int PADDING = 10;
-                private final Dimension screenBounds = Toolkit.getDefaultToolkit().getScreenSize();
+                        private static final int PADDING = 10;
+                        private final Dimension screenBounds = Toolkit.getDefaultToolkit().getScreenSize();
 
-                @Override
-                public void run() {
+                        @Override
+                        public void run() {
 
-                    int x = e.getX(), y = e.getY();
-                    if (x + getWidth() + PADDING > screenBounds.getWidth())
-                        x -= getWidth() - PADDING;
-                    if (y + getHeight() + PADDING > screenBounds.getHeight())
-                        y -= getHeight() - PADDING;
+                            int x = e.getX(), y = e.getY();
+                            if (x + getWidth() + PADDING > screenBounds.getWidth())
+                                x -= getWidth() - PADDING;
+                            if (y + getHeight() + PADDING > screenBounds.getHeight())
+                                y -= getHeight() - PADDING;
 
-                    setLocation( x, y );
-                }
-            } );
+                            setLocation( x, y );
+                        }
+                    } );
         }
     }
 

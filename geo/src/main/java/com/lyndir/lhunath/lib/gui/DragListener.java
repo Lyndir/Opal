@@ -22,7 +22,8 @@ import java.awt.event.MouseEvent;
 
 /**
  * <i>{@link DragListener} - An adapter class that implements functionality needed to make the component dragable in its container.</i><br>
- * <br> The constructor defines the component that will be dragged. Use {@link #install()} to recursively add listeners to the component and
+ * <br> The constructor defines the component that will be dragged. Use {@link #install()} to recursively add listeners to the component
+ * and
  * its children.<br> <br>
  *
  * @author lhunath

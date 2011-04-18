@@ -19,7 +19,8 @@ import org.apache.wicket.markup.html.panel.Panel;
  * <p> To enable fragment-based navigation in your application, install the PageListener on the pages you want to enable fragment-based
  * navigation on, and add the AjaxRequestListener to each AjaxRequestTarget that can cause content state or navigation to change.</p>
  *
- * <p>The easiest way to do the latter is by overriding WebApplication#newAjaxRequestTarget(Page page) and adding the AjaxRequestListener to
+ * <p>The easiest way to do the latter is by overriding WebApplication#newAjaxRequestTarget(Page page) and adding the AjaxRequestListener
+ * to
  * the target there.</p>
  *
  * <p> <i>07 06, 2010</i> </p>
@@ -34,7 +35,7 @@ public interface FragmentNavigationListener {
         static final Logger logger = Logger.get( Controller.class );
 
         private String pageFragment;
-        private T activeTab;
+        private T      activeTab;
 
         /**
          * Mark the given tab as active and restore state in its contents from the given tab-specific state arguments.
@@ -42,7 +43,8 @@ public interface FragmentNavigationListener {
          * @param tab      The tab that should be activated.
          * @param fragment The string that contains the fragment which needs to be parsed into tab-specific state.
          *
-         * @throws IncompatibleStateException If the state represented by the fragment is incompatible with the current state and can not be
+         * @throws IncompatibleStateException If the state represented by the fragment is incompatible with the current state and can not
+         *                                    be
          *                                    loaded.
          */
         <TT extends FragmentNavigationTab<PP, SS>, PP extends P, SS extends S> void activateTabWithState(final TT tab,
@@ -148,7 +150,8 @@ public interface FragmentNavigationListener {
         }
 
         /**
-         * @return The page on which the tabs should be showing.  If not <code>null</code>; any time a tab is activated on another page; the
+         * @return The page on which the tabs should be showing.  If not <code>null</code>; any time a tab is activated on another page;
+         *         the
          *         user will be redirected to a url on this page with the activated tab's state in the url fragment.
          */
         protected Class<? extends Page> getTabExclusivePage() {
@@ -260,7 +263,7 @@ public interface FragmentNavigationListener {
         static final Logger logger = Logger.get( AjaxRequestListener.class );
 
         private final Controller<P, S, T> controller;
-        private String newFragment;
+        private       String              newFragment;
 
         /**
          * @param controller The object that controls fragment state for this page.

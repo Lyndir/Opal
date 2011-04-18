@@ -34,12 +34,14 @@ public class Iterators2 {
             NONE( false ) {
                 @Override
                 void calibrate(final ListIterator<?> listIterator) {
+
                     throw new IllegalStateException();
                 }
             },
             NEXT( true ) {
                 @Override
                 void calibrate(final ListIterator<?> listIterator) {
+
                     listIterator.next();
                     listIterator.previous();
                 }
@@ -47,6 +49,7 @@ public class Iterators2 {
             PREVIOUS( true ) {
                 @Override
                 void calibrate(final ListIterator<?> listIterator) {
+
                     listIterator.previous();
                     listIterator.next();
                 }
@@ -196,6 +199,7 @@ public class Iterators2 {
         }
 
         private void moveBack() {
+
             while (offset > 0) {
                 listIterator.previous();
                 offset--;

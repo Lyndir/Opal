@@ -81,7 +81,7 @@ public class Pair<K, V> implements Map.Entry<K, V>, Serializable {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings( { "ParameterHidesMemberVariable" })
+    @SuppressWarnings({ "ParameterHidesMemberVariable" })
     public V setValue(final V value) {
 
         V old = this.value;

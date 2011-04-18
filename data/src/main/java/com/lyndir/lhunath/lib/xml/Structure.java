@@ -17,21 +17,14 @@ package com.lyndir.lhunath.lib.xml;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.*;
 import javax.xml.validation.Schema;
 import javax.xml.xpath.XPathExpressionException;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.w3c.tidy.Tidy;
 import org.xml.sax.SAXException;
 
@@ -51,8 +44,8 @@ public class Structure {
     private static final XPathUtil xmlpath = new XPathUtil( false );
     // private static final XPathUtil xhtmlpath = new XPathUtil( true );
 
-    private static final int TAB_SIZE = 4;
-    private static final Pattern LINE = Pattern.compile( "\n$" );
+    private static final int     TAB_SIZE = 4;
+    private static final Pattern LINE     = Pattern.compile( "\n$" );
 
     private static <T> void inject(final Node root, final T structure)
             throws XPathExpressionException {
@@ -67,8 +60,9 @@ public class Structure {
                 Class<?> valueType = field.getType();
                 field.setAccessible( true );
 
-                logger.dbg( "Setting (%s) '%s' to '%s' (xpath: %s)", valueType.getSimpleName(), field.getName(),
-                            xmlpath.getString( root, annotation.value() ), annotation.value() );
+                logger.dbg(
+                        "Setting (%s) '%s' to '%s' (xpath: %s)", valueType.getSimpleName(), field.getName(),
+                        xmlpath.getString( root, annotation.value() ), annotation.value() );
 
                 Object value;
                 if (Byte.class.isAssignableFrom( valueType ) || Byte.TYPE.isAssignableFrom( valueType ))
@@ -227,8 +221,9 @@ public class Structure {
             for (final Field field : structure.getClass().getDeclaredFields())
                 if (field.isAnnotationPresent( XInjectTag.class ))
                     try {
-                        logger.dbg( "Setting (%s) '%s' to tagname '%s'", field.getType().getSimpleName(), field.getName(),
-                                    child.getNodeName() );
+                        logger.dbg(
+                                "Setting (%s) '%s' to tagname '%s'", field.getType().getSimpleName(), field.getName(),
+                                child.getNodeName() );
 
                         field.setAccessible( true );
                         field.set( structure, child.getNodeName() );

@@ -15,10 +15,7 @@
  */
 package com.lyndir.lhunath.lib.wayward.i18n;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 
 /**
@@ -33,12 +30,14 @@ import java.lang.annotation.Target;
 public @interface BooleanKeyAppender {
 
     /**
-     * @return The key chunk to append to the localization key when the value of the annotated parameter is <code>true</code> or don't append anything if unspecified or the empty string.
+     * @return The key chunk to append to the localization key when the value of the annotated parameter is <code>true</code> or don't
+     *         append anything if unspecified or the empty string.
      */
     String y() default "";
 
     /**
-     * @return The key chunk to append to the localization key when the value of the annotated parameter is <code>false</code> or don't append anything if unspecified or the empty string.
+     * @return The key chunk to append to the localization key when the value of the annotated parameter is <code>false</code> or don't
+     *         append anything if unspecified or the empty string.
      */
     String n() default "";
 }

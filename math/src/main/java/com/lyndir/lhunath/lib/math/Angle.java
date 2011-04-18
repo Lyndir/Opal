@@ -16,7 +16,8 @@
 package com.lyndir.lhunath.lib.math;
 
 /**
- * <i>Angle - Any angle; available in degrees or radians.</i><br> <br> The Angle object handles angles in their dual form (degree / radian).
+ * <i>Angle - Any angle; available in degrees or radians.</i><br> <br> The Angle object handles angles in their dual form (degree /
+ * radian).
  * After an Angle object has been created (either through degrees or radians); both degree and radial form are available at all times.<br>
  * <br> Both the retrieval of and mathematical functions applied upon these angles are optimized for repeated retrieval by caching of all
  * calculated results.<br> <br>

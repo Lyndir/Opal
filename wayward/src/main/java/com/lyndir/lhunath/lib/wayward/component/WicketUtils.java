@@ -15,13 +15,9 @@
  */
 package com.lyndir.lhunath.lib.wayward.component;
 
-import java.text.DateFormat;
-import java.text.MessageFormat;
-import java.text.NumberFormat;
+import java.text.*;
 import java.util.Date;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import org.apache.wicket.*;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.protocol.http.WebRequest;

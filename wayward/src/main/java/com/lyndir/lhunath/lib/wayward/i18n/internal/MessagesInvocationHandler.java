@@ -1,24 +1,17 @@
 package com.lyndir.lhunath.lib.wayward.i18n.internal;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 import com.google.common.collect.ImmutableList;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import com.lyndir.lhunath.lib.system.logging.exception.AlreadyCheckedException;
-import com.lyndir.lhunath.lib.wayward.i18n.BooleanKeyAppender;
-import com.lyndir.lhunath.lib.wayward.i18n.KeyAppender;
-import com.lyndir.lhunath.lib.wayward.i18n.KeyMatch;
-import com.lyndir.lhunath.lib.wayward.i18n.XMLResourceBundle;
+import com.lyndir.lhunath.lib.wayward.i18n.*;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.*;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -52,8 +45,9 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
         if (baseClass == null) {
             Class<?> methodType = method.getDeclaringClass();
             baseClass = methodType.getEnclosingClass();
-            checkNotNull( baseClass,
-                          "Must be an inner class of the class by the name of the resource bundle or manually specify the context class." );
+            checkNotNull(
+                    baseClass,
+                    "Must be an inner class of the class by the name of the resource bundle or manually specify the context class." );
         }
 
         // Convert all non-serializable data into something serializable.
@@ -128,9 +122,9 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                             BooleanKeyAppender annotation = (BooleanKeyAppender) argAnnotation;
                             useValue = false;
 
-                            checkArgument( Boolean.class.isInstance( argValue ),
-                                           "BooleanKeyAppender for method %s, expects a Boolean value but found: %s", methodName,
-                                           argValue );
+                            checkArgument(
+                                    Boolean.class.isInstance( argValue ),
+                                    "BooleanKeyAppender for method %s, expects a Boolean value but found: %s", methodName, argValue );
 
                             if (Boolean.TRUE.equals( argValue ))
                                 appendKey( keyBuilder, annotation.y() );
@@ -147,12 +141,13 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                 }
 
                 String key = keyBuilder.toString();
-                logger.dbg( "Resolving localization value of key: %s, in baseClass: %s, with arguments: %s", //
-                            key, baseClass, localizationArgs );
+                logger.dbg(
+                        "Resolving localization value of key: %s, in baseClass: %s, with arguments: %s", //
+                        key, baseClass, localizationArgs );
 
                 // Find the resource bundle for the current locale and the given baseName.
-                ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle( baseClass.getCanonicalName(), Session.get().getLocale(),
-                                                                                baseClass.getClassLoader() );
+                ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle(
+                        baseClass.getCanonicalName(), Session.get().getLocale(), baseClass.getClassLoader() );
 
                 // Format the localization key with the arguments.
                 try {
@@ -160,8 +155,9 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                 }
                 catch (MissingResourceException e) {
                     //noinspection ThrowInsideCatchBlockWhichIgnoresCaughtException
-                    throw new MissingResourceException( String.format( "Missing resource for: %s, at key: %s.", baseClass, e.getKey() ),
-                                                        baseClass.getCanonicalName(), e.getKey() );
+                    throw new MissingResourceException(
+                            String.format( "Missing resource for: %s, at key: %s.", baseClass, e.getKey() ), baseClass.getCanonicalName(),
+                            e.getKey() );
                 }
             }
 

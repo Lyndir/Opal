@@ -32,10 +32,10 @@ public abstract class Schedule implements Runnable, Serializable {
 
     private static final Timer scheduler = new Timer( "Scheduler", true );
 
-    private Calendar nextSchedule;
-    private           int     stepAmount;
-    private           int     stepField;
-    private transient boolean isScheduled;
+    private           Calendar  nextSchedule;
+    private           int       stepAmount;
+    private           int       stepField;
+    private transient boolean   isScheduled;
     private transient TimerTask scheduleTask;
 
     /**
@@ -75,15 +75,16 @@ public abstract class Schedule implements Runnable, Serializable {
         while (nextSchedule.getTime().before( now ))
             nextSchedule.add( stepField, stepAmount );
 
-        scheduler.schedule( scheduleTask = new TimerTask() {
+        scheduler.schedule(
+                scheduleTask = new TimerTask() {
 
-            @Override
-            public void run() {
+                    @Override
+                    public void run() {
 
-                Schedule.this.run();
-                schedule();
-            }
-        }, nextSchedule.getTime() );
+                        Schedule.this.run();
+                        schedule();
+                    }
+                }, nextSchedule.getTime() );
         isScheduled = true;
     }
 

@@ -42,7 +42,8 @@ public abstract class ListIteratorView<T> extends ForwardingListIterator<T> impl
     }
 
     /**
-     * @return The index that the cursor currently points at.  That is, the index of the element that was returned from the previous call to
+     * @return The index that the cursor currently points at.  That is, the index of the element that was returned from the previous call
+     *         to
      *         #next or #previous
      */
     public int currentIndex() {

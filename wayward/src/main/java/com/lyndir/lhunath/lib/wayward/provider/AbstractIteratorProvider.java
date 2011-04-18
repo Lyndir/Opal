@@ -2,9 +2,7 @@ package com.lyndir.lhunath.lib.wayward.provider;
 
 import com.google.common.collect.AbstractIterator;
 import java.io.Serializable;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.*;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -55,7 +53,7 @@ public abstract class AbstractIteratorProvider<T> implements IDataProvider<T> {
      * override this method or run-time madness will ensue.</p>
      */
     @Override
-    @SuppressWarnings( { "unchecked" })
+    @SuppressWarnings({ "unchecked" })
     public IModel<T> model(final T object) {
 
         return (IModel<T>) new Model<Serializable>( (Serializable) object );

@@ -49,6 +49,6 @@ public class FocusOnReady extends AbstractHeaderContributor {
     @Override
     public IHeaderContributor[] getHeaderContributors() {
 
-        return new IHeaderContributor[] { headerContributor };
+        return new IHeaderContributor[]{ headerContributor };
     }
 }

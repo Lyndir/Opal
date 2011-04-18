@@ -35,9 +35,9 @@ public class DiffUtils {
 
     private static final Pattern NOT_ADD_CHUNK = Pattern.compile( "(?m)^[^>].*" );
     private static final Pattern NOT_REM_CHUNK = Pattern.compile( "(?m)^[^<].*" );
-    private static final Pattern ADD_CHUNK = Pattern.compile( "(?m)^>" );
-    private static final Pattern REM_CHUNK = Pattern.compile( "(?m)^<" );
-    private static final Pattern LINE = Pattern.compile( ".*\n" );
+    private static final Pattern ADD_CHUNK     = Pattern.compile( "(?m)^>" );
+    private static final Pattern REM_CHUNK     = Pattern.compile( "(?m)^<" );
+    private static final Pattern LINE          = Pattern.compile( ".*\n" );
 
     /**
      * Get the contextual difference between the data from two streams.
@@ -54,14 +54,14 @@ public class DiffUtils {
 
         BufferedReader fromReader = null, toReader = null;
         try {
-            fromReader= new BufferedReader( new InputStreamReader( from ) );
+            fromReader = new BufferedReader( new InputStreamReader( from ) );
             toReader = new BufferedReader( new InputStreamReader( to ) );
 
             return getDiff( fromReader, toReader );
         }
         finally {
-            Closeables.closeQuietly(fromReader);
-            Closeables.closeQuietly(toReader);
+            Closeables.closeQuietly( fromReader );
+            Closeables.closeQuietly( toReader );
         }
     }
 
@@ -112,7 +112,7 @@ public class DiffUtils {
      */
     private static String renderDiff(final Diff diff) {
 
-        @SuppressWarnings( { "cast", "unchecked" })
+        @SuppressWarnings({ "cast", "unchecked" })
         Iterable<Hunk> hunks = diff.getHunks();
         StringBuilder out = new StringBuilder( "<pre>" );
 

@@ -7,7 +7,8 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 
 /**
- * A <code>JSplitPane</code> subclass that can try to remove the divider border. Useful if the splitted components render their own borders.
+ * A <code>JSplitPane</code> subclass that can try to remove the divider border. Useful if the splitted components render their own
+ * borders.
  * Note that this feature is not supported by all look&amp;feels. Some look&amp;feel implementation will always show a divider border, and
  * conversely, others will never show a divider border.
  *
@@ -41,8 +42,9 @@ public final class UIFSplitPane extends JSplitPane {
      */
     public UIFSplitPane() {
 
-        this( HORIZONTAL_SPLIT, false, new JButton( UIManager.getString( "SplitPane.leftButtonText" ) ),
-              new JButton( UIManager.getString( "SplitPane.rightButtonText" ) ) );
+        this(
+                HORIZONTAL_SPLIT, false, new JButton( UIManager.getString( "SplitPane.leftButtonText" ) ),
+                new JButton( UIManager.getString( "SplitPane.rightButtonText" ) ) );
     }
 
     /**
@@ -132,7 +134,8 @@ public final class UIFSplitPane extends JSplitPane {
 
     /**
      * Checks and answers whether the divider border shall be visible or invisible. Note that this feature is not supported by all
-     * look&amp;feels. Some look&amp;feel implementation will always show a divider border, and conversely, others will never show a divider
+     * look&amp;feels. Some look&amp;feel implementation will always show a divider border, and conversely, others will never show a
+     * divider
      * border.
      *
      * @return the desired (but potentially inaccurate) divider border visiblity

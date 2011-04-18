@@ -45,60 +45,68 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
         super( id );
         setOutputMarkupId( true );
 
-        add( new Image( "image", new DynamicImageResource() {
+        add(
+                new Image(
+                        "image", new DynamicImageResource() {
 
-            @Override
-            protected byte[] getImageData() {
+                    @Override
+                    protected byte[] getImageData() {
 
-                return AjaxEditableImage.this.getImageData();
-            }
-        }.setCacheable( false ) ) {
+                        return AjaxEditableImage.this.getImageData();
+                    }
+                }.setCacheable( false ) ) {
 
-            @Override
-            public boolean isVisible() {
+                    @Override
+                    public boolean isVisible() {
 
-                return hasImageData();
-            }
-        }.add( new AttributeAppender( "class", new LoadableDetachableModel<String>() {
+                        return hasImageData();
+                    }
+                }.add(
+                        new AttributeAppender(
+                                "class", new LoadableDetachableModel<String>() {
 
-            @Override
-            protected String load() {
+                                    @Override
+                                    protected String load() {
 
-                return isEditable()? "link": "";
-            }
-        }, " " ) ).add( new AjaxEventBehavior( "onClick" ) {
+                                        return isEditable()? "link": "";
+                                    }
+                                }, " " ) ).add(
+                        new AjaxEventBehavior( "onClick" ) {
 
-            @Override
-            protected void onEvent(final AjaxRequestTarget target) {
+                            @Override
+                            protected void onEvent(final AjaxRequestTarget target) {
 
-                if (isEditable())
-                    window.show( target );
-            }
-        } ) );
-        add( new Image( "noimage", PackageResource.get( Resources.class, "boxed-x2.png" ) ) {
+                                if (isEditable())
+                                    window.show( target );
+                            }
+                        } ) );
+        add(
+                new Image( "noimage", PackageResource.get( Resources.class, "boxed-x2.png" ) ) {
 
-            @Override
-            public boolean isVisible() {
+                    @Override
+                    public boolean isVisible() {
 
-                return !hasImageData() && isEditable();
-            }
-        }.add( new AjaxEventBehavior( "onClick" ) {
+                        return !hasImageData() && isEditable();
+                    }
+                }.add(
+                        new AjaxEventBehavior( "onClick" ) {
 
-            @Override
-            protected void onEvent(final AjaxRequestTarget target) {
+                            @Override
+                            protected void onEvent(final AjaxRequestTarget target) {
 
-                window.show( target );
-            }
-        } ) );
-        add( window = new ModalWindow( "upload" ) {
+                                window.show( target );
+                            }
+                        } ) );
+        add(
+                window = new ModalWindow( "upload" ) {
 
-            {
-                setInitialWidth( 300 );
-                setInitialHeight( 100 );
-                setContent( new UploadPanel( this, getContentId() ) );
-                setWindowClosedCallback( AjaxEditableImage.this );
-            }
-        } );
+                    {
+                        setInitialWidth( 300 );
+                        setInitialHeight( 100 );
+                        setContent( new UploadPanel( this, getContentId() ) );
+                        setWindowClosedCallback( AjaxEditableImage.this );
+                    }
+                } );
     }
 
     /**
@@ -112,7 +120,8 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
     }
 
     /**
-     * Override me to perform a more lazy check of whether image data is available. None will be loaded from {@link #getImageData()} if this
+     * Override me to perform a more lazy check of whether image data is available. None will be loaded from {@link #getImageData()} if
+     * this
      * returns <code>false</code>.
      *
      * @return <code>true</code>  if image data is available for this component.
@@ -157,21 +166,23 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
 
             super( id );
 
-            add( new Form<Void>( "form" ) {
+            add(
+                    new Form<Void>( "form" ) {
 
-                {
-                    add( new FileUploadField( "file", file ) );
-                    add( new AjaxButton( "submit" ) {
+                        {
+                            add( new FileUploadField( "file", file ) );
+                            add(
+                                    new AjaxButton( "submit" ) {
 
-                        @Override
-                        protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+                                        @Override
+                                        protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 
-                            setImageData( file.getObject().getBytes() );
-                            modalWindow.close( target );
+                                            setImageData( file.getObject().getBytes() );
+                                            modalWindow.close( target );
+                                        }
+                                    } );
                         }
                     } );
-                }
-            } );
         }
     }
 }

@@ -15,10 +15,7 @@
  */
 package com.lyndir.lhunath.lib.wayward.i18n;
 
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 /**

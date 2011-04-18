@@ -2,9 +2,7 @@ package com.lyndir.lhunath.lib.wayward.model;
 
 import com.google.common.collect.ImmutableList;
 import java.util.List;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.*;
 
 
 /**

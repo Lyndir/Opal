@@ -305,6 +305,7 @@ public class Vec2 implements Serializable {
 
         return new Vec2( x, getY() );
     }
+
     public Vec2 withY(final double y) {
 
         return new Vec2( getX(), y );

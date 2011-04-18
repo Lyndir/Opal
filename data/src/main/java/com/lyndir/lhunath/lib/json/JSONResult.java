@@ -63,7 +63,8 @@ public class JSONResult {
 
     public static JSONResult failureUpdateRequired(Serializable requiredVersion) {
 
-        return new JSONResult( null, CODE_FAILURE_UPDATE_REQUIRED, "The server does not work with clients older than " + requiredVersion,
+        return new JSONResult(
+                null, CODE_FAILURE_UPDATE_REQUIRED, "The server does not work with clients older than " + requiredVersion,
                 "server.error.outdated", requiredVersion ).setOutdated( true );
     }
 

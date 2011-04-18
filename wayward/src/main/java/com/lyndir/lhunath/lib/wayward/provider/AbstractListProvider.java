@@ -56,7 +56,7 @@ public abstract class AbstractListProvider<T> implements IDataProvider<T> {
      * override this method or run-time madness will ensue.</p>
      */
     @Override
-    @SuppressWarnings( { "unchecked" })
+    @SuppressWarnings({ "unchecked" })
     public IModel<T> model(final T object) {
 
         return (IModel<T>) new Model<Serializable>( (Serializable) object );

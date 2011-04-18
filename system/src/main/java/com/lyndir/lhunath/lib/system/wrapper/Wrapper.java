@@ -16,17 +16,17 @@
 
 package com.lyndir.lhunath.lib.system.wrapper;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.HashMap;
 import java.util.Map;
 
 
 /**
  * <i>{@link Wrapper} - An abstract class that assists in writing wrapper classes for other classes that may or may not be
- * available.</i><br> <br> This class provides utility methods that facilitate access to classes that may or may not be available at compile
- * time or runtime.<br> <br> The idea is that any code that wishes to use the class that may or may not be available uses proxy methods on a
+ * available.</i><br> <br> This class provides utility methods that facilitate access to classes that may or may not be available at
+ * compile
+ * time or runtime.<br> <br> The idea is that any code that wishes to use the class that may or may not be available uses proxy methods on
+ * a
  * proxy class instead. This proxy class implements this {@link Wrapper} and all methods that the wrapped class provides. Upon each call to
  * these proxied methods, the proxy class should call {@link #invoke(String, Class[], Object...)} with the name of the method and parameter
  * data. This call will return the intended result if the wrapper class is available or fail with an {@link UnsupportedOperationException}

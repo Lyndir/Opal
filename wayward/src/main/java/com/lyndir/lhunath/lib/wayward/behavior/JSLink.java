@@ -38,14 +38,15 @@ public class JSLink extends AttributeModifier {
      */
     public JSLink(final String function, final Object... args) {
 
-        this( new LoadableDetachableModel<String>() {
+        this(
+                new LoadableDetachableModel<String>() {
 
-            @Override
-            protected String load() {
+                    @Override
+                    protected String load() {
 
-                return JSUtils.callFunction( function, args );
-            }
-        } );
+                        return JSUtils.callFunction( function, args );
+                    }
+                } );
     }
 
     /**

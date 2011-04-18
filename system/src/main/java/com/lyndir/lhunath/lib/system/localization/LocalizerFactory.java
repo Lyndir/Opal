@@ -18,10 +18,7 @@ package com.lyndir.lhunath.lib.system.localization;
 import com.lyndir.lhunath.lib.system.localization.UseBundle.UnspecifiedBundle;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.Serializable;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
+import java.lang.reflect.*;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
@@ -73,20 +70,23 @@ public abstract class LocalizerFactory {
 
         if (!(localizationInterface.isAnnotationPresent( UseBundle.class ) || localizationInterface.isAnnotationPresent(
                 UseLocalizationProvider.class )))
-            throw new IllegalArgumentException( MessageFormat.format( "Localization interface must be annotated with {0} or {1}: {2}", //
-                                                                      UseBundle.class, UseLocalizationProvider.class,
-                                                                      localizationInterface ) );
+            throw new IllegalArgumentException(
+                    MessageFormat.format(
+                            "Localization interface must be annotated with {0} or {1}: {2}", //
+                            UseBundle.class, UseLocalizationProvider.class, localizationInterface ) );
 
         for (final Method method : localizationInterface.getDeclaredMethods())
             if (!method.isAnnotationPresent( UseKey.class ))
                 throw new IllegalArgumentException(
-                        MessageFormat.format( "Method must be annotated with {0}: {1} of {2}", UseKey.class, method,
-                                              localizationInterface ) );
+                        MessageFormat.format(
+                                "Method must be annotated with {0}: {1} of {2}", UseKey.class, method, localizationInterface ) );
 
         // Create a localization interface proxy.
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        return localizationInterface.cast( Proxy.newProxyInstance( classLoader, new Class[] { localizationInterface, Serializable.class },
-                                                                   new LocalizationInvocationHandler( context ) ) );
+        return localizationInterface.cast(
+                Proxy.newProxyInstance(
+                        classLoader, new Class[]{ localizationInterface, Serializable.class },
+                        new LocalizationInvocationHandler( context ) ) );
     }
 
     private static class LocalizationInvocationHandler implements InvocationHandler, Serializable {
@@ -124,8 +124,8 @@ public abstract class LocalizerFactory {
                     bundleResource = useBundleAnnotation.resource();
                 if (bundleResource == null || bundleResource.isEmpty())
                     throw new IllegalStateException(
-                            MessageFormat.format( "No #type or #resource was specified on the {0} annotation for {1}", UseBundle.class,
-                                                  method ) );
+                            MessageFormat.format(
+                                    "No #type or #resource was specified on the {0} annotation for {1}", UseBundle.class, method ) );
 
                 ResourceBundle bundle = ResourceBundle.getBundle( bundleResource );
 

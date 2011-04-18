@@ -2,9 +2,7 @@ package com.lyndir.lhunath.lib.gui.template.shade;
 
 import com.lyndir.lhunath.lib.system.BaseConfig;
 import com.lyndir.lhunath.lib.system.logging.Logger;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import javax.swing.*;
 
 

@@ -26,10 +26,7 @@ package com.lyndir.lhunath.lib.wayward.servlet;
 
 import java.io.IOException;
 import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 
 
 /**
@@ -83,9 +80,11 @@ public class DisableURLSessionFilter implements Filter {
     @Override
     public void init(final FilterConfig config)
             throws ServletException {
+
     }
 
     @Override
     public void destroy() {
+
     }
 }

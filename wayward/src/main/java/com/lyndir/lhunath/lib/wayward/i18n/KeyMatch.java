@@ -15,10 +15,7 @@
  */
 package com.lyndir.lhunath.lib.wayward.i18n;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 
 /**
@@ -68,7 +65,8 @@ public @interface KeyMatch {
     String key();
 
     /**
-     * @return The key part to append when all of the if* conditions holds <code>false</code>. Append nothing if unspecified or an empty string.
+     * @return The key part to append when all of the if* conditions holds <code>false</code>. Append nothing if unspecified or an empty
+     *         string.
      */
     String elseKey() default "";
 }

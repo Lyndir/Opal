@@ -15,9 +15,7 @@
  */
 package com.lyndir.lhunath.lib.system;
 
-import com.google.common.io.ByteStreams;
-import com.google.common.io.CharStreams;
-import com.google.common.io.Closeables;
+import com.google.common.io.*;
 import com.lyndir.lhunath.lib.system.dummy.NullOutputStream;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.*;
@@ -126,38 +124,40 @@ public class Shell {
         }
 
         try {
-            @SuppressWarnings( { "CallToRuntimeExec" })
+            @SuppressWarnings({ "CallToRuntimeExec" })
             final Process process = Runtime.getRuntime().exec( execCmd, null, currDir );
 
-            new Thread( new Runnable() {
+            new Thread(
+                    new Runnable() {
 
-                @Override
-                public void run() {
+                        @Override
+                        public void run() {
 
-                    try {
-                        ByteStreams.copy( process.getInputStream(), out );
-                    }
-                    catch (IOException e) {
-                        logger.err( e, "Couldn't read from process or write to stdout!" );
-                    }
-                    Closeables.closeQuietly( process.getInputStream() );
-                }
-            }, cmd[0] + " stdout" ).start();
+                            try {
+                                ByteStreams.copy( process.getInputStream(), out );
+                            }
+                            catch (IOException e) {
+                                logger.err( e, "Couldn't read from process or write to stdout!" );
+                            }
+                            Closeables.closeQuietly( process.getInputStream() );
+                        }
+                    }, cmd[0] + " stdout" ).start();
 
-            new Thread( new Runnable() {
+            new Thread(
+                    new Runnable() {
 
-                @Override
-                public void run() {
+                        @Override
+                        public void run() {
 
-                    try {
-                        ByteStreams.copy( process.getErrorStream(), err );
-                    }
-                    catch (IOException e) {
-                        logger.err( e, "Couldn't read from process or write to stderr!" );
-                    }
-                    Closeables.closeQuietly( process.getErrorStream() );
-                }
-            }, cmd[0] + " stderr" ).start();
+                            try {
+                                ByteStreams.copy( process.getErrorStream(), err );
+                            }
+                            catch (IOException e) {
+                                logger.err( e, "Couldn't read from process or write to stderr!" );
+                            }
+                            Closeables.closeQuietly( process.getErrorStream() );
+                        }
+                    }, cmd[0] + " stderr" ).start();
 
             return process;
         }

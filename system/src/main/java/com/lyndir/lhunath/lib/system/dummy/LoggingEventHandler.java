@@ -21,9 +21,7 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.*;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.MouseInputListener;
+import javax.swing.event.*;
 
 
 /**
@@ -285,8 +283,8 @@ public class LoggingEventHandler
     @Override
     public void windowDeactivated(final WindowEvent event) {
 
-        logger.dbg( "%s: window deactivated [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
-                    event.getNewState() );
+        logger.dbg(
+                "%s: window deactivated [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
     /**
@@ -295,8 +293,8 @@ public class LoggingEventHandler
     @Override
     public void windowDeiconified(final WindowEvent event) {
 
-        logger.dbg( "%s: window deiconified [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(),
-                    event.getNewState() );
+        logger.dbg(
+                "%s: window deiconified [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
     /**
@@ -332,8 +330,8 @@ public class LoggingEventHandler
     @Override
     public void propertyChange(final PropertyChangeEvent event) {
 
-        logger.dbg( "%s: property [Name: %s, Value: From %s to %s]", name, event.getPropertyName(), event.getOldValue(),
-                    event.getNewValue() );
+        logger.dbg(
+                "%s: property [Name: %s, Value: From %s to %s]", name, event.getPropertyName(), event.getOldValue(), event.getNewValue() );
     }
 
     /**
@@ -342,9 +340,10 @@ public class LoggingEventHandler
     @Override
     public void mouseClicked(final MouseEvent event) {
 
-        logger.dbg( "%s: clicked [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
-                    event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
-                    System.currentTimeMillis() - event.getWhen() );
+        logger.dbg(
+                "%s: clicked [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
+                event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
+                System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -353,9 +352,10 @@ public class LoggingEventHandler
     @Override
     public void mouseEntered(final MouseEvent event) {
 
-        logger.dbg( "%s: entered [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
-                    event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
-                    System.currentTimeMillis() - event.getWhen() );
+        logger.dbg(
+                "%s: entered [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
+                event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
+                System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -364,9 +364,10 @@ public class LoggingEventHandler
     @Override
     public void mouseExited(final MouseEvent event) {
 
-        logger.dbg( "%s: exited [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
-                    event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
-                    System.currentTimeMillis() - event.getWhen() );
+        logger.dbg(
+                "%s: exited [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
+                event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
+                System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -375,9 +376,10 @@ public class LoggingEventHandler
     @Override
     public void mousePressed(final MouseEvent event) {
 
-        logger.dbg( "%s: pressed [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
-                    event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
-                    System.currentTimeMillis() - event.getWhen() );
+        logger.dbg(
+                "%s: pressed [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
+                event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
+                System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -386,9 +388,10 @@ public class LoggingEventHandler
     @Override
     public void mouseReleased(final MouseEvent event) {
 
-        logger.dbg( "%s: released [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
-                    event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
-                    System.currentTimeMillis() - event.getWhen() );
+        logger.dbg(
+                "%s: released [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
+                event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
+                System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -397,9 +400,10 @@ public class LoggingEventHandler
     @Override
     public void mouseDragged(final MouseEvent event) {
 
-        logger.dbg( "%s: dragged [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
-                    event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
-                    System.currentTimeMillis() - event.getWhen() );
+        logger.dbg(
+                "%s: dragged [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
+                event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
+                System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -408,9 +412,10 @@ public class LoggingEventHandler
     @Override
     public void mouseMoved(final MouseEvent event) {
 
-        logger.dbg( "%s: moved [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
-                    event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
-                    System.currentTimeMillis() - event.getWhen() );
+        logger.dbg(
+                "%s: moved [Id: %d, Mod: %d, ModEx: %d, Button: %d, Clicks: %d, At: (%d,%d), Time: %dms ago]", name, event.getID(),
+                event.getModifiers(), event.getModifiersEx(), event.getButton(), event.getClickCount(), event.getX(), event.getY(),
+                System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -432,8 +437,9 @@ public class LoggingEventHandler
     @Override
     public void keyPressed(final KeyEvent event) {
 
-        logger.dbg( "%s: key pressed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(), event.getKeyChar(),
-                    event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis() - event.getWhen() );
+        logger.dbg(
+                "%s: key pressed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(), event.getKeyChar(),
+                event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -442,8 +448,9 @@ public class LoggingEventHandler
     @Override
     public void keyReleased(final KeyEvent event) {
 
-        logger.dbg( "%s: key released [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(), event.getKeyChar(),
-                    event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis() - event.getWhen() );
+        logger.dbg(
+                "%s: key released [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(), event.getKeyChar(),
+                event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -452,8 +459,9 @@ public class LoggingEventHandler
     @Override
     public void keyTyped(final KeyEvent event) {
 
-        logger.dbg( "%s: key typed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(), event.getKeyChar(),
-                    event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis() - event.getWhen() );
+        logger.dbg(
+                "%s: key typed [Id: %d, Char: %s (%d), Location: %d, Time: %dms ago]", name, event.getID(), event.getKeyChar(),
+                event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -462,8 +470,9 @@ public class LoggingEventHandler
     @Override
     public void caretPositionChanged(final InputMethodEvent event) {
 
-        logger.dbg( "%s: caret [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", name, event.getID(), event.getCommittedCharacterCount(),
-                    event.getText(), System.currentTimeMillis() - event.getWhen() );
+        logger.dbg(
+                "%s: caret [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", name, event.getID(), event.getCommittedCharacterCount(),
+                event.getText(), System.currentTimeMillis() - event.getWhen() );
     }
 
     /**
@@ -472,7 +481,8 @@ public class LoggingEventHandler
     @Override
     public void inputMethodTextChanged(final InputMethodEvent event) {
 
-        logger.dbg( "%s: text changed [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", name, event.getID(),
-                    event.getCommittedCharacterCount(), event.getText(), System.currentTimeMillis() - event.getWhen() );
+        logger.dbg(
+                "%s: text changed [Id: %d, Chars: %d, Text: %s, Time: %dms ago]", name, event.getID(), event.getCommittedCharacterCount(),
+                event.getText(), System.currentTimeMillis() - event.getWhen() );
     }
 }

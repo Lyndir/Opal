@@ -18,9 +18,7 @@ package com.lyndir.lhunath.lib.system.logging;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import org.slf4j.LoggerFactory;
 
 
@@ -91,9 +89,9 @@ public class Logger implements Serializable {
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments The arguments to inject into the event message format.
      *
-     * @see #trc(Throwable, String, Object...)
-     *
      * @return Self, for chaining.
+     *
+     * @see #trc(Throwable, String, Object...)
      */
     public Logger trc(final String descriptionFormat, final Object... descriptionArguments) {
 
@@ -329,7 +327,7 @@ public class Logger implements Serializable {
      *
      * @return An unchecked {@link Error}.
      */
-    @SuppressWarnings( { "ThrowableResultOfMethodCallIgnored" })
+    @SuppressWarnings({ "ThrowableResultOfMethodCallIgnored" })
     public RuntimeException toError() {
 
         if (eventCause.get() instanceof RuntimeException)
@@ -347,7 +345,8 @@ public class Logger implements Serializable {
      *                   given class has a constructor that takes a {@link String} argument (the message) and a {@link Throwable} argument
      *                   (the cause) in that order.
      * @param args       Optional additional arguments. These will be passed to the <code>errorClass</code> constructor, so make sure the
-     *                   class has a constructor that supports the given number and type of arguments. They should <b>follow</b> the message
+     *                   class has a constructor that supports the given number and type of arguments. They should <b>follow</b> the
+     *                   message
      *                   and cause arguments.
      * @param <E>        The type of the requested exception must be a subclass of {@link Throwable}.
      *
@@ -394,12 +393,14 @@ public class Logger implements Serializable {
                     constructors.add( constructor );
             }
             if (constructors.isEmpty())
-                throw loggerLogger.err( "No constructors found for %s that match argument types %s", //
-                                        errorClass, Arrays.asList( types ) ) //
+                throw loggerLogger.err(
+                        "No constructors found for %s that match argument types %s", //
+                        errorClass, Arrays.asList( types ) ) //
                         .toError( IllegalArgumentException.class );
             if (constructors.size() > 1)
-                throw loggerLogger.err( "Ambiguous argument types %s for constructors of %s.  Constructors: %s", //
-                                        Arrays.asList( types ), errorClass, constructors ) //
+                throw loggerLogger.err(
+                        "Ambiguous argument types %s for constructors of %s.  Constructors: %s", //
+                        Arrays.asList( types ), errorClass, constructors ) //
                         .toError( IllegalArgumentException.class );
 
             return constructors.get( 0 ).newInstance( arguments );

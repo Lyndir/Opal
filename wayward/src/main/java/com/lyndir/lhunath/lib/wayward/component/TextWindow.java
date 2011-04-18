@@ -5,9 +5,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
@@ -45,32 +43,34 @@ public class TextWindow<T> extends ModalWindow {
 
             super( id, model );
 
-            add( new Form<Object>( "form" ) {
+            add(
+                    new Form<Object>( "form" ) {
 
-                public Component field;
-                public Component area;
+                        public Component field;
+                        public Component area;
 
-                {
-                    add( field = new TextField<T>( "field", model, type ).add( new FocusOnReady() ) );
-                    add( area = new TextArea<T>( "area", model ).add( new FocusOnReady() ) );
-                    add( new AjaxButton("submit") {
-                        @Override
-                        protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                        {
+                            add( field = new TextField<T>( "field", model, type ).add( new FocusOnReady() ) );
+                            add( area = new TextArea<T>( "area", model ).add( new FocusOnReady() ) );
+                            add(
+                                    new AjaxButton( "submit" ) {
+                                        @Override
+                                        protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 
-                            closeCurrent( target );
+                                            closeCurrent( target );
+                                        }
+                                    } );
                         }
-                    });
-                }
 
-                @Override
-                protected void onConfigure() {
+                        @Override
+                        protected void onConfigure() {
 
-                    super.onConfigure();
+                            super.onConfigure();
 
-                    field.setVisible( oneLine );
-                    area.setVisible( !oneLine );
-                }
-            } );
+                            field.setVisible( oneLine );
+                            area.setVisible( !oneLine );
+                        }
+                    } );
         }
     }
 

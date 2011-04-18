@@ -20,10 +20,7 @@ import com.lyndir.lhunath.lib.system.util.Utils;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.util.PPaintContext;
 import java.awt.*;
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
+import java.awt.geom.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -143,6 +140,7 @@ public class PBox extends PShape {
      * @return The paint used to draw the text.
      */
     public Paint getTextPaint() {
+
         return textPaint;
     }
 
@@ -276,6 +274,7 @@ public class PBox extends PShape {
      * @return Whether this box is being automatically sized.
      */
     public boolean isAutoSize() {
+
         return autoSize;
     }
 
@@ -445,8 +444,8 @@ public class PBox extends PShape {
             g2.setFont( getFont() );
             g2.setPaint( textPaint );
             g2.setStroke( new BasicStroke( 1 ) );
-            g2.drawString( title, (int) (getBounds().getCenterX() - titleBounds.getCenterX()),
-                           (int) (getY() + titleBounds.getHeight() + 3) );
+            g2.drawString(
+                    title, (int) (getBounds().getCenterX() - titleBounds.getCenterX()), (int) (getY() + titleBounds.getHeight() + 3) );
         }
 
         g2.dispose();

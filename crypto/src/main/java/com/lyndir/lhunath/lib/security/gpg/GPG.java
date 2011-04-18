@@ -20,14 +20,8 @@ import com.google.common.io.Closeables;
 import com.lyndir.lhunath.lib.system.BaseConfig;
 import java.io.*;
 import java.security.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import org.bouncycastle.bcpg.ArmoredOutputStream;
-import org.bouncycastle.bcpg.CompressionAlgorithmTags;
-import org.bouncycastle.bcpg.HashAlgorithmTags;
-import org.bouncycastle.bcpg.SymmetricKeyAlgorithmTags;
+import java.util.*;
+import org.bouncycastle.bcpg.*;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openpgp.*;
 import org.slf4j.Logger;
@@ -212,14 +206,15 @@ public class GPG {
                     if (!key.getUserIDs().hasNext())
                         continue;
 
-                    keys.add( new PrintableKeyWrapper<PGPSecretKey>( key, key.getKeyID() ) {
+                    keys.add(
+                            new PrintableKeyWrapper<PGPSecretKey>( key, key.getKeyID() ) {
 
-                        @Override
-                        public String toString() {
+                                @Override
+                                public String toString() {
 
-                            return getKey().getUserIDs().next().toString();
-                        }
-                    } );
+                                    return getKey().getUserIDs().next().toString();
+                                }
+                            } );
                 }
             }
 
@@ -259,14 +254,15 @@ public class GPG {
                     if (!key.getUserIDs().hasNext())
                         continue;
 
-                    keys.add( new PrintableKeyWrapper<PGPPublicKey>( key, key.getKeyID() ) {
+                    keys.add(
+                            new PrintableKeyWrapper<PGPPublicKey>( key, key.getKeyID() ) {
 
-                        @Override
-                        public String toString() {
+                                @Override
+                                public String toString() {
 
-                            return getKey().getUserIDs().next().toString();
-                        }
-                    } );
+                                    return getKey().getUserIDs().next().toString();
+                                }
+                            } );
                 }
             }
 
@@ -326,7 +322,7 @@ public class GPG {
     public static byte[] encrypt(final byte[] plainTextData, final PGPPublicKey publicKey, final boolean armoured)
             throws NoSuchProviderException, IOException, PGPException {
 
-        return ByteStreams.toByteArray(encrypt( new ByteArrayInputStream( plainTextData ), publicKey, armoured ) );
+        return ByteStreams.toByteArray( encrypt( new ByteArrayInputStream( plainTextData ), publicKey, armoured ) );
     }
 
     /**
@@ -349,15 +345,14 @@ public class GPG {
         PGPLiteralDataGenerator literalDataGenerator = new PGPLiteralDataGenerator();
         ByteArrayOutputStream decryptedStream = new ByteArrayOutputStream();
         PGPCompressedDataGenerator compressor = new PGPCompressedDataGenerator( CompressionAlgorithmTags.ZLIB );
-        OutputStream literalStream = literalDataGenerator.open( compressor.open( decryptedStream ), PGPLiteralData.BINARY, "", new Date(),
-                                                                new byte[BaseConfig.BUFFER_SIZE] );
+        OutputStream literalStream = literalDataGenerator.open(
+                compressor.open( decryptedStream ), PGPLiteralData.BINARY, "", new Date(), new byte[BaseConfig.BUFFER_SIZE] );
         ByteStreams.copy( plainTextStream, literalStream );
         compressor.close();
 
         /* Encrypt compressed data. */
-        PGPEncryptedDataGenerator encryptedDataGenerator = new PGPEncryptedDataGenerator( SymmetricKeyAlgorithmTags.CAST5,
-                                                                                          new SecureRandom(),
-                                                                                          BouncyCastleProvider.PROVIDER_NAME );
+        PGPEncryptedDataGenerator encryptedDataGenerator = new PGPEncryptedDataGenerator(
+                SymmetricKeyAlgorithmTags.CAST5, new SecureRandom(), BouncyCastleProvider.PROVIDER_NAME );
         encryptedDataGenerator.addMethod( publicKey );
 
         /* Create the encrypted output stream, armour if necessary. */
@@ -582,10 +577,11 @@ public class GPG {
             throws NoSuchAlgorithmException, NoSuchProviderException, PGPException, SignatureException, IOException {
 
         /* Build the signature generator. */
-        PGPSignatureGenerator signer = new PGPSignatureGenerator( privateKey.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1,
-                                                                  BouncyCastleProvider.PROVIDER_NAME );
-        signer.initSign( PGPSignature.BINARY_DOCUMENT,
-                         privateKey.extractPrivateKey( passPhrase.toCharArray(), BouncyCastleProvider.PROVIDER_NAME ) );
+        PGPSignatureGenerator signer = new PGPSignatureGenerator(
+                privateKey.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1, BouncyCastleProvider.PROVIDER_NAME );
+        signer.initSign(
+                PGPSignature.BINARY_DOCUMENT,
+                privateKey.extractPrivateKey( passPhrase.toCharArray(), BouncyCastleProvider.PROVIDER_NAME ) );
 
         /* Write the data into the generator. */
         byte[] buffer = new byte[BaseConfig.BUFFER_SIZE];
@@ -616,7 +612,7 @@ public class GPG {
      */
     private static class PrintableKeyWrapper<K> {
 
-        private final K key;
+        private final K    key;
         private final Long keyId;
 
         /**

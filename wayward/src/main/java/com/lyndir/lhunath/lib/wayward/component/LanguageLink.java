@@ -19,9 +19,7 @@ import java.util.Locale;
 import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.*;
 
 
 /**
@@ -53,14 +51,16 @@ public class LanguageLink extends Link<String> {
 
         super( id, model );
 
-        add( new AttributeAppender( "class", new AbstractReadOnlyModel<String>() {
+        add(
+                new AttributeAppender(
+                        "class", new AbstractReadOnlyModel<String>() {
 
-            @Override
-            public String getObject() {
+                            @Override
+                            public String getObject() {
 
-                return Session.get().getLocale().getLanguage().equals( getModelObject() )? "active": null;
-            }
-        }, ";" ) );
+                                return Session.get().getLocale().getLanguage().equals( getModelObject() )? "active": null;
+                            }
+                        }, ";" ) );
     }
 
     /**

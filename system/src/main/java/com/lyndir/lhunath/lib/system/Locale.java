@@ -15,9 +15,7 @@
  */
 package com.lyndir.lhunath.lib.system;
 
-import java.util.ListResourceBundle;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 /**
@@ -30,8 +28,8 @@ import java.util.ResourceBundle;
  */
 public class Locale {
 
-    private static final Locale         instance  = new Locale();
-    private              ResourceBundle resources;
+    private static final Locale instance = new Locale();
+    private ResourceBundle resources;
 
     private Locale() {
 

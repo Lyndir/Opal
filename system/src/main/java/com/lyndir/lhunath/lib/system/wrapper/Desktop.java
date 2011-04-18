@@ -64,7 +64,7 @@ public class Desktop extends Wrapper {
 
         try {
             Object desktopAction = mapEnumValue( action, getClass( "java.awt.Desktop.Action" ) );
-            return (Boolean) invoke( "isSupported", new Class[] { getClass( "java.awt.Desktop.Action" ) }, desktopAction );
+            return (Boolean) invoke( "isSupported", new Class[]{ getClass( "java.awt.Desktop.Action" ) }, desktopAction );
         }
 
         catch (Exception ignored) {
@@ -92,11 +92,11 @@ public class Desktop extends Wrapper {
      *                                       within an applet or Java Web Started application
      * @throws IllegalArgumentException      - if the necessary permissions are not available and the URI can not be converted to a URL
      */
-    @SuppressWarnings( { "unused", "RedundantThrows" })
+    @SuppressWarnings({ "unused", "RedundantThrows" })
     public void browse(final URI uri)
             throws NullPointerException, UnsupportedOperationException, IOException, SecurityException, IllegalArgumentException {
 
-        invoke( "browse", new Class[] { URI.class }, uri );
+        invoke( "browse", new Class[]{ URI.class }, uri );
     }
 
     /**
@@ -114,11 +114,11 @@ public class Desktop extends Wrapper {
      *                                       write access to the file, or it denies the AWTPermission("showWindowWithoutWarningBanner")
      *                                       permission, or the calling thread is not allowed to create a subprocess
      */
-    @SuppressWarnings( { "unused", "RedundantThrows" })
+    @SuppressWarnings({ "unused", "RedundantThrows" })
     public void edit(final File file)
             throws NullPointerException, IllegalArgumentException, UnsupportedOperationException, IOException, SecurityException {
 
-        invoke( "edit", new Class[] { File.class }, file );
+        invoke( "edit", new Class[]{ File.class }, file );
     }
 
     /**
@@ -129,7 +129,7 @@ public class Desktop extends Wrapper {
      * @throws SecurityException             - if a security manager exists and it denies the AWTPermission("showWindowWithoutWarningBanner")
      *                                       permission, or the calling thread is not allowed to create a subprocess
      */
-    @SuppressWarnings( { "unused", "RedundantThrows" })
+    @SuppressWarnings({ "unused", "RedundantThrows" })
     public void mail()
             throws UnsupportedOperationException, IOException, SecurityException {
 
@@ -148,11 +148,11 @@ public class Desktop extends Wrapper {
      * @throws SecurityException             - if a security manager exists and it denies the AWTPermission("showWindowWithoutWarningBanner")
      *                                       permission, or the calling thread is not allowed to create a subprocess
      */
-    @SuppressWarnings( { "unused", "RedundantThrows" })
+    @SuppressWarnings({ "unused", "RedundantThrows" })
     public void mail(final URI mailtoURI)
             throws NullPointerException, IllegalArgumentException, UnsupportedOperationException, IOException, SecurityException {
 
-        invoke( "mail", new Class[] { URI.class }, mailtoURI );
+        invoke( "mail", new Class[]{ URI.class }, mailtoURI );
     }
 
     /**
@@ -163,17 +163,18 @@ public class Desktop extends Wrapper {
      * @throws NullPointerException          - if file is null
      * @throws IllegalArgumentException      - if the specified file doesn't exist
      * @throws UnsupportedOperationException - if the current platform does not support the Desktop.Action#OPEN action
-     * @throws IOException                   - if the specified file has no associated application or the associated application fails to be
+     * @throws IOException                   - if the specified file has no associated application or the associated application fails to
+     *                                       be
      *                                       launched
      * @throws SecurityException             - if a security manager exists and its SecurityManager#checkRead(java.lang.String) method
      *                                       denies read access to the file, or it denies the AWTPermission("showWindowWithoutWarningBanner")
      *                                       permission, or the calling thread is not allowed to create a subprocess
      */
-    @SuppressWarnings( { "unused", "RedundantThrows" })
+    @SuppressWarnings({ "unused", "RedundantThrows" })
     public void open(final File file)
             throws NullPointerException, IllegalArgumentException, UnsupportedOperationException, IOException, SecurityException {
 
-        invoke( "open", new Class[] { File.class }, file );
+        invoke( "open", new Class[]{ File.class }, file );
     }
 
     /**
@@ -189,11 +190,11 @@ public class Desktop extends Wrapper {
      *                                       denies read access to the file, or its SecurityManager#checkPrintJobAccess() method denies the
      *                                       permission to print the file, or the calling thread is not allowed to create a subprocess
      */
-    @SuppressWarnings( { "unused", "RedundantThrows" })
+    @SuppressWarnings({ "unused", "RedundantThrows" })
     public void print(final File file)
             throws NullPointerException, IllegalArgumentException, UnsupportedOperationException, IOException, SecurityException {
 
-        invoke( "print", new Class[] { File.class }, file );
+        invoke( "print", new Class[]{ File.class }, file );
     }
 
     /**

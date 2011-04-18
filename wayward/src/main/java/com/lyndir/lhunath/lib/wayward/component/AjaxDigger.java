@@ -31,55 +31,59 @@ public class AjaxDigger<D extends Serializable> extends Panel {
         setOutputMarkupId( true );
 
         levels.push( initialLevel );
-        add( new ListView<DiggerLevel>( "levels", levels ) {
-
-            @Override
-            protected void populateItem(final ListItem<DiggerLevel> levelListItem) {
-
-                final DiggerLevel level = levelListItem.getModelObject();
-
-                levelListItem.add( new Label( "heading", level.getHeading() ) );
-                levelListItem.add( new ListView<DiggerItem>( "items", level.getItems() ) {
+        add(
+                new ListView<DiggerLevel>( "levels", levels ) {
 
                     @Override
-                    protected void populateItem(final ListItem<DiggerItem> itemListItem) {
+                    protected void populateItem(final ListItem<DiggerLevel> levelListItem) {
 
-                        final DiggerItem diggerItem = itemListItem.getModelObject();
-                        itemListItem.add( new AjaxLink<Void>( "link" ) {
+                        final DiggerLevel level = levelListItem.getModelObject();
 
-                            {
-                                add( diggerItem.getSelectItem( "selectItem", level ) );
-                            }
+                        levelListItem.add( new Label( "heading", level.getHeading() ) );
+                        levelListItem.add(
+                                new ListView<DiggerItem>( "items", level.getItems() ) {
 
-                            @Override
-                            public boolean isVisible() {
+                                    @Override
+                                    protected void populateItem(final ListItem<DiggerItem> itemListItem) {
 
-                                return !ObjectUtils.isEqual( level.getActiveItem(), diggerItem );
-                            }
+                                        final DiggerItem diggerItem = itemListItem.getModelObject();
+                                        itemListItem.add(
+                                                new AjaxLink<Void>( "link" ) {
 
-                            @Override
-                            public void onClick(final AjaxRequestTarget target) {
+                                                    {
+                                                        add( diggerItem.getSelectItem( "selectItem", level ) );
+                                                    }
 
-                                // Pop all items off the path from the clicked level up.
-                                while (!levels.isEmpty() && !ObjectUtils.isEqual( levels.peek(), level ))
-                                    levels.pop();
+                                                    @Override
+                                                    public boolean isVisible() {
 
-                                // Add the clicked item to the path.
-                                level.setActiveItem( diggerItem );
-                                DiggerLevel itemLevel = diggerItem.getLevel();
-                                if (itemLevel != null)
-                                    levels.push( itemLevel );
+                                                        return !ObjectUtils.isEqual( level.getActiveItem(), diggerItem );
+                                                    }
 
-                                target.addComponent( AjaxDigger.this );
-                            }
-                        } );
-                        itemListItem.add( diggerItem.getExpandedItem( "expandedItem", level )
-                                // TODO: This should probably happen lazily:
-                                                  .setVisible( ObjectUtils.isEqual( level.getActiveItem(), diggerItem ) ) );
+                                                    @Override
+                                                    public void onClick(final AjaxRequestTarget target) {
+
+                                                        // Pop all items off the path from the clicked level up.
+                                                        while (!levels.isEmpty() && !ObjectUtils.isEqual( levels.peek(), level ))
+                                                            levels.pop();
+
+                                                        // Add the clicked item to the path.
+                                                        level.setActiveItem( diggerItem );
+                                                        DiggerLevel itemLevel = diggerItem.getLevel();
+                                                        if (itemLevel != null)
+                                                            levels.push( itemLevel );
+
+                                                        target.addComponent( AjaxDigger.this );
+                                                    }
+                                                } );
+                                        itemListItem.add(
+                                                diggerItem.getExpandedItem( "expandedItem", level )
+                                                        // TODO: This should probably happen lazily:
+                                                        .setVisible( ObjectUtils.isEqual( level.getActiveItem(), diggerItem ) ) );
+                                    }
+                                } );
                     }
                 } );
-            }
-        } );
     }
 
     public static class DiggerLevel implements Serializable {
@@ -117,6 +121,7 @@ public class AjaxDigger<D extends Serializable> extends Panel {
         }
 
         public IModel<?> getHeading() {
+
             return heading;
         }
     }

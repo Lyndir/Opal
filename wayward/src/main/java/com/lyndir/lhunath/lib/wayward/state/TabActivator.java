@@ -16,9 +16,7 @@
 package com.lyndir.lhunath.lib.wayward.state;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
-import com.lyndir.lhunath.lib.wayward.navigation.FragmentNavigationListener;
-import com.lyndir.lhunath.lib.wayward.navigation.FragmentNavigationTab;
-import com.lyndir.lhunath.lib.wayward.navigation.FragmentState;
+import com.lyndir.lhunath.lib.wayward.navigation.*;
 import org.apache.wicket.markup.html.panel.Panel;
 
 

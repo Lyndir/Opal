@@ -1,8 +1,6 @@
 package com.lyndir.lhunath.lib.wayward.navigation;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Splitter;
+import com.google.common.base.*;
 import com.google.common.collect.Lists;
 import com.lyndir.lhunath.lib.system.util.ObjectUtils;
 import java.util.List;
@@ -57,9 +55,10 @@ public abstract class AbstractFragmentState implements FragmentState {
      */
     protected void assertFragments() {
 
-        Preconditions.checkArgument( ObjectUtils.isEqual( findFragment( 0 ), getTabFragment() ),
-                                     "Can't load %s state from %s: No fragments found or initial fragment does not match this tab's.",
-                                     getClass().getSimpleName(), fragments );
+        Preconditions.checkArgument(
+                ObjectUtils.isEqual( findFragment( 0 ), getTabFragment() ),
+                "Can't load %s state from %s: No fragments found or initial fragment does not match this tab's.",
+                getClass().getSimpleName(), fragments );
     }
 
     @Override

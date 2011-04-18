@@ -185,8 +185,10 @@ public class Vec3 extends Vec2 {
      * </pre>
      *
      * <br> The resulting vector is perpendicular to both vectors. The direction it will be pointing in is theoretically undefined, but
-     * defined by convention as: <q>An easy way to compute the direction of the resultant vector is the "right-hand rule." If the coordinate
-     * system is right-handed, one simply points the forefinger in the direction of the first operand and the middle finger in the direction
+     * defined by convention as: <q>An easy way to compute the direction of the resultant vector is the "right-hand rule." If the
+     * coordinate
+     * system is right-handed, one simply points the forefinger in the direction of the first operand and the middle finger in the
+     * direction
      * of the second operand. Then, the resultant vector is coming out of the thumb.</q> <br> <br> It will thus always be perpendicular to
      * the plane formed by the given vectors (this is the same plane as formed by the above parallelogram).<br> This means that the product
      * of the resultant of a cross product with a third gives the volume of the parallelepiped thus formed.</i>
@@ -199,8 +201,9 @@ public class Vec3 extends Vec2 {
 
         Preconditions.checkNotNull( vector, "Given vector cannot be null." );
 
-        return new Vec3( getY() * vector.getZ() - getZ() * vector.getY(), getZ() * vector.getX() - getX() * vector.getZ(),
-                         getX() * vector.getY() - getY() * vector.getX() );
+        return new Vec3(
+                getY() * vector.getZ() - getZ() * vector.getY(), getZ() * vector.getX() - getX() * vector.getZ(),
+                getX() * vector.getY() - getY() * vector.getX() );
     }
 
     /**

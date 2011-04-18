@@ -19,9 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import org.apache.wicket.Component;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.IWrapModel;
+import org.apache.wicket.model.*;
 
 
 /**
@@ -29,7 +27,8 @@ import org.apache.wicket.model.IWrapModel;
  *
  * <p> Model providers are classes that serve to extract the maintenance of a component's models from the component's logic. </p>
  *
- * <p> Generally, you would create a {@link ModelProvider} for each component that you have a top-level class for. The {@link ModelProvider}
+ * <p> Generally, you would create a {@link ModelProvider} for each component that you have a top-level class for. The {@link
+ * ModelProvider}
  * for your component should be the component's model.<br /> Then, create accessor methods in the {@link ModelProvider} for all the models
  * you'll need in your component. It is often helpful to replicate your component's component hierarchy in your {@link ModelProvider} by
  * using inner {@link ModelProvider} classes, providing accessor methods for them in their parent and setting them as the model for your
@@ -168,7 +167,7 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
     /**
      * @param component The component we have been or will be attached to.
      */
-    @SuppressWarnings( { "hiding", "ParameterHidesMemberVariable" })
+    @SuppressWarnings({ "hiding", "ParameterHidesMemberVariable" })
     public void attach(final Component component) {
 
         setComponent( checkNotNull( component, "Can't attach model provider (%s) to null.", this ) );

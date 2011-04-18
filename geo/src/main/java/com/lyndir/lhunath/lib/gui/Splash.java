@@ -25,7 +25,8 @@ import javax.swing.*;
 
 
 /**
- * <i>Splash - Create and show a splash screen for your application.</i><br> <br> This splash screen captures the screen and paints an image
+ * <i>Splash - Create and show a splash screen for your application.</i><br> <br> This splash screen captures the screen and paints an
+ * image
  * on top of the capture. This allows for splash screens with transparent or translucent images.<br> The splash screen normally disappears
  * after a given delay, but you can also call the {@link #dispose()} method to get rid of it as soon as your application's
  * com.lyndir.lhunath.lib.gui *
@@ -134,14 +135,15 @@ public class Splash extends JWindow {
         startTime = System.currentTimeMillis();
         endTime = startTime + duration;
 
-        new Timer( "Splash Fade Timer", true ).scheduleAtFixedRate( new TimerTask() {
+        new Timer( "Splash Fade Timer", true ).scheduleAtFixedRate(
+                new TimerTask() {
 
-            @Override
-            public void run() {
+                    @Override
+                    public void run() {
 
-                repaint();
-            }
-        }, 0, Math.max( 1, (endTime - startTime) / 1000 ) );
+                        repaint();
+                    }
+                }, 0, Math.max( 1, (endTime - startTime) / 1000 ) );
     }
 
     /**
@@ -190,15 +192,16 @@ public class Splash extends JWindow {
                 }
 
             instance = new Splash( initial, icon );
-            new Timer( "Splash Disposal Timer" ).schedule( new TimerTask() {
+            new Timer( "Splash Disposal Timer" ).schedule(
+                    new TimerTask() {
 
-                @Override
-                public void run() {
+                        @Override
+                        public void run() {
 
-                    if (instance != null)
-                        instance.dispose();
-                }
-            }, duration );
+                            if (instance != null)
+                                instance.dispose();
+                        }
+                    }, duration );
         }
 
         return instance;

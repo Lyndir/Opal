@@ -22,7 +22,8 @@ import javax.swing.event.ChangeListener;
 
 
 /**
- * <i>OnOffButton - A toggle button with configurable text for its toggle states.</i><br> <br> This button shows the onText specified in the
+ * <i>OnOffButton - A toggle button with configurable text for its toggle states.</i><br> <br> This button shows the onText specified in
+ * the
  * constructor when it is selected and the offText when it is not.<br> <br>
  *
  * @author lhunath

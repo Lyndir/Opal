@@ -7,10 +7,12 @@ import javax.swing.border.AbstractBorder;
 
 
 /**
- * A <code>JPanel</code> subclass that has a drop shadow border and that provides a header with icon, title and tool bar. <p> This class can
+ * A <code>JPanel</code> subclass that has a drop shadow border and that provides a header with icon, title and tool bar. <p> This class
+ * can
  * be used to replace the <code>JInternalFrame</code>, for use outside of a <code>JDesktopPane</code>. The <code>SimpleInternalFrame</code>
  * is less flexible but often more usable; it avoids overlapping windows and scales well up to IDE size. Several customers have reported
- * that they and their clients feel much better with both the appearance and the UI feel. <p> The SimpleInternalFrame provides the following
+ * that they and their clients feel much better with both the appearance and the UI feel. <p> The SimpleInternalFrame provides the
+ * following
  * bound properties: <i>frameIcon, title, toolBar, content, selected.</i> <p> By default the SimpleInternalFrame is in <i>selected</i>
  * state. If you don't do anything, multiple simple internal frames will be displayed as selected.
  *
@@ -248,14 +250,15 @@ public class SimpleInternalFrame extends JPanel {
 
         gradientPanel.setPaint( PaintPanel.gradientPaint( getHeaderBackground(), UIManager.getColor( "control" ) ) );
         gradientPanel.setOpaque( isSelected() );
-        SwingUtilities.invokeLater( new Runnable() {
+        SwingUtilities.invokeLater(
+                new Runnable() {
 
-            @Override
-            public void run() {
+                    @Override
+                    public void run() {
 
-                titleLabel.setForeground( getTextForeground( isSelected() ) );
-            }
-        } );
+                        titleLabel.setForeground( getTextForeground( isSelected() ) );
+                    }
+                } );
     }
 
     /**
@@ -282,7 +285,8 @@ public class SimpleInternalFrame extends JPanel {
     }
 
     /**
-     * Determines and answers the header's text foreground color. Tries to lookup a special color from the L&amp;F. In case it is absent, it
+     * Determines and answers the header's text foreground color. Tries to lookup a special color from the L&amp;F. In case it is absent,
+     * it
      * uses the standard internal frame forground.
      *
      * @param isSelected true to lookup the active color, false for the inactive
@@ -299,7 +303,8 @@ public class SimpleInternalFrame extends JPanel {
     }
 
     /**
-     * Determines and answers the header's background color. Tries to lookup a special color from the L&amp;F. In case it is absent, it uses
+     * Determines and answers the header's background color. Tries to lookup a special color from the L&amp;F. In case it is absent, it
+     * uses
      * the standard internal frame background.
      *
      * @return the color of the header's background

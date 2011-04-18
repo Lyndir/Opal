@@ -233,8 +233,9 @@ public class PaintPanel extends ScrollPanel {
                 background = background.brighter();
 
             if (paint instanceof GradientPaint)
-                paint = new GradientPaint( ((GradientPaint) paint).getPoint1(), MyLookAndFeel.getActiveBright(),
-                                           ((GradientPaint) paint).getPoint2(), background );
+                paint = new GradientPaint(
+                        ((GradientPaint) paint).getPoint1(), MyLookAndFeel.getActiveBright(), ((GradientPaint) paint).getPoint2(),
+                        background );
             else
                 paint = gradientPaint( MyLookAndFeel.getActiveBright(), background );
         }

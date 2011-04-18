@@ -47,7 +47,8 @@ public interface Plugin {
      *
      * @param element The application request that was triggered in the shade interface and was not handled by the application.
      *
-     * @return <code>true</code> if the given request is handled by this plugin; <code>false</code> if not (so that other plugins can try to
+     * @return <code>true</code> if the given request is handled by this plugin; <code>false</code> if not (so that other plugins can try
+     *         to
      *         handle the event).
      */
     boolean handleRequest(Request element);

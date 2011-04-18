@@ -1,12 +1,8 @@
 package com.lyndir.lhunath.lib.system.util;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
+import com.google.common.collect.*;
 import com.lyndir.lhunath.lib.system.logging.Logger;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import org.joda.time.*;
 
 
@@ -48,9 +44,9 @@ public abstract class DateUtils {
 
         // Order of standard date/time fields from small to large.
         ImmutableList.Builder<DateTimeFieldType> stdDateTimeFieldsBuilder = ImmutableList.builder();
-        stdDateTimeFieldsBuilder.add( DateTimeFieldType.millisOfSecond(), DateTimeFieldType.secondOfDay(), DateTimeFieldType.minuteOfHour(),
-                                      DateTimeFieldType.hourOfDay(), DateTimeFieldType.dayOfMonth(), DateTimeFieldType.monthOfYear(),
-                                      DateTimeFieldType.year() );
+        stdDateTimeFieldsBuilder.add(
+                DateTimeFieldType.millisOfSecond(), DateTimeFieldType.secondOfDay(), DateTimeFieldType.minuteOfHour(),
+                DateTimeFieldType.hourOfDay(), DateTimeFieldType.dayOfMonth(), DateTimeFieldType.monthOfYear(), DateTimeFieldType.year() );
         stdDateTimeFields = stdDateTimeFieldsBuilder.build();
     }
 

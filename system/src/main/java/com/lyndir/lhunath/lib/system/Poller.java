@@ -15,10 +15,7 @@
  */
 package com.lyndir.lhunath.lib.system;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
