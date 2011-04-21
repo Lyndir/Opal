@@ -1,7 +1,5 @@
 package com.lyndir.lhunath.lib.json;
 
-import static com.lyndir.lhunath.lib.system.util.ObjectUtils.getOrDefault;
-
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.lyndir.lhunath.lib.system.util.ObjectMeta;
@@ -52,7 +50,7 @@ public class JSONResult {
         else {
             this.userDescriptionArguments = new String[userDescriptionArguments.length];
             for (int o = 0; o < userDescriptionArguments.length; ++o)
-                this.userDescriptionArguments[o] = getOrDefault( userDescriptionArguments[o], "" ).toString();
+                this.userDescriptionArguments[o] = ObjectUtils.ifNotNullElse( userDescriptionArguments[o], "" ).toString();
         }
     }
 
