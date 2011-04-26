@@ -1,6 +1,7 @@
 package com.lyndir.lhunath.lib.system.logging;
 
 import com.google.common.collect.ImmutableMap;
+import com.lyndir.lhunath.lib.system.util.ObjectUtils;
 import java.util.*;
 
 
@@ -55,21 +56,21 @@ public class UserLog {
         logger = Logger.get( type );
     }
 
-    public UserLog inf(final UserLogMessage message, final String technical) {
+    public UserLog inf(final UserLogMessage message) {
 
-        logger.inf( technical );
+        logger.inf( ObjectUtils.toString( message ) );
         return log( Level.INFO, message );
     }
 
-    public UserLog wrn(final UserLogMessage message, final String technical) {
+    public UserLog wrn(final UserLogMessage message) {
 
-        logger.inf( technical );
+        logger.inf( ObjectUtils.toString( message ) );
         return log( Level.WARNING, message );
     }
 
-    public UserLog err(final UserLogMessage message, final String technical) {
+    public UserLog err(final UserLogMessage message) {
 
-        logger.inf( technical );
+        logger.inf( ObjectUtils.toString( message ) );
         return log( Level.ERROR, message );
     }
 
