@@ -15,6 +15,8 @@
  */
 package com.lyndir.lhunath.lib.system.util;
 
+import static com.google.common.base.Preconditions.*;
+
 import com.google.common.base.*;
 import com.google.common.collect.ImmutableList;
 import com.lyndir.lhunath.lib.system.logging.Logger;
@@ -28,12 +30,10 @@ import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.google.common.base.Preconditions.*;
-
 
 /**
  * <h2>{@link ObjectUtils}<br> <sub>[in short] (TODO).</sub></h2>
- *
+ * <p/>
  * <p> <i>Mar 22, 2010</i> </p>
  *
  * @author lhunath
@@ -47,19 +47,19 @@ public abstract class ObjectUtils {
 
     /**
      * Check whether two objects are equal according to {@link #equals(Object)}.
-     *
-     * <p> <b>NOTE:</b> This method is <code>null</code>-safe and two <code>null</code> objects are also considered equal. </p>
-     *
+     * <p/>
+     * <p> <b>NOTE:</b> This method is {@code null}-safe and two {@code null} objects are also considered equal. </p>
+     * <p/>
      * <p> <b>NOTE:</b> This method attempts to aid in type safety of the objects that are being compared. </p>
      *
      * @param <A>    The type of the first parameter.  It should be of the same type or a subtype (more concrete type) of the second
      *               parameter.
      * @param <B>    The type of the second parameter. The type of this parameter must be the same type or more generic
      *               assignment-compatible to that of the first parameter.
-     * @param first  The first object, or <code>null</code>.
-     * @param second The second object, or <code>null</code>.
+     * @param first  The first object, or {@code null}.
+     * @param second The second object, or {@code null}.
      *
-     * @return <code>true</code> if both objects are <code>null</code> or if neither are and {@link #equals(Object)} considers them equal.
+     * @return {@code true} if both objects are {@code null} or if neither are and {@link #equals(Object)} considers them equal.
      */
     public static <B, A extends B> boolean isEqual(final A first, final B second) {
 
@@ -127,8 +127,7 @@ public abstract class ObjectUtils {
 
         if (o instanceof X509Certificate) {
             X509Certificate x509Certificate = (X509Certificate) o;
-            return String.format(
-                    "{Cert: DN=%s, Issuer=%s}", x509Certificate.getSubjectX500Principal().getName(),
+            return String.format( "{Cert: DN=%s, Issuer=%s}", x509Certificate.getSubjectX500Principal().getName(),
                     x509Certificate.getIssuerX500Principal().getName() );
         }
 
@@ -140,7 +139,7 @@ public abstract class ObjectUtils {
      * object's type has been annotated with {@link ObjectMeta}.
      *
      * @param o The object for which a toString description should be generated (inside your {@link Object#equals(Object)}, use
-     *          <code>this</code>).
+     *          {@code this}).
      *
      * @return A description of specific field and values of the given object.
      */
@@ -152,8 +151,8 @@ public abstract class ObjectUtils {
             name = o.getClass().getName().replace( ".*\\.", "" );
         toString.append( name );
 
-        StringBuilder fieldsString = forEachFieldWithMeta(
-                ObjectMeta.For.toString, o.getClass(), new Function<TypeUtils.LastResult<Field, StringBuilder>, StringBuilder>() {
+        StringBuilder fieldsString = forEachFieldWithMeta( ObjectMeta.For.toString, o.getClass(),
+                new Function<TypeUtils.LastResult<Field, StringBuilder>, StringBuilder>() {
                     @Override
                     public StringBuilder apply(final TypeUtils.LastResult<Field, StringBuilder> lastResult) {
 
@@ -198,7 +197,7 @@ public abstract class ObjectUtils {
      * Generate a decent generic {@link Object#hashCode()} for the given object using its fields.  The fields used depend on how the
      * object's type has been annotated with {@link ObjectMeta}.
      *
-     * @param o The object for which a hashCode should be generated (inside your {@link Object#equals(Object)}, use <code>this</code>).
+     * @param o The object for which a hashCode should be generated (inside your {@link Object#equals(Object)}, use {@code this}).
      *
      * @return A hashCode of specific field values of the given object.
      */
@@ -233,10 +232,10 @@ public abstract class ObjectUtils {
      * and all superObject type's fields selected for inclusion by {@link ObjectMeta} annotations have equal values as those of subObject.
      *
      * @param superObject The object that should be compared to subObject (inside your {@link Object#equals(Object)}, use
-     *                    <code>this</code>).
+     *                    {@code this}).
      * @param subObject   The object that should be compared to superObject.
      *
-     * @return <code>true</code> if both objects are equal according to this method's rules.
+     * @return {@code true} if both objects are equal according to this method's rules.
      */
     public static boolean equals(final Object superObject, final Object subObject) {
 
@@ -278,37 +277,37 @@ public abstract class ObjectUtils {
                                                  final Function<TypeUtils.LastResult<Field, R>, R> function) {
 
         return TypeUtils.forEachSuperTypeOf( type, new Function<TypeUtils.LastResult<Class<?>, R>, R>() {
-            @Override
-            public R apply(final TypeUtils.LastResult<Class<?>, R> lastTypeResult) {
-
-                Class<?> subType = lastTypeResult.getCurrent();
-                R typeResult = lastTypeResult.getLastResult();
-                final boolean usedByType = usesMeta( meta, subType );
-
-                return ifNotNullElse( TypeUtils.forEachFieldOf( subType, new Function<TypeUtils.LastResult<Field, R>, R>() {
                     @Override
-                    public R apply(final TypeUtils.LastResult<Field, R> lastFieldResult) {
+                    public R apply(final TypeUtils.LastResult<Class<?>, R> lastTypeResult) {
 
-                        Field field = lastFieldResult.getCurrent();
-                        R result = lastFieldResult.getLastResult();
+                        Class<?> subType = lastTypeResult.getCurrent();
+                        R typeResult = lastTypeResult.getLastResult();
+                        final boolean usedByType = usesMeta( meta, subType );
 
-                        if (Modifier.isStatic( field.getModifiers() ))
-                            return result;
-                        if (field.isAnnotationPresent( ObjectMeta.class )) {
-                            boolean usedByField = usesMeta( meta, field );
+                        return ifNotNullElse( TypeUtils.forEachFieldOf( subType, new Function<TypeUtils.LastResult<Field, R>, R>() {
+                                    @Override
+                                    public R apply(final TypeUtils.LastResult<Field, R> lastFieldResult) {
 
-                            if (!usedByField)
-                                return result;
-                        } else
-                            // Field has no @ObjectMeta, default to type's decision.
-                            if (!usedByType)
-                                return result;
+                                        Field field = lastFieldResult.getCurrent();
+                                        R result = lastFieldResult.getLastResult();
 
-                        return function.apply( new TypeUtils.LastResult<Field, R>( field, result ) );
+                                        if (Modifier.isStatic( field.getModifiers() ))
+                                            return result;
+                                        if (field.isAnnotationPresent( ObjectMeta.class )) {
+                                            boolean usedByField = usesMeta( meta, field );
+
+                                            if (!usedByField)
+                                                return result;
+                                        } else
+                                            // Field has no @ObjectMeta, default to type's decision.
+                                            if (!usedByType)
+                                                return result;
+
+                                        return function.apply( new TypeUtils.LastResult<Field, R>( field, result ) );
+                                    }
+                                }, false ), typeResult );
                     }
-                }, false ), typeResult );
-            }
-        }, null );
+                }, null );
     }
 
     private static boolean usesMeta(final ObjectMeta.For meta, final Class<?> type) {
@@ -336,13 +335,14 @@ public abstract class ObjectUtils {
     }
 
     /**
-     * @param value     The value to return, if it isn't <code>null</code> .
-     * @param nullValue The value to return if <code>value</code>  is <code>null</code> .
+     * @param value     The value to return, if it isn't {@code null} .
+     * @param nullValue The value to return if {@code value}  is {@code null} .
      * @param <T>       The type of object to return.
      *
      * @return One of two values.
      */
-    public static <T> T ifNotNullElse(@Nullable final T value, final T nullValue) {
+    @Nullable
+    public static <T> T ifNotNullElse(@Nullable final T value, @Nullable final T nullValue) {
 
         if (value != null)
             return value;
@@ -353,8 +353,8 @@ public abstract class ObjectUtils {
     /**
      * Version of {@link #ifNotNullElse(Object, Object)} that loads the default value lazily.
      *
-     * @param value             The value to return, if it isn't <code>null</code> .
-     * @param nullValueSupplier Provides the value to return if <code>value</code>  is <code>null</code>.  The supplier is only
+     * @param value             The value to return, if it isn't {@code null} .
+     * @param nullValueSupplier Provides the value to return if {@code value}  is {@code null}.  The supplier is only
      *                          consulted
      *                          if necessary.
      * @param <T>               The type of object to return.
@@ -370,13 +370,24 @@ public abstract class ObjectUtils {
         return nullValueSupplier.get();
     }
 
+    /**
+     * Apply a function to the first parameter if it is not {@code null} .  Otherwise, return {@code null} .
+     *
+     * @param from                 The value to transform if it is not {@code null} .
+     * @param notNullValueFunction The function that defines the transform to apply to the {@code from}  value.
+     * @param <F>                  The type of object to transform.
+     * @param <T>                  The type of object to return.
+     *
+     * @return The transformed value, or {@code null}.
+     */
     @Nullable
     public static <F, T> T ifNotNull(@Nullable F from, Function<F, T> notNullValueFunction) {
 
         return ifNotNullElse( from, notNullValueFunction, null );
     }
 
-    public static <F, T> T ifNotNullElse(@Nullable F from, Function<F, T> notNullValueFunction, T nullValue) {
+    @Nullable
+    public static <F, T> T ifNotNullElse(@Nullable F from, Function<F, T> notNullValueFunction, @Nullable T nullValue) {
 
         if (from == null)
             return nullValue;
