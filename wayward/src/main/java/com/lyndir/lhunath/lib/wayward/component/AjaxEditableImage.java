@@ -65,12 +65,12 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
                         new AttributeAppender(
                                 "class", new LoadableDetachableModel<String>() {
 
-                                    @Override
-                                    protected String load() {
+                            @Override
+                            protected String load() {
 
-                                        return isEditable()? "link": "";
-                                    }
-                                }, " " ) ).add(
+                                return isEditable()? "link": "";
+                            }
+                        }, " " ) ).add(
                         new AjaxEventBehavior( "onClick" ) {
 
                             @Override

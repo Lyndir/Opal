@@ -77,22 +77,22 @@ public class SslFactory implements SecureProtocolSocketFactory {
             context.init( null, tFactory.getTrustManagers(), null );
         }
         catch (KeyStoreException e) {
-            throw logger.err( e, "Keystore type not supported or keystore could not be initialized." ).toError();
+            throw new IllegalArgumentException( "Keystore type not supported or keystore could not be used to initialize trust.", e );
         }
         catch (NoSuchAlgorithmException e) {
-            throw logger.err( e, "Key algorithm not supported." ).toError();
+            throw new IllegalStateException( "Key algorithm not supported.", e );
         }
         catch (CertificateException e) {
-            throw logger.err( e, "An unexpected error has occurred!" ).toError();
+            throw new IllegalArgumentException( "Keystore could not be loaded.", e );
         }
         catch (FileNotFoundException e) {
-            throw logger.err( e, "Keystore not found!" ).toError();
+            throw new IllegalArgumentException( "Keystore not found.", e );
         }
         catch (IOException e) {
-            throw logger.err( e, "Could not read the keys from the keystore!" ).toError();
+            throw new RuntimeException( "Could not read the keys from the keystore.", e );
         }
         catch (KeyManagementException e) {
-            throw logger.err( e, "Could not add the keys as trusted!" ).toError();
+            throw new RuntimeException( "Could not use the keys for trust.", e );
         }
         finally {
             Closeables.closeQuietly( keyStoreStream );

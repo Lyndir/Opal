@@ -585,7 +585,7 @@ public class GPG {
 
         /* Write the data into the generator. */
         byte[] buffer = new byte[BaseConfig.BUFFER_SIZE];
-        for (int read; (read = data.read( buffer )) >= 0;)
+        for (int read; (read = data.read( buffer )) >= 0; )
             signer.update( buffer, 0, read );
 
         /* Create the signature output stream, armour if necessary. */

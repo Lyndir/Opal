@@ -16,7 +16,7 @@
 package com.lyndir.lhunath.lib.system;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
-import com.lyndir.lhunath.lib.system.util.Utils;
+import com.lyndir.lhunath.lib.system.util.ConversionUtils;
 import com.thoughtworks.xstream.XStream;
 import java.io.*;
 import java.lang.reflect.Field;
@@ -159,7 +159,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      */
     public static BaseConfig<URL> createUrl(final String defaultValue) {
 
-        return create( Utils.toUrl( defaultValue ) );
+        return create( ConversionUtils.toUrl( defaultValue ) );
     }
 
     /**

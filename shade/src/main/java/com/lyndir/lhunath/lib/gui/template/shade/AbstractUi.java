@@ -27,7 +27,7 @@ import com.lyndir.lhunath.lib.gui.FileDialog;
 import com.lyndir.lhunath.lib.system.*;
 import com.lyndir.lhunath.lib.system.Locale;
 import com.lyndir.lhunath.lib.system.logging.*;
-import com.lyndir.lhunath.lib.system.util.Utils;
+import com.lyndir.lhunath.lib.system.util.TypeUtils;
 import com.lyndir.lhunath.lib.system.wrapper.Desktop;
 import com.lyndir.lhunath.lib.system.wrapper.SystemTray;
 import com.lyndir.lhunath.lib.system.wrapper.TrayIcon;
@@ -475,9 +475,9 @@ public abstract class AbstractUi
         if (e instanceof ActionEvent)
             logger.wrn(
                     "warn.actionNotImplemented", e.getClass(), ((ActionEvent) e).getActionCommand(), //$NON-NLS-1$
-                    Utils.getFieldName( this, e.getSource() ) );
+                    TypeUtils.findFirstField( this, e.getSource() ).getName() );
         else
-            logger.wrn( "warn.eventNotImplemented", e.getClass(), Utils.getFieldName( this, e.getSource() ) ); //$NON-NLS-1$
+            logger.wrn( "warn.eventNotImplemented", e.getClass(), TypeUtils.findFirstField( this, e.getSource() ).getName() ); //$NON-NLS-1$
     }
 
     /**
@@ -982,8 +982,8 @@ public abstract class AbstractUi
 
         builder.append(
                 Locale.explain( "ui.theme" ), new ToolTip(
-                        Locale.explain( "ui.themeTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                        + Locale.explain( "ui.themeTip" ), themesPanel = new JPanel() ), 5 ); //$NON-NLS-1$
+                Locale.explain( "ui.themeTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                + Locale.explain( "ui.themeTip" ), themesPanel = new JPanel() ), 5 ); //$NON-NLS-1$
         for (MyTheme theme : MyTheme.values())
             themesPanel.add( theme.getButton() );
         themesPanel.setOpaque( false );
@@ -991,30 +991,30 @@ public abstract class AbstractUi
 
         builder.append(
                 Locale.explain( "ui.systray" ), new ToolTip(
-                        Locale.explain( "ui.systrayTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                        + Locale.explain( "ui.systrayTip" ), //$NON-NLS-1$
-                        systrayButton = new JCheckBox(
-                                Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+                Locale.explain( "ui.systrayTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                + Locale.explain( "ui.systrayTip" ), //$NON-NLS-1$
+                systrayButton = new JCheckBox(
+                        Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
         builder.append(
                 Locale.explain( "ui.ontop" ), new ToolTip(
-                        Locale.explain( "ui.ontopTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                        + Locale.explain( "ui.ontopTip" ), //$NON-NLS-1$
-                        alwaysOnTop = new JCheckBox(
-                                Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+                Locale.explain( "ui.ontopTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                + Locale.explain( "ui.ontopTip" ), //$NON-NLS-1$
+                alwaysOnTop = new JCheckBox(
+                        Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
         builder.nextLine();
 
         builder.append(
                 Locale.explain( "ui.startmini" ), new ToolTip(
-                        Locale.explain( "ui.startminiTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                        + Locale.explain( "ui.startminiTip" ), //$NON-NLS-1$
-                        startMini = new JCheckBox(
-                                Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+                Locale.explain( "ui.startminiTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                + Locale.explain( "ui.startminiTip" ), //$NON-NLS-1$
+                startMini = new JCheckBox(
+                        Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
         builder.append(
                 Locale.explain( "ui.verbose" ), new ToolTip(
-                        Locale.explain( "ui.verboseTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                        + Locale.explain( "ui.verboseTip" ), //$NON-NLS-1$
-                        verboseLogs = new JCheckBox(
-                                Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+                Locale.explain( "ui.verboseTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                + Locale.explain( "ui.verboseTip" ), //$NON-NLS-1$
+                verboseLogs = new JCheckBox(
+                        Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
         builder.nextLine();
 
         appendCustomSettings( builder );

@@ -3,13 +3,13 @@ package com.lyndir.lhunath.lib.system.util;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.common.base.Function;
+import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -21,7 +21,10 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class TypeUtils {
 
-    static final Logger logger = LoggerFactory.getLogger( TypeUtils.class );
+    static final Logger logger = Logger.get( TypeUtils.class );
+
+    private static final Pattern FIRST_LETTER = Pattern.compile( "(\\w)\\w{2,}\\." );
+    private static final Pattern THROWS       = Pattern.compile( " throws [^\\(\\)]*" );
 
     /**
      * Recursively search a type's inheritance hierarchy for an annotation.
@@ -144,10 +147,36 @@ public abstract class TypeUtils {
             }
         };
 
-        if (descend)
-            return forEachSuperTypeOf( type, eachFieldFunction, null );
+        try {
+            if (descend)
+                return forEachSuperTypeOf( type, eachFieldFunction, null );
 
-        return eachFieldFunction.apply( new LastResult<Class<?>, R>( type, null ) );
+            return eachFieldFunction.apply( new LastResult<Class<?>, R>( type, null ) );
+        }
+        catch (BreakException e) {
+            return e.<R>getResult();
+        }
+    }
+
+    public static Field findFirstField(final Object owner, final Object value) {
+
+        return forEachFieldOf(
+                owner.getClass(), new Function<LastResult<Field, Field>, Field>() {
+                    @Override
+                    public Field apply(final LastResult<Field, Field> from) {
+
+                        try {
+                            from.getCurrent().setAccessible( true );
+                            if (ObjectUtils.equals( from.getCurrent().get( owner ), value ))
+                                throw new BreakException( from.getCurrent() );
+                        }
+                        catch (IllegalAccessException e) {
+                            logger.bug( e );
+                        }
+
+                        return from.getLastResult();
+                    }
+                }, true );
     }
 
     /**
@@ -206,6 +235,19 @@ public abstract class TypeUtils {
         return (Class<T>) type;
     }
 
+    /**
+     * Compress the generic form of the method's signature. Trim off throws declarations.<br> java.lang.method -> j~l~method
+     *
+     * @param signature The signature that needs to be compressed.
+     *
+     * @return The compressed signature.
+     */
+    public static String compressSignature(final CharSequence signature) {
+
+        String compressed = FIRST_LETTER.matcher( signature ).replaceAll( "$1~" );
+        return THROWS.matcher( compressed ).replaceFirst( "" );
+    }
+
     public static class LastResult<C, R> {
 
         private final C current;
@@ -225,6 +267,23 @@ public abstract class TypeUtils {
         public R getLastResult() {
 
             return lastResult;
+        }
+    }
+
+
+    public static class BreakException extends RuntimeException {
+
+        private final transient Object result;
+
+        public BreakException(Object result) {
+
+            this.result = result;
+        }
+
+        @SuppressWarnings({ "unchecked" })
+        public <R> R getResult() {
+
+            return (R) result;
         }
     }
 }

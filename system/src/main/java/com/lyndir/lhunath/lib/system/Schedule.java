@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.lib.system;
 
-import com.lyndir.lhunath.lib.system.util.Utils;
+import com.lyndir.lhunath.lib.system.util.DateUtils;
 import java.io.Serializable;
 import java.util.*;
 import java.util.Locale;
@@ -54,7 +54,7 @@ public abstract class Schedule implements Runnable, Serializable {
         nextSchedule = Calendar.getInstance();
         Calendar baseSchedule = Calendar.getInstance( TimeZone.getTimeZone( "GMT" ) );
         baseSchedule.setTimeInMillis( time );
-        for (final int field : Utils.calendarFields) {
+        for (final int field : DateUtils.calendarFields) {
             if (field == stepField)
                 break;
 
@@ -133,14 +133,14 @@ public abstract class Schedule implements Runnable, Serializable {
     public String toString() {
 
         StringBuffer time = new StringBuffer();
-        for (final int field : Utils.calendarFields) {
+        for (final int field : DateUtils.calendarFields) {
             if (field == stepField)
                 break;
 
-            time.insert( 0, String.format( "%02d%s", nextSchedule.get( field ), Utils.calendarSuffix( field ) ) );
+            time.insert( 0, String.format( "%02d%s", nextSchedule.get( field ), DateUtils.calendarSuffix( field ) ) );
         }
 
-        String desc = Utils.calendarDesc.get( stepField ).toLowerCase( Locale.ENGLISH );
+        String desc = DateUtils.calendarDesc.get( stepField ).toLowerCase( Locale.ENGLISH );
         if (stepAmount > 1)
             desc += 's';
 

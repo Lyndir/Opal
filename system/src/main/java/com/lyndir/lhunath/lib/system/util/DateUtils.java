@@ -2,7 +2,9 @@ package com.lyndir.lhunath.lib.system.util;
 
 import com.google.common.collect.*;
 import com.lyndir.lhunath.lib.system.logging.Logger;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 import org.joda.time.*;
 
 
@@ -25,6 +27,38 @@ public abstract class DateUtils {
     };
     private static final ImmutableMap<DurationFieldType, DateTimeFieldType> types;
     private static final ImmutableList<DateTimeFieldType>                   stdDateTimeFields;
+
+    private static final Pattern              LETTERS        = Pattern.compile( "[a-zA-Z]" );
+    /**
+     * Description of the calendar fields.
+     */
+    public static final  Map<Integer, String> calendarDesc   = ImmutableMap.<Integer, String>builder()
+                                                                           .put( Calendar.MILLISECOND, "Millisecond" )
+                                                                           .put( Calendar.SECOND, "Second" )
+                                                                           .put( Calendar.MINUTE, "Minute" )
+                                                                           .put( Calendar.HOUR_OF_DAY, "Hour" )
+                                                                           .put( Calendar.DAY_OF_MONTH, "Day" )
+                                                                           .put( Calendar.MONTH, "Month" )
+                                                                           .put( Calendar.YEAR, "Year" )
+                                                                           .build();
+    /**
+     * {@link SimpleDateFormat} of the calendar fields.
+     */
+    public static final  Map<Integer, String> calendarFormat = ImmutableMap.<Integer, String>builder()
+                                                                           .put( Calendar.MILLISECOND, "SSSS" )
+                                                                           .put( Calendar.SECOND, "ss." )
+                                                                           .put( Calendar.MINUTE, "mm:" )
+                                                                           .put( Calendar.HOUR_OF_DAY, "HH:" )
+                                                                           .put( Calendar.DAY_OF_MONTH, "dd " )
+                                                                           .put( Calendar.MONTH, "MM/" )
+                                                                           .put( Calendar.YEAR, "yyyy/" )
+                                                                           .build();
+    /**
+     * Calendar fields in order.
+     */
+    public static final  int[]                calendarFields = {
+            Calendar.MILLISECOND, Calendar.SECOND, Calendar.MINUTE, Calendar.HOUR_OF_DAY, Calendar.DAY_OF_MONTH, Calendar.MONTH,
+            Calendar.YEAR };
 
     static {
         // Mapping DurationFieldTypes to DateTimeFieldTypes.
@@ -82,6 +116,18 @@ public abstract class DateUtils {
     public static boolean removeTimer(final Timer timer) {
 
         return currentTimer.get().remove( timer );
+    }
+
+    /**
+     * Format suffix for the given calendar field.
+     *
+     * @param field {@link Calendar} field.
+     *
+     * @return The suffix in the format specification of the given field.
+     */
+    public static String calendarSuffix(final int field) {
+
+        return LETTERS.matcher( calendarFormat.get( field ) ).replaceAll( "" );
     }
 
     public static class Timer {

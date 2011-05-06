@@ -15,6 +15,7 @@
  */
 package com.lyndir.lhunath.lib.xml;
 
+import com.google.common.base.Throwables;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.IOException;
 import java.lang.reflect.*;
@@ -146,16 +147,19 @@ public class Structure {
             structure = type.getConstructor().newInstance();
         }
         catch (InstantiationException e) {
-            throw logger.err( e, "FromXML class may not be instantiated." ).toError();
+            logger.bug( e );
+            throw Throwables.propagate( e );
         }
         catch (IllegalAccessException e) {
-            throw logger.err( e, "FromXML class isn't accessible." ).toError();
+            logger.bug( e );
+            throw Throwables.propagate( e );
         }
         catch (NoSuchMethodException e) {
-            throw logger.err( e, "FromXML class has no default constructor." ).toError();
+            logger.bug( e );
+            throw Throwables.propagate( e );
         }
         catch (InvocationTargetException e) {
-            throw logger.err( e, "FromXML class instantiation failed." ).toError();
+            throw Throwables.propagate( e );
         }
 
         // Set up our XML parser.
@@ -205,16 +209,16 @@ public class Structure {
                 structure = type.getConstructor().newInstance();
             }
             catch (InstantiationException e) {
-                throw logger.err( e, "FromXML class can't be instantiated." ).toError();
+                throw logger.bug( e );
             }
             catch (IllegalAccessException e) {
-                throw logger.err( e, "FromXML class isn't accessible." ).toError();
+                throw logger.bug( e );
             }
             catch (NoSuchMethodException e) {
-                throw logger.err( e, "FromXML class has no default constructor." ).toError();
+                throw logger.bug( e );
             }
             catch (InvocationTargetException e) {
-                throw logger.err( e, "FromXML class instantiation failed." ).toError();
+                throw Throwables.propagate( e );
             }
 
             // If an XInjectTag is defined; set it to the name of the child tag.

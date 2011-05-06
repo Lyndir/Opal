@@ -55,12 +55,12 @@ public class LanguageLink extends Link<String> {
                 new AttributeAppender(
                         "class", new AbstractReadOnlyModel<String>() {
 
-                            @Override
-                            public String getObject() {
+                    @Override
+                    public String getObject() {
 
-                                return Session.get().getLocale().getLanguage().equals( getModelObject() )? "active": null;
-                            }
-                        }, ";" ) );
+                        return Session.get().getLocale().getLanguage().equals( getModelObject() )? "active": null;
+                    }
+                }, ";" ) );
     }
 
     /**

@@ -62,12 +62,12 @@ public class CSSClassAttributeAppender extends AttributeAppender {
                         return Collections2.transform(
                                 Arrays.asList( cssClassModels ), new Function<IModel<String>, String>() {
 
-                                    @Override
-                                    public String apply(final IModel<String> from) {
+                            @Override
+                            public String apply(final IModel<String> from) {
 
-                                        return from.getObject();
-                                    }
-                                } );
+                                return from.getObject();
+                            }
+                        } );
                     }
                 } );
     }

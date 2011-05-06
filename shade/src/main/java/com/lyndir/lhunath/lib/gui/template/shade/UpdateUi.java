@@ -55,7 +55,7 @@ public class UpdateUi extends Thread {
 
         UpdateRequest newRequest = new UpdateRequest(
                 uiRequest, new RuntimeException(
-                        Locale.explain( "err.originates" ) + Thread.currentThread().getName() ) ); //$NON-NLS-1$
+                Locale.explain( "err.originates" ) + Thread.currentThread().getName() ) ); //$NON-NLS-1$
 
         /* Don't process a request if the next pending or currently executing request is the same. */
         if (newRequest.equals( currentRequest ) || requests.contains( newRequest ))

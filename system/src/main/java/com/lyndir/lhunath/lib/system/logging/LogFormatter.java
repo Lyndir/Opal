@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.lib.system.logging;
 
-import com.lyndir.lhunath.lib.system.util.Utils;
+import com.lyndir.lhunath.lib.system.util.TypeUtils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.*;
@@ -97,11 +97,11 @@ public abstract class LogFormatter extends Formatter {
         if (stackTrace.length > 0 && !stackTrace[0].equals( sourceElement ))
             realSource = String.format(
                     "(%s:%d) %s.%s()", stackTrace[0].getFileName(), stackTrace[0].getLineNumber(),
-                    Utils.compressSignature( stackTrace[0].getClassName() ), stackTrace[0].getMethodName() );
+                    TypeUtils.compressSignature( stackTrace[0].getClassName() ), stackTrace[0].getMethodName() );
         if (sourceElement != null)
             relSource = String.format(
                     "(%s:%d) %s.%s()", sourceElement.getFileName(), sourceElement.getLineNumber(),
-                    Utils.compressSignature( sourceElement.getClassName() ), sourceElement.getMethodName() );
+                    TypeUtils.compressSignature( sourceElement.getClassName() ), sourceElement.getMethodName() );
         String source = realSource + (realSource.length() > 0? ", ": "") + relSource;
         if (source.length() == 0)
             source = "[Unknown Source]";

@@ -17,7 +17,7 @@ package com.lyndir.lhunath.lib.gui;
 
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import com.lyndir.lhunath.lib.system.util.ConversionUtils;
-import com.lyndir.lhunath.lib.system.util.Utils;
+import com.lyndir.lhunath.lib.system.util.DateUtils;
 import java.text.*;
 import java.util.*;
 import javax.swing.*;
@@ -91,11 +91,11 @@ public class TimeSpinner extends JSpinner {
 
         this.jumpField = jumpField;
         StringBuilder format = new StringBuilder();
-        for (final int field : Utils.calendarFields) {
+        for (final int field : DateUtils.calendarFields) {
             if (field == jumpField)
                 break;
 
-            format.insert( 0, Utils.calendarFormat.get( field ) );
+            format.insert( 0, DateUtils.calendarFormat.get( field ) );
         }
 
         model.setFormat( format.toString() );

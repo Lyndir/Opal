@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.lib.system.util;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.*;
 import com.google.common.collect.ImmutableList;
@@ -42,7 +42,7 @@ public abstract class ObjectUtils {
 
     static final Logger logger = Logger.get( ObjectUtils.class );
 
-    private static final Pattern NON_PRINTABLE     = Pattern.compile( "\\p{Print}" );
+    private static final Pattern NON_PRINTABLE     = Pattern.compile( "[^\\p{Print}]" );
     private static final int     MAX_DECODE_LENGTH = 100;
 
     /**
@@ -127,7 +127,8 @@ public abstract class ObjectUtils {
 
         if (o instanceof X509Certificate) {
             X509Certificate x509Certificate = (X509Certificate) o;
-            return String.format( "{Cert: DN=%s, Issuer=%s}", x509Certificate.getSubjectX500Principal().getName(),
+            return String.format(
+                    "{Cert: DN=%s, Issuer=%s}", x509Certificate.getSubjectX500Principal().getName(),
                     x509Certificate.getIssuerX500Principal().getName() );
         }
 
@@ -151,42 +152,42 @@ public abstract class ObjectUtils {
             name = o.getClass().getName().replace( ".*\\.", "" );
         toString.append( name );
 
-        StringBuilder fieldsString = forEachFieldWithMeta( ObjectMeta.For.toString, o.getClass(),
-                new Function<TypeUtils.LastResult<Field, StringBuilder>, StringBuilder>() {
-                    @Override
-                    public StringBuilder apply(final TypeUtils.LastResult<Field, StringBuilder> lastResult) {
+        StringBuilder fieldsString = forEachFieldWithMeta(
+                ObjectMeta.For.toString, o.getClass(), new Function<TypeUtils.LastResult<Field, StringBuilder>, StringBuilder>() {
+            @Override
+            public StringBuilder apply(final TypeUtils.LastResult<Field, StringBuilder> lastResult) {
 
-                        Field field = lastResult.getCurrent();
-                        StringBuilder fieldsString = lastResult.getLastResult();
+                Field field = lastResult.getCurrent();
+                StringBuilder fieldsString = lastResult.getLastResult();
 
-                        String name = null;
-                        ObjectMeta fieldMeta = field.getAnnotation( ObjectMeta.class );
-                        if (fieldMeta != null)
-                            name = fieldMeta.name();
-                        if (name == null || name.isEmpty())
-                            name = field.getName();
+                String name = null;
+                ObjectMeta fieldMeta = field.getAnnotation( ObjectMeta.class );
+                if (fieldMeta != null)
+                    name = fieldMeta.name();
+                if (name == null || name.isEmpty())
+                    name = field.getName();
 
-                        if (fieldsString == null)
-                            fieldsString = new StringBuilder( ": " );
-                        else
-                            fieldsString.append( ", " );
+                if (fieldsString == null)
+                    fieldsString = new StringBuilder( ": " );
+                else
+                    fieldsString.append( ", " );
 
-                        try {
-                            field.setAccessible( true );
-                        }
-                        catch (SecurityException ignored) {
-                        }
+                try {
+                    field.setAccessible( true );
+                }
+                catch (SecurityException ignored) {
+                }
 
-                        try {
-                            fieldsString.append( name ).append( '=' ).append( describe( field.get( o ) ) );
-                        }
-                        catch (IllegalAccessException e) {
-                            logger.dbg( e, "Not accessible: %s", field );
-                        }
+                try {
+                    fieldsString.append( name ).append( '=' ).append( describe( field.get( o ) ) );
+                }
+                catch (IllegalAccessException e) {
+                    logger.dbg( e, "Not accessible: %s", field );
+                }
 
-                        return fieldsString;
-                    }
-                } );
+                return fieldsString;
+            }
+        } );
         if (fieldsString != null)
             toString.append( fieldsString );
 
@@ -204,7 +205,8 @@ public abstract class ObjectUtils {
     public static int hashCode(final Object o) {
 
         return checkNotNull(
-                forEachFieldWithMeta( ObjectMeta.For.hashCode, o.getClass(), new Function<TypeUtils.LastResult<Field, Integer>, Integer>() {
+                forEachFieldWithMeta(
+                        ObjectMeta.For.hashCode, o.getClass(), new Function<TypeUtils.LastResult<Field, Integer>, Integer>() {
                     @Override
                     public Integer apply(final TypeUtils.LastResult<Field, Integer> lastResult) {
 
@@ -216,7 +218,7 @@ public abstract class ObjectUtils {
                         }
 
                         try {
-                            return Arrays.hashCode( new int[] { lastResult.getLastResult(), field.get( o ).hashCode() } );
+                            return Arrays.hashCode( new int[]{ lastResult.getLastResult(), field.get( o ).hashCode() } );
                         }
                         catch (IllegalAccessException e) {
                             logger.dbg( e, "Not accessible: %s", field );
@@ -247,8 +249,9 @@ public abstract class ObjectUtils {
         if (!superObject.getClass().isAssignableFrom( subObject.getClass() ))
             return false;
 
-        return ifNotNullElse( forEachFieldWithMeta( ObjectMeta.For.equals, superObject.getClass(),
-                new Function<TypeUtils.LastResult<Field, Boolean>, Boolean>() {
+        return ifNotNullElse(
+                forEachFieldWithMeta(
+                        ObjectMeta.For.equals, superObject.getClass(), new Function<TypeUtils.LastResult<Field, Boolean>, Boolean>() {
                     @Override
                     public Boolean apply(final TypeUtils.LastResult<Field, Boolean> lastResult) {
 
@@ -276,15 +279,15 @@ public abstract class ObjectUtils {
     private static <R, T> R forEachFieldWithMeta(final ObjectMeta.For meta, final Class<T> type,
                                                  final Function<TypeUtils.LastResult<Field, R>, R> function) {
 
-        return TypeUtils.forEachSuperTypeOf( type, new Function<TypeUtils.LastResult<Class<?>, R>, R>() {
+        return TypeUtils.forEachSuperTypeOf(
+                type, new Function<TypeUtils.LastResult<Class<?>, R>, R>() {
                     @Override
                     public R apply(final TypeUtils.LastResult<Class<?>, R> lastTypeResult) {
 
                         Class<?> subType = lastTypeResult.getCurrent();
-                        R typeResult = lastTypeResult.getLastResult();
                         final boolean usedByType = usesMeta( meta, subType );
-
-                        return ifNotNullElse( TypeUtils.forEachFieldOf( subType, new Function<TypeUtils.LastResult<Field, R>, R>() {
+                        R result = TypeUtils.forEachFieldOf(
+                                subType, new Function<TypeUtils.LastResult<Field, R>, R>() {
                                     @Override
                                     public R apply(final TypeUtils.LastResult<Field, R> lastFieldResult) {
 
@@ -305,7 +308,11 @@ public abstract class ObjectUtils {
 
                                         return function.apply( new TypeUtils.LastResult<Field, R>( field, result ) );
                                     }
-                                }, false ), typeResult );
+                                }, false );
+
+                        if (result != null)
+                            return result;
+                        return lastTypeResult.getLastResult();
                     }
                 }, null );
     }
@@ -341,13 +348,13 @@ public abstract class ObjectUtils {
      *
      * @return One of two values.
      */
-    @Nullable
-    public static <T> T ifNotNullElse(@Nullable final T value, @Nullable final T nullValue) {
+    @NotNull
+    public static <T> T ifNotNullElse(@Nullable final T value, @NotNull final T nullValue) {
 
-        if (value != null)
-            return value;
+        if (value == null)
+            return checkNotNull( nullValue );
 
-        return nullValue;
+        return value;
     }
 
     /**
@@ -361,13 +368,12 @@ public abstract class ObjectUtils {
      *
      * @return One of two values.
      */
-    @NotNull
     public static <T> T ifNotNullElse(@Nullable final T value, final Supplier<T> nullValueSupplier) {
 
         if (value != null)
             return value;
 
-        return nullValueSupplier.get();
+        return checkNotNull( nullValueSupplier.get() );
     }
 
     /**
@@ -383,15 +389,18 @@ public abstract class ObjectUtils {
     @Nullable
     public static <F, T> T ifNotNull(@Nullable F from, Function<F, T> notNullValueFunction) {
 
-        return ifNotNullElse( from, notNullValueFunction, null );
+        if (from == null)
+            return null;
+
+        return checkNotNull( notNullValueFunction.apply( from ) );
     }
 
-    @Nullable
-    public static <F, T> T ifNotNullElse(@Nullable F from, Function<F, T> notNullValueFunction, @Nullable T nullValue) {
+    @NotNull
+    public static <F, T> T ifNotNullElse(@Nullable F from, Function<F, T> notNullValueFunction, @NotNull T nullValue) {
 
         if (from == null)
-            return nullValue;
+            return checkNotNull( nullValue );
 
-        return notNullValueFunction.apply( from );
+        return checkNotNull( notNullValueFunction.apply( from ) );
     }
 }

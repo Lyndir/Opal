@@ -57,4 +57,21 @@ public abstract class ArrayUtils {
 
         return array;
     }
+
+    /**
+     * Check whether the given array contains the given search object.
+     *
+     * @param array  The array to search through.
+     * @param search The object to search for in the array.
+     *
+     * @return <code>true</code> if the search object was found in the array.
+     */
+    public static <T, U extends T> boolean inArray(final T[] array, final U search) {
+
+        for (final T element : array)
+            if (ObjectUtils.isEqual( search, element ))
+                return true;
+
+        return false;
+    }
 }

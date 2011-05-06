@@ -15,14 +15,14 @@ import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * <h2>{@link FragmentNavigationListener}<br> <sub>Listeners that implement support for fragment-based AJAX content navigation.</sub></h2>
- *
+ * <p/>
  * <p> To enable fragment-based navigation in your application, install the PageListener on the pages you want to enable fragment-based
  * navigation on, and add the AjaxRequestListener to each AjaxRequestTarget that can cause content state or navigation to change.</p>
- *
+ * <p/>
  * <p>The easiest way to do the latter is by overriding WebApplication#newAjaxRequestTarget(Page page) and adding the AjaxRequestListener
  * to
  * the target there.</p>
- *
+ * <p/>
  * <p> <i>07 06, 2010</i> </p>
  *
  * @author lhunath
@@ -252,7 +252,7 @@ public interface FragmentNavigationListener {
                     return;
                 }
 
-            throw logger.err( "Could not activate a tab for page; no tabs are visible." ).toError( IllegalStateException.class );
+            throw new IllegalStateException( "Could not activate a tab for page; no tabs are visible." );
         }
     }
 

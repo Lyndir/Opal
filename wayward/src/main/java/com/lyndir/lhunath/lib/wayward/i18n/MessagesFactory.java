@@ -24,7 +24,7 @@ import java.lang.reflect.Proxy;
 
 /**
  * <h2>{@link MessagesFactory}<br> <sub>[in short] (TODO).</sub></h2>
- *
+ * <p/>
  * <p> <i>Mar 26, 2010</i> </p>
  *
  * @author lhunath
@@ -90,8 +90,7 @@ public abstract class MessagesFactory {
             logger.bug( e, "Field %s of class %s was inaccessible even though we tried setAccessible.", msgsFieldName, object.getClass() );
         }
         catch (NoSuchFieldException e) {
-            throw logger.err( e, "Field %s of class %s not found.", msgsFieldName, object.getClass() )
-                        .toError( IllegalArgumentException.class );
+            throw new IllegalArgumentException( "Field " + msgsFieldName + " of class " + object.getClass() + " not found.", e );
         }
     }
 }

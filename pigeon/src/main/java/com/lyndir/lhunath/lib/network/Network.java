@@ -15,6 +15,8 @@
  */
 package com.lyndir.lhunath.lib.network;
 
+import static com.google.common.base.Preconditions.*;
+
 import com.google.common.base.Charsets;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.io.IOException;
@@ -63,7 +65,7 @@ public class Network implements Runnable {
     private final Map<SocketChannel, Object>        writeQueueLocks   = Collections.synchronizedMap( new HashMap<SocketChannel, Object>() );
 
     protected final Object selectorGuard = new Object();
-    protected Selector selector; // TODO: Synchronize all access to/of the selector.
+    private Selector selector; // TODO: Synchronize all access to/of the selector.
 
     // Collections that are only modified by the networking thread.
     private final Map<SocketChannel, ByteBuffer> readBuffers    = new HashMap<SocketChannel, ByteBuffer>();
@@ -87,8 +89,7 @@ public class Network implements Runnable {
      */
     public void startThread() {
 
-        if (networkThread != null && networkThread.isAlive())
-            throw logger.err( "Network thread is already running." ).toError( IllegalStateException.class );
+        checkState( networkThread == null || !networkThread.isAlive(), "Network thread is already running." );
 
         networkThread = new Thread( this );
         networkThread.start();
@@ -139,7 +140,7 @@ public class Network implements Runnable {
         }
 
         catch (IOException e) {
-            throw logger.err( e, "Failed to bring up the networking framework!" ).toError();
+            throw new RuntimeException( "Couldn't open a new network selector.", e );
         }
 
         logger.inf( "Networking framework is up." );
@@ -162,7 +163,7 @@ public class Network implements Runnable {
         }
 
         catch (IOException e) {
-            throw logger.err( e, "Failed to shut down the networking framework!" ).toError();
+            throw new IllegalStateException( "Couldn't close the network selector.", e );
         }
 
         logger.inf( "Networking framework is down." );
@@ -251,8 +252,7 @@ public class Network implements Runnable {
     public ServerSocketChannel bind(final SocketAddress socketAddress, final SSLEngine sslEngine)
             throws IOException {
 
-        if (selector == null || !selector.isOpen())
-            throw logger.err( "The networking framework is not (yet) up." ).toError( IllegalStateException.class );
+        checkState( selector != null && selector.isOpen(), "The networking framework is not (yet) up." );
 
         // Bind a new socket in non-blocking mode to the socketAddress.
         ServerSocketChannel serverChannel = ServerSocketChannel.open();
@@ -365,8 +365,7 @@ public class Network implements Runnable {
     public SocketChannel connect(final InetSocketAddress socketAddress, final SSLEngine sslEngine)
             throws IOException {
 
-        if (selector == null || !selector.isOpen())
-            throw logger.err( "The networking framework is not (yet) up." ).toError( IllegalStateException.class );
+        checkState( selector != null && selector.isOpen(), "The networking framework is not (yet) up." );
 
         // Begin a new non-blocking connection.
         SocketChannel connectionChannel = SocketChannel.open();
@@ -761,12 +760,9 @@ public class Network implements Runnable {
     public void queue(final ByteBuffer dataBuffer, final SocketChannel socketChannel)
             throws ClosedChannelException {
 
-        if (socketChannel.keyFor( selector ) == null) {
-            // Destination is not supported by our selector.
-            logger.wrn(
-                    "Tried to queue a message for a destination (%s) that is not managed by our selector.", nameChannel( socketChannel ) );
-            throw logger.toError( IllegalArgumentException.class );
-        }
+        checkArgument(
+                socketChannel.keyFor( selector ) != null,
+                "Tried to queue a message for a destination (%s) that is not managed by our selector.", nameChannel( socketChannel ) );
 
         ByteBuffer writeQueueBuffer;
         synchronized (writeQueueBuffers) {

@@ -15,18 +15,21 @@
  */
 package com.lyndir.lhunath.lib.system.logging;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.google.common.base.Throwables;
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
 
 
 /**
  * <h2>{@link Logger}<br> <sub>[in short] (TODO).</sub></h2>
- *
+ * <p/>
  * <p> [description / usage]. </p>
- *
+ * <p/>
  * <p> <i>Mar 28, 2009</i> </p>
  *
  * @author lhunath
@@ -35,11 +38,8 @@ public class Logger implements Serializable {
 
     private static final Logger loggerLogger = get( Logger.class );
 
-    private final org.slf4j.Logger logger;
-
-    private static final ThreadLocal<Throwable> eventCause     = new ThreadLocal<Throwable>();
-    private static final ThreadLocal<String>    eventFormat    = new ThreadLocal<String>();
-    private static final ThreadLocal<Object[]>  eventArguments = new ThreadLocal<Object[]>();
+    private final     Class<?>         type;
+    private transient org.slf4j.Logger logger;
 
     // Create a logger --
 
@@ -57,7 +57,28 @@ public class Logger implements Serializable {
 
     /**
      * Log a progress trace event.
+     * <p/>
+     * <p> This level is for all events that describe the flow of execution. </p>
      *
+     * @param marker               An optional marker that can be used to tag this event with additional context.
+     * @param cause                A throwable that details the stack at the time of this event.
+     * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments The arguments to inject into the event message format.
+     *
+     * @return Self, for chaining.
+     */
+    public Logger trc(@Nullable final Marker marker, @Nullable final Throwable cause, final String descriptionFormat,
+                      final Object... descriptionArguments) {
+
+        if (slf4j().isTraceEnabled())
+            slf4j().trace( marker, String.format( descriptionFormat, descriptionArguments ), cause );
+
+        return this;
+    }
+
+    /**
+     * Log a progress trace event.
+     * <p/>
      * <p> This level is for all events that describe the flow of execution. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -66,24 +87,14 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger trc(final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger trc(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
 
-        if (logger.isTraceEnabled())
-            if (cause == null)
-                logger.trace( String.format( descriptionFormat, descriptionArguments ) );
-            else
-                logger.trace( String.format( descriptionFormat, descriptionArguments ), cause );
-
-        eventCause.set( cause );
-        eventFormat.set( descriptionFormat );
-        eventArguments.set( descriptionArguments );
-
-        return this;
+        return trc( null, cause, descriptionFormat, descriptionArguments );
     }
 
     /**
      * Log a progress trace event.
-     *
+     * <p/>
      * <p> This level is for all events that describe the flow of execution. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -100,7 +111,28 @@ public class Logger implements Serializable {
 
     /**
      * Log a debugging event.
+     * <p/>
+     * <p> This level is for all events that visualize the application's state. </p>
      *
+     * @param marker               An optional marker that can be used to tag this event with additional context.
+     * @param cause                A throwable that details the stack at the time of this event.
+     * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments The arguments to inject into the event message format.
+     *
+     * @return Self, for chaining.
+     */
+    public Logger dbg(@Nullable final Marker marker, @Nullable final Throwable cause, final String descriptionFormat,
+                      final Object... descriptionArguments) {
+
+        if (slf4j().isDebugEnabled())
+            slf4j().debug( marker, String.format( descriptionFormat, descriptionArguments ), cause );
+
+        return this;
+    }
+
+    /**
+     * Log a debugging event.
+     * <p/>
      * <p> This level is for all events that visualize the application's state. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -109,24 +141,14 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger dbg(final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger dbg(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
 
-        if (logger.isDebugEnabled())
-            if (cause == null)
-                logger.debug( String.format( descriptionFormat, descriptionArguments ) );
-            else
-                logger.debug( String.format( descriptionFormat, descriptionArguments ), cause );
-
-        eventCause.set( cause );
-        eventFormat.set( descriptionFormat );
-        eventArguments.set( descriptionArguments );
-
-        return this;
+        return dbg( null, cause, descriptionFormat, descriptionArguments );
     }
 
     /**
      * Log a debugging event.
-     *
+     * <p/>
      * <p> This level is for all events that visualize the application's state. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -141,7 +163,28 @@ public class Logger implements Serializable {
 
     /**
      * Log an informative statement.
+     * <p/>
+     * <p> This level is for all events that detail an important evolution in the application's state. </p>
      *
+     * @param marker               An optional marker that can be used to tag this event with additional context.
+     * @param cause                A throwable that details the stack at the time of this event.
+     * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments The arguments to inject into the event message format.
+     *
+     * @return Self, for chaining.
+     */
+    public Logger inf(@Nullable final Marker marker, @Nullable final Throwable cause, final String descriptionFormat,
+                      final Object... descriptionArguments) {
+
+        if (slf4j().isInfoEnabled())
+            slf4j().info( marker, String.format( descriptionFormat, descriptionArguments ), cause );
+
+        return this;
+    }
+
+    /**
+     * Log an informative statement.
+     * <p/>
      * <p> This level is for all events that detail an important evolution in the application's state. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -150,21 +193,14 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger inf(final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger inf(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
 
-        if (logger.isInfoEnabled())
-            logger.info( String.format( descriptionFormat, descriptionArguments ), cause );
-
-        eventCause.set( cause );
-        eventFormat.set( descriptionFormat );
-        eventArguments.set( descriptionArguments );
-
-        return this;
+        return inf( null, cause, descriptionFormat, descriptionArguments );
     }
 
     /**
      * Log an informative statement.
-     *
+     * <p/>
      * <p> This level is for all events that detail an important evolution in the application's state. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -181,7 +217,28 @@ public class Logger implements Serializable {
 
     /**
      * Log an application warning.
+     * <p/>
+     * <p> This level is for all events that indicate a suboptimal / non-ideal flow. </p>
      *
+     * @param marker               An optional marker that can be used to tag this event with additional context.
+     * @param cause                A throwable that details the stack at the time of this event.
+     * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments The arguments to inject into the event message format.
+     *
+     * @return Self, for chaining.
+     */
+    public Logger wrn(@Nullable final Marker marker, @Nullable final Throwable cause, final String descriptionFormat,
+                      final Object... descriptionArguments) {
+
+        if (slf4j().isWarnEnabled())
+            slf4j().warn( marker, String.format( descriptionFormat, descriptionArguments ), cause );
+
+        return this;
+    }
+
+    /**
+     * Log an application warning.
+     * <p/>
      * <p> This level is for all events that indicate a suboptimal / non-ideal flow. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -190,24 +247,14 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger wrn(final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger wrn(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
 
-        if (logger.isWarnEnabled())
-            if (cause == null)
-                logger.warn( String.format( descriptionFormat, descriptionArguments ) );
-            else
-                logger.warn( String.format( descriptionFormat, descriptionArguments ), cause );
-
-        eventCause.set( cause );
-        eventFormat.set( descriptionFormat );
-        eventArguments.set( descriptionArguments );
-
-        return this;
+        return wrn( null, cause, descriptionFormat, descriptionArguments );
     }
 
     /**
      * Log an application warning.
-     *
+     * <p/>
      * <p> This level is for all events that indicate a suboptimal / non-ideal flow. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -221,65 +268,29 @@ public class Logger implements Serializable {
     }
 
     /**
-     * Log an internal inconsistency.
+     * Log an application error.
+     * <p/>
+     * <p> This level is for all events that indicate failure to comply with the request. </p>
      *
-     * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
-     *
-     * @param cause A throwable that details the stack at the time of this event.
-     *
-     * @return Self, for chaining.
-     *
-     * @see #bug(Throwable, String, Object...)
-     */
-    public Logger bug(final Throwable cause) {
-
-        return bug( cause, "Unexpected Error" );
-    }
-
-    /**
-     * Log an internal inconsistency.
-     *
-     * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
-     *
+     * @param marker               An optional marker that can be used to tag this event with additional context.
      * @param cause                A throwable that details the stack at the time of this event.
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments The arguments to inject into the event message format.
      *
      * @return Self, for chaining.
      */
-    public Logger bug(final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger err(@Nullable final Marker marker, @Nullable final Throwable cause, final String descriptionFormat,
+                      final Object... descriptionArguments) {
 
-        if (logger.isErrorEnabled())
-            if (cause == null)
-                logger.error( String.format( descriptionFormat, descriptionArguments ) );
-            else
-                logger.error( String.format( descriptionFormat, descriptionArguments ), cause );
-
-        eventCause.set( cause );
-        eventFormat.set( descriptionFormat );
-        eventArguments.set( descriptionArguments );
+        if (slf4j().isErrorEnabled())
+            slf4j().error( marker, String.format( descriptionFormat, descriptionArguments ), cause );
 
         return this;
     }
 
     /**
-     * Log an internal inconsistency.
-     *
-     * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
-     *
-     * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
-     * @param descriptionArguments The arguments to inject into the event message format.
-     *
-     * @return Self, for chaining.
-     */
-    public Logger bug(final String descriptionFormat, final Object... descriptionArguments) {
-
-        return bug( null, descriptionFormat, descriptionArguments );
-    }
-
-    /**
      * Log an application error.
-     *
+     * <p/>
      * <p> This level is for all events that indicate failure to comply with the request. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -288,24 +299,14 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger err(final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger err(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
 
-        if (logger.isErrorEnabled())
-            if (cause == null)
-                logger.error( String.format( descriptionFormat, descriptionArguments ) );
-            else
-                logger.error( String.format( descriptionFormat, descriptionArguments ), cause );
-
-        eventCause.set( cause );
-        eventFormat.set( descriptionFormat );
-        eventArguments.set( descriptionArguments );
-
-        return this;
+        return err( null, cause, descriptionFormat, descriptionArguments );
     }
 
     /**
      * Log an application error.
-     *
+     * <p/>
      * <p> This level is for all events that indicate failure to comply with the request. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -318,120 +319,113 @@ public class Logger implements Serializable {
         return err( null, descriptionFormat, descriptionArguments );
     }
 
-    // Event delegation --
-
     /**
-     * Generate an unchecked {@link Error} of the previously logged event (and initialize its cause if set).
+     * Log a user action.
+     * <p/>
+     * <p>This level is for all actions performed by a user that site administrators may later need to reflect upon to evaluate user
+     * conduct.</p>
      *
-     * The previous event details are kept in a thread-safe manner and local to this logger instance.
+     * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments The arguments to inject into the event message format.
      *
-     * @return An unchecked {@link Error}.
+     * @return Self, for chaining.
      */
-    @SuppressWarnings({ "ThrowableResultOfMethodCallIgnored" })
-    public RuntimeException toError() {
+    public Logger audit(final String descriptionFormat, final Object... descriptionArguments) {
 
-        if (eventCause.get() instanceof RuntimeException)
-            return (RuntimeException) eventCause.get();
-
-        return toError( RuntimeException.class );
+        return inf( Markers.AUDIT, null, descriptionFormat, descriptionArguments );
     }
 
     /**
-     * Generate the given {@link Throwable} of the previously logged event (and initialize its cause if set).
+     * Log an internal inconsistency.
+     * <p/>
+     * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
      *
-     * The previous event details are kept in a thread-safe manner and local to this logger instance.
+     * @param cause A throwable that details the stack at the time of this event.
      *
-     * @param errorClass The type of {@link Throwable} to generate for the previously logged event. This method relies on the fact that the
-     *                   given class has a constructor that takes a {@link String} argument (the message) and a {@link Throwable} argument
-     *                   (the cause) in that order.
-     * @param args       Optional additional arguments. These will be passed to the <code>errorClass</code> constructor, so make sure the
-     *                   class has a constructor that supports the given number and type of arguments. They should <b>follow</b> the
-     *                   message
-     *                   and cause arguments.
-     * @param <E>        The type of the requested exception must be a subclass of {@link Throwable}.
+     * @return The cause, if not null, wrapped in a {@link RuntimeException} if it isn't one.  For easy rethrowing.
      *
-     * @return The requested {@link Throwable}.
+     * @see #bug(Throwable, String, Object...)
      */
-    public <E extends Throwable> E toError(final Class<E> errorClass, final Object... args) {
+    public RuntimeException bug(@NotNull final Throwable cause) {
 
-        if (eventFormat.get() == null)
-            throw new IllegalStateException( "No previous event set: can't rethrow one." );
+        return checkNotNull( bug( checkNotNull( cause ), "Unexpected Error" ) );
+    }
 
-        try {
-            Class<?>[] types = new Class<?>[args.length + 2];
-            Object[] arguments = new Object[args.length + 2];
-            types[0] = String.class;
-            arguments[0] = String.format( eventFormat.get(), eventArguments.get() );
-            types[1] = Throwable.class;
-            arguments[1] = eventCause.get();
-            for (int a = 0; a < args.length; ++a) {
-                arguments[a + 2] = args[a];
-                if (arguments[a + 2] != null)
-                    types[a + 2] = arguments[a + 2].getClass();
-            }
+    /**
+     * Log an internal inconsistency.
+     * <p/>
+     * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
+     *
+     * @param cause                A throwable that details the stack at the time of this event.
+     * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments The arguments to inject into the event message format.
+     *
+     * @return The cause, if not null, wrapped in a {@link RuntimeException} if it isn't one.  For easy rethrowing.
+     */
+    @Nullable
+    public RuntimeException bug(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
 
-            // Find all constructors of errorClass that match the argument types.
-            // (Cast is necessary because generic arrays are unsafe in java.)
-            @SuppressWarnings("unchecked")
-            Constructor<E>[] errorConstructors = (Constructor<E>[]) errorClass.getConstructors();
-            List<Constructor<E>> constructors = new LinkedList<Constructor<E>>();
-            for (final Constructor<E> constructor : errorConstructors) {
-                if (constructor.getParameterTypes().length != types.length)
-                    continue;
+        err( Markers.BUG, cause, descriptionFormat, descriptionArguments );
 
-                boolean validConstructor = true;
-                for (int t = 0; t < types.length; ++t) {
-                    if (types[t] == null)
-                        continue;
-                    if (!constructor.getParameterTypes()[t].equals( types[t] )) {
-                        validConstructor = false;
-                        break;
-                    }
-                }
+        return cause == null? null: Throwables.propagate( cause );
+    }
 
-                if (validConstructor)
-                    constructors.add( constructor );
-            }
-            if (constructors.isEmpty())
-                throw loggerLogger.err(
-                        "No constructors found for %s that match argument types %s", //
-                        errorClass, Arrays.asList( types ) ) //
-                        .toError( IllegalArgumentException.class );
-            if (constructors.size() > 1)
-                throw loggerLogger.err(
-                        "Ambiguous argument types %s for constructors of %s.  Constructors: %s", //
-                        Arrays.asList( types ), errorClass, constructors ) //
-                        .toError( IllegalArgumentException.class );
+    /**
+     * Log an internal inconsistency.
+     * <p/>
+     * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
+     *
+     * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments The arguments to inject into the event message format.
+     */
+    public void bug(final String descriptionFormat, final Object... descriptionArguments) {
 
-            return constructors.get( 0 ).newInstance( arguments );
-        }
+        bug( null, descriptionFormat, descriptionArguments );
+    }
 
-        catch (IllegalArgumentException e) {
-            throw loggerLogger.bug( e ).toError();
-        }
-        catch (InstantiationException e) {
-            throw loggerLogger.bug( e ).toError();
-        }
-        catch (IllegalAccessException e) {
-            throw loggerLogger.bug( e ).toError();
-        }
-        catch (InvocationTargetException e) {
-            throw loggerLogger.bug( e ).toError();
-        }
-        catch (SecurityException e) {
-            throw loggerLogger.bug( e ).toError();
-        }
+    /**
+     * Log a security concern.
+     * <p/>
+     * <p> This level is for all events that should be evaluated by the security team. </p>
+     *
+     * @param cause                A throwable that details the stack at the time of this event.
+     * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments The arguments to inject into the event message format.
+     *
+     * @return Self, for chaining.
+     */
+    public Logger security(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+
+        return wrn( Markers.SECURITY, cause, descriptionFormat, descriptionArguments );
+    }
+
+    /**
+     * Log a security concern.
+     * <p/>
+     * <p> This level is for all events that should be evaluated by the security team. </p>
+     *
+     * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments The arguments to inject into the event message format.
+     *
+     * @return Self, for chaining.
+     */
+    public Logger security(final String descriptionFormat, final Object... descriptionArguments) {
+
+        return security( null, descriptionFormat, descriptionArguments );
     }
 
     // Internal operation --
 
     public org.slf4j.Logger slf4j() {
 
+        if (logger == null)
+            logger = LoggerFactory.getLogger( type );
+
         return logger;
     }
 
     private Logger(final Class<?> type) {
 
-        logger = LoggerFactory.getLogger( type );
+        this.type = type;
     }
 }

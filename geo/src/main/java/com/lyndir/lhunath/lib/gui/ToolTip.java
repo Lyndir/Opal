@@ -135,12 +135,12 @@ public class ToolTip extends JPanel {
         toolTipPane.getActionMap().put(
                 "stick", new AbstractAction( "stick" ) {
 
-                    @Override
-                    public void actionPerformed(final ActionEvent e) {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
 
-                        toggleSticky();
-                    }
-                } );
+                toggleSticky();
+            }
+        } );
 
         listen( this );
         setContent( component );
