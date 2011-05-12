@@ -5,12 +5,12 @@ import java.lang.annotation.*;
 
 /**
  * <h2>{@link ObjectMeta}<br> <sub>[in short] (TODO).</sub></h2>
- *
+ * <p/>
  * <p> <i>02 04, 2011</i> </p>
  *
  * @author lhunath
  */
-@Target({ ElementType.TYPE, ElementType.FIELD })
+@Target( { ElementType.TYPE, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ObjectMeta {
 
@@ -28,6 +28,12 @@ public @interface ObjectMeta {
      * @return What utilities may not use this, regardless of what other applicable {@link ObjectMeta} configuration says.
      */
     For[] ignoreFor() default { };
+
+    /**
+     * @return Allow this annotation to apply to subtypes of the type upon which it is declared (or the type which implements this type, if
+     *         this type is an interface).
+     */
+    boolean inherited() default true;
 
     enum For {
 

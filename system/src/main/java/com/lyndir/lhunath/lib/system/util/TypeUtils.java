@@ -1,12 +1,14 @@
 package com.lyndir.lhunath.lib.system.util;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.*;
 
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableMap;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -55,6 +57,40 @@ public abstract class TypeUtils {
         }
 
         return null;
+    }
+
+    /**
+     * Recursively search a type's inheritance hierarchy for all instances of the given annotation.
+     *
+     * @param type           The class whose hierarchy to search.
+     * @param annotationType The annotation type to search for.
+     * @param <A>            The annotation type.
+     *
+     * @return A mapping of the given type and its super types to a mapping of that type or one of its implemented interfaces to the
+     *         instance of the given annotation the type declares.
+     *         <code>[TT = T or a supertype of T -> [ TTT = TT or interface of TT -> annotation on TTT ]]</code>
+     */
+    @NotNull
+    public static <T, A extends Annotation> Map<Class<? super T>, Map<Class<?>, A>> getAnnotations(final Class<T> type,
+                                                                                                   final Class<A> annotationType) {
+
+        ImmutableMap.Builder<Class<? super T>, Map<Class<?>, A>> typeHierarchyAnnotations = ImmutableMap.builder();
+        ImmutableMap.Builder<Class<?>, A> typeAnnotations = ImmutableMap.builder();
+
+        A annotation = type.getAnnotation( annotationType );
+        if (annotation != null)
+            typeAnnotations.put( type, annotation );
+        for (final Class<?> typeInterface : type.getInterfaces()) {
+            annotation = findAnnotation( typeInterface, annotationType );
+            if (annotation != null)
+                typeAnnotations.put( typeInterface, annotation );
+        }
+        typeHierarchyAnnotations.put( type, typeAnnotations.build() );
+
+        if (type.getSuperclass() != null)
+            typeHierarchyAnnotations.putAll( getAnnotations( type.getSuperclass(), annotationType ) );
+
+        return typeHierarchyAnnotations.build();
     }
 
     /**
@@ -168,8 +204,7 @@ public abstract class TypeUtils {
 
     public static Field findFirstField(final Object owner, final Object value) {
 
-        return forEachFieldOf(
-                owner.getClass(), new Function<LastResult<Field, Field>, Field>() {
+        return forEachFieldOf( owner.getClass(), new Function<LastResult<Field, Field>, Field>() {
                     @Override
                     public Field apply(final LastResult<Field, Field> from) {
 
@@ -230,13 +265,13 @@ public abstract class TypeUtils {
      *
      * @see #valueOfEnum(Class, String)
      */
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings( { "unchecked" })
     public static <T> T unsafeValueOfEnum(final Class<T> type, final String value) {
 
         return type.cast( valueOfEnum( (Class<Enum>) type, value ) );
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings( { "unchecked" })
     public static <T extends Enum<T>> Class<T> checkEnum(final Class<?> type) {
 
         checkArgument( type.isEnum(), "%s is not an enum.", type );
@@ -288,7 +323,7 @@ public abstract class TypeUtils {
             this.result = result;
         }
 
-        @SuppressWarnings({ "unchecked" })
+        @SuppressWarnings( { "unchecked" })
         public <R> R getResult() {
 
             return (R) result;

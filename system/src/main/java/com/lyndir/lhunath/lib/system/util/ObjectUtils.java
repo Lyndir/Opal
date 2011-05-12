@@ -317,9 +317,32 @@ public abstract class ObjectUtils {
                 }, null );
     }
 
-    private static boolean usesMeta(final ObjectMeta.For meta, final Class<?> type) {
+    private static <T> boolean usesMeta(final ObjectMeta.For meta, final Class<T> type) {
 
-        return usesMeta( meta, type.getAnnotation( ObjectMeta.class ) );
+        for (Map.Entry<Class<? super T>, Map<Class<?>, ObjectMeta>> annotationEntry : TypeUtils.getAnnotations( type, ObjectMeta.class ).entrySet()) {
+            Class<?> superType = annotationEntry.getKey();
+            Map<Class<?>, ObjectMeta> superTypeAnnotations = annotationEntry.getValue();
+
+            // Does the superType have an annotation?
+            ObjectMeta superTypeAnnotation = superTypeAnnotations.get( superType );
+            if (superTypeAnnotation != null) {
+                if (superType == type || superTypeAnnotation.inherited())
+                    // The superType is the type or is inheritable by the type, use its annotation.
+                    return usesMeta( meta, superTypeAnnotation );
+
+                // superType has an annotation, stop descending hierarchy.
+                break;
+            }
+
+            // superType has no annotation, look at its implemented interfaces.
+            for (ObjectMeta annotation : superTypeAnnotations.values())
+                if (superType == type || annotation.inherited())
+                    // The superType is the type or is inheritable by the type, use its annotation.
+                    if (usesMeta( meta, annotation ))
+                        return true;
+        }
+
+        return false;
     }
 
     private static boolean usesMeta(final ObjectMeta.For meta, final Field field) {
