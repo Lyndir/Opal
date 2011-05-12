@@ -36,8 +36,6 @@ import org.slf4j.Marker;
  */
 public class Logger implements Serializable {
 
-    private static final Logger loggerLogger = get( Logger.class );
-
     private final     Class<?>         type;
     private transient org.slf4j.Logger logger;
 

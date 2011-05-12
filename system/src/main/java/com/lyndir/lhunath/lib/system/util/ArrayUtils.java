@@ -6,7 +6,7 @@ import java.util.*;
 
 /**
  * <h2>{@link ArrayUtils}<br> <sub>[in short] (TODO).</sub></h2>
- *
+ * <p/>
  * <p> <i>06 03, 2010</i> </p>
  *
  * @author lhunath
@@ -73,5 +73,41 @@ public abstract class ArrayUtils {
                 return true;
 
         return false;
+    }
+
+    /**
+     * Return a new array with all elements from the given array copied over, skipping the first <code>numberToSkip</code> elements.
+     *
+     * @param arrayType               The type of elements that the array houses.
+     * @param commandNameAndArguments The original array that provides the objects to fill the new array with.
+     * @param numberToSkip            The amount of elements to skip in the source array, from the start.
+     * @param <T>                     The type of elements that the array houses.
+     *
+     * @return A new array with length <code>commandNameAndArguments.length - numberToSkip</code>
+     */
+    public static <T> T[] skip(final Class<T> arrayType, final T[] commandNameAndArguments, final int numberToSkip) {
+
+        T[] trimmedArray = ObjectArrays.newArray( arrayType, commandNameAndArguments.length - numberToSkip );
+        System.arraycopy( commandNameAndArguments, numberToSkip, trimmedArray, 0, trimmedArray.length );
+
+        return trimmedArray;
+    }
+
+    /**
+     * Return a new array with all elements from the given array copied over, except the last <code>numberToTrim</code> elements.
+     *
+     * @param arrayType               The type of elements that the array houses.
+     * @param commandNameAndArguments The original array that provides the objects to fill the new array with.
+     * @param numberToTrim            The amount of elements to skip in the source array, at the end.
+     * @param <T>                     The type of elements that the array houses.
+     *
+     * @return A new array with length <code>commandNameAndArguments.length - numberToSkip</code>
+     */
+    public static <T> T[] trim(final Class<T> arrayType, final T[] commandNameAndArguments, final int numberToTrim) {
+
+        T[] trimmedArray = ObjectArrays.newArray( arrayType, commandNameAndArguments.length - numberToTrim );
+        System.arraycopy( commandNameAndArguments, 0, trimmedArray, 0, trimmedArray.length );
+
+        return trimmedArray;
     }
 }
