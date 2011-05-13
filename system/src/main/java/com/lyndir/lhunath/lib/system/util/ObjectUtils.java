@@ -211,6 +211,7 @@ public abstract class ObjectUtils {
                     public Integer apply(final TypeUtils.LastResult<Field, Integer> lastResult) {
 
                         Field field = lastResult.getCurrent();
+                        int lastHashCode = ifNotNullElse( lastResult.getLastResult(), 0);
                         try {
                             field.setAccessible( true );
                         }
@@ -218,13 +219,15 @@ public abstract class ObjectUtils {
                         }
 
                         try {
-                            return Arrays.hashCode( new int[]{ lastResult.getLastResult(), field.get( o ).hashCode() } );
+                            Object value = field.get( o );
+                            if (value != null)
+                                return Arrays.hashCode( new int[]{ lastHashCode, value.hashCode() } );
                         }
                         catch (IllegalAccessException e) {
                             logger.dbg( e, "Not accessible: %s", field );
-
-                            return lastResult.getLastResult();
                         }
+
+                        return lastHashCode;
                     }
                 } ), "No fields to generate a hashCode from in object: %s", o );
     }

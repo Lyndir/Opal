@@ -17,6 +17,7 @@ package com.lyndir.lhunath.lib.system.collection;
 
 import java.io.Serializable;
 import java.util.Map;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -33,8 +34,8 @@ import java.util.Map;
  */
 public class Pair<K, V> implements Map.Entry<K, V>, Serializable {
 
-    private final K key;
-    private       V value;
+    private  K key;
+    private  V value;
 
     /**
      * Create a new {@link Pair} instance.
@@ -54,35 +55,36 @@ public class Pair<K, V> implements Map.Entry<K, V>, Serializable {
      *
      * @return A new {@link Pair} instance
      */
-    public static <K, V> Pair<K, V> of(final K key, final V value) {
+    public static <K, V> Pair<K, V> of(@Nullable final K key, @Nullable final V value) {
 
         return new Pair<K, V>( key, value );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
+    @Nullable
     public K getKey() {
 
         return key;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    public K setKey(@Nullable final K key) {
+
+        K old = this.key;
+        this.key = key;
+
+        return old;
+    }
+
     @Override
+    @Nullable
     public V getValue() {
 
         return value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @SuppressWarnings({ "ParameterHidesMemberVariable" })
-    public V setValue(final V value) {
+    public V setValue(@Nullable final V value) {
 
         V old = this.value;
         this.value = value;
