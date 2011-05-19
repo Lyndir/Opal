@@ -3,11 +3,11 @@ package com.lyndir.lhunath.lib.system.util;
 import static com.google.common.base.Preconditions.*;
 
 import com.google.common.base.Function;
+import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.lyndir.lhunath.lib.system.logging.Logger;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.Map;
 import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +27,89 @@ public abstract class TypeUtils {
 
     private static final Pattern FIRST_LETTER = Pattern.compile( "(\\w)\\w{2,}\\." );
     private static final Pattern THROWS       = Pattern.compile( " throws [^\\(\\)]*" );
+
+    /**
+     * Load the named class or turn any exceptions into runtime exceptions.
+     *
+     * @param typeName The name of the class that should be loaded.
+     * @param <T>      The type of class that the operation should yield (note: unchecked).
+     *
+     * @return A class object.
+     *
+     * @throws RuntimeException In case the named class cannot be found in the thread's context classloader.
+     */
+    @NotNull
+    @SuppressWarnings( { "unchecked" })
+    public static <T> Class<T> loadClass(final String typeName) {
+
+        try {
+            return (Class<T>) Thread.currentThread().getContextClassLoader().loadClass( typeName );
+        }
+        catch (ClassNotFoundException e) {
+            throw Throwables.propagate( e );
+        }
+    }
+
+    /**
+     * Instantiate the given class or turn any exceptions into runtime exceptions.
+     *
+     * @param type The class that should be instantiated with the default constructor.
+     * @param <T>  The type of instance that the operation should yield.
+     *
+     * @return An instance object of the named type.
+     *
+     * @throws RuntimeException In case the named class cannot be found in the thread's context classloader or the class cannot be
+     *                          instantiated or constructed.
+     */
+    public static <T> T newInstance(final Class<T> type) {
+
+        try {
+            return type.getConstructor().newInstance();
+        }
+        catch (InstantiationException e) {
+            throw Throwables.propagate( e );
+        }
+        catch (IllegalAccessException e) {
+            throw Throwables.propagate( e );
+        }
+        catch (InvocationTargetException e) {
+            throw Throwables.propagate( e );
+        }
+        catch (NoSuchMethodException e) {
+            throw Throwables.propagate( e );
+        }
+    }
+
+    /**
+     * Load and instantiate the named class or turn any exceptions into runtime exceptions.
+     *
+     * @param typeName The name of the class that should be loaded and instantiated with the default constructor.
+     * @param <T>      The type of instance that the operation should yield (note: unchecked).
+     *
+     * @return An instance object of the named type.
+     *
+     * @throws RuntimeException In case the named class cannot be found in the thread's context classloader or the class cannot be
+     *                          instantiated or constructed.
+     */
+    @SuppressWarnings( { "unchecked" })
+    public static <T> T newInstance(final String typeName) {
+
+        try {
+            return (T) loadClass( typeName ).getConstructor().newInstance();
+        }
+        catch (InstantiationException e) {
+            throw Throwables.propagate( e );
+        }
+        catch (IllegalAccessException e) {
+            throw Throwables.propagate( e );
+        }
+        catch (InvocationTargetException e) {
+            throw Throwables.propagate( e );
+        }
+        catch (NoSuchMethodException e) {
+            throw Throwables.propagate( e );
+        }
+    }
 
     /**
      * Recursively search a type's inheritance hierarchy for an annotation.
