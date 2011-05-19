@@ -15,11 +15,16 @@
  */
 package com.lyndir.lhunath.lib.system.util;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import java.io.ByteArrayInputStream;
 import java.net.URL;
+import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * <h2>{@link StringUtils}<br> <sub>Some utility methods for working with {@link String}s.</sub></h2>
- *
+ * <p/>
  * <p> <i>Jan 12, 2010</i> </p>
  *
  * @author lhunath
@@ -61,7 +66,7 @@ public abstract class StringUtils {
     }
 
     /**
-     * Trim all <code>trim</code> strings off of the <code>source</code> string, operating only on the left side.
+     * Trim all {@code trim} strings off of the {@code source} string, operating only on the left side.
      *
      * @param source The source object that needs to be converted to a string and trimmed.
      * @param trim   The object that needs to be converted to a string and is what will be trimmed off.
@@ -82,7 +87,7 @@ public abstract class StringUtils {
     }
 
     /**
-     * Trim all <code>trim</code> strings off of the <code>source</code> string, operating only on the left side.
+     * Trim all {@code trim} strings off of the {@code source} string, operating only on the left side.
      *
      * @param source The source object that needs to be converted to a string and trimmed.
      * @param trim   The object that needs to be converted to a string and is what will be trimmed off.
@@ -103,7 +108,7 @@ public abstract class StringUtils {
     }
 
     /**
-     * Trim all <code>trim</code> strings off of the <code>source</code> string, operating on both sides.
+     * Trim all {@code trim} strings off of the {@code source} string, operating on both sides.
      *
      * @param source The source object that needs to be converted to a string and trimmed.
      * @param trim   The object that needs to be converted to a string and is what will be trimmed off.
@@ -181,5 +186,44 @@ public abstract class StringUtils {
         String path = NON_FINAL_PATH.matcher( TRAILING_SLASHES.matcher( home.getPath() ).replaceFirst( "" ) ).replaceFirst( "" );
 
         return String.format( "%s:%s", shortHome, path );
+    }
+
+    /**
+     * Perform an expansion operation on the given {@code source} string by expanding all curly-braced words with a certain
+     * {@code keyPrefix} into an expansion value determined by the {@code keyToExpansion} function.
+     * <p/>
+     * <p>If the source string is {@code I am a $}{good} sentence.</code>, the keyPrefix is {@code $} and the keyToExpansion function
+     * returns {@code bad} when its input is the string {@code good}, the result of this method will be: {@code I am a bad sentence.}</p>
+     *
+     * @param source         The string to search for expansion words and to expand into.
+     * @param keyPrefix      The string that should come just before the opening curly-brace.
+     * @param keyToExpansion The function that determines the value to expand an expansion word into.  The word within the curly braces
+     *                       will be given to the function.  The expansion value will be expected as return value.
+     *
+     * @return An expanded version of the source string.
+     */
+    public static String expand(String source, String keyPrefix, Function<String, String> keyToExpansion) {
+
+        Map<Integer, Integer> indexToEnds = Maps.newTreeMap();
+        Map<Integer, String> indexToExpansions = Maps.newTreeMap();
+
+        Pattern keyPattern = Pattern.compile( String.format( "%s\\{([^\\}]*)\\}", Pattern.quote( keyPrefix ) ) );
+        Matcher matcher = keyPattern.matcher( source );
+        while (matcher.find()) {
+            int index = matcher.start();
+            String key = matcher.group( 1 );
+
+            indexToEnds.put( index, matcher.end() );
+            indexToExpansions.put( index, keyToExpansion.apply( key ) );
+        }
+
+        SortedSet<Integer> reverseIndexes = Sets.newTreeSet( Collections.reverseOrder() );
+        reverseIndexes.addAll( indexToExpansions.keySet() );
+
+        StringBuilder filtered = new StringBuilder( source );
+        for (Integer index : reverseIndexes)
+            filtered.replace( index, indexToEnds.get( index ), indexToExpansions.get( index ) );
+
+        return filtered.toString();
     }
 }
