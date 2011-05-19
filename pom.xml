@@ -12,7 +12,7 @@
 
     <groupId>com.lyndir.lhunath.jlibs</groupId>
     <artifactId>jlibs</artifactId>
-    <version>SNAPSHOT</version>
+    <version>1.4-p12</version>
     <packaging>pom</packaging>
     <name>JLibs</name>
     <description>
