@@ -16,6 +16,7 @@
 package com.lyndir.lhunath.lib.system.util;
 
 import static com.google.common.base.Preconditions.*;
+import static com.lyndir.lhunath.lib.system.util.ObjectUtils.*;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
@@ -214,7 +215,7 @@ public abstract class StringUtils {
             String key = matcher.group( 1 );
 
             indexToEnds.put( index, matcher.end() );
-            indexToExpansions.put( index, keyToExpansion.apply( key ) );
+            indexToExpansions.put( index, ifNotNullElse( keyToExpansion.apply( key ), "" ) );
         }
 
         SortedSet<Integer> reverseIndexes = Sets.newTreeSet( Collections.reverseOrder() );
