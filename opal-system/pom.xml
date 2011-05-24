@@ -5,18 +5,17 @@
 
     <!-- PROJECT METADATA -->
     <parent>
-        <groupId>com.lyndir.lhunath.jlibs</groupId>
-        <artifactId>jlibs</artifactId>
-        <version>SNAPSHOT</version>
+        <groupId>com.lyndir.lhunath.opal</groupId>
+        <artifactId>opal</artifactId>
+        <version>GIT-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.lyndir.lhunath.jlibs</groupId>
-    <artifactId>system</artifactId>
+    <name>Opal System</name>
+    <description>Opal: General system utilities and IO management.</description>
+
+    <groupId>com.lyndir.lhunath.opal</groupId>
+    <artifactId>opal-system</artifactId>
     <packaging>jar</packaging>
-    <name>JLibs System</name>
-    <description>
-        JLibs: General System Utilities And IO Management
-    </description>
 
     <!-- BUILD CONFIGURATION -->
     <build />
@@ -38,14 +37,6 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.thoughtworks.xstream</groupId>
-            <artifactId>xstream</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>xpp3</groupId>
-            <artifactId>xpp3_min</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

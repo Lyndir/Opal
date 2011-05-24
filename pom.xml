@@ -10,40 +10,37 @@
         <version>1.11</version>
     </parent>
 
-    <groupId>com.lyndir.lhunath.jlibs</groupId>
-    <artifactId>jlibs</artifactId>
+    <groupId>com.lyndir.lhunath.opal</groupId>
+    <artifactId>opal</artifactId>
     <version>SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>JLibs</name>
+    <name>Opal</name>
     <description>
-        Java library for programming convenience.
+        Convenience libraries.
     </description>
 
     <!-- CODE ACCESS -->
     <scm>
-        <url>${scm.github.webbase}/JLibs</url>
-        <connection>${scm.github.pubbase}/JLibs.git</connection>
-        <developerConnection>${scm.github.devbase}/JLibs.git</developerConnection>
+        <url>${scm.github.webbase}/Opal</url>
+        <connection>${scm.github.pubbase}/Opal.git</connection>
+        <developerConnection>${scm.github.devbase}/Opal.git</developerConnection>
     </scm>
 
     <!-- DEFAULT PROPERTIES -->
     <properties>
-        <release.version>1.4</release.version>
+        <release.version>1.5</release.version>
     </properties>
 
     <!-- ALL MODULES THAT ARE ENABLED BY DEFAULT -->
     <modules>
         <!--module>eclipse-config</module-->
 
-        <module>crypto</module>
-        <module>data</module>
-        <module>geo</module>
-        <module>math</module>
-        <!--module>piccolo</module-->
-        <module>pigeon</module>
-        <module>shade</module>
-        <module>system</module>
-        <module>wayward</module>
+        <module>opal-crypto</module>
+        <module>opal-struct</module>
+        <module>opal-math</module>
+        <module>opal-network</module>
+        <module>opal-system</module>
+        <module>opal-wicket</module>
     </modules>
 
     <!-- REMOTE ARTIFACT REPOSITORIES -->

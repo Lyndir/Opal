@@ -5,18 +5,17 @@
 
     <!-- PROJECT METADATA -->
     <parent>
-        <groupId>com.lyndir.lhunath.jlibs</groupId>
-        <artifactId>jlibs</artifactId>
-        <version>SNAPSHOT</version>
+        <groupId>com.lyndir.lhunath.opal</groupId>
+        <artifactId>opal</artifactId>
+        <version>GIT-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.lyndir.lhunath.jlibs</groupId>
-    <artifactId>crypto</artifactId>
+    <name>Opal Math</name>
+    <description>Opal: Mathematical structures and utilities.</description>
+
+    <groupId>com.lyndir.lhunath.opal</groupId>
+    <artifactId>opal-math</artifactId>
     <packaging>jar</packaging>
-    <name>JLibs Crypto</name>
-    <description>
-        JLibs: Cryptography Utilities
-    </description>
 
     <!-- BUILD CONFIGURATION -->
     <build />
@@ -26,9 +25,9 @@
 
         <!-- PROJECT REFERENCES -->
         <dependency>
-            <groupId>com.lyndir.lhunath.jlibs</groupId>
-            <artifactId>system</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-system</artifactId>
+            <version>GIT-SNAPSHOT</version>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
@@ -37,14 +36,6 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>bouncycastle</groupId>
-            <artifactId>bcpg-jdk15</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>bouncycastle</groupId>
-            <artifactId>bcprov-jdk15</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

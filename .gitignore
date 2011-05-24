@@ -1,4 +1,5 @@
 # Compiled objects.
+/discontinued/*/target
 /*/target
 /target
 
@@ -6,9 +7,10 @@
 .DS_Store
 
 # Eclipse IDE
+/discontinued/*/eclipse
+/discontinued/*/.settings
+/discontinued/*/.refactorings
 /*/eclipse
-/*/.classpath
-/*/.project
 /*/.settings
 /*/.refactorings
 
