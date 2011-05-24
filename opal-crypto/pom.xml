@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.lyndir.lhunath.opal</groupId>
         <artifactId>opal-parent</artifactId>
-        <version>GIT-SNAPSHOT</version>
+        <version>1.5</version>
     </parent>
 
     <name>Opal Crypto</name>
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.lyndir.lhunath.opal</groupId>
             <artifactId>opal-system</artifactId>
-            <version>GIT-SNAPSHOT</version>
+            <version>1.5</version>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
