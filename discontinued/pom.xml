@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- PROJECT METADATA -->
+    <parent>
+        <groupId>com.lyndir.lhunath.opal</groupId>
+        <artifactId>opal-parent</artifactId>
+        <version>GIT-SNAPSHOT</version>
+    </parent>
+
+    <name>Opal Discontinued</name>
+    <description>Discontinued Opal Libraries.</description>
+
+    <groupId>com.lyndir.lhunath.opal</groupId>
+    <artifactId>opal-discontinued</artifactId>
+    <packaging>pom</packaging>
+
+    <!-- ALL MODULES THAT ARE ENABLED BY DEFAULT -->
+    <modules>
+        <module>opal-geo</module>
+        <module>opal-piccolo</module>
+        <module>opal-shade</module>
+    </modules>
+
+</project>

@@ -17,7 +17,6 @@ package com.lyndir.lhunath.opal.security.gpg;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
-import com.lyndir.lhunath.opal.system.BaseConfig;
 import java.io.*;
 import java.security.*;
 import java.util.*;
@@ -346,7 +345,7 @@ public class GPG {
         ByteArrayOutputStream decryptedStream = new ByteArrayOutputStream();
         PGPCompressedDataGenerator compressor = new PGPCompressedDataGenerator( CompressionAlgorithmTags.ZLIB );
         OutputStream literalStream = literalDataGenerator.open(
-                compressor.open( decryptedStream ), PGPLiteralData.BINARY, "", new Date(), new byte[BaseConfig.BUFFER_SIZE] );
+                compressor.open( decryptedStream ), PGPLiteralData.BINARY, "", new Date(), new byte[4096] );
         ByteStreams.copy( plainTextStream, literalStream );
         compressor.close();
 
@@ -362,7 +361,7 @@ public class GPG {
             encryptedStream = new ArmoredOutputStream( encryptedStream );
 
         /* Create and write out the encrypted file. */
-        OutputStream encryptionStream = encryptedDataGenerator.open( encryptedStream, new byte[BaseConfig.BUFFER_SIZE] );
+        OutputStream encryptionStream = encryptedDataGenerator.open( encryptedStream, new byte[4096] );
         ByteStreams.copy( new ByteArrayInputStream( decryptedStream.toByteArray() ), encryptionStream );
         encryptedDataGenerator.close();
 
@@ -584,7 +583,7 @@ public class GPG {
                 privateKey.extractPrivateKey( passPhrase.toCharArray(), BouncyCastleProvider.PROVIDER_NAME ) );
 
         /* Write the data into the generator. */
-        byte[] buffer = new byte[BaseConfig.BUFFER_SIZE];
+        byte[] buffer = new byte[4096];
         for (int read; (read = data.read( buffer )) >= 0; )
             signer.update( buffer, 0, read );
 

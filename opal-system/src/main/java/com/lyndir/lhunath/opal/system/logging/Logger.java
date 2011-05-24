@@ -376,9 +376,11 @@ public class Logger implements Serializable {
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments The arguments to inject into the event message format.
      */
-    public void bug(final String descriptionFormat, final Object... descriptionArguments) {
+    public RuntimeException bug(final String descriptionFormat, final Object... descriptionArguments) {
 
         bug( null, descriptionFormat, descriptionArguments );
+
+        return new RuntimeException( String.format( descriptionFormat, descriptionArguments ) );
     }
 
     /**

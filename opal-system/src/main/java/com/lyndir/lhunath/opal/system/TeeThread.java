@@ -54,7 +54,7 @@ public class TeeThread extends Thread {
 
         try {
             int bytesRead;
-            byte[] buf = new byte[BaseConfig.BUFFER_SIZE];
+            byte[] buf = new byte[4096];
 
             while ((bytesRead = source.read( buf )) > 0)
                 for (final OutputStream destination : destinations)

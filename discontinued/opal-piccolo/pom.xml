@@ -6,18 +6,17 @@
 
     <!-- PROJECT METADATA -->
     <parent>
-        <groupId>com.lyndir.lhunath.jlibs</groupId>
-        <artifactId>jlibs</artifactId>
-        <version>SNAPSHOT</version>
+        <groupId>com.lyndir.lhunath.opal</groupId>
+        <artifactId>opal-discontinued</artifactId>
+        <version>GIT-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.lyndir.lhunath.jlibs</groupId>
-    <artifactId>piccolo</artifactId>
+    <name>Opal Piccolo</name>
+    <description>Opal: Piccolo ZUI objects and utilities.</description>
+
+    <groupId>com.lyndir.lhunath.opal.discontinued</groupId>
+    <artifactId>opal-piccolo</artifactId>
     <packaging>jar</packaging>
-    <name>JLibs Piccolo</name>
-    <description>
-        JLibs: Piccolo ZUI Objects and Utilities
-    </description>
 
     <!-- BUILD CONFIGURATION -->
     <build></build>
@@ -27,14 +26,14 @@
 
         <!-- PROJECT REFERENCES -->
         <dependency>
-            <groupId>com.lyndir.lhunath.jlibs</groupId>
-            <artifactId>system</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-system</artifactId>
+            <version>GIT-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.lyndir.lhunath.jlibs</groupId>
-            <artifactId>math</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-math</artifactId>
+            <version>GIT-SNAPSHOT</version>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->

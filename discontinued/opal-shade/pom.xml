@@ -5,18 +5,16 @@
 
     <!-- PROJECT METADATA -->
     <parent>
-        <groupId>com.lyndir.lhunath.jlibs</groupId>
-        <artifactId>jlibs</artifactId>
-        <version>SNAPSHOT</version>
+        <groupId>com.lyndir.lhunath.opal</groupId>
+        <artifactId>opal-discontinued</artifactId>
+        <version>GIT-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.lyndir.lhunath.jlibs</groupId>
-    <artifactId>shade</artifactId>
+    <groupId>com.lyndir.lhunath.opal</groupId>
+    <artifactId>opal-shade</artifactId>
     <packaging>jar</packaging>
-    <name>JLibs Shade</name>
-    <description>
-        JLibs: Shade UI Template
-    </description>
+    <name>Opal Shade</name>
+    <description>Opal: Shade UI template.</description>
 
     <!-- BUILD CONFIGURATION -->
     <build />
@@ -26,19 +24,19 @@
 
         <!-- PROJECT REFERENCES -->
         <dependency>
-            <groupId>com.lyndir.lhunath.jlibs</groupId>
-            <artifactId>system</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-system</artifactId>
+            <version>GIT-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.lyndir.lhunath.jlibs</groupId>
-            <artifactId>math</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-math</artifactId>
+            <version>GIT-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.lyndir.lhunath.jlibs</groupId>
-            <artifactId>geo</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.lyndir.lhunath.opal.discontinued</groupId>
+            <artifactId>opal-geo</artifactId>
+            <version>GIT-SNAPSHOT</version>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->

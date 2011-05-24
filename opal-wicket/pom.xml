@@ -6,14 +6,14 @@
     <!-- PROJECT METADATA -->
     <parent>
         <groupId>com.lyndir.lhunath.opal</groupId>
-        <artifactId>opal</artifactId>
+        <artifactId>opal-parent</artifactId>
         <version>GIT-SNAPSHOT</version>
     </parent>
 
     <groupId>com.lyndir.lhunath.opal</groupId>
-    <artifactId>opal-wayward</artifactId>
+    <artifactId>opal-wicket</artifactId>
     <packaging>jar</packaging>
-    <name>Opal Wayward</name>
+    <name>Opal Wicket</name>
     <description>Opal: Wicket components, behaviours and frameworks.</description>
 
     <!-- BUILD CONFIGURATION -->
@@ -61,6 +61,10 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
         </dependency>
 
     </dependencies>
