@@ -1,6 +1,6 @@
 package com.jgoodies.uif_lite.panel;
 
-import com.lyndir.lhunath.lib.gui.PaintPanel;
+import com.lyndir.lhunath.opal.gui.PaintPanel;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
