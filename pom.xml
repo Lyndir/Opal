@@ -7,15 +7,15 @@
     <parent>
         <groupId>com.lyndir.lhunath</groupId>
         <artifactId>lyndir</artifactId>
-        <version>1.11</version>
+        <version>1.12</version>
     </parent>
 
     <name>Opal</name>
     <description>Opal: Convenience libraries.</description>
 
     <groupId>com.lyndir.lhunath.opal</groupId>
-    <artifactId>opal-parent</artifactId>
-    <version>SNAPSHOT</version>
+    <artifactId>opal</artifactId>
+    <version>GIT-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <!-- CODE ACCESS -->

@@ -6,8 +6,8 @@
     <!-- PROJECT METADATA -->
     <parent>
         <groupId>com.lyndir.lhunath.opal</groupId>
-        <artifactId>opal-parent</artifactId>
-        <version>SNAPSHOT</version>
+        <artifactId>opal</artifactId>
+        <version>GIT-SNAPSHOT</version>
     </parent>
 
     <name>Opal System</name>
