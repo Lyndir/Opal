@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.lyndir.lhunath.opal</groupId>
         <artifactId>opal-parent</artifactId>
-        <version>1.5</version>
+        <version>SNAPSHOT</version>
     </parent>
 
     <name>Opal System</name>
