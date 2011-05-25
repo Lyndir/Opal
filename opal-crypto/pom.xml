@@ -37,12 +37,12 @@
         </dependency>
 
         <dependency>
-            <groupId>bouncycastle</groupId>
-            <artifactId>bcpg-jdk15</artifactId>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpg-jdk16</artifactId>
         </dependency>
         <dependency>
-            <groupId>bouncycastle</groupId>
-            <artifactId>bcprov-jdk15</artifactId>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk16</artifactId>
         </dependency>
     </dependencies>
 
