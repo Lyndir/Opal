@@ -152,44 +152,43 @@ public abstract class ObjectUtils {
             name = o.getClass().getName().replace( ".*\\.", "" );
         toString.append( name );
 
-        StringBuilder fieldsString = forEachFieldWithMeta(
-                ObjectMeta.For.toString, o.getClass(), new Function<TypeUtils.LastResult<Field, StringBuilder>, StringBuilder>() {
-            @Override
-            public StringBuilder apply(final TypeUtils.LastResult<Field, StringBuilder> lastResult) {
+        toString.append(
+                forEachFieldWithMeta(
+                        ObjectMeta.For.toString, o.getClass(), new Function<TypeUtils.LastResult<Field, StringBuilder>, StringBuilder>() {
+                    @Override
+                    public StringBuilder apply(final TypeUtils.LastResult<Field, StringBuilder> lastResult) {
 
-                Field field = lastResult.getCurrent();
-                StringBuilder fieldsString = lastResult.getLastResult();
+                        Field field = lastResult.getCurrent();
+                        StringBuilder fieldsString = lastResult.getLastResult();
 
-                String name = null;
-                ObjectMeta fieldMeta = field.getAnnotation( ObjectMeta.class );
-                if (fieldMeta != null)
-                    name = fieldMeta.name();
-                if (name == null || name.isEmpty())
-                    name = field.getName();
+                        String name = null;
+                        ObjectMeta fieldMeta = field.getAnnotation( ObjectMeta.class );
+                        if (fieldMeta != null)
+                            name = fieldMeta.name();
+                        if (name == null || name.isEmpty())
+                            name = field.getName();
 
-                if (fieldsString == null)
-                    fieldsString = new StringBuilder( ": " );
-                else
-                    fieldsString.append( ", " );
+                        if (fieldsString.length() == 0)
+                            fieldsString.append( ": " );
+                        else
+                            fieldsString.append( ", " );
 
-                try {
-                    field.setAccessible( true );
-                }
-                catch (SecurityException ignored) {
-                }
+                        try {
+                            field.setAccessible( true );
+                        }
+                        catch (SecurityException ignored) {
+                        }
 
-                try {
-                    fieldsString.append( name ).append( '=' ).append( describe( field.get( o ) ) );
-                }
-                catch (IllegalAccessException e) {
-                    logger.dbg( e, "Not accessible: %s", field );
-                }
+                        try {
+                            fieldsString.append( name ).append( '=' ).append( describe( field.get( o ) ) );
+                        }
+                        catch (IllegalAccessException e) {
+                            logger.dbg( e, "Not accessible: %s", field );
+                        }
 
-                return fieldsString;
-            }
-        } );
-        if (fieldsString != null)
-            toString.append( fieldsString );
+                        return fieldsString;
+                    }
+                }, new StringBuilder() ) );
 
         return toString.append( '}' ).toString();
     }
@@ -204,32 +203,32 @@ public abstract class ObjectUtils {
      */
     public static int hashCode(final Object o) {
 
-        return checkNotNull(
+        return ifNotNullElse(
                 forEachFieldWithMeta(
                         ObjectMeta.For.hashCode, o.getClass(), new Function<TypeUtils.LastResult<Field, Integer>, Integer>() {
-                    @Override
-                    public Integer apply(final TypeUtils.LastResult<Field, Integer> lastResult) {
+                            @Override
+                            public Integer apply(final TypeUtils.LastResult<Field, Integer> lastResult) {
 
-                        Field field = lastResult.getCurrent();
-                        int lastHashCode = ifNotNullElse( lastResult.getLastResult(), 0);
-                        try {
-                            field.setAccessible( true );
-                        }
-                        catch (SecurityException ignored) {
-                        }
+                                Field field = lastResult.getCurrent();
+                                int lastHashCode = lastResult.getLastResult();
+                                try {
+                                    field.setAccessible( true );
+                                }
+                                catch (SecurityException ignored) {
+                                }
 
-                        try {
-                            Object value = field.get( o );
-                            if (value != null)
-                                return Arrays.hashCode( new int[]{ lastHashCode, value.hashCode() } );
-                        }
-                        catch (IllegalAccessException e) {
-                            logger.dbg( e, "Not accessible: %s", field );
-                        }
+                                try {
+                                    Object value = field.get( o );
+                                    if (value != null)
+                                        return Arrays.hashCode( new int[]{ lastHashCode, value.hashCode() } );
+                                }
+                                catch (IllegalAccessException e) {
+                                    logger.dbg( e, "Not accessible: %s", field );
+                                }
 
-                        return lastHashCode;
-                    }
-                } ), "No fields to generate a hashCode from in object: %s", o );
+                                return lastHashCode;
+                            }
+                        }, 0 ), System.identityHashCode( o ) );
     }
 
     /**
@@ -252,35 +251,33 @@ public abstract class ObjectUtils {
         if (!superObject.getClass().isAssignableFrom( subObject.getClass() ))
             return false;
 
-        return ifNotNullElse(
-                forEachFieldWithMeta(
-                        ObjectMeta.For.equals, superObject.getClass(), new Function<TypeUtils.LastResult<Field, Boolean>, Boolean>() {
-                    @Override
-                    public Boolean apply(final TypeUtils.LastResult<Field, Boolean> lastResult) {
+        return forEachFieldWithMeta(
+                ObjectMeta.For.equals, superObject.getClass(), new Function<TypeUtils.LastResult<Field, Boolean>, Boolean>() {
+            @Override
+            public Boolean apply(final TypeUtils.LastResult<Field, Boolean> lastResult) {
 
-                        Field field = lastResult.getCurrent();
-                        try {
-                            field.setAccessible( true );
-                        }
-                        catch (SecurityException ignored) {
-                        }
+                Field field = lastResult.getCurrent();
+                try {
+                    field.setAccessible( true );
+                }
+                catch (SecurityException ignored) {
+                }
 
-                        try {
-                            if (!Objects.equal( field.get( superObject ), field.get( subObject ) ))
-                                return false;
-                        }
-                        catch (IllegalAccessException e) {
-                            logger.dbg( e, "Not accessible: %s", field );
-                        }
+                try {
+                    if (!Objects.equal( field.get( superObject ), field.get( subObject ) ))
+                        return false;
+                }
+                catch (IllegalAccessException e) {
+                    logger.dbg( e, "Not accessible: %s", field );
+                }
 
-                        return true;
-                    }
-                } ), false /* There are no (accessible) fields to compare. */ );
+                return true;
+            }
+        }, false /* There are no (accessible) fields to compare. */ );
     }
 
-    @Nullable
     private static <R, T> R forEachFieldWithMeta(final ObjectMeta.For meta, final Class<T> type,
-                                                 final Function<TypeUtils.LastResult<Field, R>, R> function) {
+                                                 final Function<TypeUtils.LastResult<Field, R>, R> function, R firstResult) {
 
         return TypeUtils.forEachSuperTypeOf(
                 type, new Function<TypeUtils.LastResult<Class<?>, R>, R>() {
@@ -289,7 +286,8 @@ public abstract class ObjectUtils {
 
                         Class<?> subType = lastTypeResult.getCurrent();
                         final boolean usedByType = usesMeta( meta, subType );
-                        R result = TypeUtils.forEachFieldOf(
+
+                        return TypeUtils.forEachFieldOf(
                                 subType, new Function<TypeUtils.LastResult<Field, R>, R>() {
                                     @Override
                                     public R apply(final TypeUtils.LastResult<Field, R> lastFieldResult) {
@@ -311,18 +309,15 @@ public abstract class ObjectUtils {
 
                                         return function.apply( new TypeUtils.LastResult<Field, R>( field, result ) );
                                     }
-                                }, false );
-
-                        if (result != null)
-                            return result;
-                        return lastTypeResult.getLastResult();
+                                }, lastTypeResult.getLastResult(), false );
                     }
-                }, null );
+                }, null, firstResult );
     }
 
     private static <T> boolean usesMeta(final ObjectMeta.For meta, final Class<T> type) {
 
-        for (Map.Entry<Class<? super T>, Map<Class<?>, ObjectMeta>> annotationEntry : TypeUtils.getAnnotations( type, ObjectMeta.class ).entrySet()) {
+        for (Map.Entry<Class<? super T>, Map<Class<?>, ObjectMeta>> annotationEntry : TypeUtils.getAnnotations( type, ObjectMeta.class )
+                                                                                               .entrySet()) {
             Class<?> superType = annotationEntry.getKey();
             Map<Class<?>, ObjectMeta> superTypeAnnotations = annotationEntry.getValue();
 

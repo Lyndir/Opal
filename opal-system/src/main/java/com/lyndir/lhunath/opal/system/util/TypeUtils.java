@@ -222,6 +222,8 @@ public abstract class TypeUtils {
      *                          type.
      * @param interfaceFunction The operation to perform on each interface of each type in the hierarchy. Evaluated after the typeFunction
      *                          on the type.
+     * @param firstResult       The lastResult that will be given in the first invocation of the operation function.  It'll also be the
+     *                          return value if no functions are invoked.
      * @param <T>               The type whose hierarchy to descend.
      * @param <R>               The type of the result that the operation should generate.
      *
@@ -229,9 +231,9 @@ public abstract class TypeUtils {
      */
     public static <T, R> R forEachSuperTypeOf(@NotNull final Class<T> type,
                                               @Nullable final Function<LastResult<Class<?>, R>, R> typeFunction,
-                                              @Nullable final Function<LastResult<Class<?>, R>, R> interfaceFunction) {
+                                              @Nullable final Function<LastResult<Class<?>, R>, R> interfaceFunction, @Nullable final R firstResult) {
 
-        R lastResult = null;
+        R lastResult = firstResult;
         try {
             for (Class<? super T> currentType = type; currentType != null; currentType = currentType.getSuperclass()) {
                 if (typeFunction != null)
@@ -252,15 +254,18 @@ public abstract class TypeUtils {
     /**
      * Perform an operation for each field declared in a given type.
      *
-     * @param type     The type whose declared fields to iterate.
-     * @param function The operation to perform on each of the declared fields.
-     * @param descend  <code>true</code> if the given type's hierarchy should also be descended to iterate fields declared by subtypes.
-     * @param <T>      The type whose declared fields to iterate.
-     * @param <R>      The type of the result that the operation should generate.
+     * @param type        The type whose declared fields to iterate.
+     * @param function    The operation to perform on each of the declared fields.
+     * @param firstResult The lastResult that will be given in the first invocation of the operation function. It'll also be the return
+     *                    value if no functions are invoked.
+     * @param descend     <code>true</code> if the given type's hierarchy should also be descended to iterate fields declared by subtypes.
+     * @param <T>         The type whose declared fields to iterate.
+     * @param <R>         The type of the result that the operation should generate.
      *
      * @return The final result produced by the last execution of the operation.
      */
-    public static <T, R> R forEachFieldOf(final Class<T> type, final Function<LastResult<Field, R>, R> function, final boolean descend) {
+    public static <T, R> R forEachFieldOf(final Class<T> type, final Function<LastResult<Field, R>, R> function,
+                                          @Nullable final R firstResult, final boolean descend) {
 
         Function<LastResult<Class<?>, R>, R> eachFieldFunction = new Function<LastResult<Class<?>, R>, R>() {
             @Override
@@ -280,9 +285,9 @@ public abstract class TypeUtils {
         };
 
         if (descend)
-            return forEachSuperTypeOf( type, eachFieldFunction, null );
+            return forEachSuperTypeOf( type, eachFieldFunction, null, firstResult );
 
-        return eachFieldFunction.apply( new LastResult<Class<?>, R>( type, null ) );
+        return eachFieldFunction.apply( new LastResult<Class<?>, R>( type, firstResult ) );
     }
 
     public static Field findFirstField(final Object owner, final Object value) {
@@ -302,7 +307,7 @@ public abstract class TypeUtils {
 
                         return from.getLastResult();
                     }
-                }, true );
+                }, null, true );
     }
 
     /**
