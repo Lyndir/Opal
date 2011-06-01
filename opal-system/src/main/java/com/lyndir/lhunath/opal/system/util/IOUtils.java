@@ -1,15 +1,13 @@
 package com.lyndir.lhunath.opal.system.util;
 
-import com.google.common.io.CharStreams;
-import com.google.common.io.Closeables;
+import com.google.common.io.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.io.*;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -26,88 +24,28 @@ public abstract class IOUtils {
 
     private static final Pattern PATH_SEPARATORS = Pattern.compile( "[\\\\/]+" );
 
-    /**
-     * Calculate the MD5 hash for the given file.
-     *
-     * @param file The file to calculate the sum for.
-     *
-     * @return The hash as a string of hexadecimal characters.
-     */
-    @Nullable
-    public static String findMD5(final File file) {
+    public static <T> InputSupplier<T> supply(final T supply) {
 
-        return findDigest( file, Digest.MD5 );
+        return new InputSupplier<T>() {
+            @Override
+            public T getInput()
+                    throws IOException {
+
+                return supply;
+            }
+        };
     }
 
-    /**
-     * Calculate a digest hash for the given file.
-     *
-     * @param file       The file to calculate the sum for.
-     * @param digestType The digest to calculate.
-     *
-     * @return The hash as a string of hexadecimal characters.
-     */
-    @Nullable
-    public static String findDigest(final File file, final Digest digestType) {
+    public static InputSupplier<? extends InputStream> supply(final byte[] supply) {
 
-        InputStream fileStream = null, bufferedFileStream = null;
-        try {
-            fileStream = new FileInputStream( file );
-            bufferedFileStream = new BufferedInputStream( fileStream );
-            return getDigest( bufferedFileStream, digestType );
-        }
-        catch (FileNotFoundException e) {
-            logger.err( e, "File %s does not exist.  Can't calculate %s", file, digestType.getName() );
-            return null;
-        }
-        finally {
-            Closeables.closeQuietly( fileStream );
-            Closeables.closeQuietly( bufferedFileStream );
-        }
-    }
+        return new InputSupplier<InputStream>() {
+            @Override
+            public InputStream getInput()
+                    throws IOException {
 
-    /**
-     * Calculate a digest hash for the given file.
-     *
-     * @param in         The stream to read the data from needed to calculate the sum.
-     * @param digestType The digest to calculate.
-     *
-     * @return The hash as a string of hexadecimal characters.
-     */
-    @Nullable
-    public static String getDigest(final InputStream in, final Digest digestType) {
-
-        try {
-            MessageDigest digest = null;
-            if (digestType != Digest.CRC32)
-                digest = MessageDigest.getInstance( digestType.getName() );
-
-            byte[] buffer = new byte[256];
-
-            Checksum checksum = new CRC32();
-            for (int len; (len = in.read( buffer )) >= 0; )
-                if (digest == null)
-                    checksum.update( buffer, 0, len );
-                else
-                    digest.update( buffer, 0, len );
-
-            StringBuilder digestHex = new StringBuilder();
-            if (digest == null)
-                digestHex.append( String.format( "%08x", checksum.getValue() ) );
-            else
-                for (final byte b : digest.digest())
-                    digestHex.append( String.format( "%02x", b ) );
-
-            return digestHex.toString();
-        }
-        catch (NoSuchAlgorithmException e) {
-            logger.err( e, "%s is unsupported!", digestType.getName() );
-        }
-        catch (IOException e) {
-            logger.err( e, "Couldn't read file to digest!" );
-        }
-
-        return null;
+                return new ByteArrayInputStream( supply );
+            }
+        };
     }
 
     /**
@@ -214,89 +152,5 @@ public abstract class IOUtils {
         }
 
         return resultBuilder.toString();
-    }
-
-    /**
-     * Digests that can be calculated with the {@link IOUtils#findDigest(File, Digest)} method.
-     */
-    public enum Digest {
-
-        /**
-         * The CRC-32 message digest algorithm.
-         */
-        CRC32,
-
-        /**
-         * The MD2 message digest algorithm as defined in RFC 1319.
-         */
-        MD2,
-
-        /**
-         * The MD5 message digest algorithm as defined in RFC 1321.
-         */
-        MD5,
-
-        /**
-         * Hash algorithms defined in the FIPS PUB 180-2.
-         */
-        SHA1,
-
-        /**
-         * Hash algorithms defined in the FIPS PUB 180-2.<br> SHA-256 is a 256-bit hash function intended to provide 128 bits of security
-         * against collision attacks.
-         */
-        SHA256,
-
-        /**
-         * Hash algorithms defined in the FIPS PUB 180-2.<br> A 384-bit hash may be obtained by truncating the SHA-512 output.
-         */
-        SHA384,
-
-        /**
-         * Hash algorithms defined in the FIPS PUB 180-2.<br> SHA-512 is a 512-bit hash function intended to provide 256 bits of security.
-         */
-        SHA512;
-
-        /**
-         * Return the official name for this digest.
-         *
-         * @return Guess.
-         */
-        public String getName() {
-
-            return name().replace( '_', '-' );
-        }
-
-        /**
-         * Try to guess which type of hash the given digest is. This works fairly flawlessly for every supported hash except for {@link
-         * Digest#MD2}; since its hash string is not exclusively different from that of {@link Digest#MD5}. {@link Digest#MD5} will be the
-         * result of this function in this case.
-         *
-         * @param digest The hexadecimal-formatted hash string to estimate the type of.
-         *
-         * @return The guessed digest type.
-         *
-         * @throws IllegalArgumentException If the digest could not be guessed.
-         */
-        public static Digest guessType(final String digest)
-                throws IllegalArgumentException {
-
-            switch (digest.length()) {
-                case 8:
-                    return CRC32;
-                case 32:
-                    return MD5;
-                case 40:
-                    return SHA1;
-                case 64:
-                    return SHA256;
-                case 96:
-                    return SHA384;
-                case 512:
-                    return SHA512;
-                default:
-                    throw new IllegalArgumentException( "The digest in the argument is cannot be recognized: " + digest );
-            }
-        }
     }
 }

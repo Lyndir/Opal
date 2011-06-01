@@ -1,7 +1,7 @@
 package com.lyndir.lhunath.opal.system.util;
 
 import com.google.common.collect.ObjectArrays;
-import java.util.*;
+import java.util.Collection;
 
 
 /**
@@ -33,11 +33,36 @@ public abstract class ArrayUtils {
         if (elements.length == 0)
             return array;
 
-        // TODO: Optimize using array copying.
-        List<T> elementList = new ArrayList<T>( array.length + elements.length );
-        elementList.addAll( Arrays.asList( array ) );
-        elementList.addAll( Arrays.asList( elements ) );
-        return elementList.toArray( array );
+        T[] concatenation = ObjectArrays.newArray( array, array.length + elements.length );
+        System.arraycopy( array, 0, concatenation, 0, array.length );
+        System.arraycopy( elements, 0, concatenation, array.length, elements.length );
+
+        return concatenation;
+    }
+
+    public static byte[] concatBytes(final byte[] array, final byte... elements) {
+
+        if (elements.length == 0)
+            return array;
+
+        byte[] concatenation = new byte[array.length + elements.length];
+        System.arraycopy( array, 0, concatenation, 0, array.length );
+        System.arraycopy( elements, 0, concatenation, array.length, elements.length );
+
+        return concatenation;
+    }
+
+    public static byte[] concatBytes(final byte[] array, final int... elements) {
+
+        if (elements.length == 0)
+            return array;
+
+        byte[] concatenation = new byte[array.length + elements.length];
+        System.arraycopy( array, 0, concatenation, 0, array.length );
+        for (int e = 0; e < elements.length; ++e)
+            concatenation[array.length + e] = (byte) elements[e];
+
+        return concatenation;
     }
 
     public static <T> T[] of(final Class<T> type, final Collection<T> elements) {
@@ -50,6 +75,21 @@ public abstract class ArrayUtils {
         return elements;
     }
 
+    public static byte[] ofBytes(final byte... elements) {
+
+        return elements;
+    }
+
+    public static byte[] ofBytes(final int... elements) {
+
+        byte[] array = new byte[elements.length];
+        for (int e = 0; e < elements.length; ++e)
+            array[e] = (byte) elements[e];
+
+        return array;
+    }
+
+    @SuppressWarnings( { "SuspiciousSystemArraycopy" })
     public static <T> T[] unsafeCopyOf(final Class<T> type, final Object... elements) {
 
         T[] array = ObjectArrays.newArray( type, elements.length );
