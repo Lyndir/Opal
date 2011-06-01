@@ -1,11 +1,10 @@
 package com.lyndir.lhunath.opal.crypto;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.common.base.Charsets;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.security.*;
-import java.util.Formatter;
 import java.util.Random;
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
@@ -35,7 +34,7 @@ public class CryptUtils {
      * @throws IllegalBlockSizeException {@code usePadding} was {@code false} but the plain text data was not a multiple of the
      *                                   block size.
      */
-    public static byte[] encrypt(byte[] plainData, byte[] key, boolean usePadding)
+    public static byte[] encrypt(final byte[] plainData, final byte[] key, final boolean usePadding)
             throws IllegalBlockSizeException {
 
         try {
@@ -58,7 +57,7 @@ public class CryptUtils {
      *
      * @throws BadPaddingException {@code usePadding} was {@code true} but the encrypted data was not padded.
      */
-    public static byte[] decrypt(byte[] encryptedData, byte[] key, boolean usePadding)
+    public static byte[] decrypt(final byte[] encryptedData, final byte[] key, final boolean usePadding)
             throws BadPaddingException {
 
         try {
@@ -85,7 +84,7 @@ public class CryptUtils {
      *                                   block size.
      * @throws BadPaddingException       While decrypting with padding, the encrypted data was not padded during encryption.
      */
-    public static byte[] doCrypt(byte[] data, byte[] key, String cipherTransformation, int blockBitSize, final int mode)
+    public static byte[] doCrypt(final byte[] data, final byte[] key, final String cipherTransformation, final int blockBitSize, final int mode)
             throws IllegalBlockSizeException, BadPaddingException {
 
         // Truncate key to the block size.
@@ -124,7 +123,7 @@ public class CryptUtils {
      *
      * @return A data set of bytes where: data[b] = data1[b] ^ data2[b].
      */
-    public static byte[] xor(byte[] data1, byte[] data2) {
+    public static byte[] xor(final byte[] data1, final byte[] data2) {
 
         checkArgument( data1.length == data2.length, "Cannot XOR two data sets of different length." );
 
@@ -142,7 +141,7 @@ public class CryptUtils {
      *
      * @return A random key of the given byte length.
      */
-    public static byte[] getRandomBlock(int bitSize) {
+    public static byte[] newRandomBlock(final int bitSize) {
 
         byte[] block = new byte[bitSize / Byte.SIZE];
         random.nextBytes( block );
@@ -158,7 +157,7 @@ public class CryptUtils {
      * @return This convenience method returns an empty string when the byte array is {@code null} or empty.
      */
     @Nullable
-    public static String toBase64(@Nullable byte[] plainData) {
+    public static String encodeBase64(@Nullable final byte[] plainData) {
 
         if (plainData == null || plainData.length == 0)
             return null;
@@ -173,44 +172,11 @@ public class CryptUtils {
      *
      * @return This convenience method returns an empty byte array when the string is {@code null} or empty.
      */
-    public static byte[] fromBase64(@Nullable String b64Data) {
+    public static byte[] decodeBase64(@Nullable final String b64Data) {
 
         if (b64Data == null || b64Data.length() == 0)
             return new byte[0];
 
         return Base64.decode( b64Data.getBytes( Charsets.UTF_8 ) );
-    }
-
-    public static String toHex(@Nullable byte[] data) {
-
-        return toHex( data, false );
-    }
-
-    public static String toHex(@Nullable byte[] data, boolean pretty) {
-
-        StringBuffer bytes = new StringBuffer();
-        Formatter formatter = new Formatter( bytes );
-        String format = String.format( "%%02X%s", pretty? ":": "" );
-
-        if (data != null)
-            for (byte b : data) {
-                formatter.format( format, b );
-            }
-        if (pretty && bytes.length() > 0)
-            bytes.deleteCharAt( bytes.length() - 1 );
-
-        return bytes.toString();
-    }
-
-    public static byte[] fromHex(@Nullable String hexString) {
-
-        if (hexString == null)
-            return new byte[0];
-
-        byte[] deviceToken = new byte[hexString.length() / 2];
-        for (int i = 0; i < hexString.length(); i += 2)
-            deviceToken[i / 2] = Integer.valueOf( hexString.substring( i, i + 2 ), 16 ).byteValue();
-
-        return deviceToken;
     }
 }
