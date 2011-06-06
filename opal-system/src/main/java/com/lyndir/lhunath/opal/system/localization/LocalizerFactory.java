@@ -75,7 +75,7 @@ public abstract class LocalizerFactory {
                             "Localization interface must be annotated with {0} or {1}: {2}", //
                             UseBundle.class, UseLocalizationProvider.class, localizationInterface ) );
 
-        for (final Method method : localizationInterface.getDeclaredMethods())
+        for (final Method method : localizationInterface.getMethods())
             if (!method.isAnnotationPresent( UseKey.class ))
                 throw new IllegalArgumentException(
                         MessageFormat.format(

@@ -462,9 +462,13 @@ public class Network implements Runnable {
 
             // Pass incoming (plain-text) data to the application.
             notifyRead( dataBuffer, socketChannel );
-        } else if (bytesRead < 0)
+        } else if (bytesRead < 0) {
             // Socket connection was terminated by the client.
+            logger.dbg(
+                    "[<<<<: %s] Reached end-of-stream.", //
+                    nameChannel( socketChannel ) );
             closedChannels.put( socketChannel, true );
+        }
     }
 
     /**

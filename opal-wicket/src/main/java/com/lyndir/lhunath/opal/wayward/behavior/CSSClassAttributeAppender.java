@@ -21,6 +21,7 @@ import java.util.*;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -51,7 +52,7 @@ public class CSSClassAttributeAppender extends AttributeAppender {
      *
      * @return An appender which appends all the CSS classes in the collection from the given model to a component's HTML element.
      */
-    public static CSSClassAttributeAppender of(final IModel<String>... cssClassModels) {
+    public static CSSClassAttributeAppender of(final IModel<?>... cssClassModels) {
 
         return ofList(
                 new AbstractReadOnlyModel<Collection<String>>() {
@@ -60,12 +61,13 @@ public class CSSClassAttributeAppender extends AttributeAppender {
                     public Collection<String> getObject() {
 
                         return Collections2.transform(
-                                Arrays.asList( cssClassModels ), new Function<IModel<String>, String>() {
+                                Arrays.asList( cssClassModels ), new Function<IModel<?>, String>() {
 
+                            @Nullable
                             @Override
-                            public String apply(final IModel<String> from) {
+                            public String apply(final IModel<?> from) {
 
-                                return from.getObject();
+                                return from.getObject() == null? null: String.valueOf( from.getObject() );
                             }
                         } );
                     }

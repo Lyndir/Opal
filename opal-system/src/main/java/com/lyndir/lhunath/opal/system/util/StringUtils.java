@@ -15,19 +15,15 @@
  */
 package com.lyndir.lhunath.opal.system.util;
 
-import static com.google.common.base.Preconditions.*;
 import static com.lyndir.lhunath.opal.system.util.ObjectUtils.*;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -123,60 +119,6 @@ public abstract class StringUtils {
     }
 
     /**
-     * Calculate a digest hash for the given string.
-     *
-     * @param data The data to calculate the sum for.
-     *
-     * @return The hash as a string of hexadecimal characters.
-     */
-    @NotNull
-    public static String getMD5(final String data) {
-
-        return checkNotNull( IOUtils.getDigest( new ByteArrayInputStream( data.getBytes( Charsets.UTF_8 ) ), IOUtils.Digest.MD5 ) );
-    }
-
-    /**
-     * Calculate a digest hash for the given bytes.
-     *
-     * @param data The data to calculate the sum for.
-     *
-     * @return The hash as a string of hexadecimal characters.
-     */
-    @NotNull
-    public static String getMD5(final byte[] data) {
-
-        return checkNotNull( IOUtils.getDigest( new ByteArrayInputStream( data ), IOUtils.Digest.MD5 ) );
-    }
-
-    /**
-     * Calculate a digest hash for the given file.
-     *
-     * @param data       The data to calculate the sum for.
-     * @param digestType The digest to calculate.
-     *
-     * @return The hash as a string of hexadecimal characters.
-     */
-    @NotNull
-    public static String getDigest(final String data, final IOUtils.Digest digestType) {
-
-        return checkNotNull( IOUtils.getDigest( new ByteArrayInputStream( data.getBytes() ), digestType ) );
-    }
-
-    /**
-     * Calculate a digest hash for the given file.
-     *
-     * @param data       The data to calculate the sum for.
-     * @param digestType The digest to calculate.
-     *
-     * @return The hash as a string of hexadecimal characters.
-     */
-    @NotNull
-    public static String getDigest(final byte[] data, final IOUtils.Digest digestType) {
-
-        return checkNotNull( IOUtils.getDigest( new ByteArrayInputStream( data ), digestType ) );
-    }
-
-    /**
      * @param home The {@link URL} that needs to be converted to a short string version.
      *
      * @return A concise representation of the URL showing only the root domain and final part of the path.
@@ -226,5 +168,38 @@ public abstract class StringUtils {
             filtered.replace( index, indexToEnds.get( index ), indexToExpansions.get( index ) );
 
         return filtered.toString();
+    }
+
+    public static String encodeHex(@Nullable final byte[] data) {
+
+        return encodeHex( data, false );
+    }
+
+    public static String encodeHex(@Nullable final byte[] data, final boolean pretty) {
+
+        StringBuffer bytes = new StringBuffer();
+        Formatter formatter = new Formatter( bytes );
+        String format = String.format( "%%02X%s", pretty? ":": "" );
+
+        if (data != null)
+            for (final byte b : data) {
+                formatter.format( format, b );
+            }
+        if (pretty && bytes.length() > 0)
+            bytes.deleteCharAt( bytes.length() - 1 );
+
+        return bytes.toString();
+    }
+
+    public static byte[] decodeHex(@Nullable final String hexString) {
+
+        if (hexString == null)
+            return new byte[0];
+
+        byte[] deviceToken = new byte[hexString.length() / 2];
+        for (int i = 0; i < hexString.length(); i += 2)
+            deviceToken[i / 2] = Integer.valueOf( hexString.substring( i, i + 2 ), 16 ).byteValue();
+
+        return deviceToken;
     }
 }

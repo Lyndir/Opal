@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.opal.security.gpg;
+package com.lyndir.lhunath.opal.crypto.gpg;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
