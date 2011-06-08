@@ -2,8 +2,7 @@ package com.lyndir.lhunath.opal.json;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
-import com.lyndir.lhunath.opal.system.util.ObjectMeta;
-import com.lyndir.lhunath.opal.system.util.ObjectUtils;
+import com.lyndir.lhunath.opal.system.util.*;
 import java.io.Serializable;
 
 
@@ -15,8 +14,7 @@ import java.io.Serializable;
  *
  * @author lhunath
  */
-@ObjectMeta
-public class JSONResult {
+public class JSONResult extends MetaObject {
 
     public static final int CODE_SUCCESS                 = 0;
     public static final int CODE_FAILURE_GENERIC         = -1;
@@ -113,23 +111,5 @@ public class JSONResult {
     public int getCode() {
 
         return code;
-    }
-
-    @Override
-    public int hashCode() {
-
-        return ObjectUtils.hashCode( this );
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-
-        return ObjectUtils.equals( this, obj );
-    }
-
-    @Override
-    public String toString() {
-
-        return ObjectUtils.toString( this );
     }
 }

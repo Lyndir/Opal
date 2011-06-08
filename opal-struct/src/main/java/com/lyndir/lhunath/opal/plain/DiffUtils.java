@@ -19,7 +19,7 @@
 package com.lyndir.lhunath.opal.plain;
 
 import com.google.common.io.Closeables;
-import com.lyndir.lhunath.opal.system.UIUtils;
+import com.lyndir.lhunath.opal.system.util.UIUtils;
 import java.io.*;
 import java.util.regex.Pattern;
 import jlibdiff.Diff;
@@ -31,7 +31,7 @@ import jlibdiff.Hunk;
  *
  * @author lhunath
  */
-public class DiffUtils {
+public abstract class DiffUtils {
 
     private static final Pattern NOT_ADD_CHUNK = Pattern.compile( "(?m)^[^>].*" );
     private static final Pattern NOT_REM_CHUNK = Pattern.compile( "(?m)^[^<].*" );

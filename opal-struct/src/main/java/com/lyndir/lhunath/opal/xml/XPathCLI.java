@@ -25,15 +25,15 @@ import org.xml.sax.SAXException;
 
 
 /**
- * <h2>{@link XPath}<br> <sub>CLI utility to test and execute XPath expressions on XML/XHTML/HTML data.</sub></h2>
+ * <h2>{@link XPathCLI}<br> <sub>CLI utility to test and execute XPath expressions on XML/XHTML/HTML data.</sub></h2>
  *
  * <p> <i>Jun 10, 2008</i> </p>
  *
  * @author mbillemo
  */
-public class XPath {
+public class XPathCLI {
 
-    private static final Logger logger = LoggerFactory.getLogger( XPath.class );
+    private static final Logger logger = LoggerFactory.getLogger( XPathCLI.class );
 
     /**
      * Entry point of the command-line XPath utility.

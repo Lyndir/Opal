@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author mbillemo
  */
-public class GPG {
+public abstract class GPG {
 
     private static final Logger logger = LoggerFactory.getLogger( GPG.class );
 

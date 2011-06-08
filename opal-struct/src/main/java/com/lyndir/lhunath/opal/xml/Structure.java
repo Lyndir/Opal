@@ -38,7 +38,7 @@ import org.xml.sax.SAXException;
  *
  * @author mbillemo
  */
-public class Structure {
+public abstract class Structure {
 
     private static final Logger logger = Logger.get( Structure.class );
 

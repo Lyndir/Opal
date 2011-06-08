@@ -26,7 +26,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.lyndir.lhunath.opal.xml.XPath</mainClass>
+                            <mainClass>com.lyndir.lhunath.opal.xml.XPathCLI</mainClass>
                             <addClasspath>true</addClasspath>
                             <classpathMavenRepositoryLayout>true</classpathMavenRepositoryLayout>
                             <classpathPrefix>./</classpathPrefix>

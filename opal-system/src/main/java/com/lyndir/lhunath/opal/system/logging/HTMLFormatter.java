@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.opal.system.logging;
 
-import com.lyndir.lhunath.opal.system.UIUtils;
+import com.lyndir.lhunath.opal.system.util.UIUtils;
 import java.awt.*;
 import java.util.logging.Level;
 

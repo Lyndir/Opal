@@ -28,15 +28,15 @@ import org.apache.commons.httpclient.protocol.*;
 
 
 /**
- * <i>{@link SslFactory} - Factory for creating {@link Protocol} objects that can be used by Jakarta's HttpClient for establishing https
+ * <i>{@link SSLFactory} - Factory for creating {@link Protocol} objects that can be used by Jakarta's HttpClient for establishing https
  * communications.</i><br> <br> The Protocol trusts all keys provided by the keystore that is used to initialize this {@link
- * SslFactory}.<br> <br>
+ * SSLFactory}.<br> <br>
  *
  * @author lhunath
  */
-public class SslFactory implements SecureProtocolSocketFactory {
+public class SSLFactory implements SecureProtocolSocketFactory {
 
-    private static final Logger logger = Logger.get( SslFactory.class );
+    static final Logger logger = Logger.get( SSLFactory.class );
 
     private final SSLContext context;
 
@@ -48,9 +48,9 @@ public class SslFactory implements SecureProtocolSocketFactory {
      *
      * @return The factory.
      */
-    public static SslFactory initialize(final File keyStore, final String password) {
+    public static SSLFactory initialize(final File keyStore, final String password) {
 
-        return new SslFactory( keyStore, password );
+        return new SSLFactory( keyStore, password );
     }
 
     /**
@@ -58,12 +58,12 @@ public class SslFactory implements SecureProtocolSocketFactory {
      *
      * @return Guess.
      */
-    public Protocol createHttpsProtocol() {
+    public Protocol createHTTPSProtocol() {
 
         return new Protocol( "https", (ProtocolSocketFactory) this, 443 );
     }
 
-    private SslFactory(final File keyStore, final String password) {
+    private SSLFactory(final File keyStore, final String password) {
 
         InputStream keyStoreStream = null;
         try {
@@ -151,7 +151,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
     }
 
     /**
-     * All instances of {@link SslFactory} are the same.
+     * All instances of {@link SSLFactory} are the same.
      */
     @Override
     public boolean equals(final Object obj) {
@@ -160,7 +160,7 @@ public class SslFactory implements SecureProtocolSocketFactory {
     }
 
     /**
-     * All instances of {@link SslFactory} have the same hash code.
+     * All instances of {@link SSLFactory} have the same hash code.
      */
     @Override
     public int hashCode() {

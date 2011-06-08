@@ -15,6 +15,7 @@
  */
 package com.lyndir.lhunath.opal.system.collection;
 
+import com.lyndir.lhunath.opal.system.util.MetaObject;
 import java.io.Serializable;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author mbillemo
  */
-public class Pair<K, V> implements Map.Entry<K, V>, Serializable {
+public class Pair<K, V> extends MetaObject implements Map.Entry<K, V>, Serializable {
 
     private  K key;
     private  V value;

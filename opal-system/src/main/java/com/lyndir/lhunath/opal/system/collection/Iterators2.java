@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
  *
  * @author Andreou Dimitris, email: jim.andreou (at) gmail (dot) com
  */
-public class Iterators2 {
+public abstract class Iterators2 {
 
     public static <E> ListIterator<E> filter(final ListIterator<E> listIterator, final Predicate<? super E> filter) {
 

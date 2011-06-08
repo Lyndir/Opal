@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author lhunath
  */
-public class CryptUtils {
+public abstract class CryptUtils {
 
     private static final Logger logger = Logger.get( CryptUtils.class );
     private static final Random random = new SecureRandom();

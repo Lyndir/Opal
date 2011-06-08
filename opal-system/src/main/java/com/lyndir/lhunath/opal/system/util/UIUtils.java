@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.opal.system;
+package com.lyndir.lhunath.opal.system.util;
 
 import com.lyndir.lhunath.opal.system.wrapper.Desktop;
 import java.awt.*;

@@ -1,7 +1,6 @@
 package com.lyndir.lhunath.opal.system.collection;
 
-import com.lyndir.lhunath.opal.system.util.ObjectMeta;
-import com.lyndir.lhunath.opal.system.util.ObjectUtils;
+import com.lyndir.lhunath.opal.system.util.MetaObject;
 import java.io.Serializable;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,8 +12,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author lhunath
  */
-@ObjectMeta
-public class NullableHolder<T> implements Serializable {
+public class NullableHolder<T> extends MetaObject implements Serializable {
 
     private T value;
 
@@ -32,23 +30,5 @@ public class NullableHolder<T> implements Serializable {
     public void set(@Nullable final T value) {
 
         this.value = value;
-    }
-
-    @Override
-    public int hashCode() {
-
-        return ObjectUtils.hashCode( this );
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-
-        return ObjectUtils.equals( this, obj );
-    }
-
-    @Override
-    public String toString() {
-
-        return ObjectUtils.toString( this );
     }
 }

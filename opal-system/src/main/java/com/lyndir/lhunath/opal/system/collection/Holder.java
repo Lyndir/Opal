@@ -2,8 +2,7 @@ package com.lyndir.lhunath.opal.system.collection;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.lyndir.lhunath.opal.system.util.ObjectMeta;
-import com.lyndir.lhunath.opal.system.util.ObjectUtils;
+import com.lyndir.lhunath.opal.system.util.MetaObject;
 import java.io.Serializable;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,8 +14,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author lhunath
  */
-@ObjectMeta
-public class Holder<T> implements Serializable {
+public class Holder<T> extends MetaObject implements Serializable {
 
     private T value;
 
@@ -34,23 +32,5 @@ public class Holder<T> implements Serializable {
     public void set(@NotNull final T value) {
 
         this.value = checkNotNull( value );
-    }
-
-    @Override
-    public int hashCode() {
-
-        return ObjectUtils.hashCode( this );
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-
-        return ObjectUtils.equals( this, obj );
-    }
-
-    @Override
-    public String toString() {
-
-        return ObjectUtils.toString( this );
     }
 }
