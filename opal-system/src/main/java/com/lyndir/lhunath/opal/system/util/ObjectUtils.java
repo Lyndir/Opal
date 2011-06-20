@@ -103,6 +103,9 @@ public abstract class ObjectUtils {
         if (o.getClass().isArray())
             return Arrays.asList( (Object[]) o ).toString();
 
+        if (o instanceof String)
+            return String.format( "\"%s\"", o );
+
         if (o instanceof Map) {
             StringBuilder description = new StringBuilder().append( '[' );
             for (final Entry<?, ?> entry : ((Map<?, ?>) o).entrySet()) {
