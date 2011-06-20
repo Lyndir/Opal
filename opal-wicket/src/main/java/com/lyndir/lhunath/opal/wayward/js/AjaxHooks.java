@@ -11,11 +11,12 @@ import org.apache.wicket.markup.html.JavascriptPackageResource;
 /**
  * <h2>{@link AjaxHooks}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p> AjaxHooks is a convenience implementation which will give you client-side access to AJAX update events. </p>
+ * <p> AjaxHooks is a convenience implementation which will give you client-side access to AJAX update events and server-side access to
+ * ready events (eg. after an anchor update). </p>
  *
  * <p> On the server side (in your Java code), you install the AjaxHooks by doing these two things: <ul> <li>Installing it on any visible
- * component that's part of the page (<code>AjaxHooks.installAjaxEvents( mycomponent )</code>)</li> <li>Installing it on your
- * AjaxRequestTargets (for access to the list of updated elements).</p> </ul>
+ * component that's part of the page (<code>AjaxHooks.installAjaxEvents( mycomponent )</code>).  This activates AjaxHooks for that
+ * component's page.</li> <li>Installing it on your AjaxRequestTargets (for access to the list of updated elements).</p> </ul>
  *
  * The easiest and most consistent way to do the latter is by overriding Application#newAjaxRequestTarget:
  *
@@ -34,6 +35,9 @@ public abstract class AjaxHooks {
     /**
      * Adds a header contribution to the component which will install client-side AjaxHooks support on the component's page.
      *
+     * You can then register a client-side JavaScript function using AjaxHooks.registerPostAjax() which will be fired after each AJAX call
+     * with the updated elements as array argument.
+     *
      * @param component The component whose page to add support for AjaxHooks to.
      */
     public static void installAjaxEvents(final Component component) {
@@ -43,6 +47,8 @@ public abstract class AjaxHooks {
 
     /**
      * Adds an IListener to the AjaxRequestTarget which will install server-side AjaxHooks support for the given request target.
+     *
+     * This is necessary to fire the functions registered with AjaxHooks.registerPostAjax after the target has completed.
      *
      * @param target The request target to add AjaxHooks support to.
      */
@@ -64,6 +70,14 @@ public abstract class AjaxHooks {
                 } );
     }
 
+    /**
+     * Adds a behaviour to the component which will install client-side support for notifying the server-side about page-ready events.
+     *
+     * The listener will be triggered each time the page that the component is on becomes ready (reloads or has its anchor updated).
+     *
+     * @param component The component whose page to add support for page events to.
+     * @param listener  The listener to fire when the page is updated.
+     */
     public static void installPageEvents(final Component component, final IPageListener listener) {
 
         component.add(

@@ -1,9 +1,10 @@
 package com.lyndir.lhunath.opal.wayward.navigation;
 
-import com.google.common.base.*;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.lyndir.lhunath.opal.system.util.ObjectUtils;
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -20,7 +21,6 @@ public abstract class AbstractFragmentState implements FragmentState {
     protected AbstractFragmentState() {
 
         fragments = Lists.newLinkedList();
-        appendFragment( getTabFragment() );
     }
 
     protected AbstractFragmentState(final String fragment) {
@@ -35,6 +35,7 @@ public abstract class AbstractFragmentState implements FragmentState {
         assertFragments();
     }
 
+    @Nullable
     protected String findFragment(final int index) {
 
         if (index < fragments.size())
@@ -50,15 +51,10 @@ public abstract class AbstractFragmentState implements FragmentState {
     }
 
     /**
-     * Override this method if you need to do custom checks on the validity of String fragments.  Don't forget to call the super
-     * implementation.
+     * Override this method if you need to do custom checks on the validity of String fragments.
      */
     protected void assertFragments() {
 
-        Preconditions.checkArgument(
-                ObjectUtils.isEqual( findFragment( 0 ), getTabFragment() ),
-                "Can't load %s state from %s: No fragments found or initial fragment does not match this tab's.",
-                getClass().getSimpleName(), fragments );
     }
 
     @Override
@@ -77,6 +73,4 @@ public abstract class AbstractFragmentState implements FragmentState {
 
         return String.format( "{%s: %s}", getClass().getSimpleName(), toFragment() );
     }
-
-    protected abstract String getTabFragment();
 }

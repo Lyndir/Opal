@@ -7,6 +7,11 @@ package com.lyndir.lhunath.opal.system.util;
  */
 public class Throw {
 
+    public static RuntimeException propagate(final Throwable t) {
+
+        return new RuntimeException( null, t );
+    }
+
     public static RuntimeException propagate(final Throwable t, final String message, final Object... arguments) {
 
         return new RuntimeException( message == null || arguments.length == 0? message: String.format( message, arguments ), t );

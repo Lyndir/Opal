@@ -47,7 +47,7 @@ public abstract class TabActivator<P extends Panel, S extends FragmentState, T e
     @Override
     public boolean isActive() {
 
-        FragmentNavigationListener.Controller<?, ?, ?> controller = findController();
+        FragmentNavigationListener.Controller<?, ?> controller = findController();
         return controller != null && tab.equals( controller.getActiveTab() );
     }
 
@@ -61,5 +61,5 @@ public abstract class TabActivator<P extends Panel, S extends FragmentState, T e
         findController().activateNewTab( tab );
     }
 
-    protected abstract FragmentNavigationListener.Controller<? super P, ? super S, ? super T> findController();
+    protected abstract FragmentNavigationListener.Controller<? super P, ? super S> findController();
 }

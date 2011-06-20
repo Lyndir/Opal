@@ -1,5 +1,8 @@
 package com.lyndir.lhunath.opal.wayward.navigation;
 
+import org.jetbrains.annotations.Nullable;
+
+
 /**
  * <h2>{@link FragmentState}<br> <sub>[in short] (TODO).</sub></h2>
  *
@@ -12,5 +15,6 @@ public interface FragmentState {
     /**
      * @return The representation of this state as it should be used in the URL's fragment for navigation.
      */
+    @Nullable
     String toFragment();
 }

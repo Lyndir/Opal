@@ -55,19 +55,19 @@ public abstract class ObjectUtils {
      * <p/>
      * <p> <b>NOTE:</b> This method attempts to aid in type safety of the objects that are being compared. </p>
      *
-     * @param <A>    The type of the first parameter.  It should be of the same type or a subtype (more concrete type) of the second
+     * @param <C>    The type of the first parameter.  It should be of the same type or a subtype (more concrete type) of the second
      *               parameter.
-     * @param <B>    The type of the second parameter. The type of this parameter must be the same type or more generic
+     * @param <P>    The type of the second parameter. The type of this parameter must be the same type or more generic
      *               assignment-compatible to that of the first parameter.
-     * @param first  The first object, or {@code null}.
-     * @param second The second object, or {@code null}.
+     * @param subObject  The first object, or {@code null}.
+     * @param superObject The second object, or {@code null}.
      *
      * @return {@code true} if both objects are {@code null} or if neither are and {@link #equals(Object)} considers them equal.
      */
-    public static <B, A extends B> boolean isEqual(final A first, final B second) {
+    public static <P, C extends P> boolean isEqual(final C subObject, final P superObject) {
 
         //noinspection ObjectEquality
-        return first == second || first != null && first.equals( second );
+        return subObject == superObject || subObject != null && subObject.equals( superObject );
     }
 
     /**
@@ -283,7 +283,7 @@ public abstract class ObjectUtils {
     }
 
     private static <R, T> R forEachFieldWithMeta(final For meta, final Class<T> type, final Function<LastResult<Field, R>, R> function,
-                                                 R firstResult) {
+                                                 final R firstResult) {
 
         return TypeUtils.forEachSuperTypeOf(
                 type, new Function<LastResult<Class<?>, R>, R>() {
@@ -322,7 +322,7 @@ public abstract class ObjectUtils {
 
     private static <T> boolean usesMeta(final For meta, final Class<T> type) {
 
-        for (Entry<Class<? super T>, Map<Class<?>, ObjectMeta>> annotationEntry : TypeUtils.getAnnotations( type, ObjectMeta.class )
+        for (final Entry<Class<? super T>, Map<Class<?>, ObjectMeta>> annotationEntry : TypeUtils.getAnnotations( type, ObjectMeta.class )
                                                                                            .entrySet()) {
             Class<?> superType = annotationEntry.getKey();
             Map<Class<?>, ObjectMeta> superTypeAnnotations = annotationEntry.getValue();
@@ -339,7 +339,7 @@ public abstract class ObjectUtils {
             }
 
             // superType has no annotation, look at its implemented interfaces.
-            for (ObjectMeta annotation : superTypeAnnotations.values())
+            for (final ObjectMeta annotation : superTypeAnnotations.values())
                 if (superType == type || annotation.inherited())
                     // The superType is the type or is inheritable by the type, use its annotation.
                     if (usesMeta( meta, annotation ))
@@ -451,7 +451,7 @@ public abstract class ObjectUtils {
      * @return The transformed value, or {@code null}.
      */
     @Nullable
-    public static <F, T> T ifNotNull(@Nullable F from, Function<F, T> notNullValueFunction) {
+    public static <F, T> T ifNotNull(@Nullable final F from, final Function<F, T> notNullValueFunction) {
 
         if (from == null)
             return null;
@@ -460,7 +460,7 @@ public abstract class ObjectUtils {
     }
 
     @NotNull
-    public static <F, T> T ifNotNullElse(@Nullable F from, Function<F, T> notNullValueFunction, @NotNull T nullValue) {
+    public static <F, T> T ifNotNullElse(@Nullable final F from, final Function<F, T> notNullValueFunction, @NotNull final T nullValue) {
 
         if (from == null)
             return checkNotNull( nullValue );
@@ -469,7 +469,7 @@ public abstract class ObjectUtils {
     }
 
     @Nullable
-    public static <F, T> T ifNotNullElseNullable(@Nullable F from, Function<F, T> notNullValueFunction, @NotNull T nullValue) {
+    public static <F, T> T ifNotNullElseNullable(@Nullable final F from, final Function<F, T> notNullValueFunction, @NotNull final T nullValue) {
 
         if (from == null)
             return nullValue;

@@ -3,6 +3,7 @@ package com.lyndir.lhunath.opal.wayward.navigation;
 import org.apache.wicket.IClusterable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -17,6 +18,7 @@ public interface FragmentNavigationTab<P extends Panel, S extends FragmentState>
     /**
      * @return The string that identifies this tab when it's the zero'th argument in the fragment part of the URL.
      */
+    @NotNull
     String getTabFragment();
 
     /**
@@ -26,7 +28,8 @@ public interface FragmentNavigationTab<P extends Panel, S extends FragmentState>
      *
      * @return The given panel's state serialized into a fragment state object.
      */
-    S buildFragmentState(P panel);
+    @NotNull
+    S buildFragmentState(@NotNull P panel);
 
     /**
      * Apply fragment state specific to this tab.
@@ -36,37 +39,31 @@ public interface FragmentNavigationTab<P extends Panel, S extends FragmentState>
      *
      * @throws IncompatibleStateException If the state is incompatible with the current state and can not be applied.
      */
-    void applyFragmentState(P panel, S state)
+    void applyFragmentState(@NotNull P panel, @NotNull S state)
             throws IncompatibleStateException;
 
     /**
      * @return The string that identifies this tab in its navigation menu.
      */
+    @NotNull
     IModel<String> getTitle();
-
-    /**
-     * @param panelId The wicket ID to bind the panel to.
-     *
-     * @return The panel that serves this tab's contents.
-     */
-    P newPanel(String panelId);
 
     /**
      * @return <code>true</code> if this tab should be visible in its navigation menu.
      */
-    boolean isVisible();
+    boolean isInNavigation();
 
     /**
      * @return The class of the panel that will serve this tab's content.
-     *
-     * @see #newPanel(String)
      */
-    Class<P> getPanelClass();
+    @NotNull
+    Class<P> getContentPanelClass();
 
     /**
      * @param fragment The string that contains the fragment which needs to be parsed into state for this tab.
      *
      * @return A state object for this tab that contains state as specified by the given arguments.
      */
-    S getState(String fragment);
+    @NotNull
+    S getState(@NotNull String fragment);
 }
