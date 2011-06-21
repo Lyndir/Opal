@@ -274,7 +274,8 @@ public abstract class TypeUtils {
                 R result = lastResult.getLastResult();
                 try {
                     for (final Field field : lastResult.getCurrent().getDeclaredFields())
-                        result = function.apply( new LastResult<Field, R>( field, result ) );
+                        if (!field.isSynthetic())
+                            result = function.apply( new LastResult<Field, R>( field, result ) );
                 }
                 catch (BreakException e) {
                     result = e.<R>getResult();
