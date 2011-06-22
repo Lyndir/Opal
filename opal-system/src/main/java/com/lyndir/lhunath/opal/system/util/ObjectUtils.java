@@ -18,7 +18,7 @@ package com.lyndir.lhunath.opal.system.util;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.base.*;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.system.util.ObjectMeta.For;
 import com.lyndir.lhunath.opal.system.util.TypeUtils.LastResult;
@@ -45,8 +45,22 @@ public abstract class ObjectUtils {
 
     static final Logger logger = Logger.get( ObjectUtils.class );
 
-    private static final Pattern NON_PRINTABLE     = Pattern.compile( "[^\\p{Print}]" );
-    private static final int     MAX_DECODE_LENGTH = 100;
+    private static final Pattern                                 NON_PRINTABLE     = Pattern.compile( "[^\\p{Print}]" );
+    private static final int                                     MAX_DECODE_LENGTH = 100;
+    private static final EnumMap<For, ThreadLocal<Set<Integer>>> seen              = Maps.newEnumMap( For.class );
+
+    static {
+        for (For forMeta : For.values()) {
+            seen.put(
+                    forMeta, new ThreadLocal<Set<Integer>>() {
+                @Override
+                protected Set<Integer> initialValue() {
+
+                    return Sets.newHashSet();
+                }
+            } );
+        }
+    }
 
     /**
      * Check whether two objects are equal according to {@link #equals(Object)}.
@@ -55,11 +69,11 @@ public abstract class ObjectUtils {
      * <p/>
      * <p> <b>NOTE:</b> This method attempts to aid in type safety of the objects that are being compared. </p>
      *
-     * @param <C>    The type of the first parameter.  It should be of the same type or a subtype (more concrete type) of the second
-     *               parameter.
-     * @param <P>    The type of the second parameter. The type of this parameter must be the same type or more generic
-     *               assignment-compatible to that of the first parameter.
-     * @param subObject  The first object, or {@code null}.
+     * @param <C>         The type of the first parameter.  It should be of the same type or a subtype (more concrete type) of the second
+     *                    parameter.
+     * @param <P>         The type of the second parameter. The type of this parameter must be the same type or more generic
+     *                    assignment-compatible to that of the first parameter.
+     * @param subObject   The first object, or {@code null}.
      * @param superObject The second object, or {@code null}.
      *
      * @return {@code true} if both objects are {@code null} or if neither are and {@link #equals(Object)} considers them equal.
@@ -158,9 +172,17 @@ public abstract class ObjectUtils {
             name = o.getClass().getName().replace( ".*\\.", "" );
         toString.append( name );
 
-        toString.append(
-                forEachFieldWithMeta(
-                        For.toString, o.getClass(), new Function<LastResult<Field, StringBuilder>, StringBuilder>() {
+        int identityHashCode = System.identityHashCode( o );
+        if (seen.get( For.toString ).get().contains( identityHashCode ))
+            // Cyclic reference.
+            toString.append( ": " ).append( Integer.toHexString( identityHashCode ) );
+        else
+            try {
+                seen.get( For.toString ).get().add( identityHashCode );
+
+                toString.append(
+                        forEachFieldWithMeta(
+                                For.toString, o.getClass(), new Function<LastResult<Field, StringBuilder>, StringBuilder>() {
                             @Override
                             public StringBuilder apply(final LastResult<Field, StringBuilder> lastResult) {
 
@@ -195,6 +217,10 @@ public abstract class ObjectUtils {
                                 return fieldsString;
                             }
                         }, new StringBuilder() ) );
+            }
+            finally {
+                seen.get( For.toString ).get().remove( identityHashCode );
+            }
 
         return toString.append( '}' ).toString();
     }
@@ -209,32 +235,43 @@ public abstract class ObjectUtils {
      */
     public static int hashCode(final Object o) {
 
-        return ifNotNullElse(
-                forEachFieldWithMeta(
-                        For.hashCode, o.getClass(), new Function<LastResult<Field, Integer>, Integer>() {
-                            @Override
-                            public Integer apply(final LastResult<Field, Integer> lastResult) {
+        int identityHashCode = System.identityHashCode( o );
+        if (seen.get( For.hashCode ).get().contains( identityHashCode ))
+            // Cyclic reference.
+            return identityHashCode;
 
-                                Field field = lastResult.getCurrent();
-                                int lastHashCode = lastResult.getLastResult();
-                                try {
-                                    field.setAccessible( true );
-                                }
-                                catch (SecurityException ignored) {
-                                }
+        try {
+            seen.get( For.hashCode ).get().add( identityHashCode );
+            return ifNotNullElse(
+                    forEachFieldWithMeta(
+                            For.hashCode, o.getClass(), new Function<LastResult<Field, Integer>, Integer>() {
+                        @Override
+                        public Integer apply(final LastResult<Field, Integer> lastResult) {
 
-                                try {
-                                    Object value = field.get( o );
-                                    if (value != null)
-                                        return Arrays.hashCode( new int[]{ lastHashCode, value.hashCode() } );
-                                }
-                                catch (IllegalAccessException e) {
-                                    logger.dbg( e, "Not accessible: %s", field );
-                                }
-
-                                return lastHashCode;
+                            Field field = lastResult.getCurrent();
+                            int lastHashCode = lastResult.getLastResult();
+                            try {
+                                field.setAccessible( true );
                             }
-                        }, 0 ), System.identityHashCode( o ) );
+                            catch (SecurityException ignored) {
+                            }
+
+                            try {
+                                Object value = field.get( o );
+                                if (value != null)
+                                    return Arrays.hashCode( new int[]{ lastHashCode, value.hashCode() } );
+                            }
+                            catch (IllegalAccessException e) {
+                                logger.dbg( e, "Not accessible: %s", field );
+                            }
+
+                            return lastHashCode;
+                        }
+                    }, 0 ), identityHashCode );
+        }
+        finally {
+            seen.get( For.hashCode ).get().remove( identityHashCode );
+        }
     }
 
     /**
@@ -257,29 +294,40 @@ public abstract class ObjectUtils {
         if (!superObject.getClass().isAssignableFrom( subObject.getClass() ))
             return false;
 
-        return forEachFieldWithMeta(
-                For.equals, superObject.getClass(), new Function<LastResult<Field, Boolean>, Boolean>() {
-                    @Override
-                    public Boolean apply(final LastResult<Field, Boolean> lastResult) {
+        int identityHashCode = System.identityHashCode( superObject );
+        if (seen.get( For.equals ).get().contains( identityHashCode ))
+            // Cyclic reference.  We return true as a way of "skipping this field".
+            return true;
 
-                        Field field = lastResult.getCurrent();
-                        try {
-                            field.setAccessible( true );
-                        }
-                        catch (SecurityException ignored) {
-                        }
+        try {
+            seen.get( For.equals ).get().add( identityHashCode );
+            return forEachFieldWithMeta(
+                    For.equals, superObject.getClass(), new Function<LastResult<Field, Boolean>, Boolean>() {
+                @Override
+                public Boolean apply(final LastResult<Field, Boolean> lastResult) {
 
-                        try {
-                            if (!Objects.equal( field.get( superObject ), field.get( subObject ) ))
-                                return false;
-                        }
-                        catch (IllegalAccessException e) {
-                            logger.dbg( e, "Not accessible: %s", field );
-                        }
-
-                        return true;
+                    Field field = lastResult.getCurrent();
+                    try {
+                        field.setAccessible( true );
                     }
-                }, false /* There are no (accessible) fields to compare. */ );
+                    catch (SecurityException ignored) {
+                    }
+
+                    try {
+                        if (!Objects.equal( field.get( superObject ), field.get( subObject ) ))
+                            return false;
+                    }
+                    catch (IllegalAccessException e) {
+                        logger.dbg( e, "Not accessible: %s", field );
+                    }
+
+                    return true;
+                }
+            }, false /* There are no (accessible) fields to compare. */ );
+        }
+        finally {
+            seen.get( For.equals ).get().remove( identityHashCode );
+        }
     }
 
     private static <R, T> R forEachFieldWithMeta(final For meta, final Class<T> type, final Function<LastResult<Field, R>, R> function,
@@ -287,43 +335,43 @@ public abstract class ObjectUtils {
 
         return TypeUtils.forEachSuperTypeOf(
                 type, new Function<LastResult<Class<?>, R>, R>() {
+            @Override
+            public R apply(final LastResult<Class<?>, R> lastTypeResult) {
+
+                Class<?> subType = lastTypeResult.getCurrent();
+                final boolean usedByType = usesMeta( meta, subType );
+
+                return TypeUtils.forEachFieldOf(
+                        subType, new Function<LastResult<Field, R>, R>() {
                     @Override
-                    public R apply(final LastResult<Class<?>, R> lastTypeResult) {
+                    public R apply(final LastResult<Field, R> lastFieldResult) {
 
-                        Class<?> subType = lastTypeResult.getCurrent();
-                        final boolean usedByType = usesMeta( meta, subType );
+                        Field field = lastFieldResult.getCurrent();
+                        R result = lastFieldResult.getLastResult();
 
-                        return TypeUtils.forEachFieldOf(
-                                subType, new Function<LastResult<Field, R>, R>() {
-                                    @Override
-                                    public R apply(final LastResult<Field, R> lastFieldResult) {
+                        if (Modifier.isStatic( field.getModifiers() ))
+                            return result;
+                        if (field.isAnnotationPresent( ObjectMeta.class )) {
+                            boolean usedByField = usesMeta( meta, field );
 
-                                        Field field = lastFieldResult.getCurrent();
-                                        R result = lastFieldResult.getLastResult();
+                            if (!usedByField)
+                                return result;
+                        } else
+                            // Field has no @ObjectMeta, default to type's decision.
+                            if (!usedByType)
+                                return result;
 
-                                        if (Modifier.isStatic( field.getModifiers() ))
-                                            return result;
-                                        if (field.isAnnotationPresent( ObjectMeta.class )) {
-                                            boolean usedByField = usesMeta( meta, field );
-
-                                            if (!usedByField)
-                                                return result;
-                                        } else
-                                            // Field has no @ObjectMeta, default to type's decision.
-                                            if (!usedByType)
-                                                return result;
-
-                                        return function.apply( new LastResult<Field, R>( field, result ) );
-                                    }
-                                }, lastTypeResult.getLastResult(), false );
+                        return function.apply( new LastResult<Field, R>( field, result ) );
                     }
-                }, null, firstResult );
+                }, lastTypeResult.getLastResult(), false );
+            }
+        }, null, firstResult );
     }
 
     private static <T> boolean usesMeta(final For meta, final Class<T> type) {
 
         for (final Entry<Class<? super T>, Map<Class<?>, ObjectMeta>> annotationEntry : TypeUtils.getAnnotations( type, ObjectMeta.class )
-                                                                                           .entrySet()) {
+                                                                                                 .entrySet()) {
             Class<?> superType = annotationEntry.getKey();
             Map<Class<?>, ObjectMeta> superTypeAnnotations = annotationEntry.getValue();
 
@@ -469,7 +517,8 @@ public abstract class ObjectUtils {
     }
 
     @Nullable
-    public static <F, T> T ifNotNullElseNullable(@Nullable final F from, final Function<F, T> notNullValueFunction, @NotNull final T nullValue) {
+    public static <F, T> T ifNotNullElseNullable(@Nullable final F from, final Function<F, T> notNullValueFunction,
+                                                 @NotNull final T nullValue) {
 
         if (from == null)
             return nullValue;

@@ -1,6 +1,6 @@
 package com.lyndir.lhunath.opal.system.collection;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.lyndir.lhunath.opal.system.util.MetaObject;
 import java.io.Serializable;

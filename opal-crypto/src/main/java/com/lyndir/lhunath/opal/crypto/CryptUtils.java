@@ -84,7 +84,8 @@ public abstract class CryptUtils {
      *                                   block size.
      * @throws BadPaddingException       While decrypting with padding, the encrypted data was not padded during encryption.
      */
-    public static byte[] doCrypt(final byte[] data, final byte[] key, final String cipherTransformation, final int blockBitSize, final int mode)
+    public static byte[] doCrypt(final byte[] data, final byte[] key, final String cipherTransformation, final int blockBitSize,
+                                 final int mode)
             throws IllegalBlockSizeException, BadPaddingException {
 
         // Truncate key to the block size.
@@ -107,8 +108,9 @@ public abstract class CryptUtils {
                     "Cipher transformation: " + cipherTransformation + ", is not valid or not supported by the provider.", e );
         }
         catch (NoSuchPaddingException e) {
-            throw new IllegalStateException( "Cipher transformation: " + cipherTransformation
-                                             + ", uses a padding scheme that is not valid or not supported by the provider.", e );
+            throw new IllegalStateException(
+                    "Cipher transformation: " + cipherTransformation
+                    + ", uses a padding scheme that is not valid or not supported by the provider.", e );
         }
         catch (InvalidKeyException e) {
             throw logger.bug( e, "Key is inappropriate for cipher." );

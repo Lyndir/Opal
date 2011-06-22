@@ -4,7 +4,6 @@ import java.util.*;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
-import javax.xml.xpath.XPath;
 import javax.xml.xpath.*;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

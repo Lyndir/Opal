@@ -1,6 +1,6 @@
 package com.lyndir.lhunath.opal.system.util;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.common.base.Function;
 import com.google.common.base.Throwables;
@@ -39,7 +39,7 @@ public abstract class TypeUtils {
      * @throws RuntimeException In case the named class cannot be found in the thread's context classloader.
      */
     @NotNull
-    @SuppressWarnings( { "unchecked" })
+    @SuppressWarnings({ "unchecked" })
     public static <T> Class<T> loadClass(final String typeName) {
 
         try {
@@ -91,7 +91,7 @@ public abstract class TypeUtils {
      * @throws RuntimeException In case the named class cannot be found in the thread's context classloader or the class cannot be
      *                          instantiated or constructed.
      */
-    @SuppressWarnings( { "unchecked" })
+    @SuppressWarnings({ "unchecked" })
     public static <T> T newInstance(final String typeName) {
 
         try {
@@ -231,7 +231,8 @@ public abstract class TypeUtils {
      */
     public static <T, R> R forEachSuperTypeOf(@NotNull final Class<T> type,
                                               @Nullable final Function<LastResult<Class<?>, R>, R> typeFunction,
-                                              @Nullable final Function<LastResult<Class<?>, R>, R> interfaceFunction, @Nullable final R firstResult) {
+                                              @Nullable final Function<LastResult<Class<?>, R>, R> interfaceFunction,
+                                              @Nullable final R firstResult) {
 
         R lastResult = firstResult;
         try {
@@ -274,8 +275,10 @@ public abstract class TypeUtils {
                 R result = lastResult.getLastResult();
                 try {
                     for (final Field field : lastResult.getCurrent().getDeclaredFields())
-                        if (!field.isSynthetic())
+                        if (!field.isSynthetic() && Modifier.isStatic( field.getModifiers() )) {
+                            logger.trc( "Iteration of %s: %s", lastResult.getCurrent(), field );
                             result = function.apply( new LastResult<Field, R>( field, result ) );
+                        }
                 }
                 catch (BreakException e) {
                     result = e.<R>getResult();
@@ -293,22 +296,23 @@ public abstract class TypeUtils {
 
     public static Field findFirstField(final Object owner, final Object value) {
 
-        return forEachFieldOf( owner.getClass(), new Function<LastResult<Field, Field>, Field>() {
-                    @Override
-                    public Field apply(final LastResult<Field, Field> from) {
+        return forEachFieldOf(
+                owner.getClass(), new Function<LastResult<Field, Field>, Field>() {
+            @Override
+            public Field apply(final LastResult<Field, Field> from) {
 
-                        try {
-                            from.getCurrent().setAccessible( true );
-                            if (ObjectUtils.equals( from.getCurrent().get( owner ), value ))
-                                throw new BreakException( from.getCurrent() );
-                        }
-                        catch (IllegalAccessException e) {
-                            throw logger.bug( e );
-                        }
+                try {
+                    from.getCurrent().setAccessible( true );
+                    if (ObjectUtils.equals( from.getCurrent().get( owner ), value ))
+                        throw new BreakException( from.getCurrent() );
+                }
+                catch (IllegalAccessException e) {
+                    throw logger.bug( e );
+                }
 
-                        return from.getLastResult();
-                    }
-                }, null, true );
+                return from.getLastResult();
+            }
+        }, null, true );
     }
 
     /**
@@ -354,13 +358,13 @@ public abstract class TypeUtils {
      *
      * @see #valueOfEnum(Class, String)
      */
-    @SuppressWarnings( { "unchecked" })
+    @SuppressWarnings({ "unchecked" })
     public static <T> T unsafeValueOfEnum(final Class<T> type, final String value) {
 
         return type.cast( valueOfEnum( (Class<Enum>) type, value ) );
     }
 
-    @SuppressWarnings( { "unchecked" })
+    @SuppressWarnings({ "unchecked" })
     public static <T extends Enum<T>> Class<T> checkEnum(final Class<?> type) {
 
         checkArgument( type.isEnum(), "%s is not an enum.", type );
@@ -412,7 +416,7 @@ public abstract class TypeUtils {
             this.result = result;
         }
 
-        @SuppressWarnings( { "unchecked" })
+        @SuppressWarnings({ "unchecked" })
         public <R> R getResult() {
 
             return (R) result;

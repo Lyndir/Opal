@@ -2,7 +2,8 @@ package com.lyndir.lhunath.opal.json;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
-import com.lyndir.lhunath.opal.system.util.*;
+import com.lyndir.lhunath.opal.system.util.MetaObject;
+import com.lyndir.lhunath.opal.system.util.ObjectUtils;
 import java.io.Serializable;
 
 

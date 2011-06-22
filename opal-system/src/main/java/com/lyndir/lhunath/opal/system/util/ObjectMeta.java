@@ -10,7 +10,7 @@ import java.lang.annotation.*;
  *
  * @author lhunath
  */
-@Target( { ElementType.TYPE, ElementType.FIELD })
+@Target({ ElementType.TYPE, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ObjectMeta {
 

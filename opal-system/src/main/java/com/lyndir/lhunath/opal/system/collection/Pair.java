@@ -35,8 +35,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public class Pair<K, V> extends MetaObject implements Map.Entry<K, V>, Serializable {
 
-    private  K key;
-    private  V value;
+    private K key;
+    private V value;
 
     /**
      * Create a new {@link Pair} instance.

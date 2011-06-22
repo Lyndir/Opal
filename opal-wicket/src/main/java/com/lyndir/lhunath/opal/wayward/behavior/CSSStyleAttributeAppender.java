@@ -57,11 +57,11 @@ public class CSSStyleAttributeAppender extends AttributeAppender {
 
         super(
                 STYLE_ATTRIBUTE, true, new LoadableDetachableModel<String>() {
-                    @Override
-                    protected String load() {
+            @Override
+            protected String load() {
 
-                        return String.format( "%s: %s", property, value.getObject() );
-                    }
-                }, STYLE_SEPARATOR );
+                return String.format( "%s: %s", property, value.getObject() );
+            }
+        }, STYLE_SEPARATOR );
     }
 }

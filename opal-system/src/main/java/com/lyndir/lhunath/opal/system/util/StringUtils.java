@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.opal.system.util;
 
-import static com.lyndir.lhunath.opal.system.util.ObjectUtils.*;
+import static com.lyndir.lhunath.opal.system.util.ObjectUtils.ifNotNullElse;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;

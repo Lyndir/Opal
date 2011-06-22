@@ -89,7 +89,7 @@ public abstract class ArrayUtils {
         return array;
     }
 
-    @SuppressWarnings( { "SuspiciousSystemArraycopy" })
+    @SuppressWarnings({ "SuspiciousSystemArraycopy" })
     public static <T> T[] unsafeCopyOf(final Class<T> type, final Object... elements) {
 
         T[] array = ObjectArrays.newArray( type, elements.length );
