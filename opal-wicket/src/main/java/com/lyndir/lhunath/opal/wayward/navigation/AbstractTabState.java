@@ -4,32 +4,33 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import java.util.List;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.jetbrains.annotations.Nullable;
 
 
 /**
- * <h2>{@link AbstractFragmentState}<br> <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link AbstractTabState}<br> <sub>[in short] (TODO).</sub></h2>
  *
  * <p> <i>07 10, 2010</i> </p>
  *
  * @author lhunath
  */
-public abstract class AbstractFragmentState implements FragmentState {
+public abstract class AbstractTabState<P extends Panel> implements TabState<P> {
 
     private final List<String> fragments;
 
-    protected AbstractFragmentState() {
+    protected AbstractTabState() {
 
         fragments = Lists.newLinkedList();
     }
 
-    protected AbstractFragmentState(final String fragment) {
+    protected AbstractTabState(final String fragment) {
 
         fragments = Lists.newLinkedList( Splitter.on( '/' ).split( fragment ) );
         assertFragments();
     }
 
-    protected AbstractFragmentState(final List<String> fragments) {
+    protected AbstractTabState(final List<String> fragments) {
 
         this.fragments = fragments;
         assertFragments();

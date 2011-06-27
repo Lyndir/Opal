@@ -27,7 +27,7 @@ import org.apache.wicket.markup.html.panel.Panel;
  *
  * @author lhunath
  */
-public abstract class TabActivator<P extends Panel, S extends FragmentState, T extends FragmentNavigationTab<P, S>>
+public abstract class TabActivator<P extends Panel, S extends TabState<P>, T extends TabDescriptor<P, S>>
         implements ComponentActivator {
 
     static final Logger logger = Logger.get( TabActivator.class );
@@ -47,7 +47,7 @@ public abstract class TabActivator<P extends Panel, S extends FragmentState, T e
     @Override
     public boolean isActive() {
 
-        FragmentNavigationListener.Controller<?, ?> controller = findController();
+        TabController controller = findController();
         return controller != null && tab.equals( controller.getActiveTab() );
     }
 
@@ -61,5 +61,5 @@ public abstract class TabActivator<P extends Panel, S extends FragmentState, T e
         findController().activateNewTab( tab );
     }
 
-    protected abstract FragmentNavigationListener.Controller<? super P, ? super S> findController();
+    protected abstract TabController findController();
 }
