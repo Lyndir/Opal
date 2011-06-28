@@ -16,17 +16,17 @@ import org.jetbrains.annotations.Nullable;
 
 
 /**
-* <i>06 26, 2011</i>
-*
-* @author lhunath
-*/
+ * <i>06 26, 2011</i>
+ *
+ * @author lhunath
+ */
 public abstract class TabController implements IClusterable {
 
     private static final Pattern FRAGMENT_ELEMENT = Pattern.compile( "([^/]*/)?" );
 
     static final Logger logger = Logger.get( TabController.class );
 
-    private String                      pageFragment;
+    private String              pageFragment;
     private TabDescriptor<?, ?> activeTab;
 
     /**
@@ -39,7 +39,8 @@ public abstract class TabController implements IClusterable {
      *                                    be
      *                                    loaded.
      */
-    <T extends TabDescriptor<P, S>, S extends TabState<P>, P extends Panel> void activateTabWithState(@NotNull final T tab, @NotNull final String fragment)
+    <T extends TabDescriptor<P, S>, S extends TabState<P>, P extends Panel> void activateTabWithState(@NotNull final T tab,
+                                                                                                      @NotNull final String fragment)
             throws IncompatibleStateException {
 
         Matcher matcher = FRAGMENT_ELEMENT.matcher( fragment );
@@ -59,11 +60,8 @@ public abstract class TabController implements IClusterable {
      *
      * @throws IncompatibleStateException If the state is incompatible with the current state and can not be applied.
      */
-    // FIXME: This method signature isn't entirely correct: It doesn't express that PP should extend P and SS should extend S.
-    // FIXME: This currently seems impossible to do in Java (as of Java 6).  As such, this method's implementation is also a bit messy.
-    @SuppressWarnings({ "unchecked", "RedundantCast" })
-    public <T extends TabDescriptor<P, S>, S extends TabState<P>, P extends Panel> void activateTabWithState(
-            @NotNull final T tab, @NotNull final S state)
+    public <T extends TabDescriptor<P, S>, S extends TabState<P>, P extends Panel> void activateTabWithState(@NotNull final T tab,
+                                                                                                             @NotNull final S state)
             throws IncompatibleStateException {
 
         P tabPanel = getContent( tab );
@@ -77,10 +75,7 @@ public abstract class TabController implements IClusterable {
      *
      * @param tab The tab that should be activated.
      */
-    // FIXME: This method signature isn't entirely correct: It doesn't express that PP should extend P and SS should extend S.
-    // FIXME: This currently seems impossible to do in Java (as of Java 6).  As such, this method's implementation is also a bit messy.
-    @SuppressWarnings({ "unchecked", "RedundantCast" })
-    public <T extends TabDescriptor<P, S>, S extends TabState<P>, P extends Panel> void activateNewTab(@NotNull final T tab) {
+    public void activateNewTab(@NotNull final TabDescriptor<?, ?> tab) {
 
         activateTab( tab, null );
     }
@@ -92,8 +87,7 @@ public abstract class TabController implements IClusterable {
      * @param tabPanel The panel that provides the tab's content or <code>null</code> if a new content panel should be created for the
      *                 tab.
      */
-    public <T extends TabDescriptor<P, S>, S extends TabState<P>, P extends Panel> void activateTab(@NotNull final T tab,
-                                                                                                                 @Nullable P tabPanel) {
+    public <T extends TabDescriptor<P, ?>, P extends Panel> void activateTab(@NotNull final T tab, @Nullable P tabPanel) {
 
         if (tabPanel == null)
             tabPanel = getContent( tab );
@@ -183,8 +177,7 @@ public abstract class TabController implements IClusterable {
      * @return The component that represents the content of the given tab.
      */
     @NotNull
-    protected abstract <T extends TabDescriptor<P, S>, S extends TabState<P>, P extends Panel> P getContent(
-            @NotNull T tab);
+    protected abstract <T extends TabDescriptor<P, ?>, P extends Panel> P getContent(@NotNull T tab);
 
     /**
      * @return All components that should be updated whenever page navigation changes.
@@ -198,8 +191,7 @@ public abstract class TabController implements IClusterable {
      * @param tab      The tab that needs to be activated.
      * @param tabPanel The panel that contains the tab's content as determined by fragment state.
      */
-    protected abstract <T extends TabDescriptor<P, S>, S extends TabState<P>, P extends Panel> void onTabActivated(
-            @NotNull T tab, @NotNull P tabPanel);
+    protected abstract <T extends TabDescriptor<P, ?>, P extends Panel> void onTabActivated(@NotNull T tab, @NotNull P tabPanel);
 
     /**
      * Handle errors that occur when attempting to apply state that is incompatible with the current state.
