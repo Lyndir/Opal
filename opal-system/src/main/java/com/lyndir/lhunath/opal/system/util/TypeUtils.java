@@ -275,7 +275,7 @@ public abstract class TypeUtils {
                 R result = lastResult.getLastResult();
                 try {
                     for (final Field field : lastResult.getCurrent().getDeclaredFields())
-                        if (!field.isSynthetic() && Modifier.isStatic( field.getModifiers() )) {
+                        if (!field.isSynthetic() && !Modifier.isStatic( field.getModifiers() )) {
                             logger.trc( "Iteration of %s: %s", lastResult.getCurrent(), field );
                             result = function.apply( new LastResult<Field, R>( field, result ) );
                         }
