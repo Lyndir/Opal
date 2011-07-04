@@ -63,7 +63,7 @@ public class TabAjaxRequestListener implements AjaxRequestTarget.IListener {
             // Active panel is not on the AJAX request's page, tab does not apply to this page's fragment.
             return;
 
-        newFragment = activeTab.newState( contentPanel ).toFragment();
+        newFragment = controller.toFragment( activeTab, contentPanel );
         if (!ObjectUtils.isEqual( newFragment, controller.getPageFragment() ))
             controller.updateNavigationComponents();
     }

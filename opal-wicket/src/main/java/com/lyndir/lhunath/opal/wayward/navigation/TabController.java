@@ -106,15 +106,20 @@ public abstract class TabController implements IClusterable {
         } else {
             // PageClass is set and the current request is a page request from another page; redirect to tab on pageClass.
             CharSequence pageUrl = RequestCycle.get().urlFor( getTabPage(), null );
-            String tabFragment = tab.newState( tabPanel ).toFragment();
-            if (StringUtils.isEmpty( tabFragment ))
-                tabFragment = tab.getFragment();
-            else
-                tabFragment = Joiner.on( '/' ).join( tab.getFragment(), tabFragment );
+            String tabFragment = toFragment( tab, tabPanel );
 
             logger.dbg( "Redirecting to tab-exclusive page: %s (url: %s), fragment: %s", getTabPage(), pageUrl, tabFragment );
             throw new RedirectToUrlException( String.format( "%s#%s", pageUrl, tabFragment ) );
         }
+    }
+
+    public <T extends TabDescriptor<P, ?>, P extends Panel> String toFragment(final T tab, final P content) {
+
+        String tabFragment = tab.newState( content ).toFragment();
+        if (StringUtils.isEmpty( tabFragment ))
+            return tab.getFragment();
+
+        return Joiner.on( '/' ).join( tab.getFragment(), tabFragment );
     }
 
     void updateNavigationComponents() {
