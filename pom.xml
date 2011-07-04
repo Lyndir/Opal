@@ -33,6 +33,7 @@
     <!-- ALL MODULES THAT ARE ENABLED BY DEFAULT -->
     <modules>
         <module>opal-crypto</module>
+        <module>opal-jpa</module>
         <module>opal-struct</module>
         <module>opal-math</module>
         <module>opal-network</module>
