@@ -20,12 +20,43 @@ import com.lyndir.lhunath.opal.wayward.i18n.internal.MessagesInvocationHandler;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Proxy;
+import java.text.MessageFormat;
+import java.util.Locale;
+import org.apache.wicket.model.IModel;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
- * <h2>{@link MessagesFactory}<br> <sub>[in short] (TODO).</sub></h2>
+ * This factory makes it trivial for you to do type-safe localization.
  * <p/>
- * <p> <i>Mar 26, 2010</i> </p>
+ * Begin by creating a static field in your class with the {@link #create(Class)} method.  The argument to this method is your field's
+ * type. It should be an interface that describes the localization keys you want to access.  It generally makes sense to make this an inner
+ * interface of your class.
+ * <p/>
+ * The interface describes each localization key you want to access: A method in the interface references a localization key in your
+ * localization bundle.  The method can accept arguments.  The arguments can be used to modify the localization key the method will access
+ * (by annotating the argument with a {@link KeyAppender}) or the argument can be passed for expansion to the localization value.
+ * <p/>
+ * The bundle whose localization data the interface references is determined by the base class passed in the {@link #create(Class, Class)}
+ * call or the class in which your interface is declared if you used {@link #create(Class)}.  Once the base class is determined, an XML
+ * file is loaded using the standard bundle loading mechanism using the base class's canonical name as the <code>baseName</code>, the
+ * Wicket session's current {@link Locale} and the classloader that loaded the base class.  Effectively, this means it's best to put your
+ * XML file next to your base class, with the same name.
+ * <p/>
+ * As mentioned, you can use arguments to your interface methods to modify the key used to look up the localized return value in the
+ * bundle. Any arguments annotated with {@link KeyAppender} will have their value appended to the key (which is initially the name of the
+ * method), prefixed by a dot.  In arguments to the annotation, you can specify conditions that the value must meet in order to be appended
+ * to the key.  Refer to {@link KeyAppender}'s documentation for more information.  {@link BooleanKeyAppender} works similarly, but is used
+ * on boolean arguments and adds a fixed value to the key if the argument is <code>true</code> or <code>false</code>.
+ * <p/>
+ * Any arguments that aren't appended to the key will get passed to the localization value for expansion.  This expansion is performed by
+ * {@link MessageFormat#format(String, Object...)}, by passing the localization value as the format string and the method arguments as
+ * format arguments.
+ * <p/>
+ * You can type arguments and return values either with a concrete type or a concrete type wrapped in an {@link IModel}.  If the type is
+ * not a model, the object is converted to a string using {@link #toString()}.  If the type is a model, the model's object is handled the
+ * same way.  The advantage of using a model is that the object is only retrieved when (and each time) the localization value is being
+ * generated.
  *
  * @author lhunath
  */
@@ -53,7 +84,7 @@ public abstract class MessagesFactory {
      *
      * @return The localization proxy that provides localized values.
      */
-    public static <M> M create(final Class<M> localizationInterface, final Class<?> baseClass) {
+    public static <M> M create(final Class<M> localizationInterface, @Nullable final Class<?> baseClass) {
 
         // Create a localization interface proxy.
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();

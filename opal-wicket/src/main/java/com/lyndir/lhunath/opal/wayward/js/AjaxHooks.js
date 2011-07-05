@@ -19,19 +19,14 @@ AjaxHooks = {
 	// Fire all the registered post-AJAX callbacks passing the updated DOM elements as defined by the previous handle call.
 	firePostAjax: function() {
 
-		if (AjaxHooks.updatedDomIds.length) {
-			// Select the updated elements by ID.
-			var selector = AjaxHooks.updatedDomIds.join(',');
+        // Select the updated elements by ID.
+        var selector = AjaxHooks.updatedDomIds.join(',');
 
-			// Invoke the callbacks passing the elements.
-			var updatedDomElements = $(selector);
-			$.each(AjaxHooks.postAjaxCallbacks, function() {
-				this(updatedDomElements);
-			});
-
-			// Clean up the list of updated IDs.
-			AjaxHooks.updatedDomIds = [];
-		}
+        // Invoke the callbacks passing the elements.
+        var updatedDomElements = $(selector);
+        $.each(AjaxHooks.postAjaxCallbacks, function() {
+            this(updatedDomElements);
+        });
 	}
 };
 

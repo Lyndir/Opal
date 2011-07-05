@@ -15,6 +15,7 @@ import java.util.*;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -28,9 +29,10 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
 
     static final Logger logger = Logger.get( MessagesInvocationHandler.class );
 
+    @Nullable
     Class<?> baseClass;
 
-    public MessagesInvocationHandler(final Class<?> baseClass) {
+    public MessagesInvocationHandler(@Nullable final Class<?> baseClass) {
 
         this.baseClass = baseClass;
     }

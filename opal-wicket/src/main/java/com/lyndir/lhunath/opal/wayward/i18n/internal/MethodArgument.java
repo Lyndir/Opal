@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import org.apache.wicket.model.IModel;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -14,7 +15,7 @@ import org.apache.wicket.model.IModel;
  * <p>When the value for the argument is requested; it is first unwrapped.  That means, in several steps; the value object is transformed
  * in
  * another that is "contained" by it. <ul><li>If it is an IModel, the model's object is substituted.</li> <li>If it is Localized, the
- * object's #objectDescription is substituted.</li> </ul> </p>
+ * object's #getLocalizedInstance is substituted.</li> </ul> </p>
  *
  * <p> <i>07 23, 2010</i> </p>
  *
@@ -41,6 +42,7 @@ public class MethodArgument implements Serializable {
         return value;
     }
 
+    @Nullable
     public Object getUnwrappedValue() {
 
         // Time to unwrap the value.
@@ -53,6 +55,7 @@ public class MethodArgument implements Serializable {
         return unwrappedValue;
     }
 
+    @Nullable
     public Object getLocalizedUnwrappedValue() {
 
         // Time to unwrap the value.
@@ -60,7 +63,7 @@ public class MethodArgument implements Serializable {
         if (unwrappedValue == null)
             return null;
         if (Localized.class.isInstance( unwrappedValue ))
-            unwrappedValue = ((Localized) unwrappedValue).objectDescription();
+            unwrappedValue = ((Localized) unwrappedValue).getLocalizedInstance();
 
         return unwrappedValue;
     }

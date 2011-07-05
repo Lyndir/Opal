@@ -94,7 +94,7 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
         }
 
         @Override
-        public ResourceBundle newBundle(String baseName, final Locale locale, final String format, ClassLoader loader, final boolean reload)
+        public ResourceBundle newBundle(final String baseName, final Locale locale, final String format, final ClassLoader loader, final boolean reload)
                 throws IllegalAccessException, InstantiationException, IOException {
 
             checkNotNull( baseName );

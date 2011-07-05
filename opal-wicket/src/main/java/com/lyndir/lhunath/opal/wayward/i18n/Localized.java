@@ -15,10 +15,10 @@ public interface Localized extends IClusterable {
     /**
      * @return A localized description of this type.
      */
-    String typeDescription();
+    String getLocalizedType();
 
     /**
      * @return A localized description of this object.
      */
-    String objectDescription();
+    String getLocalizedInstance();
 }
