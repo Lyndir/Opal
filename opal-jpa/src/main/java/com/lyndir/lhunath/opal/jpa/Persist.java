@@ -18,6 +18,7 @@ package com.lyndir.lhunath.opal.jpa;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.persistence.*;
+import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -29,9 +30,23 @@ import javax.persistence.*;
  */
 public class Persist {
 
+    private static final ThreadLocal<Persist> persistences = new ThreadLocal<Persist>();
+
     private final EntityManagerFactory emf;
     private       EntityManager        em;
     private       Object               transactionOwner;
+
+    @NotNull
+    public static Persist persistence() {
+
+        return checkNotNull( persistences.get(), "No persistence active." );
+    }
+
+    @NotNull
+    public static EntityManager entityManager() {
+
+        return persistence().getEntityManager();
+    }
 
     public Persist() {
 
@@ -53,7 +68,7 @@ public class Persist {
      *
      * @return The current entity manager.
      */
-    public EntityManager entityManager() {
+    public EntityManager getEntityManager() {
 
         if (em == null || !em.isOpen())
             em = emf.createEntityManager();
@@ -72,11 +87,12 @@ public class Persist {
     public EntityTransaction begin(final Object caller) {
 
         if (transactionOwner == null) {
-            entityManager().getTransaction().begin();
+            getEntityManager().getTransaction().begin();
             transactionOwner = caller;
         }
 
-        return entityManager().getTransaction();
+        persistences.set( this );
+        return getEntityManager().getTransaction();
     }
 
     /**
@@ -95,6 +111,7 @@ public class Persist {
 
         em = null;
 
+        persistences.remove();
         return didClose;
     }
 
@@ -107,7 +124,7 @@ public class Persist {
     public boolean abort() {
 
         boolean didRollBack = false;
-        EntityTransaction transaction = entityManager().getTransaction();
+        EntityTransaction transaction = getEntityManager().getTransaction();
         if (transaction != null && transaction.isActive()) {
             transaction.rollback();
             didRollBack = true;
@@ -130,7 +147,7 @@ public class Persist {
     public boolean complete(final Object caller) {
 
         boolean didComplete = false;
-        EntityTransaction transaction = entityManager().getTransaction();
+        EntityTransaction transaction = getEntityManager().getTransaction();
         if (transactionOwner == caller && transaction != null && transaction.isActive()) {
             transaction.commit();
             didComplete = true;
