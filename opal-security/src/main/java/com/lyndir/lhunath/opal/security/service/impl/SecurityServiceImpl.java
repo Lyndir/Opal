@@ -49,10 +49,10 @@ public class SecurityServiceImpl implements SecurityService {
      * {@inheritDoc}
      */
     @Override
-    public boolean hasAccess(final Permission permission, final SecurityToken token, final SecureObject<?> o) {
+    public boolean hasAccess(final Permission permission, final SecurityToken token, final SecureObject<?, ?> object) {
 
         try {
-            assertAccess( permission, token, o );
+            assertAccess( permission, token, object );
             return true;
         }
 
@@ -62,7 +62,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public <T extends SecureObject<?>> Iterator<T> filterAccess(final Permission permission, final SecurityToken token,
+    public <T extends SecureObject<?, ?>> Iterator<T> filterAccess(final Permission permission, final SecurityToken token,
                                                                 final Iterator<T> source) {
 
         return Iterators.filter(
@@ -77,7 +77,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public <T extends SecureObject<?>> ListIterator<T> filterAccess(final Permission permission, final SecurityToken token,
+    public <T extends SecureObject<?, ?>> ListIterator<T> filterAccess(final Permission permission, final SecurityToken token,
                                                                     final ListIterator<T> source) {
 
         return Iterators2.filter(
@@ -92,63 +92,63 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public <S extends SecureObject<?>> S assertAccess(final Permission permission, final SecurityToken token, final S o)
+    public <S extends SecureObject<?, ?>> S assertAccess(final Permission permission, final SecurityToken token, final S object)
             throws PermissionDeniedException {
 
         checkNotNull( token, "Given security token must not be null." );
 
         // Automatically grant permission when no object is given or required permission is NONE.
-        if (o == null || permission == Permission.NONE) {
+        if (object == null || permission == Permission.NONE) {
             logger.dbg(
                     "Permission Granted: No permission necessary for: %s@%s", //
-                    permission, o );
-            return o;
+                    permission, object );
+            return object;
         }
 
         // Automatically grant permission to INTERNAL_USE token.
         if (token.isInternalUseOnly()) {
             logger.dbg(
                     "Permission Granted: INTERNAL_USE token for: %s@%s", //
-                    permission, o );
-            return o;
+                    permission, object );
+            return object;
         }
 
         // Determine what permission level to grant on the object for the token.
         Permission tokenPermission;
-        if (ObjectUtils.isEqual( o.getOwner(), token.getActor() ))
+        if (ObjectUtils.isEqual( object.getOwner(), token.getActor() ))
             tokenPermission = Permission.ADMINISTER;
         else
-            tokenPermission = o.getACL().getSubjectPermission( token.getActor() );
+            tokenPermission = object.getACL().getSubjectPermission( token.getActor() );
 
         // If INHERIT, recurse.
         if (tokenPermission == Permission.INHERIT) {
-            if (o.getParent() == null) {
+            if (object.getParent() == null) {
                 logger.dbg(
                         "Permission Denied: Can't inherit permissions, no parent set for: %s@%s", //
-                        permission, o );
-                throw new PermissionDeniedException( permission, o, "Had to inherit permission but no parent set" );
+                        permission, object );
+                throw new PermissionDeniedException( permission, object, "Had to inherit permission but no parent set" );
             }
 
             logger.dbg(
                     "Inheriting permission for: %s@%s", //
-                    permission, o );
-            assertAccess( permission, token, o.getParent() );
-            return o;
+                    permission, object );
+            assertAccess( permission, token, object.getParent() );
+            return object;
         }
 
         // Else, check if granted permission provides required permission.
         if (!isPermissionProvided( tokenPermission, permission )) {
             logger.dbg(
                     "Permission Denied: Token authorizes %s (ACL default? %s), insufficient for: %s@%s", //
-                    tokenPermission, o.getACL().isSubjectPermissionDefault( token.getActor() ), permission, o );
-            throw new PermissionDeniedException( permission, o, "Security Token %s grants permissions %s ", token, tokenPermission );
+                    tokenPermission, object.getACL().isSubjectPermissionDefault( token.getActor() ), permission, object );
+            throw new PermissionDeniedException( permission, object, "Security Token %s grants permissions %s ", token, tokenPermission );
         }
 
         // No permission denied thrown, grant permission.
         logger.dbg(
                 "Permission Granted: Token authorization %s matches for: %s@%s", //
-                tokenPermission, permission, o );
-        return o;
+                tokenPermission, permission, object );
+        return object;
     }
 
     private static boolean isPermissionProvided(final Permission givenPermission, final Permission requestedPermission) {
@@ -166,7 +166,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public Permission getDefaultPermission(final SecurityToken token, final SecureObject<?> o)
+    public Permission getDefaultPermission(final SecurityToken token, final SecureObject<?, ?> o)
             throws PermissionDeniedException {
 
         checkNotNull( o, "Given secure object must not be null." );
@@ -176,7 +176,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public Permission getEffectivePermissions(final SecurityToken token, final Subject subject, final SecureObject<?> o)
+    public Permission getEffectivePermissions(final SecurityToken token, final Subject subject, final SecureObject<?, ?> o)
             throws PermissionDeniedException {
 
         checkNotNull( o, "Given secure object must not be null." );
@@ -184,7 +184,7 @@ public class SecurityServiceImpl implements SecurityService {
 
         Permission permission = o.getACL().getSubjectPermission( subject );
         if (permission == Permission.INHERIT) {
-            SecureObject<?> parent = checkNotNull( o.getParent(), "Secure object's default permission is INHERIT but has no parent." );
+            SecureObject<?, ?> parent = checkNotNull( o.getParent(), "Secure object's default permission is INHERIT but has no parent." );
 
             return getEffectivePermissions( token, subject, parent );
         }
@@ -193,7 +193,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public Iterator<Pair<Subject, Permission>> iterateSubjectPermissions(final SecurityToken token, final SecureObject<?> o)
+    public Iterator<Pair<Subject, Permission>> iterateSubjectPermissions(final SecurityToken token, final SecureObject<?, ?> o)
             throws PermissionDeniedException {
 
         checkNotNull( o, "Given secure object must not be null." );
@@ -227,7 +227,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public int countPermittedSubjects(final SecurityToken token, final SecureObject<?> o)
+    public int countPermittedSubjects(final SecurityToken token, final SecureObject<?, ?> o)
             throws PermissionDeniedException {
 
         checkNotNull( o, "Given secure object must not be null." );
@@ -237,7 +237,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public void setDefaultPermission(final SecurityToken token, final SecureObject<?> o, final Permission permission)
+    public void setDefaultPermission(final SecurityToken token, final SecureObject<?, ?> o, final Permission permission)
             throws PermissionDeniedException {
 
         checkNotNull( o, "Given secure object must not be null." );
@@ -247,7 +247,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public void setPermission(final SecurityToken token, final SecureObject<?> object, final Subject subject, final Permission permission)
+    public void setPermission(final SecurityToken token, final SecureObject<?, ?> object, final Subject subject, final Permission permission)
             throws PermissionDeniedException, IllegalRequestException {
 
         checkNotNull( object, "Given secure object must not be null." );

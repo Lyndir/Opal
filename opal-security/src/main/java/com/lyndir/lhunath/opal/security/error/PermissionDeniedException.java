@@ -33,7 +33,7 @@ public class PermissionDeniedException extends Exception {
     static final Messages msgs = MessagesFactory.create( Messages.class );
 
     private final Permission permission;
-    private final SecureObject<?> secureObject;
+    private final SecureObject<?, ?> secureObject;
 
     /**
      * @param permission    The permission level required on the object.
@@ -41,7 +41,7 @@ public class PermissionDeniedException extends Exception {
      * @param messageFormat The message that explains why permission was denied in String#format syntax.
      * @param messageArgs   Additional arguments to expand into the message as defined by messageFormat.
      */
-    public PermissionDeniedException(final Permission permission, final SecureObject<?> secureObject, final String messageFormat,
+    public PermissionDeniedException(final Permission permission, final SecureObject<?, ?> secureObject, final String messageFormat,
                                      final Object... messageArgs) {
 
         super( String.format( messageFormat + " in request for: %s@%s.", ArrayUtils.concat( messageArgs, permission, secureObject ) ) );
@@ -57,7 +57,7 @@ public class PermissionDeniedException extends Exception {
      * @param messageFormat The message that explains why permission was denied in String#format syntax.
      * @param messageArgs   Additional arguments to expand into the message as defined by messageFormat.
      */
-    public PermissionDeniedException(final Throwable cause, final Permission permission, final SecureObject<?> secureObject,
+    public PermissionDeniedException(final Throwable cause, final Permission permission, final SecureObject<?, ?> secureObject,
                                      final String messageFormat, final Object... messageArgs) {
 
         this( permission, secureObject, messageFormat, messageArgs );
@@ -75,6 +75,6 @@ public class PermissionDeniedException extends Exception {
 
     interface Messages {
 
-        String message(Permission permission, SecureObject<?> secureObject);
+        String message(Permission permission, SecureObject<?, ?> secureObject);
     }
 }

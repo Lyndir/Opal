@@ -84,7 +84,7 @@ public enum Permission implements Localized {
     @Override
     public String getLocalizedInstance() {
 
-        return msgs.description( this );
+        return msgs.instance( this );
     }
 
     /**
@@ -92,7 +92,7 @@ public enum Permission implements Localized {
      *
      * @return An explanation of the effects of this permission.
      */
-    public String info(final SecureObject<?> of) {
+    public String info(final SecureObject<?, ?> of) {
 
         return msgs.info( this, of, of.getParent() );
     }
@@ -109,7 +109,7 @@ public enum Permission implements Localized {
          *
          * @return A description of the given permission.
          */
-        String description(@KeyAppender Permission permission);
+        String instance(@KeyAppender Permission permission);
 
         /**
          * @param permission The permission to explain.
@@ -118,6 +118,6 @@ public enum Permission implements Localized {
          *
          * @return An information text explaining what this permission grants.
          */
-        String info(@KeyAppender Permission permission, SecureObject<?> current, SecureObject<?> parent);
+        String info(@KeyAppender Permission permission, SecureObject<?, ?> current, SecureObject<?, ?> parent);
     }
 }

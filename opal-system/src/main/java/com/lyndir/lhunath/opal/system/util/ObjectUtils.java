@@ -22,14 +22,14 @@ import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.system.util.ObjectMeta.For;
 import com.lyndir.lhunath.opal.system.util.TypeUtils.LastResult;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.security.cert.X509Certificate;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
+import net.sf.cglib.proxy.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -301,8 +301,7 @@ public abstract class ObjectUtils {
 
         try {
             seen.get( For.equals ).get().add( identityHashCode );
-            return forEachFieldWithMeta(
-                    For.equals, superObject.getClass(), new Function<LastResult<Field, Boolean>, Boolean>() {
+            return forEachFieldWithMeta( For.equals, superObject.getClass(), new Function<LastResult<Field, Boolean>, Boolean>() {
                 @Override
                 public Boolean apply(final LastResult<Field, Boolean> lastResult) {
 
@@ -524,5 +523,41 @@ public abstract class ObjectUtils {
             return nullValue;
 
         return notNullValueFunction.apply( from );
+    }
+
+    @NotNull
+    public static <T> T ifType(@NotNull final Class<T> type, final Object object) {
+
+        return type.cast( Enhancer.create( type, new MethodInterceptor() {
+            @Override
+            @SuppressWarnings( { "ProhibitedExceptionDeclared" })
+            public Object intercept(final Object proxyObject, final Method proxyMethod, final Object[] arguments,
+                                    final MethodProxy methodProxy)
+                    throws Throwable {
+
+                if (type.isInstance( object ))
+                    return methodProxy.invoke( object, arguments );
+
+                return null;
+            }
+        } ) );
+    }
+
+    @NotNull
+    public static <T> T ifTypeElse(@NotNull final Class<T> type, final Object object, @NotNull final Object defaultValue) {
+
+        return type.cast( Enhancer.create( type, new MethodInterceptor() {
+            @Override
+            @SuppressWarnings( { "ProhibitedExceptionDeclared" })
+            public Object intercept(final Object proxyObject, final Method proxyMethod, final Object[] arguments,
+                                    final MethodProxy methodProxy)
+                    throws Throwable {
+
+                if (type.isInstance( object ))
+                    return checkNotNull( methodProxy.invoke( object, arguments ) );
+
+                return defaultValue;
+            }
+        } ) );
     }
 }

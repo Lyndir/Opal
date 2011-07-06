@@ -22,28 +22,14 @@ package com.lyndir.lhunath.opal.security;
  *
  * @author lhunath
  */
-public class SecurityToken {
+public class SecurityToken<S extends Subject> {
 
-    /**
-     * Use this token <b>ONLY</b> for requests that the subject can't gain anything from. The result must not be given or hinted at to the
-     * subject.
-     */
-    // TODO: Should this be moved into SecurityServiceImpl and made private?
-    public static final SecurityToken INTERNAL_USE_ONLY = new SecurityToken( null ) {
-
-        @Override
-        public boolean isInternalUseOnly() {
-
-            return true;
-        }
-    };
-
-    private final Subject actor;
+    private final S actor;
 
     /**
      * @param actor The subject that has requested or will gain access to the result of the operation.
      */
-    public SecurityToken(final Subject actor) {
+    public SecurityToken(final S actor) {
 
         this.actor = actor;
     }
@@ -51,14 +37,13 @@ public class SecurityToken {
     /**
      * @return The subject that has requested or will gain access to the result of the operation.
      */
-    public Subject getActor() {
+    public S getActor() {
 
         return actor;
     }
 
     /**
-     * @return <code>true</code>: This token should allow operations regardless. It can only be <code>true</code> for requests made using
-     *         the {@link #INTERNAL_USE_ONLY} token.
+     * @return <code>true</code>: This token permits operations without checking whether the subject has permission to perform it.
      */
     public boolean isInternalUseOnly() {
 

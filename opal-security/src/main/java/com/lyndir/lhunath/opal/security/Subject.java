@@ -1,6 +1,6 @@
 package com.lyndir.lhunath.opal.security;
 
-import java.io.Serializable;
+import com.lyndir.lhunath.opal.system.i18n.Localized;
 
 
 /**
@@ -8,6 +8,6 @@ import java.io.Serializable;
  *
  * @author lhunath
  */
-public interface Subject extends Serializable {
+public interface Subject extends Localized {
 
 }

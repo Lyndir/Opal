@@ -29,9 +29,9 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author lhunath
  */
-public abstract class AbstractSecureObject<P extends SecureObject<?>> implements SecureObject<P> {
+public abstract class AbstractSecureObject<S extends Subject, P extends SecureObject<S, ?>> implements SecureObject<S, P> {
 
-    private final Subject owner;
+    private final S owner;
     private final ACL acl = new ACL();
 
     protected AbstractSecureObject() {
@@ -39,18 +39,20 @@ public abstract class AbstractSecureObject<P extends SecureObject<?>> implements
         owner = null;
     }
 
-    protected AbstractSecureObject(@NotNull final Subject owner) {
+    protected AbstractSecureObject(@NotNull final S owner) {
 
         this.owner = owner;
     }
 
     @NotNull
     @Override
-    public Subject getOwner() {
+    public S getOwner() {
 
-        if (owner == null)
-            if (getParent() != null)
-                return getParent().getOwner();
+        if (owner == null) {
+            P parent = getParent();
+            if (parent != null)
+                return parent.getOwner();
+        }
 
         return checkNotNull( owner );
     }

@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author lhunath
  */
-public interface SecureObject<P extends SecureObject<?>> extends Localized {
+public interface SecureObject<S extends Subject, P extends SecureObject<S, ?>> extends Localized {
 
     /**
      * @return The {@link SecureObject} that we inherit metadata from.
@@ -44,7 +44,7 @@ public interface SecureObject<P extends SecureObject<?>> extends Localized {
      * @return The user that owns this object.
      */
     @NotNull
-    Subject getOwner();
+    S getOwner();
 
     /**
      * @return The access control set governing the permissions users have over this object.

@@ -25,21 +25,26 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author lhunath
  */
-public class GlobalSecureObject extends AbstractSecureObject<SecureObject<?>> {
+public class GlobalSecureObject<S extends Subject> extends AbstractSecureObject<S, SecureObject<S, ?>> {
 
     /**
      * The default {@link SecureObject} that all top-level objects should use as their parent.
      */
-    public static final transient GlobalSecureObject DEFAULT;
+    private static final transient GlobalSecureObject<Subject> DEFAULT;
 
     static {
-        DEFAULT = new GlobalSecureObject();
+        DEFAULT = new GlobalSecureObject<Subject>();
         DEFAULT.getACL().setDefaultPermission( Permission.NONE );
+    }
+
+    public static <S extends Subject> GlobalSecureObject<S> getDefault() {
+
+        return (GlobalSecureObject<S>) DEFAULT;
     }
 
     @Nullable
     @Override
-    public SecureObject<?> getParent() {
+    public SecureObject<S, ?> getParent() {
 
         return null;
     }
