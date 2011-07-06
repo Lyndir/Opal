@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+
+    <entry key="type">Permission</entry>
+
+    <entry key="description.NONE">None</entry>
+    <entry key="info.NONE">Completely denies all access.</entry>
+    <entry key="description.INHERIT">Inherited</entry>
+    <entry key="info.INHERIT">Same rights as granted on {1}.</entry>
+    <entry key="description.VIEW">View</entry>
+    <entry key="info.VIEW">Allowed to look into this {0}.</entry>
+    <entry key="description.CONTRIBUTE">Contribute</entry>
+    <entry key="info.CONTRIBUTE">Allowed to modify the contents.</entry>
+    <entry key="description.ADMINISTER">Administration</entry>
+    <entry key="info.ADMINISTER">Can grant and modify access rights.</entry>
+
+</properties>

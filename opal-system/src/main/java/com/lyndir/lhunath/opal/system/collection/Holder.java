@@ -2,6 +2,7 @@ package com.lyndir.lhunath.opal.system.collection;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Supplier;
 import com.lyndir.lhunath.opal.system.util.MetaObject;
 import java.io.Serializable;
 import org.jetbrains.annotations.NotNull;
@@ -14,16 +15,17 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author lhunath
  */
-public class Holder<T> extends MetaObject implements Serializable {
+public class Holder<T extends Serializable> extends MetaObject implements Supplier<T>, Serializable {
 
     private T value;
 
-    public Holder(@NotNull T value) {
+    public Holder(@NotNull final T value) {
 
         this.value = checkNotNull( value );
     }
 
     @NotNull
+    @Override
     public T get() {
 
         return value;

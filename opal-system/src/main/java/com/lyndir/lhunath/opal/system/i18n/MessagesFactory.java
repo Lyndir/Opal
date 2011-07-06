@@ -13,16 +13,15 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.opal.wayward.i18n;
+package com.lyndir.lhunath.opal.system.i18n;
 
+import com.lyndir.lhunath.opal.system.i18n.internal.MessagesInvocationHandler;
 import com.lyndir.lhunath.opal.system.logging.Logger;
-import com.lyndir.lhunath.opal.wayward.i18n.internal.MessagesInvocationHandler;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Proxy;
 import java.text.MessageFormat;
 import java.util.Locale;
-import org.apache.wicket.model.IModel;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -53,7 +52,7 @@ import org.jetbrains.annotations.Nullable;
  * {@link MessageFormat#format(String, Object...)}, by passing the localization value as the format string and the method arguments as
  * format arguments.
  * <p/>
- * You can type arguments and return values either with a concrete type or a concrete type wrapped in an {@link IModel}.  If the type is
+ * You can type arguments and return values either with a concrete type or a concrete type wrapped in an IModel.  If the type is
  * not a model, the object is converted to a string using {@link #toString()}.  If the type is a model, the model's object is handled the
  * same way.  The advantage of using a model is that the object is only retrieved when (and each time) the localization value is being
  * generated.

@@ -1,20 +1,19 @@
-package com.lyndir.lhunath.opal.wayward.i18n.internal;
+package com.lyndir.lhunath.opal.system.i18n.internal;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.base.Function;
+import com.google.common.base.Supplier;
+import com.google.common.collect.*;
+import com.lyndir.lhunath.opal.system.i18n.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.system.logging.exception.AlreadyCheckedException;
-import com.lyndir.lhunath.opal.wayward.i18n.*;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.*;
-import org.apache.wicket.Session;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -27,7 +26,30 @@ import org.jetbrains.annotations.Nullable;
  */
 public class MessagesInvocationHandler implements InvocationHandler, Serializable {
 
-    static final Logger logger = Logger.get( MessagesInvocationHandler.class );
+    static final         Logger                                  logger          = Logger.get( MessagesInvocationHandler.class );
+    private static final Map<Class<?>, Function<Supplier<?>, ?>> wrapperTypes    = Maps.newHashMap();
+    private static final Deque<Supplier<Locale>>                 localeSuppliers = Lists.newLinkedList();
+
+    static {
+        registerLocaleSupplier(
+                new Supplier<Locale>() {
+                    @Override
+                    public Locale get() {
+
+                        return Locale.getDefault();
+                    }
+                } );
+    }
+
+    public static <T> void registerWrapperType(final Class<T> wrapperType, final Function<Supplier<?>, T> wrapperValueFactory) {
+
+        wrapperTypes.put( wrapperType, wrapperValueFactory );
+    }
+
+    public static <T> void registerLocaleSupplier(final Supplier<Locale> localeSupplier) {
+
+        localeSuppliers.addFirst( localeSupplier );
+    }
 
     @Nullable
     Class<?> baseClass;
@@ -65,10 +87,10 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
         final List<MethodArgument> methodArgs = methodArgsBuilder.build();
 
         // Construct a model to allow lazy evaluation of the key's value.
-        IModel<String> valueModel = new AbstractReadOnlyModel<String>() {
+        Supplier<String> valueModel = new Supplier<String>() {
 
             @Override
-            public String getObject() {
+            public String get() {
 
                 StringBuilder keyBuilder = new StringBuilder( methodName );
                 logger.dbg( "Base key: %s", keyBuilder.toString() );
@@ -148,8 +170,12 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                         key, baseClass, localizationArgs );
 
                 // Find the resource bundle for the current locale and the given baseName.
+                Locale locale = null;
+                for (final Supplier<Locale> localeSupplier : localeSuppliers)
+                    if ((locale = localeSupplier.get()) != null)
+                        break;
                 ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle(
-                        baseClass.getCanonicalName(), Session.get().getLocale(), baseClass.getClassLoader() );
+                        baseClass.getCanonicalName(), locale, baseClass.getClassLoader() );
 
                 // Format the localization key with the arguments.
                 try {
@@ -174,11 +200,14 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
             }
         };
 
-        // If the method expects a model, return that.
-        if (IModel.class.isAssignableFrom( method.getReturnType() ))
+        // If the method expects an wrapped object, return that.
+        if (Supplier.class.isAssignableFrom( method.getReturnType() ))
             return valueModel;
+        for (final Map.Entry<Class<?>, Function<Supplier<?>, ?>> classFunctionEntry : wrapperTypes.entrySet())
+            if (classFunctionEntry.getKey().isAssignableFrom( method.getReturnType() ))
+                return classFunctionEntry.getValue().apply( valueModel );
 
         // Otherwise just resolve the key's value straight away.
-        return valueModel.getObject();
+        return valueModel.get();
     }
 }

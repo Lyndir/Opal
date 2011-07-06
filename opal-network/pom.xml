@@ -30,12 +30,6 @@
             <version>GIT-SNAPSHOT</version>
         </dependency>
 
-        <!-- EXTERNAL DEPENDENCIES -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
     </dependencies>
 
 </project>

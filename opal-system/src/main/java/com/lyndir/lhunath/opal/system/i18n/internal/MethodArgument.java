@@ -1,11 +1,14 @@
-package com.lyndir.lhunath.opal.wayward.i18n.internal;
+package com.lyndir.lhunath.opal.system.i18n.internal;
 
+import com.google.common.base.Function;
+import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
-import com.lyndir.lhunath.opal.wayward.i18n.Localized;
+import com.google.common.collect.Maps;
+import com.lyndir.lhunath.opal.system.i18n.Localized;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.List;
-import org.apache.wicket.model.IModel;
+import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -23,8 +26,16 @@ import org.jetbrains.annotations.Nullable;
  */
 public class MethodArgument implements Serializable {
 
+    private static final Map<Class<?>, Function<Object, ?>> unwrapperTypes = Maps.newHashMap();
+
     private final Object           value;
     private final List<Annotation> annotations;
+
+    @SuppressWarnings({ "unchecked" })
+    public static <T> void registerWrapperType(final Class<T> wrapperType, final Function<T, ?> valueUnwrapperFactory) {
+
+        unwrapperTypes.put( wrapperType, (Function<Object, ?>) valueUnwrapperFactory );
+    }
 
     public MethodArgument(final Object value, final List<Annotation> annotations) {
 
@@ -49,8 +60,12 @@ public class MethodArgument implements Serializable {
         Object unwrappedValue = getValue();
         if (unwrappedValue == null)
             return null;
-        if (IModel.class.isInstance( unwrappedValue ))
-            unwrappedValue = ((IModel<?>) unwrappedValue).getObject();
+        if (Supplier.class.isInstance( unwrappedValue ))
+            unwrappedValue = ((Supplier<?>) unwrappedValue).get();
+        for (final Map.Entry<Class<?>, Function<Object, ?>> unwrapperType : unwrapperTypes.entrySet()){
+            if (unwrapperType.getKey().isInstance( unwrappedValue ))
+                unwrappedValue = unwrapperType.getValue().apply( unwrappedValue );
+        }
 
         return unwrappedValue;
     }

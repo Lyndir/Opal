@@ -1,6 +1,6 @@
-package com.lyndir.lhunath.opal.wayward.i18n;
+package com.lyndir.lhunath.opal.system.i18n;
 
-import org.apache.wicket.IClusterable;
+import java.io.Serializable;
 
 
 /**
@@ -10,7 +10,7 @@ import org.apache.wicket.IClusterable;
  *
  * @author lhunath
  */
-public interface Localized extends IClusterable {
+public interface Localized extends Serializable {
 
     /**
      * @return A localized description of this type.

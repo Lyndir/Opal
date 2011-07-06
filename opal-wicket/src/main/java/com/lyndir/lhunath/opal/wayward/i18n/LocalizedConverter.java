@@ -1,5 +1,6 @@
 package com.lyndir.lhunath.opal.wayward.i18n;
 
+import com.lyndir.lhunath.opal.system.i18n.Localized;
 import java.util.Locale;
 import org.apache.wicket.Session;
 import org.apache.wicket.util.convert.IConverter;

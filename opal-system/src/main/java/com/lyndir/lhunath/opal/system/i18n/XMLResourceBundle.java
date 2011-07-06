@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.opal.wayward.i18n;
+package com.lyndir.lhunath.opal.system.i18n;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
