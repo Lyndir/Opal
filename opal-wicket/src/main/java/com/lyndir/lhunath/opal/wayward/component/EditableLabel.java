@@ -44,9 +44,29 @@ public class EditableLabel<T> extends GenericPanel<T> {
 
         super( id, model );
 
-        add( label = newLabel( model ) );
+        IModel<T> myModel = new IModel<T>() {
+            @Override
+            public T getObject() {
+
+                return getModel().getObject();
+            }
+
+            @Override
+            public void setObject(final T object) {
+
+                getModel().setObject( object );
+            }
+
+            @Override
+            public void detach() {
+
+                // Let me detach myself.
+            }
+        };
+
+        add( label = newLabel( myModel ) );
         add(
-                singleLineField = new TextField<T>( "singleLineField", model, modelType ) {
+                singleLineField = new TextField<T>( "singleLineField", myModel, modelType ) {
 
                     @Override
                     public boolean isVisible() {
@@ -61,7 +81,7 @@ public class EditableLabel<T> extends GenericPanel<T> {
                     }
                 } );
         add(
-                multiLineField = new TextArea<T>( "multiLineField", model ) {
+                multiLineField = new TextArea<T>( "multiLineField", myModel ) {
 
                     @Override
                     public boolean isVisible() {
