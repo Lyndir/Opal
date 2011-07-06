@@ -15,7 +15,8 @@
  */
 package com.lyndir.lhunath.opal.system.util;
 
-import static com.lyndir.lhunath.opal.system.util.ObjectUtils.ifNotNullElse;
+import static com.google.common.base.Preconditions.*;
+import static com.lyndir.lhunath.opal.system.util.ObjectUtils.*;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
@@ -135,8 +136,18 @@ public abstract class StringUtils {
      * Perform an expansion operation on the given {@code source} string by expanding all curly-braced words with a certain
      * {@code keyPrefix} into an expansion value determined by the {@code keyToExpansion} function.
      * <p/>
-     * <p>If the source string is {@code I am a $}{good} sentence.</code>, the keyPrefix is {@code $} and the keyToExpansion function
-     * returns {@code bad} when its input is the string {@code good}, the result of this method will be: {@code I am a bad sentence.}</p>
+     * <p>If the source string is <code>I am a ${karma} sentence.</code>, the keyPrefix is {@code $} and the keyToExpansion function
+     * returns {@code bad} when its input is the string {@code karma}, the result of this method will be: {@code I am a bad sentence.}</p>
+     * <p>
+     * You may append a default value after the expansion key, which will be used when the function returns {@code null} for the key.
+     * If no default value is provided in the expansion and the functions returns {@code null} for the key, an {@code
+     * java.lang.NullPointerException} will be thrown.  You can specify an optional expansion by providing an empty default value.
+     * </p>
+     * <p>
+     * For instance, if the keyToExpansion function returns {@code null} for the string {@code karma} in the previous example, an exception
+     * will be thrown.  If the source string is changed to <code>I am a ${karma:good} sentence.</code>, then this case will yield the
+     * following result: {@code I am a good sentence.}
+     * </p>
      *
      * @param source         The string to search for expansion words and to expand into.
      * @param keyPrefix      The string that should come just before the opening curly-brace.
@@ -150,14 +161,16 @@ public abstract class StringUtils {
         Map<Integer, Integer> indexToEnds = Maps.newTreeMap();
         Map<Integer, String> indexToExpansions = Maps.newTreeMap();
 
-        Pattern keyPattern = Pattern.compile( String.format( "%s\\{([^\\}]*)\\}", Pattern.quote( keyPrefix ) ) );
+        Pattern keyPattern = Pattern.compile( String.format( "%s\\{([^\\}:]*)(?::([^\\}]*))?\\}", Pattern.quote( keyPrefix ) ) );
         Matcher matcher = keyPattern.matcher( source );
         while (matcher.find()) {
             int index = matcher.start();
             String key = matcher.group( 1 );
+            String fallback = matcher.group( 2 );
 
             indexToEnds.put( index, matcher.end() );
-            indexToExpansions.put( index, ifNotNullElse( keyToExpansion.apply( key ), "" ) );
+            indexToExpansions.put( index, checkNotNull( ifNotNullElseNullable( keyToExpansion.apply( key ), fallback ), //
+                    "No value for required expansion key: %s", key ) );
         }
 
         SortedSet<Integer> reverseIndexes = Sets.newTreeSet( Collections.reverseOrder() );
