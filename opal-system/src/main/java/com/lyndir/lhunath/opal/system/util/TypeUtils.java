@@ -371,6 +371,18 @@ public abstract class TypeUtils {
         return (Class<T>) type;
     }
 
+    public static String propertyName(Method method) {
+
+        String methodName = method.getName();
+        if ((methodName.startsWith( "get" ) || methodName.startsWith( "set" )) && methodName.length() > 3)
+            methodName = methodName.substring( 3 );
+        else if (methodName.startsWith( "is" ) && methodName.length() > 2)
+            methodName = methodName.substring( 2 );
+
+        //noinspection StringConcatenation
+        return methodName.substring( 0, 1 ).toLowerCase() + methodName.substring( 1 );
+    }
+
     /**
      * Compress the generic form of the method's signature. Trim off throws declarations.<br> java.lang.method -> j~l~method
      *
