@@ -167,9 +167,10 @@ public abstract class StringUtils {
             int index = matcher.start();
             String key = matcher.group( 1 );
             String fallback = matcher.group( 2 );
+            String value = keyToExpansion.apply( key );
 
             indexToEnds.put( index, matcher.end() );
-            indexToExpansions.put( index, checkNotNull( ifNotNullElseNullable( keyToExpansion.apply( key ), fallback ), //
+            indexToExpansions.put( index, checkNotNull( ifNotNullElseNullable( value, fallback ), //
                     "No value for required expansion key: %s", key ) );
         }
 
