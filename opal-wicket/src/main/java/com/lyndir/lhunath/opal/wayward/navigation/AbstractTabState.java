@@ -3,8 +3,9 @@ package com.lyndir.lhunath.opal.wayward.navigation;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import java.util.List;
+import java.util.*;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -19,22 +20,39 @@ public abstract class AbstractTabState<P extends Panel> implements TabState<P> {
 
     private final List<String> fragments;
 
-    protected AbstractTabState() {
-
-        fragments = Lists.newLinkedList();
-    }
-
-    protected AbstractTabState(final String fragment) {
-
-        fragments = Lists.newLinkedList( Splitter.on( '/' ).split( fragment ) );
-        assertFragments();
-    }
-
+    /**
+     * You probably don't need to implement this constructor.
+     *
+     * @param fragments The fragment elements of this state.
+     */
     protected AbstractTabState(final List<String> fragments) {
 
         this.fragments = fragments;
         assertFragments();
     }
+
+    protected AbstractTabState(final String fragment) {
+
+        this( Lists.newLinkedList( Splitter.on( '/' ).split( fragment ) ) );
+    }
+
+    protected AbstractTabState(final P panel) {
+
+        fragments = loadFragments( panel );
+        assertFragments();
+    }
+
+    protected abstract List<String> loadFragments(P panel);
+
+    @Override
+    public void apply(@NotNull final P panel)
+            throws IncompatibleStateException {
+
+        applyFragments( panel, new LinkedList<String>( fragments ) );
+    }
+
+    protected abstract void applyFragments(P panel, Deque<String> fragments)
+            throws IncompatibleStateException;
 
     @Nullable
     protected String findFragment(final int index) {
@@ -61,10 +79,10 @@ public abstract class AbstractTabState<P extends Panel> implements TabState<P> {
     @Override
     public String toFragment() {
 
-        return Joiner.on( '/' ).useForNull( "" ).join( getStateFragments() );
+        return Joiner.on( '/' ).useForNull( "" ).join( getFragments() );
     }
 
-    protected final Iterable<String> getStateFragments() {
+    protected final Iterable<String> getFragments() {
 
         return fragments;
     }

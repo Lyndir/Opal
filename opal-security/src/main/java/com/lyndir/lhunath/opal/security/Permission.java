@@ -58,7 +58,7 @@ public enum Permission implements Localized {
      */
     ADMINISTER( VIEW, CONTRIBUTE );
 
-    private static final Messages msgs = MessagesFactory.create( Messages.class );
+    private static final transient Messages msgs = MessagesFactory.create( Messages.class );
 
     private final Permission[] provided;
 

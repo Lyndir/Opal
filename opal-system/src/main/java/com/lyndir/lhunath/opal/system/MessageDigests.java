@@ -1,4 +1,4 @@
-package com.lyndir.lhunath.opal.crypto;
+package com.lyndir.lhunath.opal.system;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.InputSupplier;

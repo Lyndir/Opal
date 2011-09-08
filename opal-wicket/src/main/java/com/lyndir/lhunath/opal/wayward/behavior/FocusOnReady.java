@@ -37,7 +37,7 @@ public class FocusOnReady extends AbstractHeaderContributor {
 
                 if (component.isVisibleInHierarchy()) {
                     String id = component.getMarkupId( true );
-                    response.renderOnDomReadyJavascript( String.format( "document.getElementById('%s').focus()", JSUtils.toString( id ) ) );
+                    response.renderOnDomReadyJavascript( String.format( "document.getElementById(%s).focus()", JSUtils.toString( id ) ) );
                 }
             }
         };

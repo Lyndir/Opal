@@ -47,4 +47,13 @@ public abstract class JSUtils {
 
         return GSON.toJson( o );
     }
+
+    public static String format(final String format, final Object... args) {
+
+        Object[] jsArgs = new Object[args.length];
+        for (int a = 0; a < args.length; ++a)
+            jsArgs[a] = toString( args[a] );
+
+        return String.format( format, jsArgs );
+    }
 }

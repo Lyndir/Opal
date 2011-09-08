@@ -47,7 +47,7 @@ public abstract class TabActivator<P extends Panel, S extends TabState<P>, T ext
     @Override
     public boolean isActive() {
 
-        TabController controller = findController();
+        NavigationController controller = findController();
         return controller != null && tab.equals( controller.getActiveTab() );
     }
 
@@ -61,5 +61,5 @@ public abstract class TabActivator<P extends Panel, S extends TabState<P>, T ext
         findController().activateNewTab( tab );
     }
 
-    protected abstract TabController findController();
+    protected abstract NavigationController findController();
 }

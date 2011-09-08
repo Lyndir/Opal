@@ -183,37 +183,4 @@ public abstract class StringUtils {
 
         return filtered.toString();
     }
-
-    public static String encodeHex(@Nullable final byte[] data) {
-
-        return encodeHex( data, false );
-    }
-
-    public static String encodeHex(@Nullable final byte[] data, final boolean pretty) {
-
-        StringBuffer bytes = new StringBuffer();
-        Formatter formatter = new Formatter( bytes );
-        String format = String.format( "%%02X%s", pretty? ":": "" );
-
-        if (data != null)
-            for (final byte b : data) {
-                formatter.format( format, b );
-            }
-        if (pretty && bytes.length() > 0)
-            bytes.deleteCharAt( bytes.length() - 1 );
-
-        return bytes.toString();
-    }
-
-    public static byte[] decodeHex(@Nullable final String hexString) {
-
-        if (hexString == null)
-            return new byte[0];
-
-        byte[] deviceToken = new byte[hexString.length() / 2];
-        for (int i = 0; i < hexString.length(); i += 2)
-            deviceToken[i / 2] = Integer.valueOf( hexString.substring( i, i + 2 ), 16 ).byteValue();
-
-        return deviceToken;
-    }
 }

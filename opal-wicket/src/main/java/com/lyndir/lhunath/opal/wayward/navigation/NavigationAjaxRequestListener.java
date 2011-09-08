@@ -14,24 +14,24 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Install me on the AjaxRequestTargets that can affect navigation (including those that can affect tab state).
  */
-public class TabAjaxRequestListener implements AjaxRequestTarget.IListener {
+public class NavigationAjaxRequestListener implements AjaxRequestTarget.IListener {
 
-    static final Logger logger = Logger.get( TabAjaxRequestListener.class );
+    static final Logger logger = Logger.get( NavigationAjaxRequestListener.class );
 
-    private final TabController controller;
-    private       String     newFragment;
+    private final NavigationController controller;
+    private       String               newFragment;
 
     /**
      * @param controller The object that controls fragment state for this page.
      */
-    public TabAjaxRequestListener(final TabController controller) {
+    public NavigationAjaxRequestListener(final NavigationController controller) {
 
         this.controller = controller;
     }
 
-    public static TabAjaxRequestListener of(final TabController controller) {
+    public static NavigationAjaxRequestListener of(final NavigationController controller) {
 
-        return new TabAjaxRequestListener( controller );
+        return new NavigationAjaxRequestListener( controller );
     }
 
     @Override
@@ -51,8 +51,7 @@ public class TabAjaxRequestListener implements AjaxRequestTarget.IListener {
         updatePageFragment( response );
     }
 
-    private <T extends TabDescriptor<P, S>, S extends TabState<P>, P extends Panel> void updateTabComponents(
-            @Nullable final T activeTab) {
+    private <T extends TabDescriptor<P, S>, S extends TabState<P>, P extends Panel> void updateTabComponents(@Nullable final T activeTab) {
 
         if (activeTab == null)
             // No active tab, no page fragment to update.
@@ -65,7 +64,7 @@ public class TabAjaxRequestListener implements AjaxRequestTarget.IListener {
 
         newFragment = controller.toFragment( activeTab, contentPanel );
         if (!ObjectUtils.isEqual( newFragment, controller.getPageFragment() ))
-            controller.updateNavigationComponents();
+            controller.updateNavigationComponents( contentPanel );
     }
 
     private void updatePageFragment(final AjaxRequestTarget.IJavascriptResponse response) {

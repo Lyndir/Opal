@@ -1,6 +1,6 @@
 package com.lyndir.lhunath.opal.wayward.navigation;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.*;
 
 import com.google.common.base.Joiner;
 import com.lyndir.lhunath.opal.system.logging.Logger;
@@ -20,11 +20,11 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author lhunath
  */
-public abstract class TabController implements IClusterable {
+public abstract class NavigationController implements IClusterable {
 
-    private static final Pattern FRAGMENT_ELEMENT = Pattern.compile( "([^/]*/)?" );
+    private static final Pattern FRAGMENT_ELEMENT = Pattern.compile( "(([^/]+)(?:/|$))" );
 
-    static final Logger logger = Logger.get( TabController.class );
+    static final Logger logger = Logger.get( NavigationController.class );
 
     private String              pageFragment;
     private TabDescriptor<?, ?> activeTab;
@@ -44,11 +44,14 @@ public abstract class TabController implements IClusterable {
             throws IncompatibleStateException {
 
         Matcher matcher = FRAGMENT_ELEMENT.matcher( fragment );
-        checkArgument(
-                !matcher.matches() || !ObjectUtils.isEqual( tab.getFragment(), matcher.group( 1 ) ),
-                "Can't load fragment (%s) for tab (%s), fragment's first element doesn't match tab fragment.", //
-                fragment, tab.getClass() );
+        checkArgument( matcher.find(), "Can't parse elements from fragment: %s, using: %s", matcher.pattern() );
+        String tabFragment = tab.getFragment();
+        String firstFragment = matcher.group( 2 );
+        checkArgument( ObjectUtils.isEqual( tabFragment, firstFragment ),
+                       "Can't load fragment: %s, for tab: %s, fragment's first element: %s, doesn't match tab fragment: %s.", //
+                       fragment, tab, firstFragment, tabFragment );
 
+        matcher.reset();
         activateTabWithState( tab, tab.newState( matcher.replaceFirst( "" ) ) );
     }
 
@@ -87,10 +90,9 @@ public abstract class TabController implements IClusterable {
      * @param tabPanel The panel that provides the tab's content or <code>null</code> if a new content panel should be created for the
      *                 tab.
      */
-    public <T extends TabDescriptor<P, ?>, P extends Panel> void activateTab(@NotNull final T tab, @Nullable P tabPanel) {
+    public <T extends TabDescriptor<P, ?>, P extends Panel, PP extends P> void activateTab(@NotNull final T tab, @Nullable final PP panel) {
 
-        if (tabPanel == null)
-            tabPanel = getContent( tab );
+        P tabPanel = panel == null? getContent( tab ): panel;
         tabPanel.setOutputMarkupPlaceholderTag( true );
 
         Page responsePage = RequestCycle.get().getResponsePage();
@@ -102,7 +104,7 @@ public abstract class TabController implements IClusterable {
             activeTab = tab;
             onTabActivated( tab, tabPanel );
 
-            updateNavigationComponents();
+            updateNavigationComponents( tabPanel );
         } else {
             // PageClass is set and the current request is a page request from another page; redirect to tab on pageClass.
             CharSequence pageUrl = RequestCycle.get().urlFor( getTabPage(), null );
@@ -122,12 +124,14 @@ public abstract class TabController implements IClusterable {
         return Joiner.on( '/' ).join( tab.getFragment(), tabFragment );
     }
 
-    void updateNavigationComponents() {
+    void updateNavigationComponents(final Panel tabPanel) {
 
         AjaxRequestTarget target = AjaxRequestTarget.get();
-        if (target != null)
+        if (target != null) {
+            target.addComponent( tabPanel );
             for (final Component component : getNavigationComponents())
                 target.addComponent( component );
+        }
     }
 
     /**

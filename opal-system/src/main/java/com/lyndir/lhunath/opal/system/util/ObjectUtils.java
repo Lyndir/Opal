@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.opal.system.util;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 import com.google.common.base.*;
 import com.google.common.collect.*;
@@ -41,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author lhunath
  */
+@SuppressWarnings({ "UnusedDeclaration" })
 public abstract class ObjectUtils {
 
     static final Logger logger = Logger.get( ObjectUtils.class );
@@ -51,8 +52,7 @@ public abstract class ObjectUtils {
 
     static {
         for (For forMeta : For.values()) {
-            seen.put(
-                    forMeta, new ThreadLocal<Set<Integer>>() {
+            seen.put( forMeta, new ThreadLocal<Set<Integer>>() {
                 @Override
                 protected Set<Integer> initialValue() {
 
@@ -147,8 +147,7 @@ public abstract class ObjectUtils {
 
         if (o instanceof X509Certificate) {
             X509Certificate x509Certificate = (X509Certificate) o;
-            return String.format(
-                    "{Cert: DN=%s, Issuer=%s}", x509Certificate.getSubjectX500Principal().getName(),
+            return String.format( "{Cert: DN=%s, Issuer=%s}", x509Certificate.getSubjectX500Principal().getName(),
                     x509Certificate.getIssuerX500Principal().getName() );
         }
 
@@ -181,8 +180,7 @@ public abstract class ObjectUtils {
                 seen.get( For.toString ).get().add( identityHashCode );
 
                 toString.append(
-                        forEachFieldWithMeta(
-                                For.toString, o.getClass(), new Function<LastResult<Field, StringBuilder>, StringBuilder>() {
+                        forEachFieldWithMeta( For.toString, o.getClass(), new Function<LastResult<Field, StringBuilder>, StringBuilder>() {
                             @Override
                             public StringBuilder apply(final LastResult<Field, StringBuilder> lastResult) {
 
@@ -242,32 +240,30 @@ public abstract class ObjectUtils {
 
         try {
             seen.get( For.hashCode ).get().add( identityHashCode );
-            return ifNotNullElse(
-                    forEachFieldWithMeta(
-                            For.hashCode, o.getClass(), new Function<LastResult<Field, Integer>, Integer>() {
-                        @Override
-                        public Integer apply(final LastResult<Field, Integer> lastResult) {
+            return ifNotNullElse( forEachFieldWithMeta( For.hashCode, o.getClass(), new Function<LastResult<Field, Integer>, Integer>() {
+                @Override
+                public Integer apply(final LastResult<Field, Integer> lastResult) {
 
-                            Field field = lastResult.getCurrent();
-                            int lastHashCode = lastResult.getLastResult();
-                            try {
-                                field.setAccessible( true );
-                            }
-                            catch (SecurityException ignored) {
-                            }
+                    Field field = lastResult.getCurrent();
+                    int lastHashCode = lastResult.getLastResult();
+                    try {
+                        field.setAccessible( true );
+                    }
+                    catch (SecurityException ignored) {
+                    }
 
-                            try {
-                                Object value = field.get( o );
-                                if (value != null)
-                                    return Arrays.hashCode( new int[]{ lastHashCode, value.hashCode() } );
-                            }
-                            catch (IllegalAccessException e) {
-                                logger.dbg( e, "Not accessible: %s", field );
-                            }
+                    try {
+                        Object value = field.get( o );
+                        if (value != null)
+                            return Arrays.hashCode( new int[] { lastHashCode, value.hashCode() } );
+                    }
+                    catch (IllegalAccessException e) {
+                        logger.dbg( e, "Not accessible: %s", field );
+                    }
 
-                            return lastHashCode;
-                        }
-                    }, 0 ), identityHashCode );
+                    return lastHashCode;
+                }
+            }, 0 ), identityHashCode );
         }
         finally {
             seen.get( For.hashCode ).get().remove( identityHashCode );
@@ -302,27 +298,27 @@ public abstract class ObjectUtils {
         try {
             seen.get( For.equals ).get().add( identityHashCode );
             return forEachFieldWithMeta( For.equals, superObject.getClass(), new Function<LastResult<Field, Boolean>, Boolean>() {
-                        @Override
-                        public Boolean apply(final LastResult<Field, Boolean> lastResult) {
+                @Override
+                public Boolean apply(final LastResult<Field, Boolean> lastResult) {
 
-                            Field field = lastResult.getCurrent();
-                            try {
-                                field.setAccessible( true );
-                            }
-                            catch (SecurityException ignored) {
-                            }
+                    Field field = lastResult.getCurrent();
+                    try {
+                        field.setAccessible( true );
+                    }
+                    catch (SecurityException ignored) {
+                    }
 
-                            try {
-                                if (!Objects.equal( field.get( superObject ), field.get( subObject ) ))
-                                    return false;
-                            }
-                            catch (IllegalAccessException e) {
-                                logger.dbg( e, "Not accessible: %s", field );
-                            }
+                    try {
+                        if (!Objects.equal( field.get( superObject ), field.get( subObject ) ))
+                            return false;
+                    }
+                    catch (IllegalAccessException e) {
+                        logger.dbg( e, "Not accessible: %s", field );
+                    }
 
-                            return true;
-                        }
-                    }, false /* There are no (accessible) fields to compare. */ );
+                    return true;
+                }
+            }, false /* There are no (accessible) fields to compare. */ );
         }
         finally {
             seen.get( For.equals ).get().remove( identityHashCode );
@@ -332,16 +328,14 @@ public abstract class ObjectUtils {
     private static <R, T> R forEachFieldWithMeta(final For meta, final Class<T> type, final Function<LastResult<Field, R>, R> function,
                                                  final R firstResult) {
 
-        return TypeUtils.forEachSuperTypeOf(
-                type, new Function<LastResult<Class<?>, R>, R>() {
+        return TypeUtils.forEachSuperTypeOf( type, new Function<LastResult<Class<?>, R>, R>() {
             @Override
             public R apply(final LastResult<Class<?>, R> lastTypeResult) {
 
                 Class<?> subType = lastTypeResult.getCurrent();
                 final boolean usedByType = usesMeta( meta, subType );
 
-                return TypeUtils.forEachFieldOf(
-                        subType, new Function<LastResult<Field, R>, R>() {
+                return TypeUtils.forEachFieldOf( subType, new Function<LastResult<Field, R>, R>() {
                     @Override
                     public R apply(final LastResult<Field, R> lastFieldResult) {
 
@@ -432,8 +426,8 @@ public abstract class ObjectUtils {
     }
 
     /**
-     * @param value     The value to return, if it isn't {@code null} .
-     * @param nullValue The value to return if {@code value} is {@code null} .
+     * @param value     The value to return, if it isn't {@code null}.
+     * @param nullValue The value to return if {@code value} is {@code null}.
      * @param <T>       The type of object to return.
      *
      * @return One of two values.
@@ -459,7 +453,7 @@ public abstract class ObjectUtils {
      * @return One of two values.
      */
     @NotNull
-    public static <T> T ifNotNullElse(@Nullable final T value, final Supplier<T> nullValueSupplier) {
+    public static <T> T ifNotNullElse(@Nullable final T value, final NNSupplier<T> nullValueSupplier) {
 
         if (value != null)
             return value;
@@ -479,7 +473,7 @@ public abstract class ObjectUtils {
      * @return One of two values.
      */
     @Nullable
-    public static <T> T ifNotNullElseNullable(@Nullable final T value, final Supplier<T> nullValueSupplier) {
+    public static <T> T ifNotNullElseNullable(@Nullable final T value, final NSupplier<T> nullValueSupplier) {
 
         if (value != null)
             return value;
@@ -488,7 +482,20 @@ public abstract class ObjectUtils {
     }
 
     /**
-     * Apply a function to the first parameter if it is not {@code null} .  Otherwise, return {@code null} .
+     * Apply an operation on the first argument if it is not {@code null}.  Otherwise, do nothing.
+     *
+     * @param value            The value to operate on if it is not {@code null}.
+     * @param notNullOperation The function that defines the transform to apply to the {@code from}  value.
+     * @param <T>              The type of the value to operate on.
+     */
+    public static <T> void ifNotNull(@Nullable final T value, final NNOperation<T> notNullOperation) {
+
+        if (value != null)
+            notNullOperation.apply( value );
+    }
+
+    /**
+     * Apply a function to the first parameter if it is not {@code null}.  Otherwise, return {@code null}.
      *
      * @param from                 The value to transform if it is not {@code null} .
      * @param notNullValueFunction The function that defines the transform to apply to the {@code from}  value.
@@ -498,7 +505,7 @@ public abstract class ObjectUtils {
      * @return The transformed value, or {@code null}.
      */
     @Nullable
-    public static <F, T> T ifNotNull(@Nullable final F from, final Function<F, T> notNullValueFunction) {
+    public static <F, T> T ifNotNull(@Nullable final F from, final NFunctionNN<F, T> notNullValueFunction) {
 
         if (from == null)
             return null;
@@ -507,39 +514,45 @@ public abstract class ObjectUtils {
     }
 
     /**
-     * Create a proxy object on which you can invoke methods of the given type.  The result of these methods will be the result of the method invoked on the given object, or {@code null} if the given object is {@code null}.
+     * Apply a function to the first parameter if it is not {@code null}.  Otherwise, return {@code nullValue}.
      *
-     * @param type                  The type of the object.
-     * @param object                The value to transform if it is not {@code null} .
-     * @param <T>                   The type of the object.
+     * @param from                 The value to transform if it is not {@code null} .
+     * @param notNullValueFunction The function that defines the transform to apply to the {@code from}  value.
+     * @param nullValue            The value to return if {@code value} is {@code null}.
+     * @param <F>                  The type of object to transform.
+     * @param <T>                  The type of object to return.
      *
-     * @return The transformed value, or {@code null}.
+     * @return The transformed value, or {@code nullValue}.
      */
     @NotNull
-    public static <T> T ifNotNull(@NotNull final Class<T> type, @Nullable final T object) {
-
-        return type.cast( Enhancer.create( type, new MethodInterceptor() {
-            @Override
-            @SuppressWarnings( { "ProhibitedExceptionDeclared" })
-            public Object intercept(final Object proxyObject, final Method proxyMethod, final Object[] arguments,
-                                    final MethodProxy methodProxy)
-                    throws Throwable {
-
-                if (object == null)
-                    return null;
-
-                return methodProxy.invoke( object, arguments );
-            }
-        } ) );
-    }
-
-    @NotNull
-    public static <F, T> T ifNotNullElse(@Nullable final F from, final Function<F, T> notNullValueFunction, @NotNull final T nullValue) {
+    public static <F, T> T ifNotNullElse(@Nullable final F from, final NNFunctionNN<F, T> notNullValueFunction,
+                                         @NotNull final T nullValue) {
 
         if (from == null)
             return checkNotNull( nullValue );
 
         return checkNotNull( notNullValueFunction.apply( from ) );
+    }
+
+    /**
+     * Apply a function to the first parameter if it is not {@code null}.  Otherwise, return {@code nullValue}.
+     *
+     * @param from                 The value to transform if it is not {@code null} .
+     * @param notNullValueFunction The function that defines the transform to apply to the {@code from}  value.
+     * @param nullValue            The value to return if {@code value} is {@code null}.
+     * @param <F>                  The type of object to transform.
+     * @param <T>                  The type of object to return.
+     *
+     * @return The transformed value, or {@code nullValue}.
+     */
+    @Nullable
+    public static <F, T> T ifNotNullElseNullable(@Nullable final F from, final NFunctionNN<F, T> notNullValueFunction,
+                                                 @Nullable final T nullValue) {
+
+        if (from == null)
+            return nullValue;
+
+        return notNullValueFunction.apply( from );
     }
 
     /**
@@ -553,11 +566,39 @@ public abstract class ObjectUtils {
      * @return The transformed value, or {@code null}.
      */
     @NotNull
-    public static <T> T ifNotNullElse(@NotNull final Class<T> type, @Nullable final T object, @NotNull final T nullValue) {
+    public static <T> T ifNotNull(@NotNull final Class<T> type, @Nullable final Object object) {
 
         return type.cast( Enhancer.create( type, new MethodInterceptor() {
             @Override
-            @SuppressWarnings( { "ProhibitedExceptionDeclared" })
+            @SuppressWarnings({ "ProhibitedExceptionDeclared" })
+            public Object intercept(final Object proxyObject, final Method proxyMethod, final Object[] arguments,
+                                    final MethodProxy methodProxy)
+                    throws Throwable {
+
+                if (object == null)
+                    return null;
+
+                return methodProxy.invoke( object, arguments );
+            }
+        } ) );
+    }
+
+    /**
+     * Create a proxy object on which you can invoke methods of the given type.  The result of these methods will be the result of the
+     * method invoked on the given object, or {@code nullValue} if the given object is {@code null}.
+     *
+     * @param type      The type of methods that can be invoked.
+     * @param object    The object to invoke the method on, if not {@code null}.
+     * @param nullValue The result of the invoked methods, if {@code object} is {@code null}.
+     *
+     * @return A proxy object of the given type.
+     */
+    @NotNull
+    public static <T> T ifNotNullElse(@NotNull final Class<T> type, @Nullable final Object object, @NotNull final Object nullValue) {
+
+        return type.cast( Enhancer.create( type, new MethodInterceptor() {
+            @Override
+            @SuppressWarnings({ "ProhibitedExceptionDeclared" })
             public Object intercept(final Object proxyObject, final Method proxyMethod, final Object[] arguments,
                                     final MethodProxy methodProxy)
                     throws Throwable {
@@ -570,22 +611,22 @@ public abstract class ObjectUtils {
         } ) );
     }
 
-    @Nullable
-    public static <F, T> T ifNotNullElseNullable(@Nullable final F from, final Function<F, T> notNullValueFunction,
-                                                 @NotNull final T nullValue) {
-
-        if (from == null)
-            return nullValue;
-
-        return notNullValueFunction.apply( from );
-    }
-
+    /**
+     * Create a proxy object on which you can invoke methods of the given type.  If the given {@code object} is of the given type, the
+     * result of these methods will be the result of the method invoked on the given object.  If it is not of the given type, the result of
+     * these methods will be {@code null}.
+     *
+     * @param type   The type of methods that can be invoked.
+     * @param object The object to invoke the method on, if it is of the correct {@code type}.
+     *
+     * @return A proxy object of the given type.
+     */
     @NotNull
     public static <T> T ifType(@NotNull final Class<T> type, final Object object) {
 
         return type.cast( Enhancer.create( type, new MethodInterceptor() {
             @Override
-            @SuppressWarnings( { "ProhibitedExceptionDeclared" })
+            @SuppressWarnings({ "ProhibitedExceptionDeclared" })
             public Object intercept(final Object proxyObject, final Method proxyMethod, final Object[] arguments,
                                     final MethodProxy methodProxy)
                     throws Throwable {
@@ -598,12 +639,23 @@ public abstract class ObjectUtils {
         } ) );
     }
 
+    /**
+     * Create a proxy object on which you can invoke methods of the given type.  If the given {@code object} is of the given type, the
+     * result of these methods will be the result of the method invoked on the given object.  If it is not of the given type, the result of
+     * these methods will be {@code badTypeValue}.
+     *
+     * @param type         The type of methods that can be invoked.
+     * @param object       The object to invoke the method on, if it is of the correct {@code type}.
+     * @param badTypeValue The result of the invoked methods, if {@code object} is not of the correct {@code type}.
+     *
+     * @return A proxy object of the given type.
+     */
     @NotNull
-    public static <T> T ifTypeElse(@NotNull final Class<T> type, final Object object, @NotNull final Object defaultValue) {
+    public static <T> T ifTypeElse(@NotNull final Class<T> type, final Object object, @NotNull final Object badTypeValue) {
 
         return type.cast( Enhancer.create( type, new MethodInterceptor() {
             @Override
-            @SuppressWarnings( { "ProhibitedExceptionDeclared" })
+            @SuppressWarnings({ "ProhibitedExceptionDeclared" })
             public Object intercept(final Object proxyObject, final Method proxyMethod, final Object[] arguments,
                                     final MethodProxy methodProxy)
                     throws Throwable {
@@ -611,8 +663,101 @@ public abstract class ObjectUtils {
                 if (type.isInstance( object ))
                     return checkNotNull( methodProxy.invoke( object, arguments ) );
 
-                return defaultValue;
+                return badTypeValue;
             }
         } ) );
+    }
+
+    /**
+     * Create a proxy object on which you can invoke methods of the given type.  If the given {@code object} is of the given type, the
+     * result of these methods will be the result of the method invoked on the given object.  If it is not of the given type, the result of
+     * these methods will be {@code badTypeValue}.
+     *
+     * @param type         The type of methods that can be invoked.
+     * @param object       The object to invoke the method on, if it is of the correct {@code type}.
+     * @param badTypeValue The result of the invoked methods, if {@code object} is not of the correct {@code type}.
+     *
+     * @return A proxy object of the given type.
+     */
+    @NotNull
+    public static <T> T ifTypeElseNullable(@NotNull final Class<T> type, final Object object, @Nullable final Object badTypeValue) {
+
+        return type.cast( Enhancer.create( type, new MethodInterceptor() {
+            @Override
+            @SuppressWarnings({ "ProhibitedExceptionDeclared" })
+            public Object intercept(final Object proxyObject, final Method proxyMethod, final Object[] arguments,
+                                    final MethodProxy methodProxy)
+                    throws Throwable {
+
+                if (type.isInstance( object ))
+                    return checkNotNull( methodProxy.invoke( object, arguments ) );
+
+                return badTypeValue;
+            }
+        } ) );
+    }
+
+    /**
+     * A {@link Supplier} that can supply {@code null}.
+     *
+     * @param <T> The type of the supplied value.
+     */
+    public interface NSupplier<T> extends Supplier<T> {
+
+        @Nullable
+        T get();
+    }
+
+
+    /**
+     * A {@link Supplier} that cannot supply {@code null}.
+     *
+     * @param <T> The type of the supplied value.
+     */
+    public interface NNSupplier<T> extends Supplier<T> {
+
+        @NotNull
+        T get();
+    }
+
+
+    /**
+     * An operation that can be applied to a value.
+     *
+     * @param <T> The type of the value this operation can be applied to.
+     */
+    public interface NNOperation<T> {
+
+        void apply(@NotNull T input);
+    }
+
+
+    /**
+     * A {@link Function} that can be applied only to not-{@code null} values but yield {@code null} as result.
+     *
+     * @param <T> The type of the value this operation can be applied to.
+     */
+    @SuppressWarnings({ "NullableProblems" })
+    public interface NFunctionNN<F, T> extends Function<F, T> {
+
+        @Nullable
+        T apply(@NotNull F input);
+
+        boolean equals(@NotNull Object object);
+    }
+
+
+    /**
+     * A {@link Function} that can be applied only to not-{@code null} values and cannot yield {@code null} as result.
+     *
+     * @param <T> The type of the value this operation can be applied to.
+     */
+    @SuppressWarnings({ "NullableProblems" })
+    public interface NNFunctionNN<F, T> extends Function<F, T> {
+
+        @NotNull
+        T apply(@NotNull F input);
+
+        boolean equals(@NotNull Object object);
     }
 }

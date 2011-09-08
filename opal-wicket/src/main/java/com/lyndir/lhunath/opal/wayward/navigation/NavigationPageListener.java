@@ -10,23 +10,23 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 /**
  * Install me on the page where tab navigation should happen.
  */
-public class TabPageListener implements AjaxHooks.IPageListener {
+public class NavigationPageListener implements AjaxHooks.IPageListener {
 
-    static final Logger logger = Logger.get( TabPageListener.class );
+    static final Logger logger = Logger.get( NavigationPageListener.class );
 
-    private final TabController controller;
+    private final NavigationController controller;
 
     /**
      * @param controller The object that controls fragment state for this page.
      */
-    public TabPageListener(final TabController controller) {
+    public NavigationPageListener(final NavigationController controller) {
 
         this.controller = controller;
     }
 
-    public static TabPageListener of(final TabController controller) {
+    public static NavigationPageListener of(final NavigationController controller) {
 
-        return new TabPageListener( controller );
+        return new NavigationPageListener( controller );
     }
 
     @Override
