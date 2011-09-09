@@ -1,8 +1,13 @@
 package com.lyndir.lhunath.opal.wayward.i18n;
 
+import com.google.common.base.Function;
+import com.google.common.base.Supplier;
 import com.lyndir.lhunath.opal.system.i18n.Localized;
+import com.lyndir.lhunath.opal.system.i18n.internal.MessagesInvocationHandler;
 import java.util.Locale;
 import org.apache.wicket.Session;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.util.convert.IConverter;
 
 
@@ -12,6 +17,22 @@ import org.apache.wicket.util.convert.IConverter;
 * @author lhunath
 */
 public class LocalizedConverter implements IConverter {
+
+    static {
+        MessagesInvocationHandler.registerWrapperType( IModel.class, new Function<Supplier<String>, IModel<String>>() {
+            @Override
+            public IModel<String> apply(final Supplier<String> input) {
+
+                return new LoadableDetachableModel<String>() {
+                    @Override
+                    protected String load() {
+
+                        return input.get();
+                    }
+                };
+            }
+        } );
+    }
 
     @Override
     public Object convertToObject(final String value, final Locale locale) {

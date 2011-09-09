@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 public class MessagesInvocationHandler implements InvocationHandler, Serializable {
 
     static final         Logger                                  logger          = Logger.get( MessagesInvocationHandler.class );
-    private static final Map<Class<?>, Function<Supplier<?>, ?>> wrapperTypes    = Maps.newHashMap();
+    private static final Map<Class<?>, Function<Supplier<String>, ?>> wrapperTypes    = Maps.newHashMap();
     private static final Deque<Supplier<Locale>>                 localeSuppliers = Lists.newLinkedList();
 
     static {
@@ -41,7 +41,7 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                 } );
     }
 
-    public static <T> void registerWrapperType(final Class<T> wrapperType, final Function<Supplier<?>, T> wrapperValueFactory) {
+    public static <T> void registerWrapperType(final Class<? super T> wrapperType, final Function<Supplier<String>, T> wrapperValueFactory) {
 
         wrapperTypes.put( wrapperType, wrapperValueFactory );
     }
@@ -87,7 +87,7 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
         final List<MethodArgument> methodArgs = methodArgsBuilder.build();
 
         // Construct a model to allow lazy evaluation of the key's value.
-        Supplier<String> valueModel = new Supplier<String>() {
+        Supplier<String> valueSupplier = new Supplier<String>() {
 
             @Override
             public String get() {
@@ -202,12 +202,12 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
 
         // If the method expects an wrapped object, return that.
         if (Supplier.class.isAssignableFrom( method.getReturnType() ))
-            return valueModel;
-        for (final Map.Entry<Class<?>, Function<Supplier<?>, ?>> classFunctionEntry : wrapperTypes.entrySet())
+            return valueSupplier;
+        for (final Map.Entry<Class<?>, Function<Supplier<String>, ?>> classFunctionEntry : wrapperTypes.entrySet())
             if (classFunctionEntry.getKey().isAssignableFrom( method.getReturnType() ))
-                return classFunctionEntry.getValue().apply( valueModel );
+                return classFunctionEntry.getValue().apply( valueSupplier );
 
         // Otherwise just resolve the key's value straight away.
-        return valueModel.get();
+        return valueSupplier.get();
     }
 }

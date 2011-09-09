@@ -30,7 +30,7 @@ import org.apache.wicket.model.IModel;
  *
  * @author lhunath
  */
-public abstract class AjaxLabelLink extends AjaxLink<String> {
+public abstract class AjaxLabelLink<T> extends AjaxLink<T> {
 
     /**
      * Create a new {@link LabelLink} instance.
@@ -38,7 +38,7 @@ public abstract class AjaxLabelLink extends AjaxLink<String> {
      * @param id    The wicket ID of this component.
      * @param model The model that provides the label text.
      */
-    protected AjaxLabelLink(final String id, final IModel<String> model) {
+    protected AjaxLabelLink(final String id, final IModel<T> model) {
 
         super( id, model );
     }

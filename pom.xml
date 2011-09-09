@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.lyndir.lhunath</groupId>
         <artifactId>lyndir</artifactId>
-        <version>1.16</version>
+        <version>GIT-SNAPSHOT</version>
     </parent>
 
     <name>Opal</name>
@@ -59,5 +59,15 @@
             </releases>
         </repository>
     </repositories>
+
+    <!-- PROFILES THAT MODIFY DEFAULTS -->
+    <profiles>
+        <profile>
+            <id>mod:ide</id>
+            <modules>
+                <module>opal-spike</module>
+            </modules>
+        </profile>
+    </profiles>
 
 </project>

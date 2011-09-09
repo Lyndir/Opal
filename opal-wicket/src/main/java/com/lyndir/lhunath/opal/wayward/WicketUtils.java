@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.opal.wayward.component;
+package com.lyndir.lhunath.opal.wayward;
 
 import java.text.*;
 import java.util.Date;

@@ -16,7 +16,7 @@
 package com.lyndir.lhunath.opal.wayward.state;
 
 import com.lyndir.lhunath.opal.system.logging.Logger;
-import com.lyndir.lhunath.opal.wayward.component.RedirectToPageException;
+import com.lyndir.lhunath.opal.wayward.RedirectToPageException;
 import org.apache.wicket.Page;
 import org.apache.wicket.RequestCycle;
 

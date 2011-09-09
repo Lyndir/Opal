@@ -1,6 +1,6 @@
-package com.lyndir.lhunath.opal.system.dummy;
+package com.lyndir.lhunath.opal.spike;
 
-import java.util.regex.Matcher;
+import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.util.regex.Pattern;
 
 
@@ -10,18 +10,12 @@ import java.util.regex.Pattern;
                           "ProhibitedExceptionDeclared" })
 public class Spike {
 
+    static final Logger logger = Logger.get( Spike.class );
+
     private static final Pattern FRAGMENT_ELEMENT = Pattern.compile( "(([^/]+)(?:/|$))" );
 
     public static void main(final String... arguments)
             throws Exception {
 
-        Matcher matcher = FRAGMENT_ELEMENT.matcher( "abc/def/ghi" );
-        while (matcher.find()) {
-            System.out.println( "<<<" );
-            System.out.println( matcher.group( 0 ) );
-            System.out.println( matcher.group( 1 ) );
-            System.out.println( matcher.group( 2 ) );
-            System.out.println( ">>>" );
-        }
     }
 }

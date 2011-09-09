@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- PROJECT METADATA -->
+    <parent>
+        <groupId>com.lyndir.lhunath.opal</groupId>
+        <artifactId>opal</artifactId>
+        <version>GIT-SNAPSHOT</version>
+    </parent>
+
+    <name>Opal Spike</name>
+    <description>Opal: Java code and behavior tests.</description>
+
+    <groupId>com.lyndir.lhunath.opal</groupId>
+    <artifactId>opal-spike</artifactId>
+    <packaging>jar</packaging>
+
+    <!-- BUILD CONFIGURATION -->
+    <build />
+
+    <!-- DEPENDENCY MANAGEMENT -->
+    <dependencies>
+
+        <!-- PROJECT REFERENCES -->
+        <dependency>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-crypto</artifactId>
+            <version>GIT-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-jpa</artifactId>
+            <version>GIT-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-math</artifactId>
+            <version>GIT-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-network</artifactId>
+            <version>GIT-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-security</artifactId>
+            <version>GIT-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-struct</artifactId>
+            <version>GIT-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-system</artifactId>
+            <version>GIT-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lyndir.lhunath.opal</groupId>
+            <artifactId>opal-wicket</artifactId>
+            <version>GIT-SNAPSHOT</version>
+        </dependency>
+
+        <!-- EXTERNAL DEPENDENCIES -->
+
+    </dependencies>
+
+</project>

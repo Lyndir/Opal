@@ -13,48 +13,39 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.opal.wayward.component;
+package com.lyndir.lhunath.opal.wayward;
 
 import org.apache.wicket.*;
 import org.apache.wicket.protocol.http.WebResponse;
-import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 
 
 /**
- * <h2>{@link RedirectToPageException}<br> <sub>[in short] (TODO).</sub></h2>
+ * <h2>{@link RedirectResponseException}<br> <sub>[in short] (TODO).</sub></h2>
  *
- * <p> <i>Feb 5, 2010</i> </p>
+ * <p> [description / usage]. </p>
+ *
+ * <p> <i>Nov 18, 2008</i> </p>
  *
  * @author lhunath
  */
-public class RedirectToPageException extends AbstractRestartResponseException {
+public class RedirectResponseException extends AbstractRestartResponseException {
 
     /**
-     * Create a new {@link RedirectToPageException} instance.
+     * Create a new {@link RedirectResponseException} instance.
      *
-     * @param pageClass The class of the page to redirect to.
+     * @param target The target to set as the request's target.
      */
-    public RedirectToPageException(final Class<? extends Page> pageClass) {
-
-        this( pageClass, null );
-    }
-
-    /**
-     * Create a new {@link RedirectToPageException} instance.
-     *
-     * @param pageClass  The class of the page to redirect to.
-     * @param parameters The parameters to pass to the page.
-     */
-    public RedirectToPageException(final Class<? extends Page> pageClass, final PageParameters parameters) {
+    public RedirectResponseException(final IRequestTarget target) {
 
         RequestCycle rc = RequestCycle.get();
         if (rc == null)
             throw new IllegalStateException( "This exception can only be thrown from within request processing cycle" );
+
         Response r = rc.getResponse();
         if (!(r instanceof WebResponse))
             throw new IllegalStateException( "This exception can only be thrown when wicket is processing an http request" );
 
         // abort any further response processing
-        rc.setRequestTarget( new RedirectRequestTarget( rc.urlFor( pageClass, parameters ).toString() ) );
+        rc.setRequestTarget( target );
     }
 }
