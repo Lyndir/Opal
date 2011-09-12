@@ -1,6 +1,6 @@
 package com.lyndir.lhunath.opal.system.util;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.*;
 
 import com.google.common.base.Function;
 import com.google.common.base.Throwables;
@@ -8,10 +8,17 @@ import com.google.common.collect.ImmutableMap;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
+import java.lang.reflect.InvocationHandler;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import net.sf.cglib.core.CollectionUtils;
+import net.sf.cglib.core.VisibilityPredicate;
+import net.sf.cglib.proxy.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.objenesis.Objenesis;
+import org.objenesis.ObjenesisStd;
 
 
 /**
@@ -27,6 +34,8 @@ public abstract class TypeUtils {
 
     private static final Pattern FIRST_LETTER = Pattern.compile( "(\\w)\\w{2,}\\." );
     private static final Pattern THROWS       = Pattern.compile( " throws [^\\(\\)]*" );
+
+    private static final Objenesis objenesis = new ObjenesisStd();
 
     /**
      * Load the named class or turn any exceptions into runtime exceptions.
@@ -109,6 +118,58 @@ public abstract class TypeUtils {
         catch (NoSuchMethodException e) {
             throw Throwables.propagate( e );
         }
+    }
+
+    /**
+     * Creates a proxy instance of the given type that triggers the given {@code invocationHandler} whenever a method is invoked on it.
+     *
+     * The instance is created without invoking its constructor.
+     *
+     * @param type              The class that defines the methods that can be invoked on the proxy.
+     * @param invocationHandler The handler that will be invoked for each method invoked on the proxy.
+     * @param <T>               The type of the proxy object.
+     *
+     * @return An instance of the given <code>type</code> .
+     */
+    public static <T> T newProxyInstance(final Class<T> type, final InvocationHandler invocationHandler) {
+
+        MethodInterceptor interceptor = new MethodInterceptor() {
+            @Override
+            @SuppressWarnings({ "ProhibitedExceptionDeclared" })
+            public Object intercept(final Object o, final Method method, final Object[] objects, final MethodProxy methodProxy)
+                    throws Throwable {
+
+                return invocationHandler.invoke( o, method, objects );
+            }
+        };
+
+        Enhancer enhancer = newEnhancer( type );
+        enhancer.setCallbackType( interceptor.getClass() );
+
+        Class<?> mockClass = enhancer.createClass();
+        Enhancer.registerCallbacks( mockClass, new Callback[]{ interceptor } );
+
+        // cglib code that normally gets called in the constructor.  Since we instantiated without calling the constructor call it manually.
+        Factory mock = (Factory) objenesis.newInstance( mockClass );
+        mock.getCallback( 0 );
+
+        return type.cast( mock );
+    }
+
+    private static Enhancer newEnhancer(final Class<?> type) {
+
+        return new Enhancer() {
+            {
+                setSuperclass( type );
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            protected void filterConstructors(final Class sc, final List constructors) {
+
+                CollectionUtils.filter( constructors, new VisibilityPredicate( sc, true ) );
+            }
+        };
     }
 
     /**
@@ -296,8 +357,7 @@ public abstract class TypeUtils {
 
     public static Field findFirstField(final Object owner, final Object value) {
 
-        return forEachFieldOf(
-                owner.getClass(), new Function<LastResult<Field, Field>, Field>() {
+        return forEachFieldOf( owner.getClass(), new Function<LastResult<Field, Field>, Field>() {
             @Override
             public Field apply(final LastResult<Field, Field> from) {
 

@@ -4,10 +4,10 @@ import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 import com.lyndir.lhunath.opal.system.i18n.Localized;
 import com.lyndir.lhunath.opal.system.i18n.internal.MessagesInvocationHandler;
+import com.lyndir.lhunath.opal.wayward.model.Models;
 import java.util.Locale;
 import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.util.convert.IConverter;
 
 
@@ -23,13 +23,7 @@ public class LocalizedConverter implements IConverter {
             @Override
             public IModel<String> apply(final Supplier<String> input) {
 
-                return new LoadableDetachableModel<String>() {
-                    @Override
-                    protected String load() {
-
-                        return input.get();
-                    }
-                };
+                return Models.supplied( input );
             }
         } );
     }

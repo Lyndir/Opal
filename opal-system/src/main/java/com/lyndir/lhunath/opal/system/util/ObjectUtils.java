@@ -29,7 +29,6 @@ import java.security.cert.X509Certificate;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
-import net.sf.cglib.proxy.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,12 +45,12 @@ public abstract class ObjectUtils {
 
     static final Logger logger = Logger.get( ObjectUtils.class );
 
-    private static final Pattern                                 NON_PRINTABLE     = Pattern.compile( "[^\\p{Print}]" );
-    private static final int                                     MAX_DECODE_LENGTH = 100;
-    private static final EnumMap<For, ThreadLocal<Set<Integer>>> seen              = Maps.newEnumMap( For.class );
+    private static final Pattern                             NON_PRINTABLE     = Pattern.compile( "[^\\p{Print}]" );
+    private static final int                                 MAX_DECODE_LENGTH = 100;
+    private static final Map<For, ThreadLocal<Set<Integer>>> seen              = Maps.newEnumMap( For.class );
 
     static {
-        for (For forMeta : For.values()) {
+        for (final For forMeta : For.values()) {
             seen.put( forMeta, new ThreadLocal<Set<Integer>>() {
                 @Override
                 protected Set<Integer> initialValue() {
@@ -148,7 +147,7 @@ public abstract class ObjectUtils {
         if (o instanceof X509Certificate) {
             X509Certificate x509Certificate = (X509Certificate) o;
             return String.format( "{Cert: DN=%s, Issuer=%s}", x509Certificate.getSubjectX500Principal().getName(),
-                    x509Certificate.getIssuerX500Principal().getName() );
+                                  x509Certificate.getIssuerX500Principal().getName() );
         }
 
         return String.valueOf( o );
@@ -255,7 +254,7 @@ public abstract class ObjectUtils {
                     try {
                         Object value = field.get( o );
                         if (value != null)
-                            return Arrays.hashCode( new int[] { lastHashCode, value.hashCode() } );
+                            return Arrays.hashCode( new int[]{ lastHashCode, value.hashCode() } );
                     }
                     catch (IllegalAccessException e) {
                         logger.dbg( e, "Not accessible: %s", field );
@@ -568,17 +567,17 @@ public abstract class ObjectUtils {
     @NotNull
     public static <T> T ifNotNull(@NotNull final Class<T> type, @Nullable final Object object) {
 
-        return type.cast( Enhancer.create( type, new MethodInterceptor() {
+        return type.cast( TypeUtils.newProxyInstance( type, new InvocationHandler() {
+            @Nullable
             @Override
             @SuppressWarnings({ "ProhibitedExceptionDeclared" })
-            public Object intercept(final Object proxyObject, final Method proxyMethod, final Object[] arguments,
-                                    final MethodProxy methodProxy)
+            public Object invoke(final Object proxy, final Method method, final Object[] args)
                     throws Throwable {
 
                 if (object == null)
                     return null;
 
-                return methodProxy.invoke( object, arguments );
+                return method.invoke( object, args );
             }
         } ) );
     }
@@ -596,17 +595,16 @@ public abstract class ObjectUtils {
     @NotNull
     public static <T> T ifNotNullElse(@NotNull final Class<T> type, @Nullable final Object object, @NotNull final Object nullValue) {
 
-        return type.cast( Enhancer.create( type, new MethodInterceptor() {
+        return type.cast( TypeUtils.newProxyInstance( type, new InvocationHandler() {
             @Override
             @SuppressWarnings({ "ProhibitedExceptionDeclared" })
-            public Object intercept(final Object proxyObject, final Method proxyMethod, final Object[] arguments,
-                                    final MethodProxy methodProxy)
+            public Object invoke(final Object proxy, final Method method, final Object[] args)
                     throws Throwable {
 
                 if (object == null)
                     return nullValue;
 
-                return methodProxy.invoke( object, arguments );
+                return method.invoke( object, args );
             }
         } ) );
     }
@@ -624,15 +622,15 @@ public abstract class ObjectUtils {
     @NotNull
     public static <T> T ifType(@NotNull final Class<T> type, final Object object) {
 
-        return type.cast( Enhancer.create( type, new MethodInterceptor() {
+        return type.cast( TypeUtils.newProxyInstance( type, new InvocationHandler() {
+            @Nullable
             @Override
             @SuppressWarnings({ "ProhibitedExceptionDeclared" })
-            public Object intercept(final Object proxyObject, final Method proxyMethod, final Object[] arguments,
-                                    final MethodProxy methodProxy)
+            public Object invoke(final Object proxy, final Method method, final Object[] args)
                     throws Throwable {
 
                 if (type.isInstance( object ))
-                    return methodProxy.invoke( object, arguments );
+                    return method.invoke( object, args );
 
                 return null;
             }
@@ -653,15 +651,14 @@ public abstract class ObjectUtils {
     @NotNull
     public static <T> T ifTypeElse(@NotNull final Class<T> type, final Object object, @NotNull final Object badTypeValue) {
 
-        return type.cast( Enhancer.create( type, new MethodInterceptor() {
+        return type.cast( TypeUtils.newProxyInstance( type, new InvocationHandler() {
             @Override
             @SuppressWarnings({ "ProhibitedExceptionDeclared" })
-            public Object intercept(final Object proxyObject, final Method proxyMethod, final Object[] arguments,
-                                    final MethodProxy methodProxy)
+            public Object invoke(final Object proxy, final Method method, final Object[] args)
                     throws Throwable {
 
                 if (type.isInstance( object ))
-                    return checkNotNull( methodProxy.invoke( object, arguments ) );
+                    return checkNotNull( method.invoke( object, args ) );
 
                 return badTypeValue;
             }
@@ -682,15 +679,15 @@ public abstract class ObjectUtils {
     @NotNull
     public static <T> T ifTypeElseNullable(@NotNull final Class<T> type, final Object object, @Nullable final Object badTypeValue) {
 
-        return type.cast( Enhancer.create( type, new MethodInterceptor() {
+        return type.cast( TypeUtils.newProxyInstance( type, new InvocationHandler() {
+            @Nullable
             @Override
             @SuppressWarnings({ "ProhibitedExceptionDeclared" })
-            public Object intercept(final Object proxyObject, final Method proxyMethod, final Object[] arguments,
-                                    final MethodProxy methodProxy)
+            public Object invoke(final Object proxy, final Method method, final Object[] args)
                     throws Throwable {
 
                 if (type.isInstance( object ))
-                    return checkNotNull( methodProxy.invoke( object, arguments ) );
+                    return checkNotNull( method.invoke( object, args ) );
 
                 return badTypeValue;
             }
@@ -705,6 +702,7 @@ public abstract class ObjectUtils {
     public interface NSupplier<T> extends Supplier<T> {
 
         @Nullable
+        @Override
         T get();
     }
 
@@ -717,6 +715,7 @@ public abstract class ObjectUtils {
     public interface NNSupplier<T> extends Supplier<T> {
 
         @NotNull
+        @Override
         T get();
     }
 
@@ -741,9 +740,12 @@ public abstract class ObjectUtils {
     public interface NFunctionNN<F, T> extends Function<F, T> {
 
         @Nullable
+        @Override
         T apply(@NotNull F input);
 
         boolean equals(@NotNull Object object);
+
+        int hashCode();
     }
 
 
@@ -756,8 +758,11 @@ public abstract class ObjectUtils {
     public interface NNFunctionNN<F, T> extends Function<F, T> {
 
         @NotNull
+        @Override
         T apply(@NotNull F input);
 
         boolean equals(@NotNull Object object);
+
+        int hashCode();
     }
 }

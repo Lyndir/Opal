@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.*;
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
 import com.google.common.collect.*;
+import com.lyndir.lhunath.opal.system.collection.SSupplier;
 import com.lyndir.lhunath.opal.system.i18n.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.system.logging.exception.AlreadyCheckedException;
@@ -87,7 +88,7 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
         final List<MethodArgument> methodArgs = methodArgsBuilder.build();
 
         // Construct a model to allow lazy evaluation of the key's value.
-        Supplier<String> valueSupplier = new Supplier<String>() {
+        SSupplier<String> valueSupplier = new SSupplier<String>() {
 
             @Override
             public String get() {
