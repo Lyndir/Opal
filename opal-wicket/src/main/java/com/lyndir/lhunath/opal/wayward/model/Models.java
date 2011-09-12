@@ -1,11 +1,13 @@
 package com.lyndir.lhunath.opal.wayward.model;
 
 import static com.google.common.base.Preconditions.*;
-import static com.lyndir.lhunath.opal.system.util.TypeUtils.newProxyInstance;
+import static com.lyndir.lhunath.opal.system.util.TypeUtils.*;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
+import com.lyndir.lhunath.opal.system.collection.SSupplier;
 import com.lyndir.lhunath.opal.system.util.TypeUtils;
+import java.io.Serializable;
 import java.lang.reflect.*;
 import java.util.List;
 import org.apache.wicket.model.*;
@@ -22,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public abstract class Models {
 
-    private static final ThreadLocal<Object>        modelObjectOwner      = new ThreadLocal<Object>();
+    private static final ThreadLocal<IModel<?>>     modelObjectModel      = new ThreadLocal<IModel<?>>();
     private static final ThreadLocal<StringBuilder> modelObjectExpression = new ThreadLocal<StringBuilder>();
 
     public static <T extends Enum<T>> LoadableDetachableModel<List<T>> listEnum(final Class<T> type) {
@@ -81,50 +83,124 @@ public abstract class Models {
         };
     }
 
+    /**
+     * Create a model that evaluates the bean expression from the first argument.
+     *
+     * @param object Put the {@link #bean(Object)} (or variants) expression that should be evaluated by this model here.
+     * @param <T>    The type of the model's object.
+     *
+     * @return A model that will resolve its object using the bean expression.
+     */
     @NotNull
-    @SuppressWarnings({ "UnusedParameters", "unchecked" })
+    @SuppressWarnings({ "UnusedParameters" })
     public static <T> IModel<T> model(@Nullable final T object) {
 
         try {
-            checkNotNull( modelObjectOwner.get(), "No model owner, did you forget of()?" );
+            checkNotNull( modelObjectModel.get(), "No model owner, did you forget bean()?" );
             checkNotNull( modelObjectExpression.get(),
-                          "No model expression, did you forget the expression on of()'s return value? Model owner is: %s",
-                          modelObjectOwner.get() );
+                    "No model expression, did you forget the expression on bean()'s return value? Model owner is: %s",
+                    modelObjectModel.get() );
 
-            return new PropertyModel<T>( modelObjectOwner.get(), modelObjectExpression.get().toString() );
+            return new PropertyModel<T>( modelObjectModel.get(), modelObjectExpression.get().toString() );
         }
         finally {
-            modelObjectOwner.remove();
+            modelObjectModel.remove();
             modelObjectExpression.remove();
         }
     }
 
-    @SuppressWarnings({ "unchecked" })
-    public static <T> T of(@NotNull final T object) {
+    /**
+     * Create a bean expression recorder that can be evaluated by a {@link #model(Object)}.
+     * <p/>
+     * You use it like this:<br />
+     * <code>model(bean(user).getName());</code>
+     *
+     * @param object The bean on which the expression should be evaluated.
+     * @param <T>    The type of the bean object.
+     *
+     * @return A proxy object of the bean's type that will record a bean expression.
+     */
+    public static <T> T bean(@NotNull final T object) {
 
-        checkState( modelObjectOwner.get() == null,
-                    "Model owner already set, did you forget model() for a previous of()?  Previous owner is: %s", modelObjectOwner.get() );
-        modelObjectExpression.remove();
+        @SuppressWarnings({ "unchecked" })
+        Class<T> type = (Class<T>) object.getClass();
 
-        return (T) newProxyInstance( object.getClass(), new InvocationHandler() {
-            @Nullable
+        return bean( type, new SSupplier<T>() {
             @Override
-            @SuppressWarnings({ "ProhibitedExceptionDeclared" })
-            public Object invoke(final Object proxy, final Method method, final Object[] args)
-                    throws Throwable {
+            public T get() {
 
-                checkState( modelObjectOwner.get() == null );
-                checkState( modelObjectExpression.get() == null );
-
-                modelObjectOwner.set( object );
-                modelObjectExpression.set( new StringBuilder( TypeUtils.propertyName( method ) ) );
-                return ofEnhanced( method.getReturnType() );
+                return object;
             }
         } );
     }
 
+    /**
+     * Create a bean expression recorder that can be evaluated by a {@link #model(Object)}.
+     * <p/>
+     * You use it like this:<br />
+     * <pre>
+     * model(bean(User.class, new SSupplier&lt;User&gt;() {
+     *             User get() {
+     *                 return userService.loadUser( username );
+     *             }
+     *         }).getName());
+     * </pre>
+     *
+     * @param type     The type of bean that the supplier will supply.
+     * @param supplier Supplies the bean on which the expression should be evaluated.
+     * @param <T>      The type of the bean object.
+     *
+     * @return A proxy object of the bean's type that will record a bean expression.
+     */
+    public static <T, S extends Supplier<T> & Serializable> T bean(@NotNull final Class<T> type, @NotNull final S supplier) {
+
+        return bean( type, new AbstractReadOnlyModel<T>() {
+            @Override
+            public T getObject() {
+
+                return supplier.get();
+            }
+        } );
+    }
+
+    /**
+     * Create a bean expression recorder that can be evaluated by a {@link #model(Object)}.
+     * <p/>
+     * You use it like this:<br />
+     * <pre>
+     * model(bean(User.class, new LoadableDetachableModel&lt;User&gt;() {
+     *             User load() {
+     *                 return userService.loadUser( username );
+     *             }
+     *         }).getName());
+     * </pre>
+     *
+     * @param type  The type of bean that the model will supply.
+     * @param model Supplies the bean on which the expression should be evaluated.
+     * @param <T>   The type of the bean object.
+     *
+     * @return A proxy object of the bean's type that will record a bean expression.
+     */
+    public static <T> T bean(@NotNull final Class<T> type, @NotNull final IModel<T> model) {
+
+        checkState( modelObjectModel.get() == null,
+                "Model owner already set, did you forget model() for a previous bean()?  Previous owner is: %s", modelObjectModel.get() );
+
+        modelObjectModel.set( model );
+        modelObjectExpression.set( new StringBuilder() );
+
+        return ofEnhanced( type );
+    }
+
+    /**
+     * Create a proxy object that will record all methods invoked on it for use with {@link #model(Object)}.
+     *
+     * @param type The type of methods that can be recorded.
+     * @param <T>  The type of the proxy object.
+     *
+     * @return A recording proxy object.
+     */
     @Nullable
-    @SuppressWarnings({ "unchecked" })
     private static <T> T ofEnhanced(@NotNull final Class<T> type) {
 
         if (Modifier.isFinal( type.getModifiers() ))
@@ -137,7 +213,7 @@ public abstract class Models {
             public Object invoke(final Object proxy, final Method method, final Object[] args)
                     throws Throwable {
 
-                checkNotNull( modelObjectOwner );
+                checkNotNull( modelObjectModel );
                 checkNotNull( modelObjectExpression );
 
                 modelObjectExpression.get().append( '.' ).append( TypeUtils.propertyName( method ) );
