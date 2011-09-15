@@ -86,9 +86,9 @@ public abstract class NavigationController implements IClusterable {
     /**
      * Mark the given tab as active and use the given tabPanel for its content.
      *
-     * @param tab      The tab that should be activated.
-     * @param tabPanel The panel that provides the tab's content or <code>null</code> if a new content panel should be created for the
-     *                 tab.
+     * @param tab   The tab that should be activated.
+     * @param panel The panel that provides the tab's content or <code>null</code> if a new content panel should be created for the
+     *              tab.
      */
     public <T extends TabDescriptor<P, ?>, P extends Panel, PP extends P> void activateTab(@NotNull final T tab, @Nullable final PP panel) {
 

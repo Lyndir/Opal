@@ -1,8 +1,5 @@
 package com.lyndir.lhunath.opal.wayward.model;
 
-import java.io.Serializable;
-
-
 /**
  * <h2>{@link WicketInjected}<br> <sub>Any service that will be injected in Wicket components and whose implementation or proxy is
  * serializable.</sub></h2>
@@ -11,6 +8,6 @@ import java.io.Serializable;
  *
  * @author lhunath
  */
-public interface WicketInjected extends Serializable {
+public interface WicketInjected {
 
 }
