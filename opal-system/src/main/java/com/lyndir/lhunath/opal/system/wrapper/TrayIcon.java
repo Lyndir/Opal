@@ -106,8 +106,7 @@ public class TrayIcon extends Wrapper {
     public void displayMessage(final String caption, final String text, final MessageType messageType) {
 
         Class<?> wrappedEnumClass = getClass( "java.awt.TrayIcon$MessageType" );
-        invoke(
-                "displayMessage", new Class[]{ String.class, String.class, wrappedEnumClass }, caption, text,
+        invoke( "displayMessage", new Class[]{ String.class, String.class, wrappedEnumClass }, caption, text,
                 mapEnumValue( messageType, wrappedEnumClass ) );
     }
 

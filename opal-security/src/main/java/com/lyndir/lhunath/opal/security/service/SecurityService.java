@@ -35,7 +35,7 @@ public interface SecurityService {
     /**
      * @param permission The permission required on the given object to proceed with the request.
      * @param token      The token used to authenticate the available permissions on the given object.
-     * @param object          The object that is the target of the request.
+     * @param object     The object that is the target of the request.
      *
      * @return The object from parameter <code>object</code>.
      *
@@ -51,7 +51,7 @@ public interface SecurityService {
      *
      * @param permission The permission required on the given object to proceed with the request.
      * @param token      The token used to authenticate the available permissions on the given object.
-     * @param object          The object that is the target of the request.
+     * @param object     The object that is the target of the request.
      *
      * @return <code>true</code>: The given token grants the given permission on the given object.
      */

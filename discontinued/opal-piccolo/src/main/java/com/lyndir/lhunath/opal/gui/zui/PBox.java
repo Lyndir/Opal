@@ -444,8 +444,8 @@ public class PBox extends PShape {
             g2.setFont( getFont() );
             g2.setPaint( textPaint );
             g2.setStroke( new BasicStroke( 1 ) );
-            g2.drawString(
-                    title, (int) (getBounds().getCenterX() - titleBounds.getCenterX()), (int) (getY() + titleBounds.getHeight() + 3) );
+            g2.drawString( title, (int) (getBounds().getCenterX() - titleBounds.getCenterX()),
+                           (int) (getY() + titleBounds.getHeight() + 3) );
         }
 
         g2.dispose();

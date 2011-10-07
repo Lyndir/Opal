@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.opal.wayward.model;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import org.apache.wicket.Component;

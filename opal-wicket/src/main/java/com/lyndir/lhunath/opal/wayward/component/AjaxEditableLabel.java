@@ -49,40 +49,37 @@ public class AjaxEditableLabel<T> extends EditableLabel<T> {
 
         setOutputMarkupId( true );
 
-        getField( true ).add(
-                new AjaxFormComponentUpdatingBehavior( "onBlur" ) {
+        getField( true ).add( new AjaxFormComponentUpdatingBehavior( "onBlur" ) {
 
-                    @Override
-                    protected void onUpdate(final AjaxRequestTarget target) {
+            @Override
+            protected void onUpdate(final AjaxRequestTarget target) {
 
-                        AjaxEditableLabel.this.onUpdate( target );
-                    }
-                } );
-        getField( false ).add(
-                new AjaxFormComponentUpdatingBehavior( "onBlur" ) {
+                AjaxEditableLabel.this.onUpdate( target );
+            }
+        } );
+        getField( false ).add( new AjaxFormComponentUpdatingBehavior( "onBlur" ) {
 
-                    @Override
-                    protected void onUpdate(final AjaxRequestTarget target) {
+            @Override
+            protected void onUpdate(final AjaxRequestTarget target) {
 
-                        AjaxEditableLabel.this.onUpdate( target );
-                    }
-                } );
+                AjaxEditableLabel.this.onUpdate( target );
+            }
+        } );
 
-        getLabel().add(
-                new AjaxEventBehavior( "onClick" ) {
-                    @Override
-                    protected void onEvent(final AjaxRequestTarget target) {
+        getLabel().add( new AjaxEventBehavior( "onClick" ) {
+            @Override
+            protected void onEvent(final AjaxRequestTarget target) {
 
-                        setEditable( true );
-                        target.addComponent( AjaxEditableLabel.this );
-                    }
+                setEditable( true );
+                target.addComponent( AjaxEditableLabel.this );
+            }
 
-                    @Override
-                    public boolean isEnabled(final Component component) {
+            @Override
+            public boolean isEnabled(final Component component) {
 
-                        return isClickToEdit();
-                    }
-                } );
+                return isClickToEdit();
+            }
+        } );
     }
 
     /**

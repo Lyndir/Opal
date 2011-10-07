@@ -32,7 +32,7 @@ public class PermissionDeniedException extends Exception {
 
     static final Messages msgs = MessagesFactory.create( Messages.class );
 
-    private final Permission permission;
+    private final Permission         permission;
     private final SecureObject<?, ?> secureObject;
 
     /**

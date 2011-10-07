@@ -54,20 +54,19 @@ public abstract class AjaxHooks {
      */
     public static void installAjaxEvents(final AjaxRequestTarget target) {
 
-        target.addListener(
-                new AjaxRequestTarget.IListener() {
+        target.addListener( new AjaxRequestTarget.IListener() {
 
-                    @Override
-                    public void onBeforeRespond(final Map<String, Component> map, final AjaxRequestTarget target) {
+            @Override
+            public void onBeforeRespond(final Map<String, Component> map, final AjaxRequestTarget target) {
 
-                    }
+            }
 
-                    @Override
-                    public void onAfterRespond(final Map<String, Component> map, final AjaxRequestTarget.IJavascriptResponse response) {
+            @Override
+            public void onAfterRespond(final Map<String, Component> map, final AjaxRequestTarget.IJavascriptResponse response) {
 
-                        response.addJavascript( JSUtils.callFunction( "AjaxHooks.setUpdatedDomIds", map.keySet() ) );
-                    }
-                } );
+                response.addJavascript( JSUtils.callFunction( "AjaxHooks.setUpdatedDomIds", map.keySet() ) );
+            }
+        } );
     }
 
     /**
@@ -80,32 +79,31 @@ public abstract class AjaxHooks {
      */
     public static void installPageEvents(final Component component, final IPageListener listener) {
 
-        component.add(
-                new AbstractDefaultAjaxBehavior() {
+        component.add( new AbstractDefaultAjaxBehavior() {
 
-                    @Override
-                    protected CharSequence getCallbackScript(final boolean onlyTargetActivePage) {
+            @Override
+            protected CharSequence getCallbackScript(final boolean onlyTargetActivePage) {
 
-                        return generateCallbackScript(
-                                String.format( "wicketAjaxGet('%s&pageUrl='+wicketEncode(document.location.href)", getCallbackUrl() ) );
-                    }
+                return generateCallbackScript(
+                        String.format( "wicketAjaxGet('%s&pageUrl='+wicketEncode(document.location.href)", getCallbackUrl() ) );
+            }
 
-                    @Override
-                    public void renderHead(final IHeaderResponse response) {
+            @Override
+            public void renderHead(final IHeaderResponse response) {
 
-                        super.renderHead( response );
-                        response.renderOnDomReadyJavascript( getCallbackScript().toString() );
-                    }
+                super.renderHead( response );
+                response.renderOnDomReadyJavascript( getCallbackScript().toString() );
+            }
 
-                    @Override
-                    protected void respond(final AjaxRequestTarget target) {
+            @Override
+            protected void respond(final AjaxRequestTarget target) {
 
-                        RequestCycle requestCycle = RequestCycle.get();
-                        String pageUrl = requestCycle.getRequest().getParameter( "pageUrl" );
+                RequestCycle requestCycle = RequestCycle.get();
+                String pageUrl = requestCycle.getRequest().getParameter( "pageUrl" );
 
-                        listener.onReady( target, pageUrl );
-                    }
-                } );
+                listener.onReady( target, pageUrl );
+            }
+        } );
     }
 
     public interface IPageListener extends IClusterable {

@@ -67,61 +67,60 @@ public class BaseConfig<T extends Serializable> implements Serializable {
         initClass( BaseConfig.class );
 
         /* Make a shutdown hook to save the config on exit. */
-        Runtime.getRuntime().addShutdownHook(
-                new Thread( "Config ShutdownHook" ) {
+        Runtime.getRuntime().addShutdownHook( new Thread( "Config ShutdownHook" ) {
 
-                    @Override
-                    public void run() {
+            @Override
+            public void run() {
 
-                        logger.dbg( "stat.saveConfig", configFile.get() );
+                logger.dbg( "stat.saveConfig", configFile.get() );
+                try {
+                    for (final Runnable hook : shutdownHooks)
+                        hook.run();
+
+                    if (configFile.isEmpty()) {
+                        logger.wrn( "Config file unset, can't save!" );
+                        return;
+                    }
+
+                    if (configFile.get().exists())
+                        configFile.get().delete();
+                    configFile.get().createNewFile();
+
+                    if (writeAsXML.get()) {
+                        OutputStreamWriter configWriter = new FileWriter( configFile.get() );
+
                         try {
-                            for (final Runnable hook : shutdownHooks)
-                                hook.run();
-
-                            if (configFile.isEmpty()) {
-                                logger.wrn( "Config file unset, can't save!" );
-                                return;
-                            }
-
-                            if (configFile.get().exists())
-                                configFile.get().delete();
-                            configFile.get().createNewFile();
-
-                            if (writeAsXML.get()) {
-                                OutputStreamWriter configWriter = new FileWriter( configFile.get() );
-
-                                try {
-                                    XStream xstream = new XStream();
-                                    xstream.toXML( names, configWriter );
-                                    // xstream.toXML( types, configWriter );
-                                }
-                                finally {
-                                    configWriter.close();
-                                }
-                            } else {
-                                FileOutputStream out = new FileOutputStream( configFile.get() );
-                                ObjectOutputStream objects = new ObjectOutputStream( out );
-
-                                try {
-                                    objects.writeObject( names );
-                                    // objects.writeObject( types );
-                                }
-                                finally {
-                                    objects.close();
-                                }
-                            }
-                        }
-                        catch (FileNotFoundException e) {
-                            logger.err( e, "Could not find the config file '%s'!", configFile.get() );
-                        }
-                        catch (IOException e) {
-                            logger.err( e, "Could not create/write to the config file '%s'!", configFile.get() );
+                            XStream xstream = new XStream();
+                            xstream.toXML( names, configWriter );
+                            // xstream.toXML( types, configWriter );
                         }
                         finally {
-                            logger.dbg( null );
+                            configWriter.close();
+                        }
+                    } else {
+                        FileOutputStream out = new FileOutputStream( configFile.get() );
+                        ObjectOutputStream objects = new ObjectOutputStream( out );
+
+                        try {
+                            objects.writeObject( names );
+                            // objects.writeObject( types );
+                        }
+                        finally {
+                            objects.close();
                         }
                     }
-                } );
+                }
+                catch (FileNotFoundException e) {
+                    logger.err( e, "Could not find the config file '%s'!", configFile.get() );
+                }
+                catch (IOException e) {
+                    logger.err( e, "Could not create/write to the config file '%s'!", configFile.get() );
+                }
+                finally {
+                    logger.dbg( null );
+                }
+            }
+        } );
     }
 
     /**

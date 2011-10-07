@@ -12,10 +12,10 @@ import org.apache.wicket.util.convert.IConverter;
 
 
 /**
-* <i>07 05, 2011</i>
-*
-* @author lhunath
-*/
+ * <i>07 05, 2011</i>
+ *
+ * @author lhunath
+ */
 public class LocalizedConverter implements IConverter {
 
     static {

@@ -201,9 +201,8 @@ public class Vec3 extends Vec2 {
 
         Preconditions.checkNotNull( vector, "Given vector cannot be null." );
 
-        return new Vec3(
-                getY() * vector.getZ() - getZ() * vector.getY(), getZ() * vector.getX() - getX() * vector.getZ(),
-                getX() * vector.getY() - getY() * vector.getX() );
+        return new Vec3( getY() * vector.getZ() - getZ() * vector.getY(), getZ() * vector.getX() - getX() * vector.getZ(),
+                         getX() * vector.getY() - getY() * vector.getX() );
     }
 
     /**

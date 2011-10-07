@@ -250,15 +250,14 @@ public class SimpleInternalFrame extends JPanel {
 
         gradientPanel.setPaint( PaintPanel.gradientPaint( getHeaderBackground(), UIManager.getColor( "control" ) ) );
         gradientPanel.setOpaque( isSelected() );
-        SwingUtilities.invokeLater(
-                new Runnable() {
+        SwingUtilities.invokeLater( new Runnable() {
 
-                    @Override
-                    public void run() {
+            @Override
+            public void run() {
 
-                        titleLabel.setForeground( getTextForeground( isSelected() ) );
-                    }
-                } );
+                titleLabel.setForeground( getTextForeground( isSelected() ) );
+            }
+        } );
     }
 
     /**

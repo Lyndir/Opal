@@ -54,24 +54,22 @@ public class CSSClassAttributeAppender extends AttributeAppender {
      */
     public static CSSClassAttributeAppender of(final IModel<?>... cssClassModels) {
 
-        return ofList(
-                new AbstractReadOnlyModel<Collection<String>>() {
+        return ofList( new AbstractReadOnlyModel<Collection<String>>() {
 
+            @Override
+            public Collection<String> getObject() {
+
+                return Collections2.transform( Arrays.asList( cssClassModels ), new Function<IModel<?>, String>() {
+
+                    @Nullable
                     @Override
-                    public Collection<String> getObject() {
+                    public String apply(final IModel<?> from) {
 
-                        return Collections2.transform(
-                                Arrays.asList( cssClassModels ), new Function<IModel<?>, String>() {
-
-                            @Nullable
-                            @Override
-                            public String apply(final IModel<?> from) {
-
-                                return from.getObject() == null? null: String.valueOf( from.getObject() );
-                            }
-                        } );
+                        return from.getObject() == null? null: String.valueOf( from.getObject() );
                     }
                 } );
+            }
+        } );
     }
 
     /**
@@ -101,15 +99,14 @@ public class CSSClassAttributeAppender extends AttributeAppender {
     public CSSClassAttributeAppender(final String cssClass) {
 
         // noinspection RedundantCast
-        this(
-                new AbstractReadOnlyModel<String>() {
+        this( new AbstractReadOnlyModel<String>() {
 
-                    @Override
-                    public String getObject() {
+            @Override
+            public String getObject() {
 
-                        return cssClass;
-                    }
-                }, (String) null );
+                return cssClass;
+            }
+        }, (String) null );
     }
 
     /**
@@ -118,39 +115,37 @@ public class CSSClassAttributeAppender extends AttributeAppender {
     public CSSClassAttributeAppender(final String... cssClasses) {
 
         // noinspection RedundantCast
-        this(
-                new AbstractReadOnlyModel<List<String>>() {
+        this( new AbstractReadOnlyModel<List<String>>() {
 
-                    @Override
-                    public List<String> getObject() {
+            @Override
+            public List<String> getObject() {
 
-                        return Arrays.asList( cssClasses );
-                    }
-                }, (Collection<?>) null );
+                return Arrays.asList( cssClasses );
+            }
+        }, (Collection<?>) null );
     }
 
     private CSSClassAttributeAppender(final IModel<? extends Collection<String>> appendModel,
                                       @SuppressWarnings("unused") final Collection<?> x) {
 
         // noinspection RedundantCast
-        this(
-                new AbstractReadOnlyModel<String>() {
+        this( new AbstractReadOnlyModel<String>() {
 
-                    @Override
-                    public String getObject() {
+            @Override
+            public String getObject() {
 
-                        StringBuilder stringBuilder = new StringBuilder();
+                StringBuilder stringBuilder = new StringBuilder();
 
-                        for (final String item : appendModel.getObject())
-                            if (item != null && item.length() > 0)
-                                stringBuilder.append( item ).append( CLASS_SEPARATOR );
+                for (final String item : appendModel.getObject())
+                    if (item != null && item.length() > 0)
+                        stringBuilder.append( item ).append( CLASS_SEPARATOR );
 
-                        if (stringBuilder.length() > 0)
-                            stringBuilder.deleteCharAt( stringBuilder.length() - 1 );
+                if (stringBuilder.length() > 0)
+                    stringBuilder.deleteCharAt( stringBuilder.length() - 1 );
 
-                        return stringBuilder.toString();
-                    }
-                }, (String) null );
+                return stringBuilder.toString();
+            }
+        }, (String) null );
     }
 
     private CSSClassAttributeAppender(final IModel<String> appendModel, @SuppressWarnings("unused") final String x) {

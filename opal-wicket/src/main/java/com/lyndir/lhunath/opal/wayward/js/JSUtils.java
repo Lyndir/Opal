@@ -22,8 +22,8 @@ public abstract class JSUtils {
     public static String callFunction(final String function, final Object... args) {
 
         checkNotNull( function, "Name of function to invoke must not be null." );
-        checkArgument(
-                IDENTIFIER.matcher( function ).matches(), "Name of function '%s' must be a valid JavaScript identifier name.", function );
+        checkArgument( IDENTIFIER.matcher( function ).matches(), "Name of function '%s' must be a valid JavaScript identifier name.",
+                       function );
 
         StringBuilder jsBuilder = new StringBuilder( 256 );
 

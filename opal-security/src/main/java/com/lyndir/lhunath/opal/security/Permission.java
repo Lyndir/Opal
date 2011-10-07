@@ -15,9 +15,7 @@
  */
 package com.lyndir.lhunath.opal.security;
 
-import com.lyndir.lhunath.opal.system.i18n.KeyAppender;
-import com.lyndir.lhunath.opal.system.i18n.Localized;
-import com.lyndir.lhunath.opal.system.i18n.MessagesFactory;
+import com.lyndir.lhunath.opal.system.i18n.*;
 
 
 /**

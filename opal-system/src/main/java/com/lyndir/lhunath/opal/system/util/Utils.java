@@ -69,7 +69,7 @@ public class Utils {
         if (libFile.exists())
             logger.wrn( "Native library %s not supported for your OS (%s).", libName, System.getProperty( "os.name" ) );
         else
-            System.setProperty(
-                    "java.library.path", String.format( "%s:%s", System.getProperty( "java.library.path" ), libFile.getParent() ) );
+            System.setProperty( "java.library.path",
+                                String.format( "%s:%s", System.getProperty( "java.library.path" ), libFile.getParent() ) );
     }
 }

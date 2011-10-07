@@ -38,8 +38,7 @@ public class CSSStyleAttributeAppender extends AttributeAppender {
     public CSSStyleAttributeAppender(final String property, final String value) {
 
         // noinspection RedundantCast
-        this(
-                property, new AbstractReadOnlyModel<String>() {
+        this( property, new AbstractReadOnlyModel<String>() {
 
             @Override
             public String getObject() {
@@ -55,8 +54,7 @@ public class CSSStyleAttributeAppender extends AttributeAppender {
      */
     public CSSStyleAttributeAppender(final String property, final IModel<String> value) {
 
-        super(
-                STYLE_ATTRIBUTE, true, new LoadableDetachableModel<String>() {
+        super( STYLE_ATTRIBUTE, true, new LoadableDetachableModel<String>() {
             @Override
             protected String load() {
 

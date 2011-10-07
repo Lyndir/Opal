@@ -1,6 +1,6 @@
 package com.lyndir.lhunath.opal.crypto;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.*;
 
 import com.google.common.base.Charsets;
 import com.lyndir.lhunath.opal.system.logging.Logger;
@@ -108,9 +108,8 @@ public abstract class CryptUtils {
                     "Cipher transformation: " + cipherTransformation + ", is not valid or not supported by the provider.", e );
         }
         catch (NoSuchPaddingException e) {
-            throw new IllegalStateException(
-                    "Cipher transformation: " + cipherTransformation
-                    + ", uses a padding scheme that is not valid or not supported by the provider.", e );
+            throw new IllegalStateException( "Cipher transformation: " + cipherTransformation
+                                             + ", uses a padding scheme that is not valid or not supported by the provider.", e );
         }
         catch (InvalidKeyException e) {
             throw logger.bug( e, "Key is inappropriate for cipher." );

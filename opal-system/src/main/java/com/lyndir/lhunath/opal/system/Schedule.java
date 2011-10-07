@@ -18,7 +18,6 @@ package com.lyndir.lhunath.opal.system;
 import com.lyndir.lhunath.opal.system.util.DateUtils;
 import java.io.Serializable;
 import java.util.*;
-import java.util.Locale;
 
 
 /**
@@ -75,16 +74,15 @@ public abstract class Schedule implements Runnable, Serializable {
         while (nextSchedule.getTime().before( now ))
             nextSchedule.add( stepField, stepAmount );
 
-        scheduler.schedule(
-                scheduleTask = new TimerTask() {
+        scheduler.schedule( scheduleTask = new TimerTask() {
 
-                    @Override
-                    public void run() {
+            @Override
+            public void run() {
 
-                        Schedule.this.run();
-                        schedule();
-                    }
-                }, nextSchedule.getTime() );
+                Schedule.this.run();
+                schedule();
+            }
+        }, nextSchedule.getTime() );
         isScheduled = true;
     }
 

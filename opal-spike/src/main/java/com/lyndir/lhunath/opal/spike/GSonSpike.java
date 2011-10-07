@@ -49,6 +49,7 @@ public class GSonSpike {
         String says = "moo";
     }
 
+
     private static class Horse extends Animal {
 
         String says = "neigh";

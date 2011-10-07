@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.opal.security.service.impl;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
@@ -63,10 +63,9 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public <T extends SecureObject<?, ?>> Iterator<T> filterAccess(final Permission permission, final SecurityToken token,
-                                                                final Iterator<T> source) {
+                                                                   final Iterator<T> source) {
 
-        return Iterators.filter(
-                source, new Predicate<T>() {
+        return Iterators.filter( source, new Predicate<T>() {
 
             @Override
             public boolean apply(final T input) {
@@ -78,10 +77,9 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public <T extends SecureObject<?, ?>> ListIterator<T> filterAccess(final Permission permission, final SecurityToken token,
-                                                                    final ListIterator<T> source) {
+                                                                       final ListIterator<T> source) {
 
-        return Iterators2.filter(
-                source, new Predicate<T>() {
+        return Iterators2.filter( source, new Predicate<T>() {
 
             @Override
             public boolean apply(final T input) {
@@ -99,17 +97,15 @@ public class SecurityServiceImpl implements SecurityService {
 
         // Automatically grant permission when no object is given or required permission is NONE.
         if (object == null || permission == Permission.NONE) {
-            logger.dbg(
-                    "Permission Granted: No permission necessary for: %s@%s", //
-                    permission, object );
+            logger.dbg( "Permission Granted: No permission necessary for: %s@%s", //
+                        permission, object );
             return object;
         }
 
         // Automatically grant permission to INTERNAL_USE token.
         if (token.isInternalUseOnly()) {
-            logger.dbg(
-                    "Permission Granted: INTERNAL_USE token for: %s@%s", //
-                    permission, object );
+            logger.dbg( "Permission Granted: INTERNAL_USE token for: %s@%s", //
+                        permission, object );
             return object;
         }
 
@@ -123,31 +119,27 @@ public class SecurityServiceImpl implements SecurityService {
         // If INHERIT, recurse.
         if (tokenPermission == Permission.INHERIT) {
             if (object.getParent() == null) {
-                logger.dbg(
-                        "Permission Denied: Can't inherit permissions, no parent set for: %s@%s", //
-                        permission, object );
+                logger.dbg( "Permission Denied: Can't inherit permissions, no parent set for: %s@%s", //
+                            permission, object );
                 throw new PermissionDeniedException( permission, object, "Had to inherit permission but no parent set" );
             }
 
-            logger.dbg(
-                    "Inheriting permission for: %s@%s", //
-                    permission, object );
+            logger.dbg( "Inheriting permission for: %s@%s", //
+                        permission, object );
             assertAccess( permission, token, object.getParent() );
             return object;
         }
 
         // Else, check if granted permission provides required permission.
         if (!isPermissionProvided( tokenPermission, permission )) {
-            logger.dbg(
-                    "Permission Denied: Token authorizes %s (ACL default? %s), insufficient for: %s@%s", //
-                    tokenPermission, object.getACL().isSubjectPermissionDefault( token.getActor() ), permission, object );
+            logger.dbg( "Permission Denied: Token authorizes %s (ACL default? %s), insufficient for: %s@%s", //
+                        tokenPermission, object.getACL().isSubjectPermissionDefault( token.getActor() ), permission, object );
             throw new PermissionDeniedException( permission, object, "Security Token %s grants permissions %s ", token, tokenPermission );
         }
 
         // No permission denied thrown, grant permission.
-        logger.dbg(
-                "Permission Granted: Token authorization %s matches for: %s@%s", //
-                tokenPermission, permission, object );
+        logger.dbg( "Permission Granted: Token authorization %s matches for: %s@%s", //
+                    tokenPermission, permission, object );
         return object;
     }
 
@@ -199,31 +191,30 @@ public class SecurityServiceImpl implements SecurityService {
         checkNotNull( o, "Given secure object must not be null." );
         assertAccess( Permission.ADMINISTER, token, o );
 
-        return Iterators.unmodifiableIterator(
-                new AbstractIterator<Pair<Subject, Permission>>() {
+        return Iterators.unmodifiableIterator( new AbstractIterator<Pair<Subject, Permission>>() {
 
-                    public final Iterator<Subject> permittedSubjects;
+            public final Iterator<Subject> permittedSubjects;
 
-                    {
-                        permittedSubjects = o.getACL().getPermittedSubjects().iterator();
+            {
+                permittedSubjects = o.getACL().getPermittedSubjects().iterator();
+            }
+
+            @Override
+            protected Pair<Subject, Permission> computeNext() {
+
+                try {
+                    if (permittedSubjects.hasNext()) {
+                        Subject subject = permittedSubjects.next();
+                        return Pair.of( subject, getEffectivePermissions( token, subject, o ) );
                     }
+                }
+                catch (PermissionDeniedException e) {
+                    throw new InternalInconsistencyException( "While evaluating subject permissions", e );
+                }
 
-                    @Override
-                    protected Pair<Subject, Permission> computeNext() {
-
-                        try {
-                            if (permittedSubjects.hasNext()) {
-                                Subject subject = permittedSubjects.next();
-                                return Pair.of( subject, getEffectivePermissions( token, subject, o ) );
-                            }
-                        }
-                        catch (PermissionDeniedException e) {
-                            throw new InternalInconsistencyException( "While evaluating subject permissions", e );
-                        }
-
-                        return endOfData();
-                    }
-                } );
+                return endOfData();
+            }
+        } );
     }
 
     @Override
@@ -247,7 +238,8 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public void setPermission(final SecurityToken token, final SecureObject<?, ?> object, final Subject subject, final Permission permission)
+    public void setPermission(final SecurityToken token, final SecureObject<?, ?> object, final Subject subject,
+                              final Permission permission)
             throws PermissionDeniedException, IllegalRequestException {
 
         checkNotNull( object, "Given secure object must not be null." );

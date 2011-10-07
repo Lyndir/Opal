@@ -171,7 +171,7 @@ public abstract class StringUtils {
 
             indexToEnds.put( index, matcher.end() );
             indexToExpansions.put( index, checkNotNull( ifNotNullElseNullable( value, fallback ), //
-                    "No value for required expansion key: %s", key ) );
+                                                        "No value for required expansion key: %s", key ) );
         }
 
         SortedSet<Integer> reverseIndexes = Sets.newTreeSet( Collections.reverseOrder() );

@@ -23,14 +23,7 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.uif_lite.panel.SimpleInternalFrame;
 import com.lyndir.lhunath.opal.gui.*;
-import com.lyndir.lhunath.opal.gui.FileDialog;
-import com.lyndir.lhunath.opal.system.*;
-import com.lyndir.lhunath.opal.system.Locale;
-import com.lyndir.lhunath.opal.system.logging.*;
 import com.lyndir.lhunath.opal.system.util.TypeUtils;
-import com.lyndir.lhunath.opal.system.wrapper.Desktop;
-import com.lyndir.lhunath.opal.system.wrapper.SystemTray;
-import com.lyndir.lhunath.opal.system.wrapper.TrayIcon;
 import com.lyndir.lhunath.opal.system.wrapper.TrayIcon.MessageType;
 import java.awt.*;
 import java.awt.event.*;
@@ -38,8 +31,6 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.*;
 import java.util.*;
-import java.util.List;
-import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import javax.swing.*;
@@ -139,30 +130,29 @@ public abstract class AbstractUi
         panelAnimation.setAcceleration( .1f );
         panelAnimation.setDeceleration( .4f );
 
-        SwingUtilities.invokeLater(
-                new Runnable() {
+        SwingUtilities.invokeLater( new Runnable() {
 
-                    /**
-                     * {@inheritDoc}
-                     */
-                    @Override
-                    public void run() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void run() {
 
-                        /* Build user interface. */
-                        try {
-                            buildUi();
-                        }
-                        catch (RuntimeException e) {
-                            if (frame != null)
-                                frame.dispose();
-                            panelAnimation.cancel();
+                /* Build user interface. */
+                try {
+                    buildUi();
+                }
+                catch (RuntimeException e) {
+                    if (frame != null)
+                        frame.dispose();
+                    panelAnimation.cancel();
 
-                            throw e;
-                        }
+                    throw e;
+                }
 
-                        executeAll();
-                    }
-                } );
+                executeAll();
+            }
+        } );
     }
 
     /**
@@ -207,9 +197,8 @@ public abstract class AbstractUi
                 execute( BasicRequest.SETTINGS );
         } else if ("reportIssue".equals( actionCommand )) //$NON-NLS-1$
             try {
-                URI uri = new URI(
-                        "mailto:" + reportEmail + "?subject=" //$NON-NLS-1$ //$NON-NLS-2$
-                        + URLEncoder.encode( reportIssueSubject, "ISO-8859-1" ) ); //$NON-NLS-1$
+                URI uri = new URI( "mailto:" + reportEmail + "?subject=" //$NON-NLS-1$ //$NON-NLS-2$
+                                   + URLEncoder.encode( reportIssueSubject, "ISO-8859-1" ) ); //$NON-NLS-1$
 
                 launchDelay( "stat.openingMail" ); //$NON-NLS-1$
                 Desktop.getDesktop().mail( uri );
@@ -218,25 +207,22 @@ public abstract class AbstractUi
                 showJavaVersionWarning();
             }
             catch (URISyntaxException err) {
-                logger.err(
-                        err, Locale.explain( "bug.invalidMailto" ) //$NON-NLS-1$
-                             + Locale.explain( "err.reportManually", Locale.explain( "ui.issue" ) )
-                             //$NON-NLS-1$ //$NON-NLS-2$
-                             + reportEmail );
+                logger.err( err, Locale.explain( "bug.invalidMailto" ) //$NON-NLS-1$
+                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.issue" ) )
+                                 //$NON-NLS-1$ //$NON-NLS-2$
+                                 + reportEmail );
             }
             catch (IOException err) {
-                logger.err(
-                        err, Locale.explain( "err.openingMail" ) //$NON-NLS-1$
-                             + Locale.explain( "err.reportManually", Locale.explain( "ui.issue" ) )
-                             //$NON-NLS-1$ //$NON-NLS-2$
-                             + reportEmail );
+                logger.err( err, Locale.explain( "err.openingMail" ) //$NON-NLS-1$
+                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.issue" ) )
+                                 //$NON-NLS-1$ //$NON-NLS-2$
+                                 + reportEmail );
             }
 
         else if ("reportOffense".equals( actionCommand )) //$NON-NLS-1$
             try {
-                URI uri = new URI(
-                        "mailto:" + reportEmail + "?subject=" //$NON-NLS-1$ //$NON-NLS-2$
-                        + URLEncoder.encode( reportLicenseSubject, "ISO-8859-1" ) ); //$NON-NLS-1$
+                URI uri = new URI( "mailto:" + reportEmail + "?subject=" //$NON-NLS-1$ //$NON-NLS-2$
+                                   + URLEncoder.encode( reportLicenseSubject, "ISO-8859-1" ) ); //$NON-NLS-1$
 
                 launchDelay( "stat.openingMail" ); //$NON-NLS-1$
                 Desktop.getDesktop().mail( uri );
@@ -245,18 +231,16 @@ public abstract class AbstractUi
                 showJavaVersionWarning();
             }
             catch (URISyntaxException err) {
-                logger.err(
-                        err, "bug.invalidMailto" //$NON-NLS-1$
-                             + Locale.explain( "err.reportManually", Locale.explain( "ui.offense" ) )
-                             //$NON-NLS-1$ //$NON-NLS-2$
-                             + reportEmail );
+                logger.err( err, "bug.invalidMailto" //$NON-NLS-1$
+                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.offense" ) )
+                                 //$NON-NLS-1$ //$NON-NLS-2$
+                                 + reportEmail );
             }
             catch (IOException err) {
-                logger.err(
-                        err, "err.openingMail" //$NON-NLS-1$
-                             + Locale.explain( "err.reportManually", Locale.explain( "ui.offense" ) )
-                             //$NON-NLS-1$ //$NON-NLS-2$
-                             + reportEmail );
+                logger.err( err, "err.openingMail" //$NON-NLS-1$
+                                 + Locale.explain( "err.reportManually", Locale.explain( "ui.offense" ) )
+                                 //$NON-NLS-1$ //$NON-NLS-2$
+                                 + reportEmail );
             }
 
         else if (systrayButton.equals( source )) {
@@ -293,15 +277,14 @@ public abstract class AbstractUi
     protected void toggleConsole() {
 
         if (!SwingUtilities.isEventDispatchThread()) {
-            SwingUtilities.invokeLater(
-                    new Runnable() {
+            SwingUtilities.invokeLater( new Runnable() {
 
-                        @Override
-                        public void run() {
+                @Override
+                public void run() {
 
-                            toggleConsole();
-                        }
-                    } );
+                    toggleConsole();
+                }
+            } );
 
             return;
         }
@@ -339,15 +322,14 @@ public abstract class AbstractUi
             console.pack();
             console.setLocationByPlatform( true );
             console.setVisible( true );
-            console.addWindowListener(
-                    new WindowAdapter() {
+            console.addWindowListener( new WindowAdapter() {
 
-                        @Override
-                        public void windowClosing(WindowEvent e) {
+                @Override
+                public void windowClosing(WindowEvent e) {
 
-                            toggleConsole();
-                        }
-                    } );
+                    toggleConsole();
+                }
+            } );
 
             /* Make new FDs that redirect to the console. */
             try {
@@ -473,9 +455,8 @@ public abstract class AbstractUi
     private void eventNotImplemented(EventObject e) {
 
         if (e instanceof ActionEvent)
-            logger.wrn(
-                    "warn.actionNotImplemented", e.getClass(), ((ActionEvent) e).getActionCommand(), //$NON-NLS-1$
-                    TypeUtils.findFirstField( this, e.getSource() ).getName() );
+            logger.wrn( "warn.actionNotImplemented", e.getClass(), ((ActionEvent) e).getActionCommand(), //$NON-NLS-1$
+                        TypeUtils.findFirstField( this, e.getSource() ).getName() );
         else
             logger.wrn( "warn.eventNotImplemented", e.getClass(), TypeUtils.findFirstField( this, e.getSource() ).getName() ); //$NON-NLS-1$
     }
@@ -536,15 +517,14 @@ public abstract class AbstractUi
     public void launchDelay(String desc, Object... args) {
 
         logger.dbg( desc, args );
-        new Timer().schedule(
-                new TimerTask() {
+        new Timer().schedule( new TimerTask() {
 
-                    @Override
-                    public void run() {
+            @Override
+            public void run() {
 
-                        logger.dbg( null );
-                    }
-                }, LAUNCH_DELAY );
+                logger.dbg( null );
+            }
+        }, LAUNCH_DELAY );
     }
 
     /**
@@ -557,59 +537,57 @@ public abstract class AbstractUi
             toggleConsole();
 
         if (log != null)
-            SwingUtilities.invokeLater(
-                    new Runnable() {
+            SwingUtilities.invokeLater( new Runnable() {
 
-                        @Override
-                        public void run() {
+                @Override
+                public void run() {
 
-                            String message = record.getMessage();
-                            Level level = record.getLevel();
+                    String message = record.getMessage();
+                    Level level = record.getLevel();
 
-                            /* Send log messages to our log field. */
-                            if (message != null || record.getThrown() != null)
-                                try {
-                                    log.getEditorKit().read(
-                                            new StringReader( logFormatter.format( record ) ), log.getDocument(),
-                                            log.getDocument().getLength() );
-                                }
-                                catch (IOException e) {
-                                    logger.err( e, "Couldn't read the log message from the record!" );
-                                }
-                                catch (BadLocationException e) {
-                                    logger.err( e, "Invalid location in the log pane specified for log record insertion!" );
-                                }
-
-                            /* Scroll to the bottom. */
-                            log.setCaretPosition( log.getDocument().getLength() );
-
-                            /* Manage the progress bar. */
-                            if (level.intValue() < Level.CONFIG.intValue()) {
-                                int progressLevel = 5 - level.intValue() / 100;
-                                if (message != null) {
-                                    messageStack.get( progressLevel ).push( message );
-                                    setProgress( null, level );
-                                } else {
-                                    if (messageStack.get( progressLevel ).isEmpty())
-                                        messageStack.get( progressLevel ).pop();
-
-                                    setProgress( 0d, level );
-                                }
-                            }
-
-                            /* Emit messages on the system tray. */
-                            else if (level.intValue() > Level.CONFIG.intValue())
-                                if (systray != null) {
-                                    MessageType type = MessageType.INFO;
-                                    if (level.equals( Level.WARNING ))
-                                        type = MessageType.WARNING;
-                                    else if (level.equals( Level.SEVERE ))
-                                        type = MessageType.ERROR;
-
-                                    systray.displayMessage( level.getLocalizedName(), message, type );
-                                }
+                    /* Send log messages to our log field. */
+                    if (message != null || record.getThrown() != null)
+                        try {
+                            log.getEditorKit()
+                               .read( new StringReader( logFormatter.format( record ) ), log.getDocument(), log.getDocument().getLength() );
                         }
-                    } );
+                        catch (IOException e) {
+                            logger.err( e, "Couldn't read the log message from the record!" );
+                        }
+                        catch (BadLocationException e) {
+                            logger.err( e, "Invalid location in the log pane specified for log record insertion!" );
+                        }
+
+                    /* Scroll to the bottom. */
+                    log.setCaretPosition( log.getDocument().getLength() );
+
+                    /* Manage the progress bar. */
+                    if (level.intValue() < Level.CONFIG.intValue()) {
+                        int progressLevel = 5 - level.intValue() / 100;
+                        if (message != null) {
+                            messageStack.get( progressLevel ).push( message );
+                            setProgress( null, level );
+                        } else {
+                            if (messageStack.get( progressLevel ).isEmpty())
+                                messageStack.get( progressLevel ).pop();
+
+                            setProgress( 0d, level );
+                        }
+                    }
+
+                    /* Emit messages on the system tray. */
+                    else if (level.intValue() > Level.CONFIG.intValue())
+                        if (systray != null) {
+                            MessageType type = MessageType.INFO;
+                            if (level.equals( Level.WARNING ))
+                                type = MessageType.WARNING;
+                            else if (level.equals( Level.SEVERE ))
+                                type = MessageType.ERROR;
+
+                            systray.displayMessage( level.getLocalizedName(), message, type );
+                        }
+                }
+            } );
     }
 
     /**
@@ -620,46 +598,45 @@ public abstract class AbstractUi
      */
     public void setProgress(final Double percent, final Level level) {
 
-        SwingUtilities.invokeLater(
-                new Runnable() {
+        SwingUtilities.invokeLater( new Runnable() {
 
-                    @Override
-                    public void run() {
+            @Override
+            public void run() {
 
-                        int progressLevel = 5 - level.intValue() / 100;
-                        progressStack.set( progressLevel, percent );
+                int progressLevel = 5 - level.intValue() / 100;
+                progressStack.set( progressLevel, percent );
 
-                        if (progress.getParent() == null)
-                            return;
+                if (progress.getParent() == null)
+                    return;
 
-                        for (int i = progressStack.size() - 1; i >= 0; --i) {
-                            Double levelValue = progressStack.get( i );
+                for (int i = progressStack.size() - 1; i >= 0; --i) {
+                    Double levelValue = progressStack.get( i );
 
-                            // Show value if non-null and higher than zero, or zero if last progress in the stack.
-                            if (levelValue == null) {
-                                progress.setIndeterminate( true );
-                                if (messageStack.get( i ).isEmpty())
-                                    progress.setString( "" );
-                                else
-                                    progress.setString( String.format( "[ %s ]", messageStack.get( i ).peek() ) );
-                                return;
-                            } else if (levelValue > 0 || i == 0) {
-                                progress.setIndeterminate( false );
-                                progress.setMaximum( 100 );
-                                progress.setMinimum( 0 );
+                    // Show value if non-null and higher than zero, or zero if last progress in the stack.
+                    if (levelValue == null) {
+                        progress.setIndeterminate( true );
+                        if (messageStack.get( i ).isEmpty())
+                            progress.setString( "" );
+                        else
+                            progress.setString( String.format( "[ %s ]", messageStack.get( i ).peek() ) );
+                        return;
+                    } else if (levelValue > 0 || i == 0) {
+                        progress.setIndeterminate( false );
+                        progress.setMaximum( 100 );
+                        progress.setMinimum( 0 );
 
-                                int value = (int) (levelValue * 100);
-                                progress.setValue( value );
-                                if (messageStack.get( i ).isEmpty())
-                                    progress.setString( "" );
-                                else
-                                    progress.setString( String.format( "[ %s - %d%% ]", messageStack.get( i ).peek(), value ) );
+                        int value = (int) (levelValue * 100);
+                        progress.setValue( value );
+                        if (messageStack.get( i ).isEmpty())
+                            progress.setString( "" );
+                        else
+                            progress.setString( String.format( "[ %s - %d%% ]", messageStack.get( i ).peek(), value ) );
 
-                                return;
-                            }
-                        }
+                        return;
                     }
-                } );
+                }
+            }
+        } );
     }
 
     /**
@@ -674,17 +651,16 @@ public abstract class AbstractUi
 
         AbstractAction action;
         final AbstractUi ui = this;
-        JToggleButton button = new JToggleButton(
-                action = new AbstractAction( tab.getTitle(), tab.getIcon() ) {
+        JToggleButton button = new JToggleButton( action = new AbstractAction( tab.getTitle(), tab.getIcon() ) {
 
-                    private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-                        ui.actionPerformed( e );
-                    }
-                } );
+                ui.actionPerformed( e );
+            }
+        } );
 
         button.setText( null );
         button.setBorderPainted( false );
@@ -740,18 +716,17 @@ public abstract class AbstractUi
         /* Header */
         logo = new JLabel();
         logo.setHorizontalAlignment( SwingConstants.CENTER );
-        logo.addMouseListener(
-                new MouseAdapter() {
+        logo.addMouseListener( new MouseAdapter() {
 
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
+            @Override
+            public void mouseClicked(MouseEvent e) {
 
-                        if (e.getButton() == MouseEvent.BUTTON3)
-                            BaseConfig.dump();
-                        else
-                            toggleOverlay();
-                    }
-                } );
+                if (e.getButton() == MouseEvent.BUTTON3)
+                    BaseConfig.dump();
+                else
+                    toggleOverlay();
+            }
+        } );
 
         titleBar = new JPanel( new FlowLayout( FlowLayout.RIGHT ) );
         titleBar.setLayout( new BoxLayout( titleBar, BoxLayout.X_AXIS ) );
@@ -860,15 +835,14 @@ public abstract class AbstractUi
 
     private void overlayListener(Component c) {
 
-        c.addMouseListener(
-                new MouseAdapter() {
+        c.addMouseListener( new MouseAdapter() {
 
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
+            @Override
+            public void mouseClicked(MouseEvent e) {
 
-                        toggleOverlay();
-                    }
-                } );
+                toggleOverlay();
+            }
+        } );
 
         if (c instanceof JComponent)
             for (Component child : ((JComponent) c).getComponents())
@@ -885,16 +859,15 @@ public abstract class AbstractUi
 
         final JPanel pane = new JPanel( new BorderLayout() );
         pane.setBackground( UIUtils.setAlpha( Color.black, 150 ) );
-        pane.addFocusListener(
-                new FocusAdapter() {
+        pane.addFocusListener( new FocusAdapter() {
 
-                    @Override
-                    public void focusLost(FocusEvent e) {
+            @Override
+            public void focusLost(FocusEvent e) {
 
-                        if (pane.isVisible())
-                            pane.requestFocus();
-                    }
-                } );
+                if (pane.isVisible())
+                    pane.requestFocus();
+            }
+        } );
 
         return pane;
     }
@@ -905,15 +878,14 @@ public abstract class AbstractUi
     protected void setBackgroundImage(final Image image) {
 
         if (contentPanel == null)
-            SwingUtilities.invokeLater(
-                    new Runnable() {
+            SwingUtilities.invokeLater( new Runnable() {
 
-                        @Override
-                        public void run() {
+                @Override
+                public void run() {
 
-                            setBackgroundImage( image );
-                        }
-                    } );
+                    setBackgroundImage( image );
+                }
+            } );
 
         else
             contentPanel.setBackgroundImage( image );
@@ -947,25 +919,17 @@ public abstract class AbstractUi
     private List<Tab> buildTabs() {
 
         List<Tab> tabs = new LinkedList<Tab>();
-        tabs.add(
-                settingsTab = new Tab(
-                        Locale.explain( "ui.configuration" ), UIUtils.getIcon( "settings-s.png" ),
-                        //$NON-NLS-1$ //$NON-NLS-2$
-                        getSettingsPane() ) );
-        tabs.add(
-                new Tab(
-                        Locale.explain( "ui.logs" ), UIUtils.getIcon( "log-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
-                        getOperationsPane() ) );
-        tabs.add(
-                new Tab(
-                        Locale.explain( "ui.licensing" ), UIUtils.getIcon( "license-s.png" ),
-                        //$NON-NLS-1$ //$NON-NLS-2$
-                        getLicensePane() ) );
-        tabs.add(
-                new Tab(
-                        Locale.explain( "ui.development" ), UIUtils.getIcon( "develop-s.png" ),
-                        //$NON-NLS-1$ //$NON-NLS-2$
-                        getDevelopmentPane() ) );
+        tabs.add( settingsTab = new Tab( Locale.explain( "ui.configuration" ), UIUtils.getIcon( "settings-s.png" ),
+                                         //$NON-NLS-1$ //$NON-NLS-2$
+                                         getSettingsPane() ) );
+        tabs.add( new Tab( Locale.explain( "ui.logs" ), UIUtils.getIcon( "log-s.png" ), //$NON-NLS-1$ //$NON-NLS-2$
+                           getOperationsPane() ) );
+        tabs.add( new Tab( Locale.explain( "ui.licensing" ), UIUtils.getIcon( "license-s.png" ),
+                           //$NON-NLS-1$ //$NON-NLS-2$
+                           getLicensePane() ) );
+        tabs.add( new Tab( Locale.explain( "ui.development" ), UIUtils.getIcon( "develop-s.png" ),
+                           //$NON-NLS-1$ //$NON-NLS-2$
+                           getDevelopmentPane() ) );
 
         return tabs;
     }
@@ -980,41 +944,32 @@ public abstract class AbstractUi
 
         builder.appendSeparator( Locale.explain( "ui.appearance" ) ); //$NON-NLS-1$
 
-        builder.append(
-                Locale.explain( "ui.theme" ), new ToolTip(
-                Locale.explain( "ui.themeTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                + Locale.explain( "ui.themeTip" ), themesPanel = new JPanel() ), 5 ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.theme" ), new ToolTip( Locale.explain( "ui.themeTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                                                   + Locale.explain( "ui.themeTip" ), themesPanel = new JPanel() ),
+                        5 ); //$NON-NLS-1$
         for (MyTheme theme : MyTheme.values())
             themesPanel.add( theme.getButton() );
         themesPanel.setOpaque( false );
         builder.nextLine();
 
-        builder.append(
-                Locale.explain( "ui.systray" ), new ToolTip(
-                Locale.explain( "ui.systrayTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                + Locale.explain( "ui.systrayTip" ), //$NON-NLS-1$
-                systrayButton = new JCheckBox(
-                        Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
-        builder.append(
-                Locale.explain( "ui.ontop" ), new ToolTip(
-                Locale.explain( "ui.ontopTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                + Locale.explain( "ui.ontopTip" ), //$NON-NLS-1$
-                alwaysOnTop = new JCheckBox(
-                        Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.systray" ), new ToolTip( Locale.explain( "ui.systrayTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                                                     + Locale.explain( "ui.systrayTip" ), //$NON-NLS-1$
+                                                                     systrayButton = new JCheckBox(
+                                                                             Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.ontop" ), new ToolTip( Locale.explain( "ui.ontopTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                                                   + Locale.explain( "ui.ontopTip" ), //$NON-NLS-1$
+                                                                   alwaysOnTop = new JCheckBox(
+                                                                           Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
         builder.nextLine();
 
-        builder.append(
-                Locale.explain( "ui.startmini" ), new ToolTip(
-                Locale.explain( "ui.startminiTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                + Locale.explain( "ui.startminiTip" ), //$NON-NLS-1$
-                startMini = new JCheckBox(
-                        Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
-        builder.append(
-                Locale.explain( "ui.verbose" ), new ToolTip(
-                Locale.explain( "ui.verboseTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
-                + Locale.explain( "ui.verboseTip" ), //$NON-NLS-1$
-                verboseLogs = new JCheckBox(
-                        Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.startmini" ), new ToolTip( Locale.explain( "ui.startminiTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                                                       + Locale.explain( "ui.startminiTip" ), //$NON-NLS-1$
+                                                                       startMini = new JCheckBox(
+                                                                               Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
+        builder.append( Locale.explain( "ui.verbose" ), new ToolTip( Locale.explain( "ui.verboseTitle" ) //$NON-NLS-1$ //$NON-NLS-2$
+                                                                     + Locale.explain( "ui.verboseTip" ), //$NON-NLS-1$
+                                                                     verboseLogs = new JCheckBox(
+                                                                             Locale.explain( "ui.enable" ) ) ) ); //$NON-NLS-1$
         builder.nextLine();
 
         appendCustomSettings( builder );
@@ -1061,9 +1016,8 @@ public abstract class AbstractUi
 
     private JComponent getOperationsPane() {
 
-        FormLayout layout = new FormLayout(
-                "10dlu, 15dlu, p:g, 10dlu, p:g, 15dlu, 10dlu", //$NON-NLS-1$
-                "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
+        FormLayout layout = new FormLayout( "10dlu, 15dlu, p:g, 10dlu, p:g, 15dlu, 10dlu", //$NON-NLS-1$
+                                            "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
         layout.setColumnGroups( new int[][]{ { 3, 5 } } );
 
         JButton button;
@@ -1100,9 +1054,8 @@ public abstract class AbstractUi
 
     private JComponent getLicensePane() {
 
-        FormLayout layout = new FormLayout(
-                "10dlu, 15dlu, p:g, 10dlu, p:g, 15dlu, 10dlu", //$NON-NLS-1$
-                "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
+        FormLayout layout = new FormLayout( "10dlu, 15dlu, p:g, 10dlu, p:g, 15dlu, 10dlu", //$NON-NLS-1$
+                                            "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
         layout.setColumnGroups( new int[][]{ { 3, 5 } } );
 
         String doc = "";
@@ -1153,9 +1106,8 @@ public abstract class AbstractUi
 
     private JComponent getDevelopmentPane() {
 
-        FormLayout layout = new FormLayout(
-                "10dlu, 15dlu, p:g, 10dlu, p:g, 15dlu, 10dlu", //$NON-NLS-1$
-                "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
+        FormLayout layout = new FormLayout( "10dlu, 15dlu, p:g, 10dlu, p:g, 15dlu, 10dlu", //$NON-NLS-1$
+                                            "0dlu, f:1dlu:g, 5dlu, p, 10dlu" ); //$NON-NLS-1$
         layout.setColumnGroups( new int[][]{ { 3, 5 } } );
 
         JButton button;
@@ -1251,26 +1203,24 @@ public abstract class AbstractUi
 
             /* Set some look and feel properties. */
             UIUtils.setUIFont( new Font( FONT_FACE, Font.PLAIN, FONT_SIZE ) );
-            contentPane.setBorder(
-                    BorderFactory.createBevelBorder(
-                            BevelBorder.RAISED, ShadeConfig.theme.get().getBright(), ShadeConfig.theme.get().getDark() ) );
+            contentPane.setBorder( BorderFactory.createBevelBorder( BevelBorder.RAISED, ShadeConfig.theme.get().getBright(),
+                                                                    ShadeConfig.theme.get().getDark() ) );
 
             /* Force update on hidden panels. */
             if (frame != null && frame.isVisible())
-                SwingUtilities.invokeAndWait(
-                        new Runnable() {
+                SwingUtilities.invokeAndWait( new Runnable() {
 
-                            @Override
-                            public void run() {
+                    @Override
+                    public void run() {
 
-                                SwingUtilities.updateComponentTreeUI( frame );
+                        SwingUtilities.updateComponentTreeUI( frame );
 
-                                /* Also update invisible panels, please. */
-                                for (Tab tab : panelTabs.values())
-                                    if (!tab.getContent().isDisplayable())
-                                        SwingUtilities.updateComponentTreeUI( tab.getContent() );
-                            }
-                        } );
+                        /* Also update invisible panels, please. */
+                        for (Tab tab : panelTabs.values())
+                            if (!tab.getContent().isDisplayable())
+                                SwingUtilities.updateComponentTreeUI( tab.getContent() );
+                    }
+                } );
         }
 
         catch (InterruptedException ignored) {

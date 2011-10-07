@@ -118,16 +118,15 @@ public enum MyTheme {
 
         /* Must load CUSTOM theme out of the config file if we're using it. */
         if ("CUSTOM".equals( name() ))
-            SwingUtilities.invokeLater(
-                    new Runnable() {
+            SwingUtilities.invokeLater( new Runnable() {
 
-                        @Override
-                        public void run() {
+                @Override
+                public void run() {
 
-                            if (equals( activeTheme() ))
-                                setLookAndFeel( ShadeConfig.theme.get() );
-                        }
-                    } );
+                    if (equals( activeTheme() ))
+                        setLookAndFeel( ShadeConfig.theme.get() );
+                }
+            } );
     }
 
     /**
@@ -188,20 +187,19 @@ public enum MyTheme {
                     setBackground( lookAndFeel.getBright() );
             }
         };
-        button.addActionListener(
-                new ActionListener() {
+        button.addActionListener( new ActionListener() {
 
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-                        ShadeConfig.theme.set( theme.getLookAndFeel() );
+                ShadeConfig.theme.set( theme.getLookAndFeel() );
+                ShadeConfig.getUi().execute( BasicRequest.THEME );
+
+                if (theme == CUSTOM)
+                    if (customThemeDialog( ShadeConfig.getUi().getFrame() ))
                         ShadeConfig.getUi().execute( BasicRequest.THEME );
-
-                        if (theme == CUSTOM)
-                            if (customThemeDialog( ShadeConfig.getUi().getFrame() ))
-                                ShadeConfig.getUi().execute( BasicRequest.THEME );
-                    }
-                } );
+            }
+        } );
         button.setPreferredSize( new Dimension( 20, 20 ) );
         button.setAlignmentX( 0 );
         toolTip.setContent( button );
@@ -211,9 +209,8 @@ public enum MyTheme {
 
     static boolean customThemeDialog(Component parent) {
 
-        Color customColor = JColorChooser.showDialog(
-                parent, Locale.explain( "ui.chooseBase" ), //$NON-NLS-1$
-                ShadeConfig.theme.get().getBase() );
+        Color customColor = JColorChooser.showDialog( parent, Locale.explain( "ui.chooseBase" ), //$NON-NLS-1$
+                                                      ShadeConfig.theme.get().getBase() );
         if (customColor != null) {
             CUSTOM.getLookAndFeel().setBase( customColor );
             return true;

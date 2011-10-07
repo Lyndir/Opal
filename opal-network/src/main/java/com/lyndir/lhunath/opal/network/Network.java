@@ -268,9 +268,8 @@ public class Network implements Runnable {
         // The socket is interested in accepting connections.
         setOps( serverChannel, SelectionKey.OP_ACCEPT );
 
-        logger.inf(
-                "[====: %s] Bound.", //
-                nameChannel( serverChannel ) );
+        logger.inf( "[====: %s] Bound.", //
+                    nameChannel( serverChannel ) );
         notifyBound( serverChannel );
 
         return serverChannel;
@@ -303,9 +302,8 @@ public class Network implements Runnable {
         connectionChannel.configureBlocking( false );
         setOps( connectionChannel, SelectionKey.OP_READ );
 
-        logger.inf(
-                "[====: %s] Accepted a new connection to: %s", //
-                nameChannel( serverChannel ), connectionChannel.socket().getInetAddress() );
+        logger.inf( "[====: %s] Accepted a new connection to: %s", //
+                    nameChannel( serverChannel ), connectionChannel.socket().getInetAddress() );
         notifyAccept( serverChannel, connectionChannel );
     }
 
@@ -380,9 +378,8 @@ public class Network implements Runnable {
             sslEngines.put( connectionChannel, sslEngine );
         }
 
-        logger.inf(
-                "[>>>>: %s] Connecting to: %s", //
-                nameChannel( connectionChannel ), socketAddress );
+        logger.inf( "[>>>>: %s] Connecting to: %s", //
+                    nameChannel( connectionChannel ), socketAddress );
         if (connectionChannel.connect( socketAddress ))
             finishConnect( connectionChannel );
         else
@@ -408,9 +405,8 @@ public class Network implements Runnable {
         // Connection completed, see what the server has to say.
         setOps( socketChannel, SelectionKey.OP_READ );
 
-        logger.inf(
-                "[<<<<: %s] Connected.", //
-                nameChannel( socketChannel ) );
+        logger.inf( "[<<<<: %s] Connected.", //
+                    nameChannel( socketChannel ) );
         notifyConnect( socketChannel );
     }
 
@@ -443,9 +439,8 @@ public class Network implements Runnable {
 
         if (readBuffer.position() > 0) {
             // Data was received.
-            logger.dbg(
-                    "[<<<<: %s] Read %d bytes into: %s", //
-                    nameChannel( socketChannel ), bytesRead, renderBuffer( readBuffer ) );
+            logger.dbg( "[<<<<: %s] Read %d bytes into: %s", //
+                        nameChannel( socketChannel ), bytesRead, renderBuffer( readBuffer ) );
             readBuffer.flip();
 
             ByteBuffer dataBuffer = ByteBuffer.allocate( READ_BUFFER );
@@ -455,18 +450,16 @@ public class Network implements Runnable {
                 return;
 
             // Visualize incoming (plain-text) data.
-            logger.inf(
-                    "[<<<<: %s] Received (plain): %s", //
-                    nameChannel( socketChannel ), Charsets.UTF_8.decode( dataBuffer ) );
+            logger.inf( "[<<<<: %s] Received (plain): %s", //
+                        nameChannel( socketChannel ), Charsets.UTF_8.decode( dataBuffer ) );
             dataBuffer.flip();
 
             // Pass incoming (plain-text) data to the application.
             notifyRead( dataBuffer, socketChannel );
         } else if (bytesRead < 0) {
             // Socket connection was terminated by the client.
-            logger.dbg(
-                    "[<<<<: %s] Reached end-of-stream.", //
-                    nameChannel( socketChannel ) );
+            logger.dbg( "[<<<<: %s] Reached end-of-stream.", //
+                        nameChannel( socketChannel ) );
             closedChannels.put( socketChannel, true );
         }
     }
@@ -504,9 +497,8 @@ public class Network implements Runnable {
                 switch (sslEngineResult.getStatus()) {
                     case BUFFER_OVERFLOW:
                         // Data buffer overflow, make it bigger and try again.
-                        logger.dbg(
-                                "[<<<<: %s] SSL %s: dataBuffer%s + %d]", //
-                                nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( newDataBuffer ), READ_BUFFER );
+                        logger.dbg( "[<<<<: %s] SSL %s: dataBuffer%s + %d]", //
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( newDataBuffer ), READ_BUFFER );
                         ByteBuffer resizedDataBuffer = ByteBuffer.allocate( newDataBuffer.capacity() + READ_BUFFER );
                         newDataBuffer.flip();
                         newDataBuffer = resizedDataBuffer.put( newDataBuffer );
@@ -516,24 +508,21 @@ public class Network implements Runnable {
 
                     case BUFFER_UNDERFLOW:
                         // Not enough network data collected for a whole SSL/TLS packet.
-                        logger.dbg(
-                                "[<<<<: %s] SSL %s: need_src: readBuffer%s", //
-                                nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( readBuffer ) );
+                        logger.dbg( "[<<<<: %s] SSL %s: need_src: readBuffer%s", //
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( readBuffer ) );
                         break;
 
                     case CLOSED:
                         // SSL Engine indicates it is closed or just closed itself.
-                        logger.dbg(
-                                "[<<<: %s] SSL: %s", //
-                                nameChannel( socketChannel ), sslEngineResult.getStatus() );
+                        logger.dbg( "[<<<: %s] SSL: %s", //
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus() );
                         closedChannels.put( socketChannel, true );
                         break;
 
                     case OK:
-                        logger.dbg(
-                                "[>>>>: %s] SSL %s - %s: Produced %d bytes application data", //
-                                nameChannel( socketChannel ), sslEngineResult.getStatus(), sslEngineResult.getHandshakeStatus(),
-                                sslEngineResult.bytesProduced() );
+                        logger.dbg( "[>>>>: %s] SSL %s - %s: Produced %d bytes application data", //
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), sslEngineResult.getHandshakeStatus(),
+                                    sslEngineResult.bytesProduced() );
                         break;
                 }
 
@@ -598,9 +587,8 @@ public class Network implements Runnable {
 
             if (writeBuffer.remaining() > 0) {
                 int bytesWritten = socketChannel.write( writeBuffer );
-                logger.dbg(
-                        "[>>>>: %s] Wrote %d bytes of: writeBuffer%s", //
-                        nameChannel( socketChannel ), bytesWritten, renderBuffer( writeBuffer ) );
+                logger.dbg( "[>>>>: %s] Wrote %d bytes of: writeBuffer%s", //
+                            nameChannel( socketChannel ), bytesWritten, renderBuffer( writeBuffer ) );
                 writeBuffer.compact();
             }
 
@@ -644,9 +632,9 @@ public class Network implements Runnable {
                 switch (sslEngineResult.getStatus()) {
                     case BUFFER_OVERFLOW:
                         // Data buffer overflow, make it bigger and try again.
-                        logger.dbg(
-                                "[>>>>: %s] SSL %s: writeBuffer%s + %d", //
-                                nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( newWriteBuffer ), WRITE_BUFFER );
+                        logger.dbg( "[>>>>: %s] SSL %s: writeBuffer%s + %d", //
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( newWriteBuffer ),
+                                    WRITE_BUFFER );
                         ByteBuffer resizedWriteBuffer = ByteBuffer.allocate( newWriteBuffer.capacity() + WRITE_BUFFER );
                         newWriteBuffer.flip();
                         newWriteBuffer = resizedWriteBuffer.put( newWriteBuffer );
@@ -656,24 +644,21 @@ public class Network implements Runnable {
 
                     case BUFFER_UNDERFLOW:
                         // Not enough application data collected for a whole SSL/TLS packet.
-                        logger.dbg(
-                                "[>>>>: %s] SSL %s: need_src: dataBuffer%s", //
-                                nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( dataBuffer ) );
+                        logger.dbg( "[>>>>: %s] SSL %s: need_src: dataBuffer%s", //
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( dataBuffer ) );
                         break;
 
                     case CLOSED:
                         // SSL Engine indicates it is closed or just closed itself.
-                        logger.dbg(
-                                "[>>>>: %s] SSL %s", //
-                                nameChannel( socketChannel ), sslEngineResult.getStatus() );
+                        logger.dbg( "[>>>>: %s] SSL %s", //
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus() );
                         closedChannels.put( socketChannel, false );
                         break;
 
                     case OK:
-                        logger.dbg(
-                                "[>>>>: %s] SSL %s - %s: Consumed %d bytes application data", //
-                                nameChannel( socketChannel ), sslEngineResult.getStatus(), sslEngineResult.getHandshakeStatus(),
-                                sslEngineResult.bytesConsumed() );
+                        logger.dbg( "[>>>>: %s] SSL %s - %s: Consumed %d bytes application data", //
+                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), sslEngineResult.getHandshakeStatus(),
+                                    sslEngineResult.bytesConsumed() );
                         break;
                 }
 
@@ -734,13 +719,11 @@ public class Network implements Runnable {
             writeQueueBuffers.remove( socketChannel );
 
             if (resetByPeer)
-                logger.inf(
-                        "[<<<<: %s] Closed connection (reset by peer).", //
-                        nameChannel( socketChannel ) );
+                logger.inf( "[<<<<: %s] Closed connection (reset by peer).", //
+                            nameChannel( socketChannel ) );
             else
-                logger.inf(
-                        "[>>>>: %s] Closed connection (terminated).", //
-                        nameChannel( socketChannel ) );
+                logger.inf( "[>>>>: %s] Closed connection (terminated).", //
+                            nameChannel( socketChannel ) );
 
             notifyClose( socketChannel, resetByPeer );
         }
@@ -764,9 +747,9 @@ public class Network implements Runnable {
     public void queue(final ByteBuffer dataBuffer, final SocketChannel socketChannel)
             throws ClosedChannelException {
 
-        checkArgument(
-                socketChannel.keyFor( selector ) != null,
-                "Tried to queue a message for a destination (%s) that is not managed by our selector.", nameChannel( socketChannel ) );
+        checkArgument( socketChannel.keyFor( selector ) != null,
+                       "Tried to queue a message for a destination (%s) that is not managed by our selector.",
+                       nameChannel( socketChannel ) );
 
         ByteBuffer writeQueueBuffer;
         synchronized (writeQueueBuffers) {
@@ -775,15 +758,13 @@ public class Network implements Runnable {
             // Obtain or create the data buffer for the connection.
             if (writeQueueBuffer == null)
                 // No writeQueueBuffer yet for this connection, allocate one.
-                writeQueueBuffers.put(
-                        socketChannel, writeQueueBuffer = ByteBuffer.allocate( Math.max( dataBuffer.remaining(), WRITE_QUEUE_BUFFER ) ) );
+                writeQueueBuffers.put( socketChannel,
+                                       writeQueueBuffer = ByteBuffer.allocate( Math.max( dataBuffer.remaining(), WRITE_QUEUE_BUFFER ) ) );
             else if (writeQueueBuffer.remaining() < dataBuffer.remaining())
                 // Not enough space left in the writeQueueBuffer for the application data, make it bigger.
                 synchronized (writeQueueLocks.get( socketChannel )) {
-                    ByteBuffer newWriteQueueBuffer = ByteBuffer.allocate(
-                            Math.max(
-                                    writeQueueBuffer.position() + dataBuffer.remaining(),
-                                    writeQueueBuffer.capacity() + WRITE_QUEUE_BUFFER ) );
+                    ByteBuffer newWriteQueueBuffer = ByteBuffer.allocate( Math.max( writeQueueBuffer.position() + dataBuffer.remaining(),
+                                                                                    writeQueueBuffer.capacity() + WRITE_QUEUE_BUFFER ) );
                     writeQueueBuffer.flip();
                     writeQueueBuffers.put( socketChannel, writeQueueBuffer = newWriteQueueBuffer.put( writeQueueBuffer ) );
                 }
@@ -941,24 +922,21 @@ public class Network implements Runnable {
                         // A lengthy task must be performed.
                         final Runnable delegatedTask = engine.getDelegatedTask();
                         if (delegatedTask != null) {
-                            logger.dbg(
-                                    "[====: %s] SSL %s: Starting a task thread.", //
-                                    nameChannel( channel ), handshakeStatus, delegatedTask );
+                            logger.dbg( "[====: %s] SSL %s: Starting a task thread.", //
+                                        nameChannel( channel ), handshakeStatus, delegatedTask );
 
-                            new Thread(
-                                    new Runnable() {
+                            new Thread( new Runnable() {
 
-                                        @Override
-                                        public void run() {
+                                @Override
+                                public void run() {
 
-                                            delegatedTask.run();
-                                            selector.wakeup();
-                                        }
-                                    } ).start();
+                                    delegatedTask.run();
+                                    selector.wakeup();
+                                }
+                            } ).start();
                         } else {
-                            logger.dbg(
-                                    "[====: %s] SSL %s: Task needed but none offered.", //
-                                    nameChannel( channel ), handshakeStatus, delegatedTask );
+                            logger.dbg( "[====: %s] SSL %s: Task needed but none offered.", //
+                                        nameChannel( channel ), handshakeStatus, delegatedTask );
                             break;
                         }
 
@@ -1001,9 +979,8 @@ public class Network implements Runnable {
             ByteBuffer readBuffer = entry.getValue();
 
             if (readBuffer.position() > 0) {
-                logger.dbg(
-                        "[rbuf: %s] %s", //
-                        nameChannel( socketChannel ), renderBuffer( readBuffer ) );
+                logger.dbg( "[rbuf: %s] %s", //
+                            nameChannel( socketChannel ), renderBuffer( readBuffer ) );
                 read( socketChannel );
             }
         }
@@ -1014,9 +991,8 @@ public class Network implements Runnable {
             ByteBuffer writeBuffer = entry.getValue();
 
             if (writeBuffer.position() > 0) {
-                logger.dbg(
-                        "[wbuf: %s] %s", //
-                        nameChannel( socketChannel ), renderBuffer( writeBuffer ) );
+                logger.dbg( "[wbuf: %s] %s", //
+                            nameChannel( socketChannel ), renderBuffer( writeBuffer ) );
                 addOps( socketChannel, SelectionKey.OP_WRITE );
             }
         }

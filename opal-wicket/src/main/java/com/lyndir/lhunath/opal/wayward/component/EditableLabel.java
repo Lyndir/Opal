@@ -65,36 +65,34 @@ public class EditableLabel<T> extends GenericPanel<T> {
         };
 
         add( label = newLabel( myModel ) );
-        add(
-                singleLineField = new TextField<T>( "singleLineField", myModel, modelType ) {
+        add( singleLineField = new TextField<T>( "singleLineField", myModel, modelType ) {
 
-                    @Override
-                    public boolean isVisible() {
+            @Override
+            public boolean isVisible() {
 
-                        return isEditable() && !isMultiline();
-                    }
+                return isEditable() && !isMultiline();
+            }
 
-                    @Override
-                    public boolean isInputNullable() {
+            @Override
+            public boolean isInputNullable() {
 
-                        return nullable;
-                    }
-                } );
-        add(
-                multiLineField = new TextArea<T>( "multiLineField", myModel ) {
+                return nullable;
+            }
+        } );
+        add( multiLineField = new TextArea<T>( "multiLineField", myModel ) {
 
-                    @Override
-                    public boolean isVisible() {
+            @Override
+            public boolean isVisible() {
 
-                        return isEditable() && isMultiline();
-                    }
+                return isEditable() && isMultiline();
+            }
 
-                    @Override
-                    public boolean isInputNullable() {
+            @Override
+            public boolean isInputNullable() {
 
-                        return nullable;
-                    }
-                } );
+                return nullable;
+            }
+        } );
     }
 
     private WebComponent newLabel(final IModel<?> model) {
