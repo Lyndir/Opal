@@ -38,7 +38,27 @@ public abstract class TypeUtils {
     private static final Objenesis objenesis = new ObjenesisStd();
 
     /**
-     * Load the named class or turn any exceptions into runtime exceptions.
+     * Load the named class.
+     *
+     * @param typeName The name of the class that should be loaded.
+     * @param <T>      The type of class that the operation should yield (note: unchecked).
+     *
+     * @return A class object or <code>null</code> if the type could not be found.
+     */
+    @Nullable
+    @SuppressWarnings({ "unchecked" })
+    public static <T> Class<T> findClass(final String typeName) {
+
+        try {
+            return (Class<T>) Thread.currentThread().getContextClassLoader().loadClass( typeName );
+        }
+        catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Load the named class.
      *
      * @param typeName The name of the class that should be loaded.
      * @param <T>      The type of class that the operation should yield (note: unchecked).
