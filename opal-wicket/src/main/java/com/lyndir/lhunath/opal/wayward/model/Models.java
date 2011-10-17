@@ -98,8 +98,8 @@ public abstract class Models {
         try {
             checkNotNull( modelObjectModel.get(), "No model owner, did you forget bean()?" );
             checkNotNull( modelObjectExpression.get(),
-                    "No model expression, did you forget the expression on bean()'s return value? Model owner is: %s",
-                    modelObjectModel.get() );
+                          "No model expression, did you forget the expression on bean()'s return value? Model owner is: %s",
+                          modelObjectModel.get() );
 
             return new PropertyModel<T>( modelObjectModel.get(), modelObjectExpression.get().toString() );
         }
@@ -184,7 +184,8 @@ public abstract class Models {
     public static <T> T bean(@NotNull final Class<T> type, @NotNull final IModel<T> model) {
 
         checkState( modelObjectModel.get() == null,
-                "Model owner already set, did you forget model() for a previous bean()?  Previous owner is: %s", modelObjectModel.get() );
+                    "Model owner already set, did you forget model() for a previous bean()?  Previous owner is: %s",
+                    modelObjectModel.get() );
 
         modelObjectModel.set( model );
         modelObjectExpression.set( new StringBuilder() );

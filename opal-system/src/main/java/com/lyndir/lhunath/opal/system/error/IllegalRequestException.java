@@ -39,7 +39,7 @@ public class IllegalRequestException extends Exception {
     }
 
     /**
-     * @param cause         An optional exception that caused this one.
+     * @param cause   An optional exception that caused this one.
      * @param message The message that explains why the request request was illegal.
      */
     public IllegalRequestException(final String message, @Nullable final Throwable cause) {

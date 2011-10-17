@@ -60,9 +60,8 @@ public class JSONResult extends MetaObject {
 
     public static JSONResult failureUpdateRequired(Serializable requiredVersion) {
 
-        return new JSONResult(
-                null, CODE_FAILURE_UPDATE_REQUIRED, "The server does not work with clients older than " + requiredVersion,
-                "server.error.outdated", requiredVersion ).setOutdated( true );
+        return new JSONResult( null, CODE_FAILURE_UPDATE_REQUIRED, "The server does not work with clients older than " + requiredVersion,
+                               "server.error.outdated", requiredVersion ).setOutdated( true );
     }
 
     public static JSONResult failure(final String technicalDescription, final String userDescription,

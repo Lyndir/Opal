@@ -117,7 +117,8 @@ public abstract class MessagesFactory {
         }
 
         catch (IllegalAccessException e) {
-            throw logger.bug( e, "Field %s of class %s was inaccessible even though we tried setAccessible.", msgsFieldName, object.getClass() );
+            throw logger.bug( e, "Field %s of class %s was inaccessible even though we tried setAccessible.", msgsFieldName,
+                              object.getClass() );
         }
         catch (NoSuchFieldException e) {
             throw new IllegalArgumentException( "Field " + msgsFieldName + " of class " + object.getClass() + " not found.", e );

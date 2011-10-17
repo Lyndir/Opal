@@ -42,9 +42,8 @@ public final class UIFSplitPane extends JSplitPane {
      */
     public UIFSplitPane() {
 
-        this(
-                HORIZONTAL_SPLIT, false, new JButton( UIManager.getString( "SplitPane.leftButtonText" ) ),
-                new JButton( UIManager.getString( "SplitPane.rightButtonText" ) ) );
+        this( HORIZONTAL_SPLIT, false, new JButton( UIManager.getString( "SplitPane.leftButtonText" ) ),
+              new JButton( UIManager.getString( "SplitPane.rightButtonText" ) ) );
     }
 
     /**

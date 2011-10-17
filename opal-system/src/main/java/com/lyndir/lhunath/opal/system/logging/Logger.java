@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.opal.system.logging;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 import com.google.common.base.Throwables;
 import java.io.Serializable;

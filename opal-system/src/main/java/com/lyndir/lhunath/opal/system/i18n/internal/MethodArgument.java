@@ -62,7 +62,7 @@ public class MethodArgument implements Serializable {
             return null;
         if (Supplier.class.isInstance( unwrappedValue ))
             unwrappedValue = ((Supplier<?>) unwrappedValue).get();
-        for (final Map.Entry<Class<?>, Function<Object, ?>> unwrapperType : unwrapperTypes.entrySet()){
+        for (final Map.Entry<Class<?>, Function<Object, ?>> unwrapperType : unwrapperTypes.entrySet()) {
             if (unwrapperType.getKey().isInstance( unwrappedValue ))
                 unwrappedValue = unwrapperType.getValue().apply( unwrappedValue );
         }

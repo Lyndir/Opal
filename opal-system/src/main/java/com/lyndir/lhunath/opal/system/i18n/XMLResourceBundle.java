@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.opal.system.i18n;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 import com.google.common.collect.ImmutableList;
 import java.io.*;
@@ -94,7 +94,8 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
         }
 
         @Override
-        public ResourceBundle newBundle(final String baseName, final Locale locale, final String format, final ClassLoader loader, final boolean reload)
+        public ResourceBundle newBundle(final String baseName, final Locale locale, final String format, final ClassLoader loader,
+                                        final boolean reload)
                 throws IllegalAccessException, InstantiationException, IOException {
 
             checkNotNull( baseName );

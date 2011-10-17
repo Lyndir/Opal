@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.opal.security;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 import com.lyndir.lhunath.opal.system.util.MetaObject;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +30,8 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author lhunath
  */
-public abstract class AbstractSecureObject<S extends Subject, P extends SecureObject<S, ?>> extends MetaObject implements SecureObject<S, P> {
+public abstract class AbstractSecureObject<S extends Subject, P extends SecureObject<S, ?>> extends MetaObject
+        implements SecureObject<S, P> {
 
     private final S owner;
     private final ACL acl = new ACL();

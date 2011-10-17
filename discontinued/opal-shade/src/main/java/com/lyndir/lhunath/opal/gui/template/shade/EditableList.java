@@ -57,92 +57,85 @@ public class EditableList extends JList {
         final EditableList list = this;
         setModel( model = new DefaultListModel() );
 
-        addMouseListener(
-                new MouseAdapter() {
+        addMouseListener( new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+
+                /* Only proceed on Popup Button. */
+                if (mouseEvent.getModifiers() != Event.META_MASK)
+                    return;
+
+                JMenuItem item;
+                JPopupMenu popup = new JPopupMenu( contentTitle );
+
+                if (!isSelectionEmpty()) {
+
+                    /* Title item. */
+                    item = new JMenuItem( getSelectedValue().toString() );
+                    item.setEnabled( false );
+                    popup.add( item );
+
+                    popup.addSeparator();
+                }
+
+                /* Add. */
+                item = new JMenuItem(
+                        new AbstractAction( Locale.explain( "ui.add" ) + a + contentTitle + ' ' + Locale.explain( "ui.addsuffix" ),
+                                            //$NON-NLS-1$ //$NON-NLS-2$
+                                            UIUtils.getIcon( "add-ss.png" ) ) { //$NON-NLS-1$
+
+                            private static final long serialVersionUID = 1L;
+
+                            @Override
+                            public void actionPerformed(ActionEvent actionEvent) {
+
+                                String element = JOptionPane.showInputDialog( list,
+                                                                              Locale.explain( "ui.new" ) + contentTitle + ": " + newText );
+
+                                if (element != null)
+                                    model.addElement( element );
+                            }
+                        } );
+                popup.add( item );
+
+                /* Delete. */
+                item = new JMenuItem( new AbstractAction( Locale.explain( "ui.remove" ) + contentTitle, //$NON-NLS-1$
+                                                          UIUtils.getIcon( "del-ss.png" ) ) { //$NON-NLS-1$
+
+                    private static final long serialVersionUID = 1L;
 
                     @Override
-                    public void mouseClicked(MouseEvent mouseEvent) {
+                    public void actionPerformed(ActionEvent actionEvent) {
 
-                        /* Only proceed on Popup Button. */
-                        if (mouseEvent.getModifiers() != Event.META_MASK)
-                            return;
-
-                        JMenuItem item;
-                        JPopupMenu popup = new JPopupMenu( contentTitle );
-
-                        if (!isSelectionEmpty()) {
-
-                            /* Title item. */
-                            item = new JMenuItem( getSelectedValue().toString() );
-                            item.setEnabled( false );
-                            popup.add( item );
-
-                            popup.addSeparator();
-                        }
-
-                        /* Add. */
-                        item = new JMenuItem(
-                                new AbstractAction(
-                                        Locale.explain( "ui.add" ) + a + contentTitle + ' ' + Locale.explain( "ui.addsuffix" ),
-                                        //$NON-NLS-1$ //$NON-NLS-2$
-                                        UIUtils.getIcon( "add-ss.png" ) ) { //$NON-NLS-1$
-
-                                    private static final long serialVersionUID = 1L;
-
-                                    @Override
-                                    public void actionPerformed(ActionEvent actionEvent) {
-
-                                        String element = JOptionPane.showInputDialog(
-                                                list, Locale.explain( "ui.new" ) + contentTitle + ": " + newText );
-
-                                        if (element != null)
-                                            model.addElement( element );
-                                    }
-                                } );
-                        popup.add( item );
-
-                        /* Delete. */
-                        item = new JMenuItem(
-                                new AbstractAction(
-                                        Locale.explain( "ui.remove" ) + contentTitle, //$NON-NLS-1$
-                                        UIUtils.getIcon( "del-ss.png" ) ) { //$NON-NLS-1$
-
-                                    private static final long serialVersionUID = 1L;
-
-                                    @Override
-                                    public void actionPerformed(ActionEvent actionEvent) {
-
-                                        model.remove( getSelectedIndex() );
-                                    }
-                                } );
-                        item.setEnabled( !isSelectionEmpty() );
-                        popup.add( item );
-
-                        /* Modify. */
-                        item = new JMenuItem(
-                                new AbstractAction(
-                                        Locale.explain( "ui.edit" ) + contentTitle, //$NON-NLS-1$
-                                        UIUtils.getIcon( "edit-ss.png" ) ) { //$NON-NLS-1$
-
-                                    private static final long serialVersionUID = 1L;
-
-                                    @Override
-                                    public void actionPerformed(ActionEvent actionEvent) {
-
-                                        String newVar = JOptionPane.showInputDialog(
-                                                list, Locale.explain( "ui.modify" ) + contentTitle + ": "
-                                                      //$NON-NLS-1$ //$NON-NLS-2$
-                                                      + newText, getSelectedValue() );
-                                        model.remove( getSelectedIndex() );
-                                        model.addElement( newVar );
-                                    }
-                                } );
-                        item.setEnabled( !isSelectionEmpty() );
-                        popup.add( item );
-
-                        popup.show( list, mouseEvent.getX(), mouseEvent.getY() );
+                        model.remove( getSelectedIndex() );
                     }
                 } );
+                item.setEnabled( !isSelectionEmpty() );
+                popup.add( item );
+
+                /* Modify. */
+                item = new JMenuItem( new AbstractAction( Locale.explain( "ui.edit" ) + contentTitle, //$NON-NLS-1$
+                                                          UIUtils.getIcon( "edit-ss.png" ) ) { //$NON-NLS-1$
+
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+
+                        String newVar = JOptionPane.showInputDialog( list, Locale.explain( "ui.modify" ) + contentTitle + ": "
+                                                                           //$NON-NLS-1$ //$NON-NLS-2$
+                                                                           + newText, getSelectedValue() );
+                        model.remove( getSelectedIndex() );
+                        model.addElement( newVar );
+                    }
+                } );
+                item.setEnabled( !isSelectionEmpty() );
+                popup.add( item );
+
+                popup.show( list, mouseEvent.getX(), mouseEvent.getY() );
+            }
+        } );
     }
 
     /**

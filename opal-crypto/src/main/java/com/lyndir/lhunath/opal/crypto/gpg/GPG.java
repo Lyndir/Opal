@@ -205,15 +205,14 @@ public abstract class GPG {
                     if (!key.getUserIDs().hasNext())
                         continue;
 
-                    keys.add(
-                            new PrintableKeyWrapper<PGPSecretKey>( key, key.getKeyID() ) {
+                    keys.add( new PrintableKeyWrapper<PGPSecretKey>( key, key.getKeyID() ) {
 
-                                @Override
-                                public String toString() {
+                        @Override
+                        public String toString() {
 
-                                    return getKey().getUserIDs().next().toString();
-                                }
-                            } );
+                            return getKey().getUserIDs().next().toString();
+                        }
+                    } );
                 }
             }
 
@@ -253,15 +252,14 @@ public abstract class GPG {
                     if (!key.getUserIDs().hasNext())
                         continue;
 
-                    keys.add(
-                            new PrintableKeyWrapper<PGPPublicKey>( key, key.getKeyID() ) {
+                    keys.add( new PrintableKeyWrapper<PGPPublicKey>( key, key.getKeyID() ) {
 
-                                @Override
-                                public String toString() {
+                        @Override
+                        public String toString() {
 
-                                    return getKey().getUserIDs().next().toString();
-                                }
-                            } );
+                            return getKey().getUserIDs().next().toString();
+                        }
+                    } );
                 }
             }
 
@@ -344,14 +342,15 @@ public abstract class GPG {
         PGPLiteralDataGenerator literalDataGenerator = new PGPLiteralDataGenerator();
         ByteArrayOutputStream decryptedStream = new ByteArrayOutputStream();
         PGPCompressedDataGenerator compressor = new PGPCompressedDataGenerator( CompressionAlgorithmTags.ZLIB );
-        OutputStream literalStream = literalDataGenerator.open(
-                compressor.open( decryptedStream ), PGPLiteralData.BINARY, "", new Date(), new byte[4096] );
+        OutputStream literalStream = literalDataGenerator.open( compressor.open( decryptedStream ), PGPLiteralData.BINARY, "", new Date(),
+                                                                new byte[4096] );
         ByteStreams.copy( plainTextStream, literalStream );
         compressor.close();
 
         /* Encrypt compressed data. */
-        PGPEncryptedDataGenerator encryptedDataGenerator = new PGPEncryptedDataGenerator(
-                SymmetricKeyAlgorithmTags.CAST5, new SecureRandom(), BouncyCastleProvider.PROVIDER_NAME );
+        PGPEncryptedDataGenerator encryptedDataGenerator = new PGPEncryptedDataGenerator( SymmetricKeyAlgorithmTags.CAST5,
+                                                                                          new SecureRandom(),
+                                                                                          BouncyCastleProvider.PROVIDER_NAME );
         encryptedDataGenerator.addMethod( publicKey );
 
         /* Create the encrypted output stream, armour if necessary. */
@@ -576,11 +575,10 @@ public abstract class GPG {
             throws NoSuchAlgorithmException, NoSuchProviderException, PGPException, SignatureException, IOException {
 
         /* Build the signature generator. */
-        PGPSignatureGenerator signer = new PGPSignatureGenerator(
-                privateKey.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1, BouncyCastleProvider.PROVIDER_NAME );
-        signer.initSign(
-                PGPSignature.BINARY_DOCUMENT,
-                privateKey.extractPrivateKey( passPhrase.toCharArray(), BouncyCastleProvider.PROVIDER_NAME ) );
+        PGPSignatureGenerator signer = new PGPSignatureGenerator( privateKey.getPublicKey().getAlgorithm(), HashAlgorithmTags.SHA1,
+                                                                  BouncyCastleProvider.PROVIDER_NAME );
+        signer.initSign( PGPSignature.BINARY_DOCUMENT,
+                         privateKey.extractPrivateKey( passPhrase.toCharArray(), BouncyCastleProvider.PROVIDER_NAME ) );
 
         /* Write the data into the generator. */
         byte[] buffer = new byte[4096];

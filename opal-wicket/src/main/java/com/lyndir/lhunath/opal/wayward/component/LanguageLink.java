@@ -51,16 +51,14 @@ public class LanguageLink extends Link<String> {
 
         super( id, model );
 
-        add(
-                new AttributeAppender(
-                        "class", new AbstractReadOnlyModel<String>() {
+        add( new AttributeAppender( "class", new AbstractReadOnlyModel<String>() {
 
-                    @Override
-                    public String getObject() {
+            @Override
+            public String getObject() {
 
-                        return Session.get().getLocale().getLanguage().equals( getModelObject() )? "active": null;
-                    }
-                }, ";" ) );
+                return Session.get().getLocale().getLanguage().equals( getModelObject() )? "active": null;
+            }
+        }, ";" ) );
     }
 
     /**

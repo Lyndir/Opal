@@ -27,22 +27,22 @@ import org.jetbrains.annotations.Nullable;
  */
 public class MessagesInvocationHandler implements InvocationHandler, Serializable {
 
-    static final         Logger                                  logger          = Logger.get( MessagesInvocationHandler.class );
+    static final         Logger                                       logger          = Logger.get( MessagesInvocationHandler.class );
     private static final Map<Class<?>, Function<Supplier<String>, ?>> wrapperTypes    = Maps.newHashMap();
-    private static final Deque<Supplier<Locale>>                 localeSuppliers = Lists.newLinkedList();
+    private static final Deque<Supplier<Locale>>                      localeSuppliers = Lists.newLinkedList();
 
     static {
-        registerLocaleSupplier(
-                new Supplier<Locale>() {
-                    @Override
-                    public Locale get() {
+        registerLocaleSupplier( new Supplier<Locale>() {
+            @Override
+            public Locale get() {
 
-                        return Locale.getDefault();
-                    }
-                } );
+                return Locale.getDefault();
+            }
+        } );
     }
 
-    public static <T> void registerWrapperType(final Class<? super T> wrapperType, final Function<Supplier<String>, T> wrapperValueFactory) {
+    public static <T> void registerWrapperType(final Class<? super T> wrapperType,
+                                               final Function<Supplier<String>, T> wrapperValueFactory) {
 
         wrapperTypes.put( wrapperType, wrapperValueFactory );
     }
@@ -70,9 +70,8 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
         if (baseClass == null) {
             Class<?> methodType = method.getDeclaringClass();
             baseClass = methodType.getEnclosingClass();
-            checkNotNull(
-                    baseClass,
-                    "Must be an inner class of the class by the name of the resource bundle or manually specify the context class." );
+            checkNotNull( baseClass,
+                          "Must be an inner class of the class by the name of the resource bundle or manually specify the context class." );
         }
 
         // Convert all non-serializable data into something serializable.
@@ -147,9 +146,9 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                             BooleanKeyAppender annotation = (BooleanKeyAppender) argAnnotation;
                             useValue = false;
 
-                            checkArgument(
-                                    Boolean.class.isInstance( argValue ),
-                                    "BooleanKeyAppender for method %s, expects a Boolean value but found: %s", methodName, argValue );
+                            checkArgument( Boolean.class.isInstance( argValue ),
+                                           "BooleanKeyAppender for method %s, expects a Boolean value but found: %s", methodName,
+                                           argValue );
 
                             if (Boolean.TRUE.equals( argValue ))
                                 appendKey( keyBuilder, annotation.y() );
@@ -166,17 +165,16 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                 }
 
                 String key = keyBuilder.toString();
-                logger.dbg(
-                        "Resolving localization value of key: %s, in baseClass: %s, with arguments: %s", //
-                        key, baseClass, localizationArgs );
+                logger.dbg( "Resolving localization value of key: %s, in baseClass: %s, with arguments: %s", //
+                            key, baseClass, localizationArgs );
 
                 // Find the resource bundle for the current locale and the given baseName.
                 Locale locale = null;
                 for (final Supplier<Locale> localeSupplier : localeSuppliers)
                     if ((locale = localeSupplier.get()) != null)
                         break;
-                ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle(
-                        baseClass.getCanonicalName(), locale, baseClass.getClassLoader() );
+                ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle( baseClass.getCanonicalName(), locale,
+                                                                                baseClass.getClassLoader() );
 
                 // Format the localization key with the arguments.
                 try {
@@ -184,9 +182,8 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                 }
                 catch (MissingResourceException e) {
                     //noinspection ThrowInsideCatchBlockWhichIgnoresCaughtException
-                    throw new MissingResourceException(
-                            String.format( "Missing resource for: %s, at key: %s.", baseClass, e.getKey() ), baseClass.getCanonicalName(),
-                            e.getKey() );
+                    throw new MissingResourceException( String.format( "Missing resource for: %s, at key: %s.", baseClass, e.getKey() ),
+                                                        baseClass.getCanonicalName(), e.getKey() );
                 }
             }
 

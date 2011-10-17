@@ -61,9 +61,8 @@ public abstract class Structure {
                 Class<?> valueType = field.getType();
                 field.setAccessible( true );
 
-                logger.dbg(
-                        "Setting (%s) '%s' to '%s' (xpath: %s)", valueType.getSimpleName(), field.getName(),
-                        xmlpath.getString( root, annotation.value() ), annotation.value() );
+                logger.dbg( "Setting (%s) '%s' to '%s' (xpath: %s)", valueType.getSimpleName(), field.getName(),
+                            xmlpath.getString( root, annotation.value() ), annotation.value() );
 
                 Object value;
                 if (Byte.class.isAssignableFrom( valueType ) || Byte.TYPE.isAssignableFrom( valueType ))
@@ -225,9 +224,8 @@ public abstract class Structure {
             for (final Field field : structure.getClass().getDeclaredFields())
                 if (field.isAnnotationPresent( XInjectTag.class ))
                     try {
-                        logger.dbg(
-                                "Setting (%s) '%s' to tagname '%s'", field.getType().getSimpleName(), field.getName(),
-                                child.getNodeName() );
+                        logger.dbg( "Setting (%s) '%s' to tagname '%s'", field.getType().getSimpleName(), field.getName(),
+                                    child.getNodeName() );
 
                         field.setAccessible( true );
                         field.set( structure, child.getNodeName() );

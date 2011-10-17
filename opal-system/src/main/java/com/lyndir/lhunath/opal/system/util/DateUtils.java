@@ -78,9 +78,9 @@ public abstract class DateUtils {
 
         // Order of standard date/time fields from small to large.
         ImmutableList.Builder<DateTimeFieldType> stdDateTimeFieldsBuilder = ImmutableList.builder();
-        stdDateTimeFieldsBuilder.add(
-                DateTimeFieldType.millisOfSecond(), DateTimeFieldType.secondOfDay(), DateTimeFieldType.minuteOfHour(),
-                DateTimeFieldType.hourOfDay(), DateTimeFieldType.dayOfMonth(), DateTimeFieldType.monthOfYear(), DateTimeFieldType.year() );
+        stdDateTimeFieldsBuilder.add( DateTimeFieldType.millisOfSecond(), DateTimeFieldType.secondOfDay(), DateTimeFieldType.minuteOfHour(),
+                                      DateTimeFieldType.hourOfDay(), DateTimeFieldType.dayOfMonth(), DateTimeFieldType.monthOfYear(),
+                                      DateTimeFieldType.year() );
         stdDateTimeFields = stdDateTimeFieldsBuilder.build();
     }
 

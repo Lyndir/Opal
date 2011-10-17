@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.*;
 import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
+import com.lyndir.lhunath.opal.system.logging.exception.AlreadyCheckedException;
 import com.lyndir.lhunath.opal.system.util.ObjectMeta.For;
 import com.lyndir.lhunath.opal.system.util.TypeUtils.LastResult;
 import java.lang.reflect.*;
@@ -186,6 +187,9 @@ public abstract class ObjectUtils {
                                 Field field = lastResult.getCurrent();
                                 StringBuilder fieldsString = lastResult.getLastResult();
 
+                                if (!isValueAccessible( o ))
+                                    return fieldsString;
+
                                 String name = null;
                                 ObjectMeta fieldMeta = field.getAnnotation( ObjectMeta.class );
                                 if (fieldMeta != null)
@@ -207,8 +211,9 @@ public abstract class ObjectUtils {
                                 try {
                                     fieldsString.append( name ).append( '=' ).append( describe( field.get( o ) ) );
                                 }
-                                catch (IllegalAccessException e) {
-                                    logger.dbg( e, "Not accessible: %s", field );
+                                catch (Throwable t) {
+                                    logger.dbg( t, "Couldn't load value for field: %s, in object: 0x%x", field,
+                                                System.identityHashCode( o ) );
                                 }
 
                                 return fieldsString;
@@ -251,22 +256,59 @@ public abstract class ObjectUtils {
                     catch (SecurityException ignored) {
                     }
 
+                    Object value = null;
                     try {
-                        Object value = field.get( o );
-                        if (value != null)
-                            return Arrays.hashCode( new int[]{ lastHashCode, value.hashCode() } );
+                        value = field.get( o );
                     }
-                    catch (IllegalAccessException e) {
-                        logger.dbg( e, "Not accessible: %s", field );
+                    catch (IllegalAccessException ignored) {
                     }
 
-                    return lastHashCode;
+                    int hashCode = System.identityHashCode( value );
+                    if (value != null)
+                        try {
+                            if (isValueAccessible( value ))
+                                hashCode = value.hashCode();
+                        }
+                        catch (Throwable t) {
+                            logger.dbg( t, "Couldn't load hashCode for: %s, value: %s.  Falling back to identity hashCode.", field, value );
+                        }
+
+                    return Arrays.hashCode( new int[]{ lastHashCode, hashCode } );
                 }
             }, 0 ), identityHashCode );
         }
         finally {
             seen.get( For.hashCode ).get().remove( identityHashCode );
         }
+    }
+
+    /**
+     * Some type-specific checks to see whether the object can be used.
+     *
+     * @param object The object to check.
+     *
+     * @return <code>true</code> if the object may be accessed.
+     */
+    private static boolean isValueAccessible(final Object object) {
+
+        Class<Object> persistentCollectionType = TypeUtils.findClass( "org.hibernate.collection.PersistentCollection" );
+        if (persistentCollectionType != null && persistentCollectionType.isInstance( object ))
+            try {
+                if (!(Boolean) object.getClass().getMethod( "wasInitialized" ).invoke( object ))
+                    // Hack around Hibernate idiocy of manually logging its LazyInitializationException.
+                    return false;
+            }
+            catch (IllegalAccessException e) {
+                throw new AlreadyCheckedException( "Are you using an unsupported version of Hibernate?", e );
+            }
+            catch (InvocationTargetException e) {
+                throw new AlreadyCheckedException( "Are you using an unsupported version of Hibernate?", e );
+            }
+            catch (NoSuchMethodException e) {
+                throw new AlreadyCheckedException( "Are you using an unsupported version of Hibernate?", e );
+            }
+
+        return true;
     }
 
     /**
@@ -307,15 +349,23 @@ public abstract class ObjectUtils {
                     catch (SecurityException ignored) {
                     }
 
+                    Object superValue = null, subValue = null;
                     try {
-                        if (!Objects.equal( field.get( superObject ), field.get( subObject ) ))
-                            return false;
+                        if (isValueAccessible( superObject ))
+                            superValue = field.get( superObject );
                     }
-                    catch (IllegalAccessException e) {
-                        logger.dbg( e, "Not accessible: %s", field );
+                    catch (Throwable t) {
+                        logger.dbg( t, "Couldn't load value for field: %s, in object: %s", field, superObject );
+                    }
+                    try {
+                        if (isValueAccessible( subObject ))
+                            subValue = field.get( subObject );
+                    }
+                    catch (Throwable t) {
+                        logger.dbg( t, "Couldn't load value for field: %s, in object: %s", field, subObject );
                     }
 
-                    return true;
+                    return Objects.equal( superValue, subValue );
                 }
             }, false /* There are no (accessible) fields to compare. */ );
         }
@@ -565,7 +615,7 @@ public abstract class ObjectUtils {
      * @return The transformed value, or {@code null}.
      */
     @NotNull
-    public static <T> T ifNotNull(@NotNull final Class<T> type, @Nullable final Object object) {
+    public static <T> T ifNotNull(@NotNull final Class<T> type, @Nullable final T object) {
 
         return type.cast( TypeUtils.newProxyInstance( type, new InvocationHandler() {
             @Nullable

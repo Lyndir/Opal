@@ -43,34 +43,32 @@ public class TextWindow<T> extends ModalWindow {
 
             super( id, model );
 
-            add(
-                    new Form<Object>( "form" ) {
+            add( new Form<Object>( "form" ) {
 
-                        public Component field;
-                        public Component area;
+                public Component field;
+                public Component area;
 
-                        {
-                            add( field = new TextField<T>( "field", model, type ).add( new FocusOnReady() ) );
-                            add( area = new TextArea<T>( "area", model ).add( new FocusOnReady() ) );
-                            add(
-                                    new AjaxButton( "submit" ) {
-                                        @Override
-                                        protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-
-                                            closeCurrent( target );
-                                        }
-                                    } );
-                        }
-
+                {
+                    add( field = new TextField<T>( "field", model, type ).add( new FocusOnReady() ) );
+                    add( area = new TextArea<T>( "area", model ).add( new FocusOnReady() ) );
+                    add( new AjaxButton( "submit" ) {
                         @Override
-                        protected void onConfigure() {
+                        protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 
-                            super.onConfigure();
-
-                            field.setVisible( oneLine );
-                            area.setVisible( !oneLine );
+                            closeCurrent( target );
                         }
                     } );
+                }
+
+                @Override
+                protected void onConfigure() {
+
+                    super.onConfigure();
+
+                    field.setVisible( oneLine );
+                    area.setVisible( !oneLine );
+                }
+            } );
         }
     }
 

@@ -135,15 +135,14 @@ public class Splash extends JWindow {
         startTime = System.currentTimeMillis();
         endTime = startTime + duration;
 
-        new Timer( "Splash Fade Timer", true ).scheduleAtFixedRate(
-                new TimerTask() {
+        new Timer( "Splash Fade Timer", true ).scheduleAtFixedRate( new TimerTask() {
 
-                    @Override
-                    public void run() {
+            @Override
+            public void run() {
 
-                        repaint();
-                    }
-                }, 0, Math.max( 1, (endTime - startTime) / 1000 ) );
+                repaint();
+            }
+        }, 0, Math.max( 1, (endTime - startTime) / 1000 ) );
     }
 
     /**
@@ -192,16 +191,15 @@ public class Splash extends JWindow {
                 }
 
             instance = new Splash( initial, icon );
-            new Timer( "Splash Disposal Timer" ).schedule(
-                    new TimerTask() {
+            new Timer( "Splash Disposal Timer" ).schedule( new TimerTask() {
 
-                        @Override
-                        public void run() {
+                @Override
+                public void run() {
 
-                            if (instance != null)
-                                instance.dispose();
-                        }
-                    }, duration );
+                    if (instance != null)
+                        instance.dispose();
+                }
+            }, duration );
         }
 
         return instance;

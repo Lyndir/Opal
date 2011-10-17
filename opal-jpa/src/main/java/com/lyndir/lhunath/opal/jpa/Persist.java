@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.opal.jpa;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 import javax.persistence.*;
 import org.jetbrains.annotations.NotNull;

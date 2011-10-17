@@ -64,33 +64,31 @@ public class GButton extends JButton {
         setBorderPainted( false );
         setOpaque( true );
 
-        addMouseListener(
-                new MouseAdapter() {
+        addMouseListener( new MouseAdapter() {
 
-                    @Override
-                    public void mouseEntered(final MouseEvent e) {
+            @Override
+            public void mouseEntered(final MouseEvent e) {
 
-                        hover = true;
-                        repaint();
-                    }
+                hover = true;
+                repaint();
+            }
 
-                    @Override
-                    public void mouseExited(final MouseEvent e) {
+            @Override
+            public void mouseExited(final MouseEvent e) {
 
-                        hover = false;
-                        repaint();
-                    }
-                } );
+                hover = false;
+                repaint();
+            }
+        } );
 
-        addComponentListener(
-                new ComponentAdapter() {
+        addComponentListener( new ComponentAdapter() {
 
-                    @Override
-                    public void componentResized(final ComponentEvent e) {
+            @Override
+            public void componentResized(final ComponentEvent e) {
 
-                        updateUI();
-                    }
-                } );
+                updateUI();
+            }
+        } );
 
         setHorizontalTextPosition( RIGHT );
         setVerticalTextPosition( CENTER );
@@ -154,8 +152,8 @@ public class GButton extends JButton {
         Icon icon = getIcon();
         largeEnabledIcon = new BufferedImage( icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB );
         icon.paintIcon( null, largeEnabledIcon.getGraphics(), 0, 0 );
-        smallEnabledIcon = new BufferedImage(
-                (int) (icon.getIconWidth() * ZOOM), (int) (icon.getIconHeight() * ZOOM), BufferedImage.TYPE_INT_ARGB );
+        smallEnabledIcon = new BufferedImage( (int) (icon.getIconWidth() * ZOOM), (int) (icon.getIconHeight() * ZOOM),
+                                              BufferedImage.TYPE_INT_ARGB );
         g2 = (Graphics2D) smallEnabledIcon.getGraphics();
         g2.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
         g2.drawImage( largeEnabledIcon, 0, 0, smallEnabledIcon.getWidth( this ), smallEnabledIcon.getHeight( this ), this );
@@ -163,8 +161,8 @@ public class GButton extends JButton {
         icon = getDisabledIcon();
         largeDisabledIcon = new BufferedImage( icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB );
         icon.paintIcon( null, largeDisabledIcon.getGraphics(), 0, 0 );
-        smallDisabledIcon = new BufferedImage(
-                (int) (icon.getIconWidth() * ZOOM), (int) (icon.getIconHeight() * ZOOM), BufferedImage.TYPE_INT_ARGB );
+        smallDisabledIcon = new BufferedImage( (int) (icon.getIconWidth() * ZOOM), (int) (icon.getIconHeight() * ZOOM),
+                                               BufferedImage.TYPE_INT_ARGB );
         g2 = (Graphics2D) smallDisabledIcon.getGraphics();
         g2.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
         g2.drawImage( largeDisabledIcon, 0, 0, smallDisabledIcon.getWidth( this ), smallDisabledIcon.getHeight( this ), this );
@@ -183,15 +181,14 @@ public class GButton extends JButton {
 
         if (getText() != null && getText().length() > 0) {
             if (getFont() == null) {
-                SwingUtilities.invokeLater(
-                        new Runnable() {
+                SwingUtilities.invokeLater( new Runnable() {
 
-                            @Override
-                            public void run() {
+                    @Override
+                    public void run() {
 
-                                updateSize();
-                            }
-                        } );
+                        updateSize();
+                    }
+                } );
 
                 return;
             }
@@ -241,10 +238,10 @@ public class GButton extends JButton {
 
         super.updateUI();
 
-        backgroundPaint = new GradientPaint(
-                0, 0, MyLookAndFeel.getActiveBright(), 0, getHeight(), UIUtils.setAlpha( MyLookAndFeel.getActiveDark(), 50 ) );
-        borderPaint = new GradientPaint(
-                0, 0, MyLookAndFeel.getActiveBright().brighter(), 0, getHeight(), UIUtils.setAlpha( MyLookAndFeel.getActiveBright(), 50 ) );
+        backgroundPaint = new GradientPaint( 0, 0, MyLookAndFeel.getActiveBright(), 0, getHeight(),
+                                             UIUtils.setAlpha( MyLookAndFeel.getActiveDark(), 50 ) );
+        borderPaint = new GradientPaint( 0, 0, MyLookAndFeel.getActiveBright().brighter(), 0, getHeight(),
+                                         UIUtils.setAlpha( MyLookAndFeel.getActiveBright(), 50 ) );
     }
 
     /**

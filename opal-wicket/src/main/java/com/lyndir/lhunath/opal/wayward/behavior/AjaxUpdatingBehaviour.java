@@ -40,23 +40,21 @@ public class AjaxUpdatingBehaviour implements IBehavior {
 
         if (component instanceof RadioChoice || component instanceof CheckBoxMultipleChoice || component instanceof RadioGroup
             || component instanceof CheckGroup)
-            component.add(
-                    new AjaxFormChoiceComponentUpdatingBehavior() {
-                        @Override
-                        protected void onUpdate(final AjaxRequestTarget target) {
+            component.add( new AjaxFormChoiceComponentUpdatingBehavior() {
+                @Override
+                protected void onUpdate(final AjaxRequestTarget target) {
 
-                            AjaxUpdatingBehaviour.this.onUpdate( target );
-                        }
-                    } );
+                    AjaxUpdatingBehaviour.this.onUpdate( target );
+                }
+            } );
         else if (component instanceof FormComponent)
-            component.add(
-                    new OnChangeAjaxBehavior() {
-                        @Override
-                        protected void onUpdate(final AjaxRequestTarget target) {
+            component.add( new OnChangeAjaxBehavior() {
+                @Override
+                protected void onUpdate(final AjaxRequestTarget target) {
 
-                            AjaxUpdatingBehaviour.this.onUpdate( target );
-                        }
-                    } );
+                    AjaxUpdatingBehaviour.this.onUpdate( target );
+                }
+            } );
         else
             throw logger.bug( "This behaviour is only supported on form components.  It was added to: %s", component );
     }
@@ -101,9 +99,8 @@ public class AjaxUpdatingBehaviour implements IBehavior {
 
     private void setCSSClass(final AjaxRequestTarget target, final String cssClass) {
 
-        target.appendJavascript(
-                JSUtils.format(
-                        "document.getElementById(%s).className = (' ' + document.getElementById(%s).className + ' ').replace(' uptodate ', ' ').replace(' outdated ', ' ').replace(' *$', ' ' + %s).replace('^ *', '')",
-                        boundComponent.getMarkupId(), boundComponent.getMarkupId(), cssClass ) );
+        target.appendJavascript( JSUtils.format(
+                "document.getElementById(%s).className = (' ' + document.getElementById(%s).className + ' ').replace(' uptodate ', ' ').replace(' outdated ', ' ').replace(' *$', ' ' + %s).replace('^ *', '')",
+                boundComponent.getMarkupId(), boundComponent.getMarkupId(), cssClass ) );
     }
 }
