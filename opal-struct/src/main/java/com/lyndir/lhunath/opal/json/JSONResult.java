@@ -5,11 +5,12 @@ import com.google.gson.annotations.Expose;
 import com.lyndir.lhunath.opal.system.util.MetaObject;
 import com.lyndir.lhunath.opal.system.util.ObjectUtils;
 import java.io.Serializable;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
  * A wrapper for sending {@link Gson} serializable data via a webservice and provide success/failure context data.  Works well with the
- * iLibs webservice classes.
+ * Pearl webservice classes.
  *
  * <p> <i>11 22, 2010</i> </p>
  *
@@ -26,16 +27,16 @@ public class JSONResult extends MetaObject {
     @Expose
     private final int      code;
     @Expose
+    private       boolean  outdated;
+    @Expose
     private final String   userDescription;
     @Expose
     private final String[] userDescriptionArguments;
     @Expose
     private final String   technicalDescription;
-    @Expose
-    private       boolean  outdated;
 
     @Expose
-    private final Object result;
+    private final Object   result;
 
     private JSONResult(final Object result, final int code, final String technicalDescription, final String userDescription,
                        final Object... userDescriptionArguments) {
@@ -53,7 +54,7 @@ public class JSONResult extends MetaObject {
         }
     }
 
-    public static JSONResult success(final Object result) {
+    public static JSONResult success(final @Nullable Object result) {
 
         return new JSONResult( result, CODE_SUCCESS, null, null );
     }
@@ -67,13 +68,24 @@ public class JSONResult extends MetaObject {
     public static JSONResult failure(final String technicalDescription, final String userDescription,
                                      final Object... userDescriptionArguments) {
 
-        return new JSONResult( null, CODE_FAILURE_GENERIC, technicalDescription, userDescription, userDescriptionArguments );
+        return failure( CODE_FAILURE_GENERIC, technicalDescription, userDescription, userDescriptionArguments );
     }
 
     public static JSONResult failure(final int code, final String technicalDescription, final String userDescription,
                                      final Object... userDescriptionArguments) {
 
-        return new JSONResult( null, code, technicalDescription, userDescription, userDescriptionArguments );
+        return failure( code, null, technicalDescription, userDescription, userDescriptionArguments );
+    }
+
+    public static JSONResult failure(final int code, @Nullable final Object result, final String technicalDescription, final String userDescription,
+                                     final Object... userDescriptionArguments) {
+
+        return new JSONResult( result, code, technicalDescription, userDescription, userDescriptionArguments );
+    }
+
+    public int getCode() {
+
+        return code;
     }
 
     public boolean isOutdated() {
@@ -106,10 +118,5 @@ public class JSONResult extends MetaObject {
     public Object getResult() {
 
         return result;
-    }
-
-    public int getCode() {
-
-        return code;
     }
 }
