@@ -51,7 +51,7 @@ public abstract class CodeUtils {
 
     public static String hex(@Nullable final byte[] data, final boolean pretty) {
 
-        StringBuffer bytes = new StringBuffer();
+        StringBuilder bytes = new StringBuilder( data == null? 0: (data.length + (pretty? 1: 0)) * 2 );
         Formatter formatter = new Formatter( bytes );
         String format = String.format( "%%02X%s", pretty? ":": "" );
 

@@ -41,15 +41,15 @@ import javax.net.ssl.SSLEngineResult.HandshakeStatus;
  */
 public class Network implements Runnable {
 
-    private static final Logger                             logger             = Logger.get( Network.class );
-    private static final Map<SelectionKey, Integer>         lastReadyOps       = new HashMap<SelectionKey, Integer>();
-    private static final Map<SelectionKey, Integer>         lastInterestOps    = new HashMap<SelectionKey, Integer>();
-    private static final Map<SelectionKey, HandshakeStatus> lastHSStatus       = new HashMap<SelectionKey, HandshakeStatus>();
+    private static final Logger                             logger                   = Logger.get( Network.class );
+    private static final Map<SelectionKey, Integer>         lastReadyOps             = new HashMap<SelectionKey, Integer>();
+    private static final Map<SelectionKey, Integer>         lastInterestOps          = new HashMap<SelectionKey, Integer>();
+    private static final Map<SelectionKey, HandshakeStatus> lastHSStatus             = new HashMap<SelectionKey, HandshakeStatus>();
     // TODO: Use SSLSession#getApplicationBufferSize
-    private static final int                                READ_BUFFER        = 1024;
+    private static final int                                READ_BUFFER              = 1024;
     // TODO: Use SSLSession#getPacketBufferSize
-    private static final int                                WRITE_BUFFER       = 1024;
-    private static final int                                WRITE_QUEUE_BUFFER = 1024 * 10;
+    private static final int                                WRITE_BUFFER             = 1024;
+    private static final int                                APPLICATION_WRITE_BUFFER = 1024 * 10;
 
     private Thread networkThread;
 
@@ -58,19 +58,22 @@ public class Network implements Runnable {
     private final List<NetworkConnectionStateListener> connectionStateListeners;
 
     // Collections that are modified by calling threads and the networking thread.
-    private final Map<SelectableChannel, SSLEngine> sslEngines        = Collections.synchronizedMap(
+    private final Map<SelectableChannel, SSLEngine> sslEngines               = Collections.synchronizedMap(
             new HashMap<SelectableChannel, SSLEngine>() );
-    private final Map<SocketChannel, ByteBuffer>    writeQueueBuffers = Collections.synchronizedMap(
+    private final Map<SocketChannel, ByteBuffer>    applicationWriteBuffers  = Collections.synchronizedMap(
             new HashMap<SocketChannel, ByteBuffer>() );
-    private final Map<SocketChannel, Object>        writeQueueLocks   = Collections.synchronizedMap( new HashMap<SocketChannel, Object>() );
+    private final Map<SocketChannel, Long>          applicationWriteCounters = Collections.synchronizedMap(
+            new HashMap<SocketChannel, Long>() );
+    private final Map<SocketChannel, Object>        writeLocks               = Collections.synchronizedMap(
+            new HashMap<SocketChannel, Object>() );
 
     protected final Object selectorGuard = new Object();
     private Selector selector; // TODO: Synchronize all access to/of the selector.
 
     // Collections that are only modified by the networking thread.
-    private final Map<SocketChannel, ByteBuffer> readBuffers    = new HashMap<SocketChannel, ByteBuffer>();
-    private final Map<SocketChannel, ByteBuffer> writeBuffers   = new HashMap<SocketChannel, ByteBuffer>();
-    private final Map<SocketChannel, Boolean>    closedChannels = new HashMap<SocketChannel, Boolean>();
+    private final Map<SocketChannel, ByteBuffer> networkReadBuffers         = new HashMap<SocketChannel, ByteBuffer>();
+    private final Map<SocketChannel, ByteBuffer> networkWriteBuffers        = new HashMap<SocketChannel, ByteBuffer>();
+    private final Map<SocketChannel, Boolean>    networkClosedChannelByPeer = new HashMap<SocketChannel, Boolean>();
     private boolean running;
 
     /**
@@ -126,9 +129,6 @@ public class Network implements Runnable {
      * manually bringing the network in an existing thread down and up again.
      */
     public synchronized void bringUp() {
-
-        if (!isThreadAlive())
-            startThread();
 
         if (isUp())
             // Already up.
@@ -269,7 +269,7 @@ public class Network implements Runnable {
         setOps( serverChannel, SelectionKey.OP_ACCEPT );
 
         logger.inf( "[====: %s] Bound.", //
-                    nameChannel( serverChannel ) );
+                nameChannel( serverChannel ) );
         notifyBound( serverChannel );
 
         return serverChannel;
@@ -291,7 +291,7 @@ public class Network implements Runnable {
             return;
 
         // Create a write queue lock for this channel.
-        writeQueueLocks.put( connectionChannel, new Object() );
+        writeLocks.put( connectionChannel, new Object() );
 
         // Register the SSL engine for this connection socket, if SSL/TLS is enabled on the server socket.
         SSLEngine sslEngine = sslEngines.get( serverChannel );
@@ -299,11 +299,12 @@ public class Network implements Runnable {
             sslEngines.put( connectionChannel, sslEngine );
 
         // New connection; configure it for non-blocking and read what it has to say.
+        applicationWriteCounters.put( connectionChannel, 0L );
         connectionChannel.configureBlocking( false );
         setOps( connectionChannel, SelectionKey.OP_READ );
 
         logger.inf( "[====: %s] Accepted a new connection to: %s", //
-                    nameChannel( serverChannel ), connectionChannel.socket().getInetAddress() );
+                nameChannel( serverChannel ), connectionChannel.socket().getInetAddress() );
         notifyAccept( serverChannel, connectionChannel );
     }
 
@@ -368,9 +369,10 @@ public class Network implements Runnable {
         // Begin a new non-blocking connection.
         SocketChannel connectionChannel = SocketChannel.open();
         connectionChannel.configureBlocking( false );
+        applicationWriteCounters.put( connectionChannel, 0L );
 
         // Create a write queue lock for this channel.
-        writeQueueLocks.put( connectionChannel, new Object() );
+        writeLocks.put( connectionChannel, new Object() );
 
         // Register the SSL engine for this socket, if SSL/TLS is desired.
         if (sslEngine != null) {
@@ -379,7 +381,7 @@ public class Network implements Runnable {
         }
 
         logger.inf( "[>>>>: %s] Connecting to: %s", //
-                    nameChannel( connectionChannel ), socketAddress );
+                nameChannel( connectionChannel ), socketAddress );
         if (connectionChannel.connect( socketAddress ))
             finishConnect( connectionChannel );
         else
@@ -406,7 +408,7 @@ public class Network implements Runnable {
         setOps( socketChannel, SelectionKey.OP_READ );
 
         logger.inf( "[<<<<: %s] Connected.", //
-                    nameChannel( socketChannel ) );
+                nameChannel( socketChannel ) );
         notifyConnect( socketChannel );
     }
 
@@ -421,10 +423,10 @@ public class Network implements Runnable {
             throws IOException {
 
         // Get the connection's network data read buffer.
-        ByteBuffer readBuffer = readBuffers.get( socketChannel );
+        ByteBuffer readBuffer = networkReadBuffers.get( socketChannel );
         if (readBuffer == null)
             // No read buffer assigned to this connection yet; allocate one.
-            readBuffers.put( socketChannel, readBuffer = ByteBuffer.allocate( READ_BUFFER ) );
+            networkReadBuffers.put( socketChannel, readBuffer = ByteBuffer.allocate( READ_BUFFER ) );
 
         // Read available connection bytes until either the read buffer is full or all available bytes have been read.
         int bytesRead = socketChannel.read( readBuffer );
@@ -434,13 +436,13 @@ public class Network implements Runnable {
             ByteBuffer newReadBuffer = ByteBuffer.allocate( readBuffer.capacity() + READ_BUFFER );
 
             readBuffer.flip();
-            readBuffers.put( socketChannel, readBuffer = newReadBuffer.put( readBuffer ) );
+            networkReadBuffers.put( socketChannel, readBuffer = newReadBuffer.put( readBuffer ) );
         }
 
         if (readBuffer.position() > 0) {
             // Data was received.
             logger.dbg( "[<<<<: %s] Read %d bytes into: %s", //
-                        nameChannel( socketChannel ), bytesRead, renderBuffer( readBuffer ) );
+                    nameChannel( socketChannel ), bytesRead, renderBuffer( readBuffer ) );
             readBuffer.flip();
 
             ByteBuffer dataBuffer = ByteBuffer.allocate( READ_BUFFER );
@@ -451,7 +453,7 @@ public class Network implements Runnable {
 
             // Visualize incoming (plain-text) data.
             logger.inf( "[<<<<: %s] Received (plain): %s", //
-                        nameChannel( socketChannel ), Charsets.UTF_8.decode( dataBuffer ) );
+                    nameChannel( socketChannel ), Charsets.UTF_8.decode( dataBuffer ) );
             dataBuffer.flip();
 
             // Pass incoming (plain-text) data to the application.
@@ -459,8 +461,8 @@ public class Network implements Runnable {
         } else if (bytesRead < 0) {
             // Socket connection was terminated by the client.
             logger.dbg( "[<<<<: %s] Reached end-of-stream.", //
-                        nameChannel( socketChannel ) );
-            closedChannels.put( socketChannel, true );
+                    nameChannel( socketChannel ) );
+            networkClosedChannelByPeer.put( socketChannel, true );
         }
     }
 
@@ -498,7 +500,7 @@ public class Network implements Runnable {
                     case BUFFER_OVERFLOW:
                         // Data buffer overflow, make it bigger and try again.
                         logger.dbg( "[<<<<: %s] SSL %s: dataBuffer%s + %d]", //
-                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( newDataBuffer ), READ_BUFFER );
+                                nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( newDataBuffer ), READ_BUFFER );
                         ByteBuffer resizedDataBuffer = ByteBuffer.allocate( newDataBuffer.capacity() + READ_BUFFER );
                         newDataBuffer.flip();
                         newDataBuffer = resizedDataBuffer.put( newDataBuffer );
@@ -509,20 +511,20 @@ public class Network implements Runnable {
                     case BUFFER_UNDERFLOW:
                         // Not enough network data collected for a whole SSL/TLS packet.
                         logger.dbg( "[<<<<: %s] SSL %s: need_src: readBuffer%s", //
-                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( readBuffer ) );
+                                nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( readBuffer ) );
                         break;
 
                     case CLOSED:
                         // SSL Engine indicates it is closed or just closed itself.
                         logger.dbg( "[<<<: %s] SSL: %s", //
-                                    nameChannel( socketChannel ), sslEngineResult.getStatus() );
-                        closedChannels.put( socketChannel, true );
+                                nameChannel( socketChannel ), sslEngineResult.getStatus() );
+                        networkClosedChannelByPeer.put( socketChannel, true );
                         break;
 
                     case OK:
                         logger.dbg( "[>>>>: %s] SSL %s - %s: Produced %d bytes application data", //
-                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), sslEngineResult.getHandshakeStatus(),
-                                    sslEngineResult.bytesProduced() );
+                                nameChannel( socketChannel ), sslEngineResult.getStatus(), sslEngineResult.getHandshakeStatus(),
+                                sslEngineResult.bytesProduced() );
                         break;
                 }
 
@@ -563,33 +565,41 @@ public class Network implements Runnable {
             throws IOException {
 
         // Lock this connection's write queue.
-        synchronized (writeQueueLocks.get( socketChannel )) {
+        synchronized (writeLocks.get( socketChannel )) {
             if (!socketChannel.isOpen() || !socketChannel.isConnected() || socketChannel.isConnectionPending() || socketChannel.socket()
                                                                                                                                .isOutputShutdown())
                 return;
 
-            // Obtain the application data write queue buffer. If none is allocated yet, make a dummy empty one.
-            ByteBuffer writeQueueBuffer = writeQueueBuffers.get( socketChannel );
-            if (writeQueueBuffer == null)
-                writeQueueBuffers.put( socketChannel, writeQueueBuffer = ByteBuffer.allocate( 0 ) );
+            // Obtain the application write queue buffer. If none is allocated yet, make a dummy empty one.
+            ByteBuffer applicationWriteBuffer = applicationWriteBuffers.get( socketChannel );
+            if (applicationWriteBuffer == null)
+                applicationWriteBuffers.put( socketChannel, applicationWriteBuffer = ByteBuffer.allocate( 0 ) );
             else
-                writeQueueBuffer.flip();
+                applicationWriteBuffer.flip();
 
             // Get the connection's network data write buffer.
-            ByteBuffer writeBuffer = writeBuffers.get( socketChannel );
+            ByteBuffer writeBuffer = networkWriteBuffers.get( socketChannel );
             if (writeBuffer == null)
                 // No write buffer assigned to this connection yet; allocate one.
-                writeBuffers.put( socketChannel, writeBuffer = ByteBuffer.allocate( WRITE_BUFFER ) );
+                networkWriteBuffers.put( socketChannel, writeBuffer = ByteBuffer.allocate( WRITE_BUFFER ) );
 
             // Perform translation from application data to network data and out the result.
-            writeBuffer = fromApplicationData( writeQueueBuffer, socketChannel, writeBuffer );
-            writeBuffers.put( socketChannel, writeBuffer );
+            int applicationBytes = applicationWriteBuffer.remaining();
+            writeBuffer = fromApplicationData( applicationWriteBuffer, socketChannel, writeBuffer );
+            applicationBytes = applicationBytes - applicationWriteBuffer.remaining();
+            networkWriteBuffers.put( socketChannel, writeBuffer );
 
             if (writeBuffer.remaining() > 0) {
                 int bytesWritten = socketChannel.write( writeBuffer );
-                logger.dbg( "[>>>>: %s] Wrote %d bytes of: writeBuffer%s", //
-                            nameChannel( socketChannel ), bytesWritten, renderBuffer( writeBuffer ) );
+                logger.dbg( "[>>>>: %s] Wrote %d bytes writeBuffer%s, consumed %d bytes applicationWriteBuffer%s", //
+                        nameChannel( socketChannel ), bytesWritten, renderBuffer( writeBuffer ), applicationBytes,
+                        renderBuffer( applicationWriteBuffer ) );
                 writeBuffer.compact();
+
+                synchronized (applicationWriteCounters) {
+                    applicationWriteCounters.put( socketChannel, applicationWriteCounters.get( socketChannel ) + applicationBytes );
+                    applicationWriteCounters.notifyAll();
+                }
             }
 
             if (writeBuffer.position() == 0)
@@ -626,15 +636,14 @@ public class Network implements Runnable {
 
             while (true) {
 
-                // Try to encrypt readBuffer into dataBuffer.
+                // Try to encrypt dataBuffer into newWriteBuffer.
                 SSLEngineResult sslEngineResult = sslEngine.wrap( dataBuffer, newWriteBuffer );
 
                 switch (sslEngineResult.getStatus()) {
                     case BUFFER_OVERFLOW:
                         // Data buffer overflow, make it bigger and try again.
                         logger.dbg( "[>>>>: %s] SSL %s: writeBuffer%s + %d", //
-                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( newWriteBuffer ),
-                                    WRITE_BUFFER );
+                                nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( newWriteBuffer ), WRITE_BUFFER );
                         ByteBuffer resizedWriteBuffer = ByteBuffer.allocate( newWriteBuffer.capacity() + WRITE_BUFFER );
                         newWriteBuffer.flip();
                         newWriteBuffer = resizedWriteBuffer.put( newWriteBuffer );
@@ -645,20 +654,20 @@ public class Network implements Runnable {
                     case BUFFER_UNDERFLOW:
                         // Not enough application data collected for a whole SSL/TLS packet.
                         logger.dbg( "[>>>>: %s] SSL %s: need_src: dataBuffer%s", //
-                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( dataBuffer ) );
+                                nameChannel( socketChannel ), sslEngineResult.getStatus(), renderBuffer( dataBuffer ) );
                         break;
 
                     case CLOSED:
                         // SSL Engine indicates it is closed or just closed itself.
                         logger.dbg( "[>>>>: %s] SSL %s", //
-                                    nameChannel( socketChannel ), sslEngineResult.getStatus() );
-                        closedChannels.put( socketChannel, false );
+                                nameChannel( socketChannel ), sslEngineResult.getStatus() );
+                        networkClosedChannelByPeer.put( socketChannel, false );
                         break;
 
                     case OK:
                         logger.dbg( "[>>>>: %s] SSL %s - %s: Consumed %d bytes application data", //
-                                    nameChannel( socketChannel ), sslEngineResult.getStatus(), sslEngineResult.getHandshakeStatus(),
-                                    sslEngineResult.bytesConsumed() );
+                                nameChannel( socketChannel ), sslEngineResult.getStatus(), sslEngineResult.getHandshakeStatus(),
+                                sslEngineResult.bytesConsumed() );
                         break;
                 }
 
@@ -700,7 +709,7 @@ public class Network implements Runnable {
     private void closeChannel(final SocketChannel socketChannel, final boolean resetByPeer)
             throws IOException {
 
-        synchronized (writeQueueLocks.get( socketChannel )) {
+        synchronized (writeLocks.get( socketChannel )) {
             SSLEngine sslEngine = sslEngines.get( socketChannel );
             if (sslEngine != null)
                 if (resetByPeer)
@@ -711,70 +720,116 @@ public class Network implements Runnable {
             socketChannel.close();
             sslEngines.remove( socketChannel );
 
-            readBuffers.remove( socketChannel );
-            writeBuffers.remove( socketChannel );
-            closedChannels.remove( socketChannel );
+            networkReadBuffers.remove( socketChannel );
+            networkWriteBuffers.remove( socketChannel );
+            networkClosedChannelByPeer.remove( socketChannel );
 
-            writeQueueLocks.remove( socketChannel );
-            writeQueueBuffers.remove( socketChannel );
+            writeLocks.remove( socketChannel );
+            applicationWriteBuffers.remove( socketChannel );
 
             if (resetByPeer)
                 logger.inf( "[<<<<: %s] Closed connection (reset by peer).", //
-                            nameChannel( socketChannel ) );
+                        nameChannel( socketChannel ) );
             else
                 logger.inf( "[>>>>: %s] Closed connection (terminated).", //
-                            nameChannel( socketChannel ) );
+                        nameChannel( socketChannel ) );
 
+            applicationWriteCounters.notifyAll();
             notifyClose( socketChannel, resetByPeer );
         }
     }
 
     /**
-     * Queue a message to be sent to the given destination. The message will be added to the destination's write queue.
+     * Queue a message to be sent to the given destination, asynchronously. The message will be added to the destination's write queue.
      * <p/>
      * <p> After this process, the application's data buffer's position will be set right after the bytes that have been queued on the
      * network. This is guaranteed to be the buffer's limit (eg. all data will be queued). </p>
      * <p/>
      * The connection's queue buffer's position will be right after the newly added bytes.
      *
-     * @param dataBuffer    A byte buffer that holds the bytes to dispatch. Make sure that the buffer is set up read for reading (put the
+     * @param dataBuffer    A byte buffer that holds the bytes to dispatch. Make sure that the buffer is set up ready for reading (put the
+     *                      position at the start of the data to read and the limit at the end). The buffer will be flipped so its position
+     *                      should be right after the bytes to write. Use <code>null</code> to request a connection shutdown.
+     * @param socketChannel The channel over which to send the message.
+     *
+     * @return The amount of bytes that will have been written to the given destination when the given data has been successfully sent.
+     *
+     * @throws ClosedChannelException The given channel is closed.
+     */
+    public long queue(final ByteBuffer dataBuffer, final SocketChannel socketChannel)
+            throws ClosedChannelException {
+
+        checkArgument( socketChannel.keyFor( selector ) != null,
+                "Tried to queue a message for a destination (%s) that is not managed by our selector.", nameChannel( socketChannel ) );
+
+        // FIXME: Investigate whether this is correct.
+        // Should we not synchronize on writeLocks instead?  Or should we move the writeLock block below into this synchronized block?
+        ByteBuffer applicationWriteBuffer;
+        synchronized (applicationWriteBuffers) {
+            applicationWriteBuffer = applicationWriteBuffers.get( socketChannel );
+
+            // Obtain or create the data buffer for the connection.
+            if (applicationWriteBuffer == null)
+                // No applicationWriteBuffer yet for this connection, allocate one.
+                applicationWriteBuffers.put( socketChannel,
+                        applicationWriteBuffer = ByteBuffer.allocate( Math.max( dataBuffer.remaining(), APPLICATION_WRITE_BUFFER ) ) );
+            else if (applicationWriteBuffer.remaining() < dataBuffer.remaining())
+                // Not enough space left in the applicationWriteBuffer for the application data, make it bigger.
+                synchronized (writeLocks.get( socketChannel )) {
+                    ByteBuffer newApplicationWriteBuffer = ByteBuffer.allocate(
+                            Math.max( applicationWriteBuffer.position() + dataBuffer.remaining(),
+                                    applicationWriteBuffer.capacity() + APPLICATION_WRITE_BUFFER ) );
+                    applicationWriteBuffer.flip();
+                    applicationWriteBuffers.put( socketChannel,
+                            applicationWriteBuffer = newApplicationWriteBuffer.put( applicationWriteBuffer ) );
+                }
+        }
+
+        // We are interested in writing stuff.
+        long writeCompletesCount;
+        synchronized (writeLocks.get( socketChannel )) {
+            applicationWriteBuffer.put( dataBuffer );
+            writeCompletesCount = applicationWriteCounters.get( socketChannel ) + applicationWriteBuffer.position();
+        }
+        addOps( socketChannel, SelectionKey.OP_WRITE );
+
+        return writeCompletesCount;
+    }
+
+    /**
+     * Send a message to the given destination, synchronously. The message will be added to the destination's write buffer and this method
+     * will wait for the message to be handled before returning.  If any data is already queued for the destination, it will be handled
+     * before the given data, and this method will block until both the queued data and the given data have been handled.
+     * <p/>
+     * <p> After this process, the application's data buffer's position will be set right after the bytes that have been queued on the
+     * network. This is guaranteed to be the buffer's limit (eg. all data will be queued). </p>
+     * <p/>
+     * The connection's buffer's position will be right after the newly added bytes.
+     *
+     * @param dataBuffer    A byte buffer that holds the bytes to dispatch. Make sure that the buffer is set up ready for reading (put the
      *                      position at the start of the data to read and the limit at the end). The buffer will be flipped so its position
      *                      should be right after the bytes to write. Use <code>null</code> to request a connection shutdown.
      * @param socketChannel The channel over which to send the message.
      *
      * @throws ClosedChannelException The given channel is closed.
      */
-    public void queue(final ByteBuffer dataBuffer, final SocketChannel socketChannel)
+    public void send(final ByteBuffer dataBuffer, final SocketChannel socketChannel)
             throws ClosedChannelException {
 
-        checkArgument( socketChannel.keyFor( selector ) != null,
-                       "Tried to queue a message for a destination (%s) that is not managed by our selector.",
-                       nameChannel( socketChannel ) );
+        long writeCompletesCount = queue( dataBuffer, socketChannel );
 
-        ByteBuffer writeQueueBuffer;
-        synchronized (writeQueueBuffers) {
-            writeQueueBuffer = writeQueueBuffers.get( socketChannel );
+        // Wait until socketChannel's write counter hits writeCompletesCount
+        synchronized (applicationWriteCounters) {
+            while (applicationWriteCounters.get( socketChannel ) < writeCompletesCount)
+                try {
+                    if (!socketChannel.isOpen())
+                        throw new ClosedChannelException();
 
-            // Obtain or create the data buffer for the connection.
-            if (writeQueueBuffer == null)
-                // No writeQueueBuffer yet for this connection, allocate one.
-                writeQueueBuffers.put( socketChannel,
-                                       writeQueueBuffer = ByteBuffer.allocate( Math.max( dataBuffer.remaining(), WRITE_QUEUE_BUFFER ) ) );
-            else if (writeQueueBuffer.remaining() < dataBuffer.remaining())
-                // Not enough space left in the writeQueueBuffer for the application data, make it bigger.
-                synchronized (writeQueueLocks.get( socketChannel )) {
-                    ByteBuffer newWriteQueueBuffer = ByteBuffer.allocate( Math.max( writeQueueBuffer.position() + dataBuffer.remaining(),
-                                                                                    writeQueueBuffer.capacity() + WRITE_QUEUE_BUFFER ) );
-                    writeQueueBuffer.flip();
-                    writeQueueBuffers.put( socketChannel, writeQueueBuffer = newWriteQueueBuffer.put( writeQueueBuffer ) );
+                    applicationWriteCounters.wait();
+                }
+                catch (InterruptedException ignored) {
                 }
         }
-
-        // We are interested in writing stuff.
-        synchronized (writeQueueLocks.get( socketChannel )) {
-            writeQueueBuffer.put( dataBuffer );
-        }
-        addOps( socketChannel, SelectionKey.OP_WRITE );
     }
 
     /**
@@ -792,7 +847,7 @@ public class Network implements Runnable {
     public void close(final SocketChannel socketChannel)
             throws IOException {
 
-        synchronized (writeQueueLocks.get( socketChannel )) {
+        synchronized (writeLocks.get( socketChannel )) {
             SSLEngine sslEngine = sslEngines.get( socketChannel );
             if (sslEngine != null) {
                 sslEngine.closeOutbound();
@@ -923,7 +978,7 @@ public class Network implements Runnable {
                         final Runnable delegatedTask = engine.getDelegatedTask();
                         if (delegatedTask != null) {
                             logger.dbg( "[====: %s] SSL %s: Starting a task thread.", //
-                                        nameChannel( channel ), handshakeStatus, delegatedTask );
+                                    nameChannel( channel ), handshakeStatus, delegatedTask );
 
                             new Thread( new Runnable() {
 
@@ -936,7 +991,7 @@ public class Network implements Runnable {
                             } ).start();
                         } else {
                             logger.dbg( "[====: %s] SSL %s: Task needed but none offered.", //
-                                        nameChannel( channel ), handshakeStatus, delegatedTask );
+                                    nameChannel( channel ), handshakeStatus, delegatedTask );
                             break;
                         }
 
@@ -974,40 +1029,40 @@ public class Network implements Runnable {
             throws IOException {
 
         // Read buffers
-        for (final Map.Entry<SocketChannel, ByteBuffer> entry : readBuffers.entrySet()) {
+        for (final Map.Entry<SocketChannel, ByteBuffer> entry : networkReadBuffers.entrySet()) {
             SocketChannel socketChannel = entry.getKey();
             ByteBuffer readBuffer = entry.getValue();
 
             if (readBuffer.position() > 0) {
                 logger.dbg( "[rbuf: %s] %s", //
-                            nameChannel( socketChannel ), renderBuffer( readBuffer ) );
+                        nameChannel( socketChannel ), renderBuffer( readBuffer ) );
                 read( socketChannel );
             }
         }
 
         // Write buffers
-        for (final Map.Entry<SocketChannel, ByteBuffer> entry : writeBuffers.entrySet()) {
+        for (final Map.Entry<SocketChannel, ByteBuffer> entry : networkWriteBuffers.entrySet()) {
             SocketChannel socketChannel = entry.getKey();
             ByteBuffer writeBuffer = entry.getValue();
 
             if (writeBuffer.position() > 0) {
                 logger.dbg( "[wbuf: %s] %s", //
-                            nameChannel( socketChannel ), renderBuffer( writeBuffer ) );
+                        nameChannel( socketChannel ), renderBuffer( writeBuffer ) );
                 addOps( socketChannel, SelectionKey.OP_WRITE );
             }
         }
 
         // Write queued application data
-        for (final Map.Entry<SocketChannel, ByteBuffer> entry : writeQueueBuffers.entrySet()) {
+        for (final Map.Entry<SocketChannel, ByteBuffer> entry : applicationWriteBuffers.entrySet()) {
             SocketChannel socketChannel = entry.getKey();
-            ByteBuffer writeQueueBuffer = entry.getValue();
+            ByteBuffer applicationWriteBuffer = entry.getValue();
 
-            if (writeQueueBuffer.position() > 0 && socketChannel.isOpen())
+            if (applicationWriteBuffer.position() > 0 && socketChannel.isOpen())
                 addOps( socketChannel, SelectionKey.OP_WRITE );
         }
 
         // Let each channel that has stuff to write send it out.
-        for (final SocketChannel socketChannel : writeQueueBuffers.keySet())
+        for (final SocketChannel socketChannel : applicationWriteBuffers.keySet())
             write( socketChannel );
     }
 
@@ -1020,7 +1075,7 @@ public class Network implements Runnable {
     private void processClosure()
             throws IOException {
 
-        for (final Map.Entry<SocketChannel, Boolean> entry : closedChannels.entrySet()) {
+        for (final Map.Entry<SocketChannel, Boolean> entry : networkClosedChannelByPeer.entrySet()) {
             SocketChannel socketChannel = entry.getKey();
             boolean resetByPeer = entry.getValue();
 
@@ -1159,12 +1214,11 @@ public class Network implements Runnable {
     @Override
     public void run() {
 
-        running = true;
-        int errorThrottle = 10;
-        Thread.currentThread().setName( "Networking" );
-
+        Thread.currentThread().setName( "Network Connector" );
         bringUp();
 
+        running = true;
+        int errorThrottle = 10;
         while (running)
             try {
                 try {
