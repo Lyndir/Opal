@@ -29,15 +29,15 @@
 
         <!-- EXTERNAL DEPENDENCIES -->
         <dependency>
-            <groupId>javax.persistence</groupId>
+            <groupId>org.eclipse.persistence</groupId>
             <artifactId>javax.persistence</artifactId>
-            <version>2.0-SNAPSHOT</version>
+            <version>2.0.0</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>persistence-api</artifactId>
-            <version>1.0</version>
+            <version>1.0.2</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -46,22 +46,5 @@
         </dependency>
 
     </dependencies>
-
-    <!-- Needed for persistence-api, for now. -->
-    <repositories>
-        <repository>
-            <id>eclipse</id>
-            <name>EclipseLink Repository</name>
-            <url>http://eclipse.mirror.kangaroot.net/rt/eclipselink/maven.repo/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-        </repository>
-    </repositories>
 
 </project>
