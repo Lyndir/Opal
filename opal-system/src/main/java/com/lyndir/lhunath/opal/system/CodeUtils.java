@@ -44,12 +44,12 @@ public abstract class CodeUtils {
         }
     }
 
-    public static String hex(@Nullable final byte[] data) {
+    public static String encodeHex(@Nullable final byte[] data) {
 
-        return hex( data, false );
+        return encodeHex( data, false );
     }
 
-    public static String hex(@Nullable final byte[] data, final boolean pretty) {
+    public static String encodeHex(@Nullable final byte[] data, final boolean pretty) {
 
         StringBuilder bytes = new StringBuilder( data == null? 0: (data.length + (pretty? 1: 0)) * 2 );
         Formatter formatter = new Formatter( bytes );
@@ -65,7 +65,7 @@ public abstract class CodeUtils {
         return bytes.toString();
     }
 
-    public static byte[] unhex(@Nullable final String hexString) {
+    public static byte[] decodeHex(@Nullable final String hexString) {
 
         if (hexString == null)
             return new byte[0];

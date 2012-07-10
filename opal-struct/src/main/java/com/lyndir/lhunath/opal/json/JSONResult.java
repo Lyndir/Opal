@@ -54,7 +54,7 @@ public class JSONResult extends MetaObject {
         }
     }
 
-    public static JSONResult success(final @Nullable Object result) {
+    public static JSONResult success(@Nullable final Object result) {
 
         return new JSONResult( result, CODE_SUCCESS, null, null );
     }

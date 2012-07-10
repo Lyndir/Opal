@@ -114,7 +114,21 @@ public abstract class ObjectUtils {
             return toString.append( '>' ).toString();
         }
 
-        if (o.getClass().isArray())
+        if (o.getClass().equals( char[].class )) {
+            char[] charArray = (char[]) o;
+            StringBuilder toString = new StringBuilder( String.format( "<c[]: #%d, ", charArray.length ) );
+
+            // Decode some bytes.
+            toString.append( charArray, 0, Math.min( charArray.length, MAX_DECODE_LENGTH ) );
+
+            // Append trimmed indicator if not all bytes were decoded.
+            if (charArray.length > MAX_DECODE_LENGTH)
+                toString.append( "[...]" );
+
+            return toString.append( '>' ).toString();
+        }
+
+        if (Object[].class.isAssignableFrom( o.getClass() ))
             return Arrays.asList( (Object[]) o ).toString();
 
         if (o instanceof String)
