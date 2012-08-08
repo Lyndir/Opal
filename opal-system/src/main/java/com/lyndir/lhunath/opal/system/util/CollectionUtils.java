@@ -1,7 +1,9 @@
 package com.lyndir.lhunath.opal.system.util;
 
+import com.google.common.collect.Maps;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.util.Collection;
+import java.util.Map;
 
 
 /**
@@ -29,5 +31,28 @@ public abstract class CollectionUtils {
                 return true;
 
         return false;
+    }
+
+    public static boolean isEqualElements(final Collection<?> c1, final Collection<?> c2) {
+
+        Map<Object, Integer> objectCount = Maps.newHashMap();
+        for (Object c1Object : c1) {
+            Integer count = objectCount.get( c1Object );
+            count = (count == null? 0: count) + 1;
+
+            objectCount.put( c1Object, count );
+        }
+
+        for (Object c2Object : c2) {
+            Integer count = objectCount.get( c2Object );
+            count = (count == null? 0: count) - 1;
+
+            if (count > 0)
+                objectCount.put( c2Object, count );
+            else if (count == 0)
+                objectCount.remove( c2Object );
+        }
+
+        return objectCount.isEmpty();
     }
 }

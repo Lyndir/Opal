@@ -80,8 +80,19 @@ public abstract class ObjectUtils {
      */
     public static <P, C extends P> boolean isEqual(final C subObject, final P superObject) {
 
+        // Get the simple stuff out of the way.
         //noinspection ObjectEquality
-        return subObject == superObject || subObject != null && subObject.equals( superObject );
+        if (subObject == superObject)
+            return true;
+        if (subObject == null)
+            return false;
+
+        // Be smart about arrays.  In a really ugly and dumb instanceof-kind of way.  Feel free to think of a better way.
+        if (subObject.getClass().isArray())
+            return Arrays.deepEquals( new Object[] { subObject }, new Object[] { superObject } );
+
+        // Use equals() for the rest.
+        return subObject.equals( superObject );
     }
 
     /**
@@ -103,7 +114,7 @@ public abstract class ObjectUtils {
 
             // Decode some bytes.
             CharBuffer decodedBytes = Charsets.UTF_8
-                    .decode( ByteBuffer.wrap( byteArray, 0, Math.min( byteArray.length, MAX_DECODE_LENGTH ) ) );
+                                              .decode( ByteBuffer.wrap( byteArray, 0, Math.min( byteArray.length, MAX_DECODE_LENGTH ) ) );
             String stripped = NON_PRINTABLE.matcher( decodedBytes ).replaceAll( "." );
             toString.append( stripped );
 
@@ -162,7 +173,7 @@ public abstract class ObjectUtils {
         if (o instanceof X509Certificate) {
             X509Certificate x509Certificate = (X509Certificate) o;
             return String.format( "{Cert: DN=%s, Issuer=%s}", x509Certificate.getSubjectX500Principal().getName(),
-                                  x509Certificate.getIssuerX500Principal().getName() );
+                    x509Certificate.getIssuerX500Principal().getName() );
         }
 
         return String.valueOf( o );
@@ -227,7 +238,7 @@ public abstract class ObjectUtils {
                                 }
                                 catch (Throwable t) {
                                     logger.dbg( t, "Couldn't load value for field: %s, in object: 0x%x", field,
-                                                System.identityHashCode( o ) );
+                                            System.identityHashCode( o ) );
                                 }
 
                                 return fieldsString;
@@ -287,7 +298,7 @@ public abstract class ObjectUtils {
                             logger.dbg( t, "Couldn't load hashCode for: %s, value: %s.  Falling back to identity hashCode.", field, value );
                         }
 
-                    return Arrays.hashCode( new int[]{ lastHashCode, hashCode } );
+                    return Arrays.hashCode( new int[] { lastHashCode, hashCode } );
                 }
             }, 0 ), identityHashCode );
         }
