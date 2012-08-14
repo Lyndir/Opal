@@ -1,9 +1,11 @@
 package com.lyndir.lhunath.opal.system.util;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.lyndir.lhunath.opal.system.logging.Logger;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -24,7 +26,7 @@ public abstract class CollectionUtils {
      *
      * @return <code>true</code> if the object was found anywhere within the collection or any of its sub-collections.
      */
-    public static boolean recurseContains(final Iterable<?> collection, final Object o) {
+    public static boolean recurseContains(@NotNull final Iterable<?> collection, @Nullable final Object o) {
 
         for (final Object co : collection)
             if (co.equals( o ) || co instanceof Collection<?> && recurseContains( (Iterable<?>) co, o ))
@@ -33,7 +35,7 @@ public abstract class CollectionUtils {
         return false;
     }
 
-    public static boolean isEqualElements(final Collection<?> c1, final Collection<?> c2) {
+    public static boolean isEqualElements(@NotNull final Collection<?> c1, @NotNull final Collection<?> c2) {
 
         Map<Object, Integer> objectCount = Maps.newHashMap();
         for (Object c1Object : c1) {
@@ -54,5 +56,26 @@ public abstract class CollectionUtils {
         }
 
         return objectCount.isEmpty();
+    }
+
+    @Nullable
+    public static <E> E firstElementOfType(@NotNull Class<E> type, @NotNull Collection<? super E> elements) {
+
+        for (Object element : elements)
+            if (type.isInstance( element ))
+                return type.cast( element );
+
+        return null;
+    }
+
+    @NotNull
+    public static <E> List<E> elementsOfType(@NotNull Class<E> type, @NotNull Collection<? super E> elements) {
+
+        List<E> elementsOfType = Lists.newLinkedList();
+        for (Object element : elements)
+            if (type.isInstance( element ))
+                elementsOfType.add( type.cast( element ) );
+
+        return elementsOfType;
     }
 }
