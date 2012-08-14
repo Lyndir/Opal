@@ -1,9 +1,13 @@
 package com.lyndir.lhunath.opal.system;
 
+import com.google.common.base.Charsets;
+import com.google.common.base.Preconditions;
 import com.google.common.io.ByteStreams;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.system.util.IOUtils;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.Formatter;
@@ -75,5 +79,56 @@ public abstract class CodeUtils {
             deviceToken[i / 2] = Integer.valueOf( hexString.substring( i, i + 2 ), 16 ).byteValue();
 
         return deviceToken;
+    }
+
+    /**
+     * Encode URL arguments into a URL template.  Arguments are injected after UTF-8 based URL encoding.
+     *
+     * @param urlFormat      The URL template to inject the arguments into.  {@code {}} gets replaced by its respective argument.
+     * @param urlParam1      The first URL template argument.
+     * @param otherURLParams More URL template arguments, if needed.
+     *
+     * @return A URL that is the result of injecting the arguments into the URL template.
+     */
+    public static URL encodeURL(final String urlFormat, final String urlParam1, final String... otherURLParams) {
+
+        StringBuilder url = new StringBuilder();
+        int lastURLFormatOffset = 0, urlFormatIndex = 0;
+        for (int urlFormatOffset = 0; //
+             -1 != (urlFormatOffset = urlFormat.indexOf( "{}", urlFormatOffset )); //
+             lastURLFormatOffset = urlFormatOffset += 2, ++urlFormatIndex) {
+
+            url.append( urlFormat.substring( lastURLFormatOffset, urlFormatOffset ) );
+
+            if (urlFormatIndex == 0) {
+                url.append( encodeURL( urlParam1 ) );
+            } else {
+                Preconditions.checkElementIndex( urlFormatIndex - 1, otherURLParams.length, "Not enough URL encoding parameters given." );
+                url.append( encodeURL( otherURLParams[urlFormatIndex - 1] ) );
+            }
+        }
+
+        try {
+            return new URL( url.toString() );
+        }
+        catch (MalformedURLException e) {
+            logger.err( e, "The URL template does not appear to specify a valid URL: %s", urlFormat );
+            throw new IllegalArgumentException( e );
+        }
+    }
+
+    public static String encodeURL(final String plainString) {
+
+        return encodeURL( plainString, Charsets.UTF_8 );
+    }
+
+    private static String encodeURL(final String plainString, final Charset encoding) {
+
+        try {
+            return URLEncoder.encode( plainString, encoding.displayName() );
+        }
+        catch (UnsupportedEncodingException e) {
+            throw logger.bug( e, "Given encoding not supported: %s", encoding );
+        }
     }
 }

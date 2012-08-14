@@ -492,6 +492,7 @@ public abstract class TypeUtils {
             return current;
         }
 
+        @Nullable
         public R getLastResult() {
 
             return lastResult;

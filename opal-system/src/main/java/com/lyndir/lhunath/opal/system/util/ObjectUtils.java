@@ -363,9 +363,13 @@ public abstract class ObjectUtils {
 
         try {
             seen.get( For.equals ).get().add( identityHashCode );
-            return forEachFieldWithMeta( For.equals, superObject.getClass(), new Function<LastResult<Field, Boolean>, Boolean>() {
+            return ifNotNullElse( forEachFieldWithMeta( For.equals, superObject.getClass(), new Function<LastResult<Field, Boolean>, Boolean>() {
                 @Override
                 public Boolean apply(final LastResult<Field, Boolean> lastResult) {
+
+                    if (Boolean.FALSE.equals( lastResult.getLastResult() ))
+                        // One 'false' means equals fails.  Don't bother with other fields.
+                        return Boolean.FALSE;
 
                     Field field = lastResult.getCurrent();
                     try {
@@ -392,7 +396,7 @@ public abstract class ObjectUtils {
 
                     return Objects.equal( superValue, subValue );
                 }
-            }, false /* There are no (accessible) fields to compare. */ );
+            }, null ), false /* There are no (accessible) fields to compare. */ );
         }
         finally {
             seen.get( For.equals ).get().remove( identityHashCode );
@@ -400,7 +404,7 @@ public abstract class ObjectUtils {
     }
 
     private static <R, T> R forEachFieldWithMeta(final For meta, final Class<T> type, final Function<LastResult<Field, R>, R> function,
-                                                 final R firstResult) {
+                                                 @Nullable final R firstResult) {
 
         return TypeUtils.forEachSuperTypeOf( type, new Function<LastResult<Class<?>, R>, R>() {
             @Override
