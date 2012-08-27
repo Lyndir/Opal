@@ -37,25 +37,30 @@ public abstract class CollectionUtils {
 
     public static boolean isEqualElements(@NotNull final Collection<?> c1, @NotNull final Collection<?> c2) {
 
-        Map<Object, Integer> objectCount = Maps.newHashMap();
+        if (c1.size() != c2.size())
+            return false;
+
+        Map<Object, Integer> objectsCount = Maps.newHashMap();
         for (Object c1Object : c1) {
-            Integer count = objectCount.get( c1Object );
+            Integer count = objectsCount.get( c1Object );
             count = (count == null? 0: count) + 1;
 
-            objectCount.put( c1Object, count );
+            objectsCount.put( c1Object, count );
         }
 
         for (Object c2Object : c2) {
-            Integer count = objectCount.get( c2Object );
+            Integer count = objectsCount.get( c2Object );
             count = (count == null? 0: count) - 1;
 
             if (count > 0)
-                objectCount.put( c2Object, count );
+                objectsCount.put( c2Object, count );
             else if (count == 0)
-                objectCount.remove( c2Object );
+                objectsCount.remove( c2Object );
+            else
+                return false;
         }
 
-        return objectCount.isEmpty();
+        return objectsCount.isEmpty();
     }
 
     @Nullable

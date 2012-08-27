@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -182,5 +183,25 @@ public abstract class StringUtils {
             filtered.replace( index, indexToEnds.get( index ), indexToExpansions.get( index ) );
 
         return filtered.toString();
+    }
+
+    public static String indent(final int indents) {
+
+        return indent( indents, 4 );
+    }
+
+    public static String indent(final int indents, final int size) {
+
+        StringBuilder indent = new StringBuilder(indents * size);
+        for (int i = 0; i < indents * size; i++)
+            indent.append( ' ' );
+
+        return indent.toString();
+    }
+
+    @NonNls
+    public static String indent(final int indents, final int size, final String message) {
+
+        return indent( indents, size ) + message;
     }
 }

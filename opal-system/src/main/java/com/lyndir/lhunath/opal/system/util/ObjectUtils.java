@@ -49,6 +49,7 @@ public abstract class ObjectUtils {
     private static final Pattern                             NON_PRINTABLE     = Pattern.compile( "[^\\p{Print}]" );
     private static final int                                 MAX_DECODE_LENGTH = 100;
     private static final Map<For, ThreadLocal<Set<Integer>>> seen              = Maps.newEnumMap( For.class );
+    private static final int HASHCODE_PRIME = 31;
 
     static {
         for (final For forMeta : For.values()) {
@@ -263,9 +264,15 @@ public abstract class ObjectUtils {
     public static int hashCode(final Object o) {
 
         int identityHashCode = System.identityHashCode( o );
-        if (seen.get( For.hashCode ).get().contains( identityHashCode ))
+        logger.trc( "%sHashCode for: %s (%d)", StringUtils.indent( seen.get( For.hashCode ).get().size() ), //
+                o.getClass().getSimpleName(), identityHashCode );
+
+        if (seen.get( For.hashCode ).get().contains( identityHashCode )) {
             // Cyclic reference.
+            logger.trc( "%s- Detected cycle, returning identity.", StringUtils.indent( seen.get( For.hashCode ).get().size() + 1 ),
+                    identityHashCode );
             return identityHashCode;
+        }
 
         try {
             seen.get( For.hashCode ).get().add( identityHashCode );
@@ -289,18 +296,36 @@ public abstract class ObjectUtils {
                     }
 
                     int hashCode = System.identityHashCode( value );
-                    if (value != null)
+                    if (value != null && isValueAccessible( value ))
                         try {
-                            if (isValueAccessible( value ))
+                            if (value instanceof Iterable) {
+                                // Best-effort special handling for Iterables in case they don't implement hashCode themselves.
+                                // We just use the hashCode of the sorted hashCodes of the values.
+                                ImmutableSortedSet.Builder<Integer> hashCodes = ImmutableSortedSet.<Integer>naturalOrder();
+                                for (Object o : (Iterable<?>) value)
+                                    hashCodes.add( ObjectUtils.hashCode( o ) );
+                                hashCode = hashCodes.build().hashCode();
+                            } else
                                 hashCode = value.hashCode();
                         }
                         catch (Throwable t) {
                             logger.dbg( t, "Couldn't load hashCode for: %s, value: %s.  Falling back to identity hashCode.", field, value );
                         }
 
-                    return Arrays.hashCode( new int[] { lastHashCode, hashCode } );
+                    int newHashCode = HASHCODE_PRIME * lastHashCode + hashCode;
+                    logger.trc( "%s- %s=%d (hashCode -> %d)", StringUtils.indent( seen.get( For.hashCode ).get().size() ), //
+                            field.getName(), hashCode, newHashCode );
+
+                    return newHashCode;
                 }
-            }, 0 ), identityHashCode );
+            }, 0 ), new NNSupplier<Integer>() {
+                @NotNull
+                @Override
+                public Integer get() {
+
+                    return o.hashCode();
+                }
+            } );
         }
         finally {
             seen.get( For.hashCode ).get().remove( identityHashCode );
@@ -363,40 +388,41 @@ public abstract class ObjectUtils {
 
         try {
             seen.get( For.equals ).get().add( identityHashCode );
-            return ifNotNullElse( forEachFieldWithMeta( For.equals, superObject.getClass(), new Function<LastResult<Field, Boolean>, Boolean>() {
-                @Override
-                public Boolean apply(final LastResult<Field, Boolean> lastResult) {
+            return ifNotNullElse(
+                    forEachFieldWithMeta( For.equals, superObject.getClass(), new Function<LastResult<Field, Boolean>, Boolean>() {
+                        @Override
+                        public Boolean apply(final LastResult<Field, Boolean> lastResult) {
 
-                    if (Boolean.FALSE.equals( lastResult.getLastResult() ))
-                        // One 'false' means equals fails.  Don't bother with other fields.
-                        return Boolean.FALSE;
+                            if (Boolean.FALSE.equals( lastResult.getLastResult() ))
+                                // One 'false' means equals fails.  Don't bother with other fields.
+                                return Boolean.FALSE;
 
-                    Field field = lastResult.getCurrent();
-                    try {
-                        field.setAccessible( true );
-                    }
-                    catch (SecurityException ignored) {
-                    }
+                            Field field = lastResult.getCurrent();
+                            try {
+                                field.setAccessible( true );
+                            }
+                            catch (SecurityException ignored) {
+                            }
 
-                    Object superValue = null, subValue = null;
-                    try {
-                        if (isValueAccessible( superObject ))
-                            superValue = field.get( superObject );
-                    }
-                    catch (Throwable t) {
-                        logger.dbg( t, "Couldn't load value for field: %s, in object: %s", field, superObject );
-                    }
-                    try {
-                        if (isValueAccessible( subObject ))
-                            subValue = field.get( subObject );
-                    }
-                    catch (Throwable t) {
-                        logger.dbg( t, "Couldn't load value for field: %s, in object: %s", field, subObject );
-                    }
+                            Object superValue = null, subValue = null;
+                            try {
+                                if (isValueAccessible( superObject ))
+                                    superValue = field.get( superObject );
+                            }
+                            catch (Throwable t) {
+                                logger.dbg( t, "Couldn't load value for field: %s, in object: %s", field, superObject );
+                            }
+                            try {
+                                if (isValueAccessible( subObject ))
+                                    subValue = field.get( subObject );
+                            }
+                            catch (Throwable t) {
+                                logger.dbg( t, "Couldn't load value for field: %s, in object: %s", field, subObject );
+                            }
 
-                    return Objects.equal( superValue, subValue );
-                }
-            }, null ), false /* There are no (accessible) fields to compare. */ );
+                            return Objects.equal( superValue, subValue );
+                        }
+                    }, null ), false /* There are no (accessible) fields to compare. */ );
         }
         finally {
             seen.get( For.equals ).get().remove( identityHashCode );
