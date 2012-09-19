@@ -49,7 +49,7 @@ public abstract class ObjectUtils {
     private static final Pattern                             NON_PRINTABLE     = Pattern.compile( "[^\\p{Print}]" );
     private static final int                                 MAX_DECODE_LENGTH = 100;
     private static final Map<For, ThreadLocal<Set<Integer>>> seen              = Maps.newEnumMap( For.class );
-    private static final int HASHCODE_PRIME = 31;
+    private static final int HASHCODE_PRIME                                    = 524287;
 
     static {
         for (final For forMeta : For.values()) {
@@ -281,20 +281,22 @@ public abstract class ObjectUtils {
                 public Integer apply(final LastResult<Field, Integer> lastResult) {
 
                     Field field = lastResult.getCurrent();
-                    int lastHashCode = lastResult.getLastResult();
-                    try {
-                        field.setAccessible( true );
-                    }
-                    catch (SecurityException ignored) {
-                    }
+                    Integer lastHashCode = lastResult.getLastResult();
+                    if (lastHashCode == null)
+                        lastHashCode = 0;
 
+                    // Field's value
                     Object value = null;
                     try {
+                        field.setAccessible( true );
                         value = field.get( o );
+                    }
+                    catch (SecurityException ignored) {
                     }
                     catch (IllegalAccessException ignored) {
                     }
 
+                    // Field's value's hashCode
                     int hashCode = System.identityHashCode( value );
                     if (value != null && isValueAccessible( value ))
                         try {
@@ -312,17 +314,19 @@ public abstract class ObjectUtils {
                             logger.dbg( t, "Couldn't load hashCode for: %s, value: %s.  Falling back to identity hashCode.", field, value );
                         }
 
+                    // Increment the total hashCode with this field's value's hashCode
                     int newHashCode = HASHCODE_PRIME * lastHashCode + hashCode;
                     logger.trc( "%s- %s=%d (hashCode -> %d)", StringUtils.indent( seen.get( For.hashCode ).get().size() ), //
                             field.getName(), hashCode, newHashCode );
 
                     return newHashCode;
                 }
-            }, 0 ), new NNSupplier<Integer>() {
+            }, null ), new NNSupplier<Integer>() {
                 @NotNull
                 @Override
                 public Integer get() {
 
+                    // This object has no meta fields fit for hashCode usage.  Fall back to the object's own hashCode implementation.
                     return o.hashCode();
                 }
             } );
@@ -439,9 +443,9 @@ public abstract class ObjectUtils {
                 Class<?> subType = lastTypeResult.getCurrent();
                 final boolean usedByType = usesMeta( meta, subType );
 
-                return TypeUtils.forEachFieldOf( subType, new Function<LastResult<Field, R>, R>() {
+                return TypeUtils.forEachFieldOf( subType, new NFunctionNN<LastResult<Field, R>, R>() {
                     @Override
-                    public R apply(final LastResult<Field, R> lastFieldResult) {
+                    public R apply(@NotNull final LastResult<Field, R> lastFieldResult) {
 
                         Field field = lastFieldResult.getCurrent();
                         R result = lastFieldResult.getLastResult();

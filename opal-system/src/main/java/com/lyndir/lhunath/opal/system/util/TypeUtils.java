@@ -346,7 +346,7 @@ public abstract class TypeUtils {
      *
      * @return The final result produced by the last execution of the operation.
      */
-    public static <T, R> R forEachFieldOf(final Class<T> type, final Function<LastResult<Field, R>, R> function,
+    public static <T, R> R forEachFieldOf(final Class<T> type, final ObjectUtils.NFunctionNN<LastResult<Field, R>, R> function,
                                           @Nullable final R firstResult, final boolean descend) {
 
         Function<LastResult<Class<?>, R>, R> eachFieldFunction = new Function<LastResult<Class<?>, R>, R>() {
@@ -377,9 +377,9 @@ public abstract class TypeUtils {
 
     public static Field findFirstField(final Object owner, final Object value) {
 
-        return forEachFieldOf( owner.getClass(), new Function<LastResult<Field, Field>, Field>() {
+        return forEachFieldOf( owner.getClass(), new ObjectUtils.NFunctionNN<LastResult<Field, Field>, Field>() {
             @Override
-            public Field apply(final LastResult<Field, Field> from) {
+            public Field apply(@NotNull final LastResult<Field, Field> from) {
 
                 try {
                     from.getCurrent().setAccessible( true );
