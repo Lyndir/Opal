@@ -10,9 +10,9 @@ import com.lyndir.lhunath.opal.system.util.TypeUtils;
 import java.io.Serializable;
 import java.lang.reflect.*;
 import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.apache.wicket.model.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -24,8 +24,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public abstract class Models {
 
-    private static final ThreadLocal<IModel<?>>     modelObjectModel      = new ThreadLocal<IModel<?>>();
-    private static final ThreadLocal<StringBuilder> modelObjectExpression = new ThreadLocal<StringBuilder>();
+    private static final ThreadLocal<IModel<?>>     modelObjectModel      = new ThreadLocal<>();
+    private static final ThreadLocal<StringBuilder> modelObjectExpression = new ThreadLocal<>();
 
     public static <T extends Enum<T>> LoadableDetachableModel<List<T>> listEnum(final Class<T> type) {
 
@@ -43,6 +43,7 @@ public abstract class Models {
 
         return new LoadableDetachableModel<List<String>>() {
 
+            @Nullable
             @Override
             protected List<String> load() {
 
@@ -91,7 +92,7 @@ public abstract class Models {
      *
      * @return A model that will resolve its object using the bean expression.
      */
-    @NotNull
+    @Nonnull
     @SuppressWarnings({ "UnusedParameters" })
     public static <T> IModel<T> model(@Nullable final T object) {
 
@@ -101,7 +102,7 @@ public abstract class Models {
                           "No model expression, did you forget the expression on bean()'s return value? Model owner is: %s",
                           modelObjectModel.get() );
 
-            return new PropertyModel<T>( modelObjectModel.get(), modelObjectExpression.get().toString() );
+            return new PropertyModel<>( modelObjectModel.get(), modelObjectExpression.get().toString() );
         }
         finally {
             modelObjectModel.remove();
@@ -120,7 +121,7 @@ public abstract class Models {
      *
      * @return A proxy object of the bean's type that will record a bean expression.
      */
-    public static <T> T bean(@NotNull final T object) {
+    public static <T> T bean(@Nonnull final T object) {
 
         @SuppressWarnings({ "unchecked" })
         Class<T> type = (Class<T>) object.getClass();
@@ -152,7 +153,7 @@ public abstract class Models {
      *
      * @return A proxy object of the bean's type that will record a bean expression.
      */
-    public static <T, S extends Supplier<T> & Serializable> T bean(@NotNull final Class<T> type, @NotNull final S supplier) {
+    public static <T, S extends Supplier<T> & Serializable> T bean(@Nonnull final Class<T> type, @Nonnull final S supplier) {
 
         return bean( type, new AbstractReadOnlyModel<T>() {
             @Override
@@ -181,7 +182,7 @@ public abstract class Models {
      *
      * @return A proxy object of the bean's type that will record a bean expression.
      */
-    public static <T> T bean(@NotNull final Class<T> type, @NotNull final IModel<T> model) {
+    public static <T> T bean(@Nonnull final Class<T> type, @Nonnull final IModel<T> model) {
 
         checkState( modelObjectModel.get() == null,
                     "Model owner already set, did you forget model() for a previous bean()?  Previous owner is: %s",
@@ -202,7 +203,7 @@ public abstract class Models {
      * @return A recording proxy object.
      */
     @Nullable
-    private static <T> T ofEnhanced(@NotNull final Class<T> type) {
+    private static <T> T ofEnhanced(@Nonnull final Class<T> type) {
 
         if (Modifier.isFinal( type.getModifiers() ))
             return null;

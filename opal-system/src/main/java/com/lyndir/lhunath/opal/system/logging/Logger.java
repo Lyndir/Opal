@@ -19,8 +19,8 @@ import static com.google.common.base.Preconditions.*;
 
 import com.google.common.base.Throwables;
 import java.io.Serializable;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
@@ -344,7 +344,7 @@ public class Logger implements Serializable {
      *
      * @see #bug(Throwable, String, Object...)
      */
-    public RuntimeException bug(@NotNull final Throwable cause) {
+    public RuntimeException bug(@Nonnull final Throwable cause) {
 
         return checkNotNull( bug( checkNotNull( cause ), "Unexpected Error" ) );
     }
@@ -360,12 +360,12 @@ public class Logger implements Serializable {
      *
      * @return The cause, if not null, wrapped in a {@link RuntimeException} if it isn't one.  For easy rethrowing.
      */
-    @Nullable
     public RuntimeException bug(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
 
         err( Markers.BUG, cause, descriptionFormat, descriptionArguments );
 
-        return cause == null? null: Throwables.propagate( cause );
+        //noinspection ThrowableResultOfMethodCallIgnored
+        return cause == null? new RuntimeException( String.format( descriptionFormat, descriptionArguments ) ): Throwables.propagate( cause );
     }
 
     /**
@@ -378,9 +378,7 @@ public class Logger implements Serializable {
      */
     public RuntimeException bug(final String descriptionFormat, final Object... descriptionArguments) {
 
-        bug( null, descriptionFormat, descriptionArguments );
-
-        return new RuntimeException( String.format( descriptionFormat, descriptionArguments ) );
+        return bug( null, descriptionFormat, descriptionArguments );
     }
 
     /**

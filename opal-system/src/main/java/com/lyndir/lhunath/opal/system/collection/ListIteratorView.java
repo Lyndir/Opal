@@ -94,7 +94,7 @@ public abstract class ListIteratorView<T> extends ForwardingListIterator<T> impl
 
             if (hasCurrent())
                 // Move the delegate back to the current index.
-                Iterators.skip( delegate, currentIndex );
+                Iterators.advance( delegate, currentIndex );
         }
 
         return delegate;

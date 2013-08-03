@@ -5,8 +5,8 @@ import static com.google.common.base.Preconditions.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.net.MalformedURLException;
 import java.net.URL;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 
 /**
@@ -222,7 +222,7 @@ public class ConversionUtils {
      *
      * @return The resulting string.
      */
-    @NotNull
+    @Nonnull
     public static String toStringNN(final Object object) {
 
         if (object == null)
@@ -265,7 +265,7 @@ public class ConversionUtils {
      * @throws NullPointerException Given URL is null.
      * @throws RuntimeException     Given URL string is not a valid URL.
      */
-    @NotNull
+    @Nonnull
     public static URL toURLNN(final Object url) {
 
         if (url instanceof URL)

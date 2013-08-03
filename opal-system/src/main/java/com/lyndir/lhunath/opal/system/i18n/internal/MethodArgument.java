@@ -2,14 +2,11 @@ package com.lyndir.lhunath.opal.system.i18n.internal;
 
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
+import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.i18n.Localized;
-import java.io.Serializable;
 import java.lang.annotation.Annotation;
-import java.util.List;
-import java.util.Map;
-import org.jetbrains.annotations.Nullable;
+import java.util.*;
+import javax.annotation.Nullable;
 
 
 /**
@@ -24,12 +21,12 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author lhunath
  */
-public class MethodArgument implements Serializable {
+public class MethodArgument {
 
     private static final Map<Class<?>, Function<Object, ?>> unwrapperTypes = Maps.newHashMap();
 
     private final Object           value;
-    private final List<Annotation> annotations;
+    private final ArrayList<Annotation> annotations;
 
     @SuppressWarnings({ "unchecked" })
     public static <T> void registerWrapperType(final Class<T> wrapperType, final Function<T, ?> valueUnwrapperFactory) {
@@ -37,15 +34,16 @@ public class MethodArgument implements Serializable {
         unwrapperTypes.put( wrapperType, (Function<Object, ?>) valueUnwrapperFactory );
     }
 
-    public MethodArgument(final Object value, final List<Annotation> annotations) {
+    public MethodArgument(final Object value, final Iterable<Annotation> annotations) {
 
         this.value = value;
-        this.annotations = annotations;
+        this.annotations = Lists.newArrayList( annotations );
     }
 
     public MethodArgument(final Object value, final Annotation... annotations) {
 
-        this( value, ImmutableList.copyOf( annotations ) );
+        this.value = value;
+        this.annotations = Lists.newArrayList( annotations );
     }
 
     public Object getValue() {

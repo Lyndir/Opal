@@ -22,7 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Proxy;
 import java.text.MessageFormat;
 import java.util.Locale;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 
 /**

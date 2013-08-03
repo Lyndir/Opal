@@ -13,36 +13,20 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.opal.security;
+package com.lyndir.lhunath.opal.system.util;
 
+import com.google.common.base.Supplier;
 import javax.annotation.Nullable;
 
 
 /**
- * <h2>{@link GlobalSecureObject}<br> <sub>[in short] (TODO).</sub></h2>
+ * A {@link Supplier} that can supply {@code null}.
  *
- * <p> <i>Mar 14, 2010</i> </p>
- *
- * @author lhunath
+ * @param <T> The type of the supplied value.
  */
-public class GlobalSecureObject<S extends Subject> extends AbstractSecureObject<S, SecureObject<S, ?>> {
+public interface NSupplier<T> extends Supplier<T> {
 
     @Nullable
     @Override
-    public SecureObject<S, ?> getParent() {
-
-        return null;
-    }
-
-    @Override
-    public String getLocalizedType() {
-
-        throw new UnsupportedOperationException( "This object should not be shown publicly." );
-    }
-
-    @Override
-    public String getLocalizedInstance() {
-
-        throw new UnsupportedOperationException( "This object should not be shown publicly." );
-    }
+    T get();
 }

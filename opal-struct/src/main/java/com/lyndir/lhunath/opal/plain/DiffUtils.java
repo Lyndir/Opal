@@ -52,16 +52,9 @@ public abstract class DiffUtils {
     public static String getDiff(final InputStream from, final InputStream to)
             throws IOException {
 
-        BufferedReader fromReader = null, toReader = null;
-        try {
-            fromReader = new BufferedReader( new InputStreamReader( from ) );
-            toReader = new BufferedReader( new InputStreamReader( to ) );
-
+        try (BufferedReader fromReader = new BufferedReader( new InputStreamReader( from ) ); //
+             BufferedReader toReader = new BufferedReader( new InputStreamReader( to ) )) {
             return getDiff( fromReader, toReader );
-        }
-        finally {
-            Closeables.closeQuietly( fromReader );
-            Closeables.closeQuietly( toReader );
         }
     }
 

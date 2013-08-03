@@ -18,6 +18,7 @@ package com.lyndir.lhunath.opal.system.util;
 import static com.google.common.base.Preconditions.*;
 
 import com.google.common.base.*;
+import com.google.common.base.Objects;
 import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.system.logging.exception.AlreadyCheckedException;
@@ -30,8 +31,8 @@ import java.security.cert.X509Certificate;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 
 /**
@@ -50,6 +51,7 @@ public abstract class ObjectUtils {
     private static final int                                 MAX_DECODE_LENGTH = 100;
     private static final Map<For, ThreadLocal<Set<Integer>>> seen              = Maps.newEnumMap( For.class );
     private static final int HASHCODE_PRIME                                    = 524287;
+    private static final Class<Object> persistentCollectionType = TypeUtils.findClass( "org.hibernate.collection.PersistentCollection" );
 
     static {
         for (final For forMeta : For.values()) {
@@ -79,7 +81,7 @@ public abstract class ObjectUtils {
      *
      * @return {@code true} if both objects are {@code null} or if neither are and {@link #equals(Object)} considers them equal.
      */
-    public static <P, C extends P> boolean isEqual(final C subObject, final P superObject) {
+    public static <P, C extends P> boolean isEqual(@Nullable final C subObject, @Nullable final P superObject) {
 
         // Get the simple stuff out of the way.
         //noinspection ObjectEquality
@@ -291,9 +293,7 @@ public abstract class ObjectUtils {
                         field.setAccessible( true );
                         value = field.get( o );
                     }
-                    catch (SecurityException ignored) {
-                    }
-                    catch (IllegalAccessException ignored) {
+                    catch (SecurityException | IllegalAccessException ignored) {
                     }
 
                     // Field's value's hashCode
@@ -303,8 +303,8 @@ public abstract class ObjectUtils {
                             if (value instanceof Iterable) {
                                 // Best-effort special handling for Iterables in case they don't implement hashCode themselves.
                                 // We just use the hashCode of the sorted hashCodes of the values.
-                                ImmutableSortedSet.Builder<Integer> hashCodes = ImmutableSortedSet.<Integer>naturalOrder();
-                                for (Object o : (Iterable<?>) value)
+                                ImmutableSortedSet.Builder<Integer> hashCodes = ImmutableSortedSet.naturalOrder();
+                                for (final Object o : (Iterable<?>) value)
                                     hashCodes.add( ObjectUtils.hashCode( o ) );
                                 hashCode = hashCodes.build().hashCode();
                             } else
@@ -322,7 +322,7 @@ public abstract class ObjectUtils {
                     return newHashCode;
                 }
             }, null ), new NNSupplier<Integer>() {
-                @NotNull
+                @Nonnull
                 @Override
                 public Integer get() {
 
@@ -345,20 +345,13 @@ public abstract class ObjectUtils {
      */
     private static boolean isValueAccessible(final Object object) {
 
-        Class<Object> persistentCollectionType = TypeUtils.findClass( "org.hibernate.collection.PersistentCollection" );
         if (persistentCollectionType != null && persistentCollectionType.isInstance( object ))
             try {
                 if (!(Boolean) object.getClass().getMethod( "wasInitialized" ).invoke( object ))
                     // Hack around Hibernate idiocy of manually logging its LazyInitializationException.
                     return false;
             }
-            catch (IllegalAccessException e) {
-                throw new AlreadyCheckedException( "Are you using an unsupported version of Hibernate?", e );
-            }
-            catch (InvocationTargetException e) {
-                throw new AlreadyCheckedException( "Are you using an unsupported version of Hibernate?", e );
-            }
-            catch (NoSuchMethodException e) {
+            catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new AlreadyCheckedException( "Are you using an unsupported version of Hibernate?", e );
             }
 
@@ -375,7 +368,7 @@ public abstract class ObjectUtils {
      *
      * @return {@code true} if both objects are equal according to this method's rules.
      */
-    public static boolean equals(final Object superObject, final Object subObject) {
+    public static boolean equals(@Nullable final Object superObject, @Nullable final Object subObject) {
 
         //noinspection ObjectEquality
         if (superObject == subObject)
@@ -445,10 +438,10 @@ public abstract class ObjectUtils {
 
                 return TypeUtils.forEachFieldOf( subType, new NFunctionNN<LastResult<Field, R>, R>() {
                     @Override
-                    public R apply(@NotNull final LastResult<Field, R> lastFieldResult) {
+                    public R apply(@Nonnull final LastResult<Field, R> input) {
 
-                        Field field = lastFieldResult.getCurrent();
-                        R result = lastFieldResult.getLastResult();
+                        Field field = input.getCurrent();
+                        R result = input.getLastResult();
 
                         if (Modifier.isStatic( field.getModifiers() ))
                             return result;
@@ -462,7 +455,7 @@ public abstract class ObjectUtils {
                             if (!usedByType)
                                 return result;
 
-                        return function.apply( new LastResult<Field, R>( field, result ) );
+                        return function.apply( new LastResult<>( field, result ) );
                     }
                 }, lastTypeResult.getLastResult(), false );
             }
@@ -518,14 +511,14 @@ public abstract class ObjectUtils {
     }
 
     /**
-     * @param value     The value to return, if it isn't {@code null} .
-     * @param nullValue The value to return if {@code value}  is {@code null} .
+     * @param value     The value to return, if it isn't {@code null}.
+     * @param nullValue The value to return if {@code value} is {@code null}.
      * @param <T>       The type of object to return.
      *
      * @return One of two values.
      */
-    @NotNull
-    public static <T> T ifNotNullElse(@Nullable final T value, @NotNull final T nullValue) {
+    @Nonnull
+    public static <T> T ifNotNullElse(@Nullable final T value, @Nonnull final T nullValue) {
 
         if (value == null)
             return checkNotNull( nullValue );
@@ -552,15 +545,15 @@ public abstract class ObjectUtils {
     /**
      * Version of {@link #ifNotNullElse(Object, Object)} that loads the default value lazily.
      *
-     * @param value             The value to return, if it isn't {@code null} .
-     * @param nullValueSupplier Provides the value to return if {@code value}  is {@code null}.  The supplier is only
+     * @param value             The value to return, if it isn't {@code null}.
+     * @param nullValueSupplier Provides the value to return if {@code value} is {@code null}.  The supplier is only
      *                          consulted
      *                          if necessary.
      * @param <T>               The type of object to return.
      *
      * @return One of two values.
      */
-    @NotNull
+    @Nonnull
     public static <T> T ifNotNullElse(@Nullable final T value, final NNSupplier<T> nullValueSupplier) {
 
         if (value != null)
@@ -572,8 +565,8 @@ public abstract class ObjectUtils {
     /**
      * Version of {@link #ifNotNullElse(Object, Object)} that loads the default value lazily.
      *
-     * @param value             The value to return, if it isn't {@code null} .
-     * @param nullValueSupplier Provides the value to return if {@code value}  is {@code null}.  The supplier is only
+     * @param value             The value to return, if it isn't {@code null}.
+     * @param nullValueSupplier Provides the value to return if {@code value} is {@code null}.  The supplier is only
      *                          consulted
      *                          if necessary.
      * @param <T>               The type of object to return.
@@ -593,7 +586,7 @@ public abstract class ObjectUtils {
      * Apply an operation on the first argument if it is not {@code null}.  Otherwise, do nothing.
      *
      * @param value            The value to operate on if it is not {@code null}.
-     * @param notNullOperation The function that defines the transform to apply to the {@code from}  value.
+     * @param notNullOperation The function that defines the transform to apply to the {@code from} value.
      * @param <T>              The type of the value to operate on.
      */
     public static <T> void ifNotNull(@Nullable final T value, final NNOperation<T> notNullOperation) {
@@ -605,8 +598,8 @@ public abstract class ObjectUtils {
     /**
      * Apply a function to the first parameter if it is not {@code null}.  Otherwise, return {@code null}.
      *
-     * @param from                 The value to transform if it is not {@code null} .
-     * @param notNullValueFunction The function that defines the transform to apply to the {@code from}  value.
+     * @param from                 The value to transform if it is not {@code null}.
+     * @param notNullValueFunction The function that defines the transform to apply to the {@code from} value.
      * @param <F>                  The type of object to transform.
      * @param <T>                  The type of object to return.
      *
@@ -624,17 +617,17 @@ public abstract class ObjectUtils {
     /**
      * Apply a function to the first parameter if it is not {@code null}.  Otherwise, return {@code nullValue}.
      *
-     * @param from                 The value to transform if it is not {@code null} .
-     * @param notNullValueFunction The function that defines the transform to apply to the {@code from}  value.
+     * @param from                 The value to transform if it is not {@code null}.
+     * @param notNullValueFunction The function that defines the transform to apply to the {@code from} value.
      * @param nullValue            The value to return if {@code value} is {@code null}.
      * @param <F>                  The type of object to transform.
      * @param <T>                  The type of object to return.
      *
      * @return The transformed value, or {@code nullValue}.
      */
-    @NotNull
+    @Nonnull
     public static <F, T> T ifNotNullElse(@Nullable final F from, final NNFunctionNN<F, T> notNullValueFunction,
-                                         @NotNull final T nullValue) {
+                                         @Nonnull final T nullValue) {
 
         if (from == null)
             return checkNotNull( nullValue );
@@ -645,8 +638,8 @@ public abstract class ObjectUtils {
     /**
      * Apply a function to the first parameter if it is not {@code null}.  Otherwise, return {@code nullValue}.
      *
-     * @param from                 The value to transform if it is not {@code null} .
-     * @param notNullValueFunction The function that defines the transform to apply to the {@code from}  value.
+     * @param from                 The value to transform if it is not {@code null}.
+     * @param notNullValueFunction The function that defines the transform to apply to the {@code from} value.
      * @param nullValue            The value to return if {@code value} is {@code null}.
      * @param <F>                  The type of object to transform.
      * @param <T>                  The type of object to return.
@@ -668,27 +661,15 @@ public abstract class ObjectUtils {
      * method invoked on the given object, or {@code null} if the given object is {@code null}.
      *
      * @param type   The type of the object.
-     * @param object The value to transform if it is not {@code null} .
+     * @param object The value to transform if it is not {@code null}.
      * @param <T>    The type of the object.
      *
-     * @return The transformed value, or {@code null}.
+     * @return A proxy object of the given type.
      */
-    @NotNull
-    public static <T> T ifNotNull(@NotNull final Class<T> type, @Nullable final T object) {
+    @Nonnull
+    public static <T> T ifNotNull(@Nonnull final Class<T> type, @Nullable final T object) {
 
-        return type.cast( TypeUtils.newProxyInstance( type, new InvocationHandler() {
-            @Nullable
-            @Override
-            @SuppressWarnings({ "ProhibitedExceptionDeclared" })
-            public Object invoke(final Object proxy, final Method method, final Object[] args)
-                    throws Throwable {
-
-                if (object == null)
-                    return null;
-
-                return method.invoke( object, args );
-            }
-        } ) );
+        return ifNotNullElse( type, object, null );
     }
 
     /**
@@ -701,10 +682,11 @@ public abstract class ObjectUtils {
      *
      * @return A proxy object of the given type.
      */
-    @NotNull
-    public static <T> T ifNotNullElse(@NotNull final Class<T> type, @Nullable final Object object, @NotNull final Object nullValue) {
+    @Nonnull
+    public static <T> T ifNotNullElse(@Nonnull final Class<T> type, @Nullable final T object, @Nullable final Object nullValue) {
 
         return type.cast( TypeUtils.newProxyInstance( type, new InvocationHandler() {
+            @Nullable
             @Override
             @SuppressWarnings({ "ProhibitedExceptionDeclared" })
             public Object invoke(final Object proxy, final Method method, final Object[] args)
@@ -728,8 +710,8 @@ public abstract class ObjectUtils {
      *
      * @return A proxy object of the given type.
      */
-    @NotNull
-    public static <T> T ifType(@NotNull final Class<T> type, final Object object) {
+    @Nonnull
+    public static <T> T ifType(@Nonnull final Class<T> type, final Object object) {
 
         return type.cast( TypeUtils.newProxyInstance( type, new InvocationHandler() {
             @Nullable
@@ -757,8 +739,8 @@ public abstract class ObjectUtils {
      *
      * @return A proxy object of the given type.
      */
-    @NotNull
-    public static <T> T ifTypeElse(@NotNull final Class<T> type, final Object object, @NotNull final Object badTypeValue) {
+    @Nonnull
+    public static <T> T ifTypeElse(@Nonnull final Class<T> type, final Object object, @Nonnull final Object badTypeValue) {
 
         return type.cast( TypeUtils.newProxyInstance( type, new InvocationHandler() {
             @Override
@@ -785,8 +767,8 @@ public abstract class ObjectUtils {
      *
      * @return A proxy object of the given type.
      */
-    @NotNull
-    public static <T> T ifTypeElseNullable(@NotNull final Class<T> type, final Object object, @Nullable final Object badTypeValue) {
+    @Nonnull
+    public static <T> T ifTypeElseNullable(@Nonnull final Class<T> type, final Object object, @Nullable final Object badTypeValue) {
 
         return type.cast( TypeUtils.newProxyInstance( type, new InvocationHandler() {
             @Nullable
@@ -801,77 +783,5 @@ public abstract class ObjectUtils {
                 return badTypeValue;
             }
         } ) );
-    }
-
-    /**
-     * A {@link Supplier} that can supply {@code null}.
-     *
-     * @param <T> The type of the supplied value.
-     */
-    public interface NSupplier<T> extends Supplier<T> {
-
-        @Nullable
-        @Override
-        T get();
-    }
-
-
-    /**
-     * A {@link Supplier} that cannot supply {@code null}.
-     *
-     * @param <T> The type of the supplied value.
-     */
-    public interface NNSupplier<T> extends Supplier<T> {
-
-        @NotNull
-        @Override
-        T get();
-    }
-
-
-    /**
-     * An operation that can be applied to a value.
-     *
-     * @param <T> The type of the value this operation can be applied to.
-     */
-    public interface NNOperation<T> {
-
-        void apply(@NotNull T input);
-    }
-
-
-    /**
-     * A {@link Function} that can be applied only to not-{@code null} values but yield {@code null} as result.
-     *
-     * @param <T> The type of the value this operation can be applied to.
-     */
-    @SuppressWarnings({ "NullableProblems" })
-    public interface NFunctionNN<F, T> extends Function<F, T> {
-
-        @Nullable
-        @Override
-        T apply(@NotNull F input);
-
-        boolean equals(@NotNull Object object);
-
-        int hashCode();
-    }
-
-
-    /**
-     * A {@link Function} that can be applied only to not-{@code null} values and cannot yield {@code null} as result.
-     *
-     * @param <T> The type of the value this operation can be applied to.
-     */
-    @SuppressWarnings({ "NullableProblems" })
-    public interface NNFunctionNN<F, T> extends Function<F, T> {
-
-        @NotNull
-        @Override
-        T apply(@NotNull F input);
-
-        boolean equals(@NotNull Object object);
-
-        int hashCode();
     }
 }

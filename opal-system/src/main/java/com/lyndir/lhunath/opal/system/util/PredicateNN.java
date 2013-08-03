@@ -13,36 +13,25 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.opal.security;
+package com.lyndir.lhunath.opal.system.util;
 
+import com.google.common.base.Predicate;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 
 /**
- * <h2>{@link GlobalSecureObject}<br> <sub>[in short] (TODO).</sub></h2>
+ * A {@link Predicate} that will only receive non-{@code null} input values.
  *
- * <p> <i>Mar 14, 2010</i> </p>
- *
- * @author lhunath
+ * @param <T> The type of the supplied value.
  */
-public class GlobalSecureObject<S extends Subject> extends AbstractSecureObject<S, SecureObject<S, ?>> {
-
-    @Nullable
-    @Override
-    public SecureObject<S, ?> getParent() {
-
-        return null;
-    }
+@SuppressWarnings("NullableProblems")
+public interface PredicateNN<T> extends Predicate<T> {
 
     @Override
-    public String getLocalizedType() {
+    boolean apply(@Nonnull T input);
 
-        throw new UnsupportedOperationException( "This object should not be shown publicly." );
-    }
+    boolean equals(@Nullable Object object);
 
-    @Override
-    public String getLocalizedInstance() {
-
-        throw new UnsupportedOperationException( "This object should not be shown publicly." );
-    }
+    int hashCode();
 }

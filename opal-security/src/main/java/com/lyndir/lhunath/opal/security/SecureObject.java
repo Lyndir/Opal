@@ -16,8 +16,8 @@
 package com.lyndir.lhunath.opal.security;
 
 import com.lyndir.lhunath.opal.system.i18n.Localized;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 
 /**
@@ -43,7 +43,7 @@ public interface SecureObject<S extends Subject, P extends SecureObject<S, ?>> e
     /**
      * @return The user that owns this object.
      */
-    @NotNull
+    @Nonnull
     S getOwner();
 
     /**

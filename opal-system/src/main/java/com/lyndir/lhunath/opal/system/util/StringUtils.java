@@ -25,8 +25,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 
 /**
@@ -61,7 +60,7 @@ public abstract class StringUtils {
 
     public static boolean isEmpty(final String data) {
 
-        return data == null || data.length() == 0;
+        return data == null || data.isEmpty();
     }
 
     /**
@@ -157,7 +156,7 @@ public abstract class StringUtils {
      *
      * @return An expanded version of the source string.
      */
-    public static String expand(String source, String keyPrefix, Function<String, String> keyToExpansion) {
+    public static String expand(final String source, final String keyPrefix, final Function<String, String> keyToExpansion) {
 
         Map<Integer, Integer> indexToEnds = Maps.newTreeMap();
         Map<Integer, String> indexToExpansions = Maps.newTreeMap();
@@ -179,7 +178,7 @@ public abstract class StringUtils {
         reverseIndexes.addAll( indexToExpansions.keySet() );
 
         StringBuilder filtered = new StringBuilder( source );
-        for (Integer index : reverseIndexes)
+        for (final Integer index : reverseIndexes)
             filtered.replace( index, indexToEnds.get( index ), indexToExpansions.get( index ) );
 
         return filtered.toString();
@@ -199,9 +198,16 @@ public abstract class StringUtils {
         return indent.toString();
     }
 
-    @NonNls
     public static String indent(final int indents, final int size, final String message) {
 
         return indent( indents, size ) + message;
+    }
+
+    public static String repeat(final String s, final int repeat) {
+        StringBuilder repeatedString = new StringBuilder( repeat * s.length() );
+        for (int i = 0; i < repeat; ++i)
+            repeatedString.append( s );
+
+        return repeatedString.toString();
     }
 }

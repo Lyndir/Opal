@@ -2,10 +2,9 @@ package com.lyndir.lhunath.opal.system.collection;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.google.common.base.Supplier;
 import com.lyndir.lhunath.opal.system.util.MetaObject;
 import java.io.Serializable;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 
 /**
@@ -15,23 +14,23 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author lhunath
  */
-public class Holder<T extends Serializable> extends MetaObject implements Supplier<T>, Serializable {
+public class Holder<T extends Serializable> extends MetaObject implements SSupplier<T> {
 
     private T value;
 
-    public Holder(@NotNull final T value) {
+    public Holder(@Nonnull final T value) {
 
         this.value = checkNotNull( value );
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public T get() {
 
         return value;
     }
 
-    public void set(@NotNull final T value) {
+    public void set(@Nonnull final T value) {
 
         this.value = checkNotNull( value );
     }

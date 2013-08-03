@@ -8,11 +8,11 @@ import com.lyndir.lhunath.opal.system.util.ObjectUtils;
 import com.lyndir.lhunath.opal.system.util.StringUtils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.apache.wicket.*;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -39,8 +39,8 @@ public abstract class NavigationController implements IClusterable {
      *                                    be
      *                                    loaded.
      */
-    <T extends TabDescriptor<P, S>, S extends TabState<P>, P extends Panel> void activateTabWithState(@NotNull final T tab,
-                                                                                                      @NotNull final String fragment)
+    <T extends TabDescriptor<P, S>, S extends TabState<P>, P extends Panel> void activateTabWithState(@Nonnull final T tab,
+                                                                                                      @Nonnull final String fragment)
             throws IncompatibleStateException {
 
         Matcher matcher = FRAGMENT_ELEMENT.matcher( fragment );
@@ -63,8 +63,8 @@ public abstract class NavigationController implements IClusterable {
      *
      * @throws IncompatibleStateException If the state is incompatible with the current state and can not be applied.
      */
-    public <T extends TabDescriptor<P, S>, S extends TabState<P>, P extends Panel> void activateTabWithState(@NotNull final T tab,
-                                                                                                             @NotNull final S state)
+    public <T extends TabDescriptor<P, S>, S extends TabState<P>, P extends Panel> void activateTabWithState(@Nonnull final T tab,
+                                                                                                             @Nonnull final S state)
             throws IncompatibleStateException {
 
         P tabPanel = getContent( tab );
@@ -78,7 +78,7 @@ public abstract class NavigationController implements IClusterable {
      *
      * @param tab The tab that should be activated.
      */
-    public void activateNewTab(@NotNull final TabDescriptor<?, ?> tab) {
+    public void activateNewTab(@Nonnull final TabDescriptor<?, ?> tab) {
 
         activateTab( tab, null );
     }
@@ -90,7 +90,7 @@ public abstract class NavigationController implements IClusterable {
      * @param panel The panel that provides the tab's content or <code>null</code> if a new content panel should be created for the
      *              tab.
      */
-    public <T extends TabDescriptor<P, ?>, P extends Panel, PP extends P> void activateTab(@NotNull final T tab, @Nullable final PP panel) {
+    public <T extends TabDescriptor<P, ?>, P extends Panel, PP extends P> void activateTab(@Nonnull final T tab, @Nullable final PP panel) {
 
         P tabPanel = panel == null? getContent( tab ): panel;
         tabPanel.setOutputMarkupPlaceholderTag( true );
@@ -177,7 +177,7 @@ public abstract class NavigationController implements IClusterable {
      *
      * @return The application's tabs.
      */
-    @NotNull
+    @Nonnull
     protected abstract Iterable<? extends TabDescriptor<?, ?>> getTabs();
 
     /**
@@ -185,13 +185,13 @@ public abstract class NavigationController implements IClusterable {
      *
      * @return The component that represents the content of the given tab.
      */
-    @NotNull
-    protected abstract <T extends TabDescriptor<P, ?>, P extends Panel> P getContent(@NotNull T tab);
+    @Nonnull
+    protected abstract <T extends TabDescriptor<P, ?>, P extends Panel> P getContent(@Nonnull T tab);
 
     /**
      * @return All components that should be updated whenever page navigation changes.
      */
-    @NotNull
+    @Nonnull
     protected abstract Iterable<? extends Component> getNavigationComponents();
 
     /**
@@ -200,12 +200,12 @@ public abstract class NavigationController implements IClusterable {
      * @param tab      The tab that needs to be activated.
      * @param tabPanel The panel that contains the tab's content as determined by fragment state.
      */
-    protected abstract <T extends TabDescriptor<P, ?>, P extends Panel> void onTabActivated(@NotNull T tab, @NotNull P tabPanel);
+    protected abstract <T extends TabDescriptor<P, ?>, P extends Panel> void onTabActivated(@Nonnull T tab, @Nonnull P tabPanel);
 
     /**
      * Handle errors that occur when attempting to apply state that is incompatible with the current state.
      *
      * @param e The error that occurred.
      */
-    protected abstract void onError(@NotNull IncompatibleStateException e);
+    protected abstract void onError(@Nonnull IncompatibleStateException e);
 }

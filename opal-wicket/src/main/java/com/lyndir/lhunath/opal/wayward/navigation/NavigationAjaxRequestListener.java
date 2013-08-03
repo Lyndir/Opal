@@ -5,10 +5,10 @@ import com.lyndir.lhunath.opal.system.util.ObjectUtils;
 import com.lyndir.lhunath.opal.wayward.js.JSUtils;
 import java.util.Collection;
 import java.util.Map;
+import javax.annotation.Nullable;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -37,7 +37,7 @@ public class NavigationAjaxRequestListener implements AjaxRequestTarget.IListene
     @Override
     public void onBeforeRespond(final Map<String, Component> map, final AjaxRequestTarget target) {
 
-        updateTabComponents( (TabDescriptor) controller.getActiveTab() );
+        updateTabComponents( (TabDescriptor)controller.getActiveTab() );
     }
 
     @Override

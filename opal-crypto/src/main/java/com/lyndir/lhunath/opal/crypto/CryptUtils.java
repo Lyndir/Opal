@@ -6,10 +6,10 @@ import com.google.common.base.Charsets;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.security.*;
 import java.util.Random;
+import javax.annotation.Nullable;
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import org.bouncycastle.util.encoders.Base64;
-import org.jetbrains.annotations.Nullable;
 
 
 /**

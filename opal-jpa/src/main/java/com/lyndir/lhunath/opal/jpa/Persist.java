@@ -17,8 +17,8 @@ package com.lyndir.lhunath.opal.jpa;
 
 import static com.google.common.base.Preconditions.*;
 
+import javax.annotation.Nonnull;
 import javax.persistence.*;
-import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -30,19 +30,19 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Persist {
 
-    private static final ThreadLocal<Persist> persistences = new ThreadLocal<Persist>();
+    private static final ThreadLocal<Persist> persistences = new ThreadLocal<>();
 
     private final EntityManagerFactory emf;
     private       EntityManager        em;
     private       Object               transactionOwner;
 
-    @NotNull
+    @Nonnull
     public static Persist persistence() {
 
         return checkNotNull( persistences.get(), "No persistence active." );
     }
 
-    @NotNull
+    @Nonnull
     public static EntityManager entityManager() {
 
         return persistence().getEntityManager();

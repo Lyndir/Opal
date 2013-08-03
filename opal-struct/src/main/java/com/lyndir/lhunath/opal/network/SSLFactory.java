@@ -65,10 +65,10 @@ public class SSLFactory implements SecureProtocolSocketFactory {
 
     private SSLFactory(final File keyStore, final String password) {
 
-        InputStream keyStoreStream = null;
-        try {
+
+        try (InputStream keyStoreStream = new FileInputStream( keyStore )) {
             KeyStore store = KeyStore.getInstance( "JKS" );
-            store.load( keyStoreStream = new FileInputStream( keyStore ), password.toCharArray() );
+            store.load( keyStoreStream, password.toCharArray() );
 
             TrustManagerFactory tFactory = TrustManagerFactory.getInstance( "SunX509" );
             tFactory.init( store );
@@ -93,9 +93,6 @@ public class SSLFactory implements SecureProtocolSocketFactory {
         }
         catch (KeyManagementException e) {
             throw new RuntimeException( "Could not use the keys for trust.", e );
-        }
-        finally {
-            Closeables.closeQuietly( keyStoreStream );
         }
     }
 

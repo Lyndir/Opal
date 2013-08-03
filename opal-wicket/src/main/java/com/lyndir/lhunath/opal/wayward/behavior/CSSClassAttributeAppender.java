@@ -18,10 +18,10 @@ package com.lyndir.lhunath.opal.wayward.behavior;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -126,7 +126,7 @@ public class CSSClassAttributeAppender extends AttributeAppender {
     }
 
     private CSSClassAttributeAppender(final IModel<? extends Collection<String>> appendModel,
-                                      @SuppressWarnings("unused") final Collection<?> x) {
+                                      @Nullable @SuppressWarnings("unused") final Collection<?> x) {
 
         // noinspection RedundantCast
         this( new AbstractReadOnlyModel<String>() {
@@ -137,7 +137,7 @@ public class CSSClassAttributeAppender extends AttributeAppender {
                 StringBuilder stringBuilder = new StringBuilder();
 
                 for (final String item : appendModel.getObject())
-                    if (item != null && item.length() > 0)
+                    if (item != null && !item.isEmpty())
                         stringBuilder.append( item ).append( CLASS_SEPARATOR );
 
                 if (stringBuilder.length() > 0)
@@ -148,7 +148,7 @@ public class CSSClassAttributeAppender extends AttributeAppender {
         }, (String) null );
     }
 
-    private CSSClassAttributeAppender(final IModel<String> appendModel, @SuppressWarnings("unused") final String x) {
+    private CSSClassAttributeAppender(final IModel<String> appendModel, @Nullable @SuppressWarnings("unused") final String x) {
 
         super( CLASS_ATTRIBUTE, true, appendModel, CLASS_SEPARATOR );
     }

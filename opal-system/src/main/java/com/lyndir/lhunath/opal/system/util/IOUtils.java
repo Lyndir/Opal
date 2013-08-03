@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 
 /**
@@ -28,8 +28,7 @@ public abstract class IOUtils {
 
         return new InputSupplier<T>() {
             @Override
-            public T getInput()
-                    throws IOException {
+            public T getInput() {
 
                 return supply;
             }
@@ -40,8 +39,7 @@ public abstract class IOUtils {
 
         return new InputSupplier<InputStream>() {
             @Override
-            public InputStream getInput()
-                    throws IOException {
+            public InputStream getInput() {
 
                 return new ByteArrayInputStream( supply );
             }
@@ -110,20 +108,17 @@ public abstract class IOUtils {
     public static String grep(final Pattern pattern, final File file, final int group)
             throws IOException {
 
-        if (file.isDirectory()) {
+        File[] files = file.listFiles();
+        if (files != null) {
             StringBuilder resultBuilder = new StringBuilder();
-            for (final File child : file.listFiles())
+            for (final File child : files)
                 resultBuilder.append( grep( pattern, child, group ) );
 
             return resultBuilder.toString();
         }
 
-        FileReader reader = new FileReader( file );
-        try {
+        try (FileReader reader = new FileReader( file )) {
             return grep( pattern, reader, group );
-        }
-        finally {
-            Closeables.closeQuietly( reader );
         }
     }
 

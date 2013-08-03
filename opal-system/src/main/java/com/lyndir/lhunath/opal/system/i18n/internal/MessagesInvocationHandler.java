@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.*;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 
 /**
@@ -47,7 +47,7 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
         wrapperTypes.put( wrapperType, wrapperValueFactory );
     }
 
-    public static <T> void registerLocaleSupplier(final Supplier<Locale> localeSupplier) {
+    public static void registerLocaleSupplier(final Supplier<Locale> localeSupplier) {
 
         localeSuppliers.addFirst( localeSupplier );
     }
@@ -63,6 +63,7 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
     /**
      * {@inheritDoc}
      */
+    @Nullable
     @Override
     public Object invoke(final Object proxy, final Method method, final Object[] args) {
 
@@ -95,7 +96,7 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                 StringBuilder keyBuilder = new StringBuilder( methodName );
                 logger.dbg( "Base key: %s", keyBuilder.toString() );
 
-                final List<Object> localizationArgs = new LinkedList<Object>();
+                final List<Object> localizationArgs = new LinkedList<>();
                 for (final MethodArgument methodArg : methodArgs) {
                     Object argValue = methodArg.getUnwrappedValue();
                     List<Annotation> argAnnotations = methodArg.getAnnotations();

@@ -18,7 +18,7 @@ package com.lyndir.lhunath.opal.security;
 import static com.google.common.base.Preconditions.*;
 
 import com.lyndir.lhunath.opal.system.util.MetaObject;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 
 /**
@@ -41,12 +41,12 @@ public abstract class AbstractSecureObject<S extends Subject, P extends SecureOb
         owner = null;
     }
 
-    protected AbstractSecureObject(@NotNull final S owner) {
+    protected AbstractSecureObject(@Nonnull final S owner) {
 
         this.owner = owner;
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public S getOwner() {
 

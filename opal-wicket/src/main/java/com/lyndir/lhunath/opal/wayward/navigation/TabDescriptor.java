@@ -1,9 +1,9 @@
 package com.lyndir.lhunath.opal.wayward.navigation;
 
+import javax.annotation.Nonnull;
 import org.apache.wicket.IClusterable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -18,7 +18,7 @@ public interface TabDescriptor<P extends Panel, S extends TabState<? extends P>>
     /**
      * @return The string that identifies this tab when it's the zero'th argument in the fragment part of the URL.
      */
-    @NotNull
+    @Nonnull
     String getFragment();
 
     /**
@@ -28,21 +28,21 @@ public interface TabDescriptor<P extends Panel, S extends TabState<? extends P>>
      *
      * @return The given panel's state serialized into a fragment state object.
      */
-    @NotNull
-    S newState(@NotNull P panel);
+    @Nonnull
+    S newState(@Nonnull P panel);
 
     /**
      * @param fragment The string that contains the fragment which needs to be parsed into state for this tab.
      *
      * @return A state object for this tab that contains state as specified by the given arguments.
      */
-    @NotNull
-    S newState(@NotNull String fragment);
+    @Nonnull
+    S newState(@Nonnull String fragment);
 
     /**
      * @return The string that identifies this tab in its navigation menu.
      */
-    @NotNull
+    @Nonnull
     IModel<String> getTitle();
 
     /**
@@ -53,6 +53,6 @@ public interface TabDescriptor<P extends Panel, S extends TabState<? extends P>>
     /**
      * @return The class of the panel that will serve this tab's content.
      */
-    @NotNull
+    @Nonnull
     Class<? extends P> getContentPanelClass();
 }

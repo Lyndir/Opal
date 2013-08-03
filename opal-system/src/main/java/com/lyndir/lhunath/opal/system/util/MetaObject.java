@@ -1,5 +1,8 @@
 package com.lyndir.lhunath.opal.system.util;
 
+import javax.annotation.Nullable;
+
+
 /**
  * <i>06 08, 2011</i>
  *
@@ -15,7 +18,7 @@ public abstract class MetaObject {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(@Nullable final Object obj) {
 
         return ObjectUtils.equals( this, obj );
     }

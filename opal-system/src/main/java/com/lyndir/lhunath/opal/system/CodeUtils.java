@@ -2,16 +2,13 @@ package com.lyndir.lhunath.opal.system;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
-import com.google.common.io.ByteStreams;
 import com.lyndir.lhunath.opal.system.logging.Logger;
-import com.lyndir.lhunath.opal.system.util.IOUtils;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.Formatter;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 
 /**
@@ -40,12 +37,7 @@ public abstract class CodeUtils {
 
     public static byte[] digest(final MessageDigest digest, final byte[] input) {
 
-        try {
-            return ByteStreams.getDigest( IOUtils.supply( input ), digest );
-        }
-        catch (IOException e) {
-            throw logger.bug( e );
-        }
+        return digest.digest( input );
     }
 
     public static String encodeHex(@Nullable final byte[] data) {
@@ -95,7 +87,7 @@ public abstract class CodeUtils {
         StringBuilder url = new StringBuilder();
         int lastURLFormatOffset = 0, urlFormatIndex = 0;
         for (int urlFormatOffset = 0; //
-             -1 != (urlFormatOffset = urlFormat.indexOf( "{}", urlFormatOffset )); //
+             (urlFormatOffset = urlFormat.indexOf( "{}", urlFormatOffset )) != -1; //
              lastURLFormatOffset = urlFormatOffset += 2, ++urlFormatIndex) {
 
             url.append( urlFormat.substring( lastURLFormatOffset, urlFormatOffset ) );

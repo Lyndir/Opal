@@ -55,7 +55,7 @@ public enum MessageDigests {
     public byte[] of(final InputSupplier<? extends InputStream> supplier) {
 
         try {
-            return ByteStreams.getDigest( supplier, get() );
+            return get().digest( ByteStreams.toByteArray( supplier ) );
         }
         catch (IOException e) {
             throw logger.bug( e );

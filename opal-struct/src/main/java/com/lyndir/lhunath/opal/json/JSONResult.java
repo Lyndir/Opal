@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.lyndir.lhunath.opal.system.util.MetaObject;
 import com.lyndir.lhunath.opal.system.util.ObjectUtils;
 import java.io.Serializable;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 
 /**
@@ -38,7 +38,7 @@ public class JSONResult extends MetaObject {
     @Expose
     private final Object   result;
 
-    private JSONResult(final Object result, final int code, final String technicalDescription, final String userDescription,
+    private JSONResult(@Nullable final Object result, final int code, @Nullable final String technicalDescription, @Nullable final String userDescription,
                        final Object... userDescriptionArguments) {
 
         this.result = result;
@@ -59,7 +59,7 @@ public class JSONResult extends MetaObject {
         return new JSONResult( result, CODE_SUCCESS, null, null );
     }
 
-    public static JSONResult failureUpdateRequired(Serializable requiredVersion) {
+    public static JSONResult failureUpdateRequired(final Serializable requiredVersion) {
 
         return new JSONResult( null, CODE_FAILURE_UPDATE_REQUIRED, "The server does not work with clients older than " + requiredVersion,
                                "server.error.outdated", requiredVersion ).setOutdated( true );
@@ -100,6 +100,7 @@ public class JSONResult extends MetaObject {
         return this;
     }
 
+    @Nullable
     public String getUserDescription() {
 
         return userDescription;
@@ -110,11 +111,13 @@ public class JSONResult extends MetaObject {
         return userDescriptionArguments;
     }
 
+    @Nullable
     public String getTechnicalDescription() {
 
         return technicalDescription;
     }
 
+    @Nullable
     public Object getResult() {
 
         return result;

@@ -73,13 +73,8 @@ public abstract class GPG {
     public static PGPPublicKey getPublicKey(final File publicKeyFile, final long publicKeyId)
             throws IOException, PGPException {
 
-        FileInputStream publicKeyInputStream = new FileInputStream( publicKeyFile );
-        try {
+        try (FileInputStream publicKeyInputStream = new FileInputStream( publicKeyFile )) {
             return new PGPPublicKeyRing( publicKeyInputStream ).getPublicKey( publicKeyId );
-        }
-
-        finally {
-            Closeables.closeQuietly( publicKeyInputStream );
         }
     }
 
@@ -96,14 +91,9 @@ public abstract class GPG {
     public static PGPSecretKey getPrivateKey(final File privateKeyFile, final long privateKeyId)
             throws IOException, PGPException {
 
-        FileInputStream privateKeyInputStream = new FileInputStream( privateKeyFile );
-        try {
+        try (FileInputStream privateKeyInputStream = new FileInputStream( privateKeyFile )) {
             PGPSecretKeyRingCollection privateKeyRing = new PGPSecretKeyRingCollection( PGPUtil.getDecoderStream( privateKeyInputStream ) );
             return privateKeyRing.getSecretKey( privateKeyId );
-        }
-
-        finally {
-            Closeables.closeQuietly( privateKeyInputStream );
         }
     }
 
@@ -119,12 +109,8 @@ public abstract class GPG {
     public static PGPSecretKey getPrivateKeyFor(final File encryptedFile, final File privateKeyFile)
             throws IOException, PGPException {
 
-        FileInputStream encryptedFileStream = new FileInputStream( encryptedFile );
-        try {
+        try (FileInputStream encryptedFileStream = new FileInputStream( encryptedFile )) {
             return getPrivateKeyFor( encryptedFileStream, privateKeyFile );
-        }
-        finally {
-            Closeables.closeQuietly( encryptedFileStream );
         }
     }
 
@@ -189,8 +175,7 @@ public abstract class GPG {
             throws IOException, PGPException {
 
         /* Open the key ring. */
-        FileInputStream privateKeyInputStream = new FileInputStream( privateKeyFile );
-        try {
+        try (FileInputStream privateKeyInputStream = new FileInputStream( privateKeyFile )) {
             List<PrintableKeyWrapper<PGPSecretKey>> keys = new ArrayList<PrintableKeyWrapper<PGPSecretKey>>();
             PGPSecretKeyRingCollection privateKeyRing = new PGPSecretKeyRingCollection( PGPUtil.getDecoderStream( privateKeyInputStream ) );
 
@@ -218,9 +203,6 @@ public abstract class GPG {
 
             return keys;
         }
-        finally {
-            Closeables.closeQuietly( privateKeyInputStream );
-        }
     }
 
     /**
@@ -236,8 +218,7 @@ public abstract class GPG {
             throws IOException, PGPException {
 
         /* Open the key ring. */
-        FileInputStream publicKeyInputStream = new FileInputStream( publicKeyFile );
-        try {
+        try (FileInputStream publicKeyInputStream = new FileInputStream( publicKeyFile )) {
             List<PrintableKeyWrapper<PGPPublicKey>> keys = new ArrayList<PrintableKeyWrapper<PGPPublicKey>>();
             PGPPublicKeyRingCollection privateKeyRing = new PGPPublicKeyRingCollection( PGPUtil.getDecoderStream( publicKeyInputStream ) );
 
@@ -265,10 +246,6 @@ public abstract class GPG {
 
             return keys;
         }
-
-        finally {
-            Closeables.closeQuietly( publicKeyInputStream );
-        }
     }
 
     /**
@@ -286,20 +263,9 @@ public abstract class GPG {
     public static void encryptFile(final File plainFile, final File encryptedFile, final PGPPublicKey publicKey, final boolean armoured)
             throws NoSuchProviderException, IOException, PGPException {
 
-        InputStream plainInputStream = null, encryptedInputStream = null;
-        OutputStream encryptedOutputStream = null;
-        try {
-            plainInputStream = new FileInputStream( plainFile );
-            encryptedInputStream = encrypt( plainInputStream, publicKey, armoured );
-            encryptedOutputStream = new FileOutputStream( encryptedFile );
-
+        try (OutputStream encryptedOutputStream = new FileOutputStream( encryptedFile ); InputStream plainInputStream = new FileInputStream(
+                plainFile ); InputStream encryptedInputStream = encrypt( plainInputStream, publicKey, armoured )) {
             ByteStreams.copy( encryptedInputStream, encryptedOutputStream );
-        }
-
-        finally {
-            Closeables.closeQuietly( plainInputStream );
-            Closeables.closeQuietly( encryptedInputStream );
-            Closeables.closeQuietly( encryptedOutputStream );
         }
     }
 
@@ -383,19 +349,10 @@ public abstract class GPG {
                                    final String passPhrase)
             throws NoSuchProviderException, IOException, PGPException {
 
-        InputStream encryptedInputStream = null, decryptedInputStream = null;
-        OutputStream decryptedOutputStream = null;
-        try {
-            encryptedInputStream = new FileInputStream( encryptedFile );
-            decryptedInputStream = decrypt( encryptedInputStream, privateKey, passPhrase );
-            decryptedOutputStream = new FileOutputStream( plainTextFile );
-
+        try (InputStream encryptedInputStream = new FileInputStream( encryptedFile ); InputStream decryptedInputStream = decrypt(
+                encryptedInputStream, privateKey, passPhrase ); OutputStream decryptedOutputStream = new FileOutputStream(
+                plainTextFile )) {
             ByteStreams.copy( decryptedInputStream, decryptedOutputStream );
-        }
-        finally {
-            Closeables.closeQuietly( encryptedInputStream );
-            Closeables.closeQuietly( decryptedInputStream );
-            Closeables.closeQuietly( decryptedOutputStream );
         }
     }
 
@@ -515,19 +472,11 @@ public abstract class GPG {
                                 final boolean armoured)
             throws NoSuchAlgorithmException, NoSuchProviderException, SignatureException, PGPException, IOException {
 
-        InputStream signedInputStream = null, dataInputStream = null;
-        OutputStream signedOutputStream = null;
-        try {
-            dataInputStream = new FileInputStream( dataFile );
-            signedInputStream = sign( dataInputStream, privateKey, passPhrase, armoured );
-            signedOutputStream = new FileOutputStream( signedFile );
-
-            ByteStreams.copy( signedInputStream, signedOutputStream );
-        }
-        finally {
-            Closeables.closeQuietly( dataInputStream );
-            Closeables.closeQuietly( signedInputStream );
-            Closeables.closeQuietly( signedOutputStream );
+        try (InputStream dataInputStream = new FileInputStream( dataFile )) {
+            try (InputStream signedInputStream = sign( dataInputStream, privateKey, passPhrase,
+                                                       armoured ); OutputStream signedOutputStream = new FileOutputStream( signedFile )) {
+                ByteStreams.copy( signedInputStream, signedOutputStream );
+            }
         }
     }
 

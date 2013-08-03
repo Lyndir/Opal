@@ -4,9 +4,9 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import java.util.*;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -45,10 +45,10 @@ public abstract class AbstractTabState<P extends Panel> implements TabState<P> {
     protected abstract List<String> loadFragments(P panel);
 
     @Override
-    public void apply(@NotNull final P panel)
+    public void apply(@Nonnull final P panel)
             throws IncompatibleStateException {
 
-        applyFragments( panel, new LinkedList<String>( fragments ) );
+        applyFragments( panel, new LinkedList<>( fragments ) );
     }
 
     protected abstract void applyFragments(P panel, Deque<String> fragments)

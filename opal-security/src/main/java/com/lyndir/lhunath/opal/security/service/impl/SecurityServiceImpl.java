@@ -191,7 +191,7 @@ public class SecurityServiceImpl implements SecurityService {
         checkNotNull( o, "Given secure object must not be null." );
         assertAccess( Permission.ADMINISTER, token, o );
 
-        return Iterators.unmodifiableIterator( new AbstractIterator<Pair<Subject, Permission>>() {
+        return new AbstractIterator<Pair<Subject, Permission>>() {
 
             public final Iterator<Subject> permittedSubjects;
 
@@ -214,7 +214,7 @@ public class SecurityServiceImpl implements SecurityService {
 
                 return endOfData();
             }
-        } );
+        };
     }
 
     @Override

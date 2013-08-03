@@ -100,12 +100,8 @@ public class GZIPPostMethod extends PostMethod {
 
         Header contentEncodingHeader = getResponseHeader( "Content-Encoding" );
         if (contentEncodingHeader != null && "gzip".equalsIgnoreCase( contentEncodingHeader.getValue() )) {
-            InputStream zippedStream = new GZIPInputStream( getResponseStream() );
-            try {
+            try (InputStream zippedStream = new GZIPInputStream( getResponseStream() )) {
                 setResponseStream( zippedStream );
-            }
-            finally {
-                Closeables.closeQuietly( zippedStream );
             }
         }
     }

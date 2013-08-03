@@ -16,7 +16,7 @@
 package com.lyndir.lhunath.opal.system.error;
 
 import com.lyndir.lhunath.opal.system.i18n.MessagesFactory;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 
 /**

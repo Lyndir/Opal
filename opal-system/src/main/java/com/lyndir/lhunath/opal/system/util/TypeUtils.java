@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.*;
 import com.google.common.base.Function;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
+import com.lyndir.lhunath.opal.system.error.BreakException;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -12,11 +13,11 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import net.sf.cglib.core.CollectionUtils;
 import net.sf.cglib.core.VisibilityPredicate;
 import net.sf.cglib.proxy.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisStd;
 
@@ -52,7 +53,7 @@ public abstract class TypeUtils {
         try {
             return (Class<T>) Thread.currentThread().getContextClassLoader().loadClass( typeName );
         }
-        catch (ClassNotFoundException e) {
+        catch (ClassNotFoundException ignored) {
             return null;
         }
     }
@@ -67,7 +68,7 @@ public abstract class TypeUtils {
      *
      * @throws RuntimeException In case the named class cannot be found in the thread's context classloader.
      */
-    @NotNull
+    @Nonnull
     @SuppressWarnings({ "unchecked" })
     public static <T> Class<T> loadClass(final String typeName) {
 
@@ -95,16 +96,7 @@ public abstract class TypeUtils {
         try {
             return type.getConstructor().newInstance();
         }
-        catch (InstantiationException e) {
-            throw Throwables.propagate( e );
-        }
-        catch (IllegalAccessException e) {
-            throw Throwables.propagate( e );
-        }
-        catch (InvocationTargetException e) {
-            throw Throwables.propagate( e );
-        }
-        catch (NoSuchMethodException e) {
+        catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw Throwables.propagate( e );
         }
     }
@@ -126,16 +118,7 @@ public abstract class TypeUtils {
         try {
             return (T) loadClass( typeName ).getConstructor().newInstance();
         }
-        catch (InstantiationException e) {
-            throw Throwables.propagate( e );
-        }
-        catch (IllegalAccessException e) {
-            throw Throwables.propagate( e );
-        }
-        catch (InvocationTargetException e) {
-            throw Throwables.propagate( e );
-        }
-        catch (NoSuchMethodException e) {
+        catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw Throwables.propagate( e );
         }
     }
@@ -184,7 +167,7 @@ public abstract class TypeUtils {
             }
 
             @Override
-            @SuppressWarnings("unchecked")
+            @SuppressWarnings({ "unchecked", "rawtypes" })
             protected void filterConstructors(final Class sc, final List constructors) {
 
                 CollectionUtils.filter( constructors, new VisibilityPredicate( sc, true ) );
@@ -234,7 +217,7 @@ public abstract class TypeUtils {
      *         instance of the given annotation the type declares.
      *         <code>[TT = T or a supertype of T -> [ TTT = TT or interface of TT -> annotation on TTT ]]</code>
      */
-    @NotNull
+    @Nonnull
     public static <T, A extends Annotation> Map<Class<? super T>, Map<Class<?>, A>> getAnnotations(final Class<T> type,
                                                                                                    final Class<A> annotationType) {
 
@@ -310,7 +293,7 @@ public abstract class TypeUtils {
      *
      * @return The final result produced by the last execution of the operation.
      */
-    public static <T, R> R forEachSuperTypeOf(@NotNull final Class<T> type,
+    public static <T, R> R forEachSuperTypeOf(@Nonnull final Class<T> type,
                                               @Nullable final Function<LastResult<Class<?>, R>, R> typeFunction,
                                               @Nullable final Function<LastResult<Class<?>, R>, R> interfaceFunction,
                                               @Nullable final R firstResult) {
@@ -327,7 +310,7 @@ public abstract class TypeUtils {
             }
         }
         catch (BreakException e) {
-            lastResult = e.<R>getResult();
+            lastResult = e.getResult();
         }
 
         return lastResult;
@@ -346,7 +329,7 @@ public abstract class TypeUtils {
      *
      * @return The final result produced by the last execution of the operation.
      */
-    public static <T, R> R forEachFieldOf(final Class<T> type, final ObjectUtils.NFunctionNN<LastResult<Field, R>, R> function,
+    public static <T, R> R forEachFieldOf(final Class<T> type, final NFunctionNN<LastResult<Field, R>, R> function,
                                           @Nullable final R firstResult, final boolean descend) {
 
         Function<LastResult<Class<?>, R>, R> eachFieldFunction = new Function<LastResult<Class<?>, R>, R>() {
@@ -358,11 +341,11 @@ public abstract class TypeUtils {
                     for (final Field field : lastResult.getCurrent().getDeclaredFields())
                         if (!field.isSynthetic() && !Modifier.isStatic( field.getModifiers() )) {
                             logger.trc( "Iteration of %s: %s", lastResult.getCurrent(), field );
-                            result = function.apply( new LastResult<Field, R>( field, result ) );
+                            result = function.apply( new LastResult<>( field, result ) );
                         }
                 }
                 catch (BreakException e) {
-                    result = e.<R>getResult();
+                    result = e.getResult();
                 }
 
                 return result;
@@ -377,20 +360,20 @@ public abstract class TypeUtils {
 
     public static Field findFirstField(final Object owner, final Object value) {
 
-        return forEachFieldOf( owner.getClass(), new ObjectUtils.NFunctionNN<LastResult<Field, Field>, Field>() {
+        return forEachFieldOf( owner.getClass(), new NFunctionNN<LastResult<Field, Field>, Field>() {
             @Override
-            public Field apply(@NotNull final LastResult<Field, Field> from) {
+            public Field apply(@Nonnull final LastResult<Field, Field> input) {
 
                 try {
-                    from.getCurrent().setAccessible( true );
-                    if (ObjectUtils.equals( from.getCurrent().get( owner ), value ))
-                        throw new BreakException( from.getCurrent() );
+                    input.getCurrent().setAccessible( true );
+                    if (ObjectUtils.equals( input.getCurrent().get( owner ), value ))
+                        throw new BreakException( input.getCurrent() );
                 }
                 catch (IllegalAccessException e) {
                     throw logger.bug( e );
                 }
 
-                return from.getLastResult();
+                return input.getLastResult();
             }
         }, null, true );
     }
@@ -438,7 +421,7 @@ public abstract class TypeUtils {
      *
      * @see #valueOfEnum(Class, String)
      */
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static <T> T unsafeValueOfEnum(final Class<T> type, final String value) {
 
         return type.cast( valueOfEnum( (Class<Enum>) type, value ) );
@@ -451,7 +434,7 @@ public abstract class TypeUtils {
         return (Class<T>) type;
     }
 
-    public static String propertyName(Method method) {
+    public static String propertyName(final Method method) {
 
         String methodName = method.getName();
         if ((methodName.startsWith( "get" ) || methodName.startsWith( "set" )) && methodName.length() > 3)
@@ -496,23 +479,6 @@ public abstract class TypeUtils {
         public R getLastResult() {
 
             return lastResult;
-        }
-    }
-
-
-    public static class BreakException extends RuntimeException {
-
-        private final transient Object result;
-
-        public BreakException(final Object result) {
-
-            this.result = result;
-        }
-
-        @SuppressWarnings({ "unchecked" })
-        public <R> R getResult() {
-
-            return (R) result;
         }
     }
 }

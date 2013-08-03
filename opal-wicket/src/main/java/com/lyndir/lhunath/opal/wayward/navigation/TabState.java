@@ -1,8 +1,8 @@
 package com.lyndir.lhunath.opal.wayward.navigation;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -27,6 +27,6 @@ public interface TabState<P extends Panel> {
      *
      * @throws IncompatibleStateException If the state is incompatible with the current state and can not be applied.
      */
-    void apply(@NotNull P panel)
+    void apply(@Nonnull P panel)
             throws IncompatibleStateException;
 }

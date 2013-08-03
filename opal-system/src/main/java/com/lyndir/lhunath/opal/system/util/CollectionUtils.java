@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.util.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 
 /**
@@ -26,7 +26,7 @@ public abstract class CollectionUtils {
      *
      * @return <code>true</code> if the object was found anywhere within the collection or any of its sub-collections.
      */
-    public static boolean recurseContains(@NotNull final Iterable<?> collection, @Nullable final Object o) {
+    public static boolean recurseContains(@Nonnull final Iterable<?> collection, @Nullable final Object o) {
 
         for (final Object co : collection)
             if (co.equals( o ) || co instanceof Collection<?> && recurseContains( (Iterable<?>) co, o ))
@@ -35,20 +35,20 @@ public abstract class CollectionUtils {
         return false;
     }
 
-    public static boolean isEqualElements(@NotNull final Collection<?> c1, @NotNull final Collection<?> c2) {
+    public static boolean isEqualElements(@Nonnull final Collection<?> c1, @Nonnull final Collection<?> c2) {
 
         if (c1.size() != c2.size())
             return false;
 
         Map<Object, Integer> objectsCount = Maps.newHashMap();
-        for (Object c1Object : c1) {
+        for (final Object c1Object : c1) {
             Integer count = objectsCount.get( c1Object );
             count = (count == null? 0: count) + 1;
 
             objectsCount.put( c1Object, count );
         }
 
-        for (Object c2Object : c2) {
+        for (final Object c2Object : c2) {
             Integer count = objectsCount.get( c2Object );
             count = (count == null? 0: count) - 1;
 
@@ -64,20 +64,20 @@ public abstract class CollectionUtils {
     }
 
     @Nullable
-    public static <E> E firstElementOfType(@NotNull Class<E> type, @NotNull Collection<? super E> elements) {
+    public static <E> E firstElementOfType(@Nonnull final Class<E> type, @Nonnull final Collection<? super E> elements) {
 
-        for (Object element : elements)
+        for (final Object element : elements)
             if (type.isInstance( element ))
                 return type.cast( element );
 
         return null;
     }
 
-    @NotNull
-    public static <E> List<E> elementsOfType(@NotNull Class<E> type, @NotNull Collection<? super E> elements) {
+    @Nonnull
+    public static <E> List<E> elementsOfType(@Nonnull final Class<E> type, @Nonnull final Collection<? super E> elements) {
 
         List<E> elementsOfType = Lists.newLinkedList();
-        for (Object element : elements)
+        for (final Object element : elements)
             if (type.isInstance( element ))
                 elementsOfType.add( type.cast( element ) );
 
