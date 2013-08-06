@@ -47,11 +47,12 @@ public abstract class ObjectUtils {
 
     static final Logger logger = Logger.get( ObjectUtils.class );
 
-    private static final Pattern                             NON_PRINTABLE     = Pattern.compile( "[^\\p{Print}]" );
-    private static final int                                 MAX_DECODE_LENGTH = 100;
-    private static final Map<For, ThreadLocal<Set<Integer>>> seen              = Maps.newEnumMap( For.class );
-    private static final int HASHCODE_PRIME                                    = 524287;
-    private static final Class<Object> persistentCollectionType = TypeUtils.findClass( "org.hibernate.collection.PersistentCollection" );
+    private static final Pattern                             NON_PRINTABLE            = Pattern.compile( "[^\\p{Print}]" );
+    private static final int                                 MAX_DECODE_LENGTH        = 100;
+    private static final Map<For, ThreadLocal<Set<Integer>>> seen                     = Maps.newEnumMap( For.class );
+    private static final int                                 HASHCODE_PRIME           = 524287;
+    private static final Class<Object>                       persistentCollectionType = TypeUtils.findClass(
+            "org.hibernate.collection.PersistentCollection" );
 
     static {
         for (final For forMeta : For.values()) {
@@ -64,6 +65,9 @@ public abstract class ObjectUtils {
             } );
         }
     }
+
+    private static final Pattern PACKAGE_NODE = Pattern.compile( "([^\\.])[^\\.]+\\." );
+    private static final Pattern PACKAGE = Pattern.compile( ".*\\." );
 
     /**
      * Check whether two objects are equal according to {@link #equals(Object)}.
@@ -92,7 +96,7 @@ public abstract class ObjectUtils {
 
         // Be smart about arrays.  In a really ugly and dumb instanceof-kind of way.  Feel free to think of a better way.
         if (subObject.getClass().isArray())
-            return Arrays.deepEquals( new Object[] { subObject }, new Object[] { superObject } );
+            return Arrays.deepEquals( new Object[]{ subObject }, new Object[]{ superObject } );
 
         // Use equals() for the rest.
         return subObject.equals( superObject );
@@ -111,7 +115,12 @@ public abstract class ObjectUtils {
         if (o == null)
             return "<null>";
 
-        if (o.getClass().equals( byte[].class )) {
+        if (Class.class.isInstance( o )) {
+            Class<?> type = (Class<?>) o;
+            return String.format( "<C: %s>", PACKAGE_NODE.matcher( type.getName() ).replaceAll( "$1." ) );
+        }
+
+        if (byte[].class.isInstance( o )) {
             byte[] byteArray = (byte[]) o;
             StringBuilder toString = new StringBuilder( String.format( "<b[]: %dB, ", byteArray.length ) );
 
@@ -128,7 +137,7 @@ public abstract class ObjectUtils {
             return toString.append( '>' ).toString();
         }
 
-        if (o.getClass().equals( char[].class )) {
+        if (char[].class.isInstance( o )) {
             char[] charArray = (char[]) o;
             StringBuilder toString = new StringBuilder( String.format( "<c[]: #%d, ", charArray.length ) );
 
@@ -142,22 +151,22 @@ public abstract class ObjectUtils {
             return toString.append( '>' ).toString();
         }
 
-        if (Object[].class.isAssignableFrom( o.getClass() ))
-            return Arrays.asList( (Object[]) o ).toString();
+        if (Object[].class.isInstance( o ))
+            return String.format( "<O[]:%s>", Arrays.asList( (Object[]) o ).toString() );
 
         if (o instanceof String)
             return String.format( "\"%s\"", o );
 
         if (o instanceof Map) {
-            StringBuilder description = new StringBuilder().append( '[' );
+            StringBuilder description = new StringBuilder().append( "<M:[" );
             for (final Entry<?, ?> entry : ((Map<?, ?>) o).entrySet()) {
                 if (description.length() > 1)
-                    description.append( ", " );
+                    description.append( "], [" );
 
                 description.append( describe( entry.getKey() ) ).append( '=' ).append( describe( entry.getValue() ) );
             }
 
-            return description.append( ']' ).toString();
+            return description.append( "]>" ).toString();
         }
 
         if (o instanceof Collection) {
@@ -175,8 +184,8 @@ public abstract class ObjectUtils {
 
         if (o instanceof X509Certificate) {
             X509Certificate x509Certificate = (X509Certificate) o;
-            return String.format( "{Cert: DN=%s, Issuer=%s}", x509Certificate.getSubjectX500Principal().getName(),
-                    x509Certificate.getIssuerX500Principal().getName() );
+            return String.format( "<Cert: DN=%s, Issuer=%s>", x509Certificate.getSubjectX500Principal().getName(),
+                                  x509Certificate.getIssuerX500Principal().getName() );
         }
 
         return String.valueOf( o );
@@ -194,7 +203,7 @@ public abstract class ObjectUtils {
     public static String toString(final Object o) {
 
         StringBuilder toString = new StringBuilder( "{" );
-        String name = o.getClass().getSimpleName();
+        String name = PACKAGE.matcher( o.getClass().getName() ).replaceFirst( "" );
         if (name == null)
             name = o.getClass().getName().replace( ".*\\.", "" );
         toString.append( name );
@@ -241,7 +250,7 @@ public abstract class ObjectUtils {
                                 }
                                 catch (Throwable t) {
                                     logger.dbg( t, "Couldn't load value for field: %s, in object: 0x%x", field,
-                                            System.identityHashCode( o ) );
+                                                System.identityHashCode( o ) );
                                 }
 
                                 return fieldsString;
@@ -267,12 +276,12 @@ public abstract class ObjectUtils {
 
         int identityHashCode = System.identityHashCode( o );
         logger.trc( "%sHashCode for: %s (%d)", StringUtils.indent( seen.get( For.hashCode ).get().size() ), //
-                o.getClass().getSimpleName(), identityHashCode );
+                    o.getClass().getName(), identityHashCode );
 
         if (seen.get( For.hashCode ).get().contains( identityHashCode )) {
             // Cyclic reference.
             logger.trc( "%s- Detected cycle, returning identity.", StringUtils.indent( seen.get( For.hashCode ).get().size() + 1 ),
-                    identityHashCode );
+                        identityHashCode );
             return identityHashCode;
         }
 
@@ -317,7 +326,7 @@ public abstract class ObjectUtils {
                     // Increment the total hashCode with this field's value's hashCode
                     int newHashCode = HASHCODE_PRIME * lastHashCode + hashCode;
                     logger.trc( "%s- %s=%d (hashCode -> %d)", StringUtils.indent( seen.get( For.hashCode ).get().size() ), //
-                            field.getName(), hashCode, newHashCode );
+                                field.getName(), hashCode, newHashCode );
 
                     return newHashCode;
                 }

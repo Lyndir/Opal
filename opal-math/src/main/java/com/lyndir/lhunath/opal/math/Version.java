@@ -20,6 +20,7 @@ import com.lyndir.lhunath.opal.system.util.ConversionUtils;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 
 
 /**
@@ -66,12 +67,13 @@ public class Version implements Comparable<Version>, Serializable {
      * @return The major version number (the first number in the version). <code>null</code> if the first tag is not a number or there are
      *         no tags.
      */
+    @Nullable
     public Integer getMajor() {
 
         if (tags.length == 0)
             return null;
 
-        return ConversionUtils.toInteger( tags[0] );
+        return ConversionUtils.toInteger( tags[0] ).orNull();
     }
 
     /**

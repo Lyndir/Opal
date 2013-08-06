@@ -2,6 +2,7 @@ package com.lyndir.lhunath.opal.system.util;
 
 import static com.google.common.base.Preconditions.*;
 
+import com.google.common.base.Optional;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,18 +29,17 @@ public class ConversionUtils {
      *
      * @return The resulting integer.
      */
-    @Nullable
-    public static Long toLong(final Object object) {
+    public static Optional<Long> toLong(@Nullable final Object object) {
 
         if (object == null || object instanceof Long)
-            return (Long) object;
+            return Optional.fromNullable( (Long) object );
 
         try {
-            return Long.valueOf( object.toString() );
+            return Optional.of( Long.valueOf( object.toString() ) );
         }
         catch (NumberFormatException e) {
             logger.wrn( e, "Malformed long: %s", object );
-            return null;
+            return Optional.absent();
         }
     }
 
@@ -51,7 +51,7 @@ public class ConversionUtils {
      *
      * @return The resulting integer.
      */
-    public static long toLongNN(final Object object) {
+    public static long toLongNN(@Nullable final Object object) {
 
         if (object == null)
             return 0;
@@ -76,18 +76,18 @@ public class ConversionUtils {
      *
      * @return The resulting integer.
      */
-    @Nullable
-    public static Integer toInteger(final Object object) {
+    @Nonnull
+    public static Optional<Integer> toInteger(@Nullable final Object object) {
 
         if (object == null || object instanceof Integer)
-            return (Integer) object;
+            return Optional.fromNullable( (Integer) object);
 
         try {
-            return Integer.valueOf( object.toString() );
+            return Optional.of( Integer.valueOf( object.toString() ) );
         }
         catch (NumberFormatException e) {
             logger.wrn( e, "Malformed integer: %s", object );
-            return null;
+            return Optional.absent();
         }
     }
 
@@ -99,7 +99,7 @@ public class ConversionUtils {
      *
      * @return The resulting integer.
      */
-    public static int toIntegerNN(final Object object) {
+    public static int toIntegerNN(@Nullable final Object object) {
 
         if (object == null)
             return 0;
@@ -123,18 +123,18 @@ public class ConversionUtils {
      *
      * @return The resulting double.
      */
-    @Nullable
-    public static Double toDouble(final Object object) {
+    @Nonnull
+    public static Optional<Double> toDouble(@Nullable final Object object) {
 
         if (object == null || object instanceof Double)
-            return (Double) object;
+            return Optional.fromNullable( (Double) object);
 
         try {
-            return Double.parseDouble( object.toString() );
+            return Optional.of( Double.parseDouble( object.toString() ) );
         }
         catch (NumberFormatException e) {
             logger.wrn( e, "Malformed double: %s", object );
-            return null;
+            return Optional.absent();
         }
     }
 
@@ -146,7 +146,7 @@ public class ConversionUtils {
      *
      * @return The resulting double.
      */
-    public static double toDoubleNN(final Object object) {
+    public static double toDoubleNN(@Nullable final Object object) {
 
         if (object == null)
             return 0;
@@ -166,17 +166,19 @@ public class ConversionUtils {
      * Convert an object into a boolean in a safe way. If the given object is not {@code null} or a {@link Boolean}, we parse its
      * {@link Object#toString()} using {@link Boolean#parseBoolean(String)}.
      *
+     * NOTE: Strings that do not look like booleans will get converted into {@code false}.
+     *
      * @param object The object that represents a boolean.
      *
      * @return The resulting boolean.
      */
-    @Nullable
-    public static Boolean toBoolean(final Object object) {
+    @Nonnull
+    public static Optional<Boolean> toBoolean(@Nullable final Object object) {
 
         if (object == null || object instanceof Boolean)
-            return (Boolean) object;
+            return Optional.fromNullable( (Boolean) object );
 
-        return Boolean.parseBoolean( object.toString() );
+        return Optional.of( Boolean.parseBoolean( object.toString() ) );
     }
 
     /**
@@ -187,7 +189,7 @@ public class ConversionUtils {
      *
      * @return The resulting boolean.
      */
-    public static boolean toBooleanNN(final Object object) {
+    public static boolean toBooleanNN(@Nullable final Object object) {
 
         if (object == null)
             return false;
@@ -205,13 +207,13 @@ public class ConversionUtils {
      *
      * @return The resulting string.
      */
-    @Nullable
-    public static String toString(final Object object) {
+    @Nonnull
+    public static Optional<String> toString(@Nullable final Object object) {
 
         if (object == null || object instanceof String)
-            return (String) object;
+            return Optional.fromNullable( (String) object );
 
-        return object.toString();
+        return Optional.of( object.toString() );
     }
 
     /**
@@ -223,7 +225,7 @@ public class ConversionUtils {
      * @return The resulting string.
      */
     @Nonnull
-    public static String toStringNN(final Object object) {
+    public static String toStringNN(@Nullable final Object object) {
 
         if (object == null)
             return "";
@@ -240,18 +242,18 @@ public class ConversionUtils {
      *
      * @return The URL string in a URL object.
      */
-    @Nullable
-    public static URL toURL(final Object url) {
+    @Nonnull
+    public static Optional<URL> toURL(@Nullable final Object url) {
 
         if (url == null || url instanceof URL)
-            return (URL) url;
+            return Optional.fromNullable( (URL) url );
 
         try {
-            return new URL( url.toString() );
+            return Optional.of( new URL( url.toString() ) );
         }
         catch (MalformedURLException e) {
             logger.wrn( e, "Malformed URL: %s", url );
-            return null;
+            return Optional.absent();
         }
     }
 
@@ -266,7 +268,7 @@ public class ConversionUtils {
      * @throws RuntimeException     Given URL string is not a valid URL.
      */
     @Nonnull
-    public static URL toURLNN(final Object url) {
+    public static URL toURLNN(@Nullable final Object url) {
 
         if (url instanceof URL)
             return (URL) url;
