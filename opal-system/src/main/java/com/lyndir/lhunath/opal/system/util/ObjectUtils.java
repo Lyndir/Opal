@@ -704,6 +704,7 @@ public abstract class ObjectUtils {
                 if (object == null)
                     return nullValue;
 
+                method.setAccessible( true );
                 return method.invoke( object, args );
             }
         } ) );
@@ -722,7 +723,7 @@ public abstract class ObjectUtils {
     @Nonnull
     public static <T> T ifType(@Nonnull final Class<T> type, final Object object) {
 
-        return type.cast( TypeUtils.newProxyInstance( type, new InvocationHandler() {
+        return TypeUtils.newProxyInstance( type, new InvocationHandler() {
             @Nullable
             @Override
             @SuppressWarnings({ "ProhibitedExceptionDeclared" })
@@ -734,7 +735,7 @@ public abstract class ObjectUtils {
 
                 return null;
             }
-        } ) );
+        } );
     }
 
     /**
