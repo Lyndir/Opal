@@ -8,7 +8,7 @@ import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.collection.SSupplier;
 import com.lyndir.lhunath.opal.system.i18n.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
-import com.lyndir.lhunath.opal.system.logging.exception.AlreadyCheckedException;
+import com.lyndir.lhunath.opal.system.error.AlreadyCheckedException;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;

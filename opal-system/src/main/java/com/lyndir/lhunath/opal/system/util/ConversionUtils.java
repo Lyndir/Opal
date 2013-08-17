@@ -103,8 +103,10 @@ public class ConversionUtils {
 
         if (object == null)
             return 0;
-        if (object instanceof Integer)
+        if (Integer.class.isInstance( object ))
             return (Integer) object;
+        if (Integer.TYPE.isInstance( object ))
+            return (int) object;
 
         try {
             return Integer.valueOf( object.toString() );

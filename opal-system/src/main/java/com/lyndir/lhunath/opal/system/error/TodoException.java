@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.opal.system.logging.exception;
+package com.lyndir.lhunath.opal.system.error;
 
 /**
  * <h2>{@link TodoException}<br> <sub>[in short] (TODO).</sub></h2>

@@ -21,7 +21,7 @@ import com.google.common.base.*;
 import com.google.common.base.Objects;
 import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
-import com.lyndir.lhunath.opal.system.logging.exception.AlreadyCheckedException;
+import com.lyndir.lhunath.opal.system.error.AlreadyCheckedException;
 import com.lyndir.lhunath.opal.system.util.ObjectMeta.For;
 import com.lyndir.lhunath.opal.system.util.TypeUtils.LastResult;
 import java.lang.reflect.*;
@@ -209,57 +209,56 @@ public abstract class ObjectUtils {
         toString.append( name );
 
         int identityHashCode = System.identityHashCode( o );
-        if (seen.get( For.toString ).get().contains( identityHashCode ))
+        toString.append( '[' ).append( identityHashCode ).append( ']' );
+
+        if (!seen.get( For.toString ).get().add( identityHashCode ))
             // Cyclic reference.
-            toString.append( ": " ).append( Integer.toHexString( identityHashCode ) );
-        else
-            try {
-                seen.get( For.toString ).get().add( identityHashCode );
+            return toString.append( '}' ).toString();
 
-                toString.append(
-                        forEachFieldWithMeta( For.toString, o.getClass(), new Function<LastResult<Field, StringBuilder>, StringBuilder>() {
-                            @Override
-                            public StringBuilder apply(final LastResult<Field, StringBuilder> lastResult) {
+        try {
+            toString.append(
+                    forEachFieldWithMeta( For.toString, o.getClass(), new Function<LastResult<Field, StringBuilder>, StringBuilder>() {
+                        @Override
+                        public StringBuilder apply(final LastResult<Field, StringBuilder> lastResult) {
 
-                                Field field = lastResult.getCurrent();
-                                StringBuilder fieldsString = lastResult.getLastResult();
+                            Field field = lastResult.getCurrent();
+                            StringBuilder fieldsString = lastResult.getLastResult();
 
-                                if (!isValueAccessible( o ))
-                                    return fieldsString;
-
-                                String name = null;
-                                ObjectMeta fieldMeta = field.getAnnotation( ObjectMeta.class );
-                                if (fieldMeta != null)
-                                    name = fieldMeta.name();
-                                if (name == null || name.isEmpty())
-                                    name = field.getName();
-
-                                if (fieldsString.length() == 0)
-                                    fieldsString.append( ": " );
-                                else
-                                    fieldsString.append( ", " );
-
-                                try {
-                                    field.setAccessible( true );
-                                }
-                                catch (SecurityException ignored) {
-                                }
-
-                                try {
-                                    fieldsString.append( name ).append( '=' ).append( describe( field.get( o ) ) );
-                                }
-                                catch (Throwable t) {
-                                    logger.dbg( t, "Couldn't load value for field: %s, in object: 0x%x", field,
-                                                System.identityHashCode( o ) );
-                                }
-
+                            if (!isValueAccessible( o ))
                                 return fieldsString;
+
+                            String name = null;
+                            ObjectMeta fieldMeta = field.getAnnotation( ObjectMeta.class );
+                            if (fieldMeta != null)
+                                name = fieldMeta.name();
+                            if (name == null || name.isEmpty())
+                                name = field.getName();
+
+                            if (fieldsString.length() == 0)
+                                fieldsString.append( ": " );
+                            else
+                                fieldsString.append( ", " );
+
+                            try {
+                                field.setAccessible( true );
                             }
-                        }, new StringBuilder() ) );
-            }
-            finally {
-                seen.get( For.toString ).get().remove( identityHashCode );
-            }
+                            catch (SecurityException ignored) {
+                            }
+
+                            try {
+                                fieldsString.append( name ).append( '=' ).append( describe( field.get( o ) ) );
+                            }
+                            catch (Throwable t) {
+                                logger.dbg( t, "Couldn't load value for field: %s, in object: 0x%x", field, System.identityHashCode( o ) );
+                            }
+
+                            return fieldsString;
+                        }
+                    }, new StringBuilder() ) );
+        }
+        finally {
+            seen.get( For.toString ).get().remove( identityHashCode );
+        }
 
         return toString.append( '}' ).toString();
     }

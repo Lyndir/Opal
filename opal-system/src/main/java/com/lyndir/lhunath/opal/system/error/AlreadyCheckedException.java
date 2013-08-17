@@ -1,4 +1,4 @@
-package com.lyndir.lhunath.opal.system.logging.exception;
+package com.lyndir.lhunath.opal.system.error;
 
 /**
  * <h2>{@link AlreadyCheckedException}<br> <sub>[in short] (TODO).</sub></h2>
