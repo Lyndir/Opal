@@ -20,8 +20,8 @@ import static com.google.common.base.Preconditions.*;
 import com.google.common.base.*;
 import com.google.common.base.Objects;
 import com.google.common.collect.*;
-import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.system.error.AlreadyCheckedException;
+import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.system.util.ObjectMeta.For;
 import com.lyndir.lhunath.opal.system.util.TypeUtils.LastResult;
 import java.lang.reflect.*;
@@ -67,7 +67,7 @@ public abstract class ObjectUtils {
     }
 
     private static final Pattern PACKAGE_NODE = Pattern.compile( "([^\\.])[^\\.]+\\." );
-    private static final Pattern PACKAGE = Pattern.compile( ".*\\." );
+    private static final Pattern PACKAGE      = Pattern.compile( ".*\\." );
 
     /**
      * Check whether two objects are equal according to {@link #equals(Object)}.
@@ -159,11 +159,13 @@ public abstract class ObjectUtils {
 
         if (o instanceof Map) {
             StringBuilder description = new StringBuilder().append( "<M:[" );
-            for (final Entry<?, ?> entry : ((Map<?, ?>) o).entrySet()) {
-                if (description.length() > 1)
-                    description.append( "], [" );
+            synchronized (o) {
+                for (final Entry<?, ?> entry : ((Map<?, ?>) o).entrySet()) {
+                    if (description.length() > 1)
+                        description.append( "], [" );
 
-                description.append( describe( entry.getKey() ) ).append( '=' ).append( describe( entry.getValue() ) );
+                    description.append( describe( entry.getKey() ) ).append( '=' ).append( describe( entry.getValue() ) );
+                }
             }
 
             return description.append( "]>" ).toString();
@@ -172,11 +174,13 @@ public abstract class ObjectUtils {
         if (o instanceof Collection) {
             Collection<?> collection = (Collection<?>) o;
             StringBuilder description = new StringBuilder().append( '[' );
-            for (final Object entry : collection) {
-                if (description.length() > 1)
-                    description.append( ", " );
+            synchronized (collection) {
+                for (final Object entry : collection) {
+                    if (description.length() > 1)
+                        description.append( ", " );
 
-                description.append( describe( entry ) );
+                    description.append( describe( entry ) );
+                }
             }
 
             return description.append( ']' ).toString();
@@ -312,8 +316,10 @@ public abstract class ObjectUtils {
                                 // Best-effort special handling for Iterables in case they don't implement hashCode themselves.
                                 // We just use the hashCode of the sorted hashCodes of the values.
                                 ImmutableSortedSet.Builder<Integer> hashCodes = ImmutableSortedSet.naturalOrder();
-                                for (final Object o : (Iterable<?>) value)
-                                    hashCodes.add( ObjectUtils.hashCode( o ) );
+                                synchronized (value) {
+                                    for (final Object o : (Iterable<?>) value)
+                                        hashCodes.add( ObjectUtils.hashCode( o ) );
+                                }
                                 hashCode = hashCodes.build().hashCode();
                             } else
                                 hashCode = value.hashCode();
