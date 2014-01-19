@@ -4,14 +4,14 @@ import static com.google.common.base.Preconditions.*;
 
 import com.google.common.base.Function;
 import com.google.common.base.Throwables;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.error.BreakException;
+import com.lyndir.lhunath.opal.system.error.InternalInconsistencyException;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.lang.reflect.InvocationHandler;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -53,7 +53,7 @@ public abstract class TypeUtils {
         try {
             return (Class<T>) Thread.currentThread().getContextClassLoader().loadClass( typeName );
         }
-        catch (ClassNotFoundException ignored) {
+        catch (final ClassNotFoundException ignored) {
             return null;
         }
     }
@@ -75,7 +75,7 @@ public abstract class TypeUtils {
         try {
             return (Class<T>) Thread.currentThread().getContextClassLoader().loadClass( typeName );
         }
-        catch (ClassNotFoundException e) {
+        catch (final ClassNotFoundException e) {
             throw Throwables.propagate( e );
         }
     }
@@ -183,7 +183,7 @@ public abstract class TypeUtils {
      * @param <A>            The annotation type.
      *
      * @return The annotation of the given annotation type in the given type's hierarchy or <code>null</code> if the type's hierarchy
-     *         contains no classes that have the given annotation type set.
+     * contains no classes that have the given annotation type set.
      */
     @Nullable
     public static <A extends Annotation> A findAnnotation(final Class<?> type, final Class<A> annotationType) {
@@ -214,8 +214,8 @@ public abstract class TypeUtils {
      * @param <A>            The annotation type.
      *
      * @return A mapping of the given type and its super types to a mapping of that type or one of its implemented interfaces to the
-     *         instance of the given annotation the type declares.
-     *         <code>[TT = T or a supertype of T -> [ TTT = TT or interface of TT -> annotation on TTT ]]</code>
+     * instance of the given annotation the type declares.
+     * <code>[TT = T or a supertype of T -> [ TTT = TT or interface of TT -> annotation on TTT ]]</code>
      */
     @Nonnull
     public static <T, A extends Annotation> Map<Class<? super T>, Map<Class<?>, A>> getAnnotations(final Class<T> type,
@@ -248,7 +248,7 @@ public abstract class TypeUtils {
      * @param <A>            The annotation type.
      *
      * @return The annotation of the given annotation type in the given method's hierarchy or <code>null</code> if the method's hierarchy
-     *         contains no methods that have the given annotation type set.
+     * contains no methods that have the given annotation type set.
      */
     @Nullable
     public static <A extends Annotation> A findAnnotation(final Method method, final Class<A> annotationType) {
@@ -268,7 +268,7 @@ public abstract class TypeUtils {
                 //logger.debug( "Trying for method {} in {}", method.getName(), superclass );
                 superclassMethod = superclass.getMethod( method.getName(), method.getParameterTypes() );
             }
-            catch (NoSuchMethodException ignored) {
+            catch (final NoSuchMethodException ignored) {
             }
         if (superclassMethod == null) {
             //logger.debug( "Gave up for annotation {} (reached end of hierarchy)", annotationType );
@@ -276,6 +276,58 @@ public abstract class TypeUtils {
         }
 
         return findAnnotation( superclassMethod, annotationType );
+    }
+
+    public static <E> ImmutableList<Constructor<E>> findConstructors(final Class<E> type, final Object... args) {
+        ImmutableList.Builder<Constructor<E>> constructors = ImmutableList.builder();
+        for (final Constructor<?> constructor : type.getDeclaredConstructors()) {
+            Class<?>[] parameterTypes = constructor.getParameterTypes();
+
+            boolean compatible = parameterTypes.length == args.length;
+            if (!compatible) {
+                logger.dbg( "constructor: %s, not compatible in parameter length: %d != %d", constructor, parameterTypes.length, args.length);
+                continue;
+            }
+
+            for (int i = 0; i < parameterTypes.length; i++)
+                if (!parameterTypes[i].isInstance( args[i] )) {
+                    logger.dbg( "constructor: %s, not compatible in parameter type: !%s.isInstance(%s)", constructor, parameterTypes[i], args[i] );
+                    compatible = false;
+                    break;
+                }
+            if (!compatible)
+                continue;
+
+            // Constructor guaranteed of type <E> because it comes from Class<E> type.
+            //noinspection unchecked
+            constructors.add( (Constructor<E>) constructor );
+        }
+
+        return constructors.build();
+    }
+
+    public static <E> Constructor<E> getConstructor(final Class<E> type, final Object... args) {
+        ImmutableList<Constructor<E>> constructors = findConstructors( type, args );
+        if (constructors.isEmpty())
+            throw new InternalInconsistencyException( String.format( "No constructors of type: %s, match argument types: %s", type,
+                                                                     Lists.transform( Arrays.asList( args ),
+                                                                                      new Function<Object, Object>() {
+                                                                                          @Override
+                                                                                          public Object apply(final Object input) {
+                                                                                              return input.getClass();
+                                                                                          }
+                                                                                      } ) ) );
+        if (constructors.size() > 1)
+            throw new InternalInconsistencyException(
+                    String.format( "Multiple constructors of type: %s, match argument types: %s, candidates: %s", type,
+                                   Lists.transform( Arrays.asList( args ), new Function<Object, Object>() {
+                                       @Override
+                                       public Object apply(final Object input) {
+                                           return input.getClass();
+                                       }
+                                   } ), constructors ) );
+
+        return constructors.get( 0 );
     }
 
     /**
@@ -309,7 +361,7 @@ public abstract class TypeUtils {
                         lastResult = interfaceFunction.apply( new LastResult<Class<?>, R>( interfaceType, lastResult ) );
             }
         }
-        catch (BreakException e) {
+        catch (final BreakException e) {
             lastResult = e.getResult();
         }
 
@@ -344,7 +396,7 @@ public abstract class TypeUtils {
                             result = function.apply( new LastResult<>( field, result ) );
                         }
                 }
-                catch (BreakException e) {
+                catch (final BreakException e) {
                     result = e.getResult();
                 }
 
@@ -369,7 +421,7 @@ public abstract class TypeUtils {
                     if (ObjectUtils.equals( input.getCurrent().get( owner ), value ))
                         throw new BreakException( input.getCurrent() );
                 }
-                catch (IllegalAccessException e) {
+                catch (final IllegalAccessException e) {
                     throw logger.bug( e );
                 }
 
