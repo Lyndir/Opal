@@ -391,49 +391,6 @@ public abstract class TypeUtils {
         return findAnnotation( type, annotationType ) != null;
     }
 
-    /**
-     * Find the enum value of the given enum type with the given identifier (name).
-     *
-     * @param type  The enum type for which to obtain a value.
-     * @param value The name of the enum value to obtain.
-     * @param <T>   The enum type for which to obtain a value.
-     *
-     * @return The enum value.
-     *
-     * @throws IllegalArgumentException if the given enum type has no member named by the given value.
-     */
-    public static <T extends Enum<T>> T valueOfEnum(final Class<T> type, final String value) {
-
-        return Enum.valueOf( type, value );
-    }
-
-    /**
-     * Type-forced version of {@link #valueOfEnum(Class, String)}.  Does not require the class to be an Enum class.  Really only useful if
-     * you've got a <code>Class<?></code> and you have no clue what enum is in it and you've already done a {@link Class#isEnum()} to
-     * verify
-     * that it really is an enum.
-     *
-     * @param type  The enum type for which to obtain a value.
-     * @param value The name of the enum value to obtain.
-     * @param <T>   The enum type for which to obtain a value.
-     *
-     * @return The enum value.
-     *
-     * @see #valueOfEnum(Class, String)
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static <T> T unsafeValueOfEnum(final Class<T> type, final String value) {
-
-        return type.cast( valueOfEnum( (Class<Enum>) type, value ) );
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    public static <T extends Enum<T>> Class<T> checkEnum(final Class<?> type) {
-
-        checkArgument( type.isEnum(), "%s is not an enum.", type );
-        return (Class<T>) type;
-    }
-
     public static String propertyName(final Method method) {
 
         String methodName = method.getName();

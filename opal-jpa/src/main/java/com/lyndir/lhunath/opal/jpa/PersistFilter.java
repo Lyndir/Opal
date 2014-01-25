@@ -1,5 +1,6 @@
 package com.lyndir.lhunath.opal.jpa;
 
+import com.google.inject.Singleton;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.io.IOException;
 import javax.servlet.*;
@@ -12,15 +13,25 @@ import javax.servlet.*;
  *
  * @author lhunath
  */
+@Singleton
 public class PersistFilter implements Filter {
 
     static final Logger logger = Logger.get( PersistFilter.class );
 
     private final Persist persistence;
 
+    private static Persist createPersistence() {
+
+        try {
+            return new Persist();
+        } catch (RuntimeException e) {
+            throw logger.bug( e, "While initializing PersistFilter" );
+        }
+    }
+
     public PersistFilter() {
 
-        this( new Persist() );
+        this( createPersistence() );
     }
 
     public PersistFilter(final Persist persistence) {

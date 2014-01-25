@@ -30,6 +30,7 @@ import javax.persistence.*;
  */
 public class Persist {
 
+    public static final  String               DEFAULT_UNIT = "DefaultDS";
     private static final ThreadLocal<Persist> persistences = new ThreadLocal<>();
 
     private final EntityManagerFactory emf;
@@ -50,7 +51,7 @@ public class Persist {
 
     public Persist() {
 
-        this( Persistence.createEntityManagerFactory( "DefaultDS" ) );
+        this( Persistence.createEntityManagerFactory( DEFAULT_UNIT ) );
     }
 
     public Persist(final String persistenceUnitName) {
@@ -99,7 +100,7 @@ public class Persist {
      * Close and clean up the entity manager if one is open.
      *
      * @return <code>true</code>  if an entity manager was open and has been closed as a result of this call.  <code>false</code>  if there
-     *         was no entity manager or it was not open.
+     * was no entity manager or it was not open.
      */
     private boolean close() {
 
@@ -119,7 +120,7 @@ public class Persist {
      * Abort the current transaction if one is active.
      *
      * @return <code>true</code>  if an active transaction was rolled back as a result of this call.  <code>false</code>  if there was no
-     *         transaction or if it was not active anymore.
+     * transaction or if it was not active anymore.
      */
     public boolean abort() {
 
@@ -142,7 +143,7 @@ public class Persist {
      * @param caller The object that was passed as caller to {@link #begin(Object)}.  Generally, just <code>this</code> .
      *
      * @return <code>true</code>  if a transaction was active and the caller owned it, and the transaction was successfully committed.
-     *         <code>false</code>  otherwise.
+     * <code>false</code>  otherwise.
      */
     public boolean complete(final Object caller) {
 

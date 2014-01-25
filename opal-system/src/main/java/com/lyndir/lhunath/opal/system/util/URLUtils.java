@@ -143,12 +143,30 @@ public abstract class URLUtils {
         }
     }
 
+    public static URI newURI(String urlFormat, Object... urlFormatArgs) {
+        try {
+            return newURL( urlFormat, urlFormatArgs ).toURI();
+        }
+        catch (URISyntaxException e) {
+            throw Throwables.propagate( e );
+        }
+    }
+
     public static URL newURL(URL baseURL, CharSequence relativeURLString) {
 
         try {
             return relativeURLString == null? baseURL: new URL( baseURL, relativeURLString.toString() );
         }
         catch (MalformedURLException e) {
+            throw Throwables.propagate( e );
+        }
+    }
+
+    public static URI newURI(URL baseURL, CharSequence relativeURLString) {
+        try {
+            return newURL( baseURL, relativeURLString ).toURI();
+        }
+        catch (URISyntaxException e) {
             throw Throwables.propagate( e );
         }
     }
