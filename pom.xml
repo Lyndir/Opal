@@ -27,7 +27,7 @@
 
     <!-- DEFAULT PROPERTIES -->
     <properties>
-        <release.version>1.5</release.version>
+        <release.version>1.7</release.version>
     </properties>
 
     <!-- ALL MODULES THAT ARE ENABLED BY DEFAULT -->
