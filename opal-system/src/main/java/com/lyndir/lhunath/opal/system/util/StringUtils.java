@@ -22,6 +22,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,6 +41,22 @@ public abstract class StringUtils {
     private static final Pattern TLD              = Pattern.compile( "^.*?([^\\.]+\\.[^\\.]+)$" );
     private static final Pattern TRAILING_SLASHES = Pattern.compile( "/+$" );
     private static final Pattern NON_FINAL_PATH   = Pattern.compile( "^.*/" );
+
+    /**
+     * Convenience shortcut for {@link MessageFormat#format(String, Object...)}.  Great for static imports.
+     */
+    public static String str(final String messageFormat, final Object... args) {
+
+        return MessageFormat.format( messageFormat, args );
+    }
+
+    /**
+     * Convenience shortcut for {@link String#format(String, Object...)}.  Great for static imports.
+     */
+    public static String strf(final String format, final Object... args) {
+
+        return String.format( format, args );
+    }
 
     /**
      * Concatenate several strings into one.
