@@ -118,17 +118,10 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
             if (reload)
                 connection.setUseCaches( false );
             InputStream stream = connection.getInputStream();
-            if (stream == null)
-                return null;
 
             Properties properties = new Properties();
-            BufferedInputStream input = new BufferedInputStream( stream );
-            try {
+            try (BufferedInputStream input = new BufferedInputStream( stream )) {
                 properties.loadFromXML( input );
-            }
-
-            finally {
-                input.close();
             }
 
             return new XMLResourceBundle( properties );

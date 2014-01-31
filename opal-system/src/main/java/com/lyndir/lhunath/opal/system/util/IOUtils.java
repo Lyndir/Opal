@@ -2,7 +2,9 @@ package com.lyndir.lhunath.opal.system.util;
 
 import com.google.common.io.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -75,6 +77,7 @@ public abstract class IOUtils {
      * return the whole line that matched the pattern.
      * <p>If the given file is a directory, a recursive search will take place.</p>
      *
+     * @param charset The character set to decode the file's bytes with.
      * @param pattern The pattern to search for.
      * @param file    The file to search in.
      * @param group   The group number in the pattern to return; or 0 to return the whole matching line.
@@ -84,10 +87,10 @@ public abstract class IOUtils {
      *
      * @throws IOException The file, or a file in the directory could not be read.
      */
-    public static String grep(final String pattern, final File file, final int group)
+    public static String grep(final Charset charset, final String pattern, final File file, final int group)
             throws IOException {
 
-        return grep( Pattern.compile( pattern ), file, group );
+        return grep( charset, Pattern.compile( pattern ), file, group );
     }
 
     /**
@@ -96,6 +99,7 @@ public abstract class IOUtils {
      * return the whole line that matched the pattern.
      * <p>If the given file is a directory, a recursive search will take place.</p>
      *
+     * @param charset The character set to decode the file's bytes with.
      * @param pattern The pattern to search for.
      * @param file    The file to search in.
      * @param group   The group number in the pattern to return; or 0 to return the whole matching line.
@@ -105,19 +109,20 @@ public abstract class IOUtils {
      *
      * @throws IOException The file, or a file in the directory could not be read.
      */
-    public static String grep(final Pattern pattern, final File file, final int group)
+    @SuppressFBWarnings({ "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" })
+    public static String grep(final Charset charset, final Pattern pattern, final File file, final int group)
             throws IOException {
 
         File[] files = file.listFiles();
         if (files != null) {
             StringBuilder resultBuilder = new StringBuilder();
             for (final File child : files)
-                resultBuilder.append( grep( pattern, child, group ) );
+                resultBuilder.append( grep( charset, pattern, child, group ) );
 
             return resultBuilder.toString();
         }
 
-        try (FileReader reader = new FileReader( file )) {
+        try (Reader reader = new InputStreamReader( new FileInputStream( file ), charset ) ) {
             return grep( pattern, reader, group );
         }
     }

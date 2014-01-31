@@ -978,7 +978,7 @@ public class Network implements Runnable {
                         final Runnable delegatedTask = engine.getDelegatedTask();
                         if (delegatedTask != null) {
                             logger.dbg( "[====: %s] SSL %s: Starting a task thread.", //
-                                    nameChannel( channel ), handshakeStatus, delegatedTask );
+                                    nameChannel( channel ), handshakeStatus );
 
                             new Thread( new Runnable() {
 
@@ -991,7 +991,7 @@ public class Network implements Runnable {
                             } ).start();
                         } else {
                             logger.dbg( "[====: %s] SSL %s: Task needed but none offered.", //
-                                    nameChannel( channel ), handshakeStatus, delegatedTask );
+                                    nameChannel( channel ), handshakeStatus );
                             break;
                         }
 

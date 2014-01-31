@@ -16,6 +16,7 @@
 
 package com.lyndir.lhunath.opal.system.dummy;
 
+import edu.umd.cs.findbugs.annotations.*;
 import java.io.PrintStream;
 
 
@@ -24,6 +25,7 @@ import java.io.PrintStream;
  *
  * @author mbillemo
  */
+@SuppressFBWarnings({"DM_DEFAULT_ENCODING"})
 public class NullPrintStream extends PrintStream {
 
     /**

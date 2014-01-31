@@ -258,7 +258,7 @@ public abstract class Structure {
         if (structure.getClass().getAnnotation( FromXML.class ) == null)
             throw new IllegalArgumentException( "Object passed must have the FromXML annotation." );
 
-        StringBuilder out = new StringBuilder( String.format( "<%s>\n", structure.getClass().getSimpleName() ) );
+        StringBuilder out = new StringBuilder( String.format( "<%s>%n", structure.getClass().getSimpleName() ) );
         for (final Field field : structure.getClass().getDeclaredFields()) {
             XInject annotation = field.getAnnotation( XInject.class );
             if (annotation == null)
@@ -277,7 +277,7 @@ public abstract class Structure {
                 else {
                     out.append( '>' ).append( '\n' );
                     out.append( indent( 2 ) ).append( content ).append( '\n' );
-                    out.append( indent( 1 ) ).append( String.format( "</%s>\n", annotation.value() ) );
+                    out.append( indent( 1 ) ).append( String.format( "</%s>%n", annotation.value() ) );
                 }
             }
 

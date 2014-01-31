@@ -36,6 +36,8 @@ import org.slf4j.Marker;
  */
 public class Logger implements Serializable {
 
+    private static final long serialVersionUID = 0;
+
     private final     Class<?>         type;
     private transient org.slf4j.Logger logger;
 
@@ -365,7 +367,8 @@ public class Logger implements Serializable {
         err( Markers.BUG, cause, descriptionFormat, descriptionArguments );
 
         //noinspection ThrowableResultOfMethodCallIgnored
-        return cause == null? new RuntimeException( String.format( descriptionFormat, descriptionArguments ) ): Throwables.propagate( cause );
+        return cause == null? new RuntimeException( String.format( descriptionFormat, descriptionArguments ) )
+                : Throwables.propagate( cause );
     }
 
     /**

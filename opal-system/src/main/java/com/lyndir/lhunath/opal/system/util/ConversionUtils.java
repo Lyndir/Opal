@@ -270,7 +270,7 @@ public class ConversionUtils {
      * @throws RuntimeException     Given URL string is not a valid URL.
      */
     @Nonnull
-    public static URL toURLNN(@Nullable final Object url) {
+    public static URL toURLNN(@Nonnull final Object url) {
 
         if (url instanceof URL)
             return (URL) url;

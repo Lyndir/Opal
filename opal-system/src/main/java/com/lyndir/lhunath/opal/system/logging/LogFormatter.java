@@ -108,7 +108,7 @@ public abstract class LogFormatter extends Formatter {
         StringBuilder messageBuilder = new StringBuilder();
         if (error != null)
             for (Throwable e = error; e != null; e = e.getCause())
-                messageBuilder.insert( 0, String.format( "(%s:%d) %s: %s\n",
+                messageBuilder.insert( 0, String.format( "(%s:%d) %s: %s%n",
                                                          e.getStackTrace().length > 0? e.getStackTrace()[0].getFileName(): "n/a",
                                                          e.getStackTrace().length > 0? e.getStackTrace()[0].getLineNumber(): -1,
                                                          e.getClass().getName(), e.getLocalizedMessage() ) );
@@ -122,7 +122,7 @@ public abstract class LogFormatter extends Formatter {
         buffer.append( levelColor.get( record.getLevel() ) );
         String prefix = "$1 #  ";
         if (record.getLevel().intValue() > Level.INFO.intValue())
-            buffer.append( String.format( "[ %7s | %-30s ]:\n", record.getLevel().getLocalizedName(), source ) );
+            buffer.append( String.format( "[ %7s | %-30s ]:%n", record.getLevel().getLocalizedName(), source ) );
         else
             prefix = String.format( "%s [ %-7s ]  ", prefix, record.getLevel().getLocalizedName() );
         buffer.append( message.replaceAll( "(\n|^)", prefix ) );
@@ -132,7 +132,7 @@ public abstract class LogFormatter extends Formatter {
             /* Write the stack trace to the buffer. */
             if (stackTrace.length > 0)
                 for (final StackTraceElement e : stackTrace)
-                    buffer.append( String.format( "\n %s      %s", isIgnored( e.getClassName() )? '-': '>', e ) );
+                    buffer.append( String.format( "%n %s      %s", isIgnored( e.getClassName() )? '-': '>', e ) );
         buffer.append( levelColor.get( null ) );
 
         return buffer.toString();

@@ -1,6 +1,6 @@
 package com.lyndir.lhunath.opal.system.util;
 
-import static com.google.common.base.Preconditions.*;
+import static com.lyndir.lhunath.opal.system.util.StringUtils.*;
 
 import com.google.common.base.Function;
 import com.google.common.base.Throwables;
@@ -285,13 +285,15 @@ public abstract class TypeUtils {
 
             boolean compatible = parameterTypes.length == args.length;
             if (!compatible) {
-                logger.dbg( "constructor: %s, not compatible in parameter length: %d != %d", constructor, parameterTypes.length, args.length);
+                logger.dbg( "constructor: %s, not compatible in parameter length: %d != %d", constructor, parameterTypes.length,
+                            args.length );
                 continue;
             }
 
             for (int i = 0; i < parameterTypes.length; i++)
                 if (!parameterTypes[i].isInstance( args[i] )) {
-                    logger.dbg( "constructor: %s, not compatible in parameter type: !%s.isInstance(%s)", constructor, parameterTypes[i], args[i] );
+                    logger.dbg( "constructor: %s, not compatible in parameter type: !%s.isInstance(%s)", constructor, parameterTypes[i],
+                                args[i] );
                     compatible = false;
                     break;
                 }
@@ -309,23 +311,22 @@ public abstract class TypeUtils {
     public static <E> Constructor<E> getConstructor(final Class<E> type, final Object... args) {
         ImmutableList<Constructor<E>> constructors = findConstructors( type, args );
         if (constructors.isEmpty())
-            throw new InternalInconsistencyException( String.format( "No constructors of type: %s, match argument types: %s", type,
-                                                                     Lists.transform( Arrays.asList( args ),
-                                                                                      new Function<Object, Object>() {
-                                                                                          @Override
-                                                                                          public Object apply(final Object input) {
-                                                                                              return input.getClass();
-                                                                                          }
-                                                                                      } ) ) );
+            throw new InternalInconsistencyException( strf( "No constructors of type: %s, match argument types: %s", type,
+                                                            Lists.transform( Arrays.asList( args ), new Function<Object, Object>() {
+                                                                @Override
+                                                                public Object apply(final Object input) {
+                                                                    return input == null? "<null>": input.getClass();
+                                                                }
+                                                            } ) ) );
         if (constructors.size() > 1)
             throw new InternalInconsistencyException(
-                    String.format( "Multiple constructors of type: %s, match argument types: %s, candidates: %s", type,
-                                   Lists.transform( Arrays.asList( args ), new Function<Object, Object>() {
-                                       @Override
-                                       public Object apply(final Object input) {
-                                           return input.getClass();
-                                       }
-                                   } ), constructors ) );
+                    strf( "Multiple constructors of type: %s, match argument types: %s, candidates: %s", type,
+                          Lists.transform( Arrays.asList( args ), new Function<Object, Object>() {
+                              @Override
+                              public Object apply(final Object input) {
+                                  return input == null? "<null>": input.getClass();
+                              }
+                          } ), constructors ) );
 
         return constructors.get( 0 );
     }
@@ -345,9 +346,10 @@ public abstract class TypeUtils {
      *
      * @return The final result produced by the last execution of the operation.
      */
+    @Nullable
     public static <T, R> R forEachSuperTypeOf(@Nonnull final Class<T> type,
-                                              @Nullable final Function<LastResult<Class<?>, R>, R> typeFunction,
-                                              @Nullable final Function<LastResult<Class<?>, R>, R> interfaceFunction,
+                                              @Nullable final NFunctionNN<LastResult<Class<?>, R>, R> typeFunction,
+                                              @Nullable final NFunctionNN<LastResult<Class<?>, R>, R> interfaceFunction,
                                               @Nullable final R firstResult) {
 
         R lastResult = firstResult;
@@ -384,9 +386,10 @@ public abstract class TypeUtils {
     public static <T, R> R forEachFieldOf(final Class<T> type, final NFunctionNN<LastResult<Field, R>, R> function,
                                           @Nullable final R firstResult, final boolean descend) {
 
-        Function<LastResult<Class<?>, R>, R> eachFieldFunction = new Function<LastResult<Class<?>, R>, R>() {
+        NFunctionNN<LastResult<Class<?>, R>, R> eachFieldFunction = new NFunctionNN<LastResult<Class<?>, R>, R>() {
+            @Nullable
             @Override
-            public R apply(final LastResult<Class<?>, R> lastResult) {
+            public R apply(@Nonnull final LastResult<Class<?>, R> lastResult) {
 
                 R result = lastResult.getLastResult();
                 try {
@@ -473,12 +476,13 @@ public abstract class TypeUtils {
         private final C current;
         private final R lastResult;
 
-        public LastResult(final C current, final R lastResult) {
+        public LastResult(@Nonnull final C current, @Nullable final R lastResult) {
 
             this.current = current;
             this.lastResult = lastResult;
         }
 
+        @Nonnull
         public C getCurrent() {
 
             return current;

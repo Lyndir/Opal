@@ -17,7 +17,9 @@ package com.lyndir.lhunath.opal.crypto.gpg;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
+import edu.umd.cs.findbugs.annotations.*;
 import java.io.*;
+import java.lang.SuppressWarnings;
 import java.security.*;
 import java.util.*;
 import org.bouncycastle.bcpg.*;
@@ -70,6 +72,7 @@ public abstract class GPG {
      * @throws IOException
      * @throws PGPException
      */
+    @SuppressFBWarnings({ "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" })
     public static PGPPublicKey getPublicKey(final File publicKeyFile, final long publicKeyId)
             throws IOException, PGPException {
 
@@ -88,6 +91,7 @@ public abstract class GPG {
      * @throws IOException
      * @throws PGPException
      */
+    @SuppressFBWarnings({ "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" })
     public static PGPSecretKey getPrivateKey(final File privateKeyFile, final long privateKeyId)
             throws IOException, PGPException {
 
@@ -125,7 +129,7 @@ public abstract class GPG {
      */
     public static PGPSecretKey getPrivateKeyFor(final String encryptedString, final File privateKeyFile)
             throws IOException, PGPException {
-
+        // TODO: need encoding for encryptedString.
         return getPrivateKeyFor( new ByteArrayInputStream( encryptedString.getBytes() ), privateKeyFile );
     }
 

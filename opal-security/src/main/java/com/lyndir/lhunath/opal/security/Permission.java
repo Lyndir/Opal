@@ -15,7 +15,9 @@
  */
 package com.lyndir.lhunath.opal.security;
 
+import com.google.common.collect.ImmutableSet;
 import com.lyndir.lhunath.opal.system.i18n.*;
+import java.util.Arrays;
 
 
 /**
@@ -58,17 +60,17 @@ public enum Permission implements Localized {
 
     private static final transient Messages msgs = MessagesFactory.create( Messages.class );
 
-    private final Permission[] provided;
+    private final ImmutableSet<Permission> provided;
 
     Permission(final Permission... provided) {
 
-        this.provided = provided;
+        this.provided = ImmutableSet.copyOf( provided );
     }
 
     /**
      * @return Other permissions provided (granted) by this one.
      */
-    public Permission[] getProvided() {
+    public ImmutableSet<Permission> getProvided() {
 
         return provided;
     }

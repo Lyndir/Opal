@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.lyndir.lhunath.opal.system.util.MetaObject;
 import com.lyndir.lhunath.opal.system.util.ObjectUtils;
+import edu.umd.cs.findbugs.annotations.*;
 import java.io.Serializable;
 import javax.annotation.Nullable;
 
@@ -106,6 +107,7 @@ public class JSONResult extends MetaObject {
         return userDescription;
     }
 
+    @SuppressFBWarnings({ "EI_EXPOSE_REP" })
     public String[] getUserDescriptionArguments() {
 
         return userDescriptionArguments;

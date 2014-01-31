@@ -153,9 +153,9 @@ public class XPathUtil {
      *
      * @author mbillemo
      */
-    private class XHTMLContext implements NamespaceContext {
+    private static class XHTMLContext implements NamespaceContext {
 
-        private final Map<String, String> namespaces = new HashMap<String, String>();
+        private final Map<String, String> namespaces = new HashMap<>();
 
         /**
          * Create a new AuthDriver.XHTMLContext instance.

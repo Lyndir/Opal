@@ -21,6 +21,7 @@ package com.lyndir.lhunath.opal.plain;
 import com.google.common.io.Closeables;
 import com.lyndir.lhunath.opal.system.util.UIUtils;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.regex.Pattern;
 import jlibdiff.Diff;
 import jlibdiff.Hunk;
@@ -49,11 +50,11 @@ public abstract class DiffUtils {
      *
      * @throws IOException jlibdiff fails.
      */
-    public static String getDiff(final InputStream from, final InputStream to)
+    public static String getDiff(final InputStream from, final InputStream to, final Charset charset)
             throws IOException {
 
-        try (BufferedReader fromReader = new BufferedReader( new InputStreamReader( from ) ); //
-             BufferedReader toReader = new BufferedReader( new InputStreamReader( to ) )) {
+        try (BufferedReader fromReader = new BufferedReader( new InputStreamReader( from, charset ) ); //
+             BufferedReader toReader = new BufferedReader( new InputStreamReader( to, charset ) )) {
             return getDiff( fromReader, toReader );
         }
     }

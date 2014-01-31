@@ -127,7 +127,7 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                                         logger.dbg( "With match: %s, ", match );
 
                                         boolean matches = false;
-                                        if (!matches && match.ifNum() != KeyMatch.NUM_UNSET)
+                                        if (!matches && !Double.isNaN( match.ifNum() ))
                                             if (Number.class.isInstance( argValue ) && match.ifNum() == ((Number) argValue).doubleValue())
                                                 matches = true;
                                         if (!matches && match.ifString() != KeyMatch.STRING_UNSET)

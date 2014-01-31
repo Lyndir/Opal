@@ -15,7 +15,11 @@
  */
 package com.lyndir.lhunath.opal.system;
 
+import static com.lyndir.lhunath.opal.system.util.StringUtils.str;
+
+import com.google.common.base.Charsets;
 import com.lyndir.lhunath.opal.system.dummy.NullOutputStream;
+import edu.umd.cs.findbugs.annotations.*;
 import java.io.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +31,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author lhunath
  */
+@SuppressFBWarnings({ "DMI_HARDCODED_ABSOLUTE_FILENAME" })
 public class WinReg {
 
     private static final Logger logger = LoggerFactory.getLogger( WinReg.class );
@@ -62,7 +67,7 @@ public class WinReg {
         if (!(type.equals( String.class ) || type.equals( Integer.class )))
             throw new IllegalArgumentException( "Can only query the registry for String or Integer types." );
 
-        String output = Shell.execRead( new File( "C:\\Windows\\System32" ), "reg.exe", "query", key, "/v", value );
+        String output = Shell.execRead( Charsets.UTF_8, new File( "C:\\Windows\\System32" ), "reg.exe", "query", key, "/v", value );
 
         int pos;
         T result = null;

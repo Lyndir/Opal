@@ -15,10 +15,12 @@
  */
 package com.lyndir.lhunath.opal.system;
 
+import com.google.common.base.Charsets;
 import com.google.common.io.*;
 import com.lyndir.lhunath.opal.system.dummy.NullOutputStream;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -94,12 +96,13 @@ public class Shell {
     public static Process exec(final OutputStream out, final OutputStream err, final File currDir, final String... cmd)
             throws FileNotFoundException {
 
+        int bytesRead;
         char[] buffer = new char[100];
         String[] execCmd = cmd;
 
-        Reader reader = new FileReader( new File( currDir, cmd[0] ) );
+        Reader reader =  new InputStreamReader(new FileInputStream( new File( currDir, cmd[0] ) ), Charsets.US_ASCII );
         try {
-            reader.read( buffer );
+            bytesRead = reader.read( buffer );
         }
         catch (IOException e) {
             logger.err( e, "Failed to open the file to execute!" );
@@ -111,7 +114,7 @@ public class Shell {
 
         /* Check whether this is a shell script and if so, what interpreter to use. */
         // FIXME: Hashbang can contain one argument
-        String head = new String( buffer );
+        String head = new String( buffer, 0, bytesRead );
         int eol = head.indexOf( '\n' );
         if (eol > 0) {
             head = head.substring( 0, eol );
@@ -168,18 +171,19 @@ public class Shell {
     /**
      * Run an application or shell script and read its standard output and standard error into a string.
      *
+     * @param charset The character set to decode the process' output with.
      * @param currDir The current directory for the child process.
      * @param cmd     The command to invoke for running the new process.
      *
      * @return The standard output and standard error of the process.
      */
-    public static String execRead(final File currDir, final String... cmd) {
+    public static String execRead(final Charset charset, final File currDir, final String... cmd) {
 
         try {
             PipedOutputStream output = new PipedOutputStream();
             exec( output, new NullOutputStream(), currDir, cmd );
 
-            return CharStreams.toString( new InputStreamReader( new PipedInputStream( output ) ) );
+            return CharStreams.toString( new InputStreamReader( new PipedInputStream( output ), charset ) );
         }
         catch (FileNotFoundException e) {
             logger.err( e, "Command to execute was not found!" );

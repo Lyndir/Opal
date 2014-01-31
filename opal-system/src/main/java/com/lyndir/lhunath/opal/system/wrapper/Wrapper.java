@@ -45,8 +45,8 @@ import java.util.Map;
  */
 public abstract class Wrapper {
 
-    protected static boolean classNotFound;
-    protected static final Map<Class<? extends Wrapper>, Class<?>> wrappedClasses = new HashMap<Class<? extends Wrapper>, Class<?>>();
+    static final Map<Class<? extends Wrapper>, Class<?>> wrappedClasses = new HashMap<Class<? extends Wrapper>, Class<?>>();
+    static boolean classNotFound;
 
     /**
      * Construct an instance of this wrapper's wrapped class.

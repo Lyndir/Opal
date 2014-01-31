@@ -207,10 +207,7 @@ public abstract class ObjectUtils {
     public static String toString(final Object o) {
 
         StringBuilder toString = new StringBuilder( "{" );
-        String name = PACKAGE.matcher( o.getClass().getName() ).replaceFirst( "" );
-        if (name == null)
-            name = o.getClass().getName().replace( ".*\\.", "" );
-        toString.append( name );
+        toString.append( PACKAGE.matcher( o.getClass().getName() ).replaceFirst( "" ) );
 
         int identityHashCode = System.identityHashCode( o );
         toString.append( '[' ).append( identityHashCode ).append( ']' );
@@ -221,9 +218,9 @@ public abstract class ObjectUtils {
 
         try {
             toString.append(
-                    forEachFieldWithMeta( For.toString, o.getClass(), new Function<LastResult<Field, StringBuilder>, StringBuilder>() {
+                    forEachFieldWithMeta( For.toString, o.getClass(), new NFunctionNN<LastResult<Field, StringBuilder>, StringBuilder>() {
                         @Override
-                        public StringBuilder apply(final LastResult<Field, StringBuilder> lastResult) {
+                        public StringBuilder apply(@Nonnull final LastResult<Field, StringBuilder> lastResult) {
 
                             Field field = lastResult.getCurrent();
                             StringBuilder fieldsString = lastResult.getLastResult();
@@ -290,9 +287,9 @@ public abstract class ObjectUtils {
 
         try {
             seen.get( For.hashCode ).get().add( identityHashCode );
-            return ifNotNullElse( forEachFieldWithMeta( For.hashCode, o.getClass(), new Function<LastResult<Field, Integer>, Integer>() {
+            return ifNotNullElse( forEachFieldWithMeta( For.hashCode, o.getClass(), new NFunctionNN<LastResult<Field, Integer>, Integer>() {
                 @Override
-                public Integer apply(final LastResult<Field, Integer> lastResult) {
+                public Integer apply(@Nonnull final LastResult<Field, Integer> lastResult) {
 
                     Field field = lastResult.getCurrent();
                     Integer lastHashCode = lastResult.getLastResult();
@@ -400,9 +397,10 @@ public abstract class ObjectUtils {
         try {
             seen.get( For.equals ).get().add( identityHashCode );
             return ifNotNullElse(
-                    forEachFieldWithMeta( For.equals, superObject.getClass(), new Function<LastResult<Field, Boolean>, Boolean>() {
+                    forEachFieldWithMeta( For.equals, superObject.getClass(), new NFunctionNN<LastResult<Field, Boolean>, Boolean>() {
+                        @Nonnull
                         @Override
-                        public Boolean apply(final LastResult<Field, Boolean> lastResult) {
+                        public Boolean apply(@Nonnull final LastResult<Field, Boolean> lastResult) {
 
                             if (Boolean.FALSE.equals( lastResult.getLastResult() ))
                                 // One 'false' means equals fails.  Don't bother with other fields.
@@ -440,17 +438,18 @@ public abstract class ObjectUtils {
         }
     }
 
-    private static <R, T> R forEachFieldWithMeta(final For meta, final Class<T> type, final Function<LastResult<Field, R>, R> function,
+    private static <R, T> R forEachFieldWithMeta(final For meta, final Class<T> type, final NFunctionNN<LastResult<Field, R>, R> function,
                                                  @Nullable final R firstResult) {
 
-        return TypeUtils.forEachSuperTypeOf( type, new Function<LastResult<Class<?>, R>, R>() {
+        return TypeUtils.forEachSuperTypeOf( type, new NFunctionNN<LastResult<Class<?>, R>, R>() {
             @Override
-            public R apply(final LastResult<Class<?>, R> lastTypeResult) {
+            public R apply(@Nonnull final LastResult<Class<?>, R> lastTypeResult) {
 
                 Class<?> subType = lastTypeResult.getCurrent();
                 final boolean usedByType = usesMeta( meta, subType );
 
                 return TypeUtils.forEachFieldOf( subType, new NFunctionNN<LastResult<Field, R>, R>() {
+                    @Nullable
                     @Override
                     public R apply(@Nonnull final LastResult<Field, R> input) {
 
