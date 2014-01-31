@@ -119,21 +119,6 @@ public abstract class GPG {
     }
 
     /**
-     * @param encryptedString The string that can be decrypted with the private key.
-     * @param privateKeyFile  The file that contains the private key that can decrypt the string.
-     *
-     * @return a private key required to decrypt the given string from file.
-     *
-     * @throws IOException
-     * @throws PGPException
-     */
-    public static PGPSecretKey getPrivateKeyFor(final String encryptedString, final File privateKeyFile)
-            throws IOException, PGPException {
-        // TODO: need encoding for encryptedString.
-        return getPrivateKeyFor( new ByteArrayInputStream( encryptedString.getBytes() ), privateKeyFile );
-    }
-
-    /**
      * @param encryptedStream The stream of data that can be decrypted with the private key.
      * @param privateKeyFile  The file that contains the private key that can decrypt the stream data.
      *

@@ -67,7 +67,7 @@ public class Network implements Runnable {
     private final Map<SocketChannel, Object>        writeLocks               = Collections.synchronizedMap(
             new HashMap<SocketChannel, Object>() );
 
-    protected final Object selectorGuard = new Object();
+    //protected final Object selectorGuard = new Object(); // TODO: Verify that we can safely remove this.
     private Selector selector; // TODO: Synchronize all access to/of the selector.
 
     // Collections that are only modified by the networking thread.
@@ -586,7 +586,7 @@ public class Network implements Runnable {
             // Perform translation from application data to network data and out the result.
             int applicationBytes = applicationWriteBuffer.remaining();
             writeBuffer = fromApplicationData( applicationWriteBuffer, socketChannel, writeBuffer );
-            applicationBytes = applicationBytes - applicationWriteBuffer.remaining();
+            applicationBytes -= applicationWriteBuffer.remaining();
             networkWriteBuffers.put( socketChannel, writeBuffer );
 
             if (writeBuffer.remaining() > 0) {
@@ -945,11 +945,11 @@ public class Network implements Runnable {
             // Interest ops are unmodified.
             return;
 
-        synchronized (selectorGuard) {
-            selector.wakeup();
-            regKey = channel.register( selector, interestOps );
-            showKeyState( regKey );
-        }
+        //synchronized (selectorGuard) {
+        selector.wakeup();
+        regKey = channel.register( selector, interestOps );
+        showKeyState( regKey );
+        //}
     }
 
     /**
@@ -1234,8 +1234,8 @@ public class Network implements Runnable {
                     processClosure();
 
                     // See if any keys in the selector are ready for I/O.
-                    synchronized (selectorGuard) {
-                    }
+                    //synchronized (selectorGuard) {
+                    //}
 
                     // Visualize key state evolution.
                     for (final SelectionKey key : selector.keys())
