@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.IHeaderResponse;
  */
 public class FocusOnReady extends AbstractHeaderContributor {
 
+    @SuppressWarnings("InstanceVariableMayNotBeInitialized")
     private IHeaderContributor headerContributor;
 
     @Override
@@ -43,9 +44,6 @@ public class FocusOnReady extends AbstractHeaderContributor {
         };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public IHeaderContributor[] getHeaderContributors() {
 

@@ -24,7 +24,7 @@ public class PersistFilter implements Filter {
 
         try {
             return new Persist();
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
             throw logger.bug( e, "While initializing PersistFilter" );
         }
     }
@@ -54,7 +54,7 @@ public class PersistFilter implements Filter {
 
             chain.doFilter( request, response );
         }
-        catch (Throwable t) {
+        catch (final Throwable t) {
             logger.err( t, "Uncaught throwable" );
             persistence.abort();
         }

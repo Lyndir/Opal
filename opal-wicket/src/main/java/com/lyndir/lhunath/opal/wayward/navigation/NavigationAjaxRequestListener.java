@@ -1,7 +1,8 @@
 package com.lyndir.lhunath.opal.wayward.navigation;
 
+import static com.lyndir.lhunath.opal.system.util.ObjectUtils.*;
+
 import com.lyndir.lhunath.opal.system.logging.Logger;
-import com.lyndir.lhunath.opal.system.util.ObjectUtils;
 import com.lyndir.lhunath.opal.wayward.js.JSUtils;
 import java.util.Collection;
 import java.util.Map;
@@ -19,7 +20,9 @@ public class NavigationAjaxRequestListener implements AjaxRequestTarget.IListene
     static final Logger logger = Logger.get( NavigationAjaxRequestListener.class );
 
     private final NavigationController controller;
-    private       String               newFragment;
+
+    @Nullable
+    private String newFragment;
 
     /**
      * @param controller The object that controls fragment state for this page.
@@ -37,7 +40,8 @@ public class NavigationAjaxRequestListener implements AjaxRequestTarget.IListene
     @Override
     public void onBeforeRespond(final Map<String, Component> map, final AjaxRequestTarget target) {
 
-        updateTabComponents( (TabDescriptor)controller.getActiveTab() );
+        //noinspection rawtypes FIXME
+        updateTabComponents( (TabDescriptor) controller.getActiveTab() );
     }
 
     @Override
@@ -63,15 +67,15 @@ public class NavigationAjaxRequestListener implements AjaxRequestTarget.IListene
             return;
 
         newFragment = controller.toFragment( activeTab, contentPanel );
-        if (!ObjectUtils.isEqual( newFragment, controller.getPageFragment() ))
+        if (!isEqual( newFragment, controller.getPageFragment() ))
             controller.updateNavigationComponents( contentPanel );
     }
 
     private void updatePageFragment(final AjaxRequestTarget.IJavascriptResponse response) {
 
-        if (!ObjectUtils.isEqual( newFragment, controller.getPageFragment() )) {
+        if (!isEqual( newFragment, controller.getPageFragment() )) {
             controller.setPageFragment( newFragment );
-            response.addJavascript( "document.location.hash = " + JSUtils.toString( newFragment ) );
+            response.addJavascript( JSUtils.format( "document.location.hash = %s", ifNotNullElse( newFragment, "" ) ) );
         }
     }
 }

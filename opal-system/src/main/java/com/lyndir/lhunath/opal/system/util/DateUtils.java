@@ -5,6 +5,7 @@ import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 import org.joda.time.*;
 
 
@@ -22,7 +23,7 @@ public abstract class DateUtils {
         @Override
         protected Stack<Timer> initialValue() {
 
-            return new Stack<Timer>();
+            return new Stack<>();
         }
     };
     private static final ImmutableMap<DurationFieldType, DateTimeFieldType> types;
@@ -111,7 +112,7 @@ public abstract class DateUtils {
     /**
      * @param timer The timer that should no longer be tracked on the thread's timer stack.
      *
-     * @return <code>true</code> if the timer was on the stack.
+     * @return {@code true} if the timer was on the stack.
      */
     public static boolean removeTimer(final Timer timer) {
 
@@ -134,6 +135,8 @@ public abstract class DateUtils {
 
         private final String name;
         private final ReadableInstant start = new Instant();
+
+        @Nullable
         private Instant end;
 
         public Timer(final String name) {
@@ -286,7 +289,7 @@ public abstract class DateUtils {
 
     /**
      * @param startField   The first field in the standard field series to return.
-     * @param smallToLarge Whether to start the fields from small units to large (<code>true</code>) or the other way around.
+     * @param smallToLarge Whether to start the fields from small units to large ({@code true}) or the other way around.
      *
      * @return All standard date/time fields starting from the given field; ordered from small to large.
      */

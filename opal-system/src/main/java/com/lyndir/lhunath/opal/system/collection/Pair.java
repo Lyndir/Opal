@@ -33,9 +33,14 @@ import javax.annotation.Nullable;
  *
  * @author mbillemo
  */
-public class Pair<K extends Serializable, V extends Serializable> extends MetaObject implements Map.Entry<K, V>, Serializable {
+@SuppressWarnings("NonSerializableFieldInSerializableClass")
+public class Pair<K, V> extends MetaObject implements Map.Entry<K, V>, Serializable {
 
+    private static final long serialVersionUID = 0;
+
+    @Nullable
     private K key;
+    @Nullable
     private V value;
 
     /**
@@ -44,7 +49,7 @@ public class Pair<K extends Serializable, V extends Serializable> extends MetaOb
      * @param key   The key of this pair.
      * @param value The value of this pair.
      */
-    Pair(final K key, final V value) {
+    Pair(@Nullable final K key, @Nullable final V value) {
 
         this.key = key;
         this.value = value;
@@ -56,7 +61,7 @@ public class Pair<K extends Serializable, V extends Serializable> extends MetaOb
      *
      * @return A new {@link Pair} instance
      */
-    public static <K extends Serializable, V extends Serializable> Pair<K, V> of(@Nullable final K key, @Nullable final V value) {
+    public static <K, V> Pair<K, V> of(@Nullable final K key, @Nullable final V value) {
 
         return new Pair<>( key, value );
     }
@@ -68,6 +73,8 @@ public class Pair<K extends Serializable, V extends Serializable> extends MetaOb
         return key;
     }
 
+    @Nullable
+    @SuppressWarnings({ "ParameterHidesMemberVariable" })
     public K setKey(@Nullable final K key) {
 
         K old = this.key;
@@ -84,6 +91,7 @@ public class Pair<K extends Serializable, V extends Serializable> extends MetaOb
     }
 
     @Override
+    @Nullable
     @SuppressWarnings({ "ParameterHidesMemberVariable" })
     public V setValue(@Nullable final V value) {
 

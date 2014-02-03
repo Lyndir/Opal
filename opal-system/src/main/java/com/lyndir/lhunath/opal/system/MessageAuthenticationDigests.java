@@ -37,7 +37,7 @@ public enum MessageAuthenticationDigests {
         try {
             return Mac.getInstance( getJCAName() );
         }
-        catch (NoSuchAlgorithmException e) {
+        catch (final NoSuchAlgorithmException e) {
             throw logger.bug( e );
         }
     }
@@ -73,10 +73,7 @@ public enum MessageAuthenticationDigests {
                 }
             } );
         }
-        catch (IOException e) {
-            throw logger.bug( e );
-        }
-        catch (InvalidKeyException e) {
+        catch (final IOException | InvalidKeyException e) {
             throw logger.bug( e );
         }
     }

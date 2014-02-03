@@ -27,9 +27,10 @@ import java.util.logging.Level;
 public class ANSIFormatter extends LogFormatter {
 
     @Override
+    @SuppressWarnings({ "StringConcatenation", "StringConcatenationMissingWhitespace" })
     protected void setColors() {
 
-        levelColor.put( null, (char) 27 + "[0m\r\n" );
+        levelColor.put( null, (char) 27 + "[0m" + System.lineSeparator() );
         levelColor.put( Level.SEVERE, (char) 27 + "[1;31m" );
         levelColor.put( Level.WARNING, (char) 27 + "[1;33m" );
         levelColor.put( Level.INFO, (char) 27 + "[1;36m" );

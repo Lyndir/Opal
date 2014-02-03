@@ -26,7 +26,9 @@ public abstract class NavigationController implements IClusterable {
 
     static final Logger logger = Logger.get( NavigationController.class );
 
+    @Nullable
     private String              pageFragment;
+    @Nullable
     private TabDescriptor<?, ?> activeTab;
 
     /**
@@ -87,7 +89,7 @@ public abstract class NavigationController implements IClusterable {
      * Mark the given tab as active and use the given tabPanel for its content.
      *
      * @param tab   The tab that should be activated.
-     * @param panel The panel that provides the tab's content or <code>null</code> if a new content panel should be created for the
+     * @param panel The panel that provides the tab's content or {@code null} if a new content panel should be created for the
      *              tab.
      */
     public <T extends TabDescriptor<P, ?>, P extends Panel, PP extends P> void activateTab(@Nonnull final T tab, @Nullable final PP panel) {
@@ -162,7 +164,7 @@ public abstract class NavigationController implements IClusterable {
     }
 
     /**
-     * @return The page on which the tabs should be showing.  If not <code>null</code>; any time a tab is activated on another page;
+     * @return The page on which the tabs should be showing.  If not {@code null}; any time a tab is activated on another page;
      *         the user will be redirected to a url on this page with the activated tab's state in the url fragment.
      */
     @Nullable

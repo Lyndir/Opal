@@ -1,6 +1,7 @@
 package com.lyndir.lhunath.opal.xml;
 
 import java.util.*;
+import javax.annotation.Nullable;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
@@ -22,7 +23,7 @@ public class XPathUtil {
     /**
      * Create a new XPathUtil instance.
      *
-     * @param isXHTML <code>true</code>: Indicate that the document uses the XHTML namespace context and set it as the default context.
+     * @param isXHTML {@code true}: Indicate that the document uses the XHTML namespace context and set it as the default context.
      */
     public XPathUtil(final boolean isXHTML) {
 
@@ -80,7 +81,7 @@ public class XPathUtil {
     public List<Node> getNodes(final Object context, final String expressionFormat, final Object... arguments)
             throws XPathExpressionException {
 
-        List<Node> nodeList = new ArrayList<Node>();
+        List<Node> nodeList = new ArrayList<>();
         NodeList annoyingNodeList = (NodeList) getObject( context, expressionFormat, XPathConstants.NODESET, arguments );
 
         for (int node = 0; node < annoyingNodeList.getLength(); ++node)
@@ -168,26 +169,13 @@ public class XPathUtil {
             namespaces.put( "xhtml", "http://www.w3.org/1999/xhtml" );
         }
 
-        /**
-         * {@inheritDoc}
-         *
-         * @param prefix The prefix of the namespace to retrieve.
-         *
-         * @return The namespace mapped by the given prefix.
-         */
         @Override
         public String getNamespaceURI(final String prefix) {
 
             return namespaces.get( prefix );
         }
 
-        /**
-         * {@inheritDoc}
-         *
-         * @param namespaceURI The namespace to retrieve the first set prefix for.
-         *
-         * @return The first prefix that maps the given namespace.
-         */
+        @Nullable
         @Override
         public String getPrefix(final String namespaceURI) {
 
@@ -198,17 +186,10 @@ public class XPathUtil {
             return null;
         }
 
-        /**
-         * {@inheritDoc}
-         *
-         * @param namespaceURI The namespace to retrieve the prefixes for.
-         *
-         * @return All prefixes that map the given namespace.
-         */
         @Override
         public Iterator<String> getPrefixes(final String namespaceURI) {
 
-            List<String> uris = new ArrayList<String>();
+            Collection<String> uris = new ArrayList<>();
             for (final Map.Entry<String, String> namespace : namespaces.entrySet())
                 if (namespaceURI.equals( namespace.getValue() ))
                     uris.add( namespace.getKey() );

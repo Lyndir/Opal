@@ -17,6 +17,7 @@ package com.lyndir.lhunath.opal.wayward;
 
 import java.text.*;
 import java.util.Date;
+import javax.annotation.Nullable;
 import javax.servlet.http.*;
 import org.apache.wicket.*;
 import org.apache.wicket.model.StringResourceModel;
@@ -82,6 +83,7 @@ public abstract class WicketUtils {
     /**
      * @return The {@link HttpServletResponse} that the active Wicket {@link Response} will be sent to.
      */
+    @Nullable
     public static HttpServletResponse getServletResponse() {
 
         Response response = RequestCycle.get().getResponse();

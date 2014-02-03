@@ -106,180 +106,120 @@ public class LoggingEventHandler
         this.name = name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void componentHidden(final ComponentEvent event) {
 
         logger.dbg( "%s: hidden [Id: %d]", name, event.getID() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void componentMoved(final ComponentEvent event) {
 
         logger.dbg( "%s: moved [Id: %d]", name, event.getID() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void componentResized(final ComponentEvent event) {
 
         logger.dbg( "%s: sized [Id: %d]", name, event.getID() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void componentShown(final ComponentEvent event) {
 
         logger.dbg( "%s: shown [Id: %d]", name, event.getID() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void componentAdded(final ContainerEvent event) {
 
         logger.dbg( "%s: added [Id: %d]", name, event.getID() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void componentRemoved(final ContainerEvent event) {
 
         logger.dbg( "%s: removed [Id: %d]", name, event.getID() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void focusGained(final FocusEvent event) {
 
         logger.dbg( "%s: focused [Id: %d]", name, event.getID() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void focusLost(final FocusEvent event) {
 
         logger.dbg( "%s: unfocused [Id: %d]", name, event.getID() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void ancestorAdded(final AncestorEvent event) {
 
         logger.dbg( "%s: ancestor added [Id: %d]", name, event.getID() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void ancestorMoved(final AncestorEvent event) {
 
         logger.dbg( "%s: ancestor moved [Id: %d]", name, event.getID() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void ancestorRemoved(final AncestorEvent event) {
 
         logger.dbg( "%s: ancestor removed [Id: %d]", name, event.getID() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void ancestorMoved(final HierarchyEvent event) {
 
         logger.dbg( "%s: hierarchy ancestor moved [Id: %d, Flags: %d]", name, event.getID(), event.getChangeFlags() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void ancestorResized(final HierarchyEvent event) {
 
         logger.dbg( "%s: hierarchy ancestor sized [Id: %d, Flags: %d]", name, event.getID(), event.getChangeFlags() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void hierarchyChanged(final HierarchyEvent event) {
 
         logger.dbg( "%s: hierarchy changed [Id: %d, Flags: %d]", name, event.getID(), event.getChangeFlags() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void windowGainedFocus(final WindowEvent event) {
 
         logger.dbg( "%s: window focused [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void windowLostFocus(final WindowEvent event) {
 
         logger.dbg( "%s: window unfocused [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void windowActivated(final WindowEvent event) {
 
         logger.dbg( "%s: window activated [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void windowClosed(final WindowEvent event) {
 
         logger.dbg( "%s: window closed [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void windowClosing(final WindowEvent event) {
 
         logger.dbg( "%s: window closing [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void windowDeactivated(final WindowEvent event) {
 
@@ -287,9 +227,6 @@ public class LoggingEventHandler
                     event.getNewState() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void windowDeiconified(final WindowEvent event) {
 
@@ -297,36 +234,24 @@ public class LoggingEventHandler
                     event.getNewState() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void windowIconified(final WindowEvent event) {
 
         logger.dbg( "%s: window iconified [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void windowOpened(final WindowEvent event) {
 
         logger.dbg( "%s: window opened [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void windowStateChanged(final WindowEvent event) {
 
         logger.dbg( "%s: window state [Id: %d, State: From %d to %d]", name, event.getID(), event.getOldState(), event.getNewState() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void propertyChange(final PropertyChangeEvent event) {
 
@@ -334,9 +259,6 @@ public class LoggingEventHandler
                     event.getNewValue() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void mouseClicked(final MouseEvent event) {
 
@@ -345,9 +267,6 @@ public class LoggingEventHandler
                     System.currentTimeMillis() - event.getWhen() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void mouseEntered(final MouseEvent event) {
 
@@ -356,9 +275,6 @@ public class LoggingEventHandler
                     System.currentTimeMillis() - event.getWhen() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void mouseExited(final MouseEvent event) {
 
@@ -367,9 +283,6 @@ public class LoggingEventHandler
                     System.currentTimeMillis() - event.getWhen() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void mousePressed(final MouseEvent event) {
 
@@ -378,9 +291,6 @@ public class LoggingEventHandler
                     System.currentTimeMillis() - event.getWhen() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void mouseReleased(final MouseEvent event) {
 
@@ -389,9 +299,6 @@ public class LoggingEventHandler
                     System.currentTimeMillis() - event.getWhen() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void mouseDragged(final MouseEvent event) {
 
@@ -400,9 +307,6 @@ public class LoggingEventHandler
                     System.currentTimeMillis() - event.getWhen() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void mouseMoved(final MouseEvent event) {
 
@@ -411,9 +315,6 @@ public class LoggingEventHandler
                     System.currentTimeMillis() - event.getWhen() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void mouseWheelMoved(final MouseWheelEvent event) {
 
@@ -424,9 +325,6 @@ public class LoggingEventHandler
                 System.currentTimeMillis() - event.getWhen() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void keyPressed(final KeyEvent event) {
 
@@ -434,9 +332,6 @@ public class LoggingEventHandler
                     event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis() - event.getWhen() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void keyReleased(final KeyEvent event) {
 
@@ -444,9 +339,6 @@ public class LoggingEventHandler
                     event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis() - event.getWhen() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void keyTyped(final KeyEvent event) {
 
@@ -454,9 +346,6 @@ public class LoggingEventHandler
                     event.getKeyCode(), event.getKeyLocation(), System.currentTimeMillis() - event.getWhen() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void caretPositionChanged(final InputMethodEvent event) {
 
@@ -464,9 +353,6 @@ public class LoggingEventHandler
                     event.getText(), System.currentTimeMillis() - event.getWhen() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void inputMethodTextChanged(final InputMethodEvent event) {
 

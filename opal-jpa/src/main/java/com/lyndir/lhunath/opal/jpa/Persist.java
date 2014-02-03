@@ -18,6 +18,7 @@ package com.lyndir.lhunath.opal.jpa;
 import static com.google.common.base.Preconditions.*;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.persistence.*;
 
 
@@ -34,7 +35,9 @@ public class Persist {
     private static final ThreadLocal<Persist> persistences = new ThreadLocal<>();
 
     private final EntityManagerFactory emf;
+    @Nullable
     private       EntityManager        em;
+    @Nullable
     private       Object               transactionOwner;
 
     @Nonnull
@@ -81,7 +84,7 @@ public class Persist {
      * Begin a new transaction if one is not active yet.
      *
      * @param caller The party responsible for completing the transaction later on with a {@link #complete(Object)} call. Generally, just
-     *               <code>this</code>.
+     *               {@code this}.
      *
      * @return The current transaction.
      */
@@ -99,7 +102,7 @@ public class Persist {
     /**
      * Close and clean up the entity manager if one is open.
      *
-     * @return <code>true</code>  if an entity manager was open and has been closed as a result of this call.  <code>false</code>  if there
+     * @return {@code true}  if an entity manager was open and has been closed as a result of this call.  {@code false}  if there
      * was no entity manager or it was not open.
      */
     private boolean close() {
@@ -119,7 +122,7 @@ public class Persist {
     /**
      * Abort the current transaction if one is active.
      *
-     * @return <code>true</code>  if an active transaction was rolled back as a result of this call.  <code>false</code>  if there was no
+     * @return {@code true}  if an active transaction was rolled back as a result of this call.  {@code false}  if there was no
      * transaction or if it was not active anymore.
      */
     public boolean abort() {
@@ -140,15 +143,17 @@ public class Persist {
     /**
      * If a transaction is active and owned by the caller, commit it.
      *
-     * @param caller The object that was passed as caller to {@link #begin(Object)}.  Generally, just <code>this</code> .
+     * @param caller The object that was passed as caller to {@link #begin(Object)}.  Generally, just {@code this} .
      *
-     * @return <code>true</code>  if a transaction was active and the caller owned it, and the transaction was successfully committed.
-     * <code>false</code>  otherwise.
+     * @return {@code true}  if a transaction was active and the caller owned it, and the transaction was successfully committed.
+     * {@code false}  otherwise.
      */
     public boolean complete(final Object caller) {
 
         boolean didComplete = false;
         EntityTransaction transaction = getEntityManager().getTransaction();
+
+        //noinspection ObjectEquality
         if (transactionOwner == caller && transaction != null && transaction.isActive()) {
             transaction.commit();
             didComplete = true;

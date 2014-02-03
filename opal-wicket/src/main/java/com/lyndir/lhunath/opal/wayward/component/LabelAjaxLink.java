@@ -44,18 +44,12 @@ public abstract class LabelAjaxLink extends AjaxLink<String> {
         super( id, model );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
 
         replaceComponentTagBody( markupStream, openTag, getDefaultModelObjectAsString() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void onComponentTag(final ComponentTag tag) {
 

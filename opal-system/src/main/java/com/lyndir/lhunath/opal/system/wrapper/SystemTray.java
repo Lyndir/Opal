@@ -38,7 +38,7 @@ public class SystemTray extends Wrapper {
     }
 
     /**
-     * @return <code>true</code>: if the Java6 SystemTray class is available and the system tray is supported in the current environment.
+     * @return {@code true}: if the Java6 SystemTray class is available and the system tray is supported in the current environment.
      */
     public static boolean isSupported() {
 
@@ -46,7 +46,7 @@ public class SystemTray extends Wrapper {
             return (Boolean) invoke( SystemTray.class, null, "isSupported" );
         }
 
-        catch (Exception ignored) {
+        catch (final Exception ignored) {
             return false;
         }
     }
@@ -65,11 +65,11 @@ public class SystemTray extends Wrapper {
      * @throws IllegalArgumentException - if the same instance of a TrayIcon is added more than once
      * @throws AWTException             - if the desktop system tray is missing
      */
-    @SuppressWarnings({ "unused", "RedundantThrows", "TypeMayBeWeakened" })
+    @SuppressWarnings({ "unused", "RedundantThrows", "TypeMayBeWeakened", "ProhibitedExceptionDeclared" })
     public void add(final TrayIcon trayIcon)
             throws NullPointerException, IllegalArgumentException, AWTException {
 
-        invoke( "add", new Class[]{ getWrappedClass( TrayIcon.class ) }, trayIcon.getWrappedInstance() );
+        invoke( "add", new Class<?>[]{ getWrappedClass( TrayIcon.class ) }, trayIcon.getWrappedInstance() );
     }
 
     /**
@@ -80,7 +80,7 @@ public class SystemTray extends Wrapper {
      */
     public synchronized void addPropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
 
-        invoke( "addPropertyChangeListener", new Class[]{ String.class, PropertyChangeListener.class }, propertyName, listener );
+        invoke( "addPropertyChangeListener", new Class<?>[]{ String.class, PropertyChangeListener.class }, propertyName, listener );
     }
 
     /**
@@ -92,7 +92,7 @@ public class SystemTray extends Wrapper {
      */
     public synchronized PropertyChangeListener[] getPropertyChangeListeners(final String propertyName) {
 
-        return (PropertyChangeListener[]) invoke( "getPropertyChangeListeners", new Class[]{ String.class }, propertyName );
+        return (PropertyChangeListener[]) invoke( "getPropertyChangeListeners", new Class<?>[]{ String.class }, propertyName );
     }
 
     /**
@@ -125,7 +125,7 @@ public class SystemTray extends Wrapper {
     @SuppressWarnings({ "TypeMayBeWeakened" })
     public void remove(final TrayIcon trayIcon) {
 
-        invoke( "remove", new Class[]{ getWrappedClass( TrayIcon.class ) }, trayIcon.getWrappedInstance() );
+        invoke( "remove", new Class<?>[]{ getWrappedClass( TrayIcon.class ) }, trayIcon.getWrappedInstance() );
     }
 
     /**
@@ -136,6 +136,6 @@ public class SystemTray extends Wrapper {
      */
     public synchronized void removePropertyChangeListener(final String propertyName, final PropertyChangeListener listener) {
 
-        invoke( "removePropertyChangeListener", new Class[]{ String.class, PropertyChangeListener.class }, propertyName, listener );
+        invoke( "removePropertyChangeListener", new Class<?>[]{ String.class, PropertyChangeListener.class }, propertyName, listener );
     }
 }

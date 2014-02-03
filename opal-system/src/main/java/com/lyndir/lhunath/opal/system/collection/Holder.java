@@ -16,6 +16,7 @@ import javax.annotation.Nonnull;
  */
 public class Holder<T extends Serializable> extends MetaObject implements SSupplier<T> {
 
+    private static final long serialVersionUID = 0;
     private T value;
 
     public Holder(@Nonnull final T value) {

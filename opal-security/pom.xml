@@ -13,7 +13,6 @@
     <name>Opal Security</name>
     <description>Opal: Security utilities.</description>
 
-    <groupId>com.lyndir.lhunath.opal</groupId>
     <artifactId>opal-security</artifactId>
     <packaging>jar</packaging>
 

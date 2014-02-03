@@ -19,12 +19,12 @@ public abstract class CollectionUtils {
 
     /**
      * Recursively iterate the given {@link Collection} and all {@link Collection}s within it. When an element is encountered that equals
-     * the given {@link Object}, the method returns <code>true</code>.
+     * the given {@link Object}, the method returns {@code true}.
      *
      * @param collection The collection to iterate recursively.
      * @param o          The object to look for in the collection.
      *
-     * @return <code>true</code> if the object was found anywhere within the collection or any of its sub-collections.
+     * @return {@code true} if the object was found anywhere within the collection or any of its sub-collections.
      */
     public static boolean recurseContains(@Nonnull final Iterable<?> collection, @Nullable final Object o) {
 
@@ -64,7 +64,7 @@ public abstract class CollectionUtils {
     }
 
     @Nullable
-    public static <E> E firstElementOfType(@Nonnull final Class<E> type, @Nonnull final Collection<? super E> elements) {
+    public static <E> E firstElementOfType(@Nonnull final Class<E> type, @Nonnull final Iterable<? super E> elements) {
 
         for (final Object element : elements)
             if (type.isInstance( element ))
@@ -74,7 +74,7 @@ public abstract class CollectionUtils {
     }
 
     @Nonnull
-    public static <E> List<E> elementsOfType(@Nonnull final Class<E> type, @Nonnull final Collection<? super E> elements) {
+    public static <E> List<E> elementsOfType(@Nonnull final Class<E> type, @Nonnull final Iterable<? super E> elements) {
 
         List<E> elementsOfType = Lists.newLinkedList();
         for (final Object element : elements)

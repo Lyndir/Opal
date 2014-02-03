@@ -1,9 +1,10 @@
 package com.lyndir.lhunath.opal.wayward.component;
 
+import com.google.common.collect.ImmutableList;
 import com.lyndir.lhunath.opal.system.util.ObjectUtils;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -23,9 +24,9 @@ import org.apache.wicket.model.IModel;
  */
 public class AjaxDigger<D extends Serializable> extends Panel {
 
-    private Stack<DiggerLevel> levels = new Stack<DiggerLevel>();
+    private final Stack<DiggerLevel> levels = new Stack<>();
 
-    public AjaxDigger(final String id, DiggerLevel initialLevel) {
+    public AjaxDigger(final String id, final DiggerLevel initialLevel) {
 
         super( id );
         setOutputMarkupId( true );
@@ -82,17 +83,20 @@ public class AjaxDigger<D extends Serializable> extends Panel {
         } );
     }
 
+    @SuppressWarnings("serial")
     public static class DiggerLevel implements Serializable {
 
-        private final DiggerItem       parent;
-        private final List<DiggerItem> items;
-        private       DiggerItem       activeItem;
-        private       IModel<String>   heading;
+        private final DiggerItem                parent;
+        private final ImmutableList<DiggerItem> items;
+        private final IModel<String>            heading;
 
-        public DiggerLevel(final IModel<String> heading, final DiggerItem parent, final List<DiggerItem> items) {
+        @Nullable
+        private       DiggerItem                activeItem;
+
+        public DiggerLevel(final IModel<String> heading, final DiggerItem parent, final Iterable<DiggerItem> items) {
 
             this.parent = parent;
-            this.items = items;
+            this.items = ImmutableList.copyOf( items );
             this.heading = heading;
         }
 
@@ -101,17 +105,18 @@ public class AjaxDigger<D extends Serializable> extends Panel {
             return parent;
         }
 
-        public List<DiggerItem> getItems() {
+        public ImmutableList<DiggerItem> getItems() {
 
             return items;
         }
 
+        @Nullable
         public DiggerItem getActiveItem() {
 
             return activeItem;
         }
 
-        public void setActiveItem(final DiggerItem activeItem) {
+        public void setActiveItem(@Nullable final DiggerItem activeItem) {
 
             this.activeItem = activeItem;
         }
@@ -125,9 +130,9 @@ public class AjaxDigger<D extends Serializable> extends Panel {
 
     public interface DiggerItem extends Serializable {
 
-        Component getSelectItem(final String wicketId, final DiggerLevel level);
+        Component getSelectItem(String wicketId, DiggerLevel level);
 
-        Component getExpandedItem(final String wicketId, final DiggerLevel level);
+        Component getExpandedItem(String wicketId, DiggerLevel level);
 
         DiggerLevel getLevel();
     }

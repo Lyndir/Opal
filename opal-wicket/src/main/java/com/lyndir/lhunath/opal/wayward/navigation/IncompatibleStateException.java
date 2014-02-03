@@ -1,5 +1,8 @@
 package com.lyndir.lhunath.opal.wayward.navigation;
 
+import javax.annotation.Nullable;
+
+
 /**
  * <h2>{@link IncompatibleStateException}<br> <sub>[in short] (TODO).</sub></h2>
  *
@@ -41,6 +44,7 @@ public class IncompatibleStateException extends Exception {
         super( cause );
     }
 
+    @Nullable
     @Override
     public String getMessage() {
 

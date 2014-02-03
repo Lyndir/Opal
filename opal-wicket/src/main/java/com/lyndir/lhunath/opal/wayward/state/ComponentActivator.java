@@ -25,17 +25,17 @@ package com.lyndir.lhunath.opal.wayward.state;
 public interface ComponentActivator {
 
     /**
-     * @return <code>true</code>: if the session state requires the attention of this page.
+     * @return {@code true}: if the session state requires the attention of this page.
      */
     boolean isNecessary();
 
     /**
-     * @return <code>true</code>: If the component can be activated in the current request cycle.
+     * @return {@code true}: If the component can be activated in the current request cycle.
      */
     boolean isActivatable();
 
     /**
-     * @return <code>true</code>: The component that handles this {@link ComponentActivator} is being presented to the user.
+     * @return {@code true}: The component that handles this {@link ComponentActivator} is being presented to the user.
      */
     boolean isActive();
 

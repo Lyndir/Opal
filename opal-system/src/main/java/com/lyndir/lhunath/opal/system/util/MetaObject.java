@@ -18,6 +18,7 @@ public abstract class MetaObject {
     }
 
     @Override
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     public boolean equals(@Nullable final Object obj) {
 
         return ObjectUtils.equals( this, obj );

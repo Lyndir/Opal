@@ -37,7 +37,7 @@ public class ConversionUtils {
         try {
             return Optional.of( Long.valueOf( object.toString() ) );
         }
-        catch (NumberFormatException e) {
+        catch (final NumberFormatException e) {
             logger.wrn( e, "Malformed long: %s", object );
             return Optional.absent();
         }
@@ -61,7 +61,7 @@ public class ConversionUtils {
         try {
             return Long.valueOf( object.toString() );
         }
-        catch (NumberFormatException e) {
+        catch (final NumberFormatException e) {
             logger.wrn( e, "Malformed long: %s", object );
             return 0;
         }
@@ -85,7 +85,7 @@ public class ConversionUtils {
         try {
             return Optional.of( Integer.valueOf( object.toString() ) );
         }
-        catch (NumberFormatException e) {
+        catch (final NumberFormatException e) {
             logger.wrn( e, "Malformed integer: %s", object );
             return Optional.absent();
         }
@@ -111,7 +111,7 @@ public class ConversionUtils {
         try {
             return Integer.valueOf( object.toString() );
         }
-        catch (NumberFormatException e) {
+        catch (final NumberFormatException e) {
             logger.wrn( e, "Malformed integer: %s", object );
             return 0;
         }
@@ -134,7 +134,7 @@ public class ConversionUtils {
         try {
             return Optional.of( Double.parseDouble( object.toString() ) );
         }
-        catch (NumberFormatException e) {
+        catch (final NumberFormatException e) {
             logger.wrn( e, "Malformed double: %s", object );
             return Optional.absent();
         }
@@ -158,7 +158,7 @@ public class ConversionUtils {
         try {
             return Double.valueOf( object.toString() );
         }
-        catch (NumberFormatException e) {
+        catch (final NumberFormatException e) {
             logger.wrn( e, "Malformed double: %s", object );
             return 0;
         }
@@ -253,7 +253,7 @@ public class ConversionUtils {
         try {
             return Optional.of( new URL( url.toString() ) );
         }
-        catch (MalformedURLException e) {
+        catch (final MalformedURLException e) {
             logger.wrn( e, "Malformed URL: %s", url );
             return Optional.absent();
         }
@@ -278,7 +278,7 @@ public class ConversionUtils {
         try {
             return new URL( checkNotNull( url, "Missing URL." ).toString() );
         }
-        catch (MalformedURLException e) {
+        catch (final MalformedURLException e) {
             throw Throw.propagate( e, "Malformed URL: %s", url );
         }
     }

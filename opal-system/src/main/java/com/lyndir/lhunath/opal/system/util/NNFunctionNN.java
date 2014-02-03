@@ -53,6 +53,7 @@ public abstract class NNFunctionNN<F, T> implements Function<F, T> {
             }
 
             @Override
+            @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
             public boolean equals(@Nonnull final Object object) {
 
                 return func.equals( object );

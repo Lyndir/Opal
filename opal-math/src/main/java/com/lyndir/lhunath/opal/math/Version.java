@@ -55,16 +55,13 @@ public class Version implements Comparable<Version>, Serializable {
      */
     public Version(final String version) {
 
-        if (version == null)
-            this.version = "0";
-        else
-            this.version = version.trim();
+        this.version = version == null? "0": version.trim();
 
         tags = DOT.split( this.version );
     }
 
     /**
-     * @return The major version number (the first number in the version). <code>null</code> if the first tag is not a number or there are
+     * @return The major version number (the first number in the version). {@code null} if the first tag is not a number or there are
      *         no tags.
      */
     @Nullable
@@ -76,11 +73,9 @@ public class Version implements Comparable<Version>, Serializable {
         return ConversionUtils.toInteger( tags[0] ).orNull();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public int compareTo(final Version o) {
+    @SuppressWarnings("StringConcatenationInFormatCall")
+    public int compareTo(@Nullable final Version o) {
 
         if (o == null)
             return 1;
@@ -118,9 +113,6 @@ public class Version implements Comparable<Version>, Serializable {
         return 31 * version.hashCode() + Arrays.hashCode( tags );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
 

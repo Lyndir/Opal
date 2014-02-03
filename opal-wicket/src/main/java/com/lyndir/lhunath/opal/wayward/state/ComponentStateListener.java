@@ -40,9 +40,6 @@ public class ComponentStateListener implements IComponentOnBeforeRenderListener 
         this.componentActivators = ImmutableList.copyOf( componentActivators );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onBeforeRender(final Component component) {
 

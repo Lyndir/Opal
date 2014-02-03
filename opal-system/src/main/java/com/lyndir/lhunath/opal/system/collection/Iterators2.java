@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import javax.annotation.Nullable;
 
 
 /**
@@ -11,11 +12,12 @@ import java.util.NoSuchElementException;
  *
  * @author Andreou Dimitris, email: jim.andreou (at) gmail (dot) com
  */
+@SuppressWarnings("NewExceptionWithoutArguments")
 public abstract class Iterators2 {
 
     public static <E> ListIterator<E> filter(final ListIterator<E> listIterator, final Predicate<? super E> filter) {
 
-        return new FilteringListIterator<E>( listIterator, filter );
+        return new FilteringListIterator<>( listIterator, filter );
     }
 
     static class FilteringListIterator<E> implements ListIterator<E> {
@@ -25,7 +27,9 @@ public abstract class Iterators2 {
 
         private int index;
         private int offset;
-        private E   elementToReturn;
+
+        @Nullable
+        private E elementToReturn;
         private Accessed accessed = Accessed.NONE;
 
 
@@ -113,7 +117,7 @@ public abstract class Iterators2 {
                 throw new NoSuchElementException();
             }
             try {
-                return elementToReturn;
+                return Preconditions.checkNotNull( elementToReturn );
             }
             finally {
                 offset = 0;
@@ -155,7 +159,7 @@ public abstract class Iterators2 {
                 throw new NoSuchElementException();
             }
             try {
-                return elementToReturn;
+                return Preconditions.checkNotNull( elementToReturn );
             }
             finally {
                 offset = 0;

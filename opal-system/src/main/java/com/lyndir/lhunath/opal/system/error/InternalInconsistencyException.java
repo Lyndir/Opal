@@ -15,6 +15,9 @@
  */
 package com.lyndir.lhunath.opal.system.error;
 
+import javax.annotation.Nullable;
+
+
 /**
  * <h2>{@link InternalInconsistencyException}<br> <sub>[in short] (TODO).</sub></h2>
  *
@@ -41,7 +44,7 @@ public class InternalInconsistencyException extends RuntimeException {
      * @param message Some context with what was going on or what caused this.
      * @param cause   The optional exception cause of this.
      */
-    public InternalInconsistencyException(final String message, final Throwable cause) {
+    public InternalInconsistencyException(final String message, @Nullable final Throwable cause) {
 
         super( message, cause );
     }

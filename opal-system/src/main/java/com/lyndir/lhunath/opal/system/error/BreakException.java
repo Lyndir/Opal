@@ -16,9 +16,6 @@
 
 package com.lyndir.lhunath.opal.system.error;
 
-import java.io.Serializable;
-
-
 /**
 * @author lhunath, 2013-08-02
 */

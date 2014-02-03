@@ -1,6 +1,7 @@
 package com.lyndir.lhunath.opal.crypto;
 
 import static com.google.common.base.Preconditions.*;
+import static com.lyndir.lhunath.opal.system.util.StringUtils.*;
 
 import com.google.common.base.Charsets;
 import com.lyndir.lhunath.opal.system.logging.Logger;
@@ -41,7 +42,7 @@ public abstract class CryptUtils {
             String cipherTransformation = String.format( "AES/ECB/%s", usePadding? "PKCS5Padding": "NoPadding" );
             return doCrypt( plainData, key, cipherTransformation, 128, Cipher.ENCRYPT_MODE );
         }
-        catch (BadPaddingException e) {
+        catch (final BadPaddingException e) {
             throw logger.bug( e, "Should only occur in decryption mode." );
         }
     }
@@ -64,7 +65,7 @@ public abstract class CryptUtils {
             String cipherTransformation = String.format( "AES/ECB/%s", usePadding? "PKCS5Padding": "NoPadding" );
             return doCrypt( encryptedData, key, cipherTransformation, 128, Cipher.DECRYPT_MODE );
         }
-        catch (IllegalBlockSizeException e) {
+        catch (final IllegalBlockSizeException e) {
             throw logger.bug( e, "Should only occur in encryption mode." );
         }
     }
@@ -103,15 +104,16 @@ public abstract class CryptUtils {
 
             return cipher.doFinal( data );
         }
-        catch (NoSuchAlgorithmException e) {
+        catch (final NoSuchAlgorithmException e) {
             throw new IllegalStateException(
-                    "Cipher transformation: " + cipherTransformation + ", is not valid or not supported by the provider.", e );
+                    strf( "Cipher transformation: %s, is not valid or not supported by the provider.", cipherTransformation ), e );
         }
-        catch (NoSuchPaddingException e) {
-            throw new IllegalStateException( "Cipher transformation: " + cipherTransformation
-                                             + ", uses a padding scheme that is not valid or not supported by the provider.", e );
+        catch (final NoSuchPaddingException e) {
+            throw new IllegalStateException(
+                    strf( "Cipher transformation: %s, uses a padding scheme that is not valid or not supported by the provider.",
+                          cipherTransformation ), e );
         }
-        catch (InvalidKeyException e) {
+        catch (final InvalidKeyException e) {
             throw logger.bug( e, "Key is inappropriate for cipher." );
         }
     }
@@ -175,7 +177,7 @@ public abstract class CryptUtils {
      */
     public static byte[] decodeBase64(@Nullable final String b64Data) {
 
-        if (b64Data == null || b64Data.length() == 0)
+        if (b64Data == null || b64Data.isEmpty())
             return new byte[0];
 
         return Base64.decode( b64Data.getBytes( Charsets.UTF_8 ) );

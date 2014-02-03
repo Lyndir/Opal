@@ -75,7 +75,7 @@ public abstract class StringUtils {
         return concatenation.substring( 0, concatenation.length() - delimitor.length() );
     }
 
-    public static boolean isEmpty(final String data) {
+    public static boolean isEmpty(@Nullable final String data) {
 
         return data == null || data.isEmpty();
     }
@@ -89,7 +89,7 @@ public abstract class StringUtils {
      * @return The result of the trimming.
      */
     @Nullable
-    public static String ltrim(final String source, final String trim) {
+    public static String ltrim(@Nullable final String source, @Nullable final String trim) {
 
         if (source == null || trim == null)
             return source == null? null: source;
@@ -110,7 +110,7 @@ public abstract class StringUtils {
      * @return The result of the trimming.
      */
     @Nullable
-    public static String rtrim(final String source, final String trim) {
+    public static String rtrim(@Nullable final String source, @Nullable final String trim) {
 
         if (source == null || trim == null)
             return source == null? null: source;
@@ -153,7 +153,7 @@ public abstract class StringUtils {
      * Perform an expansion operation on the given {@code source} string by expanding all curly-braced words with a certain
      * {@code keyPrefix} into an expansion value determined by the {@code keyToExpansion} function.
      * <p/>
-     * <p>If the source string is <code>I am a ${karma} sentence.</code>, the keyPrefix is {@code $} and the keyToExpansion function
+     * <p>If the source string is {@code I am a ${karma} sentence.}, the keyPrefix is {@code $} and the keyToExpansion function
      * returns {@code bad} when its input is the string {@code karma}, the result of this method will be: {@code I am a bad sentence.}</p>
      * <p>
      * You may append a default value after the expansion key, which will be used when the function returns {@code null} for the key.
@@ -162,7 +162,7 @@ public abstract class StringUtils {
      * </p>
      * <p>
      * For instance, if the keyToExpansion function returns {@code null} for the string {@code karma} in the previous example, an exception
-     * will be thrown.  If the source string is changed to <code>I am a ${karma:good} sentence.</code>, then this case will yield the
+     * will be thrown.  If the source string is changed to {@code I am a ${karma:good} sentence.}, then this case will yield the
      * following result: {@code I am a good sentence.}
      * </p>
      *

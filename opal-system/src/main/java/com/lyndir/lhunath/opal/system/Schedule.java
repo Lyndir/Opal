@@ -18,6 +18,7 @@ package com.lyndir.lhunath.opal.system;
 import com.lyndir.lhunath.opal.system.util.DateUtils;
 import java.io.Serializable;
 import java.util.*;
+import javax.annotation.Nullable;
 
 
 /**
@@ -31,11 +32,12 @@ public abstract class Schedule implements Runnable, Serializable {
 
     private static final Timer scheduler = new Timer( "Scheduler", true );
 
-    private           Calendar  nextSchedule;
-    private           int       stepAmount;
-    private           int       stepField;
-    private transient boolean   isScheduled;
+    @Nullable
     private transient TimerTask scheduleTask;
+    private transient boolean   isScheduled;
+    private final     Calendar  nextSchedule;
+    private final     int       stepAmount;
+    private final     int       stepField;
 
     /**
      * Update this schedule's timings.
@@ -44,7 +46,7 @@ public abstract class Schedule implements Runnable, Serializable {
      * @param steps The amount of steps specified by the step field that apply.
      * @param step  An enumeration of the relevant {@link Calendar} fields in the given time specification.
      */
-    public void setSchedule(final long time, final int steps, final int step) {
+    protected Schedule(final long time, final int steps, final int step) {
 
         stepAmount = steps;
         stepField = step;
@@ -62,13 +64,16 @@ public abstract class Schedule implements Runnable, Serializable {
 
         Date now = new Date();
         while (nextSchedule.getTime().after( now ))
+            //noinspection MagicConstant
             nextSchedule.add( stepField, -1 );
     }
 
     /**
      * Schedule this {@link Schedule} for execution in its next iteration.
      */
-    protected void schedule() {
+    protected void scheduleRun() {
+
+        assert nextSchedule != null;
 
         Date now = new Date();
         while (nextSchedule.getTime().before( now ))
@@ -80,7 +85,7 @@ public abstract class Schedule implements Runnable, Serializable {
             public void run() {
 
                 Schedule.this.run();
-                schedule();
+                scheduleRun();
             }
         }, nextSchedule.getTime() );
         isScheduled = true;
@@ -92,7 +97,7 @@ public abstract class Schedule implements Runnable, Serializable {
     public void start() {
 
         if (!isScheduled)
-            schedule();
+            scheduleRun();
     }
 
     /**
@@ -112,9 +117,7 @@ public abstract class Schedule implements Runnable, Serializable {
         cancel();
         new Thread( this, "Forced Schedule" ).start();
 
-        /* Reschedule if schedule information is present. */
-        if (nextSchedule != null)
-            schedule();
+        scheduleRun();
     }
 
     /**
@@ -124,9 +127,6 @@ public abstract class Schedule implements Runnable, Serializable {
      */
     public abstract String getDescription();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
 

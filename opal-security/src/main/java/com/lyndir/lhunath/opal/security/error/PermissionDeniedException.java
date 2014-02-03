@@ -15,10 +15,11 @@
  */
 package com.lyndir.lhunath.opal.security.error;
 
+import static com.lyndir.lhunath.opal.system.util.StringUtils.strf;
+
 import com.lyndir.lhunath.opal.security.Permission;
 import com.lyndir.lhunath.opal.security.SecureObject;
 import com.lyndir.lhunath.opal.system.i18n.MessagesFactory;
-import com.lyndir.lhunath.opal.system.util.ArrayUtils;
 
 
 /**
@@ -44,7 +45,7 @@ public class PermissionDeniedException extends Exception {
     public PermissionDeniedException(final Permission permission, final SecureObject<?, ?> secureObject, final String messageFormat,
                                      final Object... messageArgs) {
 
-        super( String.format( messageFormat + " in request for: %s@%s.", ArrayUtils.concat( messageArgs, permission, secureObject ) ) );
+        super( strf( messageFormat, messageArgs ) + strf( " in request for: %s@%s.", permission, secureObject ) );
 
         this.permission = permission;
         this.secureObject = secureObject;
@@ -64,9 +65,6 @@ public class PermissionDeniedException extends Exception {
         initCause( cause );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLocalizedMessage() {
 

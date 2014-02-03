@@ -37,7 +37,8 @@ import java.util.logging.*;
 public abstract class LogFormatter extends Formatter {
 
     private static final String[]           skipPackages = { "com.lyndir.lhunath.opal", "java", "sun", "com.sun" };
-    protected final      Map<Level, String> levelColor   = new HashMap<Level, String>();
+    protected final      Map<Level, String> levelColor   = new HashMap<>();
+    protected boolean initialized;
     protected boolean verbose;
 
     /**
@@ -46,7 +47,6 @@ public abstract class LogFormatter extends Formatter {
     protected LogFormatter() {
 
         setVerbose( true );
-        setColors();
     }
 
     /**
@@ -56,7 +56,6 @@ public abstract class LogFormatter extends Formatter {
      */
     protected LogFormatter(final boolean verbosity) {
 
-        this();
         setVerbose( verbosity );
     }
 
@@ -65,11 +64,13 @@ public abstract class LogFormatter extends Formatter {
      */
     protected abstract void setColors();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String format(final LogRecord record) {
+
+        if (!initialized) {
+            setColors();
+            initialized = true;
+        }
 
         /* Initialize some convenience variables for this record. */
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
@@ -100,8 +101,8 @@ public abstract class LogFormatter extends Formatter {
         if (sourceElement != null)
             relSource = String.format( "(%s:%d) %s.%s()", sourceElement.getFileName(), sourceElement.getLineNumber(),
                                        TypeUtils.compressSignature( sourceElement.getClassName() ), sourceElement.getMethodName() );
-        String source = realSource + (realSource.length() > 0? ", ": "") + relSource;
-        if (source.length() == 0)
+        String source = realSource + (realSource.isEmpty()? "": ", ") + relSource;
+        if (source.isEmpty())
             source = "[Unknown Source]";
 
         /* Generate a detail message for the problem: # (File:Line) Exception: Message */
@@ -113,8 +114,8 @@ public abstract class LogFormatter extends Formatter {
                                                          e.getStackTrace().length > 0? e.getStackTrace()[0].getLineNumber(): -1,
                                                          e.getClass().getName(), e.getLocalizedMessage() ) );
 
-        if (record.getMessage() != null && record.getMessage().length() > 0)
-            messageBuilder.insert( 0, record.getMessage() + '\n' );
+        if (record.getMessage() != null && !record.getMessage().isEmpty())
+            messageBuilder.insert( 0, record.getMessage() + System.lineSeparator() );
         String message = messageBuilder.toString().trim();
 
         /* Put it all together and write it to the buffer. */
@@ -125,7 +126,8 @@ public abstract class LogFormatter extends Formatter {
             buffer.append( String.format( "[ %7s | %-30s ]:%n", record.getLevel().getLocalizedName(), source ) );
         else
             prefix = String.format( "%s [ %-7s ]  ", prefix, record.getLevel().getLocalizedName() );
-        buffer.append( message.replaceAll( "(\n|^)", prefix ) );
+        //noinspection HardcodedLineSeparator
+        buffer.append( message.replaceAll( "([\r\n]|^)", prefix ) );
 
         /* Check if there's a stack trace that needs to be written. */
         if (isVerbose() && error != null)

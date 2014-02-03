@@ -39,6 +39,8 @@ public class Logger implements Serializable {
     private static final long serialVersionUID = 0;
 
     private final     Class<?>         type;
+
+    @Nullable
     private transient org.slf4j.Logger logger;
 
     // Create a logger --

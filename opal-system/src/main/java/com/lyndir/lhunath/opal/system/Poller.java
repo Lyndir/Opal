@@ -17,6 +17,7 @@ package com.lyndir.lhunath.opal.system;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import javax.annotation.Nullable;
 
 
 /**
@@ -29,15 +30,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class Poller<K, E> {
 
-    private final Map<K, Queue<E>> queues;
-
-    /**
-     * Create a new {@link Poller} instance.
-     */
-    public Poller() {
-
-        queues = Collections.synchronizedMap( new HashMap<K, Queue<E>>() );
-    }
+    private final Map<K, Queue<E>> queues = Collections.synchronizedMap( new HashMap<K, Queue<E>>() );
 
     /**
      * Offer a new element to the responsible object's queue.
@@ -49,7 +42,7 @@ public class Poller<K, E> {
 
         Queue<E> queue = queues.get( owner );
         if (queue == null)
-            queues.put( owner, queue = new ConcurrentLinkedQueue<E>() );
+            queues.put( owner, queue = new ConcurrentLinkedQueue<>() );
 
         queue.offer( element );
     }
@@ -59,8 +52,9 @@ public class Poller<K, E> {
      *
      * @param owner The responsible object whose queue to poll.
      *
-     * @return The element that has been on the responsible object's queue the longest, or <code>null</code> if its queue is empty.
+     * @return The element that has been on the responsible object's queue the longest, or {@code null} if its queue is empty.
      */
+    @Nullable
     public E poll(final K owner) {
 
         if (owner != null && queues.containsKey( owner ))
@@ -72,10 +66,11 @@ public class Poller<K, E> {
     /**
      * Check whether there is a responsible object that has available elements.
      *
-     * @return A responsible object that has elements on its queue or <code>null</code> if no queues need polling. When there are multiple
+     * @return A responsible object that has elements on its queue or {@code null} if no queues need polling. When there are multiple
      *         candidates, it is undefined which will be returned. You should continue to check this method and poll elements until it
-     *         returns <code>null</code>.
+     *         returns {@code null}.
      */
+    @Nullable
     public K pollKey() {
 
         for (final Map.Entry<K, Queue<E>> queueEntry : queues.entrySet())

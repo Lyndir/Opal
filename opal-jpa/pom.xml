@@ -13,7 +13,6 @@
     <name>Opal JPA</name>
     <description>Opal: Java Persistence API utilities.</description>
 
-    <groupId>com.lyndir.lhunath.opal</groupId>
     <artifactId>opal-jpa</artifactId>
     <packaging>jar</packaging>
 

@@ -85,7 +85,7 @@ public class AjaxEditableLabel<T> extends EditableLabel<T> {
     /**
      * Override me to perform logic after the component has been updated by an AJAX request.
      *
-     * <p>You must call <code>super.onUpdate(target)</code> at the end of your implementation.  Failing to do so will break certain
+     * <p>You must call {@code super.onUpdate(target)} at the end of your implementation.  Failing to do so will break certain
      * features
      * such as clickToEdit.</p>
      *
@@ -101,7 +101,7 @@ public class AjaxEditableLabel<T> extends EditableLabel<T> {
     }
 
     /**
-     * @param clickToEdit <code>true</code>: The non-editable label handles click events that turn the component editable.
+     * @param clickToEdit {@code true}: The non-editable label handles click events that turn the component editable.
      *
      * @return this.
      */
@@ -112,7 +112,7 @@ public class AjaxEditableLabel<T> extends EditableLabel<T> {
     }
 
     /**
-     * @return <code>true</code>: The non-editable label handles click events that turn the component editable.
+     * @return {@code true}: The non-editable label handles click events that turn the component editable.
      */
     public boolean isClickToEdit() {
 
@@ -120,21 +120,21 @@ public class AjaxEditableLabel<T> extends EditableLabel<T> {
     }
 
     @Override
-    public AjaxEditableLabel<T> setEditable(boolean editable) {
+    public AjaxEditableLabel<T> setEditable(final boolean editable) {
 
         super.setEditable( editable );
         return this;
     }
 
     @Override
-    public AjaxEditableLabel<T> setNullable(boolean nullable) {
+    public AjaxEditableLabel<T> setNullable(final boolean nullable) {
 
         super.setNullable( nullable );
         return this;
     }
 
     @Override
-    public AjaxEditableLabel<T> setMultiline(boolean multiline) {
+    public AjaxEditableLabel<T> setMultiline(final boolean multiline) {
 
         super.setMultiline( multiline );
         return this;

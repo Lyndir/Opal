@@ -60,12 +60,12 @@ public @interface KeyMatch {
     Class<?> ifClass() default KeyMatch.class;
 
     /**
-     * @return The key part to append when one of the if* conditions holds <code>true</code>. Append nothing if an empty string.
+     * @return The key part to append when one of the if* conditions holds {@code true}. Append nothing if an empty string.
      */
     String key();
 
     /**
-     * @return The key part to append when all of the if* conditions holds <code>false</code>. Append nothing if unspecified or an empty
+     * @return The key part to append when all of the if* conditions holds {@code false}. Append nothing if unspecified or an empty
      *         string.
      */
     String elseKey() default "";

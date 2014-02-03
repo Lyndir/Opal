@@ -1,6 +1,7 @@
 package com.lyndir.lhunath.opal.system.i18n.internal;
 
 import static com.google.common.base.Preconditions.*;
+import static com.lyndir.lhunath.opal.system.util.ObjectUtils.*;
 
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
@@ -8,7 +9,6 @@ import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.collection.SSupplier;
 import com.lyndir.lhunath.opal.system.i18n.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
-import com.lyndir.lhunath.opal.system.error.AlreadyCheckedException;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
@@ -28,6 +28,8 @@ import javax.annotation.Nullable;
 public class MessagesInvocationHandler implements InvocationHandler, Serializable {
 
     static final         Logger                                       logger          = Logger.get( MessagesInvocationHandler.class );
+
+    private static final long serialVersionUID = 0;
     private static final Map<Class<?>, Function<Supplier<String>, ?>> wrapperTypes    = Maps.newHashMap();
     private static final Deque<Supplier<Locale>>                      localeSuppliers = Lists.newLinkedList();
 
@@ -60,9 +62,6 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
         this.baseClass = baseClass;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Nullable
     @Override
     public Object invoke(final Object proxy, final Method method, final Object[] args) {
@@ -96,7 +95,7 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                 StringBuilder keyBuilder = new StringBuilder( methodName );
                 logger.dbg( "Base key: %s", keyBuilder.toString() );
 
-                final List<Object> localizationArgs = new LinkedList<>();
+                List<Object> localizationArgs = new LinkedList<>();
                 for (final MethodArgument methodArg : methodArgs) {
                     Object argValue = methodArg.getUnwrappedValue();
                     List<Annotation> argAnnotations = methodArg.getAnnotations();
@@ -127,9 +126,10 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                                         logger.dbg( "With match: %s, ", match );
 
                                         boolean matches = false;
-                                        if (!matches && !Double.isNaN( match.ifNum() ))
+                                        if (!Double.isNaN( match.ifNum() ))
                                             if (Number.class.isInstance( argValue ) && match.ifNum() == ((Number) argValue).doubleValue())
                                                 matches = true;
+                                        //noinspection StringEquality
                                         if (!matches && match.ifString() != KeyMatch.STRING_UNSET)
                                             if (match.ifString().equals( argValue.toString() ))
                                                 matches = true;
@@ -139,8 +139,10 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
 
                                         if (matches)
                                             appendKey( keyBuilder, match.key() );
-                                        else if (match.elseKey() != KeyMatch.STRING_UNSET)
-                                            appendKey( keyBuilder, match.elseKey() );
+                                        else
+                                            //noinspection StringEquality
+                                            if (match.elseKey() != KeyMatch.STRING_UNSET)
+                                                appendKey( keyBuilder, match.elseKey() );
                                     }
                             }
                         } else if (BooleanKeyAppender.class.isInstance( argAnnotation )) {
@@ -153,10 +155,8 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
 
                             if (Boolean.TRUE.equals( argValue ))
                                 appendKey( keyBuilder, annotation.y() );
-                            else if (Boolean.FALSE.equals( argValue ))
+                            if (Boolean.FALSE.equals( argValue ))
                                 appendKey( keyBuilder, annotation.n() );
-                            else
-                                throw new AlreadyCheckedException();
                         }
 
                     if (useValue) {
@@ -174,14 +174,15 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
                 for (final Supplier<Locale> localeSupplier : localeSuppliers)
                     if ((locale = localeSupplier.get()) != null)
                         break;
-                ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle( baseClass.getCanonicalName(), locale,
+                ResourceBundle resourceBundle = XMLResourceBundle.getXMLBundle( baseClass.getCanonicalName(),
+                                                                                ifNotNullElse( locale, Locale.getDefault() ),
                                                                                 baseClass.getClassLoader() );
 
                 // Format the localization key with the arguments.
                 try {
                     return MessageFormat.format( resourceBundle.getString( key ), localizationArgs.toArray() );
                 }
-                catch (MissingResourceException e) {
+                catch (final MissingResourceException e) {
                     //noinspection ThrowInsideCatchBlockWhichIgnoresCaughtException
                     throw new MissingResourceException( String.format( "Missing resource for: %s, at key: %s.", baseClass, e.getKey() ),
                                                         baseClass.getCanonicalName(), e.getKey() );

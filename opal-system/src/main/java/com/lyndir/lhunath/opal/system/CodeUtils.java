@@ -48,13 +48,13 @@ public abstract class CodeUtils {
     public static String encodeHex(@Nullable final byte[] data, final boolean pretty) {
 
         StringBuilder bytes = new StringBuilder( data == null? 0: (data.length + (pretty? 1: 0)) * 2 );
-        Formatter formatter = new Formatter( bytes );
-        String format = String.format( "%%02X%s", pretty? ":": "" );
+        try (Formatter formatter = new Formatter( bytes )) {
+            String format = String.format( "%%02X%s", pretty? ":": "" );
 
-        if (data != null)
-            for (final byte b : data) {
-                formatter.format( format, b );
-            }
+            if (data != null)
+                for (final byte b : data)
+                    formatter.format( format, b );
+        }
         if (pretty && bytes.length() > 0)
             bytes.deleteCharAt( bytes.length() - 1 );
 
@@ -103,7 +103,7 @@ public abstract class CodeUtils {
         try {
             return new URL( url.toString() );
         }
-        catch (MalformedURLException e) {
+        catch (final MalformedURLException e) {
             logger.err( e, "The URL template does not appear to specify a valid URL: %s", urlFormat );
             throw new IllegalArgumentException( e );
         }
@@ -119,7 +119,7 @@ public abstract class CodeUtils {
         try {
             return URLEncoder.encode( plainString, encoding.displayName() );
         }
-        catch (UnsupportedEncodingException e) {
+        catch (final UnsupportedEncodingException e) {
             throw logger.bug( e, "Given encoding not supported: %s", encoding );
         }
     }

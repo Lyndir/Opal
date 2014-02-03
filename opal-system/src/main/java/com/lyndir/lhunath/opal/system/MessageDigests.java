@@ -37,7 +37,7 @@ public enum MessageDigests {
         try {
             return MessageDigest.getInstance( getJCAName() );
         }
-        catch (NoSuchAlgorithmException e) {
+        catch (final NoSuchAlgorithmException e) {
             throw logger.bug( e );
         }
     }
@@ -57,7 +57,7 @@ public enum MessageDigests {
         try {
             return get().digest( ByteStreams.toByteArray( supplier ) );
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             throw logger.bug( e );
         }
     }

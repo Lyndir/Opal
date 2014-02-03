@@ -43,16 +43,13 @@ public class SecurityToken<S extends Subject> {
     }
 
     /**
-     * @return <code>true</code>: This token permits operations without checking whether the subject has permission to perform it.
+     * @return {@code true}: This token permits operations without checking whether the subject has permission to perform it.
      */
     public boolean isInternalUseOnly() {
 
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
 

@@ -36,13 +36,10 @@ public class ConsoleFormatter extends LogFormatter {
         super( verbosity );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void setColors() {
 
-        levelColor.put( null, "\r\n" );
+        levelColor.put( null, System.lineSeparator() );
         levelColor.put( Level.SEVERE, "" );
         levelColor.put( Level.WARNING, "" );
         levelColor.put( Level.INFO, "" );

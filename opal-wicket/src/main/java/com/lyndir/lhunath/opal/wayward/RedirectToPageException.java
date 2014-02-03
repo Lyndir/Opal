@@ -15,6 +15,7 @@
  */
 package com.lyndir.lhunath.opal.wayward;
 
+import javax.annotation.Nullable;
 import org.apache.wicket.*;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.request.target.basic.RedirectRequestTarget;
@@ -45,7 +46,7 @@ public class RedirectToPageException extends AbstractRestartResponseException {
      * @param pageClass  The class of the page to redirect to.
      * @param parameters The parameters to pass to the page.
      */
-    public RedirectToPageException(final Class<? extends Page> pageClass, final PageParameters parameters) {
+    public RedirectToPageException(final Class<? extends Page> pageClass, @Nullable final PageParameters parameters) {
 
         RequestCycle rc = RequestCycle.get();
         if (rc == null)

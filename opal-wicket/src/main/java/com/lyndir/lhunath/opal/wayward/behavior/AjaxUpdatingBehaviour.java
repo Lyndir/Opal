@@ -20,6 +20,7 @@ public class AjaxUpdatingBehaviour implements IBehavior {
 
     static final Logger logger = Logger.get( AjaxUpdatingBehaviour.class );
 
+    @SuppressWarnings("InstanceVariableMayNotBeInitialized")
     private Component boundComponent;
 
     @Override
@@ -38,6 +39,7 @@ public class AjaxUpdatingBehaviour implements IBehavior {
         boundComponent = component;
         component.setOutputMarkupId( true );
 
+        //noinspection OverlyComplexBooleanExpression
         if (component instanceof RadioChoice || component instanceof CheckBoxMultipleChoice || component instanceof RadioGroup
             || component instanceof CheckGroup)
             component.add( new AjaxFormChoiceComponentUpdatingBehavior() {

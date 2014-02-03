@@ -36,7 +36,7 @@ public interface NetworkConnectionStateListener {
      * A channel has been closed.
      *
      * @param channel     The channel whose connection has been terminated.
-     * @param resetByPeer <code>true</code> if the remote side closed the connection, <code>false</code> if the local side hung up.
+     * @param resetByPeer {@code true} if the remote side closed the connection, {@code false} if the local side hung up.
      */
     void closed(SocketChannel channel, boolean resetByPeer);
 }

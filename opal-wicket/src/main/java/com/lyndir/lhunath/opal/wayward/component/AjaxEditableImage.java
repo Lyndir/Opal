@@ -13,8 +13,7 @@ import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.*;
 
 
 /**
@@ -26,14 +25,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
  */
 public abstract class AjaxEditableImage extends Panel implements ModalWindow.WindowClosedCallback {
 
-    private final IModel<FileUpload> file = new LoadableDetachableModel<FileUpload>() {
-
-        @Override
-        protected FileUpload load() {
-
-            return null;
-        }
-    };
+    private final IModel<FileUpload> file = new Model<>();
     private final ModalWindow window;
     private       boolean     editable;
 
@@ -103,7 +95,7 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
 
     /**
      * @param id                The wicket ID of the component.
-     * @param initiallyEditable <code>true</code> if the image can be edited by clicking on it and uploading a new one.
+     * @param initiallyEditable {@code true} if the image can be edited by clicking on it and uploading a new one.
      */
     protected AjaxEditableImage(final String id, final boolean initiallyEditable) {
 
@@ -114,9 +106,9 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
     /**
      * Override me to perform a more lazy check of whether image data is available. None will be loaded from {@link #getImageData()} if
      * this
-     * returns <code>false</code>.
+     * returns {@code false}.
      *
-     * @return <code>true</code>  if image data is available for this component.
+     * @return {@code true}  if image data is available for this component.
      */
     protected boolean hasImageData() {
 
@@ -128,7 +120,7 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
     protected abstract void setImageData(byte[] imageData);
 
     /**
-     * @param editable <code>true</code> if the image can be edited by clicking on it and uploading a new one.
+     * @param editable {@code true} if the image can be edited by clicking on it and uploading a new one.
      */
     public void setEditable(final boolean editable) {
 
@@ -136,7 +128,7 @@ public abstract class AjaxEditableImage extends Panel implements ModalWindow.Win
     }
 
     /**
-     * @return <code>true</code> if the image can be edited by clicking on it and uploading a new one.
+     * @return {@code true} if the image can be edited by clicking on it and uploading a new one.
      */
     public boolean isEditable() {
 

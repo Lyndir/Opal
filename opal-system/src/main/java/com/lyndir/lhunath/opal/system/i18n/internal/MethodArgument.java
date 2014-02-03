@@ -26,9 +26,9 @@ public class MethodArgument {
     private static final Map<Class<?>, Function<Object, ?>> unwrapperTypes = Maps.newHashMap();
 
     private final Object           value;
-    private final ArrayList<Annotation> annotations;
+    private final List<Annotation> annotations;
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings("unchecked")
     public static <T> void registerWrapperType(final Class<T> wrapperType, final Function<T, ?> valueUnwrapperFactory) {
 
         unwrapperTypes.put( wrapperType, (Function<Object, ?>) valueUnwrapperFactory );

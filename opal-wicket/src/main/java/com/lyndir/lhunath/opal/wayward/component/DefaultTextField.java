@@ -21,7 +21,7 @@ import org.apache.wicket.model.StringResourceModel;
 
 
 /**
- * <h2>{@link DefaultTextField}<br> <sub>Text field that uses a default value if its model object is <code>null</code>.</sub></h2>
+ * <h2>{@link DefaultTextField}<br> <sub>Text field that uses a default value if its model object is {@code null}.</sub></h2>
  *
  * <p> <i>Jan 21, 2010</i> </p>
  *
@@ -31,7 +31,7 @@ import org.apache.wicket.model.StringResourceModel;
  */
 public class DefaultTextField<T> extends TextField<T> {
 
-    private IModel<String> defaultValue = null;
+    private IModel<String> defaultValue;
 
     /**
      * Create a new {@link DefaultTextField} instance.
@@ -43,7 +43,7 @@ public class DefaultTextField<T> extends TextField<T> {
 
         super( id, model );
 
-        setDefaultValue( new StringResourceModel( "none", this, null ) );
+        defaultValue = new StringResourceModel( "none", this, null );
     }
 
     /**

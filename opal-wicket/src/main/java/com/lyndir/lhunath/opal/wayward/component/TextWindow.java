@@ -20,7 +20,6 @@ import org.apache.wicket.model.IModel;
 public class TextWindow<T> extends ModalWindow {
 
     boolean oneLine = true;
-    IModel<T> model;
 
     /**
      * @param id       The wicket ID of the form in the markup.
@@ -32,7 +31,7 @@ public class TextWindow<T> extends ModalWindow {
 
         super( id, model );
 
-        setContent( new TextPanel<T>( getContentId(), model, type ) );
+        setContent( new TextPanel<>( getContentId(), model, type ) );
         setInitialHeight( 200 );
         setWindowClosedCallback( callback );
     }
@@ -45,15 +44,15 @@ public class TextWindow<T> extends ModalWindow {
 
             add( new Form<Object>( "form" ) {
 
-                public Component field;
-                public Component area;
+                private final Component field;
+                private final Component area;
 
                 {
-                    add( field = new TextField<T>( "field", model, type ).add( new FocusOnReady() ) );
-                    add( area = new TextArea<T>( "area", model ).add( new FocusOnReady() ) );
+                    add( field = new TextField<>( "field", model, type ).add( new FocusOnReady() ) );
+                    add( area = new TextArea<>( "area", model ).add( new FocusOnReady() ) );
                     add( new AjaxButton( "submit" ) {
                         @Override
-                        protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                        protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 
                             closeCurrent( target );
                         }

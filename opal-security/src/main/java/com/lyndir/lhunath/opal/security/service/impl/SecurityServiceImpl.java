@@ -17,7 +17,6 @@ package com.lyndir.lhunath.opal.security.service.impl;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterators;
@@ -27,11 +26,12 @@ import com.lyndir.lhunath.opal.security.service.SecurityService;
 import com.lyndir.lhunath.opal.system.collection.Iterators2;
 import com.lyndir.lhunath.opal.system.collection.Pair;
 import com.lyndir.lhunath.opal.system.error.IllegalRequestException;
-import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.system.error.InternalInconsistencyException;
+import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.system.util.ObjectUtils;
 import java.util.Iterator;
 import java.util.ListIterator;
+import javax.annotation.Nullable;
 
 
 /**
@@ -45,30 +45,29 @@ public class SecurityServiceImpl implements SecurityService {
 
     static final Logger logger = Logger.get( SecurityServiceImpl.class );
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean hasAccess(final Permission permission, final SecurityToken token, final SecureObject<?, ?> object) {
+    public <S extends Subject, O extends SecureObject<S, ?>> boolean hasAccess(final Permission permission, final SecurityToken<S> token,
+                                                                               final O object) {
 
         try {
             assertAccess( permission, token, object );
             return true;
         }
 
-        catch (PermissionDeniedException ignored) {
+        catch (final PermissionDeniedException ignored) {
             return false;
         }
     }
 
     @Override
-    public <T extends SecureObject<?, ?>> Iterator<T> filterAccess(final Permission permission, final SecurityToken token,
-                                                                   final Iterator<T> source) {
+    public <S extends Subject, O extends SecureObject<S, ?>> Iterator<O> filterAccess(final Permission permission,
+                                                                                      final SecurityToken<S> token,
+                                                                                      final Iterator<O> source) {
 
-        return Iterators.filter( source, new Predicate<T>() {
+        return Iterators.filter( source, new Predicate<O>() {
 
             @Override
-            public boolean apply(final T input) {
+            public boolean apply(final O input) {
 
                 return hasAccess( permission, token, input );
             }
@@ -76,21 +75,24 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public <T extends SecureObject<?, ?>> ListIterator<T> filterAccess(final Permission permission, final SecurityToken token,
-                                                                       final ListIterator<T> source) {
+    public <S extends Subject, O extends SecureObject<S, ?>> ListIterator<O> filterAccess(final Permission permission,
+                                                                                          final SecurityToken<S> token,
+                                                                                          final ListIterator<O> source) {
 
-        return Iterators2.filter( source, new Predicate<T>() {
+        return Iterators2.filter( source, new Predicate<O>() {
 
             @Override
-            public boolean apply(final T input) {
+            public boolean apply(final O input) {
 
                 return hasAccess( permission, token, input );
             }
         } );
     }
 
+    @Nullable
     @Override
-    public <S extends SecureObject<?, ?>> S assertAccess(final Permission permission, final SecurityToken token, final S object)
+    public <S extends Subject, O extends SecureObject<S, ?>> O assertAccess(final Permission permission, final SecurityToken<S> token,
+                                                                            @Nullable final O object)
             throws PermissionDeniedException {
 
         checkNotNull( token, "Given security token must not be null." );
@@ -158,7 +160,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public Permission getDefaultPermission(final SecurityToken token, final SecureObject<?, ?> o)
+    public <S extends Subject, O extends SecureObject<S, ?>> Permission getDefaultPermission(final SecurityToken<S> token, final O o)
             throws PermissionDeniedException {
 
         checkNotNull( o, "Given secure object must not be null." );
@@ -168,7 +170,8 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public Permission getEffectivePermissions(final SecurityToken token, final Subject subject, final SecureObject<?, ?> o)
+    public <S extends Subject, O extends SecureObject<S, ?>> Permission getEffectivePermissions(final SecurityToken<S> token,
+                                                                                                final Subject subject, final O o)
             throws PermissionDeniedException {
 
         checkNotNull( o, "Given secure object must not be null." );
@@ -176,7 +179,7 @@ public class SecurityServiceImpl implements SecurityService {
 
         Permission permission = o.getACL().getSubjectPermission( subject );
         if (permission == Permission.INHERIT) {
-            SecureObject<?, ?> parent = checkNotNull( o.getParent(), "Secure object's default permission is INHERIT but has no parent." );
+            SecureObject<S, ?> parent = checkNotNull( o.getParent(), "Secure object's default permission is INHERIT but has no parent." );
 
             return getEffectivePermissions( token, subject, parent );
         }
@@ -185,7 +188,8 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public Iterator<Pair<Subject, Permission>> iterateSubjectPermissions(final SecurityToken token, final SecureObject<?, ?> o)
+    public <S extends Subject, O extends SecureObject<S, ?>> Iterator<Pair<Subject, Permission>> iterateSubjectPermissions(
+            final SecurityToken<S> token, final O o)
             throws PermissionDeniedException {
 
         checkNotNull( o, "Given secure object must not be null." );
@@ -193,7 +197,7 @@ public class SecurityServiceImpl implements SecurityService {
 
         return new AbstractIterator<Pair<Subject, Permission>>() {
 
-            public final Iterator<Subject> permittedSubjects;
+            private final Iterator<Subject> permittedSubjects;
 
             {
                 permittedSubjects = o.getACL().getPermittedSubjects().iterator();
@@ -208,7 +212,7 @@ public class SecurityServiceImpl implements SecurityService {
                         return Pair.of( subject, getEffectivePermissions( token, subject, o ) );
                     }
                 }
-                catch (PermissionDeniedException e) {
+                catch (final PermissionDeniedException e) {
                     throw new InternalInconsistencyException( "While evaluating subject permissions", e );
                 }
 
@@ -218,7 +222,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public int countPermittedSubjects(final SecurityToken token, final SecureObject<?, ?> o)
+    public <S extends Subject, O extends SecureObject<S, ?>> int countPermittedSubjects(final SecurityToken<S> token, final O o)
             throws PermissionDeniedException {
 
         checkNotNull( o, "Given secure object must not be null." );
@@ -228,7 +232,8 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public void setDefaultPermission(final SecurityToken token, final SecureObject<?, ?> o, final Permission permission)
+    public <S extends Subject, O extends SecureObject<S, ?>> void setDefaultPermission(final SecurityToken<S> token, final O o,
+                                                                                       final Permission permission)
             throws PermissionDeniedException {
 
         checkNotNull( o, "Given secure object must not be null." );
@@ -238,17 +243,17 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public void setPermission(final SecurityToken token, final SecureObject<?, ?> object, final Subject subject,
-                              final Permission permission)
+    public <S extends Subject, O extends SecureObject<S, ?>> void setPermission(final SecurityToken<S> token, final O o,
+                                                                                final Subject subject, final Permission permission)
             throws PermissionDeniedException, IllegalRequestException {
 
-        checkNotNull( object, "Given secure object must not be null." );
-        Preconditions.checkNotNull( subject, "Given subject must not be null." );
+        checkNotNull( o, "Given secure object must not be null." );
+        checkNotNull( subject, "Given subject must not be null." );
 
-        if (ObjectUtils.isEqual( object.getOwner(), subject ))
+        if (ObjectUtils.isEqual( o.getOwner(), subject ))
             throw new IllegalRequestException( "Given subject must not be the object's owner." );
 
-        assertAccess( Permission.ADMINISTER, token, object );
-        object.getACL().setSubjectPermission( subject, permission );
+        assertAccess( Permission.ADMINISTER, token, o );
+        o.getACL().setSubjectPermission( subject, permission );
     }
 }

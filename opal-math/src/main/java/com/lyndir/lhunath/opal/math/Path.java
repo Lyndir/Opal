@@ -32,9 +32,6 @@ public class Path {
     private final Vec2    size;
     private final Vec2    offset;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
 
@@ -148,8 +145,9 @@ public class Path {
             dstHorizontal = false;
         }
 
-        if (srcBounds.getY() >= dstBounds.getY() && srcBounds.getY() <= dstBounds.getMaxY()
-            || dstBounds.getY() >= srcBounds.getY() && dstBounds.getY() <= srcBounds.getMaxY()) {
+        boolean srcYInDst = srcBounds.getY() >= dstBounds.getY() && srcBounds.getY() <= dstBounds.getMaxY();
+        boolean dstYInSrc = dstBounds.getY() >= srcBounds.getY() && dstBounds.getY() <= srcBounds.getMaxY();
+        if (srcYInDst || dstYInSrc) {
 
             if (dstBounds.getCenterX() > srcBounds.getCenterX()) {
                 src = new Vec2( srcBounds.getMaxX(), srcBounds.getCenterY() );

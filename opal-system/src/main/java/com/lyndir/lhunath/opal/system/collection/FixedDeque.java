@@ -16,6 +16,7 @@
 package com.lyndir.lhunath.opal.system.collection;
 
 import java.util.*;
+import javax.annotation.Nonnull;
 
 
 /**
@@ -43,7 +44,7 @@ public class FixedDeque<E> implements Deque<E> {
     public FixedDeque(final int maxSize) {
 
         this.maxSize = maxSize;
-        deque = new LinkedList<E>();
+        deque = new LinkedList<>();
     }
 
     /**
@@ -55,51 +56,38 @@ public class FixedDeque<E> implements Deque<E> {
     public FixedDeque(final int maxSize, final Collection<? extends E> collection) {
 
         this.maxSize = maxSize;
-        deque = new LinkedList<E>( collection );
+        deque = new LinkedList<>( collection );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isEmpty() {
 
         return deque.isEmpty();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Nonnull
     @Override
     public Object[] toArray() {
 
         return deque.toArray();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Nonnull
     @Override
     @SuppressWarnings({ "SuspiciousToArrayCall" })
-    public <T> T[] toArray(final T[] a) {
+    public <T> T[] toArray(@Nonnull final T[] a) {
 
         return deque.toArray( a );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean containsAll(final Collection<?> collection) {
+    public boolean containsAll(@Nonnull final Collection<?> collection) {
 
         return deque.containsAll( collection );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean addAll(final Collection<? extends E> collection) {
+    public boolean addAll(@Nonnull final Collection<? extends E> collection) {
 
         if (!deque.addAll( collection ))
             return false;
@@ -110,36 +98,24 @@ public class FixedDeque<E> implements Deque<E> {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean removeAll(final Collection<?> collection) {
+    public boolean removeAll(@Nonnull final Collection<?> collection) {
 
         return deque.removeAll( collection );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public boolean retainAll(final Collection<?> collection) {
+    public boolean retainAll(@Nonnull final Collection<?> collection) {
 
         return deque.retainAll( collection );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void clear() {
 
         deque.clear();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addFirst(final E e) {
 
@@ -148,9 +124,6 @@ public class FixedDeque<E> implements Deque<E> {
         deque.addFirst( e );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addLast(final E e) {
 
@@ -159,9 +132,6 @@ public class FixedDeque<E> implements Deque<E> {
         deque.addLast( e );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean offerFirst(final E e) {
 
@@ -171,9 +141,6 @@ public class FixedDeque<E> implements Deque<E> {
         return deque.offerFirst( e );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean offerLast(final E e) {
 
@@ -183,99 +150,66 @@ public class FixedDeque<E> implements Deque<E> {
         return deque.offerLast( e );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public E removeFirst() {
 
         return deque.removeFirst();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public E removeLast() {
 
         return deque.removeLast();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public E pollFirst() {
 
         return deque.pollFirst();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public E pollLast() {
 
         return deque.pollLast();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public E getFirst() {
 
         return deque.getFirst();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public E getLast() {
 
         return deque.getLast();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public E peekFirst() {
 
         return deque.peekFirst();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public E peekLast() {
 
         return deque.peekLast();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean removeFirstOccurrence(final Object o) {
 
         return deque.removeFirstOccurrence( o );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean removeLastOccurrence(final Object o) {
 
         return deque.removeLastOccurrence( o );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean add(final E e) {
 
@@ -284,81 +218,54 @@ public class FixedDeque<E> implements Deque<E> {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean offer(final E e) {
 
         return offerLast( e );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public E remove() {
 
         return removeFirst();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public E poll() {
 
         return pollFirst();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public E element() {
 
         return getFirst();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public E peek() {
 
         return peekFirst();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void push(final E e) {
 
         addFirst( e );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public E pop() {
 
         return removeFirst();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean remove(final Object o) {
 
         return removeFirstOccurrence( o );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean contains(final Object o) {
 
@@ -373,27 +280,20 @@ public class FixedDeque<E> implements Deque<E> {
         return maxSize;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int size() {
 
         return deque.size();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Nonnull
     @Override
     public Iterator<E> iterator() {
 
         return deque.iterator();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Nonnull
     @Override
     public Iterator<E> descendingIterator() {
 

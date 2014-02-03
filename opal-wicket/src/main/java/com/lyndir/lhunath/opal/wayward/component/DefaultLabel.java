@@ -22,7 +22,7 @@ import org.apache.wicket.model.*;
 
 
 /**
- * <h2>{@link DefaultLabel}<br> <sub>Text field that uses a default value if its model object is <code>null</code>.</sub></h2>
+ * <h2>{@link DefaultLabel}<br> <sub>Text field that uses a default value if its model object is {@code null}.</sub></h2>
  *
  * <p> <i>Jan 21, 2010</i> </p>
  *
@@ -30,7 +30,7 @@ import org.apache.wicket.model.*;
  */
 public class DefaultLabel extends Label {
 
-    private IModel<String> defaultValue = null;
+    private IModel<String> defaultValue;
 
     /**
      * Create a new {@link DefaultLabel} instance.
@@ -40,7 +40,7 @@ public class DefaultLabel extends Label {
      */
     public DefaultLabel(final String id, final String modelObject) {
 
-        this( id, new Model<String>( modelObject ) );
+        this( id, new Model<>( modelObject ) );
     }
 
     /**
@@ -53,7 +53,7 @@ public class DefaultLabel extends Label {
 
         super( id, model );
 
-        setDefaultValue( new StringResourceModel( "none", this, null ) );
+        defaultValue = new StringResourceModel( "none", this, null );
     }
 
     /**
@@ -86,9 +86,6 @@ public class DefaultLabel extends Label {
         this.defaultValue = defaultValue;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
 

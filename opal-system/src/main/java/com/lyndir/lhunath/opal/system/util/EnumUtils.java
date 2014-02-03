@@ -28,7 +28,7 @@ public abstract class EnumUtils {
 
     /**
      * Type-forced version of {@link #enumNamed(Class, String)}.  Does not require the class to be an Enum class.  Really only useful if
-     * you've got a <code>Class<?></code> and you have no clue what enum is in it and you've already done a {@link Class#isEnum()} to
+     * you've got a {@code Class} and you have no clue what enum is in it and you've already done a {@link Class#isEnum()} to
      * verify that it really is an enum.
      *
      * @param type The enum type for which to obtain a value.
@@ -63,26 +63,26 @@ public abstract class EnumUtils {
     /**
      * Return the enum with the smallest ordinal.
      *
-     * @param one An enum value.
-     * @param two Another enum value.
+     * @param first An enum value.
+     * @param second Another enum value.
      * @param <T> The type of the enum values.
      *
      * @return The given enum value that has the smallest ordinal.
      */
-    public static <T extends Enum<T>> T min(@Nonnull final T one, @Nonnull final T two) {
-        return one.ordinal() < two.ordinal()? one: two;
+    public static <T extends Enum<T>> T min(@Nonnull final T first, @Nonnull final T second) {
+        return first.ordinal() < second.ordinal()? first: second;
     }
 
     /**
      * Return the enum with the largest ordinal.
      *
-     * @param one An enum value.
-     * @param two Another enum value.
+     * @param first An enum value.
+     * @param second Another enum value.
      * @param <T> The type of the enum values.
      *
      * @return The given enum value that has the largest ordinal.
      */
-    public static <T extends Enum<T>> T max(@Nonnull final T one, @Nonnull final T two) {
-        return one.ordinal() > two.ordinal()? one: two;
+    public static <T extends Enum<T>> T max(@Nonnull final T first, @Nonnull final T second) {
+        return first.ordinal() > second.ordinal()? first: second;
     }
 }

@@ -31,7 +31,7 @@ public class PropertiesResourceBundle extends ResourceBundle {
 
     PropertiesResourceBundle(final Properties props) {
 
-        properties = props;
+        properties = new Properties( props );
     }
 
     @Override
@@ -40,9 +40,6 @@ public class PropertiesResourceBundle extends ResourceBundle {
         return properties.getProperty( key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Enumeration<String> getKeys() {
 

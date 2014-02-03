@@ -73,8 +73,7 @@ public class GsonJsonProvider implements MessageBodyReader<Object>, MessageBodyW
         String json = gson.toJson( o, ifNotNullElse( genericType, type ) );
         CharStreams.write( json, CharStreams.newWriterSupplier( new OutputSupplier<OutputStream>() {
             @Override
-            public OutputStream getOutput()
-                    throws IOException {
+            public OutputStream getOutput() {
                 return entityStream;
             }
         }, Charsets.UTF_8 ) );

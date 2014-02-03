@@ -13,7 +13,6 @@
     <name>Opal Network</name>
     <description>Opal: Networking and communication utilities.</description>
 
-    <groupId>com.lyndir.lhunath.opal</groupId>
     <artifactId>opal-network</artifactId>
     <packaging>jar</packaging>
 

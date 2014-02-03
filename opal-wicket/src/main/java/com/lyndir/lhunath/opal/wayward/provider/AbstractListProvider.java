@@ -18,6 +18,7 @@ package com.lyndir.lhunath.opal.wayward.provider;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import javax.annotation.Nullable;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -34,7 +35,8 @@ import org.apache.wicket.model.Model;
  */
 public abstract class AbstractListProvider<T> implements IDataProvider<T> {
 
-    private transient List<T> transientList = null;
+    @Nullable
+    private transient List<T> transientList;
 
     private List<T> getObject() {
 
@@ -59,21 +61,15 @@ public abstract class AbstractListProvider<T> implements IDataProvider<T> {
     @SuppressWarnings({ "unchecked" })
     public IModel<T> model(final T object) {
 
-        return (IModel<T>) new Model<Serializable>( (Serializable) object );
+        return (IModel<T>) new Model<>( (Serializable) object );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void detach() {
 
         transientList = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Iterator<T> iterator(final int first, final int count) {
 
@@ -84,9 +80,6 @@ public abstract class AbstractListProvider<T> implements IDataProvider<T> {
         return list.subList( from, to ).iterator();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int size() {
 

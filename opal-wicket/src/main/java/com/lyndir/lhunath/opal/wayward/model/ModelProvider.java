@@ -18,6 +18,7 @@ package com.lyndir.lhunath.opal.wayward.model;
 import static com.google.common.base.Preconditions.*;
 
 import com.lyndir.lhunath.opal.system.logging.Logger;
+import javax.annotation.Nullable;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.*;
 
@@ -45,18 +46,20 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
 
     static final Logger logger = Logger.get( ModelProvider.class );
 
-    private transient IModel<P> model        = null;
-    private           IModel<M> wrappedModel = null;
+    @Nullable
+    private transient IModel<P> model;
+    @Nullable
+    private           IModel<M> wrappedModel;
 
-    private Component component = null;
+    @SuppressWarnings("InstanceVariableMayNotBeInitialized")
+    private Component component;
 
     /**
      * @param model The base model.
      */
-    protected ModelProvider(final IModel<M> model) {
+    protected ModelProvider(@Nullable final IModel<M> model) {
 
-        if (model != null)
-            setWrappedModel( model );
+        wrappedModel = model;
     }
 
     /**
@@ -81,23 +84,19 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
     /**
      * @param wrappedModel The base model.
      */
-    public void setWrappedModel(final IModel<M> wrappedModel) {
+    public void setWrappedModel(@Nullable final IModel<M> wrappedModel) {
 
         this.wrappedModel = wrappedModel;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Nullable
     @Override
     public IModel<M> getWrappedModel() {
 
         return wrappedModel;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Nullable
     @Override
     public M getObject() {
 
@@ -109,11 +108,8 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
         return getWrappedModel().getObject();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setObject(final M object) {
+    public void setObject(@Nullable final M object) {
 
         if (getWrappedModel() == null) {
             logger.wrn( "Attempt to setObject(%s) while model is unset.", object );
@@ -123,9 +119,6 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
         getWrappedModel().setObject( object );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void detach() {
 
@@ -136,6 +129,7 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
     /**
      * @return model The object of the base model.
      */
+    @Nullable
     public M getModelObject() {
 
         if (getWrappedModel() == null) {
@@ -149,7 +143,7 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
     /**
      * @param object The new object of the base model.
      */
-    public void setModelObject(final M object) {
+    public void setModelObject(@Nullable final M object) {
 
         if (getWrappedModel() == null) {
             logger.wrn( "Attempt to setModelObject(%s) while model is unset.", object );
@@ -159,18 +153,13 @@ public abstract class ModelProvider<P extends ModelProvider<P, M>, M> implements
         getWrappedModel().setObject( object );
     }
 
-    private void setComponent(final Component component) {
-
-        this.component = component;
-    }
-
     /**
      * @param component The component we have been or will be attached to.
      */
     @SuppressWarnings({ "hiding", "ParameterHidesMemberVariable" })
     public void attach(final Component component) {
 
-        setComponent( checkNotNull( component, "Can't attach model provider (%s) to null.", this ) );
+        this.component = checkNotNull( component, "Can't attach model provider (%s) to null.", this );
     }
 
     /**

@@ -29,7 +29,7 @@ public interface Receiver<E> {
      *
      * @param event The event that was fired.
      *
-     * @return <code>false</code> if the event cannot be processed for some reason.
+     * @return {@code false} if the event cannot be processed for some reason.
      */
     boolean fire(E event);
 }

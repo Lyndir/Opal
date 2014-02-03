@@ -16,6 +16,7 @@
 package com.lyndir.lhunath.opal.wayward.component;
 
 import java.util.Locale;
+import javax.annotation.Nullable;
 import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.link.Link;
@@ -40,7 +41,7 @@ public class LanguageLink extends Link<String> {
      */
     public LanguageLink(final String id, final String language) {
 
-        this( id, new Model<String>( language ) );
+        this( id, new Model<>( language ) );
     }
 
     /**
@@ -53,6 +54,7 @@ public class LanguageLink extends Link<String> {
 
         add( new AttributeAppender( "class", new AbstractReadOnlyModel<String>() {
 
+            @Nullable
             @Override
             public String getObject() {
 
@@ -61,9 +63,6 @@ public class LanguageLink extends Link<String> {
         }, ";" ) );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onClick() {
 

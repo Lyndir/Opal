@@ -38,7 +38,7 @@ public class TrayIcon extends Wrapper {
      */
     public TrayIcon(final Image image) {
 
-        this( construct( TrayIcon.class, new Class[]{ Image.class }, image ) );
+        this( construct( TrayIcon.class, new Class<?>[]{ Image.class }, image ) );
     }
 
     /**
@@ -49,7 +49,7 @@ public class TrayIcon extends Wrapper {
      */
     public TrayIcon(final Image image, final String tooltip) {
 
-        this( construct( TrayIcon.class, new Class[]{ Image.class, String.class }, image, tooltip ) );
+        this( construct( TrayIcon.class, new Class<?>[]{ Image.class, String.class }, image, tooltip ) );
     }
 
     /**
@@ -61,7 +61,7 @@ public class TrayIcon extends Wrapper {
      */
     public TrayIcon(final Image image, final String tooltip, final PopupMenu popup) {
 
-        this( construct( TrayIcon.class, new Class[]{ Image.class, String.class, PopupMenu.class }, image, tooltip, popup ) );
+        this( construct( TrayIcon.class, new Class<?>[]{ Image.class, String.class, PopupMenu.class }, image, tooltip, popup ) );
     }
 
     /**
@@ -77,7 +77,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized void addActionListener(final ActionListener listener) {
 
-        invoke( "addActionListener", new Class[]{ ActionListener.class }, listener );
+        invoke( "addActionListener", new Class<?>[]{ ActionListener.class }, listener );
     }
 
     /**
@@ -85,7 +85,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized void addMouseListener(final MouseListener listener) {
 
-        invoke( "addMouseListener", new Class[]{ MouseListener.class }, listener );
+        invoke( "addMouseListener", new Class<?>[]{ MouseListener.class }, listener );
     }
 
     /**
@@ -93,7 +93,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized void addMouseMotionListener(final MouseMotionListener listener) {
 
-        invoke( "addMouseMotionListener", new Class[]{ MouseMotionListener.class }, listener );
+        invoke( "addMouseMotionListener", new Class<?>[]{ MouseMotionListener.class }, listener );
     }
 
     /**
@@ -106,7 +106,7 @@ public class TrayIcon extends Wrapper {
     public void displayMessage(final String caption, final String text, final MessageType messageType) {
 
         Class<?> wrappedEnumClass = getClass( "java.awt.TrayIcon$MessageType" );
-        invoke( "displayMessage", new Class[]{ String.class, String.class, wrappedEnumClass }, caption, text,
+        invoke( "displayMessage", new Class<?>[]{ String.class, String.class, wrappedEnumClass }, caption, text,
                 mapEnumValue( messageType, wrappedEnumClass ) );
     }
 
@@ -175,7 +175,7 @@ public class TrayIcon extends Wrapper {
     }
 
     /**
-     * @return <code>true</code> if the {@link TrayIcon}'s image is automatically scaled.
+     * @return {@code true} if the {@link TrayIcon}'s image is automatically scaled.
      */
     public boolean isImageAutoSize() {
 
@@ -187,7 +187,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized void removeActionListener(final ActionListener listener) {
 
-        invoke( "removeActionListener", new Class[]{ ActionListener.class }, listener );
+        invoke( "removeActionListener", new Class<?>[]{ ActionListener.class }, listener );
     }
 
     /**
@@ -195,7 +195,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized void removeMouseListener(final MouseListener listener) {
 
-        invoke( "removeMouseListener", new Class[]{ MouseListener.class }, listener );
+        invoke( "removeMouseListener", new Class<?>[]{ MouseListener.class }, listener );
     }
 
     /**
@@ -203,7 +203,7 @@ public class TrayIcon extends Wrapper {
      */
     public synchronized void removeMouseMotionListener(final MouseMotionListener listener) {
 
-        invoke( "removeMouseMotionListener", new Class[]{ MouseMotionListener.class }, listener );
+        invoke( "removeMouseMotionListener", new Class<?>[]{ MouseMotionListener.class }, listener );
     }
 
     /**
@@ -211,7 +211,7 @@ public class TrayIcon extends Wrapper {
      */
     public void setActionCommand(final String command) {
 
-        invoke( "setActionCommand", new Class[]{ String.class }, command );
+        invoke( "setActionCommand", new Class<?>[]{ String.class }, command );
     }
 
     /**
@@ -219,15 +219,15 @@ public class TrayIcon extends Wrapper {
      */
     public void setImage(final Image image) {
 
-        invoke( "setImage", new Class[]{ Image.class }, image );
+        invoke( "setImage", new Class<?>[]{ Image.class }, image );
     }
 
     /**
-     * @param autosize <code>true</code>: auto scale the image used to depict the {@link TrayIcon}.
+     * @param autosize {@code true}: auto scale the image used to depict the {@link TrayIcon}.
      */
     public void setImageAutoSize(final boolean autosize) {
 
-        invoke( "setImageAutoSize", new Class[]{ boolean.class }, autosize );
+        invoke( "setImageAutoSize", new Class<?>[]{ boolean.class }, autosize );
     }
 
     /**
@@ -235,7 +235,7 @@ public class TrayIcon extends Wrapper {
      */
     public void setPopupMenu(final PopupMenu popup) {
 
-        invoke( "setPopupMenu", new Class[]{ PopupMenu.class }, popup );
+        invoke( "setPopupMenu", new Class<?>[]{ PopupMenu.class }, popup );
     }
 
     /**
@@ -243,7 +243,7 @@ public class TrayIcon extends Wrapper {
      */
     public void setToolTip(final String tooltip) {
 
-        invoke( "setToolTip", new Class[]{ String.class }, tooltip );
+        invoke( "setToolTip", new Class<?>[]{ String.class }, tooltip );
     }
 
     /**

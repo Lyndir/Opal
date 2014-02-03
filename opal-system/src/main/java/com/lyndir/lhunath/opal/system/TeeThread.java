@@ -15,6 +15,7 @@
  */
 package com.lyndir.lhunath.opal.system;
 
+import com.google.common.collect.ImmutableList;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.io.*;
 
@@ -28,8 +29,8 @@ public class TeeThread extends Thread {
 
     private static final Logger logger = Logger.get( TeeThread.class );
 
-    private final InputStream    source;
-    private final OutputStream[] destinations;
+    private final InputStream                 source;
+    private final ImmutableList<OutputStream> destinations;
 
     /**
      * Create a new {@link TeeThread} instance.
@@ -43,12 +44,9 @@ public class TeeThread extends Thread {
         setDaemon( true );
 
         this.source = source;
-        this.destinations = destinations;
+        this.destinations = ImmutableList.copyOf( destinations );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void run() {
 
@@ -60,7 +58,7 @@ public class TeeThread extends Thread {
                 for (final OutputStream destination : destinations)
                     destination.write( buf, 0, bytesRead );
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             if (!(source instanceof PipedInputStream))
                 logger.err( e, "Could not read from the console source." );
         }

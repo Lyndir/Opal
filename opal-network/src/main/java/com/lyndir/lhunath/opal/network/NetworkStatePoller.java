@@ -46,36 +46,24 @@ public class NetworkStatePoller extends Poller<NetworkStatePoller.State, SocketC
         network.registerConnectionStateListener( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void bound(final ServerSocketChannel serverChannel) {
 
         // Not supported.
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void accepted(final ServerSocketChannel serverChannel, final SocketChannel connectionChannel) {
 
         offer( State.ACCEPTED, connectionChannel );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void connected(final SocketChannel socketChannel) {
+    public void connected(final SocketChannel channel) {
 
-        offer( State.CONNECTED, socketChannel );
+        offer( State.CONNECTED, channel );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void closed(final SocketChannel channel, final boolean resetByPeer) {
 

@@ -16,12 +16,11 @@
 package com.lyndir.lhunath.opal.crypto.gpg;
 
 import com.google.common.io.ByteStreams;
-import com.google.common.io.Closeables;
-import edu.umd.cs.findbugs.annotations.*;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.*;
-import java.lang.SuppressWarnings;
 import java.security.*;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.bouncycastle.bcpg.*;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openpgp.*;
@@ -49,6 +48,7 @@ public abstract class GPG {
      *
      * @return The long that represents the key ID.
      */
+    @SuppressWarnings({ "StringConcatenationMissingWhitespace", "NumericOverflow" })
     public static long parseKeyId(final String keyId) {
 
         String trimmedKeyId = keyId.startsWith( "0x" )? keyId.substring( 2 ): keyId;
@@ -57,7 +57,7 @@ public abstract class GPG {
 
         double doubleKeyId = firstChar * Math.pow( 16, trimmedKeyId.length() - 1 ) + otherChars;
         while (doubleKeyId > Long.MAX_VALUE)
-            doubleKeyId -= (double) Long.MAX_VALUE - (double) Long.MIN_VALUE;
+            doubleKeyId -= Long.MAX_VALUE - Long.MIN_VALUE;
 
         return (long) doubleKeyId;
     }
@@ -110,6 +110,7 @@ public abstract class GPG {
      * @throws IOException
      * @throws PGPException
      */
+    @Nullable
     public static PGPSecretKey getPrivateKeyFor(final File encryptedFile, final File privateKeyFile)
             throws IOException, PGPException {
 
@@ -127,6 +128,7 @@ public abstract class GPG {
      * @throws IOException
      * @throws PGPException
      */
+    @Nullable
     public static PGPSecretKey getPrivateKeyFor(final InputStream encryptedStream, final File privateKeyFile)
             throws IOException, PGPException {
 
@@ -165,7 +167,7 @@ public abstract class GPG {
 
         /* Open the key ring. */
         try (FileInputStream privateKeyInputStream = new FileInputStream( privateKeyFile )) {
-            List<PrintableKeyWrapper<PGPSecretKey>> keys = new ArrayList<PrintableKeyWrapper<PGPSecretKey>>();
+            List<PrintableKeyWrapper<PGPSecretKey>> keys = new ArrayList<>();
             PGPSecretKeyRingCollection privateKeyRing = new PGPSecretKeyRingCollection( PGPUtil.getDecoderStream( privateKeyInputStream ) );
 
             /* Enumerate the IDs. */
@@ -208,7 +210,7 @@ public abstract class GPG {
 
         /* Open the key ring. */
         try (FileInputStream publicKeyInputStream = new FileInputStream( publicKeyFile )) {
-            List<PrintableKeyWrapper<PGPPublicKey>> keys = new ArrayList<PrintableKeyWrapper<PGPPublicKey>>();
+            List<PrintableKeyWrapper<PGPPublicKey>> keys = new ArrayList<>();
             PGPPublicKeyRingCollection privateKeyRing = new PGPPublicKeyRingCollection( PGPUtil.getDecoderStream( publicKeyInputStream ) );
 
             /* Enumerate the IDs. */
@@ -243,7 +245,7 @@ public abstract class GPG {
      * @param plainFile     The file that contains the plain-text data.
      * @param encryptedFile The file to write encrypted data into.
      * @param publicKey     The public key to use for encryption.
-     * @param armoured      <code>true</code>: ASCII armor the encrypted data.
+     * @param armoured      {@code true}: ASCII armor the encrypted data.
      *
      * @throws NoSuchProviderException
      * @throws IOException
@@ -263,7 +265,7 @@ public abstract class GPG {
      *
      * @param plainTextData The plain-text data.
      * @param publicKey     The public key to use for encryption.
-     * @param armoured      <code>true</code>: ASCII armor the encrypted data.
+     * @param armoured      {@code true}: ASCII armor the encrypted data.
      *
      * @return The encrypted string data.
      *
@@ -282,7 +284,7 @@ public abstract class GPG {
      *
      * @param plainTextStream The stream that contains the plain-text data.
      * @param publicKey       The public key to use for encryption.
-     * @param armoured        <code>true</code>: ASCII armor the encrypted data.
+     * @param armoured        {@code true}: ASCII armor the encrypted data.
      *
      * @return The encrypted data stream.
      *
@@ -294,32 +296,35 @@ public abstract class GPG {
             throws IOException, NoSuchProviderException, PGPException {
 
         /* Compress and extract literal data packets that can be encrypted. */
-        PGPLiteralDataGenerator literalDataGenerator = new PGPLiteralDataGenerator();
-        ByteArrayOutputStream decryptedStream = new ByteArrayOutputStream();
-        PGPCompressedDataGenerator compressor = new PGPCompressedDataGenerator( CompressionAlgorithmTags.ZLIB );
-        OutputStream literalStream = literalDataGenerator.open( compressor.open( decryptedStream ), PGPLiteralData.BINARY, "", new Date(),
-                                                                new byte[4096] );
-        ByteStreams.copy( plainTextStream, literalStream );
-        compressor.close();
+        PGPEncryptedDataGenerator encryptedDataGenerator = null;
+        try (ByteArrayOutputStream decryptedStream = new ByteArrayOutputStream(); ByteArrayOutputStream encryptedByteStream = new ByteArrayOutputStream()) {
+            PGPLiteralDataGenerator literalDataGenerator = new PGPLiteralDataGenerator();
+            PGPCompressedDataGenerator compressor = new PGPCompressedDataGenerator( CompressionAlgorithmTags.ZLIB );
+            OutputStream literalStream = literalDataGenerator.open( compressor.open( decryptedStream ), PGPLiteralData.BINARY, "",
+                                                                    new Date(), new byte[4096] );
+            ByteStreams.copy( plainTextStream, literalStream );
+            compressor.close();
 
         /* Encrypt compressed data. */
-        PGPEncryptedDataGenerator encryptedDataGenerator = new PGPEncryptedDataGenerator( SymmetricKeyAlgorithmTags.CAST5,
-                                                                                          new SecureRandom(),
-                                                                                          BouncyCastleProvider.PROVIDER_NAME );
-        encryptedDataGenerator.addMethod( publicKey );
+            encryptedDataGenerator = new PGPEncryptedDataGenerator( SymmetricKeyAlgorithmTags.CAST5, new SecureRandom(),
+                                                                    BouncyCastleProvider.PROVIDER_NAME );
+            encryptedDataGenerator.addMethod( publicKey );
 
         /* Create the encrypted output stream, armour if necessary. */
-        ByteArrayOutputStream encryptedByteStream = new ByteArrayOutputStream();
-        OutputStream encryptedStream = encryptedByteStream;
-        if (armoured)
-            encryptedStream = new ArmoredOutputStream( encryptedStream );
+            OutputStream encryptedStream = encryptedByteStream;
+            if (armoured)
+                encryptedStream = new ArmoredOutputStream( encryptedStream );
 
         /* Create and write out the encrypted file. */
-        OutputStream encryptionStream = encryptedDataGenerator.open( encryptedStream, new byte[4096] );
-        ByteStreams.copy( new ByteArrayInputStream( decryptedStream.toByteArray() ), encryptionStream );
-        encryptedDataGenerator.close();
+            OutputStream encryptionStream = encryptedDataGenerator.open( encryptedStream, new byte[4096] );
+            ByteStreams.copy( new ByteArrayInputStream( decryptedStream.toByteArray() ), encryptionStream );
 
-        return new ByteArrayInputStream( encryptedByteStream.toByteArray() );
+            return new ByteArrayInputStream( encryptedByteStream.toByteArray() );
+        }
+        finally {
+            if (encryptedDataGenerator != null)
+                encryptedDataGenerator.close();
+        }
     }
 
     /**
@@ -390,7 +395,7 @@ public abstract class GPG {
             try {
                 encryptedDataObjects = encryptedDataFactory.nextObject();
             }
-            catch (IOException e) {
+            catch (final IOException e) {
                 logger.warn( e.getMessage() );
             }
         while (!(encryptedDataObjects instanceof PGPEncryptedDataList) && encryptedDataObjects != null);
@@ -433,7 +438,7 @@ public abstract class GPG {
             throw new PGPException( "No encrypted data found." );
         if (unencryptedObject instanceof PGPOnePassSignatureList)
             throw new PGPException( "Encrypted data is a signature, not an encrypted message." );
-        else if (!(unencryptedObject instanceof PGPLiteralData))
+        if (!(unencryptedObject instanceof PGPLiteralData))
             throw new PGPException( "Message type unrecognized: " + unencryptedObject.getClass() );
 
         /* Write out decrypted data. */
@@ -448,7 +453,7 @@ public abstract class GPG {
      * @param signedFile The file to write the signature into.
      * @param privateKey The private key to use for signing.
      * @param passPhrase The passphrase that the private key is locked with.
-     * @param armoured   <code>true</code>: ASCII armor the signature.
+     * @param armoured   {@code true}: ASCII armor the signature.
      *
      * @throws NoSuchAlgorithmException
      * @throws NoSuchProviderException
@@ -475,7 +480,7 @@ public abstract class GPG {
      * @param data       The string that contains the data to sign.
      * @param privateKey The private key to use for signing.
      * @param passPhrase The passphrase that the private key is locked with.
-     * @param armoured   <code>true</code>: ASCII armor the signature.
+     * @param armoured   {@code true}: ASCII armor the signature.
      *
      * @return The signature.
      *
@@ -498,7 +503,7 @@ public abstract class GPG {
      * @param data       The stream that contains the data to sign.
      * @param privateKey The private key to use for signing.
      * @param passPhrase The passphrase that the private key is locked with.
-     * @param armoured   <code>true</code>: ASCII armor the signature.
+     * @param armoured   {@code true}: ASCII armor the signature.
      *
      * @return The signature.
      *
@@ -524,16 +529,15 @@ public abstract class GPG {
             signer.update( buffer, 0, read );
 
         /* Create the signature output stream, armour if necessary. */
-        ByteArrayOutputStream signatureByteStream = new ByteArrayOutputStream();
-        OutputStream signatureStream = signatureByteStream;
-        if (armoured)
-            signatureStream = new ArmoredOutputStream( signatureStream );
+        try (ByteArrayOutputStream signatureByteStream = new ByteArrayOutputStream(); OutputStream signatureStream = armoured
+                ? new ArmoredOutputStream( signatureByteStream ): signatureByteStream) {
 
-        /* Create and write out the signature. */
-        PGPSignature signature = signer.generate();
-        signature.encode( signatureStream );
+            /* Create and write out the signature. */
+            PGPSignature signature = signer.generate();
+            signature.encode( signatureStream );
 
-        return new ByteArrayInputStream( signatureByteStream.toByteArray() );
+            return new ByteArrayInputStream( signatureByteStream.toByteArray() );
+        }
     }
 
     /**
@@ -578,9 +582,6 @@ public abstract class GPG {
             return keyId;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public String toString() {
 

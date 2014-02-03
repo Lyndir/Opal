@@ -19,6 +19,7 @@ import com.lyndir.lhunath.opal.system.wrapper.Desktop;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.net.URL;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 
@@ -188,7 +189,8 @@ public class UIUtils {
      *
      * @return The resulting color.
      */
-    public static Color setAlpha(final Color color, final int alpha) {
+    @Nullable
+    public static Color setAlpha(@Nullable final Color color, final int alpha) {
 
         if (color == null)
             return null;
@@ -207,7 +209,7 @@ public class UIUtils {
         try {
             return Desktop.isDesktopSupported();
         }
-        catch (NoClassDefFoundError ignored) {
+        catch (final NoClassDefFoundError ignored) {
             return false;
         }
     }
@@ -223,7 +225,7 @@ public class UIUtils {
         try {
             return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.BROWSE );
         }
-        catch (NoClassDefFoundError ignored) {
+        catch (final NoClassDefFoundError ignored) {
             return false;
         }
     }
@@ -239,7 +241,7 @@ public class UIUtils {
         try {
             return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.MAIL );
         }
-        catch (NoClassDefFoundError ignored) {
+        catch (final NoClassDefFoundError ignored) {
             return false;
         }
     }
@@ -255,7 +257,7 @@ public class UIUtils {
         try {
             return isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.OPEN );
         }
-        catch (NoClassDefFoundError ignored) {
+        catch (final NoClassDefFoundError ignored) {
             return false;
         }
     }
@@ -292,6 +294,7 @@ public class UIUtils {
      *
      * @return The icon.
      */
+    @Nullable
     public static ImageIcon getIcon(final String resource) {
 
         URL url = Thread.currentThread().getContextClassLoader().getResource( resource );

@@ -17,7 +17,7 @@ package com.lyndir.lhunath.opal.security;
 
 import com.google.common.collect.ImmutableSet;
 import com.lyndir.lhunath.opal.system.i18n.*;
-import java.util.Arrays;
+import javax.annotation.Nullable;
 
 
 /**
@@ -118,6 +118,6 @@ public enum Permission implements Localized {
          *
          * @return An information text explaining what this permission grants.
          */
-        String info(@KeyAppender Permission permission, SecureObject<?, ?> current, SecureObject<?, ?> parent);
+        String info(@KeyAppender Permission permission, SecureObject<?, ?> current, @Nullable SecureObject<?, ?> parent);
     }
 }

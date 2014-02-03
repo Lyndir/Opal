@@ -22,6 +22,7 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
+import javax.annotation.Nullable;
 
 
 /**
@@ -93,6 +94,7 @@ public class XMLResourceBundle extends PropertiesResourceBundle {
             return ImmutableList.of( "xml" );
         }
 
+        @Nullable
         @Override
         public ResourceBundle newBundle(final String baseName, final Locale locale, final String format, final ClassLoader loader,
                                         final boolean reload)

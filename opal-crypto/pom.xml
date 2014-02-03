@@ -13,7 +13,6 @@
     <name>Opal Crypto</name>
     <description>Opal: Cryptography utilities.</description>
 
-    <groupId>com.lyndir.lhunath.opal</groupId>
     <artifactId>opal-crypto</artifactId>
     <packaging>jar</packaging>
 

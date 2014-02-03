@@ -15,14 +15,12 @@
  */
 package com.lyndir.lhunath.opal.system;
 
-import static com.lyndir.lhunath.opal.system.util.StringUtils.str;
-
 import com.google.common.base.Charsets;
 import com.lyndir.lhunath.opal.system.dummy.NullOutputStream;
-import edu.umd.cs.findbugs.annotations.*;
+import com.lyndir.lhunath.opal.system.logging.Logger;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.annotation.Nullable;
 
 
 /**
@@ -34,7 +32,7 @@ import org.slf4j.LoggerFactory;
 @SuppressFBWarnings({ "DMI_HARDCODED_ABSOLUTE_FILENAME" })
 public class WinReg {
 
-    private static final Logger logger = LoggerFactory.getLogger( WinReg.class );
+    private static final Logger logger = Logger.get( WinReg.class );
 
     /**
      * Check whether registry queries are supported on the running operating system.
@@ -43,11 +41,10 @@ public class WinReg {
      */
     public static boolean isSupported() {
 
-        try {
-            OutputStream out = new NullOutputStream();
+        try (OutputStream out = new NullOutputStream()) {
             return Shell.waitFor( Shell.exec( out, out, new File( "C:\\Windows\\System32" ), "reg.exe", "query", "/?" ) ) == 0;
         }
-        catch (FileNotFoundException ignored) {
+        catch (final IOException ignored) {
             return false;
         }
     }
@@ -62,20 +59,22 @@ public class WinReg {
      *
      * @return The reply from the windows registry parsed into the requested type.
      */
+    @Nullable
     public static <T> T query(final String key, final String value, final Class<T> type) {
 
         if (!(type.equals( String.class ) || type.equals( Integer.class )))
             throw new IllegalArgumentException( "Can only query the registry for String or Integer types." );
 
         String output = Shell.execRead( Charsets.UTF_8, new File( "C:\\Windows\\System32" ), "reg.exe", "query", key, "/v", value );
+        if (output == null)
+            return null;
 
         int pos;
         T result = null;
-
         if (type.equals( String.class )) {
             pos = output.indexOf( "REG_SZ" ) + "REG_SZ".length();
             if (pos < 6) {
-                logger.warn( "Key %s:%s not found!", key, value );
+                logger.wrn( "Key %s:%s not found!", key, value );
                 return type.cast( "" );
             }
 

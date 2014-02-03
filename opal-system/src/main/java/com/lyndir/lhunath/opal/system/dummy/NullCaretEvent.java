@@ -39,18 +39,12 @@ public class NullCaretEvent extends CaretEvent {
         super( source );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getDot() {
 
         return 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMark() {
 

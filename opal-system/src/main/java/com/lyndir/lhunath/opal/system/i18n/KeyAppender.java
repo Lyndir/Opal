@@ -37,12 +37,12 @@ public @interface KeyAppender {
     KeyMatch[] value() default { };
 
     /**
-     * @return Key to append when the value for this parameter is <code>null</code>. Append nothing if unspecified or an empty string.
+     * @return Key to append when the value for this parameter is {@code null}. Append nothing if unspecified or an empty string.
      */
     String nullKey() default "";
 
     /**
-     * @return Key to append when the value for this parameter is not <code>null</code>. Append nothing if unspecified or an empty string.
+     * @return Key to append when the value for this parameter is not {@code null}. Append nothing if unspecified or an empty string.
      */
     String notNullKey() default "";
 

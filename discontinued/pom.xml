@@ -14,7 +14,6 @@
     <name>Opal Discontinued</name>
     <description>Discontinued Opal Libraries.</description>
 
-    <groupId>com.lyndir.lhunath.opal</groupId>
     <artifactId>opal-discontinued</artifactId>
     <packaging>pom</packaging>
 

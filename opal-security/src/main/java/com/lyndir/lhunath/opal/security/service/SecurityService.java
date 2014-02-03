@@ -37,13 +37,13 @@ public interface SecurityService {
      * @param token      The token used to authenticate the available permissions on the given object.
      * @param object     The object that is the target of the request.
      *
-     * @return The object from parameter <code>object</code>.
+     * @return The object from parameter {@code object}.
      *
-     * @throws PermissionDeniedException When permission is required and the object is not <code>null</code> while there is no security
+     * @throws PermissionDeniedException When permission is required and the object is not {@code null} while there is no security
      *                                   token or the token doesn't grant the necessary permission on the object.
      * @see #hasAccess(Permission, SecurityToken, SecureObject)
      */
-    <S extends SecureObject<?, ?>> S assertAccess(Permission permission, SecurityToken token, S object)
+    <S extends Subject, O extends SecureObject<S, ?>> O assertAccess(Permission permission, SecurityToken<S> token, O object)
             throws PermissionDeniedException;
 
     /**
@@ -53,9 +53,9 @@ public interface SecurityService {
      * @param token      The token used to authenticate the available permissions on the given object.
      * @param object     The object that is the target of the request.
      *
-     * @return <code>true</code>: The given token grants the given permission on the given object.
+     * @return {@code true}: The given token grants the given permission on the given object.
      */
-    boolean hasAccess(Permission permission, SecurityToken token, SecureObject<?, ?> object);
+    <S extends Subject, O extends SecureObject<S, ?>> boolean hasAccess(Permission permission, SecurityToken<S> token, O object);
 
     /**
      * Filter an iterator of SecureObjects, only allowing those on which the given token provides the given permission.
@@ -66,7 +66,7 @@ public interface SecurityService {
      *
      * @return An iterator that provides elements from the source on which the given permission is granted for the given token.
      */
-    <T extends SecureObject<?, ?>> Iterator<T> filterAccess(Permission permission, SecurityToken token, Iterator<T> source);
+    <S extends Subject, O extends SecureObject<S, ?>> Iterator<O> filterAccess(Permission permission, SecurityToken<S> token, Iterator<O> source);
 
     /**
      * Filter an iterator of SecureObjects, only allowing those on which the given token provides the given permission.
@@ -77,7 +77,7 @@ public interface SecurityService {
      *
      * @return An iterator that provides elements from the source on which the given permission is granted for the given token.
      */
-    <T extends SecureObject<?, ?>> ListIterator<T> filterAccess(Permission permission, SecurityToken token, ListIterator<T> source);
+    <S extends Subject, O extends SecureObject<S, ?>> ListIterator<O> filterAccess(Permission permission, SecurityToken<S> token, ListIterator<O> source);
 
     /**
      * @param token The token used to authenticate the available permissions on the given object.
@@ -87,12 +87,12 @@ public interface SecurityService {
      *
      * @throws PermissionDeniedException When the security token doesn't grant {@link Permission#ADMINISTER} on the object.
      */
-    Permission getDefaultPermission(SecurityToken token, SecureObject<?, ?> o)
+    <S extends Subject, O extends SecureObject<S, ?>> Permission getDefaultPermission(SecurityToken<S> token, O o)
             throws PermissionDeniedException;
 
     /**
      * @param token   The token used to authenticate the available permissions on the given object.
-     * @param subject The subject who's permission on the given object to retrieve.  <code>null</code> represents an anonymous subject.
+     * @param subject The subject who's permission on the given object to retrieve.  {@code null} represents an anonymous subject.
      * @param o       The object whose permissions to retrieve.
      *
      * @return The effective permissions granted for this object to the given subject are this object's permissions for the subject or its
@@ -100,7 +100,7 @@ public interface SecurityService {
      *
      * @throws PermissionDeniedException When the security token doesn't grant {@link Permission#ADMINISTER} on the object.
      */
-    Permission getEffectivePermissions(SecurityToken token, Subject subject, SecureObject<?, ?> o)
+    <S extends Subject, O extends SecureObject<S, ?>> Permission getEffectivePermissions(SecurityToken<S> token, Subject subject, O o)
             throws PermissionDeniedException;
 
     /**
@@ -111,7 +111,7 @@ public interface SecurityService {
      *
      * @throws PermissionDeniedException When the security token doesn't grant {@link Permission#ADMINISTER} on the object.
      */
-    Iterator<Pair<Subject, Permission>> iterateSubjectPermissions(SecurityToken token, SecureObject<?, ?> o)
+    <S extends Subject, O extends SecureObject<S, ?>> Iterator<Pair<Subject, Permission>> iterateSubjectPermissions(SecurityToken<S> token, O o)
             throws PermissionDeniedException;
 
     /**
@@ -122,7 +122,7 @@ public interface SecurityService {
      *
      * @throws PermissionDeniedException When the security token doesn't grant {@link Permission#ADMINISTER} on the object.
      */
-    int countPermittedSubjects(SecurityToken token, SecureObject<?, ?> o)
+    <S extends Subject, O extends SecureObject<S, ?>> int countPermittedSubjects(SecurityToken<S> token, O o)
             throws PermissionDeniedException;
 
     /**
@@ -134,7 +134,7 @@ public interface SecurityService {
      *
      * @throws PermissionDeniedException When the security token doesn't grant {@link Permission#ADMINISTER} on the object.
      */
-    void setDefaultPermission(SecurityToken token, SecureObject<?, ?> o, Permission permission)
+    <S extends Subject, O extends SecureObject<S, ?>> void setDefaultPermission(SecurityToken<S> token, O o, Permission permission)
             throws PermissionDeniedException;
 
     /**
@@ -148,6 +148,6 @@ public interface SecurityService {
      * @throws PermissionDeniedException When the security token doesn't grant {@link Permission#ADMINISTER} on the object.
      * @throws IllegalRequestException   When the given subject is the object's owner.
      */
-    void setPermission(SecurityToken token, SecureObject<?, ?> o, Subject subject, Permission permission)
+    <S extends Subject, O extends SecureObject<S, ?>> void setPermission(SecurityToken<S> token, O o, Subject subject, Permission permission)
             throws PermissionDeniedException, IllegalRequestException;
 }

@@ -13,7 +13,6 @@
     <name>Opal System</name>
     <description>Opal: General system utilities and IO management.</description>
 
-    <groupId>com.lyndir.lhunath.opal</groupId>
     <artifactId>opal-system</artifactId>
     <packaging>jar</packaging>
 

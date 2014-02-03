@@ -17,11 +17,10 @@ package com.lyndir.lhunath.opal.security;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.lyndir.lhunath.opal.system.logging.Logger;
-import java.io.Serializable;
 import java.util.*;
+import javax.annotation.Nonnull;
 
 
 /**
@@ -31,12 +30,13 @@ import java.util.*;
  *
  * @author lhunath
  */
-public class ACL implements Serializable {
+public class ACL {
 
     static final Logger logger = Logger.get( ACL.class );
 
-    private final Map<Subject, Permission> subjectPermissions;
-    private       Permission               defaultPermission;
+    private final Map<Subject, Permission> subjectPermissions = new HashMap<>();
+    @Nonnull
+    private Permission defaultPermission;
 
     /**
      * An {@link ACL} that grants subjects the {@link Permission#INHERIT} permission by default.
@@ -49,10 +49,9 @@ public class ACL implements Serializable {
     /**
      * @param defaultPermission The permission granted to subjects not explicitly specified.
      */
-    public ACL(final Permission defaultPermission) {
+    public ACL(@Nonnull final Permission defaultPermission) {
 
-        subjectPermissions = new HashMap<Subject, Permission>();
-        setDefaultPermission( defaultPermission );
+        this.defaultPermission = defaultPermission;
     }
 
     /**
@@ -62,7 +61,7 @@ public class ACL implements Serializable {
      *
      * @param permission The permission that will be granted to the given subject.
      */
-    public void setDefaultPermission(final Permission permission) {
+    public void setDefaultPermission(@Nonnull final Permission permission) {
 
         checkNotNull( permission, "Given permission must not be null." );
 
@@ -78,7 +77,7 @@ public class ACL implements Serializable {
      */
     public void setSubjectPermission(final Subject subject, final Permission permission) {
 
-        Preconditions.checkNotNull( subject, "Given subject must not be null." );
+        checkNotNull( subject, "Given subject must not be null." );
         checkNotNull( permission, "Given permission must not be null." );
 
         subjectPermissions.put( subject, permission );
@@ -90,13 +89,13 @@ public class ACL implements Serializable {
      *
      * @param subject The subject whose permissions to unset.
      *
-     * @return The subject's former permissions in this ACL or <code>null</code> if this subject's permissions were already determined by
+     * @return The subject's former permissions in this ACL or {@code null} if this subject's permissions were already determined by
      *         the
      *         default permissions.
      */
     public Permission unsetSubjectPermission(final Subject subject) {
 
-        Preconditions.checkNotNull( subject, "Given subject must not be null." );
+        checkNotNull( subject, "Given subject must not be null." );
 
         return subjectPermissions.remove( subject );
     }
@@ -108,7 +107,7 @@ public class ACL implements Serializable {
      */
     public void revokeSubjectPermission(final Subject subject) {
 
-        Preconditions.checkNotNull( subject, "Given subject must not be null." );
+        checkNotNull( subject, "Given subject must not be null." );
 
         subjectPermissions.remove( subject );
     }
@@ -127,7 +126,7 @@ public class ACL implements Serializable {
      * of
      * this ACL.
      *
-     * @param subject The subject whose permission to look up. <code>null</code> represents an anonymous subject.
+     * @param subject The subject whose permission to look up. {@code null} represents an anonymous subject.
      *
      * @return The permission granted to the given subject by this access control.
      */
@@ -136,13 +135,13 @@ public class ACL implements Serializable {
         if (isSubjectPermissionDefault( subject ))
             return getDefaultPermission();
 
-        return Preconditions.checkNotNull( subjectPermissions.get( subject ), "Permission for %s is unset.", subject );
+        return checkNotNull( subjectPermissions.get( subject ), "Permission for %s is unset.", subject );
     }
 
     /**
-     * @param subject The subject whose permission to look up. <code>null</code> represents an anonymous subject.
+     * @param subject The subject whose permission to look up. {@code null} represents an anonymous subject.
      *
-     * @return <code>true</code> if the subject's permissions in this ACL are determined by the default ACL.
+     * @return {@code true} if the subject's permissions in this ACL are determined by the default ACL.
      */
     public boolean isSubjectPermissionDefault(final Subject subject) {
 
@@ -152,14 +151,11 @@ public class ACL implements Serializable {
     /**
      * @return The subjects that have non-default permissions set in this ACL.
      */
-    public Set<Subject> getPermittedSubjects() {
+    public ImmutableSet<Subject> getPermittedSubjects() {
 
         return ImmutableSet.copyOf( subjectPermissions.keySet() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
 

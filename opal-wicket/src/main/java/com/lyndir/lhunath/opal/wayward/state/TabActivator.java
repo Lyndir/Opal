@@ -50,9 +50,6 @@ public abstract class TabActivator<P extends Panel, S extends TabState<P>, T ext
         return controller != null && tab.equals( controller.getActiveTab() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void activate() {
 

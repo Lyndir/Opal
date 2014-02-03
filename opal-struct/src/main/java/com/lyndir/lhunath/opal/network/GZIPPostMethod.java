@@ -15,7 +15,6 @@
  */
 package com.lyndir.lhunath.opal.network;
 
-import com.google.common.io.Closeables;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.GZIPInputStream;

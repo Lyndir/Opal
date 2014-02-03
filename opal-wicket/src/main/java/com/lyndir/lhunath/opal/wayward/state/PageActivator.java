@@ -49,9 +49,6 @@ public abstract class PageActivator implements ComponentActivator {
         return responsePageClass != null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isActive() {
 
@@ -59,9 +56,6 @@ public abstract class PageActivator implements ComponentActivator {
         return pageClass.isAssignableFrom( responsePageClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void activate() {
 

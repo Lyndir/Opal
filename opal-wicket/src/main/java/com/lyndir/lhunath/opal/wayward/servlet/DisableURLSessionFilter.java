@@ -58,7 +58,7 @@ public class DisableURLSessionFilter implements Filter {
         }
 
         // wrap response to remove URL encoding
-        HttpServletResponseWrapper wrappedResponse = new HttpServletResponseWrapper( httpResponse ) {
+        ServletResponse wrappedResponse = new HttpServletResponseWrapper( httpResponse ) {
 
             @Override
             public String encodeRedirectURL(final String url) {

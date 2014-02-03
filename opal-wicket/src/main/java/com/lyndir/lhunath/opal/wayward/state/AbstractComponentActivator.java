@@ -27,9 +27,6 @@ import org.apache.wicket.*;
  */
 public abstract class AbstractComponentActivator implements ComponentActivator {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isActive() {
 

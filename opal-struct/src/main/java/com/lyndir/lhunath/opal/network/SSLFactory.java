@@ -15,7 +15,6 @@
  */
 package com.lyndir.lhunath.opal.network;
 
-import com.google.common.io.Closeables;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.io.*;
 import java.net.InetAddress;
@@ -76,29 +75,26 @@ public class SSLFactory implements SecureProtocolSocketFactory {
             context = SSLContext.getInstance( "TLS" );
             context.init( null, tFactory.getTrustManagers(), null );
         }
-        catch (KeyStoreException e) {
+        catch (final KeyStoreException e) {
             throw new IllegalArgumentException( "Keystore type not supported or keystore could not be used to initialize trust.", e );
         }
-        catch (NoSuchAlgorithmException e) {
+        catch (final NoSuchAlgorithmException e) {
             throw new IllegalStateException( "Key algorithm not supported.", e );
         }
-        catch (CertificateException e) {
+        catch (final CertificateException e) {
             throw new IllegalArgumentException( "Keystore could not be loaded.", e );
         }
-        catch (FileNotFoundException e) {
+        catch (final FileNotFoundException e) {
             throw new IllegalArgumentException( "Keystore not found.", e );
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             throw new RuntimeException( "Could not read the keys from the keystore.", e );
         }
-        catch (KeyManagementException e) {
+        catch (final KeyManagementException e) {
             throw new RuntimeException( "Could not use the keys for trust.", e );
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Socket createSocket(final Socket socket, final String host, final int port, final boolean autoClose)
             throws IOException {
@@ -106,9 +102,6 @@ public class SSLFactory implements SecureProtocolSocketFactory {
         return context.getSocketFactory().createSocket( socket, host, port, autoClose );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Socket createSocket(final String host, final int port)
             throws IOException {
@@ -116,9 +109,6 @@ public class SSLFactory implements SecureProtocolSocketFactory {
         return context.getSocketFactory().createSocket( host, port );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Socket createSocket(final String host, final int port, final InetAddress localAddress, final int localPort)
             throws IOException {
@@ -126,11 +116,6 @@ public class SSLFactory implements SecureProtocolSocketFactory {
         return context.getSocketFactory().createSocket( host, port, localAddress, localPort );
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated See {@link SSLSocketFactory#createSocket(String, int, InetAddress, int)}.
-     */
     @Override
     @Deprecated
     public Socket createSocket(final String host, final int port, final InetAddress localAddress, final int localPort,

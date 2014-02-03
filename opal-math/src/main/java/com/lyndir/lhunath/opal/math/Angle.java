@@ -45,7 +45,7 @@ public class Angle {
      * Create a new Angle.
      *
      * @param angle     The angle of this Angle object.
-     * @param isDegrees Whether the specified angles are in degrees (<code>true</code>), or radians (<code>false</code>).
+     * @param isDegrees Whether the specified angles are in degrees ({@code true}), or radians ({@code false}).
      */
     public Angle(final float angle, final boolean isDegrees) {
 

@@ -14,7 +14,6 @@
     <name>Opal Spike</name>
     <description>Opal: Java code and behavior tests.</description>
 
-    <groupId>com.lyndir.lhunath.opal</groupId>
     <artifactId>opal-spike</artifactId>
     <packaging>jar</packaging>
 

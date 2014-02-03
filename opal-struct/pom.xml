@@ -13,7 +13,6 @@
     <name>Opal Structures</name>
     <description>Opal: Structure parsing and processing utilities.</description>
 
-    <groupId>com.lyndir.lhunath.opal</groupId>
     <artifactId>opal-struct</artifactId>
     <packaging>jar</packaging>
 

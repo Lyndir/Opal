@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.regex.Pattern;
+import javax.annotation.Nonnull;
 
 
 /**
@@ -43,7 +44,7 @@ public abstract class JSUtils {
      *
      * @return A JavaScript-quoted literal string.
      */
-    public static String toString(final Object o) {
+    public static String toString(@Nonnull final Object o) {
 
         return GSON.toJson( o );
     }

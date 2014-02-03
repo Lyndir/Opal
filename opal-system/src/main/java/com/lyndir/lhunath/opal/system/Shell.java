@@ -16,13 +16,15 @@
 package com.lyndir.lhunath.opal.system;
 
 import com.google.common.base.Charsets;
-import com.google.common.io.*;
+import com.google.common.io.ByteStreams;
+import com.google.common.io.CharStreams;
 import com.lyndir.lhunath.opal.system.dummy.NullOutputStream;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.LinkedList;
+import javax.annotation.Nullable;
 
 
 /**
@@ -44,11 +46,9 @@ public class Shell {
      * @param cmd     The command to invoke for running the new process.
      *
      * @return The process object for the process that was started.
-     *
-     * @throws FileNotFoundException There is no file by the name of the first element of cmd in the given currDir.
      */
-    public static Process exec(final boolean block, final File currDir, final String... cmd)
-            throws FileNotFoundException {
+    @Nullable
+    public static Process exec(final boolean block, final File currDir, final String... cmd) {
 
         Process process = exec( System.out, System.err, currDir, cmd );
 
@@ -65,7 +65,7 @@ public class Shell {
      *
      * @return The exit status of the given process.
      */
-    public static int waitFor(final Process process) {
+    public static int waitFor(@Nullable final Process process) {
 
         if (process == null)
             return -256;
@@ -73,7 +73,7 @@ public class Shell {
         try {
             process.waitFor();
         }
-        catch (InterruptedException e) {
+        catch (final InterruptedException e) {
             logger.err( e, "Process interrupted!" );
             process.destroy();
         }
@@ -90,37 +90,31 @@ public class Shell {
      * @param cmd     The command to invoke for running the new process.
      *
      * @return The process object for the process that was started.
-     *
-     * @throws FileNotFoundException There is no file by the name of the first element of cmd in the given currDir.
      */
-    public static Process exec(final OutputStream out, final OutputStream err, final File currDir, final String... cmd)
-            throws FileNotFoundException {
+    @Nullable
+    public static Process exec(final OutputStream out, final OutputStream err, final File currDir, final String... cmd) {
 
         int bytesRead;
         char[] buffer = new char[100];
         String[] execCmd = cmd;
 
-        Reader reader =  new InputStreamReader(new FileInputStream( new File( currDir, cmd[0] ) ), Charsets.US_ASCII );
-        try {
+        try (Reader reader = new InputStreamReader( new FileInputStream( new File( currDir, cmd[0] ) ), Charsets.US_ASCII )) {
             bytesRead = reader.read( buffer );
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             logger.err( e, "Failed to open the file to execute!" );
             return null;
-        }
-        finally {
-            Closeables.closeQuietly( reader );
         }
 
         /* Check whether this is a shell script and if so, what interpreter to use. */
         // FIXME: Hashbang can contain one argument
         String head = new String( buffer, 0, bytesRead );
-        int eol = head.indexOf( '\n' );
+        int eol = head.indexOf( System.lineSeparator() );
         if (eol > 0) {
             head = head.substring( 0, eol );
             if ("#!".equals( head.substring( 0, 2 ) )) {
                 String shell = head.substring( 2 );
-                LinkedList<String> cmdList = new LinkedList<String>( Arrays.asList( cmd ) );
+                LinkedList<String> cmdList = new LinkedList<>( Arrays.asList( cmd ) );
                 cmdList.addFirst( shell.trim() );
                 execCmd = cmdList.toArray( cmd );
             }
@@ -135,13 +129,12 @@ public class Shell {
                 @Override
                 public void run() {
 
-                    try {
-                        ByteStreams.copy( process.getInputStream(), out );
+                    try (InputStream inputStream = process.getInputStream()) {
+                        ByteStreams.copy( inputStream, out );
                     }
-                    catch (IOException e) {
+                    catch (final IOException e) {
                         logger.err( e, "Couldn't read from process or write to stdout!" );
                     }
-                    Closeables.closeQuietly( process.getInputStream() );
                 }
             }, cmd[0] + " stdout" ).start();
 
@@ -150,19 +143,18 @@ public class Shell {
                 @Override
                 public void run() {
 
-                    try {
-                        ByteStreams.copy( process.getErrorStream(), err );
+                    try (InputStream errorStream = process.getErrorStream()) {
+                        ByteStreams.copy( errorStream, err );
                     }
-                    catch (IOException e) {
+                    catch (final IOException e) {
                         logger.err( e, "Couldn't read from process or write to stderr!" );
                     }
-                    Closeables.closeQuietly( process.getErrorStream() );
                 }
             }, cmd[0] + " stderr" ).start();
 
             return process;
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             logger.err( e, "Could not start process %s!", cmd[0] );
             return null;
         }
@@ -177,6 +169,7 @@ public class Shell {
      *
      * @return The standard output and standard error of the process.
      */
+    @Nullable
     public static String execRead(final Charset charset, final File currDir, final String... cmd) {
 
         try {
@@ -185,10 +178,10 @@ public class Shell {
 
             return CharStreams.toString( new InputStreamReader( new PipedInputStream( output ), charset ) );
         }
-        catch (FileNotFoundException e) {
+        catch (final FileNotFoundException e) {
             logger.err( e, "Command to execute was not found!" );
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             logger.err( e, "Failed to read from the process!" );
         }
 

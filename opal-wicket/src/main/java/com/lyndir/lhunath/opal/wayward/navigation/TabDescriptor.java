@@ -46,7 +46,7 @@ public interface TabDescriptor<P extends Panel, S extends TabState<? extends P>>
     IModel<String> getTitle();
 
     /**
-     * @return <code>true</code> if this tab should be visible in its navigation menu.
+     * @return {@code true} if this tab should be visible in its navigation menu.
      */
     boolean shownInNavigation();
 

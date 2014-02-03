@@ -15,11 +15,10 @@
  */
 package com.lyndir.lhunath.opal.xml;
 
+import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.io.*;
 import java.util.Arrays;
 import javax.xml.xpath.XPathExpressionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -33,7 +32,7 @@ import org.xml.sax.SAXException;
  */
 public class XPathCLI {
 
-    private static final Logger logger = LoggerFactory.getLogger( XPathCLI.class );
+    private static final Logger logger = Logger.get( XPathCLI.class );
 
     /**
      * Entry point of the command-line XPath utility.
@@ -44,7 +43,8 @@ public class XPathCLI {
      * @throws SAXException             If any parse errors occur.
      * @throws XPathExpressionException The specified XPath expression failed to evaluate on the source data.
      */
-    public static void main(final String[] args)
+    @SuppressWarnings("HardcodedLineSeparator")
+    public static void main(final String... args)
             throws SAXException, IOException, XPathExpressionException {
 
         InputStream in = System.in;
@@ -56,7 +56,7 @@ public class XPathCLI {
             if ("-f".equals( arg ) || "--file".equals( arg ))
                 fileArg = true;
             else if (fileArg) {
-                //noinspection IOResourceOpenedButNotSafelyClosed
+                //noinspection IOResourceOpenedButNotSafelyClosed,resource
                 in = new FileInputStream( arg );
                 fileArg = false;
             } else if ("-e".equals( arg ) || "--expression".equals( arg ))
@@ -115,11 +115,11 @@ public class XPathCLI {
                 System.out.println();
                 return;
             } else {
-                logger.error( "'%s' is not a valid argument.", arg );
+                logger.err( "'%s' is not a valid argument.", arg );
                 System.exit( 1 );
             }
         if (xpathExpression == null) {
-            logger.error( "No XPath Expression provided." );
+            logger.err( "No XPath Expression provided." );
             System.exit( 1 );
         }
 

@@ -33,23 +33,22 @@ public class NullItemEvent extends ItemEvent {
     /**
      * Create a new NullItemEvent instance.
      *
-     * @param source the <code>ItemSelectable</code> object that originated the event
+     * @param source the {@code ItemSelectable} object that originated the event
      */
     public NullItemEvent(final ItemSelectable source) {
 
-        this( source, 0, null, 0 );
+        this( source, 0, 0 );
     }
 
     /**
      * Create a new NullItemEvent instance.
      *
-     * @param source      the <code>ItemSelectable</code> object that originated the event
+     * @param source      the {@code ItemSelectable} object that originated the event
      * @param id          an integer that identifies the event type
-     * @param item        an object -- the item affected by the event
      * @param stateChange an integer that indicates whether the item was selected or deselected
      */
-    public NullItemEvent(final ItemSelectable source, final int id, final Object item, final int stateChange) {
+    public NullItemEvent(final ItemSelectable source, final int id, final int stateChange) {
 
-        super( source, id, item, stateChange );
+        super( source, id, null, stateChange );
     }
 }

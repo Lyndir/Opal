@@ -11,7 +11,6 @@
         <version>GIT-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.lyndir.lhunath.opal</groupId>
     <artifactId>opal-shade</artifactId>
     <packaging>jar</packaging>
     <name>Opal Shade</name>

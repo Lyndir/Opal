@@ -6,7 +6,6 @@ import static com.lyndir.lhunath.opal.system.util.TypeUtils.*;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.lyndir.lhunath.opal.system.collection.SSupplier;
-import com.lyndir.lhunath.opal.system.util.TypeUtils;
 import java.io.Serializable;
 import java.lang.reflect.*;
 import java.util.List;
@@ -79,7 +78,7 @@ public abstract class Models {
             @Override
             public T getObject() {
 
-                throw new UnsupportedOperationException();
+                throw new UnsupportedOperationException("This model doesn't support an object.");
             }
         };
     }
@@ -114,13 +113,14 @@ public abstract class Models {
      * Create a bean expression recorder that can be evaluated by a {@link #model(Object)}.
      * <p/>
      * You use it like this:<br />
-     * <code>model(bean(user).getName());</code>
+     * {@code model(bean(user).getName());}
      *
      * @param object The bean on which the expression should be evaluated.
      * @param <T>    The type of the bean object.
      *
      * @return A proxy object of the bean's type that will record a bean expression.
      */
+    @Nullable
     public static <T> T bean(@Nonnull final T object) {
 
         @SuppressWarnings({ "unchecked" })
@@ -153,6 +153,7 @@ public abstract class Models {
      *
      * @return A proxy object of the bean's type that will record a bean expression.
      */
+    @Nullable
     public static <T, S extends Supplier<T> & Serializable> T bean(@Nonnull final Class<T> type, @Nonnull final S supplier) {
 
         return bean( type, new AbstractReadOnlyModel<T>() {
@@ -182,6 +183,7 @@ public abstract class Models {
      *
      * @return A proxy object of the bean's type that will record a bean expression.
      */
+    @Nullable
     public static <T> T bean(@Nonnull final Class<T> type, @Nonnull final IModel<T> model) {
 
         checkState( modelObjectModel.get() == null,
@@ -218,7 +220,7 @@ public abstract class Models {
                 checkNotNull( modelObjectModel );
                 checkNotNull( modelObjectExpression );
 
-                modelObjectExpression.get().append( '.' ).append( TypeUtils.propertyName( method ) );
+                modelObjectExpression.get().append( '.' ).append( propertyName( method ) );
                 return ofEnhanced( method.getReturnType() );
             }
         } );

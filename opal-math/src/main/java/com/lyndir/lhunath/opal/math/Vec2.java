@@ -29,6 +29,8 @@ import java.io.Serializable;
  */
 public class Vec2 implements Serializable {
 
+    private static final long serialVersionUID = 0;
+
     /**
      * X-Axis coordinate.
      */
@@ -256,27 +258,18 @@ public class Vec2 implements Serializable {
         return getX() * vector.getX() + getY() * vector.getY();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
 
         return "vec(" + getX() + ", " + getY() + ')';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
 
         return toString().hashCode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(final Object obj) {
 

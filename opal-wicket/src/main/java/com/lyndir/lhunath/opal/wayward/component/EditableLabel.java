@@ -118,7 +118,7 @@ public class EditableLabel<T> extends GenericPanel<T> {
     }
 
     /**
-     * @param editable <code>true</code> to make the label editable by rendering its object in a field and updating the model when that
+     * @param editable {@code true} to make the label editable by rendering its object in a field and updating the model when that
      *                 field is submitted.
      */
     public EditableLabel<T> setEditable(final boolean editable) {
@@ -129,7 +129,7 @@ public class EditableLabel<T> extends GenericPanel<T> {
     }
 
     /**
-     * @return <code>true</code> makes the label editable by rendering its object in a field and updating the model when that field is
+     * @return {@code true} makes the label editable by rendering its object in a field and updating the model when that field is
      *         submitted.
      */
     public boolean isEditable() {
@@ -138,7 +138,7 @@ public class EditableLabel<T> extends GenericPanel<T> {
     }
 
     /**
-     * @return Whether value of the editable field can be emptied (<code>true</code>). (Default: <code>true</code> )
+     * @return Whether value of the editable field can be emptied ({@code true}). (Default: {@code true} )
      */
     public boolean isNullable() {
 
@@ -146,7 +146,7 @@ public class EditableLabel<T> extends GenericPanel<T> {
     }
 
     /**
-     * @param nullable Whether value of the editable field can be emptied (<code>true</code>).
+     * @param nullable Whether value of the editable field can be emptied ({@code true}).
      */
     public EditableLabel<T> setNullable(final boolean nullable) {
 
@@ -156,7 +156,7 @@ public class EditableLabel<T> extends GenericPanel<T> {
     }
 
     /**
-     * @return <code>true</code>: Generate markup that handles multiple lines in model values properly.
+     * @return {@code true}: Generate markup that handles multiple lines in model values properly.
      */
     public boolean isMultiline() {
 
@@ -164,7 +164,7 @@ public class EditableLabel<T> extends GenericPanel<T> {
     }
 
     /**
-     * @param multiline <code>true</code>: Generate markup that handles multiple lines in model values properly.
+     * @param multiline {@code true}: Generate markup that handles multiple lines in model values properly.
      */
     public EditableLabel<T> setMultiline(final boolean multiline) {
 
@@ -193,7 +193,7 @@ public class EditableLabel<T> extends GenericPanel<T> {
     }
 
     /**
-     * @param forMultiline <code>true</code> Return the component used when the label is in multi-line mode.  <code>false</code> Return the
+     * @param forMultiline {@code true} Return the component used when the label is in multi-line mode.  {@code false} Return the
      *                     component used when the label is in single line mode.
      *
      * @return The component that renders the model object when the label is editable.

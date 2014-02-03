@@ -25,13 +25,13 @@ public abstract class AbstractTabState<P extends Panel> implements TabState<P> {
      *
      * @param fragments The fragment elements of this state.
      */
-    protected AbstractTabState(final List<String> fragments) {
+    protected AbstractTabState(final Collection<String> fragments) {
 
-        this.fragments = fragments;
+        this.fragments = new LinkedList<>( fragments );
         assertFragments();
     }
 
-    protected AbstractTabState(final String fragment) {
+    protected AbstractTabState(final CharSequence fragment) {
 
         this( Lists.newLinkedList( Splitter.on( '/' ).split( fragment ) ) );
     }
@@ -51,6 +51,7 @@ public abstract class AbstractTabState<P extends Panel> implements TabState<P> {
         applyFragments( panel, new LinkedList<>( fragments ) );
     }
 
+    @SuppressWarnings("RedundantThrows")
     protected abstract void applyFragments(P panel, Deque<String> fragments)
             throws IncompatibleStateException;
 

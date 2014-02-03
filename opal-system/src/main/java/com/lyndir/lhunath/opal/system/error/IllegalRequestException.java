@@ -47,9 +47,6 @@ public class IllegalRequestException extends Exception {
         super( message, cause );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLocalizedMessage() {
 

@@ -18,7 +18,6 @@
  */
 package com.lyndir.lhunath.opal.plain;
 
-import com.google.common.io.Closeables;
 import com.lyndir.lhunath.opal.system.util.UIUtils;
 import java.io.*;
 import java.nio.charset.Charset;
@@ -34,11 +33,12 @@ import jlibdiff.Hunk;
  */
 public abstract class DiffUtils {
 
+    @SuppressWarnings("HardcodedLineSeparator")
+    private static final Pattern LINE          = Pattern.compile( ".*[\r\n]+" );
     private static final Pattern NOT_ADD_CHUNK = Pattern.compile( "(?m)^[^>].*" );
     private static final Pattern NOT_REM_CHUNK = Pattern.compile( "(?m)^[^<].*" );
     private static final Pattern ADD_CHUNK     = Pattern.compile( "(?m)^>" );
     private static final Pattern REM_CHUNK     = Pattern.compile( "(?m)^<" );
-    private static final Pattern LINE          = Pattern.compile( ".*\n" );
 
     /**
      * Get the contextual difference between the data from two streams.
@@ -116,10 +116,10 @@ public abstract class DiffUtils {
             String chunkDel = REM_CHUNK.matcher( NOT_REM_CHUNK.matcher( chunk ).replaceAll( "" ).trim() ).replaceAll( "-" );
 
             String diffFormat = "<span style='color: %x'>%s</span>";
-            if (chunkDel.length() > 0)
-                out.append( String.format( diffFormat, UIUtils.DARK_RED.getRGB() - 0xff000000, chunkDel ) ).append( '\n' );
-            if (chunkAdd.length() > 0)
-                out.append( String.format( diffFormat, UIUtils.DARK_GREEN.getRGB() - 0xff000000, chunkAdd ) ).append( '\n' );
+            if (!chunkDel.isEmpty())
+                out.append( String.format( diffFormat, UIUtils.DARK_RED.getRGB() - 0xff000000, chunkDel ) ).append( System.lineSeparator() );
+            if (!chunkAdd.isEmpty())
+                out.append( String.format( diffFormat, UIUtils.DARK_GREEN.getRGB() - 0xff000000, chunkAdd ) ).append( System.lineSeparator() );
         }
 
         return out.append( "</pre>" ).toString();

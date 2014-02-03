@@ -37,63 +37,45 @@ public abstract class EmptyModelProvider<P extends EmptyModelProvider<P>> extend
         super( null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Deprecated
     public Object getObject() {
 
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("This model provider should not be used to obtain model objects.");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Deprecated
     public void setObject(final Object object) {
 
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("This model provider should not be used to set model objects.");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Deprecated
     public void setWrappedModel(final IModel<Object> wrappedModel) {
 
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("This model provider should not be used to set models.");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Deprecated
     public IModel<Object> getWrappedModel() {
 
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("This model provider should not be used to obtain models.");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Deprecated
     public Object getModelObject() {
 
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("This model provider should not be used to obtain model objects.");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Deprecated
     public void setModelObject(final Object object) {
 
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("This model provider should not be used to set model objects.");
     }
 }

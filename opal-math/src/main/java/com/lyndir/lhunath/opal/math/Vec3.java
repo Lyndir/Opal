@@ -25,6 +25,8 @@ import com.google.common.base.Preconditions;
  */
 public class Vec3 extends Vec2 {
 
+    private static final long serialVersionUID = 0;
+
     /**
      * Z-Axis coordinate.
      */
@@ -69,18 +71,12 @@ public class Vec3 extends Vec2 {
         this.z = z;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public double lengthSq() {
 
         return super.lengthSq() + getZ() * getZ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Vec3 normalize() {
 
@@ -165,9 +161,6 @@ public class Vec3 extends Vec2 {
         return new Vec3( getX() * vector.getX(), getY() * vector.getY(), getZ() * vector.getZ() );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Vec3 multiply(final double multiplier) {
 
@@ -222,29 +215,24 @@ public class Vec3 extends Vec2 {
         return getX() * vector.getX() + getY() * vector.getY() + getZ() * vector.getZ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
 
         return "vec(" + getX() + ", " + getY() + ", " + getZ() + ')';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(final Object obj) {
 
         if (obj == this)
             return true;
-        return obj instanceof Vec3 && getX() == ((Vec2) obj).getX() && getY() == ((Vec2) obj).getY() && getZ() == ((Vec3) obj).getZ();
+        if (!(obj instanceof Vec3))
+            return false;
+
+        Vec3 o = (Vec3) obj;
+        return getX() == o.getX() && getY() == o.getY() && getZ() == o.getZ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
 

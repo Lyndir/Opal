@@ -43,12 +43,12 @@ public abstract class URLUtils {
      *
      * @return A new URL which is the base URL with the given query parameter added to it.
      */
-    public static URL addParameter(URL url, String key, Object value) {
+    public static URL addParameter(final URL url, final String key, final Object value) {
 
         try {
             return new URL( addParameter( url.toExternalForm(), key, value ) );
         }
-        catch (MalformedURLException e) {
+        catch (final MalformedURLException e) {
             throw new IllegalStateException( "Bug.", e );
         }
     }
@@ -62,7 +62,7 @@ public abstract class URLUtils {
      *
      * @return A new URL which is the base URL with the given query parameter added to it.
      */
-    public static String addParameter(String url, String key, Object value) {
+    public static String addParameter(final String url, final String key, final Object value) {
 
         if (key == null)
             throw new IllegalArgumentException( "key to add to url can't be null" );
@@ -80,7 +80,7 @@ public abstract class URLUtils {
                 urlString.append( URLEncoder.encode( value.toString(), "UTF-8" ) );
             }
         }
-        catch (UnsupportedEncodingException e) {
+        catch (final UnsupportedEncodingException e) {
             throw new IllegalStateException( "UTF-8 unsupported by VM", e );
         }
 
@@ -94,7 +94,7 @@ public abstract class URLUtils {
      *
      * @return The glued together path.
      */
-    public static String concat(String... paths) {
+    public static String concat(final String... paths) {
 
         if (paths.length == 0)
             return "";
@@ -126,7 +126,7 @@ public abstract class URLUtils {
      *
      * @return The URL produced by expanding the URL format with the encoded arguments.
      */
-    public static URL newURL(String urlFormat, Object... urlFormatArgs) {
+    public static URL newURL(final String urlFormat, final Object... urlFormatArgs) {
 
         try {
             return new URL( MessageFormat.format( urlFormat,
@@ -138,35 +138,35 @@ public abstract class URLUtils {
                         }
                     } ).toArray() ) );
         }
-        catch (MalformedURLException e) {
+        catch (final MalformedURLException e) {
             throw Throwables.propagate( e );
         }
     }
 
-    public static URI newURI(String urlFormat, Object... urlFormatArgs) {
+    public static URI newURI(final String urlFormat, final Object... urlFormatArgs) {
         try {
             return newURL( urlFormat, urlFormatArgs ).toURI();
         }
-        catch (URISyntaxException e) {
+        catch (final URISyntaxException e) {
             throw Throwables.propagate( e );
         }
     }
 
-    public static URL newURL(URL baseURL, CharSequence relativeURLString) {
+    public static URL newURL(final URL baseURL, final CharSequence relativeURLString) {
 
         try {
             return relativeURLString == null? baseURL: new URL( baseURL, relativeURLString.toString() );
         }
-        catch (MalformedURLException e) {
+        catch (final MalformedURLException e) {
             throw Throwables.propagate( e );
         }
     }
 
-    public static URI newURI(URL baseURL, CharSequence relativeURLString) {
+    public static URI newURI(final URL baseURL, final CharSequence relativeURLString) {
         try {
             return newURL( baseURL, relativeURLString ).toURI();
         }
-        catch (URISyntaxException e) {
+        catch (final URISyntaxException e) {
             throw Throwables.propagate( e );
         }
     }

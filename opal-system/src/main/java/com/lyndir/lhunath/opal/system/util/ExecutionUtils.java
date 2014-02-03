@@ -44,7 +44,7 @@ public abstract class ExecutionUtils {
      *
      * @return The element from the current execution at the given level.
      */
-    public static StackTraceElement stack(int level) {
+    public static StackTraceElement stack(final int level) {
 
         return new Throwable().getStackTrace()[level + 1];
     }

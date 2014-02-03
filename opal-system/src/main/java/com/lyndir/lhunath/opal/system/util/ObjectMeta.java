@@ -55,6 +55,6 @@ public @interface ObjectMeta {
         /**
          * Add this field to equals generation of {@link ObjectUtils#equals(Object, Object)}.
          */
-        all;
+        all
     }
 }

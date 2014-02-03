@@ -46,6 +46,8 @@ public class JSONResult extends MetaObject {
         this.code = code;
         this.technicalDescription = technicalDescription;
         this.userDescription = userDescription;
+
+        //noinspection VariableNotUsedInsideIf
         if (this.userDescription == null)
             this.userDescriptionArguments = null;
         else {

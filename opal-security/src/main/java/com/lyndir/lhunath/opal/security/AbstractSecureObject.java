@@ -59,9 +59,6 @@ public abstract class AbstractSecureObject<S extends Subject, P extends SecureOb
         return checkNotNull( owner );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ACL getACL() {
 

@@ -3,6 +3,7 @@ package com.lyndir.lhunath.opal.wayward.provider;
 import com.google.common.collect.AbstractIterator;
 import java.io.Serializable;
 import java.util.*;
+import javax.annotation.Nullable;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -20,8 +21,10 @@ import org.apache.wicket.model.Model;
  */
 public abstract class AbstractIteratorProvider<T> implements IDataProvider<T> {
 
-    private transient Iterator<T>   transientIt   = null;
-    private transient LinkedList<T> transientList = null;
+    @Nullable
+    private transient Iterator<T> transientIt;
+    @Nullable
+    private transient List<T>     transientList;
 
     protected Iterator<T> getIterator() {
 
@@ -32,10 +35,10 @@ public abstract class AbstractIteratorProvider<T> implements IDataProvider<T> {
         return transientIt;
     }
 
-    private LinkedList<T> getCache() {
+    private List<T> getCache() {
 
         if (transientList == null) {
-            transientList = new LinkedList<T>();
+            transientList = new LinkedList<>();
         }
 
         return transientList;
@@ -56,12 +59,9 @@ public abstract class AbstractIteratorProvider<T> implements IDataProvider<T> {
     @SuppressWarnings({ "unchecked" })
     public IModel<T> model(final T object) {
 
-        return (IModel<T>) new Model<Serializable>( (Serializable) object );
+        return (IModel<T>) new Model<>( (Serializable) object );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void detach() {
 
@@ -69,15 +69,12 @@ public abstract class AbstractIteratorProvider<T> implements IDataProvider<T> {
         transientList = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Iterator<T> iterator(final int first, final int count) {
 
         return new AbstractIterator<T>() {
 
-            private ListIterator<T> listIterator = getCache().listIterator( first );
+            private final ListIterator<T> listIterator = getCache().listIterator( first );
 
             @Override
             protected T computeNext() {

@@ -17,6 +17,7 @@ package com.lyndir.lhunath.opal.wayward.provider;
 
 import java.util.Collection;
 import java.util.Iterator;
+import javax.annotation.Nullable;
 
 
 /**
@@ -30,7 +31,8 @@ import java.util.Iterator;
  */
 public abstract class AbstractCollectionProvider<T> extends AbstractIteratorProvider<T> {
 
-    private transient Collection<T> source = null;
+    @Nullable
+    private transient Collection<T> source;
 
     private Collection<T> getSource() {
 
@@ -46,9 +48,6 @@ public abstract class AbstractCollectionProvider<T> extends AbstractIteratorProv
         return getSource().iterator();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int size() {
 
@@ -60,9 +59,6 @@ public abstract class AbstractCollectionProvider<T> extends AbstractIteratorProv
      */
     protected abstract Collection<T> loadSource();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void detach() {
 

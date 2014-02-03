@@ -15,18 +15,18 @@ import org.apache.wicket.markup.html.JavascriptPackageResource;
  * ready events (eg. after an anchor update). </p>
  *
  * <p> On the server side (in your Java code), you install the AjaxHooks by doing these two things: <ul> <li>Installing it on any visible
- * component that's part of the page (<code>AjaxHooks.installAjaxEvents( mycomponent )</code>).  This activates AjaxHooks for that
+ * component that's part of the page ({@code AjaxHooks.installAjaxEvents( mycomponent )}).  This activates AjaxHooks for that
  * component's page.</li> <li>Installing it on your AjaxRequestTargets (for access to the list of updated elements).</p> </ul>
  *
  * The easiest and most consistent way to do the latter is by overriding Application#newAjaxRequestTarget:
  *
- * <pre><code>
+ * <pre>{@code
  * public AjaxRequestTarget newAjaxRequestTarget(final Page page) {
  *
  *     AjaxRequestTarget target = super.newAjaxRequestTarget( page );
  *     AjaxHooks.installAjaxEvents(target);
  * }
- * </code></pre>
+ * }</pre>
  *
  * <p> <i>05 31, 2010</i> </p>
  */
@@ -57,7 +57,7 @@ public abstract class AjaxHooks {
         target.addListener( new AjaxRequestTarget.IListener() {
 
             @Override
-            public void onBeforeRespond(final Map<String, Component> map, final AjaxRequestTarget target) {
+            public void onBeforeRespond(final Map<String, Component> map, final AjaxRequestTarget target_) {
 
             }
 

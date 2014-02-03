@@ -10,7 +10,6 @@ import com.lyndir.lhunath.opal.system.error.InternalInconsistencyException;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
-import java.lang.reflect.InvocationHandler;
 import java.util.*;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
@@ -44,7 +43,7 @@ public abstract class TypeUtils {
      * @param typeName The name of the class that should be loaded.
      * @param <T>      The type of class that the operation should yield (note: unchecked).
      *
-     * @return A class object or <code>null</code> if the type could not be found.
+     * @return A class object or {@code null} if the type could not be found.
      */
     @Nullable
     @SuppressWarnings({ "unchecked" })
@@ -132,11 +131,12 @@ public abstract class TypeUtils {
      * @param invocationHandler The handler that will be invoked for each method invoked on the proxy.
      * @param <T>               The type of the proxy object.
      *
-     * @return An instance of the given <code>type</code> .
+     * @return An instance of the given {@code type} .
      */
-    public static <T> T newProxyInstance(final Class<T> type, final InvocationHandler invocationHandler) {
+    @SuppressWarnings("UnnecessaryFullyQualifiedName")
+    public static <T> T newProxyInstance(final Class<T> type, final java.lang.reflect.InvocationHandler invocationHandler) {
 
-        MethodInterceptor interceptor = new MethodInterceptor() {
+        Callback interceptor = new MethodInterceptor() {
             @Override
             @SuppressWarnings({ "ProhibitedExceptionDeclared" })
             public Object intercept(final Object o, final Method method, final Object[] objects, final MethodProxy methodProxy)
@@ -182,7 +182,7 @@ public abstract class TypeUtils {
      * @param annotationType The annotation type to search for.
      * @param <A>            The annotation type.
      *
-     * @return The annotation of the given annotation type in the given type's hierarchy or <code>null</code> if the type's hierarchy
+     * @return The annotation of the given annotation type in the given type's hierarchy or {@code null} if the type's hierarchy
      * contains no classes that have the given annotation type set.
      */
     @Nullable
@@ -215,7 +215,7 @@ public abstract class TypeUtils {
      *
      * @return A mapping of the given type and its super types to a mapping of that type or one of its implemented interfaces to the
      * instance of the given annotation the type declares.
-     * <code>[TT = T or a supertype of T -> [ TTT = TT or interface of TT -> annotation on TTT ]]</code>
+     * {@code [TT = T or a supertype of T -> [ TTT = TT or interface of TT -> annotation on TTT ]]}
      */
     @Nonnull
     public static <T, A extends Annotation> Map<Class<? super T>, Map<Class<?>, A>> getAnnotations(final Class<T> type,
@@ -247,7 +247,7 @@ public abstract class TypeUtils {
      * @param annotationType The annotation type to search for.
      * @param <A>            The annotation type.
      *
-     * @return The annotation of the given annotation type in the given method's hierarchy or <code>null</code> if the method's hierarchy
+     * @return The annotation of the given annotation type in the given method's hierarchy or {@code null} if the method's hierarchy
      * contains no methods that have the given annotation type set.
      */
     @Nullable
@@ -377,18 +377,20 @@ public abstract class TypeUtils {
      * @param function    The operation to perform on each of the declared fields.
      * @param firstResult The lastResult that will be given in the first invocation of the operation function. It'll also be the return
      *                    value if no functions are invoked.
-     * @param descend     <code>true</code> if the given type's hierarchy should also be descended to iterate fields declared by subtypes.
+     * @param descend     {@code true} if the given type's hierarchy should also be descended to iterate fields declared by subtypes.
      * @param <T>         The type whose declared fields to iterate.
      * @param <R>         The type of the result that the operation should generate.
      *
      * @return The final result produced by the last execution of the operation.
      */
+    @Nullable
     public static <T, R> R forEachFieldOf(final Class<T> type, final NFunctionNN<LastResult<Field, R>, R> function,
                                           @Nullable final R firstResult, final boolean descend) {
 
         NFunctionNN<LastResult<Class<?>, R>, R> eachFieldFunction = new NFunctionNN<LastResult<Class<?>, R>, R>() {
             @Nullable
             @Override
+            @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
             public R apply(@Nonnull final LastResult<Class<?>, R> lastResult) {
 
                 R result = lastResult.getLastResult();
@@ -413,6 +415,7 @@ public abstract class TypeUtils {
         return eachFieldFunction.apply( new LastResult<Class<?>, R>( type, firstResult ) );
     }
 
+    @Nullable
     public static Field findFirstField(final Object owner, final Object value) {
 
         return forEachFieldOf( owner.getClass(), new NFunctionNN<LastResult<Field, Field>, Field>() {
@@ -446,7 +449,7 @@ public abstract class TypeUtils {
         return findAnnotation( type, annotationType ) != null;
     }
 
-    public static String propertyName(final Method method) {
+    public static String propertyName(@SuppressWarnings("TypeMayBeWeakened") final Method method) {
 
         String methodName = method.getName();
         if ((methodName.startsWith( "get" ) || methodName.startsWith( "set" )) && methodName.length() > 3)

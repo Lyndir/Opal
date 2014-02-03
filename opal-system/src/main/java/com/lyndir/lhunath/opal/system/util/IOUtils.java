@@ -54,7 +54,7 @@ public abstract class IOUtils {
      * @param zipFile    The {@link ZipFile} to retrieve the entry for.
      * @param zippedName The /-delimited pathname of the entry.
      *
-     * @return The {@link ZipEntry} for the pathname or <code>null</code> if none was present.
+     * @return The {@link ZipEntry} for the pathname or {@code null} if none was present.
      */
     @Nullable
     public static ZipEntry getZipEntry(final ZipFile zipFile, final CharSequence zippedName) {
@@ -141,14 +141,14 @@ public abstract class IOUtils {
      *
      * @throws IOException Couldn't read from the reader.
      */
-    public static String grep(final Pattern pattern, final Reader reader, final int group)
+    public static String grep(final Pattern pattern, final Readable reader, final int group)
             throws IOException {
 
         StringBuilder resultBuilder = new StringBuilder();
         for (final String line : CharStreams.readLines( reader )) {
             Matcher matcher = pattern.matcher( line );
             if (matcher.find())
-                resultBuilder.append( matcher.group( group ) ).append( '\n' );
+                resultBuilder.append( matcher.group( group ) ).append( System.lineSeparator() );
         }
 
         return resultBuilder.toString();

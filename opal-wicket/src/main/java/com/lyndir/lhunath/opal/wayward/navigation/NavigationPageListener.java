@@ -48,7 +48,7 @@ public class NavigationPageListener implements AjaxHooks.IPageListener {
                         controller.activateTabWithState( tab, fragment );
                         return;
                     }
-                    catch (IncompatibleStateException e) {
+                    catch (final IncompatibleStateException e) {
                         controller.onError( e );
                         return;
                     }
@@ -56,6 +56,7 @@ public class NavigationPageListener implements AjaxHooks.IPageListener {
         }
 
         // No fragment, fragment not recognised or fragment could not be applied, find and set a default tab.
+        //noinspection rawtypes FIXME
         for (final TabDescriptor tab : controller.getTabs())
             if (tab.shownInNavigation()) {
                 controller.activateNewTab( tab );

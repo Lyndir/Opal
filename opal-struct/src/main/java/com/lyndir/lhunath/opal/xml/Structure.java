@@ -22,6 +22,7 @@ import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 import javax.xml.parsers.*;
 import javax.xml.validation.Schema;
 import javax.xml.xpath.XPathExpressionException;
@@ -46,7 +47,8 @@ public abstract class Structure {
     // private static final XPathUtil xhtmlpath = new XPathUtil( true );
 
     private static final int     TAB_SIZE = 4;
-    private static final Pattern LINE     = Pattern.compile( "\n$" );
+    @SuppressWarnings("HardcodedLineSeparator")
+    private static final Pattern LINE     = Pattern.compile( "[\n\r]$" );
 
     private static <T> void inject(final Node root, final T structure)
             throws XPathExpressionException {
@@ -94,10 +96,10 @@ public abstract class Structure {
             }
 
             // In case data to the field goes wrong (shouldn't).
-            catch (IllegalArgumentException e) {
+            catch (final IllegalArgumentException e) {
                 logger.err( e, "Unexpected data type." );
             }
-            catch (IllegalAccessException e) {
+            catch (final IllegalAccessException e) {
                 logger.err( e, "Field not accessible." );
             }
         }
@@ -110,13 +112,13 @@ public abstract class Structure {
                     method.invoke( structure );
                 }
 
-                catch (IllegalArgumentException e) {
+                catch (final IllegalArgumentException e) {
                     logger.err( e, "XAfterInject method shouldn't take any arguments." );
                 }
-                catch (IllegalAccessException e) {
+                catch (final IllegalAccessException e) {
                     logger.err( e, "XAfterInject method must be accessible." );
                 }
-                catch (InvocationTargetException e) {
+                catch (final InvocationTargetException e) {
                     logger.err( e, "XAfterInject method throw an exception." );
                 }
     }
@@ -145,19 +147,10 @@ public abstract class Structure {
         try {
             structure = type.getConstructor().newInstance();
         }
-        catch (InstantiationException e) {
-            logger.bug( e );
-            throw Throwables.propagate( e );
+        catch (final InstantiationException | NoSuchMethodException | IllegalAccessException e) {
+            throw logger.bug( e );
         }
-        catch (IllegalAccessException e) {
-            logger.bug( e );
-            throw Throwables.propagate( e );
-        }
-        catch (NoSuchMethodException e) {
-            logger.bug( e );
-            throw Throwables.propagate( e );
-        }
-        catch (InvocationTargetException e) {
+        catch (final InvocationTargetException e) {
             throw Throwables.propagate( e );
         }
 
@@ -201,22 +194,16 @@ public abstract class Structure {
 
         // Create an empty object of the specified type.
         List<Node> children = xmlpath.getNodes( root, "/*/*" );
-        List<T> structures = new ArrayList<T>( children.size() );
+        List<T> structures = new ArrayList<>( children.size() );
         for (final Node child : children) {
             T structure;
             try {
                 structure = type.getConstructor().newInstance();
             }
-            catch (InstantiationException e) {
+            catch (final InstantiationException | NoSuchMethodException | IllegalAccessException e) {
                 throw logger.bug( e );
             }
-            catch (IllegalAccessException e) {
-                throw logger.bug( e );
-            }
-            catch (NoSuchMethodException e) {
-                throw logger.bug( e );
-            }
-            catch (InvocationTargetException e) {
+            catch (final InvocationTargetException e) {
                 throw Throwables.propagate( e );
             }
 
@@ -231,10 +218,10 @@ public abstract class Structure {
                         field.set( structure, child.getNodeName() );
                     }
 
-                    catch (IllegalArgumentException e) {
+                    catch (final IllegalArgumentException e) {
                         logger.err( e, "XInjectTag field of the wrong type." );
                     }
-                    catch (IllegalAccessException e) {
+                    catch (final IllegalAccessException e) {
                         logger.err( e, "XInjectTag field not accessible." );
                     }
 
@@ -268,22 +255,20 @@ public abstract class Structure {
                 field.setAccessible( true );
                 out.append( indent( 1 ) ).append( '<' ).append( annotation.value() );
                 String attribute = annotation.attribute();
-                if (attribute.length() > 0)
+                if (!attribute.isEmpty())
                     out.append( String.format( " %s=\"%s\"", attribute, field.get( structure ).toString() ) );
 
                 String content = String.valueOf( field.get( structure ) );
-                if (content == null || content.length() == 0 || attribute.length() > 0)
-                    out.append( ' ' ).append( '/' ).append( '>' ).append( '\n' );
+                if (content == null || content.isEmpty() || !attribute.isEmpty())
+                    out.append( ' ' ).append( '/' ).append( '>' ).append( System.lineSeparator() );
                 else {
-                    out.append( '>' ).append( '\n' );
-                    out.append( indent( 2 ) ).append( content ).append( '\n' );
+                    out.append( '>' ).append( System.lineSeparator() );
+                    out.append( indent( 2 ) ).append( content ).append( System.lineSeparator() );
                     out.append( indent( 1 ) ).append( String.format( "</%s>%n", annotation.value() ) );
                 }
             }
 
-            catch (IllegalArgumentException ignored) {
-            }
-            catch (IllegalAccessException ignored) {
+            catch (final IllegalArgumentException | IllegalAccessException ignored) {
             }
         }
         out.append( String.format( "</%s>", structure.getClass().getSimpleName() ) );
@@ -332,20 +317,20 @@ public abstract class Structure {
     }
 
     /**
-     * @param coalescing      <code>true</code> to convert CDATA to text nodes.
-     * @param expandEntityRef <code>true</code> to expand entity reference nodes.
-     * @param ignoreComments  <code>true</code> to ignore comment nodes.
-     * @param whitespace      <code>true</code> to remove 'ignorable whitespace'.
-     * @param awareness       <code>true</code> to be namespace-aware.
-     * @param xIncludes       <code>true</code> to be XInclude-aware.
-     * @param validating      <code>true</code> to validate the XML data against a schema.
-     * @param schema          The schema to validate against. Specify <code>null</code> if not validating.
+     * @param coalescing      {@code true} to convert CDATA to text nodes.
+     * @param expandEntityRef {@code true} to expand entity reference nodes.
+     * @param ignoreComments  {@code true} to ignore comment nodes.
+     * @param whitespace      {@code true} to remove 'ignorable whitespace'.
+     * @param awareness       {@code true} to be namespace-aware.
+     * @param xIncludes       {@code true} to be XInclude-aware.
+     * @param validating      {@code true} to validate the XML data against a schema.
+     * @param schema          The schema to validate against. Specify {@code null} if not validating.
      *
      * @return a builder that parses XML data according to the rules specified by the arguments.
      */
     public static DocumentBuilder getXMLBuilder(final boolean coalescing, final boolean expandEntityRef, final boolean ignoreComments,
                                                 final boolean whitespace, final boolean awareness, final boolean xIncludes,
-                                                final boolean validating, final Schema schema) {
+                                                final boolean validating, @Nullable final Schema schema) {
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -361,11 +346,9 @@ public abstract class Structure {
             return factory.newDocumentBuilder();
         }
 
-        catch (ParserConfigurationException e) {
-            logger.err( e, "Document Builder has not been configured correctly!" );
+        catch (final ParserConfigurationException e) {
+            throw logger.bug( e, "Document Builder has not been configured correctly!" );
         }
-
-        return null;
     }
 
     /**
@@ -375,6 +358,7 @@ public abstract class Structure {
      *
      * @return the given node as an XML-formatted string.
      */
+    @Nullable
     public static String toString(final Node node) {
 
         return toString( node, true );
@@ -382,16 +366,18 @@ public abstract class Structure {
 
     /**
      * @param node The XML node to render.
-     * @param trim <code>false</code>: Don't trim whitespace from text node data.
+     * @param trim {@code false}: Don't trim whitespace from text node data.
      *
      * @return the given node as an XML-formatted string.
      */
+    @Nullable
     public static String toString(final Node node, final boolean trim) {
 
         StringBuffer result = toString( node, 1, trim );
         return result == null? null: LINE.matcher( result.toString() ).replaceFirst( "" );
     }
 
+    @Nullable
     private static StringBuffer toString(final Node node, final int indent, final boolean trim) {
 
         if (node == null)
@@ -402,7 +388,7 @@ public abstract class Structure {
             if (trim)
                 nodeValue = nodeValue.trim();
 
-            return new StringBuffer( indent( indent ) ).append( nodeValue.trim() ).append( '\n' );
+            return new StringBuffer( indent( indent ) ).append( nodeValue.trim() ).append( System.lineSeparator() );
         }
 
         StringBuffer out = new StringBuffer();
@@ -418,7 +404,7 @@ public abstract class Structure {
                 out.append( '=' ).append( '"' ).append( attribute.getNodeValue() ).append( '"' );
             }
 
-        out.append( '>' ).append( '\n' );
+        out.append( '>' ).append( System.lineSeparator() );
 
         NodeList children = node.getChildNodes();
         for (int i = 0; i < children.getLength(); ++i) {
@@ -428,13 +414,13 @@ public abstract class Structure {
         }
 
         String value = node.getNodeValue();
-        if (value != null && value.length() > 0) {
+        if (value != null && !value.isEmpty()) {
             out.append( indent( indent + 1 ) );
-            out.append( value ).append( '\n' );
+            out.append( value ).append( System.lineSeparator() );
         }
 
         out.append( indent( indent ) );
-        out.append( '<' ).append( '/' ).append( node.getNodeName() ).append( '>' ).append( '\n' );
+        out.append( '<' ).append( '/' ).append( node.getNodeName() ).append( '>' ).append( System.lineSeparator() );
 
         return out;
     }

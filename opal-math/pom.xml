@@ -13,7 +13,6 @@
     <name>Opal Math</name>
     <description>Opal: Mathematical structures and utilities.</description>
 
-    <groupId>com.lyndir.lhunath.opal</groupId>
     <artifactId>opal-math</artifactId>
     <packaging>jar</packaging>
 

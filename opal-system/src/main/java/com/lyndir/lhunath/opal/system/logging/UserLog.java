@@ -18,12 +18,13 @@ public class UserLog {
         @Override
         protected EnumMap<Level, Map<Class<?>, List<UserLogMessage>>> initialValue() {
 
-            return new EnumMap<Level, Map<Class<?>, List<UserLogMessage>>>( Level.class );
+            return new EnumMap<>( Level.class );
         }
     };
 
-    private final Class<?> type;
+    @SuppressWarnings("NonConstantLogger")
     private final Logger   logger;
+    private final Class<?> type;
 
     public static UserLog get(final Class<?> type) {
 
@@ -37,7 +38,7 @@ public class UserLog {
      *
      * @return The messages recorded for this log level, mapped by the type that recorded them.
      */
-    public static Map<Class<?>, List<UserLogMessage>> popLogForLevel(Level level) {
+    public static Map<Class<?>, List<UserLogMessage>> popLogForLevel(final Level level) {
 
         Map<Class<?>, List<UserLogMessage>> levelLog = log.get().get( level );
         if (levelLog == null)
@@ -49,7 +50,7 @@ public class UserLog {
         return levelLog;
     }
 
-    private UserLog(Class<?> type) {
+    private UserLog(final Class<?> type) {
 
         this.type = type;
 
@@ -78,11 +79,11 @@ public class UserLog {
 
         Map<Class<?>, List<UserLogMessage>> levelLog = log.get().get( level );
         if (levelLog == null)
-            log.get().put( level, levelLog = new HashMap<Class<?>, List<UserLogMessage>>() );
+            log.get().put( level, levelLog = new HashMap<>() );
 
         List<UserLogMessage> typeLog = levelLog.get( type );
         if (typeLog == null)
-            levelLog.put( type, typeLog = new LinkedList<UserLogMessage>() );
+            levelLog.put( type, typeLog = new LinkedList<>() );
 
         typeLog.add( message );
         return this;

@@ -19,6 +19,8 @@ package com.lyndir.lhunath.opal.system.wrapper;
 import java.lang.reflect.*;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 
 /**
@@ -45,7 +47,7 @@ import java.util.Map;
  */
 public abstract class Wrapper {
 
-    static final Map<Class<? extends Wrapper>, Class<?>> wrappedClasses = new HashMap<Class<? extends Wrapper>, Class<?>>();
+    static final Map<Class<? extends Wrapper>, Class<?>> wrappedClasses = new HashMap<>();
     static boolean classNotFound;
 
     /**
@@ -67,22 +69,7 @@ public abstract class Wrapper {
             return constructor.newInstance( args );
         }
 
-        catch (SecurityException e) {
-            throw new UnsupportedOperationException( e );
-        }
-        catch (NoSuchMethodException e) {
-            throw new UnsupportedOperationException( e );
-        }
-        catch (IllegalArgumentException e) {
-            throw new UnsupportedOperationException( e );
-        }
-        catch (IllegalAccessException e) {
-            throw new UnsupportedOperationException( e );
-        }
-        catch (InvocationTargetException e) {
-            throw new UnsupportedOperationException( e );
-        }
-        catch (InstantiationException e) {
+        catch (final SecurityException | InstantiationException | InvocationTargetException | IllegalAccessException | IllegalArgumentException | NoSuchMethodException e) {
             throw new UnsupportedOperationException( e );
         }
     }
@@ -106,7 +93,7 @@ public abstract class Wrapper {
 
             return wrappedClasses.get( proxyClass );
         }
-        catch (ClassNotFoundException e) {
+        catch (final ClassNotFoundException e) {
             throw new UnsupportedOperationException( e );
         }
     }
@@ -126,7 +113,7 @@ public abstract class Wrapper {
         try {
             return ClassLoader.getSystemClassLoader().loadClass( className );
         }
-        catch (ClassNotFoundException e) {
+        catch (final ClassNotFoundException e) {
             throw new UnsupportedOperationException( e );
         }
     }
@@ -137,7 +124,7 @@ public abstract class Wrapper {
      * @param proxyClass       The wrapper class.
      * @param wrappedClassName The class that should be wrapped.
      *
-     * @return <code>true</code> if the wrapped class is supported.
+     * @return {@code true} if the wrapped class is supported.
      */
     protected static boolean initWrapper(final Class<? extends Wrapper> proxyClass, final String wrappedClassName) {
 
@@ -146,7 +133,7 @@ public abstract class Wrapper {
 
             return true;
         }
-        catch (UnsupportedOperationException ignored) {
+        catch (final UnsupportedOperationException ignored) {
             classNotFound = true;
 
             return false;
@@ -164,10 +151,10 @@ public abstract class Wrapper {
      *
      * @throws UnsupportedOperationException
      */
-    protected static Object invoke(final Class<? extends Wrapper> proxyClass, final Object wrappedInstance, final String methodName)
+    protected static Object invoke(final Class<? extends Wrapper> proxyClass, @Nullable final Object wrappedInstance, final String methodName)
             throws UnsupportedOperationException {
 
-        return invoke( proxyClass, wrappedInstance, methodName, new Class[0] );
+        return invoke( proxyClass, wrappedInstance, methodName, new Class<?>[0] );
     }
 
     /**
@@ -183,7 +170,7 @@ public abstract class Wrapper {
      *
      * @throws UnsupportedOperationException
      */
-    protected static Object invoke(final Class<? extends Wrapper> proxyClass, final Object wrappedInstance, final String methodName,
+    protected static Object invoke(final Class<? extends Wrapper> proxyClass, @Nullable final Object wrappedInstance, final String methodName,
                                    final Class<?>[] classes, final Object... args)
             throws UnsupportedOperationException {
 
@@ -192,19 +179,7 @@ public abstract class Wrapper {
             return method.invoke( wrappedInstance, args );
         }
 
-        catch (SecurityException e) {
-            throw new UnsupportedOperationException( e );
-        }
-        catch (NoSuchMethodException e) {
-            throw new UnsupportedOperationException( e );
-        }
-        catch (IllegalArgumentException e) {
-            throw new UnsupportedOperationException( e );
-        }
-        catch (IllegalAccessException e) {
-            throw new UnsupportedOperationException( e );
-        }
-        catch (InvocationTargetException e) {
+        catch (final SecurityException | InvocationTargetException | IllegalAccessException | IllegalArgumentException | NoSuchMethodException e) {
             throw new UnsupportedOperationException( e );
         }
     }
@@ -215,6 +190,7 @@ public abstract class Wrapper {
      *
      * @return The instance of the wrapped enum class that has the same value as that of the given enum wrapper instance.
      */
+    @Nullable
     protected static Object mapEnumValue(final Object proxyEnum, final Class<?> wrappedEnumClass) {
 
         for (final Object wrappedEnum : wrappedEnumClass.getEnumConstants())
@@ -224,19 +200,17 @@ public abstract class Wrapper {
         return null;
     }
 
+    @Nonnull
     protected final Object wrappedInstance;
 
     /**
      * @param wrappedInstance The instance of the class that should be proxied by this wrapper.
      */
-    protected Wrapper(final Object wrappedInstance) {
+    protected Wrapper(@Nonnull final Object wrappedInstance) {
 
         this.wrappedInstance = wrappedInstance;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(final Object obj) {
 
@@ -247,24 +221,18 @@ public abstract class Wrapper {
 
         if (obj.getClass().equals( getClass() ))
             return super.equals( obj );
-        else if (obj.getClass().equals( wrappedInstance.getClass() ))
+        if (obj.getClass().equals( wrappedInstance.getClass() ))
             return wrappedInstance.equals( obj );
 
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
 
         return wrappedInstance.hashCode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
 
@@ -274,6 +242,7 @@ public abstract class Wrapper {
     /**
      * @return The wrapped class instance.
      */
+    @Nonnull
     protected Object getWrappedInstance() {
 
         return wrappedInstance;
@@ -293,7 +262,7 @@ public abstract class Wrapper {
     protected Object invoke(final String methodName)
             throws UnsupportedOperationException {
 
-        return invoke( methodName, new Class[0] );
+        return invoke( methodName, new Class<?>[0] );
     }
 
     /**

@@ -10,7 +10,6 @@
         <version>GIT-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.lyndir.lhunath.opal</groupId>
     <artifactId>opal-wicket</artifactId>
     <packaging>jar</packaging>
     <name>Opal Wicket</name>

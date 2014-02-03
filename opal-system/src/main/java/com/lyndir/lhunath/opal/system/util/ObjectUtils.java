@@ -110,6 +110,7 @@ public abstract class ObjectUtils {
      *
      * @return A description of the given object.
      */
+    @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
     public static String describe(final Object o) {
 
         if (o == null)
@@ -171,8 +172,8 @@ public abstract class ObjectUtils {
             return description.append( "]>" ).toString();
         }
 
-        if (o instanceof Collection) {
-            Collection<?> collection = (Collection<?>) o;
+        if (o instanceof Iterable) {
+            Iterable<?> collection = (Iterable<?>) o;
             StringBuilder description = new StringBuilder().append( '[' );
             synchronized (collection) {
                 for (final Object entry : collection) {
@@ -220,10 +221,12 @@ public abstract class ObjectUtils {
             toString.append(
                     forEachFieldWithMeta( For.toString, o.getClass(), new NFunctionNN<LastResult<Field, StringBuilder>, StringBuilder>() {
                         @Override
+                        @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
                         public StringBuilder apply(@Nonnull final LastResult<Field, StringBuilder> lastResult) {
 
                             Field field = lastResult.getCurrent();
                             StringBuilder fieldsString = lastResult.getLastResult();
+                            assert fieldsString != null;
 
                             if (!isValueAccessible( o ))
                                 return fieldsString;
@@ -243,13 +246,13 @@ public abstract class ObjectUtils {
                             try {
                                 field.setAccessible( true );
                             }
-                            catch (SecurityException ignored) {
+                            catch (final SecurityException ignored) {
                             }
 
                             try {
                                 fieldsString.append( name ).append( '=' ).append( describe( field.get( o ) ) );
                             }
-                            catch (Throwable t) {
+                            catch (final Throwable t) {
                                 logger.dbg( t, "Couldn't load value for field: %s, in object: 0x%x", field, System.identityHashCode( o ) );
                             }
 
@@ -289,6 +292,7 @@ public abstract class ObjectUtils {
             seen.get( For.hashCode ).get().add( identityHashCode );
             return ifNotNullElse( forEachFieldWithMeta( For.hashCode, o.getClass(), new NFunctionNN<LastResult<Field, Integer>, Integer>() {
                 @Override
+                @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
                 public Integer apply(@Nonnull final LastResult<Field, Integer> lastResult) {
 
                     Field field = lastResult.getCurrent();
@@ -313,15 +317,16 @@ public abstract class ObjectUtils {
                                 // Best-effort special handling for Iterables in case they don't implement hashCode themselves.
                                 // We just use the hashCode of the sorted hashCodes of the values.
                                 ImmutableSortedSet.Builder<Integer> hashCodes = ImmutableSortedSet.naturalOrder();
+                                //noinspection SynchronizationOnLocalVariableOrMethodParameter
                                 synchronized (value) {
-                                    for (final Object o : (Iterable<?>) value)
-                                        hashCodes.add( ObjectUtils.hashCode( o ) );
+                                    for (final Object o_ : (Iterable<?>) value)
+                                        hashCodes.add( ObjectUtils.hashCode( o_ ) );
                                 }
                                 hashCode = hashCodes.build().hashCode();
                             } else
                                 hashCode = value.hashCode();
                         }
-                        catch (Throwable t) {
+                        catch (final Throwable t) {
                             logger.dbg( t, "Couldn't load hashCode for: %s, value: %s.  Falling back to identity hashCode.", field, value );
                         }
 
@@ -352,7 +357,7 @@ public abstract class ObjectUtils {
      *
      * @param object The object to check.
      *
-     * @return <code>true</code> if the object may be accessed.
+     * @return {@code true} if the object may be accessed.
      */
     private static boolean isValueAccessible(final Object object) {
 
@@ -400,6 +405,7 @@ public abstract class ObjectUtils {
                     forEachFieldWithMeta( For.equals, superObject.getClass(), new NFunctionNN<LastResult<Field, Boolean>, Boolean>() {
                         @Nonnull
                         @Override
+                        @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
                         public Boolean apply(@Nonnull final LastResult<Field, Boolean> lastResult) {
 
                             if (Boolean.FALSE.equals( lastResult.getLastResult() ))
@@ -410,7 +416,7 @@ public abstract class ObjectUtils {
                             try {
                                 field.setAccessible( true );
                             }
-                            catch (SecurityException ignored) {
+                            catch (final SecurityException ignored) {
                             }
 
                             Object superValue = null, subValue = null;
@@ -418,14 +424,14 @@ public abstract class ObjectUtils {
                                 if (isValueAccessible( superObject ))
                                     superValue = field.get( superObject );
                             }
-                            catch (Throwable t) {
+                            catch (final Throwable t) {
                                 logger.dbg( t, "Couldn't load value for field: %s, in object: %s", field, superObject );
                             }
                             try {
                                 if (isValueAccessible( subObject ))
                                     subValue = field.get( subObject );
                             }
-                            catch (Throwable t) {
+                            catch (final Throwable t) {
                                 logger.dbg( t, "Couldn't load value for field: %s, in object: %s", field, subObject );
                             }
 
@@ -438,11 +444,13 @@ public abstract class ObjectUtils {
         }
     }
 
+    @Nullable
     private static <R, T> R forEachFieldWithMeta(final For meta, final Class<T> type, final NFunctionNN<LastResult<Field, R>, R> function,
                                                  @Nullable final R firstResult) {
 
         return TypeUtils.forEachSuperTypeOf( type, new NFunctionNN<LastResult<Class<?>, R>, R>() {
             @Override
+            @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
             public R apply(@Nonnull final LastResult<Class<?>, R> lastTypeResult) {
 
                 Class<?> subType = lastTypeResult.getCurrent();

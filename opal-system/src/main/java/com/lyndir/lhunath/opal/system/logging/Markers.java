@@ -1,5 +1,6 @@
 package com.lyndir.lhunath.opal.system.logging;
 
+import org.slf4j.IMarkerFactory;
 import org.slf4j.Marker;
 import org.slf4j.helpers.BasicMarkerFactory;
 
@@ -11,7 +12,7 @@ import org.slf4j.helpers.BasicMarkerFactory;
  */
 public abstract class Markers {
 
-    private static final BasicMarkerFactory factory = new BasicMarkerFactory();
+    private static final IMarkerFactory factory = new BasicMarkerFactory();
 
     public static final Marker AUDIT    = factory.getMarker( "AUDIT" );
     public static final Marker BUG      = factory.getMarker( "BUG" );

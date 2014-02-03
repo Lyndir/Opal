@@ -38,7 +38,7 @@ import javax.annotation.Nullable;
  * <p/>
  * The bundle whose localization data the interface references is determined by the base class passed in the {@link #create(Class, Class)}
  * call or the class in which your interface is declared if you used {@link #create(Class)}.  Once the base class is determined, an XML
- * file is loaded using the standard bundle loading mechanism using the base class's canonical name as the <code>baseName</code>, the
+ * file is loaded using the standard bundle loading mechanism using the base class's canonical name as the {@code baseName}, the
  * Wicket session's current {@link Locale} and the classloader that loaded the base class.  Effectively, this means it's best to put your
  * XML file next to your base class, with the same name.
  * <p/>
@@ -46,7 +46,7 @@ import javax.annotation.Nullable;
  * bundle. Any arguments annotated with {@link KeyAppender} will have their value appended to the key (which is initially the name of the
  * method), prefixed by a dot.  In arguments to the annotation, you can specify conditions that the value must meet in order to be appended
  * to the key.  Refer to {@link KeyAppender}'s documentation for more information.  {@link BooleanKeyAppender} works similarly, but is used
- * on boolean arguments and adds a fixed value to the key if the argument is <code>true</code> or <code>false</code>.
+ * on boolean arguments and adds a fixed value to the key if the argument is {@code true} or {@code false}.
  * <p/>
  * Any arguments that aren't appended to the key will get passed to the localization value for expansion.  This expansion is performed by
  * {@link MessageFormat#format(String, Object...)}, by passing the localization value as the format string and the method arguments as
@@ -79,7 +79,7 @@ public abstract class MessagesFactory {
      * @param <M>                   The type of the localization interface.
      * @param baseClass             The class on which to base the name resource name to load the resource bundle from. The baseName of the
      *                              resource bundle will be the {@link Class#getSimpleName()} and the class' classloader will be used to
-     *                              resolve it.  If <code>null</code>, the class declaring the localization interface will be used.
+     *                              resolve it.  If {@code null}, the class declaring the localization interface will be used.
      *
      * @return The localization proxy that provides localized values.
      */
@@ -116,11 +116,11 @@ public abstract class MessagesFactory {
             field.setAccessible( false );
         }
 
-        catch (IllegalAccessException e) {
+        catch (final IllegalAccessException e) {
             throw logger.bug( e, "Field %s of class %s was inaccessible even though we tried setAccessible.", msgsFieldName,
                               object.getClass() );
         }
-        catch (NoSuchFieldException e) {
+        catch (final NoSuchFieldException e) {
             throw new IllegalArgumentException( "Field " + msgsFieldName + " of class " + object.getClass() + " not found.", e );
         }
     }

@@ -35,7 +35,7 @@ public abstract class Emitter<E> {
      */
     protected Emitter() {
 
-        receivers = new ArrayList<Receiver<E>>();
+        receivers = new ArrayList<>();
     }
 
     /**
@@ -53,13 +53,13 @@ public abstract class Emitter<E> {
      *
      * @param event The event that needs to be sent out.
      *
-     * @return <code>true</code> if at least one {@link Receiver} successfully processed the event.
+     * @return {@code true} if at least one {@link Receiver} successfully processed the event.
      */
     protected boolean trigger(final E event) {
 
         boolean success = false;
         for (final Receiver<E> receiver : receivers)
-            success &= receiver.fire( event );
+            success |= receiver.fire( event );
 
         return success;
     }

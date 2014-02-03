@@ -1,10 +1,12 @@
 package com.lyndir.lhunath.opal.system.collection;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ForwardingListIterator;
 import com.google.common.collect.Iterators;
 import java.io.Serializable;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import javax.annotation.Nullable;
 
 
 /**
@@ -14,14 +16,17 @@ import java.util.NoSuchElementException;
  *
  * @author lhunath
  */
-public abstract class ListIteratorView<T> extends ForwardingListIterator<T> implements Serializable {
+public abstract class ListIteratorView<T extends Serializable> extends ForwardingListIterator<T> implements Serializable {
 
+    private static final long serialVersionUID = 0;
+    @Nullable
+    transient ListIterator<T> delegate;
+    @Nullable
     T current;
     int currentIndex = -1;
-    transient ListIterator<T> delegate;
 
     /**
-     * @return <code>true</code> if this iterator is not empty.
+     * @return {@code true} if this iterator is not empty.
      */
     public boolean hasCurrent() {
 
@@ -38,7 +43,7 @@ public abstract class ListIteratorView<T> extends ForwardingListIterator<T> impl
         if (!hasCurrent())
             throw new NoSuchElementException( "Cursor does not point to an element.  Use next() or previous() first." );
 
-        return current;
+        return Preconditions.checkNotNull( current );
     }
 
     /**
@@ -74,7 +79,7 @@ public abstract class ListIteratorView<T> extends ForwardingListIterator<T> impl
     /**
      * Reset the iterator such that the next call to #next returns the first object.
      *
-     * @return <code>this</code> for chaining.
+     * @return {@code this} for chaining.
      */
     public ListIteratorView<T> reset() {
 

@@ -18,9 +18,6 @@
     <artifactId>opal-piccolo</artifactId>
     <packaging>jar</packaging>
 
-    <!-- BUILD CONFIGURATION -->
-    <build></build>
-
     <!-- DEPENDENCY MANAGEMENT -->
     <dependencies>
 

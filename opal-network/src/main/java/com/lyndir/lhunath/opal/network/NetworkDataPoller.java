@@ -44,9 +44,6 @@ public class NetworkDataPoller extends Poller<SocketChannel, ByteBuffer> impleme
         network.registerDataListener( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void received(final ByteBuffer dataBuffer, final SocketChannel channel) {
 
