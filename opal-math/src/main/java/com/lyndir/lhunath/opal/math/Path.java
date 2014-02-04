@@ -27,10 +27,10 @@ public class Path {
 
     private final boolean srcHorizontal;
     private final boolean dstHorizontal;
-    private final Vec2    src;
-    private final Vec2    dst;
-    private final Vec2    size;
-    private final Vec2    offset;
+    private final Vec2D   src;
+    private final Vec2D   dst;
+    private final Vec2D   size;
+    private final Vec2D   offset;
 
     @Override
     public String toString() {
@@ -48,7 +48,7 @@ public class Path {
      * @param srcHorizontal Whether this path exits its source horizontally.
      * @param dstHorizontal Whether this path enters its destination horizontally.
      */
-    public Path(final Vec2 src, final Vec2 dst, final Vec2 offset, final Vec2 size, final boolean srcHorizontal,
+    public Path(final Vec2D src, final Vec2D dst, final Vec2D offset, final Vec2D size, final boolean srcHorizontal,
                 final boolean dstHorizontal) {
 
         this.src = src;
@@ -70,8 +70,8 @@ public class Path {
      */
     public static Path calculatePath(final RectangularShape srcBounds, final RectangularShape dstBounds) {
 
-        Vec2 src;
-        Vec2 dst;
+        Vec2D src;
+        Vec2D dst;
         boolean srcHorizontal = false, dstHorizontal = false;
 
         /* left side of connector is SRC */
@@ -79,24 +79,24 @@ public class Path {
 
             if (dstBounds.getCenterY() > srcBounds.getCenterY()) {
                 /* top side of connector is SRC */
-                src = new Vec2( srcBounds.getCenterX(), srcBounds.getMaxY() );
+                src = new Vec2D( srcBounds.getCenterX(), srcBounds.getMaxY() );
                 srcHorizontal = false;
 
-                dst = new Vec2( dstBounds.getCenterX(), dstBounds.getY() );
+                dst = new Vec2D( dstBounds.getCenterX(), dstBounds.getY() );
                 dstHorizontal = false;
             } else if (dstBounds.getCenterY() == srcBounds.getCenterY()) {
                 /* top side of connector is both SRC and DST -> horizontal line. */
-                src = new Vec2( srcBounds.getMaxX(), srcBounds.getCenterY() );
+                src = new Vec2D( srcBounds.getMaxX(), srcBounds.getCenterY() );
                 srcHorizontal = true;
 
-                dst = new Vec2( dstBounds.getX(), dstBounds.getCenterY() );
+                dst = new Vec2D( dstBounds.getX(), dstBounds.getCenterY() );
                 dstHorizontal = true;
             } else {
                 /* top side of connector is DST */
-                src = new Vec2( srcBounds.getCenterX(), srcBounds.getY() );
+                src = new Vec2D( srcBounds.getCenterX(), srcBounds.getY() );
                 srcHorizontal = false;
 
-                dst = new Vec2( dstBounds.getCenterX(), dstBounds.getMaxY() );
+                dst = new Vec2D( dstBounds.getCenterX(), dstBounds.getMaxY() );
                 dstHorizontal = false;
             }
         }
@@ -105,43 +105,43 @@ public class Path {
 
             if (dstBounds.getCenterY() > srcBounds.getCenterY()) {
                 /* top side of connector is SRC -> vertical line. */
-                src = new Vec2( srcBounds.getCenterX(), srcBounds.getMaxY() );
+                src = new Vec2D( srcBounds.getCenterX(), srcBounds.getMaxY() );
                 srcHorizontal = false;
 
-                dst = new Vec2( dstBounds.getCenterX(), dstBounds.getY() );
+                dst = new Vec2D( dstBounds.getCenterX(), dstBounds.getY() );
                 dstHorizontal = false;
             } else if (dstBounds.getCenterY() == srcBounds.getCenterY())
                 /* top side of connector is both SRC and DST -> centers collapse, don't draw. */ {
-                src = new Vec2();
-                dst = new Vec2();
+                src = new Vec2D();
+                dst = new Vec2D();
             } else {
                 /* top side of connector is DST -> vertical line. */
-                src = new Vec2( srcBounds.getCenterX(), srcBounds.getY() );
+                src = new Vec2D( srcBounds.getCenterX(), srcBounds.getY() );
                 srcHorizontal = false;
 
-                dst = new Vec2( dstBounds.getCenterX(), dstBounds.getMaxY() );
+                dst = new Vec2D( dstBounds.getCenterX(), dstBounds.getMaxY() );
                 dstHorizontal = false;
             }
         } else if (dstBounds.getCenterY() > srcBounds.getCenterY()) {
             /* top side of connector is SRC */
-            src = new Vec2( srcBounds.getCenterX(), srcBounds.getMaxY() );
+            src = new Vec2D( srcBounds.getCenterX(), srcBounds.getMaxY() );
             srcHorizontal = false;
 
-            dst = new Vec2( dstBounds.getCenterX(), dstBounds.getY() );
+            dst = new Vec2D( dstBounds.getCenterX(), dstBounds.getY() );
             dstHorizontal = false;
         } else if (dstBounds.getCenterY() == srcBounds.getCenterY()) {
             /* top side of connector is both SRC and DST -> horizontal line. */
-            src = new Vec2( srcBounds.getX(), srcBounds.getCenterY() );
+            src = new Vec2D( srcBounds.getX(), srcBounds.getCenterY() );
             srcHorizontal = true;
 
-            dst = new Vec2( dstBounds.getMaxX(), dstBounds.getCenterY() );
+            dst = new Vec2D( dstBounds.getMaxX(), dstBounds.getCenterY() );
             dstHorizontal = true;
         } else {
             /* top side of connector is DST */
-            src = new Vec2( srcBounds.getCenterX(), srcBounds.getY() );
+            src = new Vec2D( srcBounds.getCenterX(), srcBounds.getY() );
             srcHorizontal = false;
 
-            dst = new Vec2( dstBounds.getCenterX(), dstBounds.getMaxY() );
+            dst = new Vec2D( dstBounds.getCenterX(), dstBounds.getMaxY() );
             dstHorizontal = false;
         }
 
@@ -150,42 +150,42 @@ public class Path {
         if (srcYInDst || dstYInSrc) {
 
             if (dstBounds.getCenterX() > srcBounds.getCenterX()) {
-                src = new Vec2( srcBounds.getMaxX(), srcBounds.getCenterY() );
+                src = new Vec2D( srcBounds.getMaxX(), srcBounds.getCenterY() );
                 srcHorizontal = true;
 
-                dst = new Vec2( dstBounds.getX(), dstBounds.getCenterY() );
+                dst = new Vec2D( dstBounds.getX(), dstBounds.getCenterY() );
                 dstHorizontal = true;
             } else if (dstBounds.getCenterX() == srcBounds.getCenterX()) {
-                src = new Vec2();
-                dst = new Vec2();
+                src = new Vec2D();
+                dst = new Vec2D();
             } else {
-                src = new Vec2( srcBounds.getX(), srcBounds.getCenterY() );
+                src = new Vec2D( srcBounds.getX(), srcBounds.getCenterY() );
                 srcHorizontal = true;
 
-                dst = new Vec2( dstBounds.getMaxX(), dstBounds.getCenterY() );
+                dst = new Vec2D( dstBounds.getMaxX(), dstBounds.getCenterY() );
                 dstHorizontal = true;
             }
         } else if (srcBounds.getMaxX() < dstBounds.getX() || srcBounds.getX() > dstBounds.getMaxX())
             if (dstBounds.getCenterX() > srcBounds.getCenterX()) {
-                src = new Vec2( srcBounds.getMaxX(), srcBounds.getCenterY() );
+                src = new Vec2D( srcBounds.getMaxX(), srcBounds.getCenterY() );
                 srcHorizontal = true;
 
-                dst = new Vec2( dstBounds.getX(), dstBounds.getCenterY() );
+                dst = new Vec2D( dstBounds.getX(), dstBounds.getCenterY() );
                 dstHorizontal = true;
             } else if (dstBounds.getCenterX() == srcBounds.getCenterX()) {
-                src = new Vec2();
-                dst = new Vec2();
+                src = new Vec2D();
+                dst = new Vec2D();
             } else {
-                src = new Vec2( srcBounds.getX(), srcBounds.getCenterY() );
+                src = new Vec2D( srcBounds.getX(), srcBounds.getCenterY() );
                 srcHorizontal = true;
 
-                dst = new Vec2( dstBounds.getMaxX(), dstBounds.getCenterY() );
+                dst = new Vec2D( dstBounds.getMaxX(), dstBounds.getCenterY() );
                 dstHorizontal = true;
             }
 
-        Vec2 offset = new Vec2( Math.min( src.getX(), dst.getX() ), Math.min( src.getY(), dst.getY() ) );
-        Vec2 size = new Vec2( Math.abs( dst.getX() - src.getX() ), Math.abs( dst.getY() - src.getY() ) );
-        // path.size = new Vec2( Math.max( Math.abs( path.dst.x - path.src.x ), 1 ), Math.max(
+        Vec2D offset = new Vec2D( Math.min( src.getX(), dst.getX() ), Math.min( src.getY(), dst.getY() ) );
+        Vec2D size = new Vec2D( Math.abs( dst.getX() - src.getX() ), Math.abs( dst.getY() - src.getY() ) );
+        // path.size = new Vec2D( Math.max( Math.abs( path.dst.x - path.src.x ), 1 ), Math.max(
         // Math.abs( path.dst.y - path.src.y ), 1 ) );
 
         return new Path( src, dst, offset, size, srcHorizontal, dstHorizontal );
@@ -216,7 +216,7 @@ public class Path {
      *
      * @return Guess.
      */
-    public Vec2 getSrc() {
+    public Vec2D getSrc() {
 
         return src;
     }
@@ -226,7 +226,7 @@ public class Path {
      *
      * @return Guess.
      */
-    public Vec2 getDst() {
+    public Vec2D getDst() {
 
         return dst;
     }
@@ -236,7 +236,7 @@ public class Path {
      *
      * @return Guess.
      */
-    public Vec2 getOffset() {
+    public Vec2D getOffset() {
 
         return offset;
     }
@@ -246,7 +246,7 @@ public class Path {
      *
      * @return Guess.
      */
-    public Vec2 getSize() {
+    public Vec2D getSize() {
 
         return size;
     }

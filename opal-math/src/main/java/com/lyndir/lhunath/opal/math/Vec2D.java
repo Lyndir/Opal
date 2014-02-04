@@ -24,24 +24,24 @@ import javax.annotation.Nullable;
 
 
 /**
- * <i>Vec2 - A two dimensional vector.</i><br> <br> <p> TODO: Optimize by caching calculations (much like Angle)? </p> <br> The Vec2 object
+ * <i>Vec2D - A two dimensional vector.</i><br> <br> <p> TODO: Optimize by caching calculations (much like Angle)? </p> <br> The Vec2 object
  * represents a two dimensional vector in a plane.<br> <br>
  *
  * @author lhunath
  */
-public class Vec2 implements Serializable {
+public class Vec2D implements Serializable {
 
     private static final long serialVersionUID = 0;
 
     /**
      * X-Axis coordinate.
      */
-    private final int x;
+    private final double x;
 
     /**
      * Y-Axis coordinate.
      */
-    private final int y;
+    private final double y;
 
     @Nullable
     @ObjectMeta(ignoreFor = ObjectMeta.For.toString)
@@ -50,18 +50,18 @@ public class Vec2 implements Serializable {
     /**
      * Create a new two dimensional vector at the origin.
      */
-    public Vec2() {
+    public Vec2D() {
 
         this( 0, 0, null );
     }
 
     /**
-     * Create a new two dimensional vector.
-     *
-     * @param x The x-coordinate of the new vector.
-     * @param y The y-coordinate of the new vector.
-     */
-    public Vec2(final int x, final int y) {
+    * Create a new two dimensional vector.
+    *
+    * @param x The x-coordinate of the new vector.
+    * @param y The y-coordinate of the new vector.
+    */
+    public Vec2D(final double x, final double y) {
 
         this( x, y, null );
     }
@@ -73,7 +73,7 @@ public class Vec2 implements Serializable {
      * @param y        The y-coordinate of the new vector.
      * @param wrapSize The size of the wrapping space.
      */
-    public Vec2(final int x, final int y, @Nullable final Size wrapSize) {
+    public Vec2D(final double x, final double y, @Nullable final Size wrapSize) {
 
         this.x = x;
         this.y = y;
@@ -83,7 +83,7 @@ public class Vec2 implements Serializable {
     /**
      * @return The horizontal destination of this vector.
      */
-    public int getX() {
+    public double getX() {
 
         return x;
     }
@@ -91,13 +91,13 @@ public class Vec2 implements Serializable {
     /**
      * @return The vertical destination of this vector.
      */
-    public int getY() {
+    public double getY() {
 
         return y;
     }
 
-    public int getDX(final Vec2 other) {
-        int dx = other.getX() - getX();
+    public double getDX(final Vec2D other) {
+        double dx = other.getX() - getX();
 
         // Take wrapping into account.
         if (wrapSize != null) {
@@ -111,8 +111,8 @@ public class Vec2 implements Serializable {
         return dx;
     }
 
-    public int getDY(final Vec2 other) {
-        int dy = other.getY() - getY();
+    public double getDY(final Vec2D other) {
+        double dy = other.getY() - getY();
 
         // Take wrapping into account.
         if (wrapSize != null) {
@@ -126,8 +126,8 @@ public class Vec2 implements Serializable {
         return dy;
     }
 
-    public int distanceTo(final Vec2 other) {
-        int dx = getDX( other ), dy = getDY( other );
+    public double distanceTo(final Vec2D other) {
+        double dx = getDX( other ), dy = getDY( other );
 
         return (Math.abs( dx ) + Math.abs( dy ) + Math.abs( dx + dy )) / 2;
     }
@@ -156,7 +156,7 @@ public class Vec2 implements Serializable {
      *
      * @return The squared length of this vector.
      */
-    public int lengthSq() {
+    public double lengthSq() {
 
         return getX() * getX() + getY() * getY();
     }
@@ -164,9 +164,9 @@ public class Vec2 implements Serializable {
     /**
      * Normalize this vector.
      *
-     * @return A new, normalized version of this vector; pointing in the same direction with length 1.
+     * @return The normalized version of this vector; pointing in the same direction with length 1.
      */
-    public Vec2 normalize() {
+    public Vec2D normalize() {
 
         double length = length();
         return multiply( 1 / length );
@@ -179,13 +179,12 @@ public class Vec2 implements Serializable {
      *
      * @return A new vector with the resulting coordinates.
      */
-    public Vec2 rotate(final Angle a) {
+    public Vec2D rotate(final Angle a) {
 
         if (a == null)
             return this;
 
-        return copyWith( (int) (getX() * a.sin() + getY() * a.cos()), //
-                         (int) (getX() * a.cos() - getY() * a.sin()) );
+        return copyWith( x * a.sin() + y * a.cos(), getX() * a.cos() - getY() * a.sin() );
     }
 
     /**
@@ -195,25 +194,12 @@ public class Vec2 implements Serializable {
      *
      * @return A new vector with the resulting coordinates.
      */
-    public Vec2 translate(final Vec2 vector) {
+    public Vec2D translate(final Vec2D vector) {
 
         if (vector == null)
             return this;
 
-        return translate( vector.getX(), vector.getY() );
-    }
-
-    /**
-     * Add another vector to this one.
-     *
-     * @param dx The amount by which to translate the x coordinate.
-     * @param dy The amount by which to translate the y coordinate.
-     *
-     * @return A new vector with the resulting coordinates.
-     */
-    public Vec2 translate(final int dx, final int dy) {
-
-        return copyWith( getX() + dx, getY() + dy );
+        return copyWith( getX() + vector.getX(), getY() + vector.y );
     }
 
     /**
@@ -223,7 +209,7 @@ public class Vec2 implements Serializable {
      *
      * @return A new vector with the resulting coordinates.
      */
-    public Vec2 multiply(final Vec2 vector) {
+    public Vec2D multiply(final Vec2D vector) {
 
         if (vector == null)
             return this;
@@ -238,9 +224,9 @@ public class Vec2 implements Serializable {
      *
      * @return A new vector with the resulting coordinates.
      */
-    public Vec2 multiply(final double multiplier) {
+    public Vec2D multiply(final double multiplier) {
 
-        return copyWith( (int) (getX() * multiplier), (int) (getY() * multiplier) );
+        return copyWith( getX() * multiplier, getY() * multiplier );
     }
 
     /**
@@ -248,7 +234,7 @@ public class Vec2 implements Serializable {
      *
      * @return A new vector with the resulting coordinates.
      */
-    public Vec2 inverse() {
+    public Vec2D inverse() {
 
         return multiply( -1 );
     }
@@ -267,7 +253,7 @@ public class Vec2 implements Serializable {
      *
      * @return The result of the cross product of this vector with the given one.
      */
-    public int crossMultiply(final Vec2 vector) {
+    public double crossMultiply(final Vec2D vector) {
 
         if (vector == null)
             return 0;
@@ -283,7 +269,7 @@ public class Vec2 implements Serializable {
      *
      * @return The result of the dot product of this vector with the given one.
      */
-    public int dotMultiply(final Vec2 vector) {
+    public double dotMultiply(final Vec2D vector) {
 
         if (vector == null)
             return 0;
@@ -295,9 +281,9 @@ public class Vec2 implements Serializable {
     public String toString() {
 
         if (wrapSize == null)
-            return strf( "vec(%d, %d)", getX(), getY() );
+            return strf( "vec(%.2f, %.2f)", getX(), getY() );
 
-        return strf( "vec(%d, %d / %s)", getX(), getY(), getWrapSize() );
+        return strf( "vec(%.2f, %.2f / %s)", getX(), getY(), getWrapSize() );
     }
 
     @Override
@@ -311,10 +297,10 @@ public class Vec2 implements Serializable {
 
         if (obj == this)
             return true;
-        if (!(obj instanceof Vec2))
+        if (!(obj instanceof Vec2D))
             return false;
 
-        Vec2 o = (Vec2) obj;
+        Vec2D o = (Vec2D) obj;
         return getX() == o.getX() && getY() == o.getY();
     }
 
@@ -323,7 +309,7 @@ public class Vec2 implements Serializable {
      *
      * @return A new vector with the resulting coordinates.
      */
-    public Vec2 copyWithX(final int newX) {
+    public Vec2D copyWithX(final double newX) {
 
         return copyWith( newX, getY() );
     }
@@ -333,7 +319,7 @@ public class Vec2 implements Serializable {
      *
      * @return A new vector with the resulting coordinates.
      */
-    public Vec2 copyWithY(final int newY) {
+    public Vec2D copyWithY(final double newY) {
 
         return copyWith( getX(), newY );
     }
@@ -344,11 +330,11 @@ public class Vec2 implements Serializable {
      *
      * @return A new vector with the resulting coordinates.
      */
-    public Vec2 copyWith(int newX, int newY) {
+    public Vec2D copyWith(double newX, double newY) {
 
         Size size = getWrapSize();
         if (size == null)
-            return new Vec2( newX, newY, null );
+            return new Vec2D( newX, newY, null );
 
         // Wrap X & Y.
         // X's wrap is offset by height / 2 to compensate for hex tiling.
@@ -360,6 +346,6 @@ public class Vec2 implements Serializable {
         while (newY < 0 || newY > height)
             newY += height;
 
-        return new Vec2( (newX + width) % width, (newY + height) % height, size );
+        return new Vec2D( (newX + width) % width, (newY + height) % height, size );
     }
 }

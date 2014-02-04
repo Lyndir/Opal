@@ -66,6 +66,6 @@ public enum Axis {
      */
     public Vec2 getVec2() {
 
-        return new Vec2( vector.getX(), vector.getY() );
+        return new Vec2( vector.getX(), vector.getY(), vector.getWrapSize() );
     }
 }

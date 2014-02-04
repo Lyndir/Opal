@@ -28,7 +28,7 @@ public class Angle {
 
     private static final float R_TO_D = 180 / (float) Math.PI;
 
-    private float degrees, radians, sin, cos;
+    private double degrees, radians, sin, cos;
     private boolean hasDegrees, hasRadians, hasSin, hasCos;
 
     /**
@@ -60,13 +60,13 @@ public class Angle {
      *
      * @return The sine of this angle.
      */
-    public float sin() {
+    public double sin() {
 
         if (hasSin)
             return sin;
 
         hasSin = true;
-        return sin = (float) Math.sin( getRadians() );
+        return sin = Math.sin( getRadians() );
     }
 
     /**
@@ -74,7 +74,7 @@ public class Angle {
      *
      * @return The cosine of this angle.
      */
-    public float cos() {
+    public double cos() {
 
         if (hasCos)
             return cos;
@@ -88,7 +88,7 @@ public class Angle {
      *
      * @return This angle in degrees.
      */
-    public float getDegrees() {
+    public double getDegrees() {
 
         if (!hasDegrees) {
             if (!hasRadians)
@@ -106,7 +106,7 @@ public class Angle {
      *
      * @return This angle in radians.
      */
-    public float getRadians() {
+    public double getRadians() {
 
         if (!hasRadians) {
             if (!hasDegrees)

@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.opal.math;
 
-import static com.lyndir.lhunath.opal.system.util.StringUtils.*;
+import static com.lyndir.lhunath.opal.system.util.StringUtils.strf;
 
 import com.google.common.base.Preconditions;
 import java.util.Objects;
@@ -24,20 +24,18 @@ import java.util.Objects;
 /**
  * <i>Vec3 - A three dimensional vector.</i><br> <br> The Vec3 object represents a three dimensional vector in a space.<br> <br>
  *
- *     TODO: Does not support wrapping at wrapSize.
- *
  * @author lhunath
  */
-public class Vec3 extends Vec2 {
+public class Vec3D extends Vec2D {
 
     private static final long serialVersionUID = 0;
 
     /**
      * Z-Axis coordinate.
      */
-    private final int z;
+    private final double z;
 
-    public Vec3() {
+    public Vec3D() {
 
         this( 0, 0, 0 );
     }
@@ -47,7 +45,7 @@ public class Vec3 extends Vec2 {
      *
      * @param vector The 2D vector to be converted.
      */
-    public Vec3(final Vec2 vector) {
+    public Vec3D(final Vec2 vector) {
 
         this( vector, 0 );
     }
@@ -58,7 +56,7 @@ public class Vec3 extends Vec2 {
      * @param vector The 2D vector to be converted.
      * @param z      The depth at which to place the vector in space.
      */
-    public Vec3(final Vec2 vector, final int z) {
+    public Vec3D(final Vec2 vector, final double z) {
 
         this( vector.getX(), vector.getY(), z );
     }
@@ -70,20 +68,20 @@ public class Vec3 extends Vec2 {
      * @param y The y-coordinate of the new vector.
      * @param z The z-coordinate of the new vector.
      */
-    public Vec3(final int x, final int y, final int z) {
+    public Vec3D(final double x, final double y, final double z) {
 
         super( x, y, null );
         this.z = z;
     }
 
     @Override
-    public int lengthSq() {
+    public double lengthSq() {
 
         return super.lengthSq() + getZ() * getZ();
     }
 
     @Override
-    public Vec3 normalize() {
+    public Vec3D normalize() {
 
         double length = length();
         return multiply( 1 / length );
@@ -97,21 +95,21 @@ public class Vec3 extends Vec2 {
      *
      * @return A new vector with the resulting coordinates.
      */
-    public Vec3 rotate(final Angle a, final Axis ax) {
+    public Vec3D rotate(final Angle a, final Axis ax) {
 
         switch (ax) {
 
             case X: {
-                Vec2 rotated = new Vec2( getY(), getZ(), getWrapSize() ).rotate( a );
-                return new Vec3( getX(), rotated.getX(), rotated.getY() );
+                Vec2D rotated = new Vec2D( getY(), getZ(), getWrapSize() ).rotate( a );
+                return new Vec3D( getX(), rotated.getX(), rotated.getY() );
             }
             case Y: {
-                Vec2 rotated = new Vec2( getX(), getZ(), getWrapSize() ).rotate( a );
-                return new Vec3( rotated.getX(), getY(), rotated.getY() );
+                Vec2D rotated = new Vec2D( getX(), getZ(), getWrapSize() ).rotate( a );
+                return new Vec3D( rotated.getX(), getY(), rotated.getY() );
             }
             case Z: {
-                Vec2 rotated = rotate( a );
-                return new Vec3( rotated.getX(), rotated.getY(), getZ() );
+                Vec2D rotated = rotate( a );
+                return new Vec3D( rotated.getX(), rotated.getY(), getZ() );
             }
             case O:
                 return this;
@@ -128,12 +126,12 @@ public class Vec3 extends Vec2 {
      *
      * @return A new vector with the resulting coordinates.
      */
-    public Vec3 add(final Vec3 vector) {
+    public Vec3D add(final Vec3D vector) {
 
         if (vector == null)
             return this;
 
-        return new Vec3( getX() + vector.getX(), getY() + vector.getY(), getZ() + vector.getZ() );
+        return new Vec3D( getX() + vector.getX(), getY() + vector.getY(), getZ() + vector.getZ() );
     }
 
     /**
@@ -143,12 +141,12 @@ public class Vec3 extends Vec2 {
      *
      * @return A new vector with the resulting coordinates.
      */
-    public Vec3 subtract(final Vec3 vector) {
+    public Vec3D subtract(final Vec3D vector) {
 
         if (vector == null)
             return this;
 
-        return new Vec3( getX() - vector.getX(), getY() - vector.getY(), getZ() - vector.getZ() );
+        return new Vec3D( getX() - vector.getX(), getY() - vector.getY(), getZ() - vector.getZ() );
     }
 
     /**
@@ -158,18 +156,18 @@ public class Vec3 extends Vec2 {
      *
      * @return A new vector with the resulting coordinates.
      */
-    public Vec3 multiply(final Vec3 vector) {
+    public Vec3D multiply(final Vec3D vector) {
 
         if (vector == null)
             return this;
 
-        return new Vec3( getX() * vector.getX(), getY() * vector.getY(), getZ() * vector.getZ() );
+        return new Vec3D( getX() * vector.getX(), getY() * vector.getY(), getZ() * vector.getZ() );
     }
 
     @Override
-    public Vec3 multiply(final double multiplier) {
+    public Vec3D multiply(final double multiplier) {
 
-        return new Vec3( (int) (getX() * multiplier), (int) (getY() * multiplier), (int) (getZ() * multiplier) );
+        return new Vec3D( getX() * multiplier, getY() * multiplier, getZ() * multiplier );
     }
 
     /**
@@ -195,11 +193,11 @@ public class Vec3 extends Vec2 {
      *
      * @return A new vector, perpendicular to both given vectors, as described above.
      */
-    public Vec3 crossMultiply(final Vec3 vector) {
+    public Vec3D crossMultiply(final Vec3D vector) {
 
         Preconditions.checkNotNull( vector, "Given vector cannot be null." );
 
-        return new Vec3( getY() * vector.getZ() - getZ() * vector.getY(), getZ() * vector.getX() - getX() * vector.getZ(),
+        return new Vec3D( getY() * vector.getZ() - getZ() * vector.getY(), getZ() * vector.getX() - getX() * vector.getZ(),
                          getX() * vector.getY() - getY() * vector.getX() );
     }
 
@@ -212,7 +210,7 @@ public class Vec3 extends Vec2 {
      *
      * @return The result of the dot product of this vector with the given one.
      */
-    public double dotMultiply(final Vec3 vector) {
+    public double dotMultiply(final Vec3D vector) {
 
         if (vector == null)
             return 0;
@@ -223,7 +221,7 @@ public class Vec3 extends Vec2 {
     @Override
     public String toString() {
 
-        return strf( "vec(%d, %d, %d)", getX(), getY(), getZ() );
+        return strf( "vec(%.2f, %.2f, %.2f)", getX(), getY(), getZ() );
     }
 
     @Override
@@ -231,10 +229,10 @@ public class Vec3 extends Vec2 {
 
         if (!super.equals( obj ))
             return false;
-        if (!(obj instanceof Vec3))
+        if (!(obj instanceof Vec3D))
             return false;
 
-        Vec3 o = (Vec3) obj;
+        Vec3D o = (Vec3D) obj;
         return getZ() == o.getZ();
     }
 
@@ -247,7 +245,7 @@ public class Vec3 extends Vec2 {
     /**
      * @return The depth destination of this vector.
      */
-    public int getZ() {
+    public double getZ() {
 
         return z;
     }
@@ -257,8 +255,8 @@ public class Vec3 extends Vec2 {
      *
      * @return A new vector with the resulting coordinates.
      */
-    public Vec3 copyWithZ(final int newZ) {
+    public Vec3D copyWithZ(final double newZ) {
 
-        return new Vec3( getX(), getY(), newZ );
+        return new Vec3D( getX(), getY(), newZ );
     }
 }
