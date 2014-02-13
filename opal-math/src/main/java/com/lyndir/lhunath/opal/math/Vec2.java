@@ -346,20 +346,16 @@ public class Vec2 implements Serializable {
      */
     public Vec2 copyWith(int newX, int newY) {
 
-        Size size = getWrapSize();
-        if (size == null)
-            return new Vec2( newX, newY, null );
+        Size wrapSize = getWrapSize();
+        if (wrapSize != null) {
+            // Wrap X & Y.
+            // Whenever X wraps, Y advances by height / 2 to compensate for the hex grid visually.
+            // TODO: This Vec2 could should not assume hex logic.
+            int width = wrapSize.getWidth();
+            int height = wrapSize.getHeight();
+            return new Vec2( (newX % width + width) % width, (newY % height + height + 2 * (newX / width)) % height, wrapSize );
+        }
 
-        // Wrap X & Y.
-        // X's wrap is offset by height / 2 to compensate for hex tiling.
-        // TODO: This Vec2 could should not assume hex logic.
-        int width = size.getWidth();
-        int height = size.getHeight();
-        while (newX < 0 || newX > width)
-            newX += width - height / 2;
-        while (newY < 0 || newY > height)
-            newY += height;
-
-        return new Vec2( (newX + width) % width, (newY + height) % height, size );
+        return new Vec2( newX, newY, wrapSize );
     }
 }
