@@ -43,17 +43,6 @@ public enum Side {
         this.delta = delta;
     }
 
-    /**
-     * Use this side as a delta from a given coordinate to find the adjacent coordinate.
-     *
-     * @param source The source coordinate.
-     *
-     * @return The destination coordinate.  This is the coordinate to the side of the source coordinate expressed by this instance.
-     */
-    public Vec2 delta(final Vec2 source) {
-        return source.translate( delta );
-    }
-
     public Vec2 getDelta() {
         return delta;
     }

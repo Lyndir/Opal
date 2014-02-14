@@ -72,7 +72,7 @@ public class Vec3 extends Vec2 {
      */
     public Vec3(final int x, final int y, final int z) {
 
-        super( x, y, null );
+        super( x, y );
         this.z = z;
     }
 
@@ -102,11 +102,11 @@ public class Vec3 extends Vec2 {
         switch (ax) {
 
             case X: {
-                Vec2 rotated = new Vec2( getY(), getZ(), getWrapSize() ).rotate( a );
+                Vec2 rotated = new Vec2( getY(), getZ() ).rotate( a );
                 return new Vec3( getX(), rotated.getX(), rotated.getY() );
             }
             case Y: {
-                Vec2 rotated = new Vec2( getX(), getZ(), getWrapSize() ).rotate( a );
+                Vec2 rotated = new Vec2( getX(), getZ() ).rotate( a );
                 return new Vec3( rotated.getX(), getY(), rotated.getY() );
             }
             case Z: {

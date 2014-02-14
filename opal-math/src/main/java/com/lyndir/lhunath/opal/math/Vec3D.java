@@ -70,7 +70,7 @@ public class Vec3D extends Vec2D {
      */
     public Vec3D(final double x, final double y, final double z) {
 
-        super( x, y, null );
+        super( x, y );
         this.z = z;
     }
 
@@ -100,11 +100,11 @@ public class Vec3D extends Vec2D {
         switch (ax) {
 
             case X: {
-                Vec2D rotated = new Vec2D( getY(), getZ(), getWrapSize() ).rotate( a );
+                Vec2D rotated = new Vec2D( getY(), getZ() ).rotate( a );
                 return new Vec3D( getX(), rotated.getX(), rotated.getY() );
             }
             case Y: {
-                Vec2D rotated = new Vec2D( getX(), getZ(), getWrapSize() ).rotate( a );
+                Vec2D rotated = new Vec2D( getX(), getZ() ).rotate( a );
                 return new Vec3D( rotated.getX(), getY(), rotated.getY() );
             }
             case Z: {

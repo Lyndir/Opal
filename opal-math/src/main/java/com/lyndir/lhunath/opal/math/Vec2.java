@@ -43,16 +43,12 @@ public class Vec2 implements Serializable {
      */
     private final int y;
 
-    @Nullable
-    @ObjectMeta(ignoreFor = ObjectMeta.For.toString)
-    private final Size wrapSize;
-
     /**
      * Create a new two dimensional vector at the origin.
      */
     public Vec2() {
 
-        this( 0, 0, null );
+        this( 0, 0 );
     }
 
     /**
@@ -63,21 +59,8 @@ public class Vec2 implements Serializable {
      */
     public Vec2(final int x, final int y) {
 
-        this( x, y, null );
-    }
-
-    /**
-     * Create a new two dimensional vector in a wrapping space.
-     *
-     * @param x        The x-coordinate of the new vector.
-     * @param y        The y-coordinate of the new vector.
-     * @param wrapSize The size of the wrapping space.
-     */
-    public Vec2(final int x, final int y, @Nullable final Size wrapSize) {
-
         this.x = x;
         this.y = y;
-        this.wrapSize = wrapSize;
     }
 
     /**
@@ -97,47 +80,17 @@ public class Vec2 implements Serializable {
     }
 
     public int getDX(final Vec2 other) {
-        int dx = other.getX() - getX();
-
-        // Take wrapping into account.
-        if (wrapSize != null) {
-            int width = wrapSize.getWidth();
-            if (dx > width / 2)
-                dx -= width;
-            else if (dx < -width / 2)
-                dx += width;
-        }
-
-        return dx;
+        return other.getX() - getX();
     }
 
     public int getDY(final Vec2 other) {
-        int dy = other.getY() - getY();
-
-        // Take wrapping into account.
-        if (wrapSize != null) {
-            int height = wrapSize.getHeight();
-            if (dy > height / 2)
-                dy -= height;
-            else if (dy < -height / 2)
-                dy += height;
-        }
-
-        return dy;
+        return other.getY() - getY();
     }
 
     public int distanceTo(final Vec2 other) {
         int dx = getDX( other ), dy = getDY( other );
 
         return (Math.abs( dx ) + Math.abs( dy ) + Math.abs( dx + dy )) / 2;
-    }
-
-    /**
-     * @return The size at which operations on this vector wrap.
-     */
-    @Nullable
-    public Size getWrapSize() {
-        return wrapSize;
     }
 
     /**
@@ -294,10 +247,7 @@ public class Vec2 implements Serializable {
     @Override
     public String toString() {
 
-        if (wrapSize == null)
-            return strf( "vec(%d, %d)", getX(), getY() );
-
-        return strf( "vec(%d, %d / %s)", getX(), getY(), getWrapSize() );
+        return strf( "vec(%d, %d)", getX(), getY() );
     }
 
     @Override
@@ -344,18 +294,8 @@ public class Vec2 implements Serializable {
      *
      * @return A new vector with the resulting coordinates.
      */
-    public Vec2 copyWith(int newX, int newY) {
+    public Vec2 copyWith(final int newX, final int newY) {
 
-        Size wrapSize = getWrapSize();
-        if (wrapSize != null) {
-            // Wrap X & Y.
-            // Whenever X wraps, Y advances by height / 2 to compensate for the hex grid visually.
-            // TODO: This Vec2 could should not assume hex logic.
-            int width = wrapSize.getWidth();
-            int height = wrapSize.getHeight();
-            return new Vec2( (newX % width + width) % width, (newY % height + height + 2 * (newX / width)) % height, wrapSize );
-        }
-
-        return new Vec2( newX, newY, wrapSize );
+        return new Vec2( newX, newY );
     }
 }
