@@ -152,7 +152,20 @@ public class Vec2D implements Serializable {
         if (vector == null)
             return this;
 
-        return copyWith( getX() + vector.getX(), getY() + vector.y );
+        return translate( vector.getX(), vector.getY() );
+    }
+
+    /**
+     * Add another vector to this one.
+     *
+     * @param dx The amount by which to translate the x coordinate.
+     * @param dy The amount by which to translate the y coordinate.
+     *
+     * @return A new vector with the resulting coordinates.
+     */
+    public Vec2D translate(final double dx, final double dy) {
+
+        return copyWith( getX() + dx, getY() + dy );
     }
 
     /**

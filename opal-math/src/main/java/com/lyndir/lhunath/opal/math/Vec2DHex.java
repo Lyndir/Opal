@@ -28,6 +28,13 @@ public class Vec2DHex extends Vec2D {
         this.wrapSize = wrapSize;
     }
 
+
+    @Override
+    public String toString() {
+
+        return strf( "vec(%.2f, %.2f / %s)", getX(), getY(), getWrapSize() );
+    }
+
     /**
      * @return The size at which operations on this vector wrap.
      */
@@ -70,12 +77,49 @@ public class Vec2DHex extends Vec2D {
         return dy;
     }
 
-
+    @Override
+    public Vec2DHex normalize() {
+        return (Vec2DHex) super.normalize();
+    }
 
     @Override
-    public String toString() {
+    public Vec2DHex rotate(final Angle a) {
+        return (Vec2DHex) super.rotate( a );
+    }
 
-        return strf( "vec(%.2f, %.2f / %s)", getX(), getY(), getWrapSize() );
+    @Override
+    public Vec2DHex translate(final Vec2D vector) {
+        return (Vec2DHex) super.translate( vector );
+    }
+
+    @Override
+    public Vec2DHex translate(final double dx, final double dy) {
+        return (Vec2DHex) super.translate( dx, dy );
+    }
+
+    @Override
+    public Vec2DHex multiply(final Vec2D vector) {
+        return (Vec2DHex) super.multiply( vector );
+    }
+
+    @Override
+    public Vec2DHex multiply(final double multiplier) {
+        return (Vec2DHex) super.multiply( multiplier );
+    }
+
+    @Override
+    public Vec2DHex inverse() {
+        return (Vec2DHex) super.inverse();
+    }
+
+    @Override
+    public Vec2DHex copyWithX(final double newX) {
+        return (Vec2DHex) super.copyWithX( newX );
+    }
+
+    @Override
+    public Vec2DHex copyWithY(final double newY) {
+        return (Vec2DHex) super.copyWithY( newY );
     }
 
     @Override
@@ -86,6 +130,6 @@ public class Vec2DHex extends Vec2D {
         int width = wrapSize.getWidth();
         int height = wrapSize.getHeight();
 
-        return new Vec2DHex( (newX % width + width) % width, (newY % height + height + 2 * (newX / width)) % height, wrapSize );
+        return new Vec2DHex( (newX % width + width + (newY / height) * (height / 2)) % width, (newY % height + height) % height, wrapSize );
     }
 }
