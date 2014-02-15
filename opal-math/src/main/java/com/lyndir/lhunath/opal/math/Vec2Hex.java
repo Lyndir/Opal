@@ -129,6 +129,8 @@ public class Vec2Hex extends Vec2 {
         int width = wrapSize.getWidth();
         int height = wrapSize.getHeight();
 
-        return new Vec2Hex( (newX % width + width + (newY / height) * (height / 2)) % width, (newY % height + height) % height, wrapSize );
+        int wrapCorrectionX = newY < 0? ((newY - height) / height) * (height / 2): (newY / height) * (height / 2);
+        return new Vec2Hex( (newX % width + width + wrapCorrectionX) % width,
+                            (newY % height + height) % height, wrapSize );
     }
 }
