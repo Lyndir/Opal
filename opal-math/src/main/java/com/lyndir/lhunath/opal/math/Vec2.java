@@ -17,10 +17,14 @@ package com.lyndir.lhunath.opal.math;
 
 import static com.lyndir.lhunath.opal.system.util.StringUtils.*;
 
-import com.lyndir.lhunath.opal.system.util.ObjectMeta;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+import com.lyndir.lhunath.opal.system.collection.Cache;
+import com.lyndir.lhunath.opal.system.util.NNSupplier;
 import java.io.Serializable;
+import java.lang.ref.SoftReference;
 import java.util.Objects;
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 
 /**
@@ -31,7 +35,8 @@ import javax.annotation.Nullable;
  */
 public class Vec2 implements Serializable {
 
-    private static final long serialVersionUID = 0;
+    private static final long                                         serialVersionUID = 0;
+    private static final Table<Integer, Integer, SoftReference<Vec2>> instanceCache    = HashBasedTable.create( 100, 100 );
 
     /**
      * X-Axis coordinate.
@@ -44,11 +49,17 @@ public class Vec2 implements Serializable {
     private final int y;
 
     /**
+     * Cached.
+     */
+    private transient Double  length;
+    private transient Integer lengthSq;
+    private transient Vec2    normal;
+
+    /**
      * Create a new two dimensional vector at the origin.
      */
-    public Vec2() {
-
-        this( 0, 0 );
+    public static Vec2 create() {
+        return create( 0, 0 );
     }
 
     /**
@@ -57,17 +68,28 @@ public class Vec2 implements Serializable {
      * @param x The x-coordinate of the new vector.
      * @param y The y-coordinate of the new vector.
      */
-    public Vec2(final int x, final int y) {
+    public static Vec2 create(final int x, final int y) {
+        SoftReference<Vec2> cachedInstance = instanceCache.get( x, y );
+        if (cachedInstance != null) {
+            Vec2 instance = cachedInstance.get();
+            if (instance != null)
+                return instance;
+        }
 
+        return new Vec2( x, y );
+    }
+
+    Vec2(final int x, final int y) {
         this.x = x;
         this.y = y;
+
+        instanceCache.put( x, y, new SoftReference<>( this ) );
     }
 
     /**
      * @return The horizontal destination of this vector.
      */
     public int getX() {
-
         return x;
     }
 
@@ -75,7 +97,6 @@ public class Vec2 implements Serializable {
      * @return The vertical destination of this vector.
      */
     public int getY() {
-
         return y;
     }
 
@@ -88,9 +109,14 @@ public class Vec2 implements Serializable {
     }
 
     public int distanceTo(final Vec2 other) {
-        int dx = getDX( other ), dy = getDY( other );
-
-        return (Math.abs( dx ) + Math.abs( dy ) + Math.abs( dx + dy )) / 2;
+        return Cache.getOrLoad( this, "dv", other, new NNSupplier<Integer>() {
+            @Nonnull
+            @Override
+            public Integer get() {
+                int dx = getDX( other ), dy = getDY( other );
+                return (Math.abs( dx ) + Math.abs( dy ) + Math.abs( dx + dy )) / 2;
+            }
+        } );
     }
 
     /**
@@ -99,8 +125,10 @@ public class Vec2 implements Serializable {
      * @return The length of this vector.
      */
     public double length() {
+        if (length != null)
+            return length;
 
-        return Math.sqrt( lengthSq() );
+        return length = Math.sqrt( lengthSq() );
     }
 
     /**
@@ -110,8 +138,10 @@ public class Vec2 implements Serializable {
      * @return The squared length of this vector.
      */
     public int lengthSq() {
+        if (lengthSq != null)
+            return lengthSq;
 
-        return getX() * getX() + getY() * getY();
+        return lengthSq = getX() * getX() + getY() * getY();
     }
 
     /**
@@ -120,9 +150,10 @@ public class Vec2 implements Serializable {
      * @return A new, normalized version of this vector; pointing in the same direction with length 1.
      */
     public Vec2 normalize() {
+        if (normal != null)
+            return normal;
 
-        double length = length();
-        return multiply( 1 / length );
+        return normal = multiply( 1 / length() );
     }
 
     /**
@@ -133,12 +164,17 @@ public class Vec2 implements Serializable {
      * @return A new vector with the resulting coordinates.
      */
     public Vec2 rotate(final Angle a) {
-
         if (a == null)
             return this;
 
-        return copyWith( (int) (getX() * a.sin() + getY() * a.cos()), //
-                         (int) (getX() * a.cos() - getY() * a.sin()) );
+        return Cache.getOrLoad( this, "rotate", a, new NNSupplier<Vec2>() {
+            @Nonnull
+            @Override
+            public Vec2 get() {
+                return copyWith( (int) (getX() * a.sin() + getY() * a.cos()), //
+                                 (int) (getX() * a.cos() - getY() * a.sin()) );
+            }
+        } );
     }
 
     /**
@@ -149,7 +185,6 @@ public class Vec2 implements Serializable {
      * @return A new vector with the resulting coordinates.
      */
     public Vec2 translate(final Vec2 vector) {
-
         if (vector == null)
             return this;
 
@@ -165,7 +200,6 @@ public class Vec2 implements Serializable {
      * @return A new vector with the resulting coordinates.
      */
     public Vec2 translate(final int dx, final int dy) {
-
         return copyWith( getX() + dx, getY() + dy );
     }
 
@@ -177,7 +211,6 @@ public class Vec2 implements Serializable {
      * @return A new vector with the resulting coordinates.
      */
     public Vec2 multiply(final Vec2 vector) {
-
         if (vector == null)
             return this;
 
@@ -192,7 +225,6 @@ public class Vec2 implements Serializable {
      * @return A new vector with the resulting coordinates.
      */
     public Vec2 multiply(final double multiplier) {
-
         return copyWith( (int) (getX() * multiplier), (int) (getY() * multiplier) );
     }
 
@@ -202,7 +234,6 @@ public class Vec2 implements Serializable {
      * @return A new vector with the resulting coordinates.
      */
     public Vec2 inverse() {
-
         return multiply( -1 );
     }
 
@@ -221,7 +252,6 @@ public class Vec2 implements Serializable {
      * @return The result of the cross product of this vector with the given one.
      */
     public int crossMultiply(final Vec2 vector) {
-
         if (vector == null)
             return 0;
 
@@ -237,7 +267,6 @@ public class Vec2 implements Serializable {
      * @return The result of the dot product of this vector with the given one.
      */
     public int dotMultiply(final Vec2 vector) {
-
         if (vector == null)
             return 0;
 
@@ -246,19 +275,16 @@ public class Vec2 implements Serializable {
 
     @Override
     public String toString() {
-
         return strf( "vec(%d, %d)", getX(), getY() );
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash( getX(), getY() );
     }
 
     @Override
     public boolean equals(final Object obj) {
-
         if (obj == this)
             return true;
         if (!(obj instanceof Vec2))
@@ -274,7 +300,6 @@ public class Vec2 implements Serializable {
      * @return A new vector with the resulting coordinates.
      */
     public Vec2 copyWithX(final int newX) {
-
         return copyWith( newX, getY() );
     }
 
@@ -284,7 +309,6 @@ public class Vec2 implements Serializable {
      * @return A new vector with the resulting coordinates.
      */
     public Vec2 copyWithY(final int newY) {
-
         return copyWith( getX(), newY );
     }
 
@@ -295,7 +319,6 @@ public class Vec2 implements Serializable {
      * @return A new vector with the resulting coordinates.
      */
     public Vec2 copyWith(final int newX, final int newY) {
-
-        return new Vec2( newX, newY );
+        return create( newX, newY );
     }
 }

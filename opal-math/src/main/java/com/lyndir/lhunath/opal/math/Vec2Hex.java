@@ -11,6 +11,9 @@ import javax.annotation.Nonnull;
  */
 public class Vec2Hex extends Vec2 {
 
+    private static final long serialVersionUID = 0;
+
+    @Nonnull
     @ObjectMeta(ignoreFor = ObjectMeta.For.toString)
     private final Size wrapSize;
 
@@ -21,7 +24,7 @@ public class Vec2Hex extends Vec2 {
      * @param y        The y-coordinate of the new vector.
      * @param wrapSize The size of the wrapping space.
      */
-    public Vec2Hex(final int x, final int y, final Size wrapSize) {
+    public Vec2Hex(final int x, final int y, @Nonnull final Size wrapSize) {
 
         super( x, y );
 
@@ -47,14 +50,11 @@ public class Vec2Hex extends Vec2 {
         int dx = super.getDX( other );
 
         // Take wrapping into account.
-        if (wrapSize != null) {
-            int width = wrapSize.getWidth();
-            if (dx > width / 2) {
-                dx -= width;
-            } else if (dx < -width / 2) {
-                dx += width;
-            }
-        }
+        int width = wrapSize.getWidth();
+        while (dx > width / 2)
+            dx -= width;
+        while (dx < -width / 2)
+            dx += width;
 
         return dx;
     }
@@ -64,13 +64,11 @@ public class Vec2Hex extends Vec2 {
         int dy = super.getDY( other );
 
         // Take wrapping into account.
-        if (wrapSize != null) {
-            int height = wrapSize.getHeight();
-            if (dy > height / 2) {
-                dy -= height;
-            } else if (dy < -height / 2) {
-                dy += height;
-            }
+        int height = wrapSize.getHeight();
+        if (dy > height / 2) {
+            dy -= height;
+        } else if (dy < -height / 2) {
+            dy += height;
         }
 
         return dy;
