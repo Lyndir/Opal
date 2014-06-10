@@ -51,7 +51,7 @@ public abstract class ObjectUtils {
     private static final int                                 MAX_DECODE_LENGTH        = 100;
     private static final Map<For, ThreadLocal<Set<Integer>>> seen                     = Maps.newEnumMap( For.class );
     private static final int                                 HASHCODE_PRIME           = 524287;
-    private static final Class<Object>                       persistentCollectionType = TypeUtils.findClass(
+    private static final Optional<Class<Object>>             persistentCollectionType = TypeUtils.loadClass(
             "org.hibernate.collection.PersistentCollection" );
 
     static {
@@ -361,7 +361,7 @@ public abstract class ObjectUtils {
      */
     private static boolean isValueAccessible(final Object object) {
 
-        if (persistentCollectionType != null && persistentCollectionType.isInstance( object ))
+        if (persistentCollectionType.isPresent() && persistentCollectionType.get().isInstance( object ))
             try {
                 if (!(Boolean) object.getClass().getMethod( "wasInitialized" ).invoke( object ))
                     // Hack around Hibernate idiocy of manually logging its LazyInitializationException.

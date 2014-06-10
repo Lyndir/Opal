@@ -2,8 +2,7 @@ package com.lyndir.lhunath.opal.system.util;
 
 import static com.lyndir.lhunath.opal.system.util.StringUtils.*;
 
-import com.google.common.base.Function;
-import com.google.common.base.Throwables;
+import com.google.common.base.*;
 import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.error.BreakException;
 import com.lyndir.lhunath.opal.system.error.InternalInconsistencyException;
@@ -43,39 +42,17 @@ public abstract class TypeUtils {
      * @param typeName The name of the class that should be loaded.
      * @param <T>      The type of class that the operation should yield (note: unchecked).
      *
-     * @return A class object or {@code null} if the type could not be found.
-     */
-    @Nullable
-    @SuppressWarnings({ "unchecked" })
-    public static <T> Class<T> findClass(final String typeName) {
-
-        try {
-            return (Class<T>) Thread.currentThread().getContextClassLoader().loadClass( typeName );
-        }
-        catch (final ClassNotFoundException ignored) {
-            return null;
-        }
-    }
-
-    /**
-     * Load the named class.
-     *
-     * @param typeName The name of the class that should be loaded.
-     * @param <T>      The type of class that the operation should yield (note: unchecked).
-     *
-     * @return A class object.
-     *
-     * @throws RuntimeException In case the named class cannot be found in the thread's context classloader.
+     * @return A present class object or absent if the class could not be loaded.
      */
     @Nonnull
     @SuppressWarnings({ "unchecked" })
-    public static <T> Class<T> loadClass(final String typeName) {
+    public static <T> Optional<Class<T>> loadClass(final String typeName) {
 
         try {
-            return (Class<T>) Thread.currentThread().getContextClassLoader().loadClass( typeName );
+            return Optional.of( (Class<T>) Thread.currentThread().getContextClassLoader().loadClass( typeName ) );
         }
         catch (final ClassNotFoundException e) {
-            throw Throwables.propagate( e );
+            return Optional.absent();
         }
     }
 
@@ -106,20 +83,19 @@ public abstract class TypeUtils {
      * @param typeName The name of the class that should be loaded and instantiated with the default constructor.
      * @param <T>      The type of instance that the operation should yield (note: unchecked).
      *
-     * @return An instance object of the named type.
+     * @return A present class instance or absent if the class could not be loaded.
      *
      * @throws RuntimeException In case the named class cannot be found in the thread's context classloader or the class cannot be
      *                          instantiated or constructed.
      */
     @SuppressWarnings({ "unchecked" })
-    public static <T> T newInstance(final String typeName) {
+    public static <T> Optional<T> newInstance(final String typeName) {
 
-        try {
-            return (T) loadClass( typeName ).getConstructor().newInstance();
-        }
-        catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw Throwables.propagate( e );
-        }
+        Optional<Class<T>> type = loadClass( typeName );
+        if (!type.isPresent())
+            return Optional.absent();
+
+        return Optional.of( newInstance( type.get() ) );
     }
 
     /**
