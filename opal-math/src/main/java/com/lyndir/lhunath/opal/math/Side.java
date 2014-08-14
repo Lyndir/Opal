@@ -1,6 +1,6 @@
 package com.lyndir.lhunath.opal.math;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 
 /**
@@ -52,6 +52,6 @@ public enum Side {
             if (side.name().equalsIgnoreCase( name ))
                 return Optional.of( side );
 
-        return Optional.absent();
+        return Optional.empty();
     }
 }

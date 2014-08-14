@@ -17,6 +17,7 @@ package com.lyndir.lhunath.opal.security;
 
 import static com.google.common.base.Preconditions.*;
 
+import com.google.common.base.Verify;
 import com.google.common.collect.ImmutableSet;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.util.*;
@@ -135,7 +136,7 @@ public class ACL {
         if (isSubjectPermissionDefault( subject ))
             return getDefaultPermission();
 
-        return checkNotNull( subjectPermissions.get( subject ), "Permission for %s is unset.", subject );
+        return Verify.verifyNotNull( subjectPermissions.get( subject ), "Permission for %s is unset.", subject );
     }
 
     /**

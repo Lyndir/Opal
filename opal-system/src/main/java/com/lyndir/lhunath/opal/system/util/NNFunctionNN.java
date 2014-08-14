@@ -15,8 +15,7 @@
  */
 package com.lyndir.lhunath.opal.system.util;
 
-import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
+import com.google.common.base.*;
 import javax.annotation.Nonnull;
 
 
@@ -26,30 +25,25 @@ import javax.annotation.Nonnull;
  * @param <T> The type of the value this operation can be applied to.
  */
 @SuppressWarnings({ "NullableProblems" })
-public abstract class NNFunctionNN<F, T> implements Function<F, T> {
+public interface NNFunctionNN<F, T> extends Function<F, T> {
 
     @Nonnull
     @Override
-    public abstract T apply(@Nonnull F input);
+    T apply(@Nonnull F input);
 
-    public boolean equals(@Nonnull final Object object) {
+    boolean equals(@Nonnull final Object object);
 
-        return super.equals( object );
-    }
+    @Override
+    int hashCode();
 
-    public int hashCode() {
-
-        return super.hashCode();
-    }
-
-    public static <F, T> NNFunctionNN<F, T> of(final Function<F, T> func) {
+    static <F, T> NNFunctionNN<F, T> of(final Function<F, T> func) {
 
         return new NNFunctionNN<F, T>() {
             @Nonnull
             @Override
             public T apply(@Nonnull final F input) {
 
-                return Preconditions.checkNotNull( func.apply( input ) );
+                return Verify.verifyNotNull( func.apply( input ) );
             }
 
             @Override

@@ -13,6 +13,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+
 package com.lyndir.lhunath.opal.math;
 
 import com.google.common.base.Preconditions;
@@ -62,7 +64,7 @@ public class Version implements Comparable<Version>, Serializable {
 
     /**
      * @return The major version number (the first number in the version). {@code null} if the first tag is not a number or there are
-     *         no tags.
+     * no tags.
      */
     @Nullable
     public Integer getMajor() {
@@ -70,7 +72,7 @@ public class Version implements Comparable<Version>, Serializable {
         if (tags.length == 0)
             return null;
 
-        return ConversionUtils.toInteger( tags[0] ).orNull();
+        return ConversionUtils.toInteger( tags[0] ).orElse( null );
     }
 
     @Override

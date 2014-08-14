@@ -1,11 +1,10 @@
 package com.lyndir.lhunath.opal.system.util;
 
-import static com.google.common.base.Preconditions.*;
-
-import com.google.common.base.Optional;
+import com.google.common.base.Verify;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -32,14 +31,14 @@ public class ConversionUtils {
     public static Optional<Long> toLong(@Nullable final Object object) {
 
         if (object == null || object instanceof Long)
-            return Optional.fromNullable( (Long) object );
+            return Optional.ofNullable( (Long) object );
 
         try {
             return Optional.of( Long.valueOf( object.toString() ) );
         }
         catch (final NumberFormatException e) {
             logger.wrn( e, "Malformed long: %s", object );
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 
@@ -80,14 +79,14 @@ public class ConversionUtils {
     public static Optional<Integer> toInteger(@Nullable final Object object) {
 
         if (object == null || object instanceof Integer)
-            return Optional.fromNullable( (Integer) object);
+            return Optional.ofNullable( (Integer) object );
 
         try {
             return Optional.of( Integer.valueOf( object.toString() ) );
         }
         catch (final NumberFormatException e) {
             logger.wrn( e, "Malformed integer: %s", object );
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 
@@ -129,14 +128,14 @@ public class ConversionUtils {
     public static Optional<Double> toDouble(@Nullable final Object object) {
 
         if (object == null || object instanceof Double)
-            return Optional.fromNullable( (Double) object);
+            return Optional.ofNullable( (Double) object );
 
         try {
             return Optional.of( Double.parseDouble( object.toString() ) );
         }
         catch (final NumberFormatException e) {
             logger.wrn( e, "Malformed double: %s", object );
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 
@@ -178,7 +177,7 @@ public class ConversionUtils {
     public static Optional<Boolean> toBoolean(@Nullable final Object object) {
 
         if (object == null || object instanceof Boolean)
-            return Optional.fromNullable( (Boolean) object );
+            return Optional.ofNullable( (Boolean) object );
 
         return Optional.of( Boolean.parseBoolean( object.toString() ) );
     }
@@ -213,7 +212,7 @@ public class ConversionUtils {
     public static Optional<String> toString(@Nullable final Object object) {
 
         if (object == null || object instanceof String)
-            return Optional.fromNullable( (String) object );
+            return Optional.ofNullable( (String) object );
 
         return Optional.of( object.toString() );
     }
@@ -248,14 +247,14 @@ public class ConversionUtils {
     public static Optional<URL> toURL(@Nullable final Object url) {
 
         if (url == null || url instanceof URL)
-            return Optional.fromNullable( (URL) url );
+            return Optional.ofNullable( (URL) url );
 
         try {
             return Optional.of( new URL( url.toString() ) );
         }
         catch (final MalformedURLException e) {
             logger.wrn( e, "Malformed URL: %s", url );
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 
@@ -276,7 +275,7 @@ public class ConversionUtils {
             return (URL) url;
 
         try {
-            return new URL( checkNotNull( url, "Missing URL." ).toString() );
+            return new URL( Verify.verifyNotNull( url, "Missing URL." ).toString() );
         }
         catch (final MalformedURLException e) {
             throw Throw.propagate( e, "Malformed URL: %s", url );

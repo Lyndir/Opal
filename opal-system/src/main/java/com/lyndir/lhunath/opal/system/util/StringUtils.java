@@ -19,6 +19,7 @@ import static com.google.common.base.Preconditions.*;
 import static com.lyndir.lhunath.opal.system.util.ObjectUtils.*;
 
 import com.google.common.base.Function;
+import com.google.common.base.Verify;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.net.URL;
@@ -187,8 +188,8 @@ public abstract class StringUtils {
             String value = keyToExpansion.apply( key );
 
             indexToEnds.put( index, matcher.end() );
-            indexToExpansions.put( index, checkNotNull( ifNotNullElseNullable( value, fallback ), //
-                                                        "No value for required expansion key: %s", key ) );
+            indexToExpansions.put( index, Verify.verifyNotNull( ifNotNullElse( value, fallback ), //
+                                                                "No value for required expansion key: %s", key ) );
         }
 
         SortedSet<Integer> reverseIndexes = Sets.newTreeSet( Collections.reverseOrder() );

@@ -2,7 +2,8 @@ package com.lyndir.lhunath.opal.system.util;
 
 import static com.lyndir.lhunath.opal.system.util.StringUtils.*;
 
-import com.google.common.base.*;
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.error.BreakException;
 import com.lyndir.lhunath.opal.system.error.InternalInconsistencyException;
@@ -60,20 +61,16 @@ public abstract class TypeUtils {
      * Instantiate the given class or turn any exceptions into runtime exceptions.
      *
      * @param type The class that should be instantiated with the default constructor.
-     * @param <T>  The type of instance that the operation should yield.
      *
-     * @return An instance object of the named type.
-     *
-     * @throws RuntimeException In case the named class cannot be found in the thread's context classloader or the class cannot be
-     *                          instantiated or constructed.
+     * @return A present instance object of the named type or absent if the instance could not be created.
      */
-    public static <T> T newInstance(final Class<T> type) {
+    public static <T> Optional<T> newInstance(final Class<T> type) {
 
         try {
-            return type.getConstructor().newInstance();
+            return Optional.of( type.getConstructor().newInstance() );
         }
-        catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw Throwables.propagate( e );
+        catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | NoClassDefFoundError ignored) {
+            return Optional.absent();
         }
     }
 
@@ -92,10 +89,11 @@ public abstract class TypeUtils {
     public static <T> Optional<T> newInstance(final String typeName) {
 
         Optional<Class<T>> type = loadClass( typeName );
-        if (!type.isPresent())
+        if (!type.isPresent()) {
             return Optional.absent();
+        }
 
-        return Optional.of( newInstance( type.get() ) );
+        return newInstance( type.get() );
     }
 
     /**
@@ -165,18 +163,21 @@ public abstract class TypeUtils {
     public static <A extends Annotation> A findAnnotation(final Class<?> type, final Class<A> annotationType) {
 
         A annotation = type.getAnnotation( annotationType );
-        if (annotation != null)
+        if (annotation != null) {
             return annotation;
+        }
 
         for (final Class<?> subType : type.getInterfaces()) {
             annotation = findAnnotation( subType, annotationType );
-            if (annotation != null)
+            if (annotation != null) {
                 return annotation;
+            }
         }
         if (type.getSuperclass() != null) {
             annotation = findAnnotation( type.getSuperclass(), annotationType );
-            if (annotation != null)
+            if (annotation != null) {
                 return annotation;
+            }
         }
 
         return null;
@@ -201,17 +202,20 @@ public abstract class TypeUtils {
         ImmutableMap.Builder<Class<?>, A> typeAnnotations = ImmutableMap.builder();
 
         A annotation = type.getAnnotation( annotationType );
-        if (annotation != null)
+        if (annotation != null) {
             typeAnnotations.put( type, annotation );
+        }
         for (final Class<?> typeInterface : type.getInterfaces()) {
             annotation = findAnnotation( typeInterface, annotationType );
-            if (annotation != null)
+            if (annotation != null) {
                 typeAnnotations.put( typeInterface, annotation );
+            }
         }
         typeHierarchyAnnotations.put( type, typeAnnotations.build() );
 
-        if (type.getSuperclass() != null)
+        if (type.getSuperclass() != null) {
             typeHierarchyAnnotations.putAll( getAnnotations( type.getSuperclass(), annotationType ) );
+        }
 
         return typeHierarchyAnnotations.build();
     }
@@ -239,13 +243,14 @@ public abstract class TypeUtils {
 
         Method superclassMethod = null;
         Class<?> superclass = method.getDeclaringClass();
-        while ((superclass = superclass.getSuperclass()) != null)
+        while ((superclass = superclass.getSuperclass()) != null) {
             try {
                 //logger.debug( "Trying for method {} in {}", method.getName(), superclass );
                 superclassMethod = superclass.getMethod( method.getName(), method.getParameterTypes() );
             }
             catch (final NoSuchMethodException ignored) {
             }
+        }
         if (superclassMethod == null) {
             //logger.debug( "Gave up for annotation {} (reached end of hierarchy)", annotationType );
             return null;
@@ -266,15 +271,17 @@ public abstract class TypeUtils {
                 continue;
             }
 
-            for (int i = 0; i < parameterTypes.length; i++)
+            for (int i = 0; i < parameterTypes.length; i++) {
                 if (!parameterTypes[i].isInstance( args[i] )) {
                     logger.dbg( "constructor: %s, not compatible in parameter type: !%s.isInstance(%s)", constructor, parameterTypes[i],
                                 args[i] );
                     compatible = false;
                     break;
                 }
-            if (!compatible)
+            }
+            if (!compatible) {
                 continue;
+            }
 
             // Constructor guaranteed of type <E> because it comes from Class<E> type.
             //noinspection unchecked
@@ -286,7 +293,7 @@ public abstract class TypeUtils {
 
     public static <E> Constructor<E> getConstructor(final Class<E> type, final Object... args) {
         ImmutableList<Constructor<E>> constructors = findConstructors( type, args );
-        if (constructors.isEmpty())
+        if (constructors.isEmpty()) {
             throw new InternalInconsistencyException( strf( "No constructors of type: %s, match argument types: %s", type,
                                                             Lists.transform( Arrays.asList( args ), new Function<Object, Object>() {
                                                                 @Override
@@ -294,7 +301,8 @@ public abstract class TypeUtils {
                                                                     return input == null? "<null>": input.getClass();
                                                                 }
                                                             } ) ) );
-        if (constructors.size() > 1)
+        }
+        if (constructors.size() > 1) {
             throw new InternalInconsistencyException(
                     strf( "Multiple constructors of type: %s, match argument types: %s, candidates: %s", type,
                           Lists.transform( Arrays.asList( args ), new Function<Object, Object>() {
@@ -303,6 +311,7 @@ public abstract class TypeUtils {
                                   return input == null? "<null>": input.getClass();
                               }
                           } ), constructors ) );
+        }
 
         return constructors.get( 0 );
     }
@@ -331,12 +340,15 @@ public abstract class TypeUtils {
         R lastResult = firstResult;
         try {
             for (Class<? super T> currentType = type; currentType != null; currentType = currentType.getSuperclass()) {
-                if (typeFunction != null)
+                if (typeFunction != null) {
                     lastResult = typeFunction.apply( new LastResult<Class<?>, R>( currentType, lastResult ) );
+                }
 
-                if (interfaceFunction != null)
-                    for (final Class<?> interfaceType : currentType.getInterfaces())
+                if (interfaceFunction != null) {
+                    for (final Class<?> interfaceType : currentType.getInterfaces()) {
                         lastResult = interfaceFunction.apply( new LastResult<Class<?>, R>( interfaceType, lastResult ) );
+                    }
+                }
             }
         }
         catch (final BreakException e) {
@@ -371,11 +383,12 @@ public abstract class TypeUtils {
 
                 R result = lastResult.getLastResult();
                 try {
-                    for (final Field field : lastResult.getCurrent().getDeclaredFields())
+                    for (final Field field : lastResult.getCurrent().getDeclaredFields()) {
                         if (!field.isSynthetic() && !Modifier.isStatic( field.getModifiers() )) {
                             logger.trc( "Iteration of %s: %s", lastResult.getCurrent(), field );
                             result = function.apply( new LastResult<>( field, result ) );
                         }
+                    }
                 }
                 catch (final BreakException e) {
                     result = e.getResult();
@@ -385,8 +398,9 @@ public abstract class TypeUtils {
             }
         };
 
-        if (descend)
+        if (descend) {
             return forEachSuperTypeOf( type, eachFieldFunction, null, firstResult );
+        }
 
         return eachFieldFunction.apply( new LastResult<Class<?>, R>( type, firstResult ) );
     }
@@ -400,8 +414,9 @@ public abstract class TypeUtils {
 
                 try {
                     input.getCurrent().setAccessible( true );
-                    if (ObjectUtils.equals( input.getCurrent().get( owner ), value ))
+                    if (ObjectUtils.equals( input.getCurrent().get( owner ), value )) {
                         throw new BreakException( input.getCurrent() );
+                    }
                 }
                 catch (final IllegalAccessException e) {
                     throw logger.bug( e );
@@ -428,10 +443,11 @@ public abstract class TypeUtils {
     public static String propertyName(@SuppressWarnings("TypeMayBeWeakened") final Method method) {
 
         String methodName = method.getName();
-        if ((methodName.startsWith( "get" ) || methodName.startsWith( "set" )) && methodName.length() > 3)
+        if ((methodName.startsWith( "get" ) || methodName.startsWith( "set" )) && methodName.length() > 3) {
             methodName = methodName.substring( 3 );
-        else if (methodName.startsWith( "is" ) && methodName.length() > 2)
+        } else if (methodName.startsWith( "is" ) && methodName.length() > 2) {
             methodName = methodName.substring( 2 );
+        }
 
         //noinspection StringConcatenation
         return methodName.substring( 0, 1 ).toLowerCase() + methodName.substring( 1 );
