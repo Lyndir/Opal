@@ -3,7 +3,7 @@ package com.lyndir.lhunath.opal.system.util;
 import static com.lyndir.lhunath.opal.system.util.StringUtils.*;
 
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.error.BreakException;
 import com.lyndir.lhunath.opal.system.error.InternalInconsistencyException;
@@ -53,7 +53,7 @@ public abstract class TypeUtils {
             return Optional.of( (Class<T>) Thread.currentThread().getContextClassLoader().loadClass( typeName ) );
         }
         catch (final ClassNotFoundException e) {
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 
@@ -70,7 +70,7 @@ public abstract class TypeUtils {
             return Optional.of( type.getConstructor().newInstance() );
         }
         catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | NoClassDefFoundError ignored) {
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 
@@ -90,7 +90,7 @@ public abstract class TypeUtils {
 
         Optional<Class<T>> type = loadClass( typeName );
         if (!type.isPresent()) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
         return newInstance( type.get() );
@@ -110,15 +110,7 @@ public abstract class TypeUtils {
     @SuppressWarnings("UnnecessaryFullyQualifiedName")
     public static <T> T newProxyInstance(final Class<T> type, final java.lang.reflect.InvocationHandler invocationHandler) {
 
-        Callback interceptor = new MethodInterceptor() {
-            @Override
-            @SuppressWarnings({ "ProhibitedExceptionDeclared" })
-            public Object intercept(final Object o, final Method method, final Object[] objects, final MethodProxy methodProxy)
-                    throws Throwable {
-
-                return invocationHandler.invoke( o, method, objects );
-            }
-        };
+        Callback interceptor = (MethodInterceptor) (o, method, objects, methodProxy) -> invocationHandler.invoke( o, method, objects );
 
         Enhancer enhancer = newEnhancer( type );
         enhancer.setCallbackType( interceptor.getClass() );
@@ -195,27 +187,24 @@ public abstract class TypeUtils {
      * {@code [TT = T or a supertype of T -> [ TTT = TT or interface of TT -> annotation on TTT ]]}
      */
     @Nonnull
-    public static <T, A extends Annotation> Map<Class<? super T>, Map<Class<?>, A>> getAnnotations(final Class<T> type,
-                                                                                                   final Class<A> annotationType) {
+    public static <A extends Annotation> Map<Class<?>, Map<Class<?>, A>> getAnnotations(final Class<?> type,
+                                                                                        final Class<A> annotationType) {
 
-        ImmutableMap.Builder<Class<? super T>, Map<Class<?>, A>> typeHierarchyAnnotations = ImmutableMap.builder();
+        ImmutableMap.Builder<Class<?>, Map<Class<?>, A>> typeHierarchyAnnotations = ImmutableMap.builder();
         ImmutableMap.Builder<Class<?>, A> typeAnnotations = ImmutableMap.builder();
 
         A annotation = type.getAnnotation( annotationType );
-        if (annotation != null) {
+        if (annotation != null)
             typeAnnotations.put( type, annotation );
-        }
         for (final Class<?> typeInterface : type.getInterfaces()) {
             annotation = findAnnotation( typeInterface, annotationType );
-            if (annotation != null) {
+            if (annotation != null)
                 typeAnnotations.put( typeInterface, annotation );
-            }
         }
         typeHierarchyAnnotations.put( type, typeAnnotations.build() );
 
-        if (type.getSuperclass() != null) {
+        if (type.getSuperclass() != null)
             typeHierarchyAnnotations.putAll( getAnnotations( type.getSuperclass(), annotationType ) );
-        }
 
         return typeHierarchyAnnotations.build();
     }
@@ -341,12 +330,12 @@ public abstract class TypeUtils {
         try {
             for (Class<? super T> currentType = type; currentType != null; currentType = currentType.getSuperclass()) {
                 if (typeFunction != null) {
-                    lastResult = typeFunction.apply( new LastResult<Class<?>, R>( currentType, lastResult ) );
+                    lastResult = typeFunction.apply( new LastResult<>( currentType, lastResult ) );
                 }
 
                 if (interfaceFunction != null) {
                     for (final Class<?> interfaceType : currentType.getInterfaces()) {
-                        lastResult = interfaceFunction.apply( new LastResult<Class<?>, R>( interfaceType, lastResult ) );
+                        lastResult = interfaceFunction.apply( new LastResult<>( interfaceType, lastResult ) );
                     }
                 }
             }
@@ -402,28 +391,25 @@ public abstract class TypeUtils {
             return forEachSuperTypeOf( type, eachFieldFunction, null, firstResult );
         }
 
-        return eachFieldFunction.apply( new LastResult<Class<?>, R>( type, firstResult ) );
+        return eachFieldFunction.apply( new LastResult<>( type, firstResult ) );
     }
 
     @Nullable
     public static Field findFirstField(final Object owner, final Object value) {
 
-        return forEachFieldOf( owner.getClass(), new NFunctionNN<LastResult<Field, Field>, Field>() {
-            @Override
-            public Field apply(@Nonnull final LastResult<Field, Field> input) {
+        return forEachFieldOf( owner.getClass(), input -> {
 
-                try {
-                    input.getCurrent().setAccessible( true );
-                    if (ObjectUtils.equals( input.getCurrent().get( owner ), value )) {
-                        throw new BreakException( input.getCurrent() );
-                    }
+            try {
+                input.getCurrent().setAccessible( true );
+                if (ObjectUtils.equals( input.getCurrent().get( owner ), value )) {
+                    throw new BreakException( input.getCurrent() );
                 }
-                catch (final IllegalAccessException e) {
-                    throw logger.bug( e );
-                }
-
-                return input.getLastResult();
             }
+            catch (final IllegalAccessException e) {
+                throw logger.bug( e );
+            }
+
+            return input.getLastResult();
         }, null, true );
     }
 

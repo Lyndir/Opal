@@ -1,7 +1,6 @@
 package com.lyndir.lhunath.opal.system;
 
-import com.google.common.io.ByteStreams;
-import com.google.common.io.InputSupplier;
+import com.google.common.io.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.system.util.IOUtils;
 import java.io.IOException;
@@ -52,10 +51,10 @@ public enum MessageDigests {
         return of( IOUtils.supply( bytes ) );
     }
 
-    public byte[] of(final InputSupplier<? extends InputStream> supplier) {
+    public byte[] of(final ByteSource supplier) {
 
         try {
-            return get().digest( ByteStreams.toByteArray( supplier ) );
+            return get().digest( supplier.read() );
         }
         catch (final IOException e) {
             throw logger.bug( e );
@@ -64,6 +63,11 @@ public enum MessageDigests {
 
     public byte[] of(final InputStream stream) {
 
-        return of( IOUtils.supply( stream ) );
+        try {
+            return get().digest( ByteStreams.toByteArray( stream ) );
+        }
+        catch (final IOException e) {
+            throw logger.bug( e );
+        }
     }
 }

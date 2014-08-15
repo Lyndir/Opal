@@ -13,13 +13,15 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+
 package com.lyndir.lhunath.opal.system.util;
 
 import static com.google.common.base.Preconditions.*;
 
 import com.google.common.base.*;
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.error.AlreadyCheckedException;
 import com.lyndir.lhunath.opal.system.logging.Logger;
@@ -127,8 +129,8 @@ public abstract class ObjectUtils {
             StringBuilder toString = new StringBuilder( String.format( "<b[]: %dB, ", byteArray.length ) );
 
             // Decode some bytes.
-            CharBuffer decodedBytes = Charsets.UTF_8
-                                              .decode( ByteBuffer.wrap( byteArray, 0, Math.min( byteArray.length, MAX_DECODE_LENGTH ) ) );
+            CharBuffer decodedBytes = Charsets.UTF_8.decode(
+                    ByteBuffer.wrap( byteArray, 0, Math.min( byteArray.length, MAX_DECODE_LENGTH ) ) );
             String stripped = NON_PRINTABLE.matcher( decodedBytes ).replaceAll( "." );
             toString.append( stripped );
 
@@ -486,8 +488,8 @@ public abstract class ObjectUtils {
 
     private static <T> boolean usesMeta(final For meta, final Class<T> type) {
 
-        for (final Entry<Class<? super T>, Map<Class<?>, ObjectMeta>> annotationEntry : TypeUtils.getAnnotations( type, ObjectMeta.class )
-                                                                                                 .entrySet()) {
+        for (final Entry<Class<?>, Map<Class<?>, ObjectMeta>> annotationEntry : TypeUtils.getAnnotations( type, ObjectMeta.class )
+                                                                                         .entrySet()) {
             Class<?> superType = annotationEntry.getKey();
             Map<Class<?>, ObjectMeta> superTypeAnnotations = annotationEntry.getValue();
 

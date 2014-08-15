@@ -26,26 +26,9 @@ public abstract class IOUtils {
 
     private static final Pattern PATH_SEPARATORS = Pattern.compile( "[\\\\/]+" );
 
-    public static <T> InputSupplier<T> supply(final T supply) {
+    public static ByteSource supply(final byte[] supply) {
 
-        return new InputSupplier<T>() {
-            @Override
-            public T getInput() {
-
-                return supply;
-            }
-        };
-    }
-
-    public static InputSupplier<? extends InputStream> supply(final byte[] supply) {
-
-        return new InputSupplier<InputStream>() {
-            @Override
-            public InputStream getInput() {
-
-                return new ByteArrayInputStream( supply );
-            }
-        };
+        return ByteSource.wrap( supply );
     }
 
     /**
