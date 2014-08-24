@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 
 /**
  * <h2>{@link ObjectMeta}<br> <sub>[in short] (TODO).</sub></h2>
- * <p/>
+ * <p>
  * <p> <i>02 04, 2011</i> </p>
  *
  * @author lhunath

@@ -6,7 +6,7 @@ import java.util.Collection;
 
 /**
  * <h2>{@link ArrayUtils}<br> <sub>[in short] (TODO).</sub></h2>
- * <p/>
+ * <p>
  * <p> <i>06 03, 2010</i> </p>
  *
  * @author lhunath

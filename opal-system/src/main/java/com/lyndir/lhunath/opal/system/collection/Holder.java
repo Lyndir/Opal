@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 
 /**
  * Simple object container, used for sharing an object reference.
- * <p/>
+ * <p>
  * <i>05 13, 2011</i>
  *
  * @author lhunath

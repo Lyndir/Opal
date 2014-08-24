@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 
 /**
  * <h2>{@link StringUtils}<br> <sub>Some utility methods for working with {@link String}s.</sub></h2>
- * <p/>
+ * <p>
  * <p> <i>Jan 12, 2010</i> </p>
  *
  * @author lhunath
@@ -153,7 +153,7 @@ public abstract class StringUtils {
     /**
      * Perform an expansion operation on the given {@code source} string by expanding all curly-braced words with a certain
      * {@code keyPrefix} into an expansion value determined by the {@code keyToExpansion} function.
-     * <p/>
+     * <p>
      * <p>If the source string is {@code I am a ${karma} sentence.}, the keyPrefix is {@code $} and the keyToExpansion function
      * returns {@code bad} when its input is the string {@code karma}, the result of this method will be: {@code I am a bad sentence.}</p>
      * <p>

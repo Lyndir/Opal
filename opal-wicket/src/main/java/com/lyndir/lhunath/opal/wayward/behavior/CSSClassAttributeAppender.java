@@ -37,7 +37,7 @@ public class CSSClassAttributeAppender extends AttributeAppender {
     private static final String CLASS_SEPARATOR = " ";
 
     /**
-     * @param cssClassesModel A model that provides CSS classes to append to the element's <code>class</class> attribute.
+     * @param cssClassesModel A model that provides CSS classes to append to the element's <code>class</code> attribute.
      *
      * @return An appender which appends all the CSS classes in the collection from the given model to a component's HTML element.
      */
@@ -48,7 +48,7 @@ public class CSSClassAttributeAppender extends AttributeAppender {
     }
 
     /**
-     * @param cssClassModels Models that provides CSS classes to append to the element's <code>class</class> attribute.
+     * @param cssClassModels Models that provides CSS classes to append to the element's <code>class</code> attribute.
      *
      * @return An appender which appends all the CSS classes in the collection from the given model to a component's HTML element.
      */
@@ -73,7 +73,7 @@ public class CSSClassAttributeAppender extends AttributeAppender {
     }
 
     /**
-     * @param cssClassModels Models that provides CSS classes to append to the element's <code>class</class> attribute.
+     * @param cssClassModels Models that provides CSS classes to append to the element's <code>class</code> attribute.
      *
      * @return An appender which appends all the CSS classes in the collection from the given model to a component's HTML element.
      */
@@ -83,7 +83,7 @@ public class CSSClassAttributeAppender extends AttributeAppender {
     }
 
     /**
-     * @param cssClassModel A model that provides a CSS class to append to the element's <code>class</class> attribute.
+     * @param cssClassModel A model that provides a CSS class to append to the element's <code>class</code> attribute.
      *
      * @return An appender which appends the CSS class in the model to a component's HTML element.
      */
@@ -94,7 +94,7 @@ public class CSSClassAttributeAppender extends AttributeAppender {
     }
 
     /**
-     * @param cssClass The CSS class to append to the element's <code>class</class> attribute.
+     * @param cssClass The CSS class to append to the element's <code>class</code> attribute.
      */
     public CSSClassAttributeAppender(final String cssClass) {
 
@@ -110,7 +110,7 @@ public class CSSClassAttributeAppender extends AttributeAppender {
     }
 
     /**
-     * @param cssClasses An array of CSS classes to append to the element's <code>class</class> attribute.
+     * @param cssClasses An array of CSS classes to append to the element's <code>class</code> attribute.
      */
     public CSSClassAttributeAppender(final String... cssClasses) {
 

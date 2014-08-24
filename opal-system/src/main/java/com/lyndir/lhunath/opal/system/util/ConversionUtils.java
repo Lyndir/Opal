@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 
 /**
  * <h2>{@link ConversionUtils}<br> <sub>[in short] (TODO).</sub></h2>
- * <p/>
+ * <p>
  * <p> <i>02 10, 2011</i> </p>
  *
  * @author lhunath

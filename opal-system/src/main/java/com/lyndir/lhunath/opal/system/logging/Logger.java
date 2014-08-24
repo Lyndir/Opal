@@ -27,9 +27,9 @@ import org.slf4j.Marker;
 
 /**
  * <h2>{@link Logger}<br> <sub>[in short] (TODO).</sub></h2>
- * <p/>
+ * <p>
  * <p> [description / usage]. </p>
- * <p/>
+ * <p>
  * <p> <i>Mar 28, 2009</i> </p>
  *
  * @author lhunath
@@ -59,7 +59,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a progress trace event.
-     * <p/>
+     * <p>
      * <p> This level is for all events that describe the flow of execution. </p>
      *
      * @param marker               An optional marker that can be used to tag this event with additional context.
@@ -80,7 +80,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a progress trace event.
-     * <p/>
+     * <p>
      * <p> This level is for all events that describe the flow of execution. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -96,7 +96,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a progress trace event.
-     * <p/>
+     * <p>
      * <p> This level is for all events that describe the flow of execution. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -113,7 +113,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a debugging event.
-     * <p/>
+     * <p>
      * <p> This level is for all events that visualize the application's state. </p>
      *
      * @param marker               An optional marker that can be used to tag this event with additional context.
@@ -134,7 +134,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a debugging event.
-     * <p/>
+     * <p>
      * <p> This level is for all events that visualize the application's state. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -150,7 +150,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a debugging event.
-     * <p/>
+     * <p>
      * <p> This level is for all events that visualize the application's state. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -165,7 +165,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an informative statement.
-     * <p/>
+     * <p>
      * <p> This level is for all events that detail an important evolution in the application's state. </p>
      *
      * @param marker               An optional marker that can be used to tag this event with additional context.
@@ -186,7 +186,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an informative statement.
-     * <p/>
+     * <p>
      * <p> This level is for all events that detail an important evolution in the application's state. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -202,7 +202,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an informative statement.
-     * <p/>
+     * <p>
      * <p> This level is for all events that detail an important evolution in the application's state. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -219,7 +219,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an application warning.
-     * <p/>
+     * <p>
      * <p> This level is for all events that indicate a suboptimal / non-ideal flow. </p>
      *
      * @param marker               An optional marker that can be used to tag this event with additional context.
@@ -240,7 +240,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an application warning.
-     * <p/>
+     * <p>
      * <p> This level is for all events that indicate a suboptimal / non-ideal flow. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -256,7 +256,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an application warning.
-     * <p/>
+     * <p>
      * <p> This level is for all events that indicate a suboptimal / non-ideal flow. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -271,7 +271,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an application error.
-     * <p/>
+     * <p>
      * <p> This level is for all events that indicate failure to comply with the request. </p>
      *
      * @param marker               An optional marker that can be used to tag this event with additional context.
@@ -292,7 +292,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an application error.
-     * <p/>
+     * <p>
      * <p> This level is for all events that indicate failure to comply with the request. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -308,7 +308,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an application error.
-     * <p/>
+     * <p>
      * <p> This level is for all events that indicate failure to comply with the request. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -323,7 +323,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a user action.
-     * <p/>
+     * <p>
      * <p>This level is for all actions performed by a user that site administrators may later need to reflect upon to evaluate user
      * conduct.</p>
      *
@@ -339,7 +339,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an internal inconsistency.
-     * <p/>
+     * <p>
      * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
      *
      * @param cause A throwable that details the stack at the time of this event.
@@ -355,7 +355,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an internal inconsistency.
-     * <p/>
+     * <p>
      * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -375,7 +375,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an internal inconsistency.
-     * <p/>
+     * <p>
      * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -388,7 +388,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a security concern.
-     * <p/>
+     * <p>
      * <p> This level is for all events that should be evaluated by the security team. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -404,7 +404,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a security concern.
-     * <p/>
+     * <p>
      * <p> This level is for all events that should be evaluated by the security team. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.

@@ -40,7 +40,7 @@ import javax.annotation.Nullable;
 
 /**
  * <h2>{@link ObjectUtils}<br> <sub>[in short] (TODO).</sub></h2>
- * <p/>
+ * <p>
  * <p> <i>Mar 22, 2010</i> </p>
  *
  * @author lhunath
@@ -74,9 +74,9 @@ public abstract class ObjectUtils {
 
     /**
      * Check whether two objects are equal according to {@link #equals(Object)}.
-     * <p/>
+     * <p>
      * <p> <b>NOTE:</b> This method is {@code null}-safe and two {@code null} objects are also considered equal. </p>
-     * <p/>
+     * <p>
      * <p> <b>NOTE:</b> This method attempts to aid in type safety of the objects that are being compared. </p>
      *
      * @param <C>         The type of the first parameter.  It should be of the same type or a subtype (more concrete type) of the second

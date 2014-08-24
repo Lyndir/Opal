@@ -27,7 +27,7 @@ import java.text.MessageFormat;
 
 /**
  * <h2>{@link URLUtils}<br> <sub>Utilities for working with URLs.</sub></h2>
- * <p/>
+ * <p>
  * <p> <i>Sep 17, 2009</i> </p>
  *
  * @author lhunath

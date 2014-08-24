@@ -23,7 +23,7 @@ import org.objenesis.ObjenesisStd;
 
 /**
  * <h2>{@link TypeUtils}<br> <sub>[in short] (TODO).</sub></h2>
- * <p/>
+ * <p>
  * <p> <i>10 20, 2010</i> </p>
  *
  * @author lhunath
