@@ -15,7 +15,7 @@
 
     <groupId>com.lyndir.lhunath.opal</groupId>
     <artifactId>opal</artifactId>
-    <version>GIT-SNAPSHOT</version>
+    <version>1.7</version>
     <packaging>pom</packaging>
 
     <!-- CODE ACCESS -->
