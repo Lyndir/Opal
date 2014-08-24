@@ -1,7 +1,6 @@
 package com.lyndir.lhunath.opal.system.util;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.util.*;
 import javax.annotation.Nonnull;
@@ -82,5 +81,13 @@ public abstract class CollectionUtils {
                 elementsOfType.add( type.cast( element ) );
 
         return elementsOfType;
+    }
+
+    public static <K extends Enum<K>, V> ImmutableMap<K, V> immutableEnumMap(final Class<K> enumType, final NNFunctionNN<K, V> valueForKey) {
+        ImmutableMap.Builder<K, V> builder = ImmutableMap.builder();;
+        for (final K constant : enumType.getEnumConstants())
+            builder.put( constant, valueForKey.apply( constant ) );
+
+        return Maps.immutableEnumMap( builder.build() );
     }
 }

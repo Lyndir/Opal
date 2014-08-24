@@ -113,7 +113,7 @@ public class SecurityServiceImpl implements SecurityService {
 
         // Determine what permission level to grant on the object for the token.
         Permission tokenPermission;
-        if (ObjectUtils.isEqual( object.getOwner(), token.getActor() ))
+        if (object.getOwner().equals( token.getActor() ))
             tokenPermission = Permission.ADMINISTER;
         else
             tokenPermission = object.getACL().getSubjectPermission( token.getActor() );
@@ -250,7 +250,7 @@ public class SecurityServiceImpl implements SecurityService {
         checkNotNull( o, "Given secure object must not be null." );
         checkNotNull( subject, "Given subject must not be null." );
 
-        if (ObjectUtils.isEqual( o.getOwner(), subject ))
+        if (o.getOwner().equals( subject ))
             throw new IllegalRequestException( "Given subject must not be the object's owner." );
 
         assertAccess( Permission.ADMINISTER, token, o );

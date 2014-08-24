@@ -1,7 +1,6 @@
 package com.lyndir.lhunath.opal.wayward.component;
 
 import com.google.common.collect.ImmutableList;
-import com.lyndir.lhunath.opal.system.util.ObjectUtils;
 import java.io.Serializable;
 import java.util.*;
 import javax.annotation.Nullable;
@@ -55,14 +54,14 @@ public class AjaxDigger<D extends Serializable> extends Panel {
                             @Override
                             public boolean isVisible() {
 
-                                return !ObjectUtils.isEqual( level.getActiveItem(), diggerItem );
+                                return !diggerItem.equals( level.getActiveItem() );
                             }
 
                             @Override
                             public void onClick(final AjaxRequestTarget target) {
 
                                 // Pop all items off the path from the clicked level up.
-                                while (!levels.isEmpty() && !ObjectUtils.isEqual( levels.peek(), level ))
+                                while (!levels.isEmpty() && !level.equals( levels.peek() ))
                                     levels.pop();
 
                                 // Add the clicked item to the path.
@@ -76,7 +75,7 @@ public class AjaxDigger<D extends Serializable> extends Panel {
                         } );
                         itemListItem.add( diggerItem.getExpandedItem( "expandedItem", level )
                                 // TODO: This should probably happen lazily:
-                                                  .setVisible( ObjectUtils.isEqual( level.getActiveItem(), diggerItem ) ) );
+                                                  .setVisible( diggerItem.equals( level.getActiveItem() ) ) );
                     }
                 } );
             }

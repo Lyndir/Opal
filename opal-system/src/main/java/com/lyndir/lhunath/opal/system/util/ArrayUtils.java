@@ -111,7 +111,7 @@ public abstract class ArrayUtils {
     public static <T, U extends T> boolean inArray(final T[] array, final U search) {
 
         for (final T element : array)
-            if (ObjectUtils.isEqual( search, element ))
+            if (search.equals( element ))
                 return true;
 
         return false;
