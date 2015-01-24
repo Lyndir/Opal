@@ -15,8 +15,8 @@
  */
 package com.lyndir.lhunath.opal.gui;
 
-import com.lyndir.lhunath.opal.system.UIUtils;
 import com.lyndir.lhunath.opal.system.logging.Logger;
+import com.lyndir.lhunath.opal.system.util.UIUtils;
 import javax.swing.*;
 
 

@@ -15,10 +15,10 @@
  */
 package com.lyndir.lhunath.opal.gui.zui;
 
-import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.util.PPaintContext;
+import org.piccolo2d.PNode;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import org.piccolo2d.util.PPaintContext;
 
 
 /**

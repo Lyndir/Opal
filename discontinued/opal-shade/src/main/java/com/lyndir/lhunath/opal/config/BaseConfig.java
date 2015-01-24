@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-package com.lyndir.lhunath.opal.system;
+package com.lyndir.lhunath.opal.config;
 
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.system.util.ConversionUtils;
@@ -158,7 +158,7 @@ public class BaseConfig<T extends Serializable> implements Serializable {
      */
     public static BaseConfig<URL> createUrl(final String defaultValue) {
 
-        return create( ConversionUtils.toUrl( defaultValue ) );
+        return create( ConversionUtils.toURLNN( defaultValue ) );
     }
 
     /**

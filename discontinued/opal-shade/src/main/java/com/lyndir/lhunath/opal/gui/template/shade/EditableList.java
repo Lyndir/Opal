@@ -16,7 +16,7 @@
 package com.lyndir.lhunath.opal.gui.template.shade;
 
 import com.lyndir.lhunath.opal.system.Locale;
-import com.lyndir.lhunath.opal.system.UIUtils;
+import com.lyndir.lhunath.opal.system.util.UIUtils;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;

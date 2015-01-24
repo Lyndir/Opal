@@ -332,7 +332,6 @@ public abstract class TypeUtils {
                 if (typeFunction != null) {
                     lastResult = typeFunction.apply( new LastResult<>( currentType, lastResult ) );
                 }
-
                 if (interfaceFunction != null) {
                     for (final Class<?> interfaceType : currentType.getInterfaces()) {
                         lastResult = interfaceFunction.apply( new LastResult<>( interfaceType, lastResult ) );

@@ -14,7 +14,6 @@
     <name>Opal Geo</name>
     <description>Opal: Graphical objects and graphic processing utilities.</description>
 
-    <groupId>com.lyndir.lhunath.opal.discontinued</groupId>
     <artifactId>opal-geo</artifactId>
     <packaging>jar</packaging>
 

@@ -14,7 +14,6 @@
     <name>Opal Piccolo</name>
     <description>Opal: Piccolo ZUI objects and utilities.</description>
 
-    <groupId>com.lyndir.lhunath.opal.discontinued</groupId>
     <artifactId>opal-piccolo</artifactId>
     <packaging>jar</packaging>
 
@@ -37,6 +36,12 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.piccolo2d</groupId>
+            <artifactId>piccolo2d-extras</artifactId>
+            <version>3.0</version>
         </dependency>
 
     </dependencies>

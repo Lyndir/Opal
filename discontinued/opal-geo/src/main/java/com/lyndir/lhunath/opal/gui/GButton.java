@@ -16,9 +16,11 @@
 package com.lyndir.lhunath.opal.gui;
 
 import com.lyndir.lhunath.opal.math.Vec2;
-import com.lyndir.lhunath.opal.system.UIUtils;
+import com.lyndir.lhunath.opal.math.Vec2D;
+import com.lyndir.lhunath.opal.system.util.UIUtils;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
@@ -175,9 +177,9 @@ public class GButton extends JButton {
      */
     protected void updateSize() {
 
-        Vec2 textSize = new Vec2();
-        Vec2 iconSize = new Vec2();
-        Vec2 buttonSize = new Vec2();
+        Vec2D textSize = new Vec2D();
+        Vec2D iconSize = new Vec2D();
+        Vec2D buttonSize = new Vec2D();
 
         if (getText() != null && getText().length() > 0) {
             if (getFont() == null) {
@@ -194,40 +196,40 @@ public class GButton extends JButton {
             }
 
             FontMetrics metrics = getFontMetrics( getFont() );
-            textSize = new Vec2( metrics.stringWidth( getText() ), getFont().getSize() );
+            textSize = new Vec2D( metrics.stringWidth( getText() ), getFont().getSize() );
         }
 
         if (largeEnabledIcon != null) {
             int width = largeEnabledIcon.getWidth( this );
             int height = largeEnabledIcon.getHeight( this );
-            iconSize = new Vec2( width, height );
+            iconSize = new Vec2D( width, height );
         }
 
         switch (getHorizontalTextPosition()) {
             case LEFT:
             case RIGHT:
-                buttonSize = buttonSize.withX( textSize.getX() + getIconTextGap() + iconSize.getX() );
+                buttonSize = buttonSize.copyWithX( textSize.getX() + getIconTextGap() + iconSize.getX() );
                 break;
 
             case CENTER:
             default:
-                buttonSize = buttonSize.withX( Math.max( textSize.getX(), iconSize.getX() ) );
+                buttonSize = buttonSize.copyWithX( Math.max( textSize.getX(), iconSize.getX() ) );
                 break;
         }
         switch (getVerticalTextPosition()) {
             case TOP:
             case BOTTOM:
-                buttonSize = buttonSize.withY( textSize.getY() + getIconTextGap() + iconSize.getY() );
+                buttonSize = buttonSize.copyWithY( textSize.getY() + getIconTextGap() + iconSize.getY() );
                 break;
 
             case CENTER:
             default:
-                buttonSize = buttonSize.withY( Math.max( textSize.getY(), iconSize.getY() ) );
+                buttonSize = buttonSize.copyWithY( Math.max( textSize.getY(), iconSize.getY() ) );
                 break;
         }
 
         buttonSize = buttonSize.multiply( 1 / (ZOOM * ZOOM) );
-        setPreferredSize( buttonSize.toDimension() );
+        setPreferredSize( new Dimension( (int)buttonSize.getX(), (int)buttonSize.getY() ) );
     }
 
     /**

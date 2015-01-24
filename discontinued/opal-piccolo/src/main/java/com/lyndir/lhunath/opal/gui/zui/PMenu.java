@@ -15,9 +15,9 @@
  */
 package com.lyndir.lhunath.opal.gui.zui;
 
-import edu.umd.cs.piccolo.PCanvas;
-import edu.umd.cs.piccolo.event.PInputEvent;
-import edu.umd.cs.piccolo.event.PInputEventListener;
+import org.piccolo2d.PCanvas;
+import org.piccolo2d.event.PInputEvent;
+import org.piccolo2d.event.PInputEventListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
