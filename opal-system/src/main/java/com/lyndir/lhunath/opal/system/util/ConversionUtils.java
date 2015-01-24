@@ -1,8 +1,7 @@
 package com.lyndir.lhunath.opal.system.util;
 
-import static com.google.common.base.Preconditions.*;
-
 import com.google.common.base.Optional;
+import com.google.common.base.Verify;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,7 +11,7 @@ import javax.annotation.Nullable;
 
 /**
  * <h2>{@link ConversionUtils}<br> <sub>[in short] (TODO).</sub></h2>
- * <p/>
+ * <p>
  * <p> <i>02 10, 2011</i> </p>
  *
  * @author lhunath
@@ -80,7 +79,7 @@ public class ConversionUtils {
     public static Optional<Integer> toInteger(@Nullable final Object object) {
 
         if (object == null || object instanceof Integer)
-            return Optional.fromNullable( (Integer) object);
+            return Optional.fromNullable( (Integer) object );
 
         try {
             return Optional.of( Integer.valueOf( object.toString() ) );
@@ -129,7 +128,7 @@ public class ConversionUtils {
     public static Optional<Double> toDouble(@Nullable final Object object) {
 
         if (object == null || object instanceof Double)
-            return Optional.fromNullable( (Double) object);
+            return Optional.fromNullable( (Double) object );
 
         try {
             return Optional.of( Double.parseDouble( object.toString() ) );
@@ -276,7 +275,7 @@ public class ConversionUtils {
             return (URL) url;
 
         try {
-            return new URL( checkNotNull( url, "Missing URL." ).toString() );
+            return new URL( Verify.verifyNotNull( url, "Missing URL." ).toString() );
         }
         catch (final MalformedURLException e) {
             throw Throw.propagate( e, "Malformed URL: %s", url );

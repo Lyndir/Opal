@@ -42,7 +42,8 @@ public abstract class EnumUtils {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static <T> T unsafeEnumNamed(@Nonnull final Class<T> type, @Nonnull final String name) {
 
-        return type.cast( enumNamed( (Class<Enum>) type, name ) );
+        Enum obj = enumNamed( (Class<Enum>) type, name );
+        return type.cast( obj );
     }
 
     /**

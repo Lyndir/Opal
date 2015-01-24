@@ -13,6 +13,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
+
+
 package com.lyndir.lhunath.opal.system.util;
 
 import static com.google.common.base.Preconditions.*;
@@ -37,7 +39,7 @@ import javax.annotation.Nullable;
 
 /**
  * <h2>{@link ObjectUtils}<br> <sub>[in short] (TODO).</sub></h2>
- * <p/>
+ * <p>
  * <p> <i>Mar 22, 2010</i> </p>
  *
  * @author lhunath
@@ -71,9 +73,9 @@ public abstract class ObjectUtils {
 
     /**
      * Check whether two objects are equal according to {@link #equals(Object)}.
-     * <p/>
+     * <p>
      * <p> <b>NOTE:</b> This method is {@code null}-safe and two {@code null} objects are also considered equal. </p>
-     * <p/>
+     * <p>
      * <p> <b>NOTE:</b> This method attempts to aid in type safety of the objects that are being compared. </p>
      *
      * @param <C>         The type of the first parameter.  It should be of the same type or a subtype (more concrete type) of the second
@@ -126,8 +128,8 @@ public abstract class ObjectUtils {
             StringBuilder toString = new StringBuilder( String.format( "<b[]: %dB, ", byteArray.length ) );
 
             // Decode some bytes.
-            CharBuffer decodedBytes = Charsets.UTF_8
-                                              .decode( ByteBuffer.wrap( byteArray, 0, Math.min( byteArray.length, MAX_DECODE_LENGTH ) ) );
+            CharBuffer decodedBytes = Charsets.UTF_8.decode(
+                    ByteBuffer.wrap( byteArray, 0, Math.min( byteArray.length, MAX_DECODE_LENGTH ) ) );
             String stripped = NON_PRINTABLE.matcher( decodedBytes ).replaceAll( "." );
             toString.append( stripped );
 
@@ -485,8 +487,8 @@ public abstract class ObjectUtils {
 
     private static <T> boolean usesMeta(final For meta, final Class<T> type) {
 
-        for (final Entry<Class<? super T>, Map<Class<?>, ObjectMeta>> annotationEntry : TypeUtils.getAnnotations( type, ObjectMeta.class )
-                                                                                                 .entrySet()) {
+        for (final Entry<Class<?>, Map<Class<?>, ObjectMeta>> annotationEntry : TypeUtils.getAnnotations( type, ObjectMeta.class )
+                                                                                         .entrySet()) {
             Class<?> superType = annotationEntry.getKey();
             Map<Class<?>, ObjectMeta> superTypeAnnotations = annotationEntry.getValue();
 

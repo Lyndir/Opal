@@ -80,7 +80,7 @@ public abstract class NavigationController implements IClusterable {
      *
      * @param tab The tab that should be activated.
      */
-    public void activateNewTab(@Nonnull final TabDescriptor<?, ?> tab) {
+    public <P extends Panel, S extends TabState<? extends P>> void activateNewTab(@Nonnull final TabDescriptor<P, S> tab) {
 
         activateTab( tab, null );
     }

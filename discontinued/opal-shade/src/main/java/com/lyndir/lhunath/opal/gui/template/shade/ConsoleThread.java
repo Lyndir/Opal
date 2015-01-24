@@ -1,6 +1,6 @@
 package com.lyndir.lhunath.opal.gui.template.shade;
 
-import com.lyndir.lhunath.opal.system.BaseConfig;
+import com.lyndir.lhunath.opal.config.BaseConfig;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.io.*;
 import javax.swing.*;

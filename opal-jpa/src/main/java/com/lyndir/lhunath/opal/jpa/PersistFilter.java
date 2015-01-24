@@ -8,7 +8,7 @@ import javax.servlet.*;
 
 /**
  * <h2>{@link PersistFilter}<br> <sub>[in short] (TODO).</sub></h2>
- * <p/>
+ * <p>
  * <p> <i>11 10, 2010</i> </p>
  *
  * @author lhunath

@@ -16,7 +16,8 @@
 package com.lyndir.lhunath.opal.gui;
 
 import com.lyndir.lhunath.opal.math.Vec2;
-import com.lyndir.lhunath.opal.system.UIUtils;
+import com.lyndir.lhunath.opal.math.Vec2D;
+import com.lyndir.lhunath.opal.system.util.UIUtils;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -29,7 +30,7 @@ import javax.swing.*;
  */
 public class GridBag extends GridBagConstraints {
 
-    private final ArrayList<ArrayList<Vec2>> grid;
+    private final ArrayList<ArrayList<Vec2D>> grid;
     private final JComponent                 container;
     private       Font                       font;
     private       Color                      back;
@@ -52,7 +53,7 @@ public class GridBag extends GridBagConstraints {
 
         container = component;
 
-        grid = new ArrayList<ArrayList<Vec2>>();
+        grid = new ArrayList<ArrayList<Vec2D>>();
         container.setLayout( new GridBagLayout() );
 
         fill = BOTH;
@@ -363,7 +364,7 @@ public class GridBag extends GridBagConstraints {
 
         for (int x = 0; x < grid.size() && x <= gridx; ++x)
             for (int y = 0; y < grid.get( x ).size() && y <= gridy; ++y) {
-                Vec2 gridSize = grid.get( x ).get( y );
+                Vec2D gridSize = grid.get( x ).get( y );
                 if (gridSize.getY() > 0 && y + gridSize.getY() > gridy)
                     if (gridSize.getX() > 0 && x + gridSize.getX() > firstGrid)
                         ++firstGrid;
@@ -375,11 +376,11 @@ public class GridBag extends GridBagConstraints {
     private void updateGrid() {
 
         while (grid.size() <= gridx)
-            grid.add( new ArrayList<Vec2>() );
+            grid.add( new ArrayList<Vec2D>() );
 
         while (grid.get( gridx ).size() <= gridy)
-            grid.get( gridx ).add( new Vec2( 0, 0 ) );
+            grid.get( gridx ).add( new Vec2D( 0, 0 ) );
 
-        grid.get( gridx ).set( gridy, new Vec2( gridwidth, gridheight ) );
+        grid.get( gridx ).set( gridy, new Vec2D( gridwidth, gridheight ) );
     }
 }

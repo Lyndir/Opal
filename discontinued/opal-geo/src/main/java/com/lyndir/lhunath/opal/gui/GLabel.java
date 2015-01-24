@@ -16,7 +16,7 @@
 
 package com.lyndir.lhunath.opal.gui;
 
-import com.lyndir.lhunath.opal.math.Vec2;
+import com.lyndir.lhunath.opal.math.Vec2D;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -174,9 +174,9 @@ public class GLabel extends JLabel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 
-        Vec2 size = new Vec2( getSize() );
-        Point2D src = new Vec2( gradientBase.getPoint1() ).multiply( size ).toPoint();
-        Point2D dst = new Vec2( gradientBase.getPoint2() ).multiply( size ).toPoint();
+        Vec2D size = new Vec2D( getSize().getWidth(), getSize().getHeight() );
+        Vec2D src = new Vec2D( gradientBase.getPoint1().getX(), gradientBase.getPoint1().getY() ).multiply( size );
+        Vec2D dst = new Vec2D( gradientBase.getPoint2().getX(), gradientBase.getPoint2().getY() ).multiply( size );
         Color color1 = gradientBase.getColor1();
         Color color2 = gradientBase.getColor2();
 
@@ -185,7 +185,7 @@ public class GLabel extends JLabel {
             color2 = new Color( color2.getAlpha() << 24 | color2.brighter().getRGB() - 0xff000000, true );
         }
 
-        GradientPaint gradient = new GradientPaint( src, color1, dst, color2 );
+        GradientPaint gradient = new GradientPaint( new Point2D.Double( src.getX(), src.getY() ), color1, new Point2D.Double( dst.getX(), dst.getY() ), color2 );
 
         g2.setPaint( gradient );
         g2.fillRoundRect( padding, padding, getWidth() - 1 - padding * 2, getHeight() - 1 - padding * 2, arc, arc );

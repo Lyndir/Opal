@@ -16,12 +16,15 @@
 package com.lyndir.lhunath.opal.gui.zui;
 
 import com.lyndir.lhunath.opal.math.Vec2;
-import com.lyndir.lhunath.opal.system.Utils;
-import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
-import edu.umd.cs.piccolo.event.PInputEvent;
-import edu.umd.cs.piccolox.pswing.PSwing;
-import edu.umd.cs.piccolox.pswing.PSwingCanvas;
+import com.lyndir.lhunath.opal.math.Vec2D;
+import com.lyndir.lhunath.opal.system.util.Utils;
+import java.awt.geom.Dimension2D;
+import org.piccolo2d.event.PBasicInputEventHandler;
+import org.piccolo2d.event.PInputEvent;
 import javax.swing.*;
+import org.piccolo2d.extras.pswing.PSwing;
+import org.piccolo2d.extras.pswing.PSwingCanvas;
+import org.piccolo2d.util.PDimension;
 
 
 /**
@@ -48,7 +51,9 @@ public class PDialog extends PBox {
         super( canvas, title );
         this.listener = listener;
 
-        setSize( new Vec2( canvas.getCamera().getBoundsReference().getSize() ).multiply( Utils.GOLDEN ).toDimension() );
+        Dimension2D cameraSize = canvas.getCamera().getBoundsReference().getSize();
+        Vec2D size = new Vec2D( cameraSize.getWidth(), cameraSize.getHeight() ).multiply( Utils.GOLDEN );
+        setSize( new PDimension( size.getX(), size.getY() ) );
         setCenter( canvas.getCamera().getBoundsReference().getCenter2D() );
 
         JScrollPane scrollPane = new JScrollPane( panel = new JPanel() );

@@ -10,6 +10,7 @@ import com.google.inject.Singleton;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.nio.CharBuffer;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -71,12 +72,7 @@ public class GsonJsonProvider implements MessageBodyReader<Object>, MessageBodyW
             throws IOException, WebApplicationException {
         // TODO
         String json = gson.toJson( o, ifNotNullElse( genericType, type ) );
-        CharStreams.write( json, CharStreams.newWriterSupplier( new OutputSupplier<OutputStream>() {
-            @Override
-            public OutputStream getOutput() {
-                return entityStream;
-            }
-        }, Charsets.UTF_8 ) );
+        CharStreams.copy( new StringReader( json ), new OutputStreamWriter( entityStream, Charsets.UTF_8 ) );
         //gson.toJson( o, ifNotNullElse( genericType, type ), new OutputStreamWriter( entityStream, charsetFromMediaType( mediaType ) ) );
     }
 }

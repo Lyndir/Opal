@@ -273,7 +273,7 @@ public class MyLookAndFeel implements Serializable {
         public MyTheme create(final MyLookAndFeel lnf) {
 
             try {
-                return type.getConstructor().newInstance();
+                return type.getDeclaredConstructor( MyLookAndFeel.class ).newInstance( lnf );
             }
 
             catch (InstantiationException e) {
@@ -289,7 +289,7 @@ public class MyLookAndFeel implements Serializable {
                 logger.bug( e, "Instantiation failed: %s!", type );
             }
 
-            return lnf.new MyPlasticTheme();
+            return new MyPlasticTheme(lnf);
         }
     }
 
@@ -333,12 +333,14 @@ public class MyLookAndFeel implements Serializable {
      *
      * @author mbillemo
      */
-    private class MyPlasticTheme extends AbstractSkyTheme implements MyTheme {
+    static class MyPlasticTheme extends AbstractSkyTheme implements MyTheme {
 
         private static final long serialVersionUID = 1L;
 
-        MyPlasticTheme() {
+        MyLookAndFeel myLookAndFeel;
 
+        MyPlasticTheme(MyLookAndFeel myLookAndFeel) {
+            this.myLookAndFeel = myLookAndFeel;
         }
 
         /**
@@ -364,7 +366,7 @@ public class MyLookAndFeel implements Serializable {
         @Override
         protected ColorUIResource getPrimary1() {
 
-            return new ColorUIResource( base.darker().darker() );
+            return new ColorUIResource( myLookAndFeel.base.darker().darker() );
         }
 
         /**
@@ -373,7 +375,7 @@ public class MyLookAndFeel implements Serializable {
         @Override
         protected ColorUIResource getPrimary2() {
 
-            return new ColorUIResource( base.brighter() );
+            return new ColorUIResource( myLookAndFeel.base.brighter() );
         }
 
         /**
@@ -384,7 +386,7 @@ public class MyLookAndFeel implements Serializable {
         @Override
         protected ColorUIResource getPrimary3() {
 
-            return new ColorUIResource( base.brighter().brighter() );
+            return new ColorUIResource( myLookAndFeel.base.brighter().brighter() );
         }
 
         /**
@@ -395,7 +397,7 @@ public class MyLookAndFeel implements Serializable {
         @Override
         protected ColorUIResource getSecondary1() {
 
-            return new ColorUIResource( base.brighter() );
+            return new ColorUIResource( myLookAndFeel.base.brighter() );
         }
 
         /**
@@ -406,7 +408,7 @@ public class MyLookAndFeel implements Serializable {
         @Override
         public ColorUIResource getSecondary2() {
 
-            return new ColorUIResource( base );
+            return new ColorUIResource( myLookAndFeel.base );
         }
 
         /**
@@ -417,7 +419,7 @@ public class MyLookAndFeel implements Serializable {
         @Override
         public ColorUIResource getSecondary3() {
 
-            return new ColorUIResource( base.brighter().brighter() );
+            return new ColorUIResource( myLookAndFeel.base.brighter().brighter() );
         }
 
         /**
@@ -426,7 +428,7 @@ public class MyLookAndFeel implements Serializable {
         @Override
         protected ColorUIResource getWhite() {
 
-            return new ColorUIResource( base.brighter().brighter().brighter() );
+            return new ColorUIResource( myLookAndFeel.base.brighter().brighter().brighter() );
         }
 
         /**
@@ -435,7 +437,7 @@ public class MyLookAndFeel implements Serializable {
         @Override
         protected ColorUIResource getBlack() {
 
-            return new ColorUIResource( base.darker().darker().darker() );
+            return new ColorUIResource( myLookAndFeel.base.darker().darker().darker() );
         }
 
         /**
@@ -453,7 +455,7 @@ public class MyLookAndFeel implements Serializable {
         @Override
         public ColorUIResource getSimpleInternalFrameBackground() {
 
-            return new ColorUIResource( base.darker().darker() );
+            return new ColorUIResource( myLookAndFeel.base.darker().darker() );
         }
     }
 }

@@ -16,10 +16,11 @@
 package com.lyndir.lhunath.opal.gui.zui;
 
 import com.lyndir.lhunath.opal.math.Path;
-import edu.umd.cs.piccolo.PLayer;
-import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolo.util.PPaintContext;
+import com.lyndir.lhunath.opal.math.Vec2D;
+import org.piccolo2d.PLayer;
+import org.piccolo2d.PNode;
+import org.piccolo2d.util.PBounds;
+import org.piccolo2d.util.PPaintContext;
 import java.awt.*;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Point2D;
@@ -168,11 +169,12 @@ public class PConnector extends PNode {
         PBounds dstBounds = dst.getGlobalBounds();
         Path path = Path.calculatePath( srcBounds, dstBounds );
 
-        Point2D newOffset = path.getOffset().toPoint();
+        Vec2D pathOffset = path.getOffset();
+        Point2D newOffset = new Point2D.Double( pathOffset.getX(), pathOffset.getY());
         if (!getOffset().equals( newOffset ))
             setOffset( newOffset );
 
-        return setBounds( new Rectangle( -stroke / 2 - 2, -stroke / 2 - 2, path.getSize().x + stroke + 4, path.getSize().y + stroke + 4 ) );
+        return setBounds( new Rectangle.Double( -stroke / 2 - 2, -stroke / 2 - 2, path.getSize().getX() + stroke + 4, path.getSize().getY() + stroke + 4 ) );
     }
 
     /**
@@ -223,7 +225,7 @@ public class PConnector extends PNode {
             if (!(child instanceof PNode))
                 sane = false;
             else if (!sane)
-                ((PNode) child).moveToFront();
+                ((PNode) child).raiseToTop();
     }
 
     /**

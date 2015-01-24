@@ -15,9 +15,9 @@
  */
 package com.lyndir.lhunath.opal.gui.template.shade;
 
+import com.lyndir.lhunath.opal.config.BaseConfig;
 import com.lyndir.lhunath.opal.gui.MyLookAndFeel;
 import com.lyndir.lhunath.opal.math.Version;
-import com.lyndir.lhunath.opal.system.BaseConfig;
 import com.lyndir.lhunath.opal.system.Locale;
 import java.io.File;
 import java.io.Serializable;

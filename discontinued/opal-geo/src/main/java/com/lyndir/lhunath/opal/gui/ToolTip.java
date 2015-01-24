@@ -15,10 +15,12 @@
  */
 package com.lyndir.lhunath.opal.gui;
 
-import com.lyndir.lhunath.opal.system.UIUtils;
+import com.lyndir.lhunath.opal.system.util.UIUtils;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
+import java.util.Timer;
 import javax.swing.*;
 
 
@@ -526,7 +528,7 @@ public class ToolTip extends JPanel {
     /**
      * A listener that is used to listen for sticky state changes.
      */
-    private interface ToolTipStickyListener {
+    public interface ToolTipStickyListener {
 
         /**
          * Notifies the listener that this tooltip's sticky state has changed.

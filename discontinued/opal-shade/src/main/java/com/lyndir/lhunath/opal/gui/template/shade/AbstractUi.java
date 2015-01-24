@@ -22,8 +22,14 @@ import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.uif_lite.panel.SimpleInternalFrame;
+import com.lyndir.lhunath.opal.config.BaseConfig;
 import com.lyndir.lhunath.opal.gui.*;
+import com.lyndir.lhunath.opal.gui.FileDialog;
+import com.lyndir.lhunath.opal.system.*;
+import com.lyndir.lhunath.opal.system.Locale;
+import com.lyndir.lhunath.opal.system.logging.*;
 import com.lyndir.lhunath.opal.system.util.TypeUtils;
+import com.lyndir.lhunath.opal.system.util.UIUtils;
 import com.lyndir.lhunath.opal.system.wrapper.TrayIcon.MessageType;
 import java.awt.*;
 import java.awt.event.*;
@@ -31,6 +37,8 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.*;
 import java.util.*;
+import java.util.List;
+import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import javax.swing.*;
@@ -578,11 +586,11 @@ public abstract class AbstractUi
                     /* Emit messages on the system tray. */
                     else if (level.intValue() > Level.CONFIG.intValue())
                         if (systray != null) {
-                            MessageType type = MessageType.INFO;
+                            TrayIcon.MessageType type = TrayIcon.MessageType.INFO;
                             if (level.equals( Level.WARNING ))
-                                type = MessageType.WARNING;
+                                type = TrayIcon.MessageType.WARNING;
                             else if (level.equals( Level.SEVERE ))
-                                type = MessageType.ERROR;
+                                type = TrayIcon.MessageType.ERROR;
 
                             systray.displayMessage( level.getLocalizedName(), message, type );
                         }

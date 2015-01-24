@@ -52,13 +52,13 @@ public enum MessageAuthenticationDigests {
         return of( key, IOUtils.supply( bytes ) );
     }
 
-    public byte[] of( final byte[] key, final InputSupplier<? extends InputStream> supplier) {
+    public byte[] of( final byte[] key, final ByteSource source) {
 
         try {
             final Mac mac = get();
             mac.init( new SecretKeySpec( key, mac.getAlgorithm() ) );
 
-            return ByteStreams.readBytes( supplier, new ByteProcessor<byte[]>() {
+            return source.read( new ByteProcessor<byte[]>() {
                 @Override
                 public boolean processBytes(final byte[] buf, final int off, final int len) {
 
@@ -76,10 +76,5 @@ public enum MessageAuthenticationDigests {
         catch (final IOException | InvalidKeyException e) {
             throw logger.bug( e );
         }
-    }
-
-    public byte[] of(final byte[] key, final InputStream stream) {
-
-        return of( key, IOUtils.supply( stream ) );
     }
 }

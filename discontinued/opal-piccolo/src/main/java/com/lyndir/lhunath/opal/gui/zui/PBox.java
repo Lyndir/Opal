@@ -16,13 +16,15 @@
 package com.lyndir.lhunath.opal.gui.zui;
 
 import com.lyndir.lhunath.opal.math.Vec2;
+import com.lyndir.lhunath.opal.math.Vec2D;
+import com.lyndir.lhunath.opal.system.util.UIUtils;
 import com.lyndir.lhunath.opal.system.util.Utils;
-import edu.umd.cs.piccolo.PCanvas;
-import edu.umd.cs.piccolo.util.PPaintContext;
+import org.piccolo2d.PCanvas;
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
 import javax.swing.*;
+import org.piccolo2d.util.PPaintContext;
 
 
 /**
@@ -34,7 +36,7 @@ public class PBox extends PShape {
 
     private static final double PADDING = 10;
 
-    private static final Vec2 tipOffset = new Vec2( -10, 30 );
+    private static final Vec2 tipOffset = Vec2.create( -10, 30 );
 
     protected final PCanvas canvas;
     private         PBox    tooltipNode;
@@ -215,7 +217,7 @@ public class PBox extends PShape {
             tooltipNode.setLocked( false );
 
             if (getPaint() instanceof Color)
-                tooltipNode.setPaint( Utils.setAlpha( (Color) getPaint(), 200 ) );
+                tooltipNode.setPaint( UIUtils.setAlpha( (Color) getPaint(), 200 ) );
             else
                 tooltipNode.setPaint( getPaint() );
         } else
@@ -236,7 +238,9 @@ public class PBox extends PShape {
         if (offset == null)
             return;
 
-        offset = new Vec2( canvas.getCamera().viewToLocal( localToGlobal( offset ) ) ).add( tipOffset ).toPoint();
+        Point2D cameraOffset = canvas.getCamera().viewToLocal( localToGlobal( offset ) );
+        Vec2 offsetVec = Vec2.create( (int)cameraOffset.getX(), (int)cameraOffset.getY() ).translate( tipOffset );
+        offset.setLocation( offsetVec.getX(), offsetVec.getY() );
         if (!tooltipNode.getOffset().equals( offset ))
             tooltipNode.setOffset( offset );
 

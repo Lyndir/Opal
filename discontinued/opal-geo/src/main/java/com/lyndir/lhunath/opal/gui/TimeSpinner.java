@@ -273,7 +273,7 @@ public class TimeSpinner extends JSpinner {
 
             else
                 try {
-                    Integer time = ConversionUtils.toInteger( value.toString() );
+                    Integer time = ConversionUtils.toInteger( value.toString() ).orNull();
                     if (time != null)
                         this.value = new Date( time );
                     else
