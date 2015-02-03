@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.lyndir.lhunath.opal</groupId>
         <artifactId>opal</artifactId>
-        <version>GIT-SNAPSHOT</version>
+        <version>1.6-p8</version>
     </parent>
 
     <artifactId>opal-wicket</artifactId>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>com.lyndir.lhunath.opal</groupId>
             <artifactId>opal-system</artifactId>
-            <version>GIT-SNAPSHOT</version>
+            <version>1.6-p8</version>
         </dependency>
 
         <!-- EXTERNAL DEPENDENCIES -->
