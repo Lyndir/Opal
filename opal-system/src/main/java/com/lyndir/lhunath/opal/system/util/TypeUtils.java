@@ -64,7 +64,7 @@ public abstract class TypeUtils {
      *
      * @return A present instance object of the named type or absent if the instance could not be created.
      */
-    public static <T> Optional<T> newInstance(final Class<T> type) {
+    public static <T> Optional<T> newInstance(final Class<? extends T> type) {
 
         try {
             return Optional.of( type.getConstructor().newInstance() );
@@ -108,7 +108,7 @@ public abstract class TypeUtils {
      * @return An instance of the given {@code type} .
      */
     @SuppressWarnings("UnnecessaryFullyQualifiedName")
-    public static <T> T newProxyInstance(final Class<T> type, final java.lang.reflect.InvocationHandler invocationHandler) {
+    public static <T> T newProxyInstance(final Class<? extends T> type, final java.lang.reflect.InvocationHandler invocationHandler) {
 
         Callback interceptor = (MethodInterceptor) (o, method, objects, methodProxy) -> invocationHandler.invoke( o, method, objects );
 
@@ -152,7 +152,7 @@ public abstract class TypeUtils {
      * contains no classes that have the given annotation type set.
      */
     @Nullable
-    public static <A extends Annotation> A findAnnotation(final Class<?> type, final Class<A> annotationType) {
+    public static <A extends Annotation> A findAnnotation(final Class<?> type, final Class<? extends A> annotationType) {
 
         A annotation = type.getAnnotation( annotationType );
         if (annotation != null) {
@@ -188,7 +188,7 @@ public abstract class TypeUtils {
      */
     @Nonnull
     public static <A extends Annotation> Map<Class<?>, Map<Class<?>, A>> getAnnotations(final Class<?> type,
-                                                                                        final Class<A> annotationType) {
+                                                                                        final Class<? extends A> annotationType) {
 
         ImmutableMap.Builder<Class<?>, Map<Class<?>, A>> typeHierarchyAnnotations = ImmutableMap.builder();
         ImmutableMap.Builder<Class<?>, A> typeAnnotations = ImmutableMap.builder();
@@ -220,7 +220,7 @@ public abstract class TypeUtils {
      * contains no methods that have the given annotation type set.
      */
     @Nullable
-    public static <A extends Annotation> A findAnnotation(final Method method, final Class<A> annotationType) {
+    public static <A extends Annotation> A findAnnotation(final Method method, final Class<? extends A> annotationType) {
 
         A annotation = method.getAnnotation( annotationType );
         if (annotation != null) {
@@ -248,7 +248,7 @@ public abstract class TypeUtils {
         return findAnnotation( superclassMethod, annotationType );
     }
 
-    public static <E> ImmutableList<Constructor<E>> findConstructors(final Class<E> type, final Object... args) {
+    public static <E> ImmutableList<Constructor<E>> findConstructors(final Class<? extends E> type, final Object... args) {
         ImmutableList.Builder<Constructor<E>> constructors = ImmutableList.builder();
         for (final Constructor<?> constructor : type.getDeclaredConstructors()) {
             Class<?>[] parameterTypes = constructor.getParameterTypes();
@@ -280,7 +280,7 @@ public abstract class TypeUtils {
         return constructors.build();
     }
 
-    public static <E> Constructor<E> getConstructor(final Class<E> type, final Object... args) {
+    public static <E> Constructor<E> getConstructor(final Class<? extends E> type, final Object... args) {
         ImmutableList<Constructor<E>> constructors = findConstructors( type, args );
         if (constructors.isEmpty()) {
             throw new InternalInconsistencyException( strf( "No constructors of type: %s, match argument types: %s", type,
@@ -361,7 +361,7 @@ public abstract class TypeUtils {
      * @return The final result produced by the last execution of the operation.
      */
     @Nullable
-    public static <T, R> R forEachFieldOf(final Class<T> type, final NFunctionNN<LastResult<Field, R>, R> function,
+    public static <T, R> R forEachFieldOf(final Class<? extends T> type, final NFunctionNN<LastResult<Field, R>, R> function,
                                           @Nullable final R firstResult, final boolean descend) {
 
         NFunctionNN<LastResult<Class<?>, R>, R> eachFieldFunction = new NFunctionNN<LastResult<Class<?>, R>, R>() {
