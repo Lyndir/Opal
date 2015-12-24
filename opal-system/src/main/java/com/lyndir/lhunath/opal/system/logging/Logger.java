@@ -69,6 +69,76 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
+    public Logger log(@Nonnull final Target target, @Nullable final Marker marker, @Nullable final Throwable cause, final String descriptionFormat,
+                      final Object... descriptionArguments) {
+
+        switch (target) {
+            case TRACE:
+                return trc( marker, cause, descriptionFormat, descriptionArguments );
+            case DEBUG:
+                return dbg( marker, cause, descriptionFormat, descriptionArguments );
+            case INFO:
+                return inf( marker, cause, descriptionFormat, descriptionArguments );
+            case AUDIT:
+                return audit( descriptionFormat, descriptionArguments );
+            case WARN:
+                return wrn( marker, cause, descriptionFormat, descriptionArguments );
+            case ERROR:
+                return err( marker, cause, descriptionFormat, descriptionArguments );
+            case BUG:
+                bug( cause, descriptionFormat, descriptionArguments );
+                return this;
+        }
+
+        throw new IllegalArgumentException( "Unsupported target: " + target );
+    }
+
+    /**
+     * Log a progress trace event.
+     * <p>
+     * <p> This level is for all events that describe the flow of execution. </p>
+     *
+     * @param cause                A throwable that details the stack at the time of this event.
+     * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments The arguments to inject into the event message format.
+     *
+     * @return Self, for chaining.
+     */
+    public Logger log(@Nonnull final Target target, @Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+
+        return log( target, null, cause, descriptionFormat, descriptionArguments );
+    }
+
+    /**
+     * Log a progress trace event.
+     * <p>
+     * <p> This level is for all events that describe the flow of execution. </p>
+     *
+     * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments The arguments to inject into the event message format.
+     *
+     * @return Self, for chaining.
+     *
+     * @see #log(Target target, Throwable, String, Object...)
+     */
+    public Logger log(@Nonnull final Target target, final String descriptionFormat, final Object... descriptionArguments) {
+
+        return log( target, null, descriptionFormat, descriptionArguments );
+    }
+
+
+    /**
+     * Log a progress trace event.
+     * <p>
+     * <p> This level is for all events that describe the flow of execution. </p>
+     *
+     * @param marker               An optional marker that can be used to tag this event with additional context.
+     * @param cause                A throwable that details the stack at the time of this event.
+     * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
+     * @param descriptionArguments The arguments to inject into the event message format.
+     *
+     * @return Self, for chaining.
+     */
     public Logger trc(@Nullable final Marker marker, @Nullable final Throwable cause, final String descriptionFormat,
                       final Object... descriptionArguments) {
 
@@ -430,5 +500,15 @@ public class Logger implements Serializable {
     private Logger(final Class<?> type) {
 
         this.type = type;
+    }
+
+    public enum Target {
+        TRACE,
+        DEBUG,
+        INFO,
+        AUDIT,
+        WARN,
+        ERROR,
+        BUG,
     }
 }
