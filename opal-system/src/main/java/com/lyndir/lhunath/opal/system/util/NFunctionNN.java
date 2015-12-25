@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
  * @param <T> The type of the value this operation can be applied to.
  */
 @SuppressWarnings({ "NullableProblems" })
+@FunctionalInterface
 public interface NFunctionNN<F, T> extends Function<F, T> {
 
     @Nullable

@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
  *
  * @param <T> The type of the value this operation can be applied to.
  */
+@FunctionalInterface
 public interface NNOperation<T> {
 
     void apply(@Nonnull T input);

@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
  *
  * @param <T> The type of the supplied value.
  */
+@FunctionalInterface
 public interface NSupplier<T> extends Supplier<T> {
 
     @Nullable

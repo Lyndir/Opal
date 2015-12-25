@@ -51,6 +51,7 @@ public class GsonJsonProvider implements MessageBodyReader<Object>, MessageBodyW
     public Object readFrom(final Class<Object> type, final Type genericType, final Annotation[] annotations, final MediaType mediaType,
                            final MultivaluedMap<String, String> httpHeaders, final InputStream entityStream)
             throws IOException, WebApplicationException {
+        // TODO: Get charset from mediaType
         return gson.fromJson( new InputStreamReader( entityStream, Charsets.UTF_8 ), ifNotNullElse( genericType, type ) );
     }
 
@@ -69,10 +70,7 @@ public class GsonJsonProvider implements MessageBodyReader<Object>, MessageBodyW
     public void writeTo(final Object o, final Class<?> type, final Type genericType, final Annotation[] annotations,
                         final MediaType mediaType, final MultivaluedMap<String, Object> httpHeaders, final OutputStream entityStream)
             throws IOException, WebApplicationException {
-        // TODO
+        // TODO: Get charset from mediaType
         entityStream.write( gson.toJson( o, ifNotNullElse( genericType, type ) ).getBytes( Charsets.UTF_8 ) );
-        String json = gson.toJson( o, ifNotNullElse( genericType, type ) );
-        CharStreams.copy( new StringReader( json ), new OutputStreamWriter( entityStream, Charsets.UTF_8 ) );
-        //gson.toJson( o, ifNotNullElse( genericType, type ), new OutputStreamWriter( entityStream, charsetFromMediaType( mediaType ) ) );
     }
 }

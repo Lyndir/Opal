@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
  * @param <T> The type of the supplied value.
  */
 @SuppressWarnings("NullableProblems")
+@FunctionalInterface
 public interface PredicateNN<T> extends Predicate<T> {
 
     @Override

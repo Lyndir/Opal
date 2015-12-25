@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
  *
  * @param <T> The type of the supplied value.
  */
+@FunctionalInterface
 public interface NNSupplier<T> extends Supplier<T> {
 
     @Nonnull
