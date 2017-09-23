@@ -24,11 +24,11 @@ public abstract class CryptUtils {
     private static final Random random = new SecureRandom();
 
     /**
-     * Encrypt the given data using the given key with AES at 128 bit in ECB.
+     * Encrypt the given data using the given key with AES at 128 bit in CBC.
      *
      * @param plainData  The data to encrypt.
      * @param key        The encryption key to encrypt the data with.
-     * @param usePadding Whether to use PKCS5 padding during the encryption.
+     * @param usePadding Whether to use PKCS7 padding during the encryption (needed for messages that do not fit the block size).
      *
      * @return The encrypted version of the plain text data as encrypted by the given key.
      *
@@ -39,7 +39,7 @@ public abstract class CryptUtils {
             throws IllegalBlockSizeException {
 
         try {
-            String cipherTransformation = String.format( "AES/ECB/%s", usePadding? "PKCS5Padding": "NoPadding" );
+            String cipherTransformation = String.format( "AES/CBC/%s", usePadding? "PKCS5Padding": "NoPadding" );
             return doCrypt( plainData, key, cipherTransformation, 128, Cipher.ENCRYPT_MODE );
         }
         catch (final BadPaddingException e) {
@@ -48,11 +48,11 @@ public abstract class CryptUtils {
     }
 
     /**
-     * Decrypt the given data using the given key with AES at 128 bit in ECB.
+     * Decrypt the given data using the given key with AES at 128 bit in CBC.
      *
      * @param encryptedData The data to decrypt.
      * @param key           The encryption key to decrypt the data with.
-     * @param usePadding    Whether to use PKCS5 padding during the encryption.
+     * @param usePadding    Whether to use PKCS7 padding during the encryption (needed for messages that do not fit the block size).
      *
      * @return The decrypted version of the encrypted data as decrypted by the given key.
      *
@@ -62,7 +62,7 @@ public abstract class CryptUtils {
             throws BadPaddingException {
 
         try {
-            String cipherTransformation = String.format( "AES/ECB/%s", usePadding? "PKCS5Padding": "NoPadding" );
+            String cipherTransformation = String.format( "AES/CBC/%s", usePadding? "PKCS5Padding": "NoPadding" );
             return doCrypt( encryptedData, key, cipherTransformation, 128, Cipher.DECRYPT_MODE );
         }
         catch (final IllegalBlockSizeException e) {
