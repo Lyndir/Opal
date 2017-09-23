@@ -6,9 +6,11 @@ import static com.lyndir.lhunath.opal.system.util.StringUtils.*;
 import com.google.common.base.Charsets;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.security.*;
+import java.security.spec.AlgorithmParameterSpec;
 import java.util.Random;
 import javax.annotation.Nullable;
 import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import org.bouncycastle.util.encoders.Base64;
 
@@ -99,8 +101,9 @@ public abstract class CryptUtils {
 
         // Encrypt data with key.
         try {
-            Cipher cipher = Cipher.getInstance( cipherTransformation );
-            cipher.init( mode, new SecretKeySpec( blockSizedKey, "AES" ) );
+            Cipher                 cipher     = Cipher.getInstance( cipherTransformation );
+            AlgorithmParameterSpec parameters = new IvParameterSpec( new byte[blockByteSize] );
+            cipher.init( mode, new SecretKeySpec( blockSizedKey, "AES" ), parameters );
 
             return cipher.doFinal( data );
         }
@@ -115,6 +118,9 @@ public abstract class CryptUtils {
         }
         catch (final InvalidKeyException e) {
             throw logger.bug( e, "Key is inappropriate for cipher." );
+        }
+        catch (final InvalidAlgorithmParameterException e) {
+            throw logger.bug( e, "IV is inappropriate for cipher." );
         }
     }
 
