@@ -21,6 +21,7 @@ import com.google.common.base.Throwables;
 import java.io.Serializable;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.jetbrains.annotations.NonNls;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
@@ -69,8 +70,8 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger log(@Nonnull final Target target, @Nullable final Marker marker, @Nullable final Throwable cause, final String descriptionFormat,
-                      final Object... descriptionArguments) {
+    public Logger log(@Nonnull final Target target, @Nullable final Marker marker, @Nullable final Throwable cause, @NonNls final String descriptionFormat,
+                      @NonNls final Object... descriptionArguments) {
 
         switch (target) {
             case TRACE:
@@ -104,7 +105,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger log(@Nonnull final Target target, @Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger log(@Nonnull final Target target, @Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return log( target, null, cause, descriptionFormat, descriptionArguments );
     }
@@ -121,7 +122,7 @@ public class Logger implements Serializable {
      *
      * @see #log(Target target, Throwable, String, Object...)
      */
-    public Logger log(@Nonnull final Target target, final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger log(@Nonnull final Target target, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return log( target, null, descriptionFormat, descriptionArguments );
     }
@@ -139,8 +140,8 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger trc(@Nullable final Marker marker, @Nullable final Throwable cause, final String descriptionFormat,
-                      final Object... descriptionArguments) {
+    public Logger trc(@Nullable final Marker marker, @Nullable final Throwable cause, @NonNls final String descriptionFormat,
+                      @NonNls final Object... descriptionArguments) {
 
         if (slf4j().isTraceEnabled())
             slf4j().trace( marker, String.format( descriptionFormat, descriptionArguments ), cause );
@@ -159,7 +160,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger trc(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger trc(@Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return trc( null, cause, descriptionFormat, descriptionArguments );
     }
@@ -176,7 +177,7 @@ public class Logger implements Serializable {
      *
      * @see #trc(Throwable, String, Object...)
      */
-    public Logger trc(final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger trc(@NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return trc( null, descriptionFormat, descriptionArguments );
     }
@@ -193,8 +194,8 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger dbg(@Nullable final Marker marker, @Nullable final Throwable cause, final String descriptionFormat,
-                      final Object... descriptionArguments) {
+    public Logger dbg(@Nullable final Marker marker, @Nullable final Throwable cause, @NonNls final String descriptionFormat,
+                      @NonNls final Object... descriptionArguments) {
 
         if (slf4j().isDebugEnabled())
             slf4j().debug( marker, String.format( descriptionFormat, descriptionArguments ), cause );
@@ -213,7 +214,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger dbg(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger dbg(@Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return dbg( null, cause, descriptionFormat, descriptionArguments );
     }
@@ -228,7 +229,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger dbg(final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger dbg(@NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return dbg( null, descriptionFormat, descriptionArguments );
     }
@@ -245,8 +246,8 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger inf(@Nullable final Marker marker, @Nullable final Throwable cause, final String descriptionFormat,
-                      final Object... descriptionArguments) {
+    public Logger inf(@Nullable final Marker marker, @Nullable final Throwable cause, @NonNls final String descriptionFormat,
+                      @NonNls final Object... descriptionArguments) {
 
         if (slf4j().isInfoEnabled())
             slf4j().info( marker, String.format( descriptionFormat, descriptionArguments ), cause );
@@ -265,7 +266,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger inf(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger inf(@Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return inf( null, cause, descriptionFormat, descriptionArguments );
     }
@@ -282,7 +283,7 @@ public class Logger implements Serializable {
      *
      * @see #inf(Throwable, String, Object...)
      */
-    public Logger inf(final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger inf(@NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return inf( null, descriptionFormat, descriptionArguments );
     }
@@ -299,8 +300,8 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger wrn(@Nullable final Marker marker, @Nullable final Throwable cause, final String descriptionFormat,
-                      final Object... descriptionArguments) {
+    public Logger wrn(@Nullable final Marker marker, @Nullable final Throwable cause, @NonNls final String descriptionFormat,
+                      @NonNls final Object... descriptionArguments) {
 
         if (slf4j().isWarnEnabled())
             slf4j().warn( marker, String.format( descriptionFormat, descriptionArguments ), cause );
@@ -319,7 +320,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger wrn(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger wrn(@Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return wrn( null, cause, descriptionFormat, descriptionArguments );
     }
@@ -334,7 +335,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger wrn(final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger wrn(@NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return wrn( null, descriptionFormat, descriptionArguments );
     }
@@ -351,8 +352,8 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger err(@Nullable final Marker marker, @Nullable final Throwable cause, final String descriptionFormat,
-                      final Object... descriptionArguments) {
+    public Logger err(@Nullable final Marker marker, @Nullable final Throwable cause, @NonNls final String descriptionFormat,
+                      @NonNls final Object... descriptionArguments) {
 
         if (slf4j().isErrorEnabled())
             slf4j().error( marker, String.format( descriptionFormat, descriptionArguments ), cause );
@@ -371,7 +372,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger err(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger err(@Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return err( null, cause, descriptionFormat, descriptionArguments );
     }
@@ -386,7 +387,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger err(final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger err(@NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return err( null, descriptionFormat, descriptionArguments );
     }
@@ -402,7 +403,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger audit(final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger audit(@NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return inf( Markers.AUDIT, null, descriptionFormat, descriptionArguments );
     }
@@ -434,7 +435,7 @@ public class Logger implements Serializable {
      *
      * @return The cause, if not null, wrapped in a {@link RuntimeException} if it isn't one.  For easy rethrowing.
      */
-    public RuntimeException bug(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+    public RuntimeException bug(@Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         err( Markers.BUG, cause, descriptionFormat, descriptionArguments );
 
@@ -451,7 +452,7 @@ public class Logger implements Serializable {
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
      * @param descriptionArguments The arguments to inject into the event message format.
      */
-    public RuntimeException bug(final String descriptionFormat, final Object... descriptionArguments) {
+    public RuntimeException bug(@NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return bug( null, descriptionFormat, descriptionArguments );
     }
@@ -467,7 +468,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger security(@Nullable final Throwable cause, final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger security(@Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return wrn( Markers.SECURITY, cause, descriptionFormat, descriptionArguments );
     }
@@ -482,7 +483,7 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger security(final String descriptionFormat, final Object... descriptionArguments) {
+    public Logger security(@NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         return security( null, descriptionFormat, descriptionArguments );
     }
