@@ -27,7 +27,8 @@ import java.io.*;
  */
 public class TeeThread extends Thread {
 
-    private static final Logger logger = Logger.get( TeeThread.class );
+    private static final Logger logger      = Logger.get( TeeThread.class );
+    private static final int    BUFFER_SIZE = 4096;
 
     private final InputStream                 source;
     private final ImmutableList<OutputStream> destinations;
@@ -51,8 +52,8 @@ public class TeeThread extends Thread {
     public void run() {
 
         try {
-            int bytesRead;
-            byte[] buf = new byte[4096];
+            int    bytesRead;
+            byte[] buf = new byte[BUFFER_SIZE];
 
             while ((bytesRead = source.read( buf )) > 0)
                 for (final OutputStream destination : destinations)

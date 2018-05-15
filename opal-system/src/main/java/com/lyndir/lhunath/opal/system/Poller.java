@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
  */
 public class Poller<K, E> {
 
-    private final Map<K, Queue<E>> queues = Collections.synchronizedMap( new HashMap<K, Queue<E>>() );
+    private final Map<K, Queue<E>> queues = Collections.synchronizedMap( new HashMap<>() );
 
     /**
      * Offer a new element to the responsible object's queue.
@@ -55,9 +55,9 @@ public class Poller<K, E> {
      * @return The element that has been on the responsible object's queue the longest, or {@code null} if its queue is empty.
      */
     @Nullable
-    public E poll(final K owner) {
+    public E poll(@Nullable final K owner) {
 
-        if (owner != null && queues.containsKey( owner ))
+        if ((owner != null) && queues.containsKey( owner ))
             return queues.get( owner ).poll();
 
         return null;

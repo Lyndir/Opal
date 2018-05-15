@@ -55,7 +55,7 @@ public enum MessageAuthenticationDigests {
     public byte[] of( final byte[] key, final ByteSource source) {
 
         try {
-            final Mac mac = get();
+            Mac mac = get();
             mac.init( new SecretKeySpec( key, mac.getAlgorithm() ) );
 
             return source.read( new ByteProcessor<byte[]>() {

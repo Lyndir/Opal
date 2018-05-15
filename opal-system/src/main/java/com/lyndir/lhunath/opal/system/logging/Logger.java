@@ -35,11 +35,11 @@ import org.slf4j.Marker;
  *
  * @author lhunath
  */
-public class Logger implements Serializable {
+public final class Logger implements Serializable {
 
     private static final long serialVersionUID = 0;
 
-    private final     Class<?>         type;
+    private final Class<?> type;
 
     @Nullable
     private transient org.slf4j.Logger logger;
@@ -60,7 +60,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a progress trace event.
-     * <p>
+     *
      * <p> This level is for all events that describe the flow of execution. </p>
      *
      * @param marker               An optional marker that can be used to tag this event with additional context.
@@ -70,8 +70,8 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger log(@Nonnull final Target target, @Nullable final Marker marker, @Nullable final Throwable cause, final String descriptionFormat,
-                      final Object... descriptionArguments) {
+    public Logger log(@Nonnull final Target target, @Nullable final Marker marker, @Nullable final Throwable cause,
+                      @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
 
         switch (target) {
             case TRACE:
@@ -113,7 +113,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a progress trace event.
-     * <p>
+     *
      * <p> This level is for all events that describe the flow of execution. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -128,10 +128,9 @@ public class Logger implements Serializable {
         return log( target, null, descriptionFormat, descriptionArguments );
     }
 
-
     /**
      * Log a progress trace event.
-     * <p>
+     *
      * <p> This level is for all events that describe the flow of execution. </p>
      *
      * @param marker               An optional marker that can be used to tag this event with additional context.
@@ -152,7 +151,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a progress trace event.
-     * <p>
+     *
      * <p> This level is for all events that describe the flow of execution. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -161,14 +160,15 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger trc(@Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
+    public Logger trc(@Nullable final Throwable cause, @NonNls final String descriptionFormat,
+                      @NonNls final Object... descriptionArguments) {
 
         return trc( null, cause, descriptionFormat, descriptionArguments );
     }
 
     /**
      * Log a progress trace event.
-     * <p>
+     *
      * <p> This level is for all events that describe the flow of execution. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -185,7 +185,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a debugging event.
-     * <p>
+     *
      * <p> This level is for all events that visualize the application's state. </p>
      *
      * @param marker               An optional marker that can be used to tag this event with additional context.
@@ -206,7 +206,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a debugging event.
-     * <p>
+     *
      * <p> This level is for all events that visualize the application's state. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -215,14 +215,15 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger dbg(@Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
+    public Logger dbg(@Nullable final Throwable cause, @NonNls final String descriptionFormat,
+                      @NonNls final Object... descriptionArguments) {
 
         return dbg( null, cause, descriptionFormat, descriptionArguments );
     }
 
     /**
      * Log a debugging event.
-     * <p>
+     *
      * <p> This level is for all events that visualize the application's state. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -237,7 +238,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an informative statement.
-     * <p>
+     *
      * <p> This level is for all events that detail an important evolution in the application's state. </p>
      *
      * @param marker               An optional marker that can be used to tag this event with additional context.
@@ -258,7 +259,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an informative statement.
-     * <p>
+     *
      * <p> This level is for all events that detail an important evolution in the application's state. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -267,14 +268,15 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger inf(@Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
+    public Logger inf(@Nullable final Throwable cause, @NonNls final String descriptionFormat,
+                      @NonNls final Object... descriptionArguments) {
 
         return inf( null, cause, descriptionFormat, descriptionArguments );
     }
 
     /**
      * Log an informative statement.
-     * <p>
+     *
      * <p> This level is for all events that detail an important evolution in the application's state. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -291,7 +293,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an application warning.
-     * <p>
+     *
      * <p> This level is for all events that indicate a suboptimal / non-ideal flow. </p>
      *
      * @param marker               An optional marker that can be used to tag this event with additional context.
@@ -312,7 +314,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an application warning.
-     * <p>
+     *
      * <p> This level is for all events that indicate a suboptimal / non-ideal flow. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -321,14 +323,15 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger wrn(@Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
+    public Logger wrn(@Nullable final Throwable cause, @NonNls final String descriptionFormat,
+                      @NonNls final Object... descriptionArguments) {
 
         return wrn( null, cause, descriptionFormat, descriptionArguments );
     }
 
     /**
      * Log an application warning.
-     * <p>
+     *
      * <p> This level is for all events that indicate a suboptimal / non-ideal flow. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -343,7 +346,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an application error.
-     * <p>
+     *
      * <p> This level is for all events that indicate failure to comply with the request. </p>
      *
      * @param marker               An optional marker that can be used to tag this event with additional context.
@@ -364,7 +367,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an application error.
-     * <p>
+     *
      * <p> This level is for all events that indicate failure to comply with the request. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -373,14 +376,15 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger err(@Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
+    public Logger err(@Nullable final Throwable cause, @NonNls final String descriptionFormat,
+                      @NonNls final Object... descriptionArguments) {
 
         return err( null, cause, descriptionFormat, descriptionArguments );
     }
 
     /**
      * Log an application error.
-     * <p>
+     *
      * <p> This level is for all events that indicate failure to comply with the request. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -395,7 +399,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a user action.
-     * <p>
+     *
      * <p>This level is for all actions performed by a user that site administrators may later need to reflect upon to evaluate user
      * conduct.</p>
      *
@@ -411,7 +415,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an internal inconsistency.
-     * <p>
+     *
      * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
      *
      * @param cause A throwable that details the stack at the time of this event.
@@ -427,7 +431,7 @@ public class Logger implements Serializable {
 
     /**
      * Log an internal inconsistency.
-     * <p>
+     *
      * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -436,18 +440,19 @@ public class Logger implements Serializable {
      *
      * @return The cause, if not null, wrapped in a {@link RuntimeException} if it isn't one.  For easy rethrowing.
      */
-    public RuntimeException bug(@Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
+    public RuntimeException bug(@Nullable final Throwable cause, @NonNls final String descriptionFormat,
+                                @NonNls final Object... descriptionArguments) {
 
         err( Markers.BUG, cause, descriptionFormat, descriptionArguments );
 
         //noinspection ThrowableResultOfMethodCallIgnored
-        return cause == null? new RuntimeException( String.format( descriptionFormat, descriptionArguments ) )
+        return (cause == null)? new RuntimeException( String.format( descriptionFormat, descriptionArguments ) )
                 : Throwables.propagate( cause );
     }
 
     /**
      * Log an internal inconsistency.
-     * <p>
+     *
      * <p> This level is for all events that occur unexpectedly. They indicate a bug in the application's flow. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.
@@ -460,7 +465,7 @@ public class Logger implements Serializable {
 
     /**
      * Log a security concern.
-     * <p>
+     *
      * <p> This level is for all events that should be evaluated by the security team. </p>
      *
      * @param cause                A throwable that details the stack at the time of this event.
@@ -469,14 +474,15 @@ public class Logger implements Serializable {
      *
      * @return Self, for chaining.
      */
-    public Logger security(@Nullable final Throwable cause, @NonNls final String descriptionFormat, @NonNls final Object... descriptionArguments) {
+    public Logger security(@Nullable final Throwable cause, @NonNls final String descriptionFormat,
+                           @NonNls final Object... descriptionArguments) {
 
         return wrn( Markers.SECURITY, cause, descriptionFormat, descriptionArguments );
     }
 
     /**
      * Log a security concern.
-     * <p>
+     *
      * <p> This level is for all events that should be evaluated by the security team. </p>
      *
      * @param descriptionFormat    The format of the event message. See {@link String#format(String, Object...)}.

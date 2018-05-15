@@ -29,8 +29,9 @@ import javax.annotation.Nullable;
  *
  * @author lhunath
  */
-@SuppressFBWarnings({ "DMI_HARDCODED_ABSOLUTE_FILENAME" })
-public class WinReg {
+@SuppressWarnings("HardcodedFileSeparator")
+@SuppressFBWarnings("DMI_HARDCODED_ABSOLUTE_FILENAME")
+public final class WinReg {
 
     private static final Logger logger = Logger.get( WinReg.class );
 

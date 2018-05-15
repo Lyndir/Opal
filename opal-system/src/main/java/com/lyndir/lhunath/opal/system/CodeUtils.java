@@ -8,6 +8,7 @@ import java.net.*;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.Formatter;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 
@@ -20,51 +21,60 @@ public abstract class CodeUtils {
 
     static final Logger logger = Logger.get( CodeUtils.class );
 
-    public static byte[] digest(final MessageDigests digest, final String input, final Charset charset) {
+    @Nullable
+    public static byte[] digest(final MessageDigests digest, @Nullable final String input, final Charset charset) {
 
         return digest( digest.get(), input, charset );
     }
 
-    public static byte[] digest(final MessageDigest digest, final String input, final Charset charset) {
+    @Nullable
+    public static byte[] digest(final MessageDigest digest, @Nullable final String input, final Charset charset) {
 
-        return digest( digest, input.getBytes( charset ) );
+        return (input == null)? null: digest( digest, input.getBytes( charset ) );
     }
 
-    public static byte[] digest(final MessageDigests digest, final byte[] input) {
+    @Nullable
+    public static byte[] digest(final MessageDigests digest, @Nullable final byte[] input) {
 
         return digest( digest.get(), input );
     }
 
-    public static byte[] digest(final MessageDigest digest, final byte[] input) {
+    @Nullable
+    public static byte[] digest(final MessageDigest digest, @Nullable final byte[] input) {
 
-        return digest.digest( input );
+        return (input == null)? null: digest.digest( input );
     }
 
+    @Nullable
     public static String encodeHex(@Nullable final byte[] data) {
 
         return encodeHex( data, false );
     }
 
+    @Nullable
     public static String encodeHex(@Nullable final byte[] data, final boolean pretty) {
 
-        StringBuilder bytes = new StringBuilder( data == null? 0: (data.length + (pretty? 1: 0)) * 2 );
+        if (data == null)
+            return null;
+
+        StringBuilder bytes = new StringBuilder( (data.length + (pretty? 1: 0)) * 2 );
         try (Formatter formatter = new Formatter( bytes )) {
             String format = String.format( "%%02X%s", pretty? ":": "" );
 
-            if (data != null)
                 for (final byte b : data)
                     formatter.format( format, b );
         }
-        if (pretty && bytes.length() > 0)
+        if (pretty && (bytes.length() > 0))
             bytes.deleteCharAt( bytes.length() - 1 );
 
         return bytes.toString();
     }
 
+    @Nullable
     public static byte[] decodeHex(@Nullable final String hexString) {
 
         if (hexString == null)
-            return new byte[0];
+            return null;
 
         byte[] deviceToken = new byte[hexString.length() / 2];
         for (int i = 0; i < hexString.length(); i += 2)
@@ -82,6 +92,7 @@ public abstract class CodeUtils {
      *
      * @return A URL that is the result of injecting the arguments into the URL template.
      */
+    @Nonnull
     public static URL encodeURL(final String urlFormat, final String urlParam1, final String... otherURLParams) {
 
         StringBuilder url = new StringBuilder();
@@ -90,7 +101,7 @@ public abstract class CodeUtils {
              (urlFormatOffset = urlFormat.indexOf( "{}", urlFormatOffset )) != -1; //
              lastURLFormatOffset = urlFormatOffset += 2, ++urlFormatIndex) {
 
-            url.append( urlFormat.substring( lastURLFormatOffset, urlFormatOffset ) );
+            url.append( urlFormat, lastURLFormatOffset, urlFormatOffset );
 
             if (urlFormatIndex == 0) {
                 url.append( encodeURL( urlParam1 ) );
@@ -109,11 +120,13 @@ public abstract class CodeUtils {
         }
     }
 
+    @Nonnull
     public static String encodeURL(final String plainString) {
 
         return encodeURL( plainString, Charsets.UTF_8 );
     }
 
+    @Nonnull
     private static String encodeURL(final String plainString, final Charset encoding) {
 
         try {

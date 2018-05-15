@@ -32,11 +32,11 @@ import javax.annotation.Nullable;
  *
  * @author lhunath
  */
-public class Shell {
+@SuppressWarnings("UseOfSystemOutOrSystemErr")
+public final class Shell {
 
-    static final Logger logger = Logger.get( Shell.class );
-
-    protected static final int BUFFER_SIZE = 4096;
+    private static final Logger logger      = Logger.get( Shell.class );
+    private static final int    BUFFER_SIZE = 4096;
 
     /**
      * Run an application or shell script and redirect its stdout and stderr to our stdout and stderr.
@@ -52,7 +52,7 @@ public class Shell {
 
         Process process = exec( System.out, System.err, currDir, cmd );
 
-        if (block && process != null)
+        if (block && (process != null))
             waitFor( process );
 
         return process;
@@ -94,8 +94,8 @@ public class Shell {
     @Nullable
     public static Process exec(final OutputStream out, final OutputStream err, final File currDir, final String... cmd) {
 
-        int bytesRead;
-        char[] buffer = new char[100];
+        int      bytesRead;
+        char[]   buffer  = new char[100];
         String[] execCmd = cmd;
 
         try (Reader reader = new InputStreamReader( new FileInputStream( new File( currDir, cmd[0] ) ), Charsets.US_ASCII )) {
@@ -109,11 +109,11 @@ public class Shell {
         /* Check whether this is a shell script and if so, what interpreter to use. */
         // FIXME: Hashbang can contain one argument
         String head = new String( buffer, 0, bytesRead );
-        int eol = head.indexOf( System.lineSeparator() );
+        int    eol  = head.indexOf( System.lineSeparator() );
         if (eol > 0) {
             head = head.substring( 0, eol );
             if ("#!".equals( head.substring( 0, 2 ) )) {
-                String shell = head.substring( 2 );
+                String             shell   = head.substring( 2 );
                 LinkedList<String> cmdList = new LinkedList<>( Arrays.asList( cmd ) );
                 cmdList.addFirst( shell.trim() );
                 execCmd = cmdList.toArray( cmd );
