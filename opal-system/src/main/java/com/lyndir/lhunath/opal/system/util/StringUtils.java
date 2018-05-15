@@ -28,6 +28,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
+import org.jetbrains.annotations.NonNls;
 
 
 /**
@@ -54,7 +55,7 @@ public abstract class StringUtils {
     /**
      * Convenience shortcut for {@link String#format(String, Object...)}.  Great for static imports.
      */
-    public static String strf(final String format, final Object... args) {
+    public static String strf(@NonNls final String format, final Object... args) {
 
         return String.format( format, args );
     }
@@ -67,7 +68,7 @@ public abstract class StringUtils {
      *
      * @return A long string containing all the given strings delimited by the delimitor.
      */
-    public static String concat(final String delimitor, final String... elements) {
+    public static String concat(@NonNls final String delimitor, final String... elements) {
 
         StringBuilder concatenation = new StringBuilder();
         for (final String element : elements)
@@ -90,7 +91,7 @@ public abstract class StringUtils {
      * @return The result of the trimming.
      */
     @Nullable
-    public static String ltrim(@Nullable final String source, @Nullable final String trim) {
+    public static String ltrim(@Nullable final String source, @NonNls @Nullable final String trim) {
 
         if (source == null || trim == null)
             return source == null? null: source;
@@ -111,7 +112,7 @@ public abstract class StringUtils {
      * @return The result of the trimming.
      */
     @Nullable
-    public static String rtrim(@Nullable final String source, @Nullable final String trim) {
+    public static String rtrim(@Nullable final String source, @NonNls @Nullable final String trim) {
 
         if (source == null || trim == null)
             return source == null? null: source;
@@ -132,7 +133,7 @@ public abstract class StringUtils {
      * @return The result of the trimming.
      */
     @Nullable
-    public static String trim(final String source, final String trim) {
+    public static String trim(final String source, @NonNls final String trim) {
 
         return rtrim( ltrim( source, trim ), trim );
     }
@@ -174,7 +175,7 @@ public abstract class StringUtils {
      *
      * @return An expanded version of the source string.
      */
-    public static String expand(final String source, final String keyPrefix, final Function<String, String> keyToExpansion) {
+    public static String expand(final String source, @NonNls final String keyPrefix, final Function<String, String> keyToExpansion) {
 
         Map<Integer, Integer> indexToEnds = Maps.newTreeMap();
         Map<Integer, String> indexToExpansions = Maps.newTreeMap();

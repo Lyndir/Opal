@@ -6,9 +6,11 @@ import static com.lyndir.lhunath.opal.system.util.StringUtils.*;
 import com.google.common.base.Charsets;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.security.*;
+import java.security.spec.AlgorithmParameterSpec;
 import java.util.Random;
 import javax.annotation.Nullable;
 import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import org.bouncycastle.util.encoders.Base64;
 
@@ -24,11 +26,11 @@ public abstract class CryptUtils {
     private static final Random random = new SecureRandom();
 
     /**
-     * Encrypt the given data using the given key with AES at 128 bit in ECB.
+     * Encrypt the given data using the given key with AES at 128 bit in CBC.
      *
      * @param plainData  The data to encrypt.
      * @param key        The encryption key to encrypt the data with.
-     * @param usePadding Whether to use PKCS5 padding during the encryption.
+     * @param usePadding Whether to use PKCS7 padding during the encryption (needed for messages that do not fit the block size).
      *
      * @return The encrypted version of the plain text data as encrypted by the given key.
      *
@@ -39,7 +41,7 @@ public abstract class CryptUtils {
             throws IllegalBlockSizeException {
 
         try {
-            String cipherTransformation = String.format( "AES/ECB/%s", usePadding? "PKCS5Padding": "NoPadding" );
+            String cipherTransformation = String.format( "AES/CBC/%s", usePadding? "PKCS5Padding": "NoPadding" );
             return doCrypt( plainData, key, cipherTransformation, 128, Cipher.ENCRYPT_MODE );
         }
         catch (final BadPaddingException e) {
@@ -48,11 +50,11 @@ public abstract class CryptUtils {
     }
 
     /**
-     * Decrypt the given data using the given key with AES at 128 bit in ECB.
+     * Decrypt the given data using the given key with AES at 128 bit in CBC.
      *
      * @param encryptedData The data to decrypt.
      * @param key           The encryption key to decrypt the data with.
-     * @param usePadding    Whether to use PKCS5 padding during the encryption.
+     * @param usePadding    Whether to use PKCS7 padding during the encryption (needed for messages that do not fit the block size).
      *
      * @return The decrypted version of the encrypted data as decrypted by the given key.
      *
@@ -62,7 +64,7 @@ public abstract class CryptUtils {
             throws BadPaddingException {
 
         try {
-            String cipherTransformation = String.format( "AES/ECB/%s", usePadding? "PKCS5Padding": "NoPadding" );
+            String cipherTransformation = String.format( "AES/CBC/%s", usePadding? "PKCS5Padding": "NoPadding" );
             return doCrypt( encryptedData, key, cipherTransformation, 128, Cipher.DECRYPT_MODE );
         }
         catch (final IllegalBlockSizeException e) {
@@ -99,8 +101,9 @@ public abstract class CryptUtils {
 
         // Encrypt data with key.
         try {
-            Cipher cipher = Cipher.getInstance( cipherTransformation );
-            cipher.init( mode, new SecretKeySpec( blockSizedKey, "AES" ) );
+            Cipher                 cipher     = Cipher.getInstance( cipherTransformation );
+            AlgorithmParameterSpec parameters = new IvParameterSpec( new byte[blockByteSize] );
+            cipher.init( mode, new SecretKeySpec( blockSizedKey, "AES" ), parameters );
 
             return cipher.doFinal( data );
         }
@@ -115,6 +118,9 @@ public abstract class CryptUtils {
         }
         catch (final InvalidKeyException e) {
             throw logger.bug( e, "Key is inappropriate for cipher." );
+        }
+        catch (final InvalidAlgorithmParameterException e) {
+            throw logger.bug( e, "IV is inappropriate for cipher." );
         }
     }
 

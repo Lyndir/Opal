@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.lyndir.lhunath</groupId>
         <artifactId>lyndir</artifactId>
-        <version>GIT-SNAPSHOT</version>
+        <version>1.20</version>
     </parent>
 
     <name>Opal</name>
@@ -23,7 +23,8 @@
         <url>${scm.github.webbase}/Opal</url>
         <connection>${scm.github.pubbase}/Opal.git</connection>
         <developerConnection>${scm.github.devbase}/Opal.git</developerConnection>
-    </scm>
+      <tag>HEAD</tag>
+  </scm>
 
     <!-- DEFAULT PROPERTIES -->
     <properties>

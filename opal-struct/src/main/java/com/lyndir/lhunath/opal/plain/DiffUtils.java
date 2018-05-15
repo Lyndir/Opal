@@ -18,7 +18,6 @@
  */
 package com.lyndir.lhunath.opal.plain;
 
-import com.lyndir.lhunath.opal.system.util.UIUtils;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.regex.Pattern;
@@ -115,11 +114,11 @@ public abstract class DiffUtils {
             String chunkAdd = ADD_CHUNK.matcher( NOT_ADD_CHUNK.matcher( chunk ).replaceAll( "" ).trim() ).replaceAll( "+" );
             String chunkDel = REM_CHUNK.matcher( NOT_REM_CHUNK.matcher( chunk ).replaceAll( "" ).trim() ).replaceAll( "-" );
 
-            String diffFormat = "<span style='color: %x'>%s</span>";
+            String diffFormat = "<span style='color: %s'>%s</span>";
             if (!chunkDel.isEmpty())
-                out.append( String.format( diffFormat, UIUtils.DARK_RED.getRGB() - 0xff000000, chunkDel ) ).append( System.lineSeparator() );
+                out.append( String.format( diffFormat, "#993333", chunkDel ) ).append( System.lineSeparator() );
             if (!chunkAdd.isEmpty())
-                out.append( String.format( diffFormat, UIUtils.DARK_GREEN.getRGB() - 0xff000000, chunkAdd ) ).append( System.lineSeparator() );
+                out.append( String.format( diffFormat, "#339933", chunkAdd ) ).append( System.lineSeparator() );
         }
 
         return out.append( "</pre>" ).toString();
