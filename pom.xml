@@ -15,7 +15,7 @@
 
     <groupId>com.lyndir.lhunath.opal</groupId>
     <artifactId>opal</artifactId>
-    <version>1.7-p1</version>
+    <version>GIT-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <!-- CODE ACCESS -->
@@ -23,7 +23,7 @@
         <url>${scm.github.webbase}/Opal</url>
         <connection>${scm.github.pubbase}/Opal.git</connection>
         <developerConnection>${scm.github.devbase}/Opal.git</developerConnection>
-      <tag>1.7-p1</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <!-- DEFAULT PROPERTIES -->
