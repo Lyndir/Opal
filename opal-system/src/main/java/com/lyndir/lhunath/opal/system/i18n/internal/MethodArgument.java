@@ -14,8 +14,8 @@ import javax.annotation.Nullable;
  *
  * <p>When the value for the argument is requested; it is first unwrapped.  That means, in several steps; the value object is transformed
  * in
- * another that is "contained" by it. <ul><li>If it is an IModel, the model's object is substituted.</li> <li>If it is Localized, the
- * object's #getLocalizedInstance is substituted.</li> </ul> </p>
+ * another that is "contained" by it.</p> <ul><li>If it is an IModel, the model's object is substituted.</li> <li>If it is Localized, the
+ * object's #getLocalizedInstance is substituted.</li> </ul>
  *
  * <p> <i>07 23, 2010</i> </p>
  *

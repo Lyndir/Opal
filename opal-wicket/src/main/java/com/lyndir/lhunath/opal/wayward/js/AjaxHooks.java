@@ -16,7 +16,7 @@ import org.apache.wicket.markup.html.JavascriptPackageResource;
  *
  * <p> On the server side (in your Java code), you install the AjaxHooks by doing these two things: <ul> <li>Installing it on any visible
  * component that's part of the page ({@code AjaxHooks.installAjaxEvents( mycomponent )}).  This activates AjaxHooks for that
- * component's page.</li> <li>Installing it on your AjaxRequestTargets (for access to the list of updated elements).</p> </ul>
+ * component's page.</li> <li>Installing it on your AjaxRequestTargets (for access to the list of updated elements).</li> </ul>
  *
  * The easiest and most consistent way to do the latter is by overriding Application#newAjaxRequestTarget:
  *

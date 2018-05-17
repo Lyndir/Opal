@@ -19,7 +19,7 @@ import java.io.OutputStream;
 
 
 /**
- * <i>NullOutputStream - An output stream that does nothing when written to (ie. >/dev/null).</i><br> <br> Redirects output to
+ * <i>NullOutputStream - An output stream that does nothing when written to (ie. &lt;/dev/null).</i><br> <br> Redirects output to
  * nothingness..<br> <br>
  *
  * @author lhunath

@@ -171,7 +171,7 @@ public class Vec3D extends Vec2D {
     }
 
     /**
-     * Multiply this vector with another vector using the cross product.<br> <br> <i>The length of the cross product of this vector with a
+     * Multiply this vector with another vector using the cross product.<br> <br> The length of the cross product of this vector with a
      * given one is the area of the parallelogram having this and the given vector as sides.<br>
      *
      * <pre>
@@ -187,7 +187,7 @@ public class Vec3D extends Vec2D {
      * direction
      * of the second operand. Then, the resultant vector is coming out of the thumb.</q> <br> <br> It will thus always be perpendicular to
      * the plane formed by the given vectors (this is the same plane as formed by the above parallelogram).<br> This means that the product
-     * of the resultant of a cross product with a third gives the volume of the parallelepiped thus formed.</i>
+     * of the resultant of a cross product with a third gives the volume of the parallelepiped thus formed.
      *
      * @param vector The vector with which this vector must be multiplied.
      *

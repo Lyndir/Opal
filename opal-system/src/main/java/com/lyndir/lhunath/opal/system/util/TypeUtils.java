@@ -439,7 +439,7 @@ public abstract class TypeUtils {
     }
 
     /**
-     * Compress the generic form of the method's signature. Trim off throws declarations.<br> java.lang.method -> j~l~method
+     * Compress the generic form of the method's signature. Trim off throws declarations.<br> java.lang.method -&lt; j~l~method
      *
      * @param signature The signature that needs to be compressed.
      *

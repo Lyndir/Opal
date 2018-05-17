@@ -112,7 +112,7 @@ public abstract class Models {
     /**
      * Create a bean expression recorder that can be evaluated by a {@link #model(Object)}.
      * <p>
-     * You use it like this:<br />
+     * You use it like this:<br>
      * {@code model(bean(user).getName());}
      *
      * @param object The bean on which the expression should be evaluated.
@@ -138,7 +138,7 @@ public abstract class Models {
     /**
      * Create a bean expression recorder that can be evaluated by a {@link #model(Object)}.
      * <p>
-     * You use it like this:<br />
+     * You use it like this:<br>
      * <pre>
      * model(bean(User.class, new SSupplier&lt;User&gt;() {
      *             User get() {
@@ -168,7 +168,7 @@ public abstract class Models {
     /**
      * Create a bean expression recorder that can be evaluated by a {@link #model(Object)}.
      * <p>
-     * You use it like this:<br />
+     * You use it like this:<br>
      * <pre>
      * model(bean(User.class, new LoadableDetachableModel&lt;User&gt;() {
      *             User load() {

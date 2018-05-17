@@ -30,7 +30,7 @@ import org.apache.wicket.model.*;
  *
  * <p> Generally, you would create a {@link ModelProvider} for each component that you have a top-level class for. The {@link
  * ModelProvider}
- * for your component should be the component's model.<br /> Then, create accessor methods in the {@link ModelProvider} for all the models
+ * for your component should be the component's model.<br> Then, create accessor methods in the {@link ModelProvider} for all the models
  * you'll need in your component. It is often helpful to replicate your component's component hierarchy in your {@link ModelProvider} by
  * using inner {@link ModelProvider} classes, providing accessor methods for them in their parent and setting them as the model for your
  * component's child components. </p>

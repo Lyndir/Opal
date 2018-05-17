@@ -19,6 +19,7 @@ public abstract class ExecutionUtils {
      * Obtain an element from the current execution stack at the given level.
      *
      * <table>
+     * <caption>Stack Levels</caption>
      * <tr>
      * <th>{@code level}</th>
      * <th>Meaning</th>
