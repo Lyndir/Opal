@@ -3,8 +3,6 @@ package com.lyndir.lhunath.opal.system.i18n.internal;
 import static com.google.common.base.Preconditions.*;
 import static com.lyndir.lhunath.opal.system.util.ObjectUtils.*;
 
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
 import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.collection.SSupplier;
 import com.lyndir.lhunath.opal.system.i18n.*;
@@ -15,6 +13,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 
@@ -29,18 +29,12 @@ public class MessagesInvocationHandler implements InvocationHandler, Serializabl
 
     static final         Logger                                       logger          = Logger.get( MessagesInvocationHandler.class );
 
-    private static final long serialVersionUID = 0;
-    private static final Map<Class<?>, Function<Supplier<String>, ?>> wrapperTypes    = Maps.newHashMap();
-    private static final Deque<Supplier<Locale>>                      localeSuppliers = Lists.newLinkedList();
+    private static final long                                         serialVersionUID = 0;
+    private static final Map<Class<?>, Function<Supplier<String>, ?>> wrapperTypes     = Maps.newHashMap();
+    private static final Deque<Supplier<Locale>>                      localeSuppliers  = Lists.newLinkedList();
 
     static {
-        registerLocaleSupplier( new Supplier<Locale>() {
-            @Override
-            public Locale get() {
-
-                return Locale.getDefault();
-            }
-        } );
+        registerLocaleSupplier( Locale::getDefault );
     }
 
     public static <T> void registerWrapperType(final Class<? super T> wrapperType,

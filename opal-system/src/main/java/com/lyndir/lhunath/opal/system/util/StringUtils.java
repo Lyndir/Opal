@@ -15,16 +15,15 @@
  */
 package com.lyndir.lhunath.opal.system.util;
 
-import static com.google.common.base.Preconditions.*;
 import static com.lyndir.lhunath.opal.system.util.ObjectUtils.*;
 
-import com.google.common.base.Function;
 import com.google.common.base.Verify;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;

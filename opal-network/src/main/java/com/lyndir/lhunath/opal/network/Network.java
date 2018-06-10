@@ -17,13 +17,13 @@ package com.lyndir.lhunath.opal.network;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.google.common.base.Charsets;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.io.IOException;
 import java.net.*;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import javax.annotation.Nullable;
 import javax.net.ssl.SSLEngine;
@@ -459,7 +459,7 @@ public class Network implements Runnable {
 
             // Visualize incoming (plain-text) data.
             logger.inf( "[<<<<: %s] Received (plain): %s", //
-                    nameChannel( socketChannel ), Charsets.UTF_8.decode( dataBuffer ) );
+                        nameChannel( socketChannel ), StandardCharsets.UTF_8.decode( dataBuffer ) );
             dataBuffer.flip();
 
             // Pass incoming (plain-text) data to the application.

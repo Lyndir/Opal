@@ -15,9 +15,8 @@
  */
 package com.lyndir.lhunath.opal.system.util;
 
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 
 /**
@@ -25,14 +24,9 @@ import javax.annotation.Nullable;
  *
  * @param <T> The type of the supplied value.
  */
-@SuppressWarnings("NullableProblems")
 @FunctionalInterface
 public interface PredicateNN<T> extends Predicate<T> {
 
     @Override
-    boolean apply(@Nonnull T input);
-
-    boolean equals(@Nullable Object object);
-
-    int hashCode();
+    boolean test(@Nonnull T t);
 }

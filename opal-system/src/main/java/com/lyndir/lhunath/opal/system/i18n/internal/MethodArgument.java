@@ -1,11 +1,11 @@
 package com.lyndir.lhunath.opal.system.i18n.internal;
 
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
 import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.i18n.Localized;
 import java.lang.annotation.Annotation;
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 

@@ -15,7 +15,8 @@
  */
 package com.lyndir.lhunath.opal.system.util;
 
-import com.google.common.base.*;
+import com.google.common.base.Verify;
+import java.util.function.Function;
 import javax.annotation.Nonnull;
 
 

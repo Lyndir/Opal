@@ -15,13 +15,13 @@
  */
 package com.lyndir.lhunath.opal.system;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import com.lyndir.lhunath.opal.system.dummy.NullOutputStream;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.LinkedList;
 import javax.annotation.Nullable;
@@ -98,7 +98,7 @@ public final class Shell {
         char[]   buffer  = new char[100];
         String[] execCmd = cmd;
 
-        try (Reader reader = new InputStreamReader( new FileInputStream( new File( currDir, cmd[0] ) ), Charsets.US_ASCII )) {
+        try (Reader reader = new InputStreamReader( new FileInputStream( new File( currDir, cmd[0] ) ), StandardCharsets.US_ASCII )) {
             bytesRead = reader.read( buffer );
         }
         catch (final IOException e) {

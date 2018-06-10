@@ -19,10 +19,9 @@ package com.lyndir.lhunath.opal.system.util;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.google.common.base.*;
-import com.google.common.base.Objects;
-import java.util.Optional;
 import com.google.common.collect.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import com.lyndir.lhunath.opal.system.error.AlreadyCheckedException;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import com.lyndir.lhunath.opal.system.util.ObjectMeta.For;
@@ -129,7 +128,7 @@ public abstract class ObjectUtils {
             StringBuilder toString = new StringBuilder( String.format( "<b[]: %dB, ", byteArray.length ) );
 
             // Decode some bytes.
-            CharBuffer decodedBytes = Charsets.UTF_8.decode(
+            CharBuffer decodedBytes = StandardCharsets.UTF_8.decode(
                     ByteBuffer.wrap( byteArray, 0, Math.min( byteArray.length, MAX_DECODE_LENGTH ) ) );
             String stripped = NON_PRINTABLE.matcher( decodedBytes ).replaceAll( "." );
             toString.append( stripped );
@@ -222,45 +221,41 @@ public abstract class ObjectUtils {
 
         try {
             toString.append(
-                    forEachFieldWithMeta( For.toString, o.getClass(), new NFunctionNN<LastResult<Field, StringBuilder>, StringBuilder>() {
-                        @Override
-                        @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
-                        public StringBuilder apply(@Nonnull final LastResult<Field, StringBuilder> lastResult) {
+                    forEachFieldWithMeta( For.toString, o.getClass(), lastResult -> {
 
-                            Field field = lastResult.getCurrent();
-                            StringBuilder fieldsString = lastResult.getLastResult();
-                            assert fieldsString != null;
+                        Field field = lastResult.getCurrent();
+                        StringBuilder fieldsString = lastResult.getLastResult();
+                        assert fieldsString != null;
 
-                            if (!isValueAccessible( o ))
-                                return fieldsString;
-
-                            String name = null;
-                            ObjectMeta fieldMeta = field.getAnnotation( ObjectMeta.class );
-                            if (fieldMeta != null)
-                                name = fieldMeta.name();
-                            if (name == null || name.isEmpty())
-                                name = field.getName();
-
-                            if (fieldsString.length() == 0)
-                                fieldsString.append( ": " );
-                            else
-                                fieldsString.append( ", " );
-
-                            try {
-                                field.setAccessible( true );
-                            }
-                            catch (final SecurityException ignored) {
-                            }
-
-                            try {
-                                fieldsString.append( name ).append( '=' ).append( describe( field.get( o ) ) );
-                            }
-                            catch (final Throwable t) {
-                                logger.dbg( t, "Couldn't load value for field: %s, in object: 0x%x", field, System.identityHashCode( o ) );
-                            }
-
+                        if (!isValueAccessible( o ))
                             return fieldsString;
+
+                        String name = null;
+                        ObjectMeta fieldMeta = field.getAnnotation( ObjectMeta.class );
+                        if (fieldMeta != null)
+                            name = fieldMeta.name();
+                        if (name == null || name.isEmpty())
+                            name = field.getName();
+
+                        if (fieldsString.length() == 0)
+                            fieldsString.append( ": " );
+                        else
+                            fieldsString.append( ", " );
+
+                        try {
+                            field.setAccessible( true );
                         }
+                        catch (final SecurityException ignored) {
+                        }
+
+                        try {
+                            fieldsString.append( name ).append( '=' ).append( describe( field.get( o ) ) );
+                        }
+                        catch (final Throwable t) {
+                            logger.dbg( t, "Couldn't load value for field: %s, in object: 0x%x", field, System.identityHashCode( o ) );
+                        }
+
+                        return fieldsString;
                     }, new StringBuilder() ) );
         }
         finally {
@@ -293,53 +288,49 @@ public abstract class ObjectUtils {
 
         try {
             seen.get( For.hashCode ).get().add( identityHashCode );
-            return ifNotNullElse( forEachFieldWithMeta( For.hashCode, o.getClass(), new NFunctionNN<LastResult<Field, Integer>, Integer>() {
-                @Override
-                @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
-                public Integer apply(@Nonnull final LastResult<Field, Integer> lastResult) {
+            return ifNotNullElse( forEachFieldWithMeta( For.hashCode, o.getClass(), lastResult -> {
 
-                    Field field = lastResult.getCurrent();
-                    Integer lastHashCode = lastResult.getLastResult();
-                    if (lastHashCode == null)
-                        lastHashCode = 0;
+                Field field = lastResult.getCurrent();
+                Integer lastHashCode = lastResult.getLastResult();
+                if (lastHashCode == null)
+                    lastHashCode = 0;
 
-                    // Field's value
-                    Object value = null;
-                    try {
-                        field.setAccessible( true );
-                        value = field.get( o );
-                    }
-                    catch (SecurityException | IllegalAccessException ignored) {
-                    }
-
-                    // Field's value's hashCode
-                    int hashCode = System.identityHashCode( value );
-                    if (value != null && isValueAccessible( value ))
-                        try {
-                            if (value instanceof Iterable) {
-                                // Best-effort special handling for Iterables in case they don't implement hashCode themselves.
-                                // We just use the hashCode of the sorted hashCodes of the values.
-                                ImmutableSortedSet.Builder<Integer> hashCodes = ImmutableSortedSet.naturalOrder();
-                                //noinspection SynchronizationOnLocalVariableOrMethodParameter
-                                synchronized (value) {
-                                    for (final Object o_ : (Iterable<?>) value)
-                                        hashCodes.add( ObjectUtils.hashCode( o_ ) );
-                                }
-                                hashCode = hashCodes.build().hashCode();
-                            } else
-                                hashCode = value.hashCode();
-                        }
-                        catch (final Throwable t) {
-                            logger.dbg( t, "Couldn't load hashCode for: %s, value: %s.  Falling back to identity hashCode.", field, value );
-                        }
-
-                    // Increment the total hashCode with this field's value's hashCode
-                    int newHashCode = HASHCODE_PRIME * lastHashCode + hashCode;
-                    logger.trc( "%s- %s=%d (hashCode -> %d)", StringUtils.indent( seen.get( For.hashCode ).get().size() ), //
-                                field.getName(), hashCode, newHashCode );
-
-                    return newHashCode;
+                // Field's value
+                Object value = null;
+                try {
+                    field.setAccessible( true );
+                    value = field.get( o );
                 }
+                catch (SecurityException | IllegalAccessException ignored) {
+                }
+
+                // Field's value's hashCode
+                int hashCode = System.identityHashCode( value );
+                if (value != null && isValueAccessible( value ))
+                    try {
+                        if (value instanceof Iterable) {
+                            // Best-effort special handling for Iterables in case they don't implement hashCode themselves.
+                            // We just use the hashCode of the sorted hashCodes of the values.
+                            ImmutableSortedSet.Builder<Integer> hashCodes = ImmutableSortedSet.naturalOrder();
+                            //noinspection SynchronizationOnLocalVariableOrMethodParameter
+                            synchronized (value) {
+                                for (final Object o_ : (Iterable<?>) value)
+                                    hashCodes.add( hashCode( o_ ) );
+                            }
+                            hashCode = hashCodes.build().hashCode();
+                        } else
+                            hashCode = value.hashCode();
+                    }
+                    catch (final Throwable t) {
+                        logger.dbg( t, "Couldn't load hashCode for: %s, value: %s.  Falling back to identity hashCode.", field, value );
+                    }
+
+                // Increment the total hashCode with this field's value's hashCode
+                int newHashCode = HASHCODE_PRIME * lastHashCode + hashCode;
+                logger.trc( "%s- %s=%d (hashCode -> %d)", StringUtils.indent( seen.get( For.hashCode ).get().size() ), //
+                            field.getName(), hashCode, newHashCode );
+
+                return newHashCode;
             }, null ), new NNSupplier<Integer>() {
                 @Nonnull
                 @Override
@@ -438,7 +429,7 @@ public abstract class ObjectUtils {
                                 logger.dbg( t, "Couldn't load value for field: %s, in object: %s", field, subObject );
                             }
 
-                            return Objects.equal( superValue, subValue );
+                            return Objects.equals( superValue, subValue );
                         }
                     }, null ), false /* There are no (accessible) fields to compare. */ );
         }
@@ -451,38 +442,34 @@ public abstract class ObjectUtils {
     private static <R, T> R forEachFieldWithMeta(final For meta, final Class<T> type, final NFunctionNN<LastResult<Field, R>, R> function,
                                                  @Nullable final R firstResult) {
 
-        return TypeUtils.forEachSuperTypeOf( type, new NFunctionNN<LastResult<Class<?>, R>, R>() {
-            @Override
-            @SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
-            public R apply(@Nonnull final LastResult<Class<?>, R> lastTypeResult) {
+        return TypeUtils.forEachSuperTypeOf( type, lastTypeResult -> {
 
-                Class<?> subType = lastTypeResult.getCurrent();
-                final boolean usedByType = usesMeta( meta, subType );
+            Class<?> subType = lastTypeResult.getCurrent();
+            final boolean usedByType = usesMeta( meta, subType );
 
-                return TypeUtils.forEachFieldOf( subType, new NFunctionNN<LastResult<Field, R>, R>() {
-                    @Nullable
-                    @Override
-                    public R apply(@Nonnull final LastResult<Field, R> input) {
+            return TypeUtils.forEachFieldOf( subType, new NFunctionNN<LastResult<Field, R>, R>() {
+                @Nullable
+                @Override
+                public R apply(@Nonnull final LastResult<Field, R> input) {
 
-                        Field field = input.getCurrent();
-                        R result = input.getLastResult();
+                    Field field = input.getCurrent();
+                    R result = input.getLastResult();
 
-                        if (Modifier.isStatic( field.getModifiers() ))
+                    if (Modifier.isStatic( field.getModifiers() ))
+                        return result;
+                    if (field.isAnnotationPresent( ObjectMeta.class )) {
+                        boolean usedByField = usesMeta( meta, field );
+
+                        if (!usedByField)
                             return result;
-                        if (field.isAnnotationPresent( ObjectMeta.class )) {
-                            boolean usedByField = usesMeta( meta, field );
+                    } else
+                        // Field has no @ObjectMeta, default to type's decision.
+                        if (!usedByType)
+                            return result;
 
-                            if (!usedByField)
-                                return result;
-                        } else
-                            // Field has no @ObjectMeta, default to type's decision.
-                            if (!usedByType)
-                                return result;
-
-                        return function.apply( new LastResult<>( field, result ) );
-                    }
-                }, lastTypeResult.getLastResult(), false );
-            }
+                    return function.apply( new LastResult<>( field, result ) );
+                }
+            }, lastTypeResult.getLastResult(), false );
         }, null, firstResult );
     }
 
@@ -767,17 +754,12 @@ public abstract class ObjectUtils {
     @Nonnull
     public static <T> T ifTypeElse(@Nonnull final Class<T> type, final Object object, @Nonnull final Object badTypeValue) {
 
-        return type.cast( TypeUtils.newProxyInstance( type, new InvocationHandler() {
-            @Override
-            @SuppressWarnings({ "ProhibitedExceptionDeclared" })
-            public Object invoke(final Object proxy, final Method method, final Object[] args)
-                    throws Throwable {
+        return type.cast( TypeUtils.newProxyInstance( type, (proxy, method, args) -> {
 
-                if (type.isInstance( object ))
-                    return checkNotNull( method.invoke( object, args ) );
+            if (type.isInstance( object ))
+                return checkNotNull( method.invoke( object, args ) );
 
-                return badTypeValue;
-            }
+            return badTypeValue;
         } ) );
     }
 

@@ -15,14 +15,12 @@
  */
 package com.lyndir.lhunath.opal.system.util;
 
-import com.google.common.base.Function;
 import com.google.common.base.Throwables;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
 import com.lyndir.lhunath.opal.system.CodeUtils;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.text.MessageFormat;
+import java.util.Arrays;
 
 
 /**
@@ -129,14 +127,10 @@ public abstract class URLUtils {
     public static URL newURL(final String urlFormat, final Object... urlFormatArgs) {
 
         try {
-            return new URL( MessageFormat.format( urlFormat,
-                    Collections2.transform( ImmutableList.copyOf( urlFormatArgs ), new Function<Object, String>() {
-                        @Override
-                        public String apply(final Object input) {
-
-                            return CodeUtils.encodeURL( input == null? "": input.toString() );
-                        }
-                    } ).toArray() ) );
+            return new URL( MessageFormat.format(
+                    urlFormat, Arrays.stream( urlFormatArgs )
+                                     .map( input -> CodeUtils.encodeURL( (input == null)? "": input.toString() ) )
+                                     .toArray() ) );
         }
         catch (final MalformedURLException e) {
             throw Throwables.propagate( e );

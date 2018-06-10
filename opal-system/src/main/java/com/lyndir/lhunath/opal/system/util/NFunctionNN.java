@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.opal.system.util;
 
-import com.google.common.base.Function;
+import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 

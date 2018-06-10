@@ -2,8 +2,6 @@ package com.lyndir.lhunath.opal.system.util;
 
 import static com.lyndir.lhunath.opal.system.util.StringUtils.*;
 
-import com.google.common.base.Function;
-import java.util.Optional;
 import com.google.common.collect.*;
 import com.lyndir.lhunath.opal.system.error.BreakException;
 import com.lyndir.lhunath.opal.system.error.InternalInconsistencyException;
@@ -11,7 +9,9 @@ import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.sf.cglib.core.CollectionUtils;
@@ -191,7 +191,7 @@ public abstract class TypeUtils {
                                                                                         final Class<? extends A> annotationType) {
 
         ImmutableMap.Builder<Class<?>, Map<Class<?>, A>> typeHierarchyAnnotations = ImmutableMap.builder();
-        ImmutableMap.Builder<Class<?>, A> typeAnnotations = ImmutableMap.builder();
+        ImmutableMap.Builder<Class<?>, A>                typeAnnotations          = ImmutableMap.builder();
 
         A annotation = type.getAnnotation( annotationType );
         if (annotation != null)
@@ -230,8 +230,8 @@ public abstract class TypeUtils {
 
         //logger.debug( "Digging down method for annotation {}, {}", annotationType, method );
 
-        Method superclassMethod = null;
-        Class<?> superclass = method.getDeclaringClass();
+        Method   superclassMethod = null;
+        Class<?> superclass       = method.getDeclaringClass();
         while ((superclass = superclass.getSuperclass()) != null) {
             try {
                 //logger.debug( "Trying for method {} in {}", method.getName(), superclass );
@@ -284,22 +284,16 @@ public abstract class TypeUtils {
         ImmutableList<Constructor<E>> constructors = findConstructors( type, args );
         if (constructors.isEmpty()) {
             throw new InternalInconsistencyException( strf( "No constructors of type: %s, match argument types: %s", type,
-                                                            Lists.transform( Arrays.asList( args ), new Function<Object, Object>() {
-                                                                @Override
-                                                                public Object apply(final Object input) {
-                                                                    return input == null? "<null>": input.getClass();
-                                                                }
-                                                            } ) ) );
+                                                            Arrays.stream( args )
+                                                                  .map( o -> (o == null)? "<null>": o.getClass() )
+                                                                  .collect( Collectors.toList() ) ) );
         }
         if (constructors.size() > 1) {
             throw new InternalInconsistencyException(
                     strf( "Multiple constructors of type: %s, match argument types: %s, candidates: %s", type,
-                          Lists.transform( Arrays.asList( args ), new Function<Object, Object>() {
-                              @Override
-                              public Object apply(final Object input) {
-                                  return input == null? "<null>": input.getClass();
-                              }
-                          } ), constructors ) );
+                          Arrays.stream( args )
+                                .map( o -> (o == null)? "<null>": o.getClass() )
+                                .collect( Collectors.toList() ), constructors ) );
         }
 
         return constructors.get( 0 );

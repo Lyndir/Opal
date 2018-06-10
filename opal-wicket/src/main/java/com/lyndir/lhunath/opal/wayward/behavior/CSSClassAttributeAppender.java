@@ -15,9 +15,8 @@
  */
 package com.lyndir.lhunath.opal.wayward.behavior;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 import java.util.*;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -58,16 +57,9 @@ public class CSSClassAttributeAppender extends AttributeAppender {
 
             @Override
             public Collection<String> getObject() {
-
-                return Collections2.transform( Arrays.asList( cssClassModels ), new Function<IModel<?>, String>() {
-
-                    @Nullable
-                    @Override
-                    public String apply(final IModel<?> from) {
-
-                        return from.getObject() == null? null: String.valueOf( from.getObject() );
-                    }
-                } );
+                return Arrays.stream( cssClassModels )
+                             .map( from -> (from.getObject() == null)? null: String.valueOf( from.getObject() ) )
+                             .collect( Collectors.toList() );
             }
         } );
     }

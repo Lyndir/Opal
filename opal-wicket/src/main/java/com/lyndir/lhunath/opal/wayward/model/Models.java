@@ -3,12 +3,12 @@ package com.lyndir.lhunath.opal.wayward.model;
 import static com.google.common.base.Preconditions.*;
 import static com.lyndir.lhunath.opal.system.util.TypeUtils.*;
 
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.lyndir.lhunath.opal.system.collection.SSupplier;
 import java.io.Serializable;
 import java.lang.reflect.*;
 import java.util.List;
+import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.apache.wicket.model.*;

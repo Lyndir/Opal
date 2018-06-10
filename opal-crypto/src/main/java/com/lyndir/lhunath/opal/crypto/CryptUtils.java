@@ -3,8 +3,8 @@ package com.lyndir.lhunath.opal.crypto;
 import static com.google.common.base.Preconditions.*;
 import static com.lyndir.lhunath.opal.system.util.StringUtils.*;
 
-import com.google.common.base.Charsets;
 import com.lyndir.lhunath.opal.system.logging.Logger;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Random;
@@ -171,7 +171,7 @@ public abstract class CryptUtils {
         if (plainData == null || plainData.length == 0)
             return null;
 
-        return new String( Base64.encode( plainData ), Charsets.UTF_8 );
+        return new String( Base64.encode( plainData ), StandardCharsets.UTF_8 );
     }
 
     /**
@@ -186,6 +186,6 @@ public abstract class CryptUtils {
         if (b64Data == null || b64Data.isEmpty())
             return new byte[0];
 
-        return Base64.decode( b64Data.getBytes( Charsets.UTF_8 ) );
+        return Base64.decode( b64Data.getBytes( StandardCharsets.UTF_8 ) );
     }
 }

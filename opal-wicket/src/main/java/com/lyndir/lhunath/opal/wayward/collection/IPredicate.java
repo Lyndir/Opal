@@ -15,8 +15,8 @@
  */
 package com.lyndir.lhunath.opal.wayward.collection;
 
-import com.google.common.base.Predicate;
 import java.io.Serializable;
+import java.util.function.Predicate;
 
 
 /**

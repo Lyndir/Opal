@@ -15,7 +15,7 @@
  */
 package com.lyndir.lhunath.opal.system.util;
 
-import com.google.common.base.Supplier;
+import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 

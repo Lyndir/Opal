@@ -2,15 +2,12 @@ package com.lyndir.lhunath.opal.json;
 
 import static com.lyndir.lhunath.opal.system.util.ObjectUtils.*;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.CharStreams;
-import com.google.common.io.OutputSupplier;
 import com.google.gson.*;
 import com.google.inject.Singleton;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -52,7 +49,7 @@ public class GsonJsonProvider implements MessageBodyReader<Object>, MessageBodyW
                            final MultivaluedMap<String, String> httpHeaders, final InputStream entityStream)
             throws IOException, WebApplicationException {
         // TODO: Get charset from mediaType
-        return gson.fromJson( new InputStreamReader( entityStream, Charsets.UTF_8 ), ifNotNullElse( genericType, type ) );
+        return gson.fromJson( new InputStreamReader( entityStream, StandardCharsets.UTF_8 ), ifNotNullElse( genericType, type ) );
     }
 
     @Override
@@ -71,6 +68,6 @@ public class GsonJsonProvider implements MessageBodyReader<Object>, MessageBodyW
                         final MediaType mediaType, final MultivaluedMap<String, Object> httpHeaders, final OutputStream entityStream)
             throws IOException, WebApplicationException {
         // TODO: Get charset from mediaType
-        entityStream.write( gson.toJson( o, ifNotNullElse( genericType, type ) ).getBytes( Charsets.UTF_8 ) );
+        entityStream.write( gson.toJson( o, ifNotNullElse( genericType, type ) ).getBytes( StandardCharsets.UTF_8 ) );
     }
 }

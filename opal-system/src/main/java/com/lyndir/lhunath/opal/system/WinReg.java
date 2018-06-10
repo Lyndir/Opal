@@ -15,11 +15,11 @@
  */
 package com.lyndir.lhunath.opal.system;
 
-import com.google.common.base.Charsets;
 import com.lyndir.lhunath.opal.system.dummy.NullOutputStream;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import javax.annotation.Nullable;
 
 
@@ -66,7 +66,7 @@ public final class WinReg {
         if (!(type.equals( String.class ) || type.equals( Integer.class )))
             throw new IllegalArgumentException( "Can only query the registry for String or Integer types." );
 
-        String output = Shell.execRead( Charsets.UTF_8, new File( "C:\\Windows\\System32" ), "reg.exe", "query", key, "/v", value );
+        String output = Shell.execRead( StandardCharsets.UTF_8, new File( "C:\\Windows\\System32" ), "reg.exe", "query", key, "/v", value );
         if (output == null)
             return null;
 

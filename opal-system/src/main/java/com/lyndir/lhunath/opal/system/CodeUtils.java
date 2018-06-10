@@ -1,11 +1,11 @@
 package com.lyndir.lhunath.opal.system;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.lyndir.lhunath.opal.system.logging.Logger;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Formatter;
 import javax.annotation.Nonnull;
@@ -123,7 +123,7 @@ public abstract class CodeUtils {
     @Nonnull
     public static String encodeURL(final String plainString) {
 
-        return encodeURL( plainString, Charsets.UTF_8 );
+        return encodeURL( plainString, StandardCharsets.UTF_8 );
     }
 
     @Nonnull
